@@ -11,7 +11,7 @@ export const searchSqlServer = createAsyncThunk(
       return res.body;
     });
     return response.data;
-  },
+  }
 );
 
 export const getSqlServerById = createAsyncThunk('getSqlServerById', async (id: number) => {

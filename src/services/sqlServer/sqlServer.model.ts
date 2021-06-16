@@ -36,5 +36,5 @@ export interface ISqlServer {
 }
 
 export interface ISearchSqlServer extends ISearch {
-  is_lookup : boolean;
+  is_lookup: boolean;
 }

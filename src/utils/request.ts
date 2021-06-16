@@ -20,7 +20,7 @@ request.interceptors.request.use(
   (error) => {
     alert(error);
     Promise.reject(error);
-  },
+  }
 );
 
 // Response interceptors Customize based on your need
@@ -44,7 +44,7 @@ request.interceptors.response.use(
         break;
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export default request;

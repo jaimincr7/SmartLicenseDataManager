@@ -6,7 +6,7 @@ class SqlServerService {
   ENDPOINT = '/sql-server';
 
   public async searchSqlServer(
-    searchParams?: ISearchSqlServer,
+    searchParams?: ISearchSqlServer
   ): Promise<IApiResponse<ISearchResponse<ISqlServer>>> {
     const url = `${this.ENDPOINT}/search`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {

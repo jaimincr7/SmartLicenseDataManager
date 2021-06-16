@@ -53,7 +53,7 @@ export const sqlServerSlice = createSlice({
     },
     [searchSqlServer.fulfilled.type]: (
       state,
-      action: PayloadAction<ISearchResponse<ISqlServer>>,
+      action: PayloadAction<ISearchResponse<ISqlServer>>
     ) => {
       state.search.data = action.payload.search_result.records;
       state.search.count = action.payload.search_result.total_count;

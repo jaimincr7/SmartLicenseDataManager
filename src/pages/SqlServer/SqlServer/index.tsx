@@ -6,12 +6,7 @@ import { toast } from 'react-toastify';
 import { ISearchSqlServer, ISqlServer } from '../../../services/sqlServer/sqlServer.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import {
-  deleteSqlServer,
-  getSqlServerById,
-  saveSqlServer,
-  searchSqlServer,
-} from '../../../store/sqlServer/sqlServer.action';
+import { deleteSqlServer, searchSqlServer } from '../../../store/sqlServer/sqlServer.action';
 import {
   clearSqlServer,
   clearSqlServerMessages,
@@ -53,7 +48,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
       }
       dispatch(clearSqlServerMessages());
     }
-  }, [sqlServers.delete.messages]);  
+  }, [sqlServers.delete.messages]);
 
   useEffect(() => {
     fetchSqlServer(pagination);
@@ -98,9 +93,11 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
       dataIndex: 'action',
       render: (_, data: ISqlServer) => (
         <Space size="middle">
-          <Link to={`${match.url}/edit/${data.id}`}><EditOutlined /></Link>
+          <Link to={`${match.url}/edit/${data.id}`}>
+            <EditOutlined />
+          </Link>
           <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServer(data.id)}>
-          <DeleteOutlined />
+            <DeleteOutlined />
           </Popconfirm>
         </Space>
       ),
@@ -115,10 +112,10 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
           title="Sql Server"
           extra={[
             <Link key="1" to={`${match.url}/add`}>
-                <Button type="primary">
+              <Button type="primary">
                 <PlusOutlined /> Add
-                </Button>
-            </Link>
+              </Button>
+            </Link>,
           ]}
         />
         <Content style={{ padding: '0 25px' }}>
