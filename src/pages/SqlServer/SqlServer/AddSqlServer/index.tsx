@@ -1,4 +1,4 @@
-import { Layout, PageHeader, Button, Select, Row, Col, Form, DatePicker, Input } from 'antd';
+import { Layout, PageHeader, Button, Select, Row, Col, Form, Input } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -11,9 +11,7 @@ import {
 } from '../../../../store/sqlServer/sqlServer.reducer';
 import { IAddSqlServerProps, IDropDownOption } from './addSqlServer.model';
 import { LeftOutlined } from '@ant-design/icons';
-import { Messages } from '../../../../common/constants/messages';
 import { toast } from 'react-toastify';
-import { useForm } from 'react-hook-form';
 import { ISqlServer } from '../../../../services/sqlServer/sqlServer.model';
 import 'antd/dist/antd.css';
 import './addSqlServer.style.scss';
@@ -26,13 +24,6 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
-
 const validateMessages = {
   required: '${label} is required!',
   types: {
@@ -42,16 +33,6 @@ const validateMessages = {
   number: {
     range: '${label} must be between ${min} and ${max}',
   },
-};
-
-let initialValues = {
-  busName: null,
-  companyName: null,
-  cluster: '',
-  costCode: '',
-  dataCenter: '',
-  deviceName: '',
-  tenantName: null,
 };
 
 const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
@@ -70,6 +51,16 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
     }, [isNew]);
 
     const [form] = Form.useForm();
+
+    let initialValues = {
+      busName: null,
+      companyName: null,
+      cluster: '',
+      costCode: '',
+      dataCenter: '',
+      deviceName: '',
+      tenantName: null,
+    };
 
     const busOptions: Array<IDropDownOption> = [
       { id: 60, name: 'Demo BU' },
@@ -100,7 +91,6 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
         if (sqlServers.save.hasErrors) {
           toast.error(sqlServers.save.messages.join('\n'));
         } else {
-          console.log(sqlServers.save.messages);
           toast.success(sqlServers.save.messages.join(' '));        
         }
         dispatch(clearSqlServerMessages());
