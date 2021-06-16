@@ -1,0 +1,18 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Header from '../Header';
+import Sidebar from '../Sidebar';
+import { IMainLayoutProps } from './mainLayout.model';
+
+export const MainLayout: React.FC<IMainLayoutProps> = ({ children }) => {
+  return (
+    <>
+      <div className="wrapper">
+        <Header />
+        <Sidebar />
+        <main className="main-content">{children}</main>
+      </div>
+    </>
+  );
+};
+export default MainLayout;
