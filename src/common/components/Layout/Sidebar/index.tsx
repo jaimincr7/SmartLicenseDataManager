@@ -8,18 +8,18 @@ function Sidebar() {
       <Menu defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} mode="inline">
         <Menu.Item
           key="1"
-          icon={<img src={`${process.env.PUBLIC_URL}assets/images/ic-dashboard.svg`} alt="" />}
+          icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard.svg`} alt="" />}
         >
           Dashboard
         </Menu.Item>
         <SubMenu
           key="sub1"
-          icon={<img src={`${process.env.PUBLIC_URL}assets/images/ic-cms.svg`} alt="" />}
+          icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-cms.svg`} alt="" />}
           title="CMS"
         >
           <Menu.Item
             key="2"
-            icon={<img src={`${process.env.PUBLIC_URL}assets/images/ic-dashboard-2.svg`} alt="" />}
+            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard-2.svg`} alt="" />}
           >
             Dashboard
           </Menu.Item>
@@ -27,7 +27,7 @@ function Sidebar() {
             key="3"
             icon={
               <img
-                src={`${process.env.PUBLIC_URL}assets/images/ant-design_calendar-outlined.svg`}
+                src={`${process.env.PUBLIC_URL}/assets/images/ant-design_calendar-outlined.svg`}
                 alt=""
               />
             }
@@ -36,20 +36,22 @@ function Sidebar() {
           </Menu.Item>
           <Menu.Item
             key="4"
-            icon={<img src={`${process.env.PUBLIC_URL}assets/images/ic-cart.svg`} alt="" />}
+            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-cart.svg`} alt="" />}
           >
             Purchases
           </Menu.Item>
           <Menu.Item
             key="5"
-            icon={<img src={`${process.env.PUBLIC_URL}assets/images/ic-entitlements.svg`} alt="" />}
+            icon={
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
+            }
           >
             Entitlements
           </Menu.Item>
         </SubMenu>
         <SubMenu
           key="sub2"
-          icon={<img src={`${process.env.PUBLIC_URL}assets/images/ic-magic-wand.svg`} alt="" />}
+          icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-magic-wand.svg`} alt="" />}
           title="SIMPLE"
         >
           <Menu.Item key="6">Dashboard</Menu.Item>
@@ -59,7 +61,7 @@ function Sidebar() {
         </SubMenu>
         <Menu.Item
           key="10"
-          icon={<img src={`${process.env.PUBLIC_URL}assets/images/ic-settings.svg`} alt="" />}
+          icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-settings.svg`} alt="" />}
         >
           Settings
         </Menu.Item>

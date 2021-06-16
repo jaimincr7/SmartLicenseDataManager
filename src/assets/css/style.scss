@@ -160,6 +160,7 @@ body {
   font-size: 16px;
   line-height: 22px;
   color: #4f4f4f;
+  background-color: #f4f4f4;
   font-family: 'Roboto', sans-serif;
   -ms-overflow-style: scrollbar;
   -webkit-font-smoothing: subpixel-antialiased;
@@ -182,7 +183,7 @@ h4,
 h5,
 h6 {
   line-height: 1.2em;
-  padding: 0 0 20px;
+  color: #4f4f4f;
 }
 h1 span,
 h2 span,
@@ -199,10 +200,16 @@ h2 {
 h3 {
 }
 h4 {
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 500;
 }
 h5 {
 }
 h6 {
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 500;
 }
 p {
   padding: 0 0 20px;
@@ -242,6 +249,212 @@ a {
 }
 img {
   max-width: 100%;
+}
+.p-0 {
+  padding: 0 !important;
+}
+.m-0 {
+  margin: 0 !important;
+}
+.title-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+.title-block .ant-select {
+  width: 182px;
+  max-width: 100%;
+  margin-right: 10px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+.main-card {
+  padding: 18px 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+.label {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 18px;
+  margin-bottom: 6px;
+}
+.btns-block {
+  display: flex;
+  > * {
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
+}
+.input-btns-title {
+  padding-bottom: 28px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #dddddd;
+  .ant-row {
+    align-items: flex-end;
+  }
+}
+.w-100 {
+  width: 100%;
+}
+.sm-input {
+  width: 182px;
+  max-width: 100%;
+}
+.search-block {
+}
+
+// ant-design
+.ant-btn {
+  background: #ececec;
+  border-color: #ececec;
+  color: #4f4f4f;
+}
+
+.ant-btn:hover,
+.ant-btn:focus,
+.ant-btn:active {
+  color: inherit;
+  background: #d2d2d2;
+  border-color: #d2d2d2;
+}
+.ant-btn-primary {
+  background: #014e97;
+  border-color: #014e97;
+  color: #fff;
+}
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn-primary:active {
+  color: #fff;
+  background: #001529;
+  border-color: #001529;
+}
+.ant-btn::after {
+  display: none;
+}
+
+.form-control {
+  border: 1px solid #dddddd;
+  box-shadow: none !important;
+}
+.form-control:hover,
+.form-control:focus,
+.form-control:active {
+  border-color: #00274d !important;
+}
+.ant-input::placeholder {
+  color: #999999;
+}
+
+.ant-select {
+  color: #4f4f4f;
+  width: 100%;
+}
+.ant-select-selection-placeholder {
+  color: #999999;
+}
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border: 1px solid #dddddd;
+}
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+  border-color: #00274d;
+}
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  border-color: #00274d;
+  box-shadow: none;
+}
+
+.ant-picker {
+  color: #4f4f4f;
+  border: 1px solid #dddddd;
+}
+.ant-picker:hover,
+.ant-picker-focused {
+  border-color: #00274d;
+  box-shadow: none;
+}
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: 1px solid #00274d;
+}
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+  color: #fff;
+  background: #00274d;
+}
+.ant-picker-today-btn,
+.ant-picker-header-view button {
+  color: #00274d;
+}
+.ant-picker-today-btn:hover,
+.ant-picker-header-view button:hover {
+  color: #001529;
+}
+.anticon {
+  color: #4f4f4f;
+}
+
+.action-btn:hover {
+  opacity: 0.6;
+}
+.custom-table .ant-table {
+  color: #4f4f4f;
+}
+.custom-table .ant-table-thead > tr > th {
+  color: #4f4f4f;
+  background: #f6f6f6;
+  border: none;
+  &::before {
+    display: none;
+  }
+}
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #e1e1e1;
+}
+.custom-table .ant-table-thead > tr > th,
+.custom-table .ant-table-tbody > tr > td,
+.custom-table .ant-table tfoot > tr > th,
+.custom-table .ant-table tfoot > tr > td {
+  padding: 8px;
+}
+
+// dropdown ---------------------------
+.profile-dropdown {
+  .ant-dropdown-menu {
+    background: #ffffff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 0px 0px 4px 4px;
+    color: #4f4f4f;
+  }
+}
+
+// modal -----------------------
+.custom-modal {
+  .ant-modal {
+    width: 800px !important;
+    max-width: 100%;
+    .ant-modal-footer {
+      text-align: left;
+    }
+  }
+  .ant-modal-header{
+    padding: 16px;
+  }
+  .ant-modal-title{
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 500;
+  }
+  .ant-modal-body {
+    padding: 16px;
+  }
 }
 
 // hamburger---------------------------------
@@ -290,6 +503,7 @@ img {
   top: 0;
   right: 0;
   background-color: #fff;
+  z-index: 10;
 
   .left-header {
     width: 220px;
@@ -323,8 +537,13 @@ img {
   background-position: right 18px center;
   background-repeat: no-repeat;
   background-size: 15px;
-  padding: 9px 43px 10px 0;
+  padding: 9px 43px 10px 10px;
   color: #4f4f4f;
+  background-color: transparent;
+  &:hover,
+  &.ant-dropdown-open {
+    background-color: #f4f4f4;
+  }
   .dp {
     width: 40px;
     min-width: 40px;
@@ -349,10 +568,13 @@ img {
 .main-navigation {
   width: 220px;
   position: fixed;
+  z-index: 10;
   top: 60px;
   left: 0;
   background-color: #00274d;
   height: calc(100vh - 60px);
+  overflow-y: auto;
+  overflow-x: hidden;
   .ant-menu {
     background-color: #00274d;
     color: #fff;
@@ -419,6 +641,7 @@ img {
 }
 
 .main-content {
+  padding: 13px 28px;
 }
 .show-menu {
   overflow: hidden;
