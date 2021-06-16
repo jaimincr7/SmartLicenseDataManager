@@ -16,6 +16,7 @@ import { ISqlServer } from '../../../../services/sqlServer/sqlServer.model';
 import 'antd/dist/antd.css';
 import './addSqlServer.style.scss';
 import _ from 'lodash';
+import { Messages } from '../../../../common/constants/messages';
 
 const { Option } = Select;
 
@@ -25,14 +26,7 @@ const layout = {
 };
 
 const validateMessages = {
-  required: '${label} is required!',
-  types: {
-    email: '${label} is not a valid email!',
-    number: '${label} is not a valid number!',
-  },
-  number: {
-    range: '${label} must be between ${min} and ${max}',
-  },
+  required: Messages.FIELD_REQUIRED,
 };
 
 const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
@@ -53,7 +47,7 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
     const [form] = Form.useForm();
 
     let initialValues = {
-      busName: null,
+      buName: null,
       companyName: null,
       cluster: '',
       costCode: '',
@@ -62,7 +56,7 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
       tenantName: null,
     };
 
-    const busOptions: Array<IDropDownOption> = [
+    const buOptions: Array<IDropDownOption> = [
       { id: 60, name: 'Demo BU' },
       { id: 1, name: 'Demo 2' },
     ];
@@ -75,7 +69,7 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
     const onFinish = (values: any) => {
       const inputValues: ISqlServer = {
         id: id ? +id : null,
-        bu_id: values.busName,
+        bu_id: values.buName,
         company_id: values.companyName,
         device_name: values.deviceName,
         cost_code: values.costCode,
@@ -104,7 +98,7 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
 
         if (data) {
           initialValues = {
-            busName: _.isNull(data.bu_id) ? null : busOptions.filter((x) => x.id === data.bu_id)[0].id,
+            buName: _.isNull(data.bu_id) ? null : buOptions.filter((x) => x.id === data.bu_id)[0].id,
             companyName: _.isNull(data.company_id) ? null : companyOptions.filter((x) => x.id === data.company_id)[0].id,
             tenantName: _.isNull(data.tenant_id) ? null : tenantsOptions.filter((x) => x.id === data.tenant_id)[0].id,
             cluster: data.cluster,
@@ -151,9 +145,9 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
               >
                 <Row gutter={[8, 8]}>
                   <Col span={12}>
-                    <Form.Item name="busName" label="Bus Name:" rules={[{ required: true }]}>
+                    <Form.Item name="buName" label="BU Name:" rules={[{ required: true }]}>
                       <Select placeholder="Select a option and change input text above" allowClear>
-                        {busOptions.map((option: IDropDownOption) => (
+                        {buOptions.map((option: IDropDownOption) => (
                           <Option key={option.id} value={option.id}>
                             {option.name}
                           </Option>
