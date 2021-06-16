@@ -27,6 +27,8 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
 
   const fetchSqlServer = (pagination) => {
     const search: ISearchSqlServer = {
+      // order_by: 'Date Added',
+      // order_direction: 'DESC',
       is_lookup: false,
       limit: pagination.pagesize,
       offset: (pagination.current - 1) * pagination.pagesize,
@@ -41,9 +43,9 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
   useEffect(() => {
     if (sqlServers.delete.messages.length > 0) {
       if (sqlServers.delete.hasErrors) {
-        toast.error(sqlServers.delete.messages.join('\n'));
+        toast.error(sqlServers.delete.messages.join(' '));
       } else {
-        toast.success(sqlServers.delete.messages.join('\n'));
+        toast.success(sqlServers.delete.messages.join(' '));
         fetchSqlServer(pagination);
       }
       dispatch(clearSqlServerMessages());

@@ -45,6 +45,9 @@ export const sqlServerSlice = createSlice({
       state.save.messages = [];
       state.delete.messages = [];
     },
+    clearSqlServerGetById: (state) => {
+      state.getById.data = null;
+    },
   },
   extraReducers: {
     // Search
@@ -117,7 +120,7 @@ export const sqlServerSlice = createSlice({
 export const sqlServerSelector = (state: RootState) => state.sqlServer;
 
 // Actions
-export const { clearSqlServer, clearSqlServerMessages } = sqlServerSlice.actions;
+export const { clearSqlServer, clearSqlServerMessages, clearSqlServerGetById } = sqlServerSlice.actions;
 
 // The reducer
 export default sqlServerSlice.reducer;
