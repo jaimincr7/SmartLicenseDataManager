@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import SqlServer from './SqlServer';
-import AddSqlServer from './SqlServer/AddSqlServer';
 import SqlServerEntitlements from './SqlServerEntitlements';
 
 const SqlServerRoutes: React.FC = () => {

@@ -62,7 +62,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
   return (
     <div className="homePage">
       <div className="title-block">
-        <h4 className="p-0">Events</h4>
+        <h4 className="p-0">Sql Server</h4>
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -83,7 +83,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
               </Button>
             </Dropdown>
             <Button type="primary" onClick={() => {setAddModalVisible(true);setId(0)}}>
-              Add Event
+              Add Sql Server
             </Button>
           </div>
         </div>
