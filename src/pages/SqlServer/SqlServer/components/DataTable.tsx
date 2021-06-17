@@ -1,4 +1,4 @@
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, Button } from 'antd';
 import React, { useState } from 'react';
 import {
   clearSqlServer,
@@ -11,9 +11,11 @@ import { deleteSqlServer, searchSqlServer } from '../../../../store/sqlServer/sq
 import { toast } from 'react-toastify';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { fixedColumn, IDataTable } from './dataTable.model';
+import moment from 'moment';
+import { Common } from '../../../../common/constants/common';
 
 const DataTable: React.FC<IDataTable> = (props) => {
-  const { search } = props;
+  const { search, setSelectedId } = props;
 
   const sqlServers = useAppSelector(sqlServerSelector);
   const dispatch = useAppDispatch();
@@ -99,6 +101,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       dataIndex: 'date_added',
       key: 'date_added',
       ellipsis: true,
+      render: (date:Date) => moment(date).format(Common.DATEFORMAT)
     },
     {
       title: 'SQL Cluster',
@@ -239,9 +242,9 @@ const DataTable: React.FC<IDataTable> = (props) => {
       fixed: 'right' as fixedColumn,
       render: (_, data: ISqlServer) => (
         <div className="btns-block">
-          <Link to={`${match.url}/edit/${data.id}`} className="action-btn">
+          <a href="#" className="action-btn" onClick={()=> {setSelectedId(data.id)}}>
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-          </Link>
+          </a>
           <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServer(data.id)}>
             <a href="#" title="" className="action-btn">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />

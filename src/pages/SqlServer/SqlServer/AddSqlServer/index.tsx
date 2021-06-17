@@ -1,6 +1,7 @@
 import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select } from "antd";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
+import { Common } from "../../../../common/constants/common";
 import { Messages } from "../../../../common/constants/messages";
 import { ISqlServer } from "../../../../services/sqlServer/sqlServer.model";
 import { useAppSelector, useAppDispatch } from "../../../../store/app.hooks";
@@ -21,7 +22,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, ...rest} = props;
+  const { id, showModal, handleModalClose } = props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -111,8 +112,9 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               wrapClassName="custom-modal"
               title={title}
               centered
-              visible={props.showModal}
-              onCancel={props.handleModalClose}            
+              visible={showModal}
+              onCancel={handleModalClose} 
+              footer={false}       
             >
                 <Form
                     form={form}
@@ -418,7 +420,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     <Button type="primary" htmlType="submit">
                         {submitButtonText}
                     </Button>
-                    <Button onClick={props.handleModalClose}>
+                    <Button onClick={handleModalClose}>
                         Cancel
                     </Button>
                 </Form.Item>

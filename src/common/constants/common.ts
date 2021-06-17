@@ -1,3 +1,3 @@
 export const Common = {
-  DATEFORMAT: '{y}-{m}-{d}',
+  DATEFORMAT: 'yyyy-MM-DD',
 };
