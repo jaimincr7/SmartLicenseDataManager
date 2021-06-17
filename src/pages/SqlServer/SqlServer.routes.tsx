@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import SqlServer from './SqlServer';
 import AddSqlServer from './SqlServer/AddSqlServer';
+import SqlServerEntitlements from './SqlServerEntitlements';
 
 const SqlServerRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -10,8 +11,7 @@ const SqlServerRoutes: React.FC = () => {
     <div className="sqlServer">
       <Switch>
         <Route exact path={`${match.path}`} component={SqlServer} />
-        <Route exact path={`${match.path}/edit/:id`} component={AddSqlServer} />
-        <Route exact path={`${match.path}/add`} component={AddSqlServer} />
+        <Route exact path={`${match.path}/entitlements`} component={SqlServerEntitlements} />
       </Switch>
     </div>
   );
