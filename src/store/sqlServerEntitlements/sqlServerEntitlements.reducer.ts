@@ -56,13 +56,10 @@ export const sqlServerEntitlementsSlice = createSlice({
     },
     [searchSqlServerEntitlements.fulfilled.type]: (
       state,
-      // action: PayloadAction<ISearchResponse<ISqlServerEntitlements>>
-      action: PayloadAction<any>
+      action: PayloadAction<ISearchResponse<ISqlServerEntitlements>>
     ) => {
-      // state.search.data = action.payload.search_result.records;
-      // state.search.count = action.payload.search_result.total_count;
-      state.search.data = action.payload.records;
-      state.search.count = action.payload.total_count;
+      state.search.data = action.payload.search_result.records;
+      state.search.count = action.payload.search_result.total_count;
       state.search.loading = false;
       state.search.hasErrors = false;
     },

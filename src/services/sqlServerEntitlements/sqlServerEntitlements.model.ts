@@ -17,4 +17,5 @@ export interface ISqlServerEntitlements {
 
 export interface ISearchSqlServerEntitlements extends ISearch {
   keyword?: string;
+  is_lookup?: boolean;
 }

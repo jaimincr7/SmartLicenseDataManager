@@ -30,6 +30,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       order_direction: 'DESC',
       limit: pagination.pageSize,
       offset: (pagination.current - 1) * pagination.pageSize,
+      is_lookup: false,
       ...(search || {}),
     };
     dispatch(searchSqlServerEntitlements(searchData));
