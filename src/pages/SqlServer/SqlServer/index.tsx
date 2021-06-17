@@ -28,7 +28,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
   });
   const [search, setSearch] = useState({
     keyword: '',
-    is_lookup: false
+    is_lookup: false,
   });
   const fetchSqlServer = () => {
     const searchData: ISearchSqlServer = {
@@ -105,12 +105,12 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
       title: 'Data Center',
       dataIndex: 'data_center',
       key: 'data_center',
-    },    
+    },
     {
       title: 'Device Name',
       dataIndex: 'device_name',
       key: 'device_name',
-    },      
+    },
     {
       title: 'Tenant Name',
       dataIndex: 'tenant_name',
@@ -135,18 +135,12 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
   const Filter = () => (
     <>
       <Form form={form} name="horizontal_login" layout="inline" onFinish={onFinish}>
-        <Form.Item
-          name="keyword"
-        >
+        <Form.Item name="keyword">
           <Input prefix={<SearchOutlined />} placeholder="Search" allowClear={true} />
         </Form.Item>
-        <Form.Item shouldUpdate >
+        <Form.Item shouldUpdate>
           {() => (
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{ margin: '0' }}
-            >
+            <Button type="primary" htmlType="submit" style={{ margin: '0' }}>
               Search
             </Button>
           )}

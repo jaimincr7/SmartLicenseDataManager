@@ -30,95 +30,99 @@ const validateMessages = {
 };
 
 const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
-    const sqlServers = useAppSelector(sqlServerSelector);
-    const dispatch = useAppDispatch();
-    const history = useHistory();
+  const sqlServers = useAppSelector(sqlServerSelector);
+  const dispatch = useAppDispatch();
+  const history = useHistory();
 
-    const { id } = props.match?.params;
+  const { id } = props.match?.params;
 
-    const isNew: boolean = id ? false : true;
-    const title = useMemo(() => {
-      return isNew ? 'Add Sql Server' : 'Edit Sql Server';
-    }, [isNew]);
-    const submitButtonText = useMemo(() => {
-      return isNew ? 'Save' : 'Update';
-    }, [isNew]);
+  const isNew: boolean = id ? false : true;
+  const title = useMemo(() => {
+    return isNew ? 'Add Sql Server' : 'Edit Sql Server';
+  }, [isNew]);
+  const submitButtonText = useMemo(() => {
+    return isNew ? 'Save' : 'Update';
+  }, [isNew]);
 
-    const [form] = Form.useForm();
+  const [form] = Form.useForm();
 
-    let initialValues = {
-      buName: null,
-      companyName: null,
-      cluster: '',
-      costCode: '',
-      dataCenter: '',
-      deviceName: '',
-      tenantName: null,
+  let initialValues = {
+    buName: null,
+    companyName: null,
+    cluster: '',
+    costCode: '',
+    dataCenter: '',
+    deviceName: '',
+    tenantName: null,
+  };
+
+  const buOptions: Array<IDropDownOption> = [
+    { id: 60, name: 'Demo BU' },
+    { id: 1, name: 'Demo 2' },
+  ];
+  const companyOptions: Array<IDropDownOption> = [{ id: 53, name: 'Demo Company' }];
+  const tenantsOptions: Array<IDropDownOption> = [
+    { id: 40, name: 'Demo Company' },
+    { id: 1, name: 'MatrixData 360' },
+  ];
+
+  const onFinish = (values: any) => {
+    const inputValues: ISqlServer = {
+      id: id ? +id : null,
+      bu_id: values.buName,
+      company_id: values.companyName,
+      device_name: values.deviceName,
+      cost_code: values.costCode,
+      cluster: values.cluster,
+      data_center: values.dataCenter,
+      tenant_id: values.tenantName,
     };
+    dispatch(saveSqlServer(inputValues));
+  };
 
-    const buOptions: Array<IDropDownOption> = [
-      { id: 60, name: 'Demo BU' },
-      { id: 1, name: 'Demo 2' },
-    ];
-    const companyOptions: Array<IDropDownOption> = [{ id: 53, name: 'Demo Company' }];
-    const tenantsOptions: Array<IDropDownOption> = [
-      { id: 40, name: 'Demo Company' },
-      { id: 1, name: 'MatrixData 360' },
-    ];
+  useEffect(() => {
+    if (sqlServers.save.messages.length > 0) {
+      if (sqlServers.save.hasErrors) {
+        toast.error(sqlServers.save.messages.join('\n'));
+      } else {
+        toast.success(sqlServers.save.messages.join(' '));
+      }
+      dispatch(clearSqlServerMessages());
+      history.push('/sql-server');
+    }
+  }, [sqlServers.save.messages]);
 
-    const onFinish = (values: any) => {
-      const inputValues: ISqlServer = {
-        id: id ? +id : null,
-        bu_id: values.buName,
-        company_id: values.companyName,
-        device_name: values.deviceName,
-        cost_code: values.costCode,
-        cluster: values.cluster,
-        data_center: values.dataCenter,
-        tenant_id: values.tenantName,
-      };
-      dispatch(saveSqlServer(inputValues));
+  useEffect(() => {
+    if (+id > 0) {
+      const data = sqlServers.getById.data;
+
+      if (data) {
+        initialValues = {
+          buName: _.isNull(data.bu_id) ? null : buOptions.filter((x) => x.id === data.bu_id)[0].id,
+          companyName: _.isNull(data.company_id)
+            ? null
+            : companyOptions.filter((x) => x.id === data.company_id)[0].id,
+          tenantName: _.isNull(data.tenant_id)
+            ? null
+            : tenantsOptions.filter((x) => x.id === data.tenant_id)[0].id,
+          cluster: data.cluster,
+          costCode: data.cost_code,
+          deviceName: data.device_name,
+          dataCenter: data.data_center,
+        };
+        form.setFieldsValue(initialValues);
+      }
+    }
+  }, [sqlServers.getById.data]);
+
+  useEffect(() => {
+    if (+id > 0) {
+      dispatch(getSqlServerById(+id));
+    }
+    return () => {
+      dispatch(clearSqlServerGetById());
     };
-
-    useEffect(() => {
-      if (sqlServers.save.messages.length > 0) {
-        if (sqlServers.save.hasErrors) {
-          toast.error(sqlServers.save.messages.join('\n'));
-        } else {
-          toast.success(sqlServers.save.messages.join(' '));        
-        }
-        dispatch(clearSqlServerMessages());
-        history.push('/sql-server');
-      }
-    }, [sqlServers.save.messages]);
-
-    useEffect(() => {
-      if (+id > 0) {
-        const data = sqlServers.getById.data;
-
-        if (data) {
-          initialValues = {
-            buName: _.isNull(data.bu_id) ? null : buOptions.filter((x) => x.id === data.bu_id)[0].id,
-            companyName: _.isNull(data.company_id) ? null : companyOptions.filter((x) => x.id === data.company_id)[0].id,
-            tenantName: _.isNull(data.tenant_id) ? null : tenantsOptions.filter((x) => x.id === data.tenant_id)[0].id,
-            cluster: data.cluster,
-            costCode: data.cost_code,
-            deviceName: data.device_name,
-            dataCenter: data.data_center,
-          };
-          form.setFieldsValue(initialValues);
-        }
-      }
-    }, [sqlServers.getById.data]);
-    
-    useEffect(() => {
-      if (+id > 0) {
-        dispatch(getSqlServerById(+id));
-      }
-      return () => {
-        dispatch(clearSqlServerGetById());
-      };
-    }, [dispatch]);
+  }, [dispatch]);
 
   return (
     <>
@@ -209,7 +213,7 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
                         ))}
                       </Select>
                     </Form.Item>
-                  </Col>                  
+                  </Col>
                 </Row>
                 <Row>
                   <Col span={24} style={{ marginLeft: '150px' }}>

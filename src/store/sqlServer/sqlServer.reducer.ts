@@ -120,7 +120,8 @@ export const sqlServerSlice = createSlice({
 export const sqlServerSelector = (state: RootState) => state.sqlServer;
 
 // Actions
-export const { clearSqlServer, clearSqlServerMessages, clearSqlServerGetById } = sqlServerSlice.actions;
+export const { clearSqlServer, clearSqlServerMessages, clearSqlServerGetById } =
+  sqlServerSlice.actions;
 
 // The reducer
 export default sqlServerSlice.reducer;
