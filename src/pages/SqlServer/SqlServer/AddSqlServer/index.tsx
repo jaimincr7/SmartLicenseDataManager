@@ -10,6 +10,7 @@ import { commonSelector } from "../../../../store/common/common.reducer";
 import { saveSqlServer, getSqlServerById } from "../../../../store/sqlServer/sqlServer.action";
 import { sqlServerSelector, clearSqlServerMessages, clearSqlServerGetById } from "../../../../store/sqlServer/sqlServer.reducer";
 import { IAddSqlServerProps, IDropDownOption } from "./addSqlServer.model";
+import './addSqlServer.style.scss';
 
 const { Option } = Select;
  
@@ -87,7 +88,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   }, [sqlServers.save.messages]);
 
   useEffect(() => {
-    if (+id > 0) {
+    if (+id > 0 && sqlServers.getById.data) {
       const data = sqlServers.getById.data;
  
       if(data.tenant_id){
@@ -98,9 +99,9 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
       }
       if (data) {
           initialValues ={            
-            tenant_id: _.isNull(data.tenant_id) ? null : commonLookups.tenantLookup.data.filter((x) => x.id === data.tenant_id)[0].id,
-            company_id: _.isNull(data.company_id) ? null : commonLookups.companyLookup.data.filter((x) => x.id === data.company_id)[0].id,
-            bu_id: commonLookups.buLookup.data.filter((x) => x.id === 40)[0].id,//_.isNull(data.bu_id) ? null : commonLookups.buLookup.data.filter((x) => x.id === data.bu_id)[0].id,
+            tenant_id: _.isNull(data.tenant_id) ? null : commonLookups.tenantLookup?.data.filter((x) => x.id === data.tenant_id)[0]?.id,
+            company_id: _.isNull(data.company_id) ? null : commonLookups.companyLookup?.data.filter((x) => x.id === data.company_id)[0]?.id,
+            bu_id: _.isNull(data.bu_id) ? null : commonLookups.buLookup?.data.filter((x) => x.id === data.bu_id)[0]?.id,
             cluster: data.cluster,
             cost_code: data.cost_code,
             data_center: data.data_center,
@@ -130,7 +131,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
         form.setFieldsValue(initialValues);
       }
     }
-  }, [sqlServers.getById.data]);
+  }, [sqlServers.getById.data, commonLookups]);
 
   useEffect(() => {
     dispatch(getTenantLookup());
@@ -159,7 +160,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     onFinish={onFinish}
                     validateMessages={validateMessages}
                 >
-                <Row gutter={[30, 15]}>
+                <Row gutter={[30, 15]} className="form-label-hide">
                     <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <label className="label">Tenant</label>
@@ -458,14 +459,14 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                         </div>
                     </Col>
                 </Row>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                <div className="btns-block modal-footer">
+                <Button key="submit" type="primary" htmlType="submit">
                         {submitButtonText}
                     </Button>
-                    <Button onClick={handleModalClose}>
+                    <Button key="back" onClick={handleModalClose}>
                         Cancel
                     </Button>
-                </Form.Item>
+                </div>
               </Form>              
             </Modal>
         </>
