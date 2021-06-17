@@ -154,6 +154,8 @@ const Home: React.FC<IHomeProps> = () => {
               title="Add Events"
               centered
               visible={modal1Visible}
+              onOk={setModal1Hide}
+               onCancel={setModal1Hide}
               footer={null}
               // footer={[
               //   <Button key="submit" type="primary" onClick={setModal1Hide}>
@@ -270,7 +272,6 @@ const Home: React.FC<IHomeProps> = () => {
                 <Button key="submit" type="primary" onClick={setModal1Hide}>
                   Save
                 </Button>
-                ,
                 <Button key="back" onClick={setModal1Hide}>
                   Cancel
                 </Button>
