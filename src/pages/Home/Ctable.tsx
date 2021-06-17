@@ -1,6 +1,7 @@
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const data = [
   {
@@ -45,13 +46,19 @@ const data = [
   },
 ];
 
+  
 export default class Ctable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
+     pagination: {
+      current: 1,
+      pageSize: 10,
+    },
   };
 
   searchInput;
+ fixedColumn: 'left'  = 'left';
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -124,7 +131,33 @@ export default class Ctable extends React.Component {
     this.setState({ searchText: '' });
   };
 
+
+  // pagination--------------
+  componentDidMount() {
+    const { pagination } = this.state;
+    this.fetch({ pagination });
+  }
+ 
+   handleTableChange = (pagination, filters, sorter) => {
+    this.fetch({
+      sortField: sorter.field,
+      sortOrder: sorter.order,
+      pagination,
+      ...filters,
+    });
+  };
+
+  fetch = (params = {}) => {
+    this.setState({ loading: true });
+      this.setState({
+        pagination: {
+          total: 200,
+        },
+      });
+  };
+
   render() {
+    const {pagination} = this.state;
     const columns = [
       {
         title: 'Tenant',
@@ -165,12 +198,13 @@ export default class Ctable extends React.Component {
       {
         title: 'Action',
         key: 'Action',
+        // fixed: this.fixedColumn, 
         width: '80px',
         render: () => (
           <div className="btns-block">
-            <a href="#" title="" className="action-btn">
+            <Link to="/add-event" title="" className="action-btn">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-            </a>
+            </Link>
             <a href="#" title="" className="action-btn">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
             </a>
@@ -179,7 +213,7 @@ export default class Ctable extends React.Component {
       },
     ];
     return (
-      <Table scroll={{ x: true }} columns={columns} dataSource={data} className="custom-table" />
+      <Table scroll={{ x: true }}  pagination={pagination} columns={columns} dataSource={data} className="custom-table" />
     );
   }
 }

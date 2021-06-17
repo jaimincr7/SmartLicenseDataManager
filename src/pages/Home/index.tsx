@@ -1,29 +1,54 @@
 import { IHomeProps } from './home.model';
 import './home.style.scss';
-import { Select, Row, Col, Button, DatePicker, Input, Menu, Dropdown, Checkbox, Modal } from 'antd';
+import {
+  Select,
+  Row,
+  Col,
+  Button,
+  DatePicker,
+  Input,
+  Checkbox,
+  Modal,
+  Popover,
+} from 'antd';
 import Ctable from './Ctable';
 import React from 'react';
 const { Option } = Select;
 const { TextArea } = Input;
 
 const dropdownMenu = (
-  // BU
-  // Date Added
-  // Event Date
-  // Contract Type
-  // Event Trigger Type
-  // Description
-  // Expenditure Amount
-  // Expenditure Type
-
-  <Menu>
-    <Menu.Item key="0">
+  <ul className="checkbox-list">
+    <li>
       <Checkbox>Tenant</Checkbox>
-    </Menu.Item>
-    <Menu.Item key="1">
+    </li>
+    <li>
       <Checkbox>Company</Checkbox>
-    </Menu.Item>
-  </Menu>
+    </li>
+    <li>
+      <Checkbox>BU</Checkbox>
+    </li>
+    <li>
+      <Checkbox>Date Added</Checkbox>
+    </li>
+    <li>
+      <Checkbox>Event Date</Checkbox>
+    </li>
+    <li>
+      <Checkbox>Contract Type</Checkbox>
+    </li>
+    <li>
+      <Checkbox>Event Trigger Type</Checkbox>
+    </li>
+    <li>
+      <Checkbox>Description</Checkbox>
+    </li>
+    <li>
+      <Checkbox>Expenditure Amount</Checkbox>
+    </li>
+    <li>
+      <Checkbox>Expenditure Type</Checkbox>
+    </li>
+  </ul>
 );
 
 const Home: React.FC<IHomeProps> = () => {
@@ -70,7 +95,7 @@ const Home: React.FC<IHomeProps> = () => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[30, 15]}>
-            <Col sm={24} md={8} lg={6}>
+            <Col xs={24} md={8} lg={6}>
               <div className="form-group m-0">
                 <label className="label">Event Trigger Type</label>
                 <Select
@@ -84,7 +109,7 @@ const Home: React.FC<IHomeProps> = () => {
                 </Select>
               </div>
             </Col>
-            <Col sm={24} md={8} lg={6}>
+            <Col xs={24} md={8} lg={6}>
               <div className="form-group m-0">
                 <label className="label">Contract Type</label>
                 <Select
@@ -98,13 +123,13 @@ const Home: React.FC<IHomeProps> = () => {
                 </Select>
               </div>
             </Col>
-            <Col sm={24} md={8} lg={6}>
+            <Col xs={24} md={8} lg={6}>
               <div className="form-group m-0">
                 <label className="label">Event Date</label>
                 <DatePicker className="w-100" />
               </div>
             </Col>
-            <Col sm={24} md={24} lg={6}>
+            <Col xs={24} md={24} lg={6}>
               <div className="btns-block">
                 <Button type="primary">Search</Button>
                 <Button>Clear</Button>
@@ -116,10 +141,15 @@ const Home: React.FC<IHomeProps> = () => {
           <Input
             placeholder="Search by keyword"
             className="form-control sm-input"
+            allowClear={true}
             prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
           />
           <div className="btns-block">
-            <Dropdown overlay={dropdownMenu} trigger={['click']} overlayClassName="custom-dropdown">
+            <Popover
+              content={dropdownMenu}
+              trigger="click"
+              overlayClassName="custom-popover"
+            >
               <Button
                 icon={
                   <em className="anticon">
@@ -129,7 +159,7 @@ const Home: React.FC<IHomeProps> = () => {
               >
                 Show/Hide Columns
               </Button>
-            </Dropdown>
+            </Popover>
             <Button type="primary" onClick={setModal1Visible}>
               Add Event
             </Button>
@@ -138,16 +168,15 @@ const Home: React.FC<IHomeProps> = () => {
               title="Add Events"
               centered
               visible={modal1Visible}
-              onOk={setModal1Hide}
-              onCancel={setModal1Hide}
-              footer={[
-                <Button key="submit" type="primary" onClick={setModal1Hide}>
-                  Save
-                </Button>,
-                <Button key="back" onClick={setModal1Hide}>
-                  Cancel
-                </Button>,
-              ]}
+              footer={null}
+              // footer={[
+              //   <Button key="submit" type="primary" onClick={setModal1Hide}>
+              //     Save
+              //   </Button>,
+              //   <Button key="back" onClick={setModal1Hide}>
+              //     Cancel
+              //   </Button>,
+              // ]}
             >
               <Row gutter={[30, 15]}>
                 <Col xs={24} sm={12} md={8}>
@@ -155,7 +184,7 @@ const Home: React.FC<IHomeProps> = () => {
                     <label className="label">Event Type</label>
                     <Select
                       suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}images/ic-down.svg`} alt="" />
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                       }
                     >
                       <Option value="1">John Smith</Option>
@@ -251,6 +280,14 @@ const Home: React.FC<IHomeProps> = () => {
                   </div>
                 </Col>
               </Row>
+              <div className="btns-block modal-footer">
+                <Button key="submit" type="primary" onClick={setModal1Hide}>
+                  Save
+                </Button>,
+                <Button key="back" onClick={setModal1Hide}>
+                  Cancel
+                </Button>
+              </div>
             </Modal>
           </div>
         </div>

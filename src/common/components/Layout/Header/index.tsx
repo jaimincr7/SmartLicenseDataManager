@@ -1,16 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 
 function toggleMenu() {
-  if (window.innerWidth > 767) {
+  if (window.innerWidth > 991) {
     document.body.classList.toggle('toggle-menu');
   } else {
     document.body.classList.toggle('show-menu');
   }
-
-  document.getElementById('hamburger').classList.toggle('is-active');
 }
+
+window.addEventListener(
+  'resize',
+  function () {
+    if (window.innerWidth > 991) {
+      document.body.classList.remove('toggle-menu');
+    } else {
+      document.body.classList.remove('show-menu');
+    }
+  },
+  true
+);
 
 const profileMenu = (
   <Menu>
