@@ -87,7 +87,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
             </Button>
           </div>
         </div>
-        <DataTable search={search} setSelectedId={()=> {setId(id);setAddModalVisible(true)}} />
+        <DataTable search={search} setSelectedId={(id)=> {setId(id);setAddModalVisible(true)}} />
       </div>
       {addModalVisible && <AddSqlServerModal showModal={addModalVisible} handleModalClose={()=>setAddModalVisible(false)} id={id} />}
     </div>

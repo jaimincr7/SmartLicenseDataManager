@@ -1,4 +1,4 @@
-import { Table, Popconfirm, Button } from 'antd';
+import { Table, Popconfirm } from 'antd';
 import React, { useState } from 'react';
 import {
   clearSqlServer,
@@ -13,6 +13,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import { fixedColumn, IDataTable } from './dataTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
+import _ from 'lodash';
 
 const DataTable: React.FC<IDataTable> = (props) => {
   const { search, setSelectedId } = props;
@@ -101,7 +102,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       dataIndex: 'date_added',
       key: 'date_added',
       ellipsis: true,
-      render: (date:Date) => moment(date).format(Common.DATEFORMAT)
+      render: (date:Date) => !_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''
     },
     {
       title: 'SQL Cluster',

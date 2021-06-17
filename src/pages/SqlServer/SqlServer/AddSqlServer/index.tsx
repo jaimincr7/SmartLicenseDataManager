@@ -1,7 +1,7 @@
 import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select } from "antd";
+import _ from "lodash";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
-import { Common } from "../../../../common/constants/common";
 import { Messages } from "../../../../common/constants/messages";
 import { ISqlServer } from "../../../../services/sqlServer/sqlServer.model";
 import { useAppSelector, useAppDispatch } from "../../../../store/app.hooks";
@@ -88,9 +88,15 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
 
   useEffect(() => {
     if (+id > 0) {
-      const data = sqlServers.getById.data;
+      let data = sqlServers.getById.data;
 
       if (data) {
+          data ={
+            ...data,
+            bu_id: _.isNull(data.bu_id) ? null : commonLookups.buLookup.data.filter((x) => x.id === data.bu_id)[0].id,
+            company_id: _.isNull(data.company_id) ? null : commonLookups.companyLookup.data.filter((x) => x.id === data.company_id)[0].id,
+            tenant_id: _.isNull(data.tenant_id) ? null : commonLookups.tenantLookup.data.filter((x) => x.id === data.tenant_id)[0].id, 
+          }
         form.setFieldsValue(data);
       }
     }
