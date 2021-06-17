@@ -8,6 +8,7 @@ import './sqlServer.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
+import AddSqlServerModal from './AddSqlServer';
 
 const dropdownMenu = (
   <Menu>
@@ -25,6 +26,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
   const [form] = Form.useForm();
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [id, setId] = React.useState(0);
 
   const [search, setSearch] = useState({
     keyword: '',
@@ -80,13 +82,14 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
                 Show/Hide Columns
               </Button>
             </Dropdown>
-            <Button type="primary" onClick={() => setAddModalVisible(true)}>
+            <Button type="primary" onClick={() => {setAddModalVisible(true);setId(0)}}>
               Add Event
             </Button>
           </div>
         </div>
         <DataTable search={search} />
       </div>
+      {addModalVisible && <AddSqlServerModal showModal={addModalVisible} handleModalClose={()=>setAddModalVisible(false)} id={id} />}
     </div>
   );
 };

@@ -8,5 +8,7 @@ interface IDetailParams {
   id: string;
 }
 export interface IAddSqlServerProps {
-  match?: match<IDetailParams>;
+  id: number;
+  showModal: boolean;
+  handleModalClose: () => void;
 }

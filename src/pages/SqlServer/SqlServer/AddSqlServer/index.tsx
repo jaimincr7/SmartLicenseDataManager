@@ -1,40 +1,27 @@
-import { Layout, PageHeader, Button, Select, Row, Col, Form, Input } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
-import { useEffect, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { getSqlServerById, saveSqlServer } from '../../../../store/sqlServer/sqlServer.action';
-import {
-  clearSqlServerGetById,
-  clearSqlServerMessages,
-  sqlServerSelector,
-} from '../../../../store/sqlServer/sqlServer.reducer';
-import { IAddSqlServerProps, IDropDownOption } from './addSqlServer.model';
-import { LeftOutlined } from '@ant-design/icons';
-import { toast } from 'react-toastify';
-import { ISqlServer } from '../../../../services/sqlServer/sqlServer.model';
-import 'antd/dist/antd.css';
-import './addSqlServer.style.scss';
-import _ from 'lodash';
-import { Messages } from '../../../../common/constants/messages';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select } from "antd";
+import { useEffect, useMemo } from "react";
+import { toast } from "react-toastify";
+import { Messages } from "../../../../common/constants/messages";
+import { ISqlServer } from "../../../../services/sqlServer/sqlServer.model";
+import { useAppSelector, useAppDispatch } from "../../../../store/app.hooks";
+import { getBULookup, getCompanyLookup, getTenantLookup } from "../../../../store/common/common.action";
+import { commonSelector } from "../../../../store/common/common.reducer";
+import { saveSqlServer, getSqlServerById } from "../../../../store/sqlServer/sqlServer.action";
+import { sqlServerSelector, clearSqlServerMessages, clearSqlServerGetById } from "../../../../store/sqlServer/sqlServer.reducer";
+import { IAddSqlServerProps, IDropDownOption } from "./addSqlServer.model";
 
 const { Option } = Select;
-
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 16 },
-};
-
+ 
 const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
+    required: Messages.FIELD_REQUIRED,
 };
-
-const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
-  const sqlServers = useAppSelector(sqlServerSelector);
+  
+const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
+    const sqlServers = useAppSelector(sqlServerSelector);
+  const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
-  const history = useHistory();
 
-  const { id } = props.match?.params;
+  const { id, ...rest} = props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -46,37 +33,43 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  let initialValues = {
-    buName: null,
-    companyName: null,
+  const initialValues : ISqlServer = {
+    bu_id: null,
+    company_id: null,
     cluster: '',
-    costCode: '',
-    dataCenter: '',
-    deviceName: '',
-    tenantName: null,
+    cost_code: '',
+    data_center: '',
+    device_name: '',
+    tenant_id: null,
+    date_added: null,
+    sql_cluster: '',
+    host: '',
+    device_type: '',
+    product_family: '',
+    version: '',
+    edition: '',
+    device_state: '',
+    software_state: '',
+    source: '',
+    operating_system: '',
+    os_type: '',
+    tenant_name: '',
+    raw_software_title: '',
+    product_name: '',
+    fqdn: '',
+    service: '',
+    line_of_business: '',
+    market: '',
+    application: '',
+    serial_number: '',
+    sql_cluster_node_type: ''
   };
 
-  const buOptions: Array<IDropDownOption> = [
-    { id: 60, name: 'Demo BU' },
-    { id: 1, name: 'Demo 2' },
-  ];
-  const companyOptions: Array<IDropDownOption> = [{ id: 53, name: 'Demo Company' }];
-  const tenantsOptions: Array<IDropDownOption> = [
-    { id: 40, name: 'Demo Company' },
-    { id: 1, name: 'MatrixData 360' },
-  ];
-
-  const onFinish = (values: any) => {
-    const inputValues: ISqlServer = {
-      id: id ? +id : null,
-      bu_id: values.buName,
-      company_id: values.companyName,
-      device_name: values.deviceName,
-      cost_code: values.costCode,
-      cluster: values.cluster,
-      data_center: values.dataCenter,
-      tenant_id: values.tenantName,
-    };
+  const onFinish = (values: any) => {    
+      const inputValues: ISqlServer = { 
+        ...values, 
+        id: id ? +id : null
+      };
     dispatch(saveSqlServer(inputValues));
   };
 
@@ -88,7 +81,7 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
         toast.success(sqlServers.save.messages.join(' '));
       }
       dispatch(clearSqlServerMessages());
-      history.push('/sql-server');
+      props.handleModalClose();
     }
   }, [sqlServers.save.messages]);
 
@@ -97,25 +90,13 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
       const data = sqlServers.getById.data;
 
       if (data) {
-        initialValues = {
-          buName: _.isNull(data.bu_id) ? null : buOptions.filter((x) => x.id === data.bu_id)[0].id,
-          companyName: _.isNull(data.company_id)
-            ? null
-            : companyOptions.filter((x) => x.id === data.company_id)[0].id,
-          tenantName: _.isNull(data.tenant_id)
-            ? null
-            : tenantsOptions.filter((x) => x.id === data.tenant_id)[0].id,
-          cluster: data.cluster,
-          costCode: data.cost_code,
-          deviceName: data.device_name,
-          dataCenter: data.data_center,
-        };
-        form.setFieldsValue(initialValues);
+        form.setFieldsValue(data);
       }
     }
   }, [sqlServers.getById.data]);
 
   useEffect(() => {
+    dispatch(getTenantLookup());
     if (+id > 0) {
       dispatch(getSqlServerById(+id));
     }
@@ -123,116 +104,328 @@ const AddSqlServer: React.FC<IAddSqlServerProps> = (props) => {
       dispatch(clearSqlServerGetById());
     };
   }, [dispatch]);
-
-  return (
-    <>
-      <div className="addSlqServerPage">
-        <Layout className="layout">
-          <PageHeader
-            className="site-page-header"
-            title={title}
-            extra={[
-              <Button key="1" onClick={() => history.push('/sql-server')}>
-                <LeftOutlined /> Back
-              </Button>,
-            ]}
-          />
-          <Content style={{ padding: '0 25px' }}>
-            <div className="site-layout-content">
-              <Form
-                {...layout}
-                form={form}
-                name="addSqlServer"
-                initialValues={initialValues}
-                onFinish={onFinish}
-                validateMessages={validateMessages}
-              >
-                <Row gutter={[8, 8]}>
-                  <Col span={12}>
-                    <Form.Item name="buName" label="BU Name:" rules={[{ required: true }]}>
-                      <Select placeholder="Select a option and change input text above" allowClear>
-                        {buOptions.map((option: IDropDownOption) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      name="companyName"
-                      label="Company Name:"
-                      rules={[{ required: true }]}
-                    >
-                      <Select placeholder="Select a option and change input text above" allowClear>
-                        {companyOptions.map((option: IDropDownOption) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
+  
+    return (
+        <>
+            <Modal
+              wrapClassName="custom-modal"
+              title={title}
+              centered
+              visible={props.showModal}
+              onCancel={props.handleModalClose}            
+            >
+                <Form
+                    form={form}
+                    name="addSqlServer"
+                    initialValues={initialValues}
+                    onFinish={onFinish}
+                    validateMessages={validateMessages}
+                >
+                <Row gutter={[30, 15]}>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Tenant</label>
+                            <Form.Item name="tenant_id">
+                                <Select
+                                    suffixIcon={
+                                        <img src={`${process.env.PUBLIC_URL}images/ic-down.svg`} alt="" />
+                                    }
+                                    onChange={(value)=>dispatch(getCompanyLookup(+value))}
+                                    allowClear
+                                >
+                                    {commonLookups.tenantLookup.data.map((option: IDropDownOption) => (
+                                        <Option key={option.id} value={option.id}>
+                                            {option.name}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>                    
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Company</label>
+                            <Form.Item name="company_id">
+                                <Select
+                                    suffixIcon={
+                                        <img src={`${process.env.PUBLIC_URL}images/ic-down.svg`} alt="" />
+                                    }
+                                    onChange={(value)=>dispatch(getBULookup(+value))}
+                                    allowClear
+                                >
+                                    {commonLookups.companyLookup.data.map((option: IDropDownOption) => (
+                                        <Option key={option.id} value={option.id}>
+                                            {option.name}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>                    
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">BU</label>
+                            <Form.Item name="bu_id">
+                                <Select
+                                    suffixIcon={
+                                        <img src={`${process.env.PUBLIC_URL}images/ic-down.svg`} alt="" />
+                                    }
+                                    allowClear
+                                >
+                                    {commonLookups.buLookup.data.map((option: IDropDownOption) => (
+                                        <Option key={option.id} value={option.id}>
+                                            {option.name}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>                    
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Sql Cluster</label>
+                            <Form.Item name="sql_cluster">
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Host</label>
+                            <Form.Item name="host" rules={[{ required: true }]}>
+                                <Input className="form-control"/>
+                            </Form.Item>                       
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Procs</label>
+                            <Form.Item
+                                name="procs"
+                                rules={[{ type: 'number'}]}
+                                >
+                                <InputNumber className="form-control" />
+                            </Form.Item>                      
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Cores</label>
+                            <Form.Item
+                                name="cores"
+                                rules={[{ type: 'number'}]}
+                                >
+                                <InputNumber className="form-control" />
+                            </Form.Item>                         
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Device Name</label>
+                            <Form.Item name="device_name" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Device Type</label>
+                            <Form.Item name="device_type" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Product Family</label>
+                            <Form.Item name="product_family" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Version</label>
+                            <Form.Item name="version" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Edition</label>
+                            <Form.Item name="edition" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">vCPU</label>
+                            <Form.Item
+                                name="vCPU"
+                                rules={[{ type: 'number'}]}
+                                >
+                                <InputNumber className="form-control" />
+                            </Form.Item>                      
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Device State</label>
+                            <Form.Item name="device_state" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Software State</label>
+                            <Form.Item name="software_state" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Cluster</label>
+                            <Form.Item name="cluster" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Source</label>
+                            <Form.Item name="source" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Operating System</label>
+                            <Form.Item name="operating_system" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">OS Type</label>
+                            <Form.Item name="os_type" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Raw Software Title</label>
+                            <Form.Item name="raw_software_title" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Product Name</label>
+                            <Form.Item name="product_name" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">FQDN</label>
+                            <Form.Item name="fqdn" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Service</label>
+                            <Form.Item name="service" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Cost Code</label>
+                            <Form.Item name="cost_code" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Line of Bussiness</label>
+                            <Form.Item name="line_of_business" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Market</label>
+                            <Form.Item name="market" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Application</label>
+                            <Form.Item name="application" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Data Center</label>
+                            <Form.Item name="data_center" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">Serial Number</label>
+                            <Form.Item name="serial_number" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <label className="label">SQL Cluster Node Type</label>
+                            <Form.Item name="sql_cluster_node_type" rules={[{ required: true }]}>
+                                <Input className="form-control" />
+                            </Form.Item>                        
+                        </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={8}>
+                        <div className="form-group m-0">
+                            <Form.Item name="ha_enabled" valuePropName="checked">
+                                <Checkbox>Enabled</Checkbox>
+                            </Form.Item>                        
+                        </div>
+                    </Col>
                 </Row>
-
-                <Row gutter={[8, 8]}>
-                  <Col span={12}>
-                    <Form.Item name="cluster" label="Cluster:" rules={[{ required: true }]}>
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item name="costCode" label="Cost Code:">
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Row gutter={[8, 8]}>
-                  <Col span={12}>
-                    <Form.Item name="dataCenter" label="Data Center:" rules={[{ required: true }]}>
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item name="deviceName" label="Device Name:" rules={[{ required: true }]}>
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-
-                <Row gutter={[8, 8]}>
-                  <Col span={12}>
-                    <Form.Item name="tenantName" label="Tenant Name:" rules={[{ required: true }]}>
-                      <Select placeholder="Select a option and change input text above" allowClear>
-                        {tenantsOptions.map((option: IDropDownOption) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={24} style={{ marginLeft: '150px' }}>
-                    <Form.Item>
-                      <Button type="primary" htmlType="submit">
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
                         {submitButtonText}
-                      </Button>
-                      <Button htmlType="button" onClick={() => form.resetFields()}>
-                        Reset
-                      </Button>
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
-            </div>
-          </Content>
-        </Layout>
-      </div>
-    </>
-  );
+                    </Button>
+                    <Button onClick={props.handleModalClose}>
+                        Cancel
+                    </Button>
+                </Form.Item>
+              </Form>              
+            </Modal>
+        </>
+    );
 };
-export default AddSqlServer;
+export default AddSqlServerModal;
+
