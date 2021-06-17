@@ -72,7 +72,10 @@ export const sqlServerEntitlementsSlice = createSlice({
     [getSqlServerEntitlementsById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getSqlServerEntitlementsById.fulfilled.type]: (state, action: PayloadAction<ISqlServerEntitlements>) => {
+    [getSqlServerEntitlementsById.fulfilled.type]: (
+      state,
+      action: PayloadAction<ISqlServerEntitlements>
+    ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
@@ -87,12 +90,18 @@ export const sqlServerEntitlementsSlice = createSlice({
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveSqlServerEntitlements.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveSqlServerEntitlements.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveSqlServerEntitlements.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveSqlServerEntitlements.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = true;
       state.save.messages = action.payload.errors;
@@ -103,12 +112,18 @@ export const sqlServerEntitlementsSlice = createSlice({
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteSqlServerEntitlements.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteSqlServerEntitlements.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteSqlServerEntitlements.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteSqlServerEntitlements.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
@@ -120,8 +135,11 @@ export const sqlServerEntitlementsSlice = createSlice({
 export const sqlServerEntitlementsSelector = (state: RootState) => state.sqlServerEntitlements;
 
 // Actions
-export const { clearSqlServerEntitlements, clearSqlServerEntitlementsMessages, clearSqlServerEntitlementsGetById } =
-  sqlServerEntitlementsSlice.actions;
+export const {
+  clearSqlServerEntitlements,
+  clearSqlServerEntitlementsMessages,
+  clearSqlServerEntitlementsGetById,
+} = sqlServerEntitlementsSlice.actions;
 
 // The reducer
 export default sqlServerEntitlementsSlice.reducer;

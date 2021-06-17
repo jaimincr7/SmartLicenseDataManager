@@ -46,19 +46,18 @@ const data = [
   },
 ];
 
-  
 export default class Ctable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
-     pagination: {
+    pagination: {
       current: 1,
       pageSize: 10,
     },
   };
 
   searchInput;
- fixedColumn: 'left'  = 'left';
+  fixedColumn: 'left' = 'left';
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -131,14 +130,13 @@ export default class Ctable extends React.Component {
     this.setState({ searchText: '' });
   };
 
-
   // pagination--------------
   componentDidMount() {
     const { pagination } = this.state;
     this.fetch({ pagination });
   }
- 
-   handleTableChange = (pagination, filters, sorter) => {
+
+  handleTableChange = (pagination, filters, sorter) => {
     this.fetch({
       sortField: sorter.field,
       sortOrder: sorter.order,
@@ -149,15 +147,15 @@ export default class Ctable extends React.Component {
 
   fetch = (params = {}) => {
     this.setState({ loading: true });
-      this.setState({
-        pagination: {
-          total: 200,
-        },
-      });
+    this.setState({
+      pagination: {
+        total: 200,
+      },
+    });
   };
 
   render() {
-    const {pagination} = this.state;
+    const { pagination } = this.state;
     const columns = [
       {
         title: 'Tenant',
@@ -198,7 +196,7 @@ export default class Ctable extends React.Component {
       {
         title: 'Action',
         key: 'Action',
-        // fixed: this.fixedColumn, 
+        // fixed: this.fixedColumn,
         width: '80px',
         render: () => (
           <div className="btns-block">
@@ -213,7 +211,13 @@ export default class Ctable extends React.Component {
       },
     ];
     return (
-      <Table scroll={{ x: true }}  pagination={pagination} columns={columns} dataSource={data} className="custom-table" />
+      <Table
+        scroll={{ x: true }}
+        pagination={pagination}
+        columns={columns}
+        dataSource={data}
+        className="custom-table"
+      />
     );
   }
 }

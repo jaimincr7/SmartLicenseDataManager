@@ -14,7 +14,9 @@ function AddEvent() {
             <div className="form-group">
               <label className="label">Event Type</label>
               <Select
-                suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
+                suffixIcon={
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                }
               >
                 <Option value="1">John Smith</Option>
                 <Option value="2">John Smith</Option>

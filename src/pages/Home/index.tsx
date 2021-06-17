@@ -1,16 +1,6 @@
 import { IHomeProps } from './home.model';
 import './home.style.scss';
-import {
-  Select,
-  Row,
-  Col,
-  Button,
-  DatePicker,
-  Input,
-  Checkbox,
-  Modal,
-  Popover,
-} from 'antd';
+import { Select, Row, Col, Button, DatePicker, Input, Checkbox, Modal, Popover } from 'antd';
 import Ctable from './Ctable';
 import React from 'react';
 const { Option } = Select;
@@ -145,11 +135,7 @@ const Home: React.FC<IHomeProps> = () => {
             prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
           />
           <div className="btns-block">
-            <Popover
-              content={dropdownMenu}
-              trigger="click"
-              overlayClassName="custom-popover"
-            >
+            <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
               <Button
                 icon={
                   <em className="anticon">
@@ -283,7 +269,8 @@ const Home: React.FC<IHomeProps> = () => {
               <div className="btns-block modal-footer">
                 <Button key="submit" type="primary" onClick={setModal1Hide}>
                   Save
-                </Button>,
+                </Button>
+                ,
                 <Button key="back" onClick={setModal1Hide}>
                   Cancel
                 </Button>

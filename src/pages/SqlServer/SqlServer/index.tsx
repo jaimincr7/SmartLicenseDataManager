@@ -82,14 +82,32 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
                 Show/Hide Columns
               </Button>
             </Dropdown>
-            <Button type="primary" onClick={() => {setAddModalVisible(true);setId(0)}}>
+            <Button
+              type="primary"
+              onClick={() => {
+                setAddModalVisible(true);
+                setId(0);
+              }}
+            >
               Add Sql Server
             </Button>
           </div>
         </div>
-        <DataTable search={search} setSelectedId={(id)=> {setId(id);setAddModalVisible(true)}} />
+        <DataTable
+          search={search}
+          setSelectedId={(id) => {
+            setId(id);
+            setAddModalVisible(true);
+          }}
+        />
       </div>
-      {addModalVisible && <AddSqlServerModal showModal={addModalVisible} handleModalClose={()=>setAddModalVisible(false)} id={id} />}
+      {addModalVisible && (
+        <AddSqlServerModal
+          showModal={addModalVisible}
+          handleModalClose={() => setAddModalVisible(false)}
+          id={id}
+        />
+      )}
     </div>
   );
 };

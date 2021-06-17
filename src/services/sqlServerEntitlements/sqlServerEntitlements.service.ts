@@ -1,6 +1,9 @@
 import { IApiResponse, ISearchResponse } from '../../common/models/commont';
 import request from '../../utils/request';
-import { ISearchSqlServerEntitlements, ISqlServerEntitlements } from './sqlServerEntitlements.model';
+import {
+  ISearchSqlServerEntitlements,
+  ISqlServerEntitlements,
+} from './sqlServerEntitlements.model';
 
 class SqlServerEntitlementsService {
   ENDPOINT = '/sql-server-entitlements';

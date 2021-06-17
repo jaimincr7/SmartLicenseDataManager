@@ -6,8 +6,14 @@ import {
   sqlServerEntitlementsSelector,
 } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { ISearchSqlServerEntitlements, ISqlServerEntitlements } from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
-import { deleteSqlServerEntitlements, searchSqlServerEntitlements } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
+import {
+  ISearchSqlServerEntitlements,
+  ISqlServerEntitlements,
+} from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
+import {
+  deleteSqlServerEntitlements,
+  searchSqlServerEntitlements,
+} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
 import { toast } from 'react-toastify';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { fixedColumn, IDataTable } from './dataTable.model';
@@ -63,50 +69,50 @@ const DataTable: React.FC<IDataTable> = (props) => {
     };
   }, [search, pagination]);
 
-  const columns = [    
-  {
-    title: 'Tenant Name',
-    dataIndex: 'tenant_name',
-    key: 'tenant_name',
-    ellipsis: true,
-  },
+  const columns = [
+    {
+      title: 'Tenant Name',
+      dataIndex: 'tenant_name',
+      key: 'tenant_name',
+      ellipsis: true,
+    },
     {
       title: 'Company Name',
       dataIndex: 'company_name',
       key: 'company_name',
       ellipsis: true,
     },
-  {
+    {
       title: 'BU Name',
       dataIndex: 'bu_name',
       key: 'bu_name',
       ellipsis: true,
     },
-  {
+    {
       title: 'Date Added',
       dataIndex: 'date_added',
       key: 'date_added',
       ellipsis: true,
     },
-  {
+    {
       title: 'License Id',
       dataIndex: 'license_id',
       key: 'license_id',
       ellipsis: true,
     },
-  {
+    {
       title: 'Qty 01',
       dataIndex: 'qty_01',
       key: 'qty_01',
       ellipsis: true,
     },
-  {
+    {
       title: 'Qty 02',
       dataIndex: 'qty_02',
       key: 'qty_02',
       ellipsis: true,
     },
-  {
+    {
       title: 'Qty 03',
       dataIndex: 'qty_03',
       key: 'qty_03',
@@ -122,7 +128,10 @@ const DataTable: React.FC<IDataTable> = (props) => {
           <Link to={`${match.url}/edit/${data.id}`} className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
           </Link>
-          <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerEntitlements(data.id)}>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => removeSqlServerEntitlements(data.id)}
+          >
             <a href="#" title="" className="action-btn">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
             </a>

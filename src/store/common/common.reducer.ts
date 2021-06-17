@@ -2,9 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ILookup } from '../../services/common/common.model';
 import { RootState } from '../app.model';
 import { getBULookup, getCompanyLookup, getTenantLookup } from './common.action';
-import { ICommonState } from './common.model';
+import { ICommonState, IGlobalSearch } from './common.model';
 
 export const initialState: ICommonState = {
+  search: {},
   tenantLookup: {
     data: [],
     loading: false,
@@ -23,6 +24,16 @@ export const commonSlice = createSlice({
   name: 'common',
   initialState,
   reducers: {
+    setGlobalSearch: (state, action: PayloadAction<IGlobalSearch>) => {
+      const res: IGlobalSearch = {};
+      for (const key in action.payload) {
+        const element = action.payload[key];
+        if (element !== null && element !== '') {
+          res[key] = element;
+        }
+      }
+      state.search = res;
+    },
     clearCommon: () => {
       return initialState;
     },

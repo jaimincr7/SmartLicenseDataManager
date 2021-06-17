@@ -102,7 +102,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       dataIndex: 'date_added',
       key: 'date_added',
       ellipsis: true,
-      render: (date:Date) => !_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''
+      render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
     },
     {
       title: 'SQL Cluster',
@@ -243,7 +243,13 @@ const DataTable: React.FC<IDataTable> = (props) => {
       fixed: 'right' as fixedColumn,
       render: (_, data: ISqlServer) => (
         <div className="btns-block">
-          <a href="#" className="action-btn" onClick={()=> {setSelectedId(data.id)}}>
+          <a
+            href="#"
+            className="action-btn"
+            onClick={() => {
+              setSelectedId(data.id);
+            }}
+          >
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
           </a>
           <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServer(data.id)}>

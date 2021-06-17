@@ -1,6 +1,7 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { Link } from 'react-router-dom';
 const { SubMenu } = Menu;
 
 function Sidebar() {
@@ -12,7 +13,9 @@ function Sidebar() {
             key="1"
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard.svg`} alt="" />}
           >
-            <a href="#" title="Dashboard">Dashboard</a> 
+            <a href="#" title="Dashboard">
+              Dashboard
+            </a>
           </Menu.Item>
           <SubMenu
             key="sub1"
@@ -25,7 +28,9 @@ function Sidebar() {
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard-2.svg`} alt="" />
               }
             >
-              <a href="#" title="Dashboard">Dashboard</a> 
+              <a href="#" title="Dashboard">
+                Dashboard
+              </a>
             </Menu.Item>
             <Menu.Item
               key="3"
@@ -36,14 +41,17 @@ function Sidebar() {
                 />
               }
             >
-              <a href="#" title="Events">Events</a> 
-              
+              <a href="#" title="Events">
+                Events
+              </a>
             </Menu.Item>
             <Menu.Item
               key="4"
               icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-cart.svg`} alt="" />}
             >
-              <a href="#" title="Purchases">Purchases</a> 
+              <a href="#" title="Purchases">
+                Purchases
+              </a>
             </Menu.Item>
             <Menu.Item
               key="5"
@@ -51,7 +59,15 @@ function Sidebar() {
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
               }
             >
-               <a href="#" title="Entitlements">Entitlements</a> 
+              <Link to="/sql-server" title="SQL Server">SQL Server</Link>             
+            </Menu.Item>
+            <Menu.Item
+              key="6"
+              icon={
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
+              }
+            >
+              <Link to="/sql-server/entitlements" title="Entitlements">Entitlements</Link>
             </Menu.Item>
           </SubMenu>
           <SubMenu
@@ -68,7 +84,9 @@ function Sidebar() {
             key="10"
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-settings.svg`} alt="" />}
           >
-            <a href="#" title="Settings">Settings</a>
+            <a href="#" title="Settings">
+              Settings
+            </a>
           </Menu.Item>
         </Menu>
       </Scrollbars>

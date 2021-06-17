@@ -28,7 +28,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
   const [search, setSearch] = useState({
     keyword: '',
     offset: 0,
-    is_lookup: false
+    is_lookup: false,
   });
 
   const onFinish = (values: ISearchSqlServerEntitlements) => {
