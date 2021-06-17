@@ -1,3 +1,3 @@
 export const Messages = {
-  FIELD_REQUIRED: '${name} is required!',
+  FIELD_REQUIRED: '${label} is required!',
 };
