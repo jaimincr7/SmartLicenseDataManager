@@ -7,16 +7,16 @@ import { ICommonState } from './common.model';
 export const initialState: ICommonState = {
   tenantLookup: {
     data: [],
-    loading: false
+    loading: false,
   },
   companyLookup: {
     data: [],
-    loading: false
+    loading: false,
   },
   buLookup: {
     data: [],
-    loading: false
-  }
+    loading: false,
+  },
 };
 
 export const commonSlice = createSlice({
@@ -54,7 +54,6 @@ export const commonSlice = createSlice({
       state.buLookup.data = action.payload;
       state.buLookup.loading = false;
     },
-
   },
 });
 
