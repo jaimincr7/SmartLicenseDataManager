@@ -12,8 +12,10 @@ import { fixedColumn, IDataTable } from './dataTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
-import { SearchOutlined, ClearOutlined } from '@ant-design/icons';
+import { SearchOutlined, ClearOutlined, SwapOutlined } from '@ant-design/icons';
 import { IDropDownOption } from '../../../../common/models/commont';
+import { DatePicker } from 'antd';
+const { RangePicker } = DatePicker;
 
 let pageLoaded = false;
 
@@ -78,6 +80,14 @@ const DataTable: React.FC<IDataTable> = (props) => {
     setInlineSearch({});
   };
 
+  const FilterByDate = (dataIndex: string) => (
+    <>
+      <Form.Item name={dataIndex} className="m-0">
+        <RangePicker />
+      </Form.Item>
+    </>
+  );
+
   const FilterByInput = (dataIndex: string) => (
     <>
       <Form.Item name={dataIndex} className="m-0">
@@ -105,13 +115,23 @@ const DataTable: React.FC<IDataTable> = (props) => {
     </>
   );
 
+  const FilterBySwap = (dataIndex:string, dropdownOptions: IDropDownOption[]) => {
+    const [swap, setSwap] = useState(false)
+    return(
+    <>
+      {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, dropdownOptions)}
+      <Button onClick={()=>setSwap(!swap)}><SwapOutlined /></Button>
+    </>
+  )
+};
+
   const columns = [
     {
       title: 'Product Name',
       width: '100',
       children: [
         {
-          title: FilterByInput('product_name'),
+          title: FilterBySwap('product_name', sqlServers.search.lookups?.tenants),
           dataIndex: 'product_name',
           key: 'product_name',
           ellipsis: true,
@@ -166,10 +186,15 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Date Added',
-      dataIndex: 'date_added',
-      key: 'date_added',
-      ellipsis: true,
-      render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+      children: [
+        {
+          title: FilterByDate('date_added'),
+          dataIndex: 'date_added',
+          key: 'date_added',
+          ellipsis: true,
+          render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+        }
+      ]
     },
     {
       title: 'SQL Cluster',
