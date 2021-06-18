@@ -3,13 +3,14 @@ import _ from "lodash";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
 import { Messages } from "../../../../common/constants/messages";
+import { ILookup } from "../../../../services/common/common.model";
 import { ISqlServer } from "../../../../services/sqlServer/sqlServer.model";
 import { useAppSelector, useAppDispatch } from "../../../../store/app.hooks";
 import { getBULookup, getCompanyLookup, getTenantLookup } from "../../../../store/common/common.action";
 import { commonSelector } from "../../../../store/common/common.reducer";
 import { saveSqlServer, getSqlServerById } from "../../../../store/sqlServer/sqlServer.action";
 import { sqlServerSelector, clearSqlServerMessages, clearSqlServerGetById } from "../../../../store/sqlServer/sqlServer.reducer";
-import { IAddSqlServerProps, IDropDownOption } from "./addSqlServer.model";
+import { IAddSqlServerProps } from "./addSqlServer.model";
 import './addSqlServer.style.scss';
 
 const { Option } = Select;
@@ -111,27 +112,26 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
             device_type: data.device_type,
             product_family: data.product_family,
             version: data.version,
-            edition: data.cluster,
-            device_state: data.cluster,
-            software_state: data.cluster,
-            source: data.cluster,
-            operating_system: data.cluster,
-            os_type: data.cluster,
-            tenant_name: data.cluster,
-            raw_software_title: data.cluster,
-            product_name: data.cluster,
-            fqdn: data.cluster,
-            service: data.cluster,
-            line_of_business: data.cluster,
-            market: data.cluster,
-            application: data.cluster,
-            serial_number: data.cluster,
-            sql_cluster_node_type: data.cluster
+            edition: data.edition,
+            device_state: data.device_state,
+            software_state: data.software_state,
+            source: data.source,
+            operating_system: data.operating_system,
+            os_type: data.os_type,
+            raw_software_title: data.raw_software_title,
+            product_name: data.product_name,
+            fqdn: data.fqdn,
+            service: data.service,
+            line_of_business: data.line_of_business,
+            market: data.market,
+            application: data.application,
+            serial_number: data.serial_number,
+            sql_cluster_node_type: data.sql_cluster_node_type
           }
         form.setFieldsValue(initialValues);
       }
     }
-  }, [sqlServers.getById.data, commonLookups]);
+  }, [sqlServers.getById.data]);
 
   useEffect(() => {
     dispatch(getTenantLookup());
@@ -164,15 +164,15 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <label className="label">Tenant</label>
-                            <Form.Item name="tenant_id" className="m-0" label="Tenant">
+                            <Form.Item name="tenant_id" className="m-0" label="Tenant" rules={[{ required: true }]}>
                                 <Select
                                     suffixIcon={
-                                        <img src={`${process.env.PUBLIC_URL}images/ic-down.svg`} alt="" />
+                                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                                     }
                                     onChange={(value)=>dispatch(getCompanyLookup(+value))}
                                     allowClear
                                 >
-                                    {commonLookups.tenantLookup.data.map((option: IDropDownOption) => (
+                                    {commonLookups.tenantLookup.data.map((option: ILookup) => (
                                         <Option key={option.id} value={option.id}>
                                             {option.name}
                                         </Option>
@@ -184,15 +184,15 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <label className="label">Company</label>
-                            <Form.Item name="company_id" className="m-0" label="Company">
+                            <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: true }]}>
                                 <Select
                                     suffixIcon={
-                                        <img src={`${process.env.PUBLIC_URL}images/ic-down.svg`} alt="" />
+                                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                                     }
                                     onChange={(value)=>dispatch(getBULookup(+value))}
                                     allowClear
                                 >
-                                    {commonLookups.companyLookup.data.map((option: IDropDownOption) => (
+                                    {commonLookups.companyLookup.data.map((option: ILookup) => (
                                         <Option key={option.id} value={option.id}>
                                             {option.name}
                                         </Option>
@@ -204,14 +204,14 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <label className="label">BU</label>
-                            <Form.Item name="bu_id" className="m-0" label="BU">
+                            <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                                 <Select
                                     suffixIcon={
-                                        <img src={`${process.env.PUBLIC_URL}images/ic-down.svg`} alt="" />
+                                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                                     }
                                     allowClear
                                 >
-                                    {commonLookups.buLookup.data.map((option: IDropDownOption) => (
+                                    {commonLookups.buLookup.data.map((option: ILookup) => (
                                         <Option key={option.id} value={option.id}>
                                             {option.name}
                                         </Option>

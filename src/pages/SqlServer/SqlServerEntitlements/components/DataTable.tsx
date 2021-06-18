@@ -19,7 +19,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import { fixedColumn, IDataTable } from './dataTable.model';
 
 const DataTable: React.FC<IDataTable> = (props) => {
-  const { search } = props;
+  const { search, setSelectedId } = props;
 
   const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
   const dispatch = useAppDispatch();
@@ -125,9 +125,15 @@ const DataTable: React.FC<IDataTable> = (props) => {
       fixed: 'right' as fixedColumn,
       render: (_, data: ISqlServerEntitlements) => (
         <div className="btns-block">
-          <Link to={`${match.url}/edit/${data.id}`} className="action-btn">
+          <a
+            href="#"
+            className="action-btn"
+            onClick={() => {
+              setSelectedId(data.id);
+            }}
+          >
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-          </Link>
+          </a>
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => removeSqlServerEntitlements(data.id)}

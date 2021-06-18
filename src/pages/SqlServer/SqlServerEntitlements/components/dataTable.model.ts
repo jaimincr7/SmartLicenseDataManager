@@ -2,6 +2,7 @@ import { ISearchSqlServerEntitlements } from '../../../../services/sqlServerEnti
 
 export interface IDataTable {
   search?: ISearchSqlServerEntitlements;
+  setSelectedId: Function;
 }
 
 export type fixedColumn = 'right' | 'left';

@@ -7,6 +7,7 @@ import { ISqlServerEntitlementsProps } from './sqlServerEntitlements.model';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
+import AddSqlServerEntitlementsModal from './AddSqlServerEntitlementsModal';
 
 const dropdownMenu = (
   <Menu>
@@ -24,6 +25,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
   const [form] = Form.useForm();
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [id, setId] = React.useState(0);
 
   const [search, setSearch] = useState({
     keyword: '',
@@ -79,13 +81,32 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
                 Show/Hide Columns
               </Button>
             </Dropdown>
-            <Button type="primary" onClick={() => setAddModalVisible(true)}>
+            <Button 
+              type="primary" 
+              onClick={() => {
+                  setAddModalVisible(true);
+                  setId(0);
+              }}
+            >
               Add Entitlements
             </Button>
           </div>
         </div>
-        <DataTable search={search} />
+        <DataTable 
+          search={search} 
+          setSelectedId={(id) => {
+            setId(id);
+            setAddModalVisible(true);
+          }}
+        />
       </div>
+      {addModalVisible && (
+        <AddSqlServerEntitlementsModal
+          showModal={addModalVisible}
+          handleModalClose={() => setAddModalVisible(false)}
+          id={id}
+        />
+      )}
     </div>
   );
 };
