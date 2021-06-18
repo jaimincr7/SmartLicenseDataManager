@@ -16,6 +16,9 @@ import {
 } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
 import { toast } from 'react-toastify';
 import { fixedColumn, IDataTable } from './dataTable.model';
+import moment from 'moment';
+import { Common } from '../../../../common/constants/common';
+import _ from 'lodash';
 
 const DataTable: React.FC<IDataTable> = (props) => {
   const { search, setSelectedId } = props;
@@ -91,6 +94,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       dataIndex: 'date_added',
       key: 'date_added',
       ellipsis: true,
+      render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
     },
     {
       title: 'License Id',

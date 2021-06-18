@@ -34,7 +34,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose } = props;
+  const { id, showModal, handleModalClose, refreshDataTable } = props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -49,7 +49,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   let initialValues: ISqlServerEntitlements = {
     company_id: null,
     bu_id: null,
-    license_id: 0,
+    license_id: null,
     qty_01: 0,
     qty_02: 0,
     qty_03: 0,
@@ -64,22 +64,37 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
     dispatch(saveSqlServerEntitlements(inputValues));
   };
 
+  const handleTenantChange = (tenantId: number) => {
+    form.setFieldsValue({tenant_id: tenantId, company_id: null, bu_id: null})
+    dispatch(getCompanyLookup(tenantId))
+  };
+
+  const handleCompanyChange = (companyId: number) => {
+    form.setFieldsValue({company_id: companyId, bu_id: null})
+    dispatch(getBULookup(companyId))
+  };
+
+  const handleBUChange = (buId: number) => {
+    form.setFieldsValue({bu_id: buId})
+  };
+
   useEffect(() => {
     if (sqlServersEntitlements.save.messages.length > 0) {
       if (sqlServersEntitlements.save.hasErrors) {
         toast.error(sqlServersEntitlements.save.messages.join('\n'));
       } else {
         toast.success(sqlServersEntitlements.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
       }
-      dispatch(clearSqlServerEntitlementsMessages());
-      props.handleModalClose();
+      dispatch(clearSqlServerEntitlementsMessages());        
     }
   }, [sqlServersEntitlements.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && sqlServersEntitlements.getById.data) {
       const data = sqlServersEntitlements.getById.data;
-
+      
       if (data.tenant_id) {
         dispatch(getCompanyLookup(data.tenant_id));
       }
@@ -88,15 +103,15 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
       }
       if (data) {
         initialValues = {
-          tenant_id: _.isNull(data.tenant_id) ? null : commonLookups.tenantLookup?.data.filter((x) => x.id === data.tenant_id)[0]?.id,
-          company_id: _.isNull(data.company_id) ? null : commonLookups.companyLookup?.data.filter((x) => x.id === data.company_id)[0]?.id,
-          bu_id: _.isNull(data.bu_id) ? null : commonLookups.buLookup?.data.filter((x) => x.id === data.bu_id)[0]?.id,
+          tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
+          company_id: _.isNull(data.company_id) ? null : data.company_id,
+          bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
           license_id: data.license_id,
           qty_01: data.qty_01,
           qty_02: data.qty_02,
           qty_03: data.qty_03,
         };
-        form.setFieldsValue(initialValues);
+        form.setFieldsValue(initialValues);        
       }
     }
   }, [sqlServersEntitlements.getById.data]);
@@ -137,7 +152,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                     }
-                    onChange={(value) => dispatch(getCompanyLookup(+value))}
+                    onChange={handleTenantChange}
                     allowClear
                   >
                     {commonLookups.tenantLookup.data.map((option: ILookup) => (
@@ -157,7 +172,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                     }
-                    onChange={(value) => dispatch(getBULookup(+value))}
+                    onChange={handleCompanyChange}
                     allowClear
                   >
                     {commonLookups.companyLookup.data.map((option: ILookup) => (
@@ -177,6 +192,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                     }
+                    onChange={handleBUChange}
                     allowClear
                   >
                     {commonLookups.buLookup.data.map((option: ILookup) => (
@@ -187,15 +203,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                   </Select>
                 </Form.Item>
               </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">License Id</label>
-                <Form.Item name="license_id" label="License Id" className="m-0" rules={[{ required: true, type: 'number', min : 1}]}>
-                  <InputNumber className="form-control w-100" />
-                </Form.Item>
-              </div>
-            </Col>     
+            </Col>              
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Qty1</label>
@@ -219,7 +227,15 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                   <InputNumber className="form-control w-100" />
                 </Form.Item>
               </div>
-            </Col>            
+            </Col>
+            <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
+                <label className="label">License Id</label>
+                <Form.Item name="license_id" label="License Id" className="m-0" rules={[{ type: 'number', min:1}]}>
+                  <InputNumber className="form-control w-100" />
+                </Form.Item>
+              </div>
+            </Col>               
           </Row>
           <div className="btns-block modal-footer">
             <Button key="submit" type="primary" htmlType="submit">

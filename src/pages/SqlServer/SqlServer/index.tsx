@@ -105,6 +105,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
           showModal={addModalVisible}
           handleModalClose={() => setAddModalVisible(false)}
           id={id}
+          refreshDataTable={()=> setSearch({...search})}
         />
       )}
     </div>

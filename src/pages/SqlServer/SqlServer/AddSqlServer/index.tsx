@@ -20,11 +20,11 @@ const validateMessages = {
 };
   
 const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
-    const sqlServers = useAppSelector(sqlServerSelector);
+  const sqlServers = useAppSelector(sqlServerSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose } = props;
+  const { id, showModal, handleModalClose, refreshDataTable } = props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -76,15 +76,30 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
     dispatch(saveSqlServer(inputValues));
   };
 
+  const handleTenantChange = (tenantId: number) => {
+    form.setFieldsValue({tenant_id: tenantId, company_id: null, bu_id: null})
+    dispatch(getCompanyLookup(tenantId))    
+  };
+
+  const handleCompanyChange = (companyId: number) => {
+    form.setFieldsValue({company_id: companyId, bu_id: null})
+    dispatch(getBULookup(companyId))
+  };
+
+  const handleBUChange = (buId: number) => {
+    form.setFieldsValue({bu_id: buId})
+  };
+
   useEffect(() => {
     if (sqlServers.save.messages.length > 0) {
       if (sqlServers.save.hasErrors) {
         toast.error(sqlServers.save.messages.join('\n'));
       } else {
         toast.success(sqlServers.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
       }
-      dispatch(clearSqlServerMessages());
-      props.handleModalClose();
+      dispatch(clearSqlServerMessages())
     }
   }, [sqlServers.save.messages]);
 
@@ -100,9 +115,9 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
       }
       if (data) {
           initialValues ={            
-            tenant_id: _.isNull(data.tenant_id) ? null : commonLookups.tenantLookup?.data.filter((x) => x.id === data.tenant_id)[0]?.id,
-            company_id: _.isNull(data.company_id) ? null : commonLookups.companyLookup?.data.filter((x) => x.id === data.company_id)[0]?.id,
-            bu_id: _.isNull(data.bu_id) ? null : commonLookups.buLookup?.data.filter((x) => x.id === data.bu_id)[0]?.id,
+            tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
+            company_id: _.isNull(data.company_id) ? null : data.company_id,
+            bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
             cluster: data.cluster,
             cost_code: data.cost_code,
             data_center: data.data_center,
@@ -168,8 +183,8 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                                 <Select
                                     suffixIcon={
                                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                                    }
-                                    onChange={(value)=>dispatch(getCompanyLookup(+value))}
+                                    }                                    
+                                    onChange={handleTenantChange}
                                     allowClear
                                 >
                                     {commonLookups.tenantLookup.data.map((option: ILookup) => (
@@ -188,8 +203,8 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                                 <Select
                                     suffixIcon={
                                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                                    }
-                                    onChange={(value)=>dispatch(getBULookup(+value))}
+                                    }                                    
+                                    onChange={handleCompanyChange}
                                     allowClear
                                 >
                                     {commonLookups.companyLookup.data.map((option: ILookup) => (
@@ -208,7 +223,8 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                                 <Select
                                     suffixIcon={
                                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                                    }
+                                    }                                    
+                                    onChange={handleBUChange}
                                     allowClear
                                 >
                                     {commonLookups.buLookup.data.map((option: ILookup) => (
@@ -236,7 +252,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                             </Form.Item>                       
                         </div>
                     </Col>
-                    <Col xs={24} sm={12} md={8}>
+                    {/* <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <label className="label">Procs</label>
                             <Form.Item
@@ -261,7 +277,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                                 <InputNumber className="form-control w-100" />
                             </Form.Item>                         
                         </div>
-                    </Col>
+                    </Col> */}
                     <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <label className="label">Device Name</label>
@@ -302,7 +318,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                             </Form.Item>                        
                         </div>
                     </Col>
-                    <Col xs={24} sm={12} md={8}>
+                    {/* <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <label className="label">vCPU</label>
                             <Form.Item
@@ -314,7 +330,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                                 <InputNumber className="form-control w-100" />
                             </Form.Item>                      
                         </div>
-                    </Col>
+                    </Col> */}
                     <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <label className="label">Device State</label>
@@ -451,13 +467,13 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                             </Form.Item>                        
                         </div>
                     </Col>
-                    <Col xs={24} sm={12} md={8}>
+                    {/* <Col xs={24} sm={12} md={8}>
                         <div className="form-group m-0">
                             <Form.Item name="ha_enabled" className="m-0" valuePropName="checked">
                                 <Checkbox>Enabled</Checkbox>
                             </Form.Item>                        
                         </div>
-                    </Col>
+                    </Col> */}
                 </Row>
                 <div className="btns-block modal-footer">
                 <Button key="submit" type="primary" htmlType="submit">

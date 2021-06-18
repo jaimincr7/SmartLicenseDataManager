@@ -105,6 +105,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
           showModal={addModalVisible}
           handleModalClose={() => setAddModalVisible(false)}
           id={id}
+          refreshDataTable={()=> setSearch({...search}) }
         />
       )}
     </div>
