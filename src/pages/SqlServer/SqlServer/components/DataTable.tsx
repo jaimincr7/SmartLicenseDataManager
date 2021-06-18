@@ -82,7 +82,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   const FilterByDate = (dataIndex: string) => (
     <>
-      <Form.Item name={dataIndex} className="m-0">
+      <Form.Item name={dataIndex} className="m-0 filter-input lg">
         <RangePicker />
       </Form.Item>
     </>
@@ -90,17 +90,18 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   const FilterByInput = (dataIndex: string) => (
     <>
-      <Form.Item name={dataIndex} className="m-0">
-        <Input placeholder="Search keyword" autoComplete="off" />
+      <Form.Item name={dataIndex} className="m-0 filter-input">
+        <Input placeholder="Search keyword" className="form-control" autoComplete="off" />
       </Form.Item>
     </>
   );
 
   const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOption[] = []) => (
     <>
-      <Form.Item name={dataIndex} className="m-0">
+      <Form.Item name={dataIndex} className="m-0 filter-input">
         <Select
           suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
+          showArrow={true}
           mode="multiple"
           placeholder="Select"
           maxTagCount="responsive"
@@ -115,15 +116,19 @@ const DataTable: React.FC<IDataTable> = (props) => {
     </>
   );
 
-  const FilterBySwap = (dataIndex:string, dropdownOptions: IDropDownOption[]) => {
-    const [swap, setSwap] = useState(false)
-    return(
-    <>
-      {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, dropdownOptions)}
-      <Button onClick={()=>setSwap(!swap)}><SwapOutlined /></Button>
-    </>
-  )
-};
+  const FilterBySwap = (dataIndex: string, dropdownOptions: IDropDownOption[]) => {
+    const [swap, setSwap] = useState(false);
+    return (
+      <>
+      <div className="input-group">
+        {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, dropdownOptions)}
+        <Button onClick={() => setSwap(!swap)}>
+          <SwapOutlined />
+        </Button>
+      </div>
+      </>
+    );
+  };
 
   const columns = [
     {
@@ -193,8 +198,8 @@ const DataTable: React.FC<IDataTable> = (props) => {
           key: 'date_added',
           ellipsis: true,
           render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
-        }
-      ]
+        },
+      ],
     },
     {
       title: 'SQL Cluster',
@@ -334,11 +339,11 @@ const DataTable: React.FC<IDataTable> = (props) => {
         {
           title: (
             <div className="btns-block">
-              <Button htmlType="submit">
-                <SearchOutlined />
+              <Button htmlType="submit" className="action-btn p-0">
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />
               </Button>
-              <Button htmlType="button" onClick={onReset}>
-                <ClearOutlined />
+              <Button htmlType="button" onClick={onReset} className="action-btn p-0">
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-clear.svg`} alt="" />
               </Button>
             </div>
           ),

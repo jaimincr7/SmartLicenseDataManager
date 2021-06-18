@@ -312,6 +312,17 @@ img {
   margin-bottom: 18px;
 }
 
+.filter-input {
+  min-width: 130px;
+}
+.filter-input.lg{
+  min-width: 250px;
+}
+.input-group{
+  display: flex;
+}
+
+
 // ant-design
 .ant-btn {
   background: #ececec;
