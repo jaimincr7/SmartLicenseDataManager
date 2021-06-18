@@ -91,7 +91,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
   const FilterByInput = (dataIndex: string) => (
     <>
       <Form.Item name={dataIndex} className="m-0 filter-input">
-        <Input placeholder="Search keyword" className="form-control" autoComplete="off" />
+        <Input placeholder="Search by keyword" className="form-control" autoComplete="off" />
       </Form.Item>
     </>
   );
@@ -103,7 +103,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
           suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
           showArrow={true}
           mode="multiple"
-          placeholder="Select"
+          placeholder="Select and search"
           maxTagCount="responsive"
         >
           {dropdownOptions.map((option: IDropDownOption) => (
@@ -118,25 +118,28 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   const FilterBySwap = (dataIndex: string, dropdownOptions: IDropDownOption[]) => {
     const [swap, setSwap] = useState(false);
+
+    React.useEffect(() => {
+      if (swap && !dropdownOptions) {
+        console.log('tes');
+      }
+    }, [swap])
     return (
       <>
       <div className="input-group">
-        {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, dropdownOptions)}
-        <Button onClick={() => setSwap(!swap)}>
-          <SwapOutlined />
-        </Button>
-      </div>
+        {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, (dropdownOptions || []))}
+        <Button onClick={() => setSwap(!swap)}><SwapOutlined /></Button>
+        </div>
       </>
-    );
+    )
   };
 
   const columns = [
     {
       title: 'Product Name',
-      width: '100',
       children: [
         {
-          title: FilterBySwap('product_name', sqlServers.search.lookups?.tenants),
+          title: FilterBySwap('product_name', sqlServers.search.lookups?.product_name),
           dataIndex: 'product_name',
           key: 'product_name',
           ellipsis: true,
@@ -145,10 +148,9 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Operating System',
-      width: '100',
       children: [
         {
-          title: FilterByInput('operating_system'),
+          title: FilterBySwap('operating_system', sqlServers.search.lookups?.product_name),
           dataIndex: 'operating_system',
           key: 'operating_system',
           ellipsis: true,
@@ -157,7 +159,6 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Tenant Name',
-      width: '100',
       children: [
         {
           title: FilterByDropdown('tenant_id', sqlServers.search.lookups?.tenants),
@@ -203,135 +204,245 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'SQL Cluster',
-      dataIndex: 'sql_cluster',
-      key: 'sql_cluster',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('sql_cluster', sqlServers.search.lookups?.sql_cluster),
+          dataIndex: 'sql_cluster',
+          key: 'sql_cluster',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Host',
-      dataIndex: 'host',
-      key: 'host',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('host', sqlServers.search.lookups?.host),
+          dataIndex: 'host',
+          key: 'host',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Device Name',
-      dataIndex: 'device_name',
-      key: 'device_name',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('device_name', sqlServers.search.lookups?.device_name),
+          dataIndex: 'device_name',
+          key: 'device_name',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Device Type',
-      dataIndex: 'device_type',
-      key: 'device_type',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('device_type', sqlServers.search.lookups?.device_type),
+          dataIndex: 'device_type',
+          key: 'device_type',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Product Family',
-      dataIndex: 'product_family',
-      key: 'product_family',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('product_family', sqlServers.search.lookups?.product_family),
+          dataIndex: 'product_family',
+          key: 'product_family',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Version',
-      dataIndex: 'version',
-      key: 'version',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('version', sqlServers.search.lookups?.version),
+          dataIndex: 'version',
+          key: 'version',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Edition',
-      dataIndex: 'edition',
-      key: 'edition',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('edition', sqlServers.search.lookups?.edition),
+          dataIndex: 'edition',
+          key: 'edition',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Device State',
-      dataIndex: 'device_state',
-      key: 'device_state',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('device_state', sqlServers.search.lookups?.device_state),
+          dataIndex: 'device_state',
+          key: 'device_state',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Software State',
-      dataIndex: 'software_state',
-      key: 'software_state',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('software_state', sqlServers.search.lookups?.software_state),
+          dataIndex: 'software_state',
+          key: 'software_state',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Cluster',
-      dataIndex: 'cluster',
-      key: 'cluster',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('cluster', sqlServers.search.lookups?.cluster),
+          dataIndex: 'cluster',
+          key: 'cluster',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Source',
-      dataIndex: 'source',
-      key: 'source',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('source', sqlServers.search.lookups?.source),
+          dataIndex: 'source',
+          key: 'source',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'OS Type',
-      dataIndex: 'os_type',
-      key: 'os_type',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('os_type', sqlServers.search.lookups?.os_type),
+          dataIndex: 'os_type',
+          key: 'os_type',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Raw Software Title',
-      dataIndex: 'raw_software_title',
-      key: 'raw_software_title',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('raw_software_title', sqlServers.search.lookups?.raw_software_title),
+          dataIndex: 'raw_software_title',
+          key: 'raw_software_title',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'FQDN',
-      dataIndex: 'fqdn',
-      key: 'fqdn',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('fqdn', sqlServers.search.lookups?.fqdn),
+          dataIndex: 'fqdn',
+          key: 'fqdn',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Service',
-      dataIndex: 'service',
-      key: 'service',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('service', sqlServers.search.lookups?.service),
+          dataIndex: 'service',
+          key: 'service',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Cost Code',
-      dataIndex: 'cost_code',
-      key: 'cost_code',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('cost_code', sqlServers.search.lookups?.cost_code),
+          dataIndex: 'cost_code',
+          key: 'cost_code',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Line of Business',
-      dataIndex: 'line_of_business',
-      key: 'line_of_business',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('line_of_business', sqlServers.search.lookups?.line_of_business),
+          dataIndex: 'line_of_business',
+          key: 'line_of_business',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Market',
-      dataIndex: 'market',
-      key: 'market',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('market', sqlServers.search.lookups?.market),
+          dataIndex: 'market',
+          key: 'market',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Application',
-      dataIndex: 'application',
-      key: 'application',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('application', sqlServers.search.lookups?.application),
+          dataIndex: 'application',
+          key: 'application',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Data Center',
-      dataIndex: 'data_center',
-      key: 'data_center',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('data_center', sqlServers.search.lookups?.data_center),
+          dataIndex: 'data_center',
+          key: 'data_center',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Serial Number',
-      dataIndex: 'serial_number',
-      key: 'serial_number',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('serial_number', sqlServers.search.lookups?.serial_number),
+          dataIndex: 'serial_number',
+          key: 'serial_number',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'SQL Cluster Node Type',
-      dataIndex: 'sql_cluster_node_type',
-      key: 'sql_cluster_node_type',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterBySwap('sql_cluster_node_type', sqlServers.search.lookups?.sql_cluster_node_type),
+          dataIndex: 'sql_cluster_node_type',
+          key: 'sql_cluster_node_type',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Action',
