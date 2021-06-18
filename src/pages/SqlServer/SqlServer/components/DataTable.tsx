@@ -103,6 +103,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
           suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
           showArrow={true}
           mode="multiple"
+          dropdownClassName="filter-dropdown-pop"
           placeholder="Select and search"
           maxTagCount="responsive"
         >
@@ -128,7 +129,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       <>
       <div className="input-group">
         {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, (dropdownOptions || []))}
-        <Button onClick={() => setSwap(!swap)}><SwapOutlined /></Button>
+        <Button onClick={() => setSwap(!swap)} className="filter-btn"><SwapOutlined /></Button>
         </div>
       </>
     )
@@ -450,10 +451,10 @@ const DataTable: React.FC<IDataTable> = (props) => {
         {
           title: (
             <div className="btns-block">
-              <Button htmlType="submit" className="action-btn p-0">
+              <Button htmlType="submit" className="action-btn filter-btn p-0">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />
               </Button>
-              <Button htmlType="button" onClick={onReset} className="action-btn p-0">
+              <Button htmlType="button" onClick={onReset} className="action-btn filter-btn p-0">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-clear.svg`} alt="" />
               </Button>
             </div>

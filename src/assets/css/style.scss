@@ -313,10 +313,17 @@ img {
 }
 
 .filter-input {
-  min-width: 130px;
+  min-width: 160px;
+  width: 100%;
 }
 .filter-input.lg{
   min-width: 250px;
+}
+.filter-btn.ant-btn{
+  padding: 0 8px;
+  background: #e3e2e2;
+  border-color: #dddddd;
+  color: #4f4f4f;
 }
 .input-group{
   display: flex;
@@ -329,6 +336,8 @@ img {
   border-color: #ececec;
   color: #4f4f4f;
 }
+
+
 
 .ant-btn:hover,
 .ant-btn:focus,
@@ -400,6 +409,9 @@ textarea.ant-input {
   font-weight: 500;
   background-color: #014e97;
 }
+.ant-select-item .ant-select-item-option-state .anticon {
+    color: #ffffff;
+}
 
 .ant-picker {
   color: #4f4f4f;
@@ -427,9 +439,18 @@ textarea.ant-input {
 .ant-picker-header-view button:hover {
   color: #001529;
 }
+.ant-picker-range .ant-picker-active-bar {
+    background: #014e97;
+}
+.filter-dropdown-pop{
+  width: 250px !important;
+}
+
 .anticon {
   color: #4f4f4f;
 }
+
+
 
 .action-btn {
   width: 30px;
@@ -447,7 +468,7 @@ textarea.ant-input {
 .action-btn:hover,
 .action-btn:active,
 .action-btn:focus {
-  background-color: #ececec;
+  background-color: #d2d2d2;
 }
 
 .custom-table .ant-table {
