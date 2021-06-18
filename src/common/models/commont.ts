@@ -27,3 +27,8 @@ export interface ISearchResult<T> {
 export interface ISearchResponse<T> {
   search_result: ISearchResult<T>;
 }
+
+export interface IDropDownOption {
+  id: number;
+  name: string;
+}

@@ -16,6 +16,7 @@ export const initialState: ISqlServerState = {
     hasErrors: false,
     data: [],
     count: 0,
+    lookups: {},
   },
   getById: {
     loading: false,
@@ -58,8 +59,12 @@ export const sqlServerSlice = createSlice({
       state,
       action: PayloadAction<ISearchResponse<ISqlServer>>
     ) => {
-      state.search.data = action.payload.search_result.records;
-      state.search.count = action.payload.search_result.total_count;
+      const { search_result, ...rest } = action.payload;
+      state.search.data = search_result.records;
+      state.search.count = search_result.total_count;
+      if (JSON.stringify(rest) !== '{}') {
+        state.search.lookups = { ...rest };
+      }
       state.search.loading = false;
       state.search.hasErrors = false;
     },

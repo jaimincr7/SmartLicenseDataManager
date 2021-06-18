@@ -1,7 +1,6 @@
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, Input, Form, Button, Select } from 'antd';
 import React, { useState } from 'react';
 import {
-  clearSqlServer,
   clearSqlServerMessages,
   sqlServerSelector,
 } from '../../../../store/sqlServer/sqlServer.reducer';
@@ -9,33 +8,40 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { ISearchSqlServer, ISqlServer } from '../../../../services/sqlServer/sqlServer.model';
 import { deleteSqlServer, searchSqlServer } from '../../../../store/sqlServer/sqlServer.action';
 import { toast } from 'react-toastify';
-import { Link, useRouteMatch } from 'react-router-dom';
 import { fixedColumn, IDataTable } from './dataTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
+import { SearchOutlined, ClearOutlined } from '@ant-design/icons';
+import { IDropDownOption } from '../../../../common/models/commont';
+
+let pageLoaded = false;
 
 const DataTable: React.FC<IDataTable> = (props) => {
   const { search, setSelectedId } = props;
 
   const sqlServers = useAppSelector(sqlServerSelector);
   const dispatch = useAppDispatch();
-  const match = useRouteMatch();
+  const [form] = Form.useForm();
 
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
   });
 
+  const [inlineSearch, setInlineSearch] = useState<any>({});
+
   const fetchSqlServer = () => {
     const searchData: ISearchSqlServer = {
       order_by: 'id',
       order_direction: 'DESC',
-      is_lookup: false,
+      is_lookup: !pageLoaded,
       limit: pagination.pageSize,
       offset: (pagination.current - 1) * pagination.pageSize,
       ...(search || {}),
+      filter_keys: inlineSearch,
     };
+    pageLoaded = true;
     dispatch(searchSqlServer(searchData));
   };
 
@@ -61,41 +67,102 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   React.useEffect(() => {
     fetchSqlServer();
-    return () => {
-      dispatch(clearSqlServer());
-    };
-  }, [search, pagination]);
+  }, [search, pagination, inlineSearch]);
+
+  const onFinish = (values: any) => {
+    setInlineSearch(values);
+  };
+
+  const onReset = () => {
+    form.resetFields();
+    setInlineSearch({});
+  };
+
+  const FilterByInput = (dataIndex: string) => (
+    <>
+      <Form.Item name={dataIndex} className="m-0">
+        <Input placeholder="Search keyword" autoComplete="off" />
+      </Form.Item>
+    </>
+  );
+
+  const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOption[] = []) => (
+    <>
+      <Form.Item name={dataIndex} className="m-0">
+        <Select
+          suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
+          mode="multiple"
+          placeholder="Select"
+          maxTagCount="responsive"
+        >
+          {dropdownOptions.map((option: IDropDownOption) => (
+            <Select.Option key={option.name} value={option.id}>
+              {option.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+    </>
+  );
 
   const columns = [
     {
       title: 'Product Name',
-      dataIndex: 'product_name',
-      key: 'product_name',
-      ellipsis: true,
+      width: '100',
+      children: [
+        {
+          title: FilterByInput('product_name'),
+          dataIndex: 'product_name',
+          key: 'product_name',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Operating System',
-      dataIndex: 'operating_system',
-      key: 'operating_system',
-      ellipsis: true,
+      width: '100',
+      children: [
+        {
+          title: FilterByInput('operating_system'),
+          dataIndex: 'operating_system',
+          key: 'operating_system',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Tenant Name',
-      dataIndex: 'tenant_name',
-      key: 'tenant_name',
-      ellipsis: true,
+      width: '100',
+      children: [
+        {
+          title: FilterByDropdown('tenant_id', sqlServers.search.lookups?.tenants),
+          dataIndex: 'tenant_name',
+          key: 'tenant_name',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Company Name',
-      dataIndex: 'company_name',
-      key: 'company_name',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterByDropdown('company_id', sqlServers.search.lookups?.companies),
+          dataIndex: 'company_name',
+          key: 'company_name',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Bu Name',
-      dataIndex: 'bu_name',
-      key: 'bu_name',
-      ellipsis: true,
+      children: [
+        {
+          title: FilterByDropdown('bu_id', sqlServers.search.lookups?.bus),
+          dataIndex: 'bu_name',
+          key: 'bu_name',
+          ellipsis: true,
+        },
+      ],
     },
     {
       title: 'Date Added',
@@ -238,41 +305,59 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Action',
-      key: 'Action',
-      width: '80px',
-      fixed: 'right' as fixedColumn,
-      render: (_, data: ISqlServer) => (
-        <div className="btns-block">
-          <a
-            href="#"
-            className="action-btn"
-            onClick={() => {
-              setSelectedId(data.id);
-            }}
-          >
-            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-          </a>
-          <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServer(data.id)}>
-            <a href="#" title="" className="action-btn">
-              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-            </a>
-          </Popconfirm>
-        </div>
-      ),
+      children: [
+        {
+          title: (
+            <div className="btns-block">
+              <Button htmlType="submit">
+                <SearchOutlined />
+              </Button>
+              <Button htmlType="button" onClick={onReset}>
+                <ClearOutlined />
+              </Button>
+            </div>
+          ),
+          key: 'Action',
+          width: '80px',
+          fixed: 'right' as fixedColumn,
+          render: (_, data: ISqlServer) => (
+            <div className="btns-block">
+              <a
+                href="#"
+                className="action-btn"
+                onClick={() => {
+                  setSelectedId(data.id);
+                }}
+              >
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
+              </a>
+              <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServer(data.id)}>
+                <a href="#" title="" className="action-btn">
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                </a>
+              </Popconfirm>
+            </div>
+          ),
+        },
+      ],
     },
   ];
 
   return (
-    <Table
-      scroll={{ x: true }}
-      rowKey={(record) => record.id}
-      dataSource={sqlServers.search.data}
-      columns={columns}
-      loading={sqlServers.search.loading}
-      pagination={{ ...pagination, total: sqlServers.search.count }}
-      onChange={handleTableChange}
-      className="custom-table"
-    />
+    <>
+      <Form form={form} name="searchTable" onFinish={onFinish}>
+        <Table
+          scroll={{ x: true }}
+          rowKey={(record) => record.id}
+          dataSource={sqlServers.search.data}
+          columns={columns}
+          loading={sqlServers.search.loading}
+          pagination={{ ...pagination, total: sqlServers.search.count }}
+          onChange={handleTableChange}
+          className="custom-table"
+        />
+      </Form>
+    </>
   );
 };
 

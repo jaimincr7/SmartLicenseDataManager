@@ -30,7 +30,6 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
 
   const [search, setSearch] = useState({
     keyword: '',
-    is_lookup: false,
     offset: 0,
   });
 

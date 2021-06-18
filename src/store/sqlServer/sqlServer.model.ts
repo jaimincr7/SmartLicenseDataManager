@@ -1,3 +1,4 @@
+import { IDropDownOption } from '../../common/models/commont';
 import { ISqlServer } from '../../services/sqlServer/sqlServer.model';
 
 export interface ISqlServerState {
@@ -6,6 +7,7 @@ export interface ISqlServerState {
     hasErrors: boolean;
     data: ISqlServer[];
     count: number;
+    lookups?: { [key: string]: IDropDownOption[] };
   };
   getById: {
     loading: boolean;

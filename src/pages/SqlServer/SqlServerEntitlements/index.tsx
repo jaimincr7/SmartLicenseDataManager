@@ -81,19 +81,19 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
                 Show/Hide Columns
               </Button>
             </Dropdown>
-            <Button 
-              type="primary" 
+            <Button
+              type="primary"
               onClick={() => {
-                  setAddModalVisible(true);
-                  setId(0);
+                setAddModalVisible(true);
+                setId(0);
               }}
             >
               Add Entitlements
             </Button>
           </div>
         </div>
-        <DataTable 
-          search={search} 
+        <DataTable
+          search={search}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);

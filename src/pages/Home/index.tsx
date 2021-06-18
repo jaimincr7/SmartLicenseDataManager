@@ -155,7 +155,7 @@ const Home: React.FC<IHomeProps> = () => {
               centered
               visible={modal1Visible}
               onOk={setModal1Hide}
-               onCancel={setModal1Hide}
+              onCancel={setModal1Hide}
               footer={null}
               // footer={[
               //   <Button key="submit" type="primary" onClick={setModal1Hide}>

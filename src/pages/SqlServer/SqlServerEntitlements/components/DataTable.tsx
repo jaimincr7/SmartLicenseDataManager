@@ -15,7 +15,6 @@ import {
   searchSqlServerEntitlements,
 } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
 import { toast } from 'react-toastify';
-import { Link, useRouteMatch } from 'react-router-dom';
 import { fixedColumn, IDataTable } from './dataTable.model';
 
 const DataTable: React.FC<IDataTable> = (props) => {
@@ -23,7 +22,6 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
   const dispatch = useAppDispatch();
-  const match = useRouteMatch();
 
   const [pagination, setPagination] = useState({
     current: 1,

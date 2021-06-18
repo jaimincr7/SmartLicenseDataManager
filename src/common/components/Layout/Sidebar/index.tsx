@@ -59,15 +59,19 @@ function Sidebar() {
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
               }
             >
-              <Link to="/sql-server" title="SQL Server">SQL Server</Link>             
+              <Link to="/sql-server" title="SQL Server">
+                SQL Server
+              </Link>
             </Menu.Item>
             <Menu.Item
-              key="6"
+              key="5.5"
               icon={
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
               }
             >
-              <Link to="/sql-server/entitlements" title="Entitlements">Entitlements</Link>
+              <Link to="/sql-server/entitlements" title="Entitlements">
+                Entitlements
+              </Link>
             </Menu.Item>
           </SubMenu>
           <SubMenu

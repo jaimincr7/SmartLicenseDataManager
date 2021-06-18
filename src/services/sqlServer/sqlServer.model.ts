@@ -38,4 +38,5 @@ export interface ISqlServer {
 export interface ISearchSqlServer extends ISearch {
   is_lookup?: boolean;
   keyword?: string;
+  filter_keys?: any;
 }
