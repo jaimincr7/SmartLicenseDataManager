@@ -14,6 +14,13 @@ class SqlServerService {
     });
   }
 
+  public async getLookupSqlServerByFieldName(fieldName: string): Promise<any> {
+    const url = `${this.ENDPOINT}/column-lookup/${fieldName}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getSqlServerById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -36,7 +43,7 @@ class SqlServerService {
     }
   }
 
-  public deleteSqlServer(id: number): Promise<any> {
+  public async deleteSqlServer(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
       return res.data;
