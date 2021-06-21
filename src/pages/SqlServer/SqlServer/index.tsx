@@ -29,8 +29,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
   const [id, setId] = React.useState(0);
 
   const [search, setSearch] = useState({
-    keyword: '',
-    offset: 0,
+    keyword: ''
   });
 
   const onFinish = (values: ISearchSqlServer) => {

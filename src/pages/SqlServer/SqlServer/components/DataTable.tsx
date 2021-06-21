@@ -71,11 +71,11 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   React.useEffect(() => {
     fetchSqlServer();
-  }, [search, pagination]);
+  }, [pagination]);
 
   React.useEffect(() => {
     setPagination({ ...pagination, current: 1 });
-  }, [inlineSearch]);
+  }, [inlineSearch, search]);
 
   const onFinish = (values: any) => {
     setInlineSearch(values);

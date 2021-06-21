@@ -17,7 +17,7 @@ import {
 import { toast } from 'react-toastify';
 import { fixedColumn, IDataTable } from './dataTable.model';
 import moment from 'moment';
-import { Common } from '../../../../common/constants/common';
+import { Common, DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
 import _ from 'lodash';
 
 const DataTable: React.FC<IDataTable> = (props) => {
@@ -28,7 +28,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: DEFAULT_PAGE_SIZE,
   });
 
   const fetchSqlServerEntitlements = () => {
