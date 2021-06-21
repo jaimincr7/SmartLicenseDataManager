@@ -1,4 +1,4 @@
-import { Table, Popconfirm, Input, Form, Button, Select } from 'antd';
+import { Table, Popconfirm, Form, Button } from 'antd';
 import React, { useState } from 'react';
 import {
   clearSqlServerMessages,
@@ -10,13 +10,14 @@ import { deleteSqlServer, searchSqlServer } from '../../../../store/sqlServer/sq
 import { toast } from 'react-toastify';
 import { fixedColumn, IDataTable } from './dataTable.model';
 import moment from 'moment';
-import { Common } from '../../../../common/constants/common';
+import { Common, DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
 import _ from 'lodash';
-import { SearchOutlined, ClearOutlined, SwapOutlined } from '@ant-design/icons';
-import { IDropDownOption } from '../../../../common/models/commont';
-import { DatePicker } from 'antd';
 import sqlServerService from '../../../../services/sqlServer/sqlServer.service';
-const { RangePicker } = DatePicker;
+import {
+  FilterByDate,
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTableFilters';
 
 let pageLoaded = false;
 
@@ -29,11 +30,10 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: DEFAULT_PAGE_SIZE,
   });
 
   const [inlineSearch, setInlineSearch] = useState<any>({});
-  const [columnLookup, setColumnLookup] = useState<any>({});
 
   const fetchSqlServer = () => {
     const searchData: ISearchSqlServer = {
@@ -71,7 +71,11 @@ const DataTable: React.FC<IDataTable> = (props) => {
 
   React.useEffect(() => {
     fetchSqlServer();
-  }, [search, pagination, inlineSearch]);
+  }, [search, pagination]);
+
+  React.useEffect(() => {
+    setPagination({ ...pagination, current: 1 });
+  }, [inlineSearch]);
 
   const onFinish = (values: any) => {
     setInlineSearch(values);
@@ -82,67 +86,14 @@ const DataTable: React.FC<IDataTable> = (props) => {
     setInlineSearch({});
   };
 
-  const getColumnLookup = (column: string)=>{
-    sqlServerService.getLookupSqlServerByFieldName(column).then((res)=>{
-      setColumnLookup({...columnLookup, [column]:res.body.data})
-    })
+  const getColumnLookup = (column: string) => {
+    return sqlServerService.getLookupSqlServerByFieldName(column).then((res) => {
+      return res.body.data;
+    });
+  };
 
-  }
-
-  const FilterByDate = (dataIndex: string) => (
-    <>
-      <Form.Item name={dataIndex} className="m-0 filter-input lg">
-        <RangePicker />
-      </Form.Item>
-    </>
-  );
-
-  const FilterByInput = (dataIndex: string) => (
-    <>
-      <Form.Item name={dataIndex} className="m-0 filter-input">
-        <Input placeholder="Search by keyword" className="form-control" autoComplete="off" />
-      </Form.Item>
-    </>
-  );
-
-  const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOption[] = []) => (
-    <>
-      <Form.Item name={dataIndex} className="m-0 filter-input">
-        <Select
-          suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
-          showArrow={true}
-          mode="multiple"
-          dropdownClassName="filter-dropdown-pop"
-          placeholder="Select and search"
-          maxTagCount="responsive"
-          allowClear
-        >
-          {dropdownOptions.map((option: IDropDownOption) => (
-            <Select.Option key={option.name} value={option.id}>
-              {option.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-    </>
-  );
-
-  const FilterBySwap = (dataIndex: string, dropdownOptions: IDropDownOption[]) => {
-    const [swap, setSwap] = useState(true);
-
-    React.useEffect(() => {
-      if (!swap && !dropdownOptions) {
-        getColumnLookup(dataIndex);
-      }
-    }, [swap])
-    return (
-      <>
-      <div className="input-group">
-        {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, (dropdownOptions || []))}
-        <Button onClick={() => setSwap(!swap)} className="filter-btn"><SwapOutlined /></Button>
-        </div>
-      </>
-    )
+  const FilterBySwap = (dataIndex: string) => {
+    return FilterWithSwapOption(dataIndex, getColumnLookup, form);
   };
 
   const columns = [
@@ -150,7 +101,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Product Name',
       children: [
         {
-          title: FilterBySwap('product_name', columnLookup?.product_name),
+          title: FilterBySwap('product_name'),
           dataIndex: 'product_name',
           key: 'product_name',
           ellipsis: true,
@@ -161,7 +112,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Operating System',
       children: [
         {
-          title: FilterBySwap('operating_system', columnLookup?.operating_system),
+          title: FilterBySwap('operating_system'),
           dataIndex: 'operating_system',
           key: 'operating_system',
           ellipsis: true,
@@ -217,7 +168,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'SQL Cluster',
       children: [
         {
-          title: FilterBySwap('sql_cluster', columnLookup?.sql_cluster),
+          title: FilterBySwap('sql_cluster'),
           dataIndex: 'sql_cluster',
           key: 'sql_cluster',
           ellipsis: true,
@@ -228,7 +179,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Host',
       children: [
         {
-          title: FilterBySwap('host', columnLookup?.host),
+          title: FilterBySwap('host'),
           dataIndex: 'host',
           key: 'host',
           ellipsis: true,
@@ -239,7 +190,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Device Name',
       children: [
         {
-          title: FilterBySwap('device_name', columnLookup?.device_name),
+          title: FilterBySwap('device_name'),
           dataIndex: 'device_name',
           key: 'device_name',
           ellipsis: true,
@@ -250,7 +201,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Device Type',
       children: [
         {
-          title: FilterBySwap('device_type', columnLookup?.device_type),
+          title: FilterBySwap('device_type'),
           dataIndex: 'device_type',
           key: 'device_type',
           ellipsis: true,
@@ -261,7 +212,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Product Family',
       children: [
         {
-          title: FilterBySwap('product_family', columnLookup?.product_family),
+          title: FilterBySwap('product_family'),
           dataIndex: 'product_family',
           key: 'product_family',
           ellipsis: true,
@@ -272,7 +223,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Version',
       children: [
         {
-          title: FilterBySwap('version', columnLookup?.version),
+          title: FilterBySwap('version'),
           dataIndex: 'version',
           key: 'version',
           ellipsis: true,
@@ -283,7 +234,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Edition',
       children: [
         {
-          title: FilterBySwap('edition', columnLookup?.edition),
+          title: FilterBySwap('edition'),
           dataIndex: 'edition',
           key: 'edition',
           ellipsis: true,
@@ -294,7 +245,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Device State',
       children: [
         {
-          title: FilterBySwap('device_state', columnLookup?.device_state),
+          title: FilterBySwap('device_state'),
           dataIndex: 'device_state',
           key: 'device_state',
           ellipsis: true,
@@ -305,7 +256,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Software State',
       children: [
         {
-          title: FilterBySwap('software_state', columnLookup?.software_state),
+          title: FilterBySwap('software_state'),
           dataIndex: 'software_state',
           key: 'software_state',
           ellipsis: true,
@@ -316,7 +267,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Cluster',
       children: [
         {
-          title: FilterBySwap('cluster', columnLookup?.cluster),
+          title: FilterBySwap('cluster'),
           dataIndex: 'cluster',
           key: 'cluster',
           ellipsis: true,
@@ -327,7 +278,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Source',
       children: [
         {
-          title: FilterBySwap('source', columnLookup?.source),
+          title: FilterBySwap('source'),
           dataIndex: 'source',
           key: 'source',
           ellipsis: true,
@@ -338,7 +289,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'OS Type',
       children: [
         {
-          title: FilterBySwap('os_type', columnLookup?.os_type),
+          title: FilterBySwap('os_type'),
           dataIndex: 'os_type',
           key: 'os_type',
           ellipsis: true,
@@ -349,7 +300,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Raw Software Title',
       children: [
         {
-          title: FilterBySwap('raw_software_title', columnLookup?.raw_software_title),
+          title: FilterBySwap('raw_software_title'),
           dataIndex: 'raw_software_title',
           key: 'raw_software_title',
           ellipsis: true,
@@ -360,7 +311,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'FQDN',
       children: [
         {
-          title: FilterBySwap('fqdn', columnLookup?.fqdn),
+          title: FilterBySwap('fqdn'),
           dataIndex: 'fqdn',
           key: 'fqdn',
           ellipsis: true,
@@ -371,7 +322,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Service',
       children: [
         {
-          title: FilterBySwap('service', columnLookup?.service),
+          title: FilterBySwap('service'),
           dataIndex: 'service',
           key: 'service',
           ellipsis: true,
@@ -382,7 +333,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Cost Code',
       children: [
         {
-          title: FilterBySwap('cost_code', columnLookup?.cost_code),
+          title: FilterBySwap('cost_code'),
           dataIndex: 'cost_code',
           key: 'cost_code',
           ellipsis: true,
@@ -393,7 +344,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Line of Business',
       children: [
         {
-          title: FilterBySwap('line_of_business', columnLookup?.line_of_business),
+          title: FilterBySwap('line_of_business'),
           dataIndex: 'line_of_business',
           key: 'line_of_business',
           ellipsis: true,
@@ -404,7 +355,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Market',
       children: [
         {
-          title: FilterBySwap('market', columnLookup?.market),
+          title: FilterBySwap('market'),
           dataIndex: 'market',
           key: 'market',
           ellipsis: true,
@@ -415,7 +366,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Application',
       children: [
         {
-          title: FilterBySwap('application', columnLookup?.application),
+          title: FilterBySwap('application'),
           dataIndex: 'application',
           key: 'application',
           ellipsis: true,
@@ -426,7 +377,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Data Center',
       children: [
         {
-          title: FilterBySwap('data_center', columnLookup?.data_center),
+          title: FilterBySwap('data_center'),
           dataIndex: 'data_center',
           key: 'data_center',
           ellipsis: true,
@@ -437,7 +388,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'Serial Number',
       children: [
         {
-          title: FilterBySwap('serial_number', columnLookup?.serial_number),
+          title: FilterBySwap('serial_number'),
           dataIndex: 'serial_number',
           key: 'serial_number',
           ellipsis: true,
@@ -448,7 +399,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
       title: 'SQL Cluster Node Type',
       children: [
         {
-          title: FilterBySwap('sql_cluster_node_type', columnLookup?.sql_cluster_node_type),
+          title: FilterBySwap('sql_cluster_node_type'),
           dataIndex: 'sql_cluster_node_type',
           key: 'sql_cluster_node_type',
           ellipsis: true,

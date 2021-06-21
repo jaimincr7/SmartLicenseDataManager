@@ -316,19 +316,18 @@ img {
   min-width: 160px;
   width: 100%;
 }
-.filter-input.lg{
+.filter-input.lg {
   min-width: 250px;
 }
-.filter-btn.ant-btn{
+.filter-btn.ant-btn {
   padding: 0 8px;
   background: #e3e2e2;
   border-color: #dddddd;
   color: #4f4f4f;
 }
-.input-group{
+.input-group {
   display: flex;
 }
-
 
 // ant-design
 .ant-btn {
@@ -336,8 +335,6 @@ img {
   border-color: #ececec;
   color: #4f4f4f;
 }
-
-
 
 .ant-btn:hover,
 .ant-btn:focus,
@@ -410,7 +407,7 @@ textarea.ant-input {
   background-color: #014e97;
 }
 .ant-select-item .ant-select-item-option-state .anticon {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .ant-picker {
@@ -440,17 +437,15 @@ textarea.ant-input {
   color: #001529;
 }
 .ant-picker-range .ant-picker-active-bar {
-    background: #014e97;
+  background: #014e97;
 }
-.filter-dropdown-pop{
+.filter-dropdown-pop {
   width: 250px !important;
 }
 
 .anticon {
   color: #4f4f4f;
 }
-
-
 
 .action-btn {
   width: 30px;
