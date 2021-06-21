@@ -11,7 +11,7 @@ import {
   getCompanyLookup,
   getTenantLookup,
 } from '../../../../store/common/common.action';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearBULookUp, clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
 import { saveSqlServer, getSqlServerById } from '../../../../store/sqlServer/sqlServer.action';
 import {
   sqlServerSelector,
@@ -85,19 +85,29 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   };
 
   const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
-    dispatch(getCompanyLookup(tenantId));
+    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });    
+    if(tenantId) {      
+      dispatch(getCompanyLookup(tenantId)); 
+      dispatch(clearBULookUp());
+    } else {
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
+    }    
   };
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
-    dispatch(getBULookup(companyId));
+    if(companyId) {
+      dispatch(getBULookup(companyId));
+    } else {
+      dispatch(clearBULookUp());
+    }    
   };
 
   const handleBUChange = (buId: number) => {
     form.setFieldsValue({ bu_id: buId });
   };
-
+ 
   useEffect(() => {
     if (sqlServers.save.messages.length > 0) {
       if (sqlServers.save.hasErrors) {
@@ -117,10 +127,10 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
 
       if (data.tenant_id) {
         dispatch(getCompanyLookup(data.tenant_id));
-      }
-      if (data.company_id) {
+       }
+       if (data.company_id) {
         dispatch(getBULookup(data.company_id));
-      }
+       }
       if (data) {
         initialValues = {
           tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
@@ -163,6 +173,8 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
     }
     return () => {
       dispatch(clearSqlServerGetById());
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
     };
   }, [dispatch]);
 

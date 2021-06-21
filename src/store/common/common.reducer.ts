@@ -34,6 +34,12 @@ export const commonSlice = createSlice({
       }
       state.search = res;
     },
+    clearCompanyLookUp: (state) => {
+      state.companyLookup.data = [];
+    },
+    clearBULookUp: (state) => {
+      state.buLookup.data = [];
+    },
     clearCommon: () => {
       return initialState;
     },
@@ -72,7 +78,7 @@ export const commonSlice = createSlice({
 export const commonSelector = (state: RootState) => state.common;
 
 // Actions
-export const { clearCommon } = commonSlice.actions;
+export const { clearCommon, clearBULookUp, clearCompanyLookUp } = commonSlice.actions;
 
 // The reducer
 export default commonSlice.reducer;

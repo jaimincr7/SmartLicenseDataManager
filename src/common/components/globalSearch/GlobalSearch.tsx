@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { getBULookup, getCompanyLookup, getTenantLookup } from '../../../store/common/common.action';
-import { commonSelector } from '../../../store/common/common.reducer';
+import { clearBULookUp, clearCompanyLookUp, commonSelector } from '../../../store/common/common.reducer';
 
 const GlobalSearch: React.FC = () => {
   const commonLookups = useAppSelector(commonSelector);
@@ -16,13 +16,23 @@ const GlobalSearch: React.FC = () => {
   };
 
   const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant: tenantId, company: null, bu: null });
-    dispatch(getCompanyLookup(tenantId));
+    form.setFieldsValue({ tenant: tenantId, company: null, bu: null });    
+    if(tenantId) {  
+      dispatch(getCompanyLookup(tenantId)); 
+      dispatch(clearBULookUp());
+    } else {
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
+    }    
   };
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company: companyId, bu: null });
-    dispatch(getBULookup(companyId));
+    if(companyId) {     
+      dispatch(getBULookup(companyId));
+    } else {
+      dispatch(clearBULookUp());
+    }    
   };
 
   const handleBUChange = (buId: number) => {
@@ -30,7 +40,11 @@ const GlobalSearch: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(getTenantLookup());  
+    dispatch(getTenantLookup());
+    return () => {
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
+    };  
   }, [dispatch]);
 
   return (
