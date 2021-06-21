@@ -29,10 +29,10 @@ const DataTable: React.FC<IDataTable> = (props) => {
   const [formKeyword] = Form.useForm();
   const [form] = Form.useForm();
 
-  const [tableColumn, setTableColumn] = useState([])
+  const [tableColumn, setTableColumn] = useState([]);
 
   const [search, setSearch] = useState({
-    keyword: ''
+    keyword: '',
   });
 
   const onFinishSearch = (values: ISearchSqlServer) => {
@@ -69,8 +69,8 @@ const DataTable: React.FC<IDataTable> = (props) => {
   const handleTableChange = (pagination, filters, sorter) => {
     setSorter({
       order_by: sorter.field || sorter.column?.children[0]?.dataIndex || 'id',
-      order_direction: (sorter.order === "ascend" ? 'ASC' : 'DESC')
-    })
+      order_direction: sorter.order === 'ascend' ? 'ASC' : 'DESC',
+    });
     setPagination(pagination);
   };
 
@@ -463,10 +463,10 @@ const DataTable: React.FC<IDataTable> = (props) => {
           title: (
             <div className="btns-block">
               <Button htmlType="submit" className="action-btn filter-btn p-0">
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
               </Button>
               <Button htmlType="button" onClick={onReset} className="action-btn filter-btn p-0">
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-clear.svg`} alt="" />
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-clean.svg`} alt="" />
               </Button>
             </div>
           ),
@@ -516,7 +516,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
             placeholder="Search by keyword"
             className="form-control sm-input"
             prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
-          // allowClear={true}
+            // allowClear={true}
           />
         </Form.Item>
       </Form>
