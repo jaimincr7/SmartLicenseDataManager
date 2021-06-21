@@ -1,4 +1,4 @@
-import { Button, Col, Form, InputNumber, Modal, Row, Select } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -60,13 +60,13 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
     qty_01: 0,
     qty_02: 0,
     qty_03: 0,
-    tenant_id: null,
+    tenant_id: null
   };
 
   const onFinish = (values: any) => {
     const inputValues: ISqlServerEntitlements = {
       ...values,
-      id: id ? +id : null,
+      id: id ? +id : null      
     };
     dispatch(saveSqlServerEntitlements(inputValues));
   };
@@ -99,7 +99,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   }, [sqlServersEntitlements.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && sqlServersEntitlements.getById.data) {
+    if (+id > 0 && sqlServersEntitlements.getById.data) {            
       const data = sqlServersEntitlements.getById.data;
 
       if (data.tenant_id) {
@@ -116,7 +116,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
           license_id: data.license_id,
           qty_01: data.qty_01,
           qty_02: data.qty_02,
-          qty_03: data.qty_03,
+          qty_03: data.qty_03
         };
         form.setFieldsValue(initialValues);
       }
@@ -134,7 +134,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   }, [dispatch]);
 
   return (
-    <>
+    <>      
       <Modal
         wrapClassName="custom-modal"
         title={title}
@@ -143,131 +143,138 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
         onCancel={handleModalClose}
         footer={false}
       >
-        <Form
-          form={form}
-          name="addSqlServerEntitlements"
-          initialValues={initialValues}
-          onFinish={onFinish}
-          validateMessages={validateMessages}
-        >
-          <Row gutter={[30, 15]} className="form-label-hide">
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Tenant</label>
-                <Form.Item
-                  name="tenant_id"
-                  className="m-0"
-                  label="Tenant"
-                  rules={[{ required: true }]}
-                >
-                  <Select
-                    suffixIcon={
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                    }
-                    onChange={handleTenantChange}
-                    allowClear
-                  >
-                    {commonLookups.tenantLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Company</label>
-                <Form.Item
-                  name="company_id"
-                  className="m-0"
-                  label="Company"
-                  rules={[{ required: true }]}
-                >
-                  <Select
-                    suffixIcon={
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                    }
-                    onChange={handleCompanyChange}
-                    allowClear
-                  >
-                    {commonLookups.companyLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">BU</label>
-                <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
-                  <Select
-                    suffixIcon={
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                    }
-                    onChange={handleBUChange}
-                    allowClear
-                  >
-                    {commonLookups.buLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Qty1</label>
-                <Form.Item name="qty_01" label="Qty1" className="m-0" rules={[{ type: 'number' }]}>
-                  <InputNumber className="form-control w-100" />
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Qty2</label>
-                <Form.Item name="qty_02" label="Qty2" className="m-0" rules={[{ type: 'number' }]}>
-                  <InputNumber className="form-control w-100" />
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Qty3</label>
-                <Form.Item name="qty_03" label="Qty3" className="m-0" rules={[{ type: 'number' }]}>
-                  <InputNumber className="form-control w-100" />
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">License Id</label>
-                <Form.Item
-                  name="license_id"
-                  label="License Id"
-                  className="m-0"
-                  rules={[{ type: 'number', min: 1 }]}
-                >
-                  <InputNumber className="form-control w-100" />
-                </Form.Item>
-              </div>
-            </Col>
-          </Row>
-          <div className="btns-block modal-footer">
-            <Button key="submit" type="primary" htmlType="submit">
-              {submitButtonText}
-            </Button>
-            <Button key="back" onClick={handleModalClose}>
-              Cancel
-            </Button>
+        {sqlServersEntitlements.getById.loading ? (
+          <div className="spin-loader">
+            <Spin spinning={sqlServersEntitlements.getById.loading} />
           </div>
-        </Form>
+        ) : (
+          <Form
+            form={form}
+            name="addSqlServerEntitlements"
+            initialValues={initialValues}
+            onFinish={onFinish}
+            validateMessages={validateMessages}
+          >
+            <Row gutter={[30, 15]} className="form-label-hide">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Tenant</label>
+                  <Form.Item
+                    name="tenant_id"
+                    className="m-0"
+                    label="Tenant"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      suffixIcon={
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                      }
+                      onChange={handleTenantChange}
+                      allowClear
+                    >
+                      {commonLookups.tenantLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Company</label>
+                  <Form.Item
+                    name="company_id"
+                    className="m-0"
+                    label="Company"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      suffixIcon={
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                      }
+                      onChange={handleCompanyChange}
+                      allowClear
+                    >
+                      {commonLookups.companyLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">BU</label>
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
+                    <Select
+                      suffixIcon={
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                      }
+                      onChange={handleBUChange}
+                      allowClear
+                    >
+                      {commonLookups.buLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Qty1</label>
+                  <Form.Item name="qty_01" label="Qty1" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Qty2</label>
+                  <Form.Item name="qty_02" label="Qty2" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Qty3</label>
+                  <Form.Item name="qty_03" label="Qty3" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">License Id</label>
+                  <Form.Item
+                    name="license_id"
+                    label="License Id"
+                    className="m-0"
+                    rules={[{ type: 'number', min: 1 }]}
+                  >
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+            </Row>
+            <div className="btns-block modal-footer">
+              <Button key="submit" type="primary" htmlType="submit">
+                {submitButtonText}
+              </Button>
+              <Button key="back" onClick={handleModalClose}>
+                Cancel
+              </Button>
+            </div>
+          </Form>
+         )
+        }
       </Modal>
     </>
   );
