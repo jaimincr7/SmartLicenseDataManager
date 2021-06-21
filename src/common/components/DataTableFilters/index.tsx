@@ -70,6 +70,11 @@ export const FilterWithSwapOption = (
         {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, options || [])}
         <Button onClick={() => setSwap(!swap)} className="filter-btn">
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
+          <img
+            src={`${process.env.PUBLIC_URL}/assets/images/ic-switch-white.svg`}
+            alt=""
+            className="ovarlap"
+          />
         </Button>
       </div>
     </>

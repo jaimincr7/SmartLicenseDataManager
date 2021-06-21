@@ -22,7 +22,6 @@ import {
 let pageLoaded = false;
 
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
-  
   const { setSelectedId } = props;
 
   const sqlServers = useAppSelector(sqlServerSelector);
@@ -30,7 +29,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [formKeyword] = Form.useForm();
   const [form] = Form.useForm();
 
-  const [tableColumn, setTableColumn] = useState({})
+  const [tableColumn, setTableColumn] = useState({});
 
   const [search, setSearch] = useState({
     keyword: '',
@@ -50,7 +49,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     order_direction: 'DESC',
   });
 
-  const [inlineSearch, setInlineSearch] = useState<any>({}); 
+  const [inlineSearch, setInlineSearch] = useState<any>({});
 
   const fetchSqlServer = () => {
     const searchData: ISearchSqlServer = {
@@ -70,14 +69,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   useImperativeHandle(ref, () => ({
     refreshData() {
       fetchSqlServer();
-    }
+    },
   }));
 
   const handleTableChange = (paginating, filters, sorter) => {
     setSorter({
       order_by: sorter.field || sorter.column?.children[0]?.dataIndex || 'id',
-      order_direction: (sorter.order === "ascend" ? 'ASC' : 'DESC')
-    })
+      order_direction: sorter.order === 'ascend' ? 'ASC' : 'DESC',
+    });
     setPagination(paginating);
   };
 
@@ -127,7 +126,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const columns = [
     {
       title: 'Product Name',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('product_name'),
@@ -139,7 +138,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Operating System',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('operating_system'),
@@ -151,7 +150,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Tenant Name',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterByDropdown('tenant_id', sqlServers.search.lookups?.tenants),
@@ -163,7 +162,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Company Name',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterByDropdown('company_id', sqlServers.search.lookups?.companies),
@@ -175,7 +174,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Bu Name',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterByDropdown('bu_id', sqlServers.search.lookups?.bus),
@@ -187,7 +186,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Date Added',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterByDate('date_added'),
@@ -200,7 +199,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'SQL Cluster',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('sql_cluster'),
@@ -212,7 +211,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Host',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('host'),
@@ -224,7 +223,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Device Name',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('device_name'),
@@ -236,7 +235,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Device Type',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('device_type'),
@@ -248,7 +247,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Product Family',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('product_family'),
@@ -260,7 +259,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Version',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('version'),
@@ -272,7 +271,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Edition',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('edition'),
@@ -284,7 +283,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Device State',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('device_state'),
@@ -296,7 +295,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Software State',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('software_state'),
@@ -308,7 +307,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Cluster',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('cluster'),
@@ -320,7 +319,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Source',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('source'),
@@ -332,7 +331,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'OS Type',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('os_type'),
@@ -344,7 +343,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Raw Software Title',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('raw_software_title'),
@@ -356,7 +355,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'FQDN',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('fqdn'),
@@ -368,7 +367,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Service',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('service'),
@@ -380,7 +379,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Cost Code',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('cost_code'),
@@ -392,7 +391,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Line of Business',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('line_of_business'),
@@ -404,7 +403,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Market',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('market'),
@@ -416,7 +415,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Application',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('application'),
@@ -428,7 +427,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Data Center',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('data_center'),
@@ -440,7 +439,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'Serial Number',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('serial_number'),
@@ -452,7 +451,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     {
       title: 'SQL Cluster Node Type',
-      sorter: true,      
+      sorter: true,
       children: [
         {
           title: FilterBySwap('sql_cluster_node_type'),
@@ -468,11 +467,21 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         {
           title: (
             <div className="btns-block">
-              <Button htmlType="submit" className="action-btn filter-btn p-0">
+              <Button htmlType="submit" className="action-btn filter-btn active p-0">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/images/ic-filter-white.svg`}
+                  className="ovarlap"
+                  alt=""
+                />
               </Button>
               <Button htmlType="button" onClick={onReset} className="action-btn filter-btn p-0">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-clean.svg`} alt="" />
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/images/ic-clean-white.svg`}
+                  className="ovarlap"
+                  alt=""
+                />
               </Button>
             </div>
           ),
@@ -504,18 +513,23 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const hideShowColumn = (e, title) => {
     if (e.target.checked) {
-      setTableColumn({ ...tableColumn, [title]: true })
+      setTableColumn({ ...tableColumn, [title]: true });
     } else {
-      setTableColumn({ ...tableColumn, [title]: false })
+      setTableColumn({ ...tableColumn, [title]: false });
     }
-  }
+  };
 
   const dropdownMenu = (
     <ul className="checkbox-list">
       {columns.map((col) => (
         <>
           <li key={col.title}>
-            <Checkbox checked={tableColumn[col.title] !== false} onClick={(e) => hideShowColumn(e, col.title)}>{col.title}</Checkbox>
+            <Checkbox
+              checked={tableColumn[col.title] !== false}
+              onClick={(e) => hideShowColumn(e, col.title)}
+            >
+              {col.title}
+            </Checkbox>
           </li>
         </>
       ))}
@@ -523,10 +537,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   );
 
   const getColumns = () => {
-    return columns.filter((col)=>{
+    return columns.filter((col) => {
       return tableColumn[col.title] !== false;
-    })
-  }
+    });
+  };
 
   const Filter = () => (
     <>
