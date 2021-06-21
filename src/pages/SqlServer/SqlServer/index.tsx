@@ -11,14 +11,14 @@ import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerModal from './AddSqlServer';
 
 const dropdownMenu = (
-  <Menu>
-    <Menu.Item key="0">
+  <ul className="checkbox-list">
+    <li key="0">
       <Checkbox>Tenant</Checkbox>
-    </Menu.Item>
-    <Menu.Item key="1">
+    </li>
+    <li key="1">
       <Checkbox>Company</Checkbox>
-    </Menu.Item>
-  </Menu>
+    </li>
+  </ul>
 );
 
 const SqlServer: React.FC<ISqlServerProps> = () => {
@@ -65,32 +65,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
           <GlobalSearch />
         </div>
       </div>
-      <div className="main-card">
-        <div className="title-block search-block">
-          <Filter />
-          <div className="btns-block">
-            <Dropdown overlay={dropdownMenu} trigger={['click']} overlayClassName="custom-dropdown">
-              <Button
-                icon={
-                  <em className="anticon">
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-lines.svg`} alt="" />
-                  </em>
-                }
-              >
-                Show/Hide Columns
-              </Button>
-            </Dropdown>
-            <Button
-              type="primary"
-              onClick={() => {
-                setAddModalVisible(true);
-                setId(0);
-              }}
-            >
-              Add Sql Server
-            </Button>
-          </div>
-        </div>
+      <div className="main-card">        
         <DataTable
           search={search}
           setSelectedId={(id) => {
