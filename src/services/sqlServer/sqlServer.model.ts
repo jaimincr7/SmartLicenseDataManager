@@ -1,4 +1,4 @@
-import { ISearch } from '../../common/models/commont';
+import { ISearch } from '../../common/models/common';
 
 export interface ISqlServer {
   id?: number;

@@ -1,4 +1,4 @@
-import { IApiResponse } from '../../common/models/commont';
+import { IApiResponse } from '../../common/models/common';
 import request from '../../utils/request';
 import { ILookup } from './common.model';
 

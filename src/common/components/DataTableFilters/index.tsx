@@ -1,6 +1,6 @@
 import { Form, Input, Select, Spin, Button } from 'antd';
 import { useState } from 'react';
-import { IDropDownOption } from '../../models/commont';
+import { IDropDownOption } from '../../models/common';
 import { SwapOutlined } from '@ant-design/icons';
 import { DatePicker } from 'antd';
 import React from 'react';

@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../common/models/commont';
+import { IDropDownOption } from '../../common/models/common';
 import { ISqlServer } from '../../services/sqlServer/sqlServer.model';
 
 export interface ISqlServerState {

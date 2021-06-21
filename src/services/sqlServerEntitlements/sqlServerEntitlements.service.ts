@@ -1,4 +1,4 @@
-import { IApiResponse, ISearchResponse } from '../../common/models/commont';
+import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
 import {
   ISearchSqlServerEntitlements,

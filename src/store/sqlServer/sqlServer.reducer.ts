@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IApiResponseBody, ISearchResponse } from '../../common/models/commont';
+import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
 import { ISqlServer } from '../../services/sqlServer/sqlServer.model';
 import { RootState } from '../app.model';
 import {

@@ -12,8 +12,15 @@ import {
   getTenantLookup,
 } from '../../../../store/common/common.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
-import { getSqlServerEntitlementsById, saveSqlServerEntitlements } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
-import { clearSqlServerEntitlementsGetById, clearSqlServerEntitlementsMessages, sqlServerEntitlementsSelector } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
+import {
+  getSqlServerEntitlementsById,
+  saveSqlServerEntitlements,
+} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
+import {
+  clearSqlServerEntitlementsGetById,
+  clearSqlServerEntitlementsMessages,
+  sqlServerEntitlementsSelector,
+} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
 import { IAddSqlServerEntitlementsProps } from './addSqlServerEntitlements.model';
 import './addSqlServerEntitlements.style.scss';
 
@@ -22,11 +29,11 @@ const { Option } = Select;
 const validateMessages = {
   required: Messages.FIELD_REQUIRED,
   types: {
-    number: Messages.NUMBER
+    number: Messages.NUMBER,
   },
-  number: {    
-    min: Messages.MIN
-  }
+  number: {
+    min: Messages.MIN,
+  },
 };
 
 const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = (props) => {
@@ -53,7 +60,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
     qty_01: 0,
     qty_02: 0,
     qty_03: 0,
-    tenant_id: null
+    tenant_id: null,
   };
 
   const onFinish = (values: any) => {
@@ -65,17 +72,17 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   };
 
   const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({tenant_id: tenantId, company_id: null, bu_id: null})
-    dispatch(getCompanyLookup(tenantId))
+    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
+    dispatch(getCompanyLookup(tenantId));
   };
 
   const handleCompanyChange = (companyId: number) => {
-    form.setFieldsValue({company_id: companyId, bu_id: null})
-    dispatch(getBULookup(companyId))
+    form.setFieldsValue({ company_id: companyId, bu_id: null });
+    dispatch(getBULookup(companyId));
   };
 
   const handleBUChange = (buId: number) => {
-    form.setFieldsValue({bu_id: buId})
+    form.setFieldsValue({ bu_id: buId });
   };
 
   useEffect(() => {
@@ -87,14 +94,14 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearSqlServerEntitlementsMessages());        
+      dispatch(clearSqlServerEntitlementsMessages());
     }
   }, [sqlServersEntitlements.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && sqlServersEntitlements.getById.data) {
       const data = sqlServersEntitlements.getById.data;
-      
+
       if (data.tenant_id) {
         dispatch(getCompanyLookup(data.tenant_id));
       }
@@ -111,7 +118,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
           qty_02: data.qty_02,
           qty_03: data.qty_03,
         };
-        form.setFieldsValue(initialValues);        
+        form.setFieldsValue(initialValues);
       }
     }
   }, [sqlServersEntitlements.getById.data]);
@@ -147,7 +154,12 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Tenant</label>
-                <Form.Item name="tenant_id" className="m-0" label="Tenant" rules={[{ required: true }]}>
+                <Form.Item
+                  name="tenant_id"
+                  className="m-0"
+                  label="Tenant"
+                  rules={[{ required: true }]}
+                >
                   <Select
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -167,7 +179,12 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Company</label>
-                <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: true }]}>
+                <Form.Item
+                  name="company_id"
+                  className="m-0"
+                  label="Company"
+                  rules={[{ required: true }]}
+                >
                   <Select
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -203,7 +220,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                   </Select>
                 </Form.Item>
               </div>
-            </Col>              
+            </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Qty1</label>
@@ -231,18 +248,23 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">License Id</label>
-                <Form.Item name="license_id" label="License Id" className="m-0" rules={[{ type: 'number', min:1}]}>
+                <Form.Item
+                  name="license_id"
+                  label="License Id"
+                  className="m-0"
+                  rules={[{ type: 'number', min: 1 }]}
+                >
                   <InputNumber className="form-control w-100" />
                 </Form.Item>
               </div>
-            </Col>               
+            </Col>
           </Row>
           <div className="btns-block modal-footer">
             <Button key="submit" type="primary" htmlType="submit">
-                {submitButtonText}
+              {submitButtonText}
             </Button>
             <Button key="back" onClick={handleModalClose}>
-                Cancel
+              Cancel
             </Button>
           </div>
         </Form>
