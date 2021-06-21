@@ -1,5 +1,5 @@
-import { Table, Popconfirm, Form, Button, Input, Dropdown, Menu, Checkbox, Popover } from 'antd';
-import React, { useState } from 'react';
+import { Table, Popconfirm, Form, Button, Input, Checkbox, Popover } from 'antd';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
   clearSqlServerMessages,
   sqlServerSelector,
@@ -21,7 +21,8 @@ import {
 
 let pageLoaded = false;
 
-const DataTable: React.FC<IDataTable> = (props) => {
+const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
+  
   const { setSelectedId } = props;
 
   const sqlServers = useAppSelector(sqlServerSelector);
@@ -29,7 +30,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
   const [formKeyword] = Form.useForm();
   const [form] = Form.useForm();
 
-  const [tableColumn, setTableColumn] = useState([])
+  const [tableColumn, setTableColumn] = useState({})
 
   const [search, setSearch] = useState({
     keyword: ''
@@ -49,7 +50,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     order_direction: 'DESC',
   });
 
-  const [inlineSearch, setInlineSearch] = useState<any>({});
+  const [inlineSearch, setInlineSearch] = useState<any>({}); 
 
   const fetchSqlServer = () => {
     const searchData: ISearchSqlServer = {
@@ -66,12 +67,18 @@ const DataTable: React.FC<IDataTable> = (props) => {
     dispatch(searchSqlServer(searchData));
   };
 
-  const handleTableChange = (pagination, filters, sorter) => {
+  useImperativeHandle(ref, () => ({
+    refreshData() {
+      fetchSqlServer();
+    }
+  }));
+
+  const handleTableChange = (paginating, filters, sorter) => {
     setSorter({
       order_by: sorter.field || sorter.column?.children[0]?.dataIndex || 'id',
       order_direction: (sorter.order === "ascend" ? 'ASC' : 'DESC')
     })
-    setPagination(pagination);
+    setPagination(paginating);
   };
 
   const removeSqlServer = (id: number) => {
@@ -120,8 +127,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
   const columns = [
     {
       title: 'Product Name',
-      sorter: true,
-      className: 'show',
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('product_name'),
@@ -133,7 +139,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Operating System',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('operating_system'),
@@ -145,7 +151,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Tenant Name',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterByDropdown('tenant_id', sqlServers.search.lookups?.tenants),
@@ -157,7 +163,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Company Name',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterByDropdown('company_id', sqlServers.search.lookups?.companies),
@@ -169,7 +175,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Bu Name',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterByDropdown('bu_id', sqlServers.search.lookups?.bus),
@@ -181,7 +187,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Date Added',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterByDate('date_added'),
@@ -194,7 +200,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'SQL Cluster',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('sql_cluster'),
@@ -206,7 +212,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Host',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('host'),
@@ -218,7 +224,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Device Name',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('device_name'),
@@ -230,7 +236,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Device Type',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('device_type'),
@@ -242,7 +248,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Product Family',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('product_family'),
@@ -254,7 +260,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Version',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('version'),
@@ -266,7 +272,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Edition',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('edition'),
@@ -278,7 +284,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Device State',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('device_state'),
@@ -290,7 +296,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Software State',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('software_state'),
@@ -302,7 +308,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Cluster',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('cluster'),
@@ -314,7 +320,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Source',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('source'),
@@ -326,7 +332,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'OS Type',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('os_type'),
@@ -338,7 +344,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Raw Software Title',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('raw_software_title'),
@@ -350,7 +356,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'FQDN',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('fqdn'),
@@ -362,7 +368,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Service',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('service'),
@@ -374,7 +380,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Cost Code',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('cost_code'),
@@ -386,7 +392,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Line of Business',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('line_of_business'),
@@ -398,7 +404,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Market',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('market'),
@@ -410,7 +416,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Application',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('application'),
@@ -422,7 +428,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Data Center',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('data_center'),
@@ -434,7 +440,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'Serial Number',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('serial_number'),
@@ -446,7 +452,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
     {
       title: 'SQL Cluster Node Type',
-      sorter: true,
+      sorter: true,      
       children: [
         {
           title: FilterBySwap('sql_cluster_node_type'),
@@ -496,17 +502,31 @@ const DataTable: React.FC<IDataTable> = (props) => {
     },
   ];
 
+  const hideShowColumn = (e, title) => {
+    if (e.target.checked) {
+      setTableColumn({ ...tableColumn, [title]: true })
+    } else {
+      setTableColumn({ ...tableColumn, [title]: false })
+    }
+  }
+
   const dropdownMenu = (
     <ul className="checkbox-list">
-      {columns.map((col, index) => (
+      {columns.map((col) => (
         <>
-          <li key={index}>
-            <Checkbox checked={col.className === 'show'}>{col.title}</Checkbox>
+          <li key={col.title}>
+            <Checkbox checked={tableColumn[col.title] !== false} onClick={(e) => hideShowColumn(e, col.title)}>{col.title}</Checkbox>
           </li>
         </>
       ))}
     </ul>
   );
+
+  const getColumns = () => {
+    return columns.filter((col)=>{
+      return tableColumn[col.title] !== false;
+    })
+  }
 
   const Filter = () => (
     <>
@@ -554,7 +574,7 @@ const DataTable: React.FC<IDataTable> = (props) => {
           scroll={{ x: true }}
           rowKey={(record) => record.id}
           dataSource={sqlServers.search.data}
-          columns={columns}
+          columns={getColumns()}
           loading={sqlServers.search.loading}
           pagination={{ ...pagination, total: sqlServers.search.count }}
           onChange={handleTableChange}
@@ -566,4 +586,4 @@ const DataTable: React.FC<IDataTable> = (props) => {
   );
 };
 
-export default DataTable;
+export default forwardRef(DataTable);

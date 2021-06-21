@@ -1,6 +1,4 @@
-import { Button, Input, Menu, Dropdown, Checkbox, Form } from 'antd';
-import { useEffect, useState } from 'react';
-import { ISearchSqlServer } from '../../../services/sqlServer/sqlServer.model';
+import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../../store/app.hooks';
 import { clearSqlServer } from '../../../store/sqlServer/sqlServer.reducer';
 import { ISqlServerProps } from './sqlServer.model';
@@ -10,31 +8,12 @@ import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerModal from './AddSqlServer';
 
-const dropdownMenu = (
-  <ul className="checkbox-list">
-    <li key="0">
-      <Checkbox>Tenant</Checkbox>
-    </li>
-    <li key="1">
-      <Checkbox>Company</Checkbox>
-    </li>
-  </ul>
-);
-
 const SqlServer: React.FC<ISqlServerProps> = () => {
   const dispatch = useAppDispatch();
-  const [form] = Form.useForm();
+  const dataTableRef = useRef(null);
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
-
-  const [search, setSearch] = useState({
-    keyword: ''
-  });
-
-  const onFinish = (values: ISearchSqlServer) => {
-    setSearch({ ...search, keyword: values.keyword });
-  };
 
   useEffect(() => {
     return () => {
@@ -42,23 +21,12 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
     };
   }, []);
 
-  const Filter = () => (
-    <>
-      <Form form={form} name="horizontal_login" layout="inline" onFinish={onFinish}>
-        <Form.Item name="keyword">
-          <Input
-            placeholder="Search by keyword"
-            className="form-control sm-input"
-            prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
-            // allowClear={true}
-          />
-        </Form.Item>
-      </Form>
-    </>
-  );
+  const refreshDataTable = () =>{
+    dataTableRef?.current.refreshData()
+  }
 
   return (
-    <div className="homePage">
+    <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">Sql Server</h4>
         <div className="right-title">
@@ -67,7 +35,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
       </div>
       <div className="main-card">        
         <DataTable
-          search={search}
+          ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -79,7 +47,7 @@ const SqlServer: React.FC<ISqlServerProps> = () => {
           showModal={addModalVisible}
           handleModalClose={() => setAddModalVisible(false)}
           id={id}
-          refreshDataTable={() => setSearch({ ...search })}
+          refreshDataTable={() => refreshDataTable()}
         />
       )}
     </div>
