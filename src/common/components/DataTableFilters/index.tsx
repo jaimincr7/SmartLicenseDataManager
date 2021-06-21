@@ -1,7 +1,6 @@
 import { Form, Input, Select, Spin, Button } from 'antd';
 import { useState } from 'react';
 import { IDropDownOption } from '../../models/common';
-import { SwapOutlined } from '@ant-design/icons';
 import { DatePicker } from 'antd';
 import React from 'react';
 
@@ -67,10 +66,10 @@ export const FilterWithSwapOption = (
   }, [swap]);
   return (
     <>
-      <div className="input-group">
+      <div className="input-filter-group">
         {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, options || [])}
         <Button onClick={() => setSwap(!swap)} className="filter-btn">
-          <SwapOutlined />
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
         </Button>
       </div>
     </>

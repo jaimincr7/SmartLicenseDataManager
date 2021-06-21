@@ -33,7 +33,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [tableColumn, setTableColumn] = useState({})
 
   const [search, setSearch] = useState({
-    keyword: ''
+    keyword: '',
   });
 
   const onFinishSearch = (values: ISearchSqlServer) => {
@@ -469,10 +469,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           title: (
             <div className="btns-block">
               <Button htmlType="submit" className="action-btn filter-btn p-0">
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
               </Button>
               <Button htmlType="button" onClick={onReset} className="action-btn filter-btn p-0">
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-clear.svg`} alt="" />
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-clean.svg`} alt="" />
               </Button>
             </div>
           ),
@@ -536,7 +536,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             placeholder="Search by keyword"
             className="form-control sm-input"
             prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
-          // allowClear={true}
+            // allowClear={true}
           />
         </Form.Item>
       </Form>
