@@ -107,6 +107,47 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   const handleBUChange = (buId: number) => {
     form.setFieldsValue({ bu_id: buId });
   };
+
+  const fillValuesOnEdit = async (data) => {
+    if (data.tenant_id) {
+     await dispatch(getCompanyLookup(data.tenant_id));
+     }
+     if (data.company_id) {
+     await dispatch(getBULookup(data.company_id));
+     }
+    if (data) {
+      initialValues = {
+        tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
+        company_id: _.isNull(data.company_id) ? null : data.company_id,
+        bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
+        cluster: data.cluster,
+        cost_code: data.cost_code,
+        data_center: data.data_center,
+        device_name: data.device_name,
+        sql_cluster: data.sql_cluster,
+        host: data.host,
+        device_type: data.device_type,
+        product_family: data.product_family,
+        version: data.version,
+        edition: data.edition,
+        device_state: data.device_state,
+        software_state: data.software_state,
+        source: data.source,
+        operating_system: data.operating_system,
+        os_type: data.os_type,
+        raw_software_title: data.raw_software_title,
+        product_name: data.product_name,
+        fqdn: data.fqdn,
+        service: data.service,
+        line_of_business: data.line_of_business,
+        market: data.market,
+        application: data.application,
+        serial_number: data.serial_number,
+        sql_cluster_node_type: data.sql_cluster_node_type,
+      };
+      form.setFieldsValue(initialValues);
+    }
+  }
  
   useEffect(() => {
     if (sqlServers.save.messages.length > 0) {
@@ -124,45 +165,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   useEffect(() => {
     if (+id > 0 && sqlServers.getById.data) {
       const data = sqlServers.getById.data;
-
-      if (data.tenant_id) {
-        dispatch(getCompanyLookup(data.tenant_id));
-       }
-       if (data.company_id) {
-        dispatch(getBULookup(data.company_id));
-       }
-      if (data) {
-        initialValues = {
-          tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
-          company_id: _.isNull(data.company_id) ? null : data.company_id,
-          bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-          cluster: data.cluster,
-          cost_code: data.cost_code,
-          data_center: data.data_center,
-          device_name: data.device_name,
-          sql_cluster: data.sql_cluster,
-          host: data.host,
-          device_type: data.device_type,
-          product_family: data.product_family,
-          version: data.version,
-          edition: data.edition,
-          device_state: data.device_state,
-          software_state: data.software_state,
-          source: data.source,
-          operating_system: data.operating_system,
-          os_type: data.os_type,
-          raw_software_title: data.raw_software_title,
-          product_name: data.product_name,
-          fqdn: data.fqdn,
-          service: data.service,
-          line_of_business: data.line_of_business,
-          market: data.market,
-          application: data.application,
-          serial_number: data.serial_number,
-          sql_cluster_node_type: data.sql_cluster_node_type,
-        };
-        form.setFieldsValue(initialValues);
-      }
+      fillValuesOnEdit(data);      
     }
   }, [sqlServers.getById.data]);
 

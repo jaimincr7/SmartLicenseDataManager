@@ -10,6 +10,7 @@ const SqlServerRoutes: React.FC = () => {
     <div className="sqlServer">
       <Switch>
         <Route exact path={`${match.path}`} component={SqlServer} />
+        <Route exact path={`${match.path}/:id`} component={SqlServer} />
         <Route exact path={`${match.path}/entitlements`} component={SqlServerEntitlements} />
       </Switch>
     </div>

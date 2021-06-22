@@ -8,12 +8,21 @@ import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerModal from './AddSqlServer';
 
-const SqlServer: React.FC<ISqlServerProps> = () => {
+const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
 
+  const { id : urlId } = props.match?.params;
+
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
+
+  useEffect(() => {
+    if(+urlId > 0){
+      setAddModalVisible(true);
+      setId(+urlId);
+    }
+  }, [+urlId]);
 
   useEffect(() => {
     return () => {
