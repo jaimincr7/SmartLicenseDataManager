@@ -262,12 +262,17 @@ img {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 13px;
-  .ant-select {
+  .right-title .ant-select {
     width: 182px;
     max-width: 100%;
     margin-right: 10px;
     &:last-child {
       margin-right: 0;
+    }
+  }
+  .right-title .ant-form{
+    .ant-form-item{
+       margin-right: 10px;
     }
   }
 }
@@ -926,9 +931,18 @@ textarea.ant-input {
     width: 100%;
     margin: 6px 0 0;
   }
-  .title-block .ant-select {
+  .title-block .right-title .ant-select {
     width: 32%;
     margin: 0 10px 10px 0;
+  }
+  .title-block .right-title .ant-form{
+    .ant-form-item{
+       width: 32%;
+       .ant-select {
+        width: 100%;
+        margin: 0;
+      }
+    }
   }
 }
 @media (max-width: 575px) {
@@ -956,11 +970,17 @@ textarea.ant-input {
     width: 100%;
     margin: 6px 0 0;
   }
-  .title-block .ant-select {
+  .title-block .right-title .ant-select {
     width: 100%;
     margin: 0 0px 10px 0;
     &:last-child {
       margin: 0;
+    }
+  }
+  .title-block .right-title .ant-form{
+    .ant-form-item{
+      width: 100%;
+      margin: 0 0px 10px 0;
     }
   }
 }
