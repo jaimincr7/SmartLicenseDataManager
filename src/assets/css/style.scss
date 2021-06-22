@@ -322,7 +322,7 @@ img {
   width: 100%;
 }
 .filter-input.lg {
-  min-width: 250px;
+  min-width: 208px;
 }
 
 .ovarlap {
@@ -493,7 +493,7 @@ textarea.ant-input {
 .ant-picker-range .ant-picker-active-bar {
   background: #014e97;
 }
-.ant-picker.ant-picker-range {
+.filter-input .ant-picker.ant-picker-range {
   .ant-picker-input {
     max-width: 73px;
   }
@@ -969,6 +969,10 @@ textarea.ant-input {
   .search-block .btns-block {
     width: 100%;
     margin: 6px 0 0;
+    flex-wrap: wrap;
+     > * {
+        margin: 0 8px 6px 0;
+    }
   }
   .title-block .right-title .ant-select {
     width: 100%;
