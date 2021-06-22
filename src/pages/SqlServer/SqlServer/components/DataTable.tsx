@@ -20,6 +20,7 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTableFilters';
 import { orderByType } from '../../../../common/models/common';
+import { useHistory } from 'react-router-dom';
 
 let pageLoaded = false;
 
@@ -28,6 +29,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const sqlServers = useAppSelector(sqlServerSelector);
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const [form] = Form.useForm();
 
@@ -468,7 +470,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               <Button
                 htmlType="submit"
                 className={`action-btn filter-btn p-0 ${
-                  _.isEmpty(inlineSearch, true) ? '' : 'active'
+                  _.isEmpty(inlineSearch) ? '' : 'active'
                 }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
@@ -494,10 +496,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           render: (_, data: ISqlServer) => (
             <div className="btns-block">
               <a
-                href="#"
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);
+                  history.push(`/sql-server/${data.id}`);
                 }}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />

@@ -46,7 +46,7 @@ function Header() {
   return (
     <header className="header">
       <div className="left-header">
-        <a href="#" title="Home" className="logo">
+        <a href="/" title="Home" className="logo">
           <img src={`${process.env.PUBLIC_URL}/assets/images/logo.png`} alt="" />
         </a>
       </div>

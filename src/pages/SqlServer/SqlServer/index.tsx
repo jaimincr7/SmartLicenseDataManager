@@ -7,11 +7,13 @@ import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerModal from './AddSqlServer';
+import { useHistory } from 'react-router-dom';
 
 const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
-
+  const history = useHistory();
+  
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
@@ -54,7 +56,10 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
       {addModalVisible && (
         <AddSqlServerModal
           showModal={addModalVisible}
-          handleModalClose={() => setAddModalVisible(false)}
+          handleModalClose={() => {
+            setAddModalVisible(false); 
+            history.push('/sql-server');
+          }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
         />

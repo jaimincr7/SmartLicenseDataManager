@@ -11,7 +11,7 @@ import {
   getCompanyLookup,
   getTenantLookup,
 } from '../../../../store/common/common.action';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearBULookUp, clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
 import {
   getSqlServerEntitlementsById,
   saveSqlServerEntitlements,
@@ -60,25 +60,35 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
     qty_01: 0,
     qty_02: 0,
     qty_03: 0,
-    tenant_id: null,
+    tenant_id: null
   };
 
   const onFinish = (values: any) => {
     const inputValues: ISqlServerEntitlements = {
       ...values,
-      id: id ? +id : null,
+      id: id ? +id : null      
     };
     dispatch(saveSqlServerEntitlements(inputValues));
   };
 
   const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
-    dispatch(getCompanyLookup(tenantId));
+    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });    
+    if(tenantId) {      
+      dispatch(getCompanyLookup(tenantId)); 
+      dispatch(clearBULookUp());
+    } else {
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
+    }    
   };
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
-    dispatch(getBULookup(companyId));
+    if(companyId) {
+      dispatch(getBULookup(companyId));
+    } else {
+      dispatch(clearBULookUp());
+    }    
   };
 
   const handleBUChange = (buId: number) => {
@@ -99,7 +109,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   }, [sqlServersEntitlements.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && sqlServersEntitlements.getById.data) {
+    if (+id > 0 && sqlServersEntitlements.getById.data) {            
       const data = sqlServersEntitlements.getById.data;
 
       if (data.tenant_id) {
@@ -116,7 +126,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
           license_id: data.license_id,
           qty_01: data.qty_01,
           qty_02: data.qty_02,
-          qty_03: data.qty_03,
+          qty_03: data.qty_03
         };
         form.setFieldsValue(initialValues);
       }
@@ -130,11 +140,13 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
     }
     return () => {
       dispatch(clearSqlServerEntitlementsGetById());
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
     };
   }, [dispatch]);
 
   return (
-    <>
+    <>      
       <Modal
         wrapClassName="custom-modal"
         title={title}
@@ -229,10 +241,10 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Qty1</label>
-                  <Form.Item
-                    name="qty_01"
-                    label="Qty1"
-                    className="m-0"
+                  <Form.Item 
+                    name="qty_01" 
+                    label="Qty1" 
+                    className="m-0" 
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
@@ -242,10 +254,10 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Qty2</label>
-                  <Form.Item
-                    name="qty_02"
-                    label="Qty2"
-                    className="m-0"
+                  <Form.Item 
+                    name="qty_02" 
+                    label="Qty2" 
+                    className="m-0" 
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
@@ -255,10 +267,10 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Qty3</label>
-                  <Form.Item
-                    name="qty_03"
-                    label="Qty3"
-                    className="m-0"
+                  <Form.Item 
+                    name="qty_03" 
+                    label="Qty3" 
+                    className="m-0" 
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
