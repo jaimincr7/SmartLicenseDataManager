@@ -11,7 +11,11 @@ import {
   getCompanyLookup,
   getTenantLookup,
 } from '../../../../store/common/common.action';
-import { clearBULookUp, clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearBULookUp,
+  clearCompanyLookUp,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { saveSqlServer, getSqlServerById } from '../../../../store/sqlServer/sqlServer.action';
 import {
   sqlServerSelector,
@@ -85,23 +89,23 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   };
 
   const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });    
-    if(tenantId) {      
-      dispatch(getCompanyLookup(tenantId)); 
+    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
+    if (tenantId) {
+      dispatch(getCompanyLookup(tenantId));
       dispatch(clearBULookUp());
     } else {
       dispatch(clearCompanyLookUp());
       dispatch(clearBULookUp());
-    }    
+    }
   };
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
-    if(companyId) {
+    if (companyId) {
       dispatch(getBULookup(companyId));
     } else {
       dispatch(clearBULookUp());
-    }    
+    }
   };
 
   const handleBUChange = (buId: number) => {
@@ -110,11 +114,11 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
 
   const fillValuesOnEdit = async (data) => {
     if (data.tenant_id) {
-     await dispatch(getCompanyLookup(data.tenant_id));
-     }
-     if (data.company_id) {
-     await dispatch(getBULookup(data.company_id));
-     }
+      await dispatch(getCompanyLookup(data.tenant_id));
+    }
+    if (data.company_id) {
+      await dispatch(getBULookup(data.company_id));
+    }
     if (data) {
       initialValues = {
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
@@ -147,8 +151,8 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
       };
       form.setFieldsValue(initialValues);
     }
-  }
- 
+  };
+
   useEffect(() => {
     if (sqlServers.save.messages.length > 0) {
       if (sqlServers.save.hasErrors) {
@@ -165,7 +169,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   useEffect(() => {
     if (+id > 0 && sqlServers.getById.data) {
       const data = sqlServers.getById.data;
-      fillValuesOnEdit(data);      
+      fillValuesOnEdit(data);
     }
   }, [sqlServers.getById.data]);
 
@@ -182,115 +186,115 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   }, [dispatch]);
 
   return (
-    <>      
+    <>
       <Modal
-          wrapClassName="custom-modal"
-          title={title}
-          centered
-          visible={showModal}
-          onCancel={handleModalClose}
-          footer={false}
+        wrapClassName="custom-modal"
+        title={title}
+        centered
+        visible={showModal}
+        onCancel={handleModalClose}
+        footer={false}
       >
         {sqlServers.getById.loading ? (
-            <div className="spin-loader">
-              <Spin spinning={sqlServers.getById.loading} />
-            </div>
+          <div className="spin-loader">
+            <Spin spinning={sqlServers.getById.loading} />
+          </div>
         ) : (
-            <Form
-              form={form}
-              name="addSqlServer"
-              initialValues={initialValues}
-              onFinish={onFinish}
-              validateMessages={validateMessages}
-            >
-              <Row gutter={[30, 15]} className="form-label-hide">
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Tenant</label>
-                    <Form.Item
-                      name="tenant_id"
-                      className="m-0"
-                      label="Tenant"
-                      rules={[{ required: true }]}
+          <Form
+            form={form}
+            name="addSqlServer"
+            initialValues={initialValues}
+            onFinish={onFinish}
+            validateMessages={validateMessages}
+          >
+            <Row gutter={[30, 15]} className="form-label-hide">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Tenant</label>
+                  <Form.Item
+                    name="tenant_id"
+                    className="m-0"
+                    label="Tenant"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      suffixIcon={
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                      }
+                      onChange={handleTenantChange}
+                      allowClear
                     >
-                      <Select
-                        suffixIcon={
-                          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                        }
-                        onChange={handleTenantChange}
-                        allowClear
-                      >
-                        {commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Company</label>
-                    <Form.Item
-                      name="company_id"
-                      className="m-0"
-                      label="Company"
-                      rules={[{ required: true }]}
+                      {commonLookups.tenantLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Company</label>
+                  <Form.Item
+                    name="company_id"
+                    className="m-0"
+                    label="Company"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      suffixIcon={
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                      }
+                      onChange={handleCompanyChange}
+                      allowClear
                     >
-                      <Select
-                        suffixIcon={
-                          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                        }
-                        onChange={handleCompanyChange}
-                        allowClear
-                      >
-                        {commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">BU</label>
-                    <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
-                      <Select
-                        suffixIcon={
-                          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                        }
-                        onChange={handleBUChange}
-                        allowClear
-                      >
-                        {commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Sql Cluster</label>
-                    <Form.Item name="sql_cluster" label="Sql Cluster" className="m-0">
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Host</label>
-                    <Form.Item name="host" className="m-0" label="Host" rules={[{ required: true }]}>
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                {/* <Col xs={24} sm={12} md={8}>
+                      {commonLookups.companyLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">BU</label>
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
+                    <Select
+                      suffixIcon={
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                      }
+                      onChange={handleBUChange}
+                      allowClear
+                    >
+                      {commonLookups.buLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Sql Cluster</label>
+                  <Form.Item name="sql_cluster" label="Sql Cluster" className="m-0">
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Host</label>
+                  <Form.Item name="host" className="m-0" label="Host" rules={[{ required: true }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              {/* <Col xs={24} sm={12} md={8}>
                             <div className="form-group m-0">
                                 <label className="label">Procs</label>
                                 <Form.Item
@@ -316,72 +320,72 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                                 </Form.Item>                         
                             </div>
                         </Col> */}
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Device Name</label>
-                    <Form.Item
-                      name="device_name"
-                      label="Device name"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Device Type</label>
-                    <Form.Item
-                      name="device_type"
-                      label="Device type"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Product Family</label>
-                    <Form.Item
-                      name="product_family"
-                      label="Product family"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Version</label>
-                    <Form.Item
-                      name="version"
-                      label="Version"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Edition</label>
-                    <Form.Item
-                      name="edition"
-                      label="Edition"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                {/* <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Device Name</label>
+                  <Form.Item
+                    name="device_name"
+                    label="Device name"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Device Type</label>
+                  <Form.Item
+                    name="device_type"
+                    label="Device type"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Product Family</label>
+                  <Form.Item
+                    name="product_family"
+                    label="Product family"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Version</label>
+                  <Form.Item
+                    name="version"
+                    label="Version"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Edition</label>
+                  <Form.Item
+                    name="edition"
+                    label="Edition"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              {/* <Col xs={24} sm={12} md={8}>
                             <div className="form-group m-0">
                                 <label className="label">vCPU</label>
                                 <Form.Item
@@ -394,241 +398,240 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                                 </Form.Item>                      
                             </div>
                         </Col> */}
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Device State</label>
-                    <Form.Item
-                      name="device_state"
-                      label="Device state"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Software State</label>
-                    <Form.Item
-                      name="software_state"
-                      label="Software state"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Cluster</label>
-                    <Form.Item
-                      name="cluster"
-                      label="Cluster"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Source</label>
-                    <Form.Item
-                      name="source"
-                      label="Source"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Operating System</label>
-                    <Form.Item
-                      name="operating_system"
-                      label="Operating system"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">OS Type</label>
-                    <Form.Item
-                      name="os_type"
-                      label="OS type"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Raw Software Title</label>
-                    <Form.Item
-                      name="raw_software_title"
-                      label="Raw software title"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Product Name</label>
-                    <Form.Item
-                      name="product_name"
-                      label="Product name"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">FQDN</label>
-                    <Form.Item name="fqdn" label="FQDN" className="m-0" rules={[{ required: true }]}>
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Service</label>
-                    <Form.Item
-                      name="service"
-                      label="Service"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Cost Code</label>
-                    <Form.Item
-                      name="cost_code"
-                      label="Cost code"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Line of Bussiness</label>
-                    <Form.Item
-                      name="line_of_business"
-                      label="Line of bussiness"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Market</label>
-                    <Form.Item
-                      name="market"
-                      label="Market"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Application</label>
-                    <Form.Item
-                      name="application"
-                      label="Application"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Data Center</label>
-                    <Form.Item
-                      name="data_center"
-                      label="Data center"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Serial Number</label>
-                    <Form.Item
-                      name="serial_number"
-                      label="Serial number"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">SQL Cluster Node Type</label>
-                    <Form.Item
-                      name="sql_cluster_node_type"
-                      label="SQL cluster node type"
-                      className="m-0"
-                      rules={[{ required: true }]}
-                    >
-                      <Input className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                {/* <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Device State</label>
+                  <Form.Item
+                    name="device_state"
+                    label="Device state"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Software State</label>
+                  <Form.Item
+                    name="software_state"
+                    label="Software state"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Cluster</label>
+                  <Form.Item
+                    name="cluster"
+                    label="Cluster"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Source</label>
+                  <Form.Item
+                    name="source"
+                    label="Source"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Operating System</label>
+                  <Form.Item
+                    name="operating_system"
+                    label="Operating system"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">OS Type</label>
+                  <Form.Item
+                    name="os_type"
+                    label="OS type"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Raw Software Title</label>
+                  <Form.Item
+                    name="raw_software_title"
+                    label="Raw software title"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Product Name</label>
+                  <Form.Item
+                    name="product_name"
+                    label="Product name"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">FQDN</label>
+                  <Form.Item name="fqdn" label="FQDN" className="m-0" rules={[{ required: true }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Service</label>
+                  <Form.Item
+                    name="service"
+                    label="Service"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Cost Code</label>
+                  <Form.Item
+                    name="cost_code"
+                    label="Cost code"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Line of Bussiness</label>
+                  <Form.Item
+                    name="line_of_business"
+                    label="Line of bussiness"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Market</label>
+                  <Form.Item
+                    name="market"
+                    label="Market"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Application</label>
+                  <Form.Item
+                    name="application"
+                    label="Application"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Data Center</label>
+                  <Form.Item
+                    name="data_center"
+                    label="Data center"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Serial Number</label>
+                  <Form.Item
+                    name="serial_number"
+                    label="Serial number"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">SQL Cluster Node Type</label>
+                  <Form.Item
+                    name="sql_cluster_node_type"
+                    label="SQL cluster node type"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              {/* <Col xs={24} sm={12} md={8}>
                             <div className="form-group m-0">
                                 <Form.Item name="ha_enabled" className="m-0" valuePropName="checked">
                                     <Checkbox>Enabled</Checkbox>
                                 </Form.Item>                        
                             </div>
                         </Col> */}
-              </Row>
-              <div className="btns-block modal-footer">
-                <Button key="submit" type="primary" htmlType="submit">
-                  {submitButtonText}
-                </Button>
-                <Button key="back" onClick={handleModalClose}>
-                  Cancel
-                </Button>
-              </div>
-            </Form>
-          )
-        }
+            </Row>
+            <div className="btns-block modal-footer">
+              <Button key="submit" type="primary" htmlType="submit">
+                {submitButtonText}
+              </Button>
+              <Button key="back" onClick={handleModalClose}>
+                Cancel
+              </Button>
+            </div>
+          </Form>
+        )}
       </Modal>
     </>
   );

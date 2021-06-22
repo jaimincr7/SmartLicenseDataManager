@@ -47,12 +47,12 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
 
 export const FilterWithSwapOption = (
   dataIndex: string,
-  getColumnLookup: (index: string) => Promise<any>,
+  getColumnLookup: (index: string) => Promise<IDropDownOption[]>,
   form: any
 ) => {
-  const [swap, setSwap] = useState(true);
+  const [swap, setSwap] = useState<boolean>(true);
 
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState<IDropDownOption[]>([]);
 
   React.useEffect(() => {
     if (!swap && options.length === 0) {
@@ -68,7 +68,7 @@ export const FilterWithSwapOption = (
     <>
       <div className="input-filter-group">
         {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, options || [])}
-        <Button onClick={() => setSwap(!swap)} className="filter-btn">
+        <Button onClick={() => setSwap(!swap)} className={`filter-btn ${swap ? '' : 'active'}`}>
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/ic-switch-white.svg`}
@@ -77,6 +77,29 @@ export const FilterWithSwapOption = (
           />
         </Button>
       </div>
+    </>
+  );
+};
+
+export const Filter = ({ onSearch }) => {
+  const onFinish = (values: { keyword: string }) => {
+    onSearch(values.keyword);
+  };
+
+  const [formKeyword] = Form.useForm();
+
+  return (
+    <>
+      <Form form={formKeyword} name="horizontal_login" layout="inline" onFinish={onFinish}>
+        <Form.Item name="keyword">
+          <Input
+            placeholder="Search by keyword"
+            className="form-control sm-input"
+            prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
+            // allowClear={true}
+          />
+        </Form.Item>
+      </Form>
     </>
   );
 };

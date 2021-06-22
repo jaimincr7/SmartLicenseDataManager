@@ -1,4 +1,4 @@
-import { Table, Popconfirm, Form, Button, Input, Checkbox, Popover } from 'antd';
+import { Table, Popconfirm, Form, Button, Checkbox, Popover } from 'antd';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
   clearSqlServerMessages,
@@ -8,16 +8,18 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { ISearchSqlServer, ISqlServer } from '../../../../services/sqlServer/sqlServer.model';
 import { deleteSqlServer, searchSqlServer } from '../../../../store/sqlServer/sqlServer.action';
 import { toast } from 'react-toastify';
-import { fixedColumn, IDataTable } from './dataTable.model';
+import { fixedColumn, IDataTable, IInlineSearch } from './dataTable.model';
 import moment from 'moment';
 import { Common, DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
 import _ from 'lodash';
 import sqlServerService from '../../../../services/sqlServer/sqlServer.service';
 import {
+  Filter,
   FilterByDate,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTableFilters';
+import { orderByType } from '../../../../common/models/common';
 
 let pageLoaded = false;
 
@@ -26,30 +28,20 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const sqlServers = useAppSelector(sqlServerSelector);
   const dispatch = useAppDispatch();
-  const [formKeyword] = Form.useForm();
+
   const [form] = Form.useForm();
 
-  const [tableColumn, setTableColumn] = useState({});
-
-  const [search, setSearch] = useState({
-    keyword: '',
-  });
-
-  const onFinishSearch = (values: ISearchSqlServer) => {
-    setSearch({ ...search, keyword: values.keyword });
-  };
-
+  const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
+  const [search, setSearch] = useState({ keyword: '' });
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
   });
-
-  const [sorter, setSorter] = useState<any>({
+  const [sorter, setSorter] = useState({
     order_by: 'id',
-    order_direction: 'DESC',
+    order_direction: 'DESC' as orderByType,
   });
-
-  const [inlineSearch, setInlineSearch] = useState<any>({});
+  const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
   const fetchSqlServer = () => {
     const searchData: ISearchSqlServer = {
@@ -65,25 +57,29 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     pageLoaded = true;
     dispatch(searchSqlServer(searchData));
   };
-
   useImperativeHandle(ref, () => ({
     refreshData() {
       fetchSqlServer();
     },
   }));
 
+  // Start: Pagination ans Sorting
   const handleTableChange = (paginating, filters, sorter) => {
     setSorter({
       order_by: sorter.field || sorter.column?.children[0]?.dataIndex || 'id',
-      order_direction: sorter.order === 'ascend' ? 'ASC' : 'DESC',
+      order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     });
     setPagination(paginating);
   };
+  React.useEffect(() => {
+    fetchSqlServer();
+  }, [pagination]);
+  // End: Pagination ans Sorting
 
+  // Start: Delete action
   const removeSqlServer = (id: number) => {
     dispatch(deleteSqlServer(id));
   };
-
   React.useEffect(() => {
     if (sqlServers.delete.messages.length > 0) {
       if (sqlServers.delete.hasErrors) {
@@ -95,34 +91,36 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       dispatch(clearSqlServerMessages());
     }
   }, [sqlServers.delete.messages]);
+  // End: Delete action
 
-  React.useEffect(() => {
-    fetchSqlServer();
-  }, [pagination]);
-
-  React.useEffect(() => {
-    setPagination({ ...pagination, current: 1 });
-  }, [inlineSearch, search]);
-
-  const onFinish = (values: any) => {
-    setInlineSearch(values);
+  // Keyword search
+  const onFinishSearch = (value: string) => {
+    setSearch({ ...search, keyword: value });
   };
 
+  // Start: Column level filter
+  const onFinish = (values: IInlineSearch) => {
+    setInlineSearch(values);
+  };
   const onReset = () => {
     form.resetFields();
     setInlineSearch({});
   };
-
   const getColumnLookup = (column: string) => {
     return sqlServerService.getLookupSqlServerByFieldName(column).then((res) => {
       return res.body.data;
     });
   };
-
   const FilterBySwap = (dataIndex: string) => {
     return FilterWithSwapOption(dataIndex, getColumnLookup, form);
   };
+  // End: Column level filter
 
+  React.useEffect(() => {
+    setPagination({ ...pagination, current: 1 });
+  }, [inlineSearch, search]);
+
+  // Table columns
   const columns = [
     {
       title: 'Product Name',
@@ -467,7 +465,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         {
           title: (
             <div className="btns-block">
-              <Button htmlType="submit" className="action-btn filter-btn active p-0">
+              <Button
+                htmlType="submit"
+                className={`action-btn filter-btn p-0 ${
+                  _.isEmpty(inlineSearch, true) ? '' : 'active'
+                }`}
+              >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
                   src={`${process.env.PUBLIC_URL}/assets/images/ic-filter-white.svg`}
@@ -511,6 +514,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
   ];
 
+  // Start: Hide-show columns
   const hideShowColumn = (e, title) => {
     if (e.target.checked) {
       setTableColumn({ ...tableColumn, [title]: true });
@@ -518,49 +522,31 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       setTableColumn({ ...tableColumn, [title]: false });
     }
   };
-
   const dropdownMenu = (
     <ul className="checkbox-list">
       {columns.map((col) => (
-        <>
-          <li key={col.title}>
-            <Checkbox
-              checked={tableColumn[col.title] !== false}
-              onClick={(e) => hideShowColumn(e, col.title)}
-            >
-              {col.title}
-            </Checkbox>
-          </li>
-        </>
+        <li key={col.title}>
+          <Checkbox
+            checked={tableColumn[col.title] !== false}
+            onClick={(e) => hideShowColumn(e, col.title)}
+          >
+            {col.title}
+          </Checkbox>
+        </li>
       ))}
     </ul>
   );
-
   const getColumns = () => {
     return columns.filter((col) => {
       return tableColumn[col.title] !== false;
     });
   };
-
-  const Filter = () => (
-    <>
-      <Form form={formKeyword} name="horizontal_login" layout="inline" onFinish={onFinishSearch}>
-        <Form.Item name="keyword">
-          <Input
-            placeholder="Search by keyword"
-            className="form-control sm-input"
-            prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
-            // allowClear={true}
-          />
-        </Form.Item>
-      </Form>
-    </>
-  );
+  // End: Hide-show columns
 
   return (
     <>
       <div className="title-block search-block">
-        <Filter />
+        <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button

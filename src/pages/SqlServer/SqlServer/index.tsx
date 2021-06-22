@@ -12,13 +12,13 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
 
-  const { id : urlId } = props.match?.params;
+  const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
-    if(+urlId > 0){
+    if (+urlId > 0) {
       setAddModalVisible(true);
       setId(+urlId);
     }
@@ -30,9 +30,9 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
     };
   }, []);
 
-  const refreshDataTable = () =>{
-    dataTableRef?.current.refreshData()
-  }
+  const refreshDataTable = () => {
+    dataTableRef?.current.refreshData();
+  };
 
   return (
     <div className="sqlServer">
@@ -42,7 +42,7 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
           <GlobalSearch />
         </div>
       </div>
-      <div className="main-card">        
+      <div className="main-card">
         <DataTable
           ref={dataTableRef}
           setSelectedId={(id) => {

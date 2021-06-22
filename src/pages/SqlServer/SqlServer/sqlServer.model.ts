@@ -5,5 +5,5 @@ interface IDetailParams {
 }
 
 export interface ISqlServerProps {
-    match?: match<IDetailParams>;
+  match?: match<IDetailParams>;
 }
