@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, withRouter } from 'react-router-dom';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import LayoutRoute from './common/components/Layout';
 import MainLayout from './common/components/Layout/MainLayout';
 import Home from './pages/Home';
@@ -8,18 +8,54 @@ import PageSpinner from './common/components/PageSpinner';
 import SqlServerRoutes from './pages/SqlServer/SqlServer.routes';
 import AddEvent from './pages/Home/AddEvent';
 
+import { AzureAD, AuthenticationState } from 'react-aad-msal';
+import { azureAuthProvider } from './utils/azureProvider';
+import { Login } from './pages/Login';
+import { azureAuthStore } from './store/auth/azureAuth.store';
+import { toast } from 'react-toastify';
+
 function AppRoutes() {
   return (
-    <React.Suspense fallback={<PageSpinner />}>
-      <Switch>
-        <LayoutRoute exact path="/" layout={MainLayout} component={Home} />
-        <LayoutRoute exact path="/add-event" layout={MainLayout} component={AddEvent} />
-        <LayoutRoute path="/sql-server" layout={MainLayout} component={SqlServerRoutes} />
+    <AzureAD provider={azureAuthProvider} reduxStore={azureAuthStore}>
+      {({ authenticationState, error }) => {
+        if (error) {
+          toast.error(error);
+        }
+        switch (authenticationState) {
+          case AuthenticationState.Authenticated:
+            return (
+              <React.Suspense fallback={<PageSpinner />}>
+                <Switch>
+                  <Route path="/login">
+                    <Redirect to="/" />
+                  </Route>
+                  <LayoutRoute exact path="/" layout={MainLayout} component={Home} />
+                  <LayoutRoute exact path="/add-event" layout={MainLayout} component={AddEvent} />
+                  <LayoutRoute path="/sql-server" layout={MainLayout} component={SqlServerRoutes} />
 
-        {/* keep least always */}
-        <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />
-      </Switch>
-    </React.Suspense>
+                  {/* keep least always */}
+                  <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />
+                </Switch>
+              </React.Suspense>
+            );
+          case AuthenticationState.Unauthenticated:
+          case AuthenticationState.InProgress:
+            return (
+              <>
+                <React.Suspense fallback={<PageSpinner />}>
+                  <Switch>
+                    <Route exact path="/login" component={Login} />
+                    {/* keep least always */}
+                    <Route path="*">
+                      <Redirect to="/login" />
+                    </Route>
+                  </Switch>
+                </React.Suspense>
+              </>
+            );
+        }
+      }}
+    </AzureAD>
   );
 }
 

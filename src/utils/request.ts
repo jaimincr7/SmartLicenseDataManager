@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import authService from '../services/auth/auth.service';
 import config from './config';
 
 const request = axios.create({
@@ -12,9 +13,16 @@ const request = axios.create({
 
 // Request interceptors Customize based on your need
 request.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // Add X-Access-Token header to every request, you can add other custom headers here
     // config.headers["Authorization"] = 'Bearer ' + authToken;
+
+    const authToken = await authService.getAuthToken();
+    if (authToken) {
+      // Add token to auth
+      config.headers['Authorization'] = 'Bearer ' + authToken;
+    }
+
     return config;
   },
   (error) => {

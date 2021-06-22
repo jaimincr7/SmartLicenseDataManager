@@ -13,7 +13,7 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
-  
+
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
@@ -57,7 +57,7 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
         <AddSqlServerModal
           showModal={addModalVisible}
           handleModalClose={() => {
-            setAddModalVisible(false); 
+            setAddModalVisible(false);
             history.push('/sql-server');
           }}
           id={id}

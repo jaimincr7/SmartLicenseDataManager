@@ -1,6 +1,9 @@
 import React from 'react';
 import { Menu, Dropdown } from 'antd';
 
+import { AzureAD } from 'react-aad-msal';
+import { azureAuthProvider } from '../../../../utils/azureProvider';
+
 function toggleMenu() {
   if (window.innerWidth > 991) {
     document.body.classList.toggle('toggle-menu');
@@ -22,24 +25,28 @@ window.addEventListener(
 );
 
 const profileMenu = (
-  <Menu>
-    <Menu.Item
-      key="0"
-      icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-user.svg`} alt="" />}
-    >
-      <a href="#" title="My Profile">
-        My Profile
-      </a>
-    </Menu.Item>
-    <Menu.Item
-      key="1"
-      icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-logout.svg`} alt="" />}
-    >
-      <a href="#" title="Logout">
-        Logout
-      </a>
-    </Menu.Item>
-  </Menu>
+  <AzureAD provider={azureAuthProvider}>
+    {({ logout }) => (
+      <Menu>
+        <Menu.Item
+          key="0"
+          icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-user.svg`} alt="" />}
+        >
+          <a href="#" title="My Profile">
+            My Profile
+          </a>
+        </Menu.Item>
+        <Menu.Item
+          key="1"
+          icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-logout.svg`} alt="" />}
+        >
+          <a onClick={logout} title="Logout">
+            Logout
+          </a>
+        </Menu.Item>
+      </Menu>
+    )}
+  </AzureAD>
 );
 
 function Header() {
@@ -56,16 +63,24 @@ function Header() {
           <span className="line"></span>
           <span className="line"></span>
         </div>
-        <div className="profile-wrapper">
-          <Dropdown overlay={profileMenu} trigger={['click']} overlayClassName="profile-dropdown">
-            <a href="#" title="" className="profile-block" onClick={(e) => e.preventDefault()}>
-              <em className="dp">
-                <img src={`${process.env.PUBLIC_URL}/assets/images/dp.jpg`} alt="" />
-              </em>
-              <span className="username">John Smith</span>
-            </a>
-          </Dropdown>
-        </div>
+        <AzureAD provider={azureAuthProvider}>
+          {({ accountInfo }) => (
+            <div className="profile-wrapper">
+              <Dropdown
+                overlay={profileMenu}
+                trigger={['click']}
+                overlayClassName="profile-dropdown"
+              >
+                <a href="#" title="" className="profile-block" onClick={(e) => e.preventDefault()}>
+                  <em className="dp">
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/dp.jpg`} alt="" />
+                  </em>
+                  <span className="username">{accountInfo.account.name}</span>
+                </a>
+              </Dropdown>
+            </div>
+          )}
+        </AzureAD>
       </div>
     </header>
   );

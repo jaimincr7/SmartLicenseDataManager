@@ -57,8 +57,7 @@ const Home: React.FC<IHomeProps> = () => {
         <h4 className="p-0">Events</h4>
         <div className="right-title">
           <Select
-            placeholder="Tags Mode"
-            defaultOpen
+            placeholder="Filter by Tenant"
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
           >
             <Option value="1">John Smith</Option>

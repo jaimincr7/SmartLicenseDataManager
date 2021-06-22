@@ -10,7 +10,12 @@ function Sidebar() {
   return (
     <aside className="main-navigation">
       <Scrollbars renderThumbVertical={(props) => <div {...props} className="track-vartical" />}>
-        <Menu defaultSelectedKeys={['/']} defaultOpenKeys={['sub1']} mode="inline" selectedKeys={[location.pathname]}>
+        <Menu
+          defaultSelectedKeys={['/']}
+          defaultOpenKeys={['sub1']}
+          mode="inline"
+          selectedKeys={[location.pathname]}
+        >
           <Menu.Item
             key="/"
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard.svg`} alt="" />}
@@ -23,7 +28,7 @@ function Sidebar() {
             key="sub1"
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-cms.svg`} alt="" />}
             title="CMS"
-          >           
+          >
             <Menu.Item
               key="/sql-server"
               icon={
@@ -44,7 +49,7 @@ function Sidebar() {
                 Entitlements
               </Link>
             </Menu.Item>
-          </SubMenu>          
+          </SubMenu>
         </Menu>
       </Scrollbars>
     </aside>

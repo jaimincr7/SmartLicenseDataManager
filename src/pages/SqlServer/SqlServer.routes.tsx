@@ -5,7 +5,7 @@ import SqlServerEntitlements from './SqlServerEntitlements';
 
 const SqlServerRoutes: React.FC = () => {
   const match = useRouteMatch();
-  
+
   return (
     <div className="sqlServer">
       <Switch>
@@ -13,7 +13,7 @@ const SqlServerRoutes: React.FC = () => {
         <Route exact path={`${match.path}/:id`} component={SqlServer} />
 
         {/* keep least always */}
-        <Route exact path={`${match.path}`} component={SqlServer} />  
+        <Route exact path={`${match.path}`} component={SqlServer} />
       </Switch>
     </div>
   );
