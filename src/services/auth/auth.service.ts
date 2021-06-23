@@ -1,10 +1,8 @@
-import { azureAuthProvider } from './../../utils/azureProvider';
-
 class AuthService {
-  async getAuthToken() {
-    const authToken = await azureAuthProvider.getIdToken();
-    return authToken ? authToken.idToken.rawIdToken : null;
-  }
+  getAuthToken = async () => {
+    const authToken = localStorage.getItem('accessToken');
+    return authToken || null;
+  };
 }
 
 export default new AuthService();

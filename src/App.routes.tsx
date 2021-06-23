@@ -7,55 +7,34 @@ import { PageNotFound } from './pages/PageNotFound';
 import PageSpinner from './common/components/PageSpinner';
 import SqlServerRoutes from './pages/SqlServer/SqlServer.routes';
 import AddEvent from './pages/Home/AddEvent';
-
-import { AzureAD, AuthenticationState } from 'react-aad-msal';
-import { azureAuthProvider } from './utils/azureProvider';
 import { Login } from './pages/Login';
-import { toast } from 'react-toastify';
-import { store } from './store';
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 
 function AppRoutes() {
   return (
-    <AzureAD provider={azureAuthProvider} reduxStore={store}>
-      {({ authenticationState, error }) => {
-        if (error) {
-          toast.error(error);
-        }
-        switch (authenticationState) {
-          case AuthenticationState.Authenticated:
-            return (
-              <React.Suspense fallback={<PageSpinner />}>
-                <Switch>
-                  <Route path="/login">
-                    <Redirect to="/" />
-                  </Route>
-                  <LayoutRoute exact path="/" layout={MainLayout} component={Home} />
-                  <LayoutRoute exact path="/add-event" layout={MainLayout} component={AddEvent} />
-                  <LayoutRoute path="/sql-server" layout={MainLayout} component={SqlServerRoutes} />
+    <React.Suspense fallback={<PageSpinner />}>
+      <UnauthenticatedTemplate>
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route path="*">
+            <Redirect to="/login" />
+          </Route>
+        </Switch>
+      </UnauthenticatedTemplate>
+      <AuthenticatedTemplate>
+        <Switch>
+          <Route path="/login">
+            <Redirect to="/" />
+          </Route>
+          <LayoutRoute exact path="/" layout={MainLayout} component={Home} />
+          <LayoutRoute exact path="/add-event" layout={MainLayout} component={AddEvent} />
+          <LayoutRoute path="/sql-server" layout={MainLayout} component={SqlServerRoutes} />
 
-                  {/* keep least always */}
-                  <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />
-                </Switch>
-              </React.Suspense>
-            );
-          case AuthenticationState.Unauthenticated:
-          case AuthenticationState.InProgress:
-            return (
-              <>
-                <React.Suspense fallback={<PageSpinner />}>
-                  <Switch>
-                    <Route exact path="/login" component={Login} />
-                    {/* keep least always */}
-                    <Route path="*">
-                      <Redirect to="/login" />
-                    </Route>
-                  </Switch>
-                </React.Suspense>
-              </>
-            );
-        }
-      }}
-    </AzureAD>
+          {/* keep least always */}
+          <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />
+        </Switch>
+      </AuthenticatedTemplate>
+    </React.Suspense>
   );
 }
 

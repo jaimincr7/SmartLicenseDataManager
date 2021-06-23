@@ -1,10 +1,18 @@
-import { Button, Row, Spin } from 'antd';
+import { Button, Row } from 'antd';
 import React from 'react';
-
-import { AzureAD, AuthenticationState } from 'react-aad-msal';
-import { azureAuthProvider } from '../../utils/azureProvider';
+import { useMsal } from '@azure/msal-react';
+import { loginRequest } from '../../utils/authConfig';
+import { toast } from 'react-toastify';
 
 export const Login: React.FC = () => {
+  const { instance } = useMsal();
+
+  function handleLogin(instance) {
+    instance.loginRedirect(loginRequest).catch((e: Error) => {
+      toast.error(e.message);
+    });
+  }
+
   return (
     <>
       <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
@@ -12,20 +20,9 @@ export const Login: React.FC = () => {
           <h1 style={{ color: '#fff' }}>Welcome to MetrixData 360</h1>
           <br />
           <br />
-          <AzureAD provider={azureAuthProvider}>
-            {({ login, authenticationState }) => {
-              switch (authenticationState) {
-                case AuthenticationState.Unauthenticated:
-                  return (
-                    <Button type="primary" onClick={login}>
-                      Login with Microsoft
-                    </Button>
-                  );
-                case AuthenticationState.InProgress:
-                  return <Spin />;
-              }
-            }}
-          </AzureAD>
+          <Button type="primary" onClick={() => handleLogin(instance)}>
+            Login with Microsoft
+          </Button>
         </div>
       </Row>
     </>

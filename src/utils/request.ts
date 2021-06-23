@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import authService from '../services/auth/auth.service';
+import userService from '../services/user/user.service';
 import config from './config';
 
 const request = axios.create({
@@ -15,12 +16,20 @@ const request = axios.create({
 request.interceptors.request.use(
   async (config) => {
     // Add X-Access-Token header to every request, you can add other custom headers here
-    // config.headers["Authorization"] = 'Bearer ' + authToken;
-
     const authToken = await authService.getAuthToken();
     if (authToken) {
       // Add token to auth
-      config.headers['Authorization'] = 'Bearer ' + authToken;
+      config.headers['Authorization'] = `Bearer ${authToken}`;
+    }
+
+    // Custom encrypted data
+    if (!config.headers['X-Skip-UserEncData']) {
+      const userEncData = await userService.getUserEncData();
+      if (userEncData) {
+        config.headers['X-Data'] = userEncData;
+      }
+    } else {
+      delete config.headers['X-Skip-UserEncData'];
     }
 
     return config;
