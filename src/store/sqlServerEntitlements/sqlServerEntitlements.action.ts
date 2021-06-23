@@ -9,7 +9,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const searchSqlServerEntitlements = createAsyncThunk(
   'searchSqlServerEntitlements',
-  async (searchParam: ISearchSqlServerEntitlements) => {
+  async (searchParam?: ISearchSqlServerEntitlements) => {
     const response = await sqlServerEntitlementsService
       .searchSqlServerEntitlements(searchParam)
       .then((res) => {

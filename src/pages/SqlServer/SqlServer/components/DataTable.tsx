@@ -469,7 +469,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'}`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -576,7 +578,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           dataSource={sqlServers.search.data}
           columns={getColumns()}
           loading={sqlServers.search.loading}
-          pagination={{ ...pagination, total: sqlServers.search.count, showTotal:total => `Total ${total} items` }}
+          pagination={{
+            ...pagination,
+            total: sqlServers.search.count,
+            showTotal: (total) => `Total ${total} items`,
+          }}
           onChange={handleTableChange}
           className="custom-table"
           sortDirections={['ascend', 'descend']}
