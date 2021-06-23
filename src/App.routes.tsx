@@ -11,12 +11,12 @@ import AddEvent from './pages/Home/AddEvent';
 import { AzureAD, AuthenticationState } from 'react-aad-msal';
 import { azureAuthProvider } from './utils/azureProvider';
 import { Login } from './pages/Login';
-import { azureAuthStore } from './store/auth/azureAuth.store';
 import { toast } from 'react-toastify';
+import { store } from './store';
 
 function AppRoutes() {
   return (
-    <AzureAD provider={azureAuthProvider} reduxStore={azureAuthStore}>
+    <AzureAD provider={azureAuthProvider} reduxStore={store}>
       {({ authenticationState, error }) => {
         if (error) {
           toast.error(error);

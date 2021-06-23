@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import azureAuthReducer from './auth/azureAuth.reducer';
 import commonReducer from './common/common.reducer';
 import errorLogReducer from './errorLog/errorLog.reducer';
 import sqlServerReducer from './sqlServer/sqlServer.reducer';
@@ -9,4 +10,5 @@ export const rootReducer = combineReducers({
   sqlServer: sqlServerReducer,
   common: commonReducer,
   sqlServerEntitlements: sqlServerEntitlementsReducer,
+  azureAuth: azureAuthReducer,
 });
