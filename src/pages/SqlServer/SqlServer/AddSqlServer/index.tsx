@@ -623,7 +623,12 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                         </Col> */}
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit">
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={sqlServers.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

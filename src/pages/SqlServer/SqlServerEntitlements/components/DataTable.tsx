@@ -1,11 +1,23 @@
 import { Table, Popconfirm, Form, Button, Checkbox, Popover } from 'antd';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { toast } from 'react-toastify';
+import { fixedColumn, IDataTable, IInlineSearch } from './dataTable.model';
+import moment from 'moment';
+import { Common, DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
+import _ from 'lodash';
 import {
-  clearSqlServerEntitlements,
+  Filter,
+  FilterByDate,
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTableFilters';
+import { orderByType } from '../../../../common/models/common';
+import { useHistory } from 'react-router-dom';
+import {
   clearSqlServerEntitlementsMessages,
   sqlServerEntitlementsSelector,
 } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
-import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   ISearchSqlServerEntitlements,
   ISqlServerEntitlements,
@@ -14,21 +26,7 @@ import {
   deleteSqlServerEntitlements,
   searchSqlServerEntitlements,
 } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
-import { toast } from 'react-toastify';
-import { fixedColumn, IDataTable, IInlineSearch } from './dataTable.model';
-import moment from 'moment';
-import { Common, DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
-import _ from 'lodash';
-import { useHistory } from 'react-router-dom';
-import { orderByType } from '../../../../common/models/common';
-import SqlServerEntitlements from '..';
 import sqlServerEntitlementsService from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.service';
-import {
-  Filter,
-  FilterByDate,
-  FilterByDropdown,
-  FilterWithSwapOption,
-} from '../../../../common/components/DataTableFilters';
 
 let pageLoaded = false;
 
@@ -54,6 +52,15 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
   const fetchSqlServerEntitlements = () => {
+    const inlineSearchFilter = _.pickBy(inlineSearch, function (value) {
+      return !(
+        value === undefined ||
+        value === '' ||
+        _.isNull(value) ||
+        (Array.isArray(value) && value.length === 0)
+      );
+    });
+
     const searchData: ISearchSqlServerEntitlements = {
       order_by: 'id',
       order_direction: 'DESC',
@@ -62,7 +69,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       offset: (pagination.current - 1) * pagination.pageSize,
       ...(search || {}),
       ...(sorter || {}),
-      filter_keys: inlineSearch,
+      filter_keys: inlineSearchFilter,
     };
     pageLoaded = true;
     dispatch(searchSqlServerEntitlements(searchData));
@@ -98,7 +105,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         toast.success(sqlServerEntitlements.delete.messages.join(' '));
         fetchSqlServerEntitlements();
       }
-      dispatch(clearSqlServerEntitlements());
+      dispatch(clearSqlServerEntitlementsMessages());
     }
   }, [sqlServerEntitlements.delete.messages]);
   // End: Delete action

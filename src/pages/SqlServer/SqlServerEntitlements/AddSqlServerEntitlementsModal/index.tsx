@@ -45,7 +45,6 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const loading = sqlServersEntitlements.getById.loading || sqlServersEntitlements.save.loading;
   const { id, showModal, handleModalClose, refreshDataTable } = props;
 
   const isNew: boolean = id ? false : true;
@@ -160,9 +159,9 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
         onCancel={handleModalClose}
         footer={false}
       >
-        {loading ? (
+        {sqlServersEntitlements.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={loading} />
+            <Spin spinning={sqlServersEntitlements.getById.loading} />
           </div>
         ) : (
           <Form
@@ -297,7 +296,12 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit">
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={sqlServersEntitlements.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

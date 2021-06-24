@@ -46,6 +46,15 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
   const fetchSqlServer = () => {
+    const inlineSearchFilter = _.pickBy(inlineSearch, function (value) {
+      return !(
+        value === undefined ||
+        value === '' ||
+        _.isNull(value) ||
+        (Array.isArray(value) && value.length === 0)
+      );
+    });
+
     const searchData: ISearchSqlServer = {
       order_by: 'id',
       order_direction: 'DESC',
@@ -54,7 +63,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       offset: (pagination.current - 1) * pagination.pageSize,
       ...(search || {}),
       ...(sorter || {}),
-      filter_keys: inlineSearch,
+      filter_keys: inlineSearchFilter,
     };
     pageLoaded = true;
     dispatch(searchSqlServer(searchData));

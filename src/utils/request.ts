@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import authService from '../services/auth/auth.service';
-import userService from '../services/user/user.service';
 import config from './config';
 
 const request = axios.create({
@@ -23,14 +22,14 @@ request.interceptors.request.use(
     }
 
     // Custom encrypted data
-    if (!config.headers['X-Skip-UserEncData']) {
-      const userEncData = await userService.getUserEncData();
-      if (userEncData) {
-        config.headers['X-Data'] = userEncData;
-      }
-    } else {
-      delete config.headers['X-Skip-UserEncData'];
-    }
+    // if (!config.headers['X-Skip-UserEncData']) {
+    //   const userEncData = await userService.getUserEncData();
+    //   if (userEncData) {
+    //     config.headers['X-Data'] = userEncData;
+    //   }
+    // } else {
+    //   delete config.headers['X-Skip-UserEncData'];
+    // }
 
     return config;
   },

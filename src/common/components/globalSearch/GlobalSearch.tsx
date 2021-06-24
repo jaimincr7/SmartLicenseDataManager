@@ -19,10 +19,6 @@ const GlobalSearch: React.FC = () => {
 
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log(values);
-  };
-
   const handleTenantChange = (tenantId: number) => {
     form.setFieldsValue({ tenant: tenantId, company: null, bu: null });
     if (tenantId) {
@@ -57,7 +53,7 @@ const GlobalSearch: React.FC = () => {
 
   return (
     <>
-      <Form form={form} name="horizontal_filter" layout="inline" onFinish={onFinish}>
+      <Form form={form} name="horizontal_filter" layout="inline">
         <Form.Item name="tenant" className="mr-1">
           <Select
             placeholder="Filter by Tenant"
