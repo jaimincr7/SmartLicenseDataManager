@@ -1,4 +1,4 @@
-import { Form, Select } from 'antd';
+import { Form, Select, Spin } from 'antd';
 import { useEffect } from 'react';
 import { ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
@@ -51,7 +51,7 @@ const GlobalSearch: React.FC = () => {
       company_id: companyId ? companyId : null,
     };
 
-    form.setFieldsValue({ company_id: companyId, bu: null });
+    form.setFieldsValue({ company_id: companyId, bu_id: null });
     dispatch(setGlobalSearch(searchValues));
     if (companyId) {
       dispatch(getBULookup(companyId));
@@ -86,6 +86,7 @@ const GlobalSearch: React.FC = () => {
             onChange={handleTenantChange}
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
+            notFoundContent={commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null}
           >
             {commonLookups.tenantLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
@@ -100,6 +101,7 @@ const GlobalSearch: React.FC = () => {
             onChange={handleCompanyChange}
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
+            notFoundContent={commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null}
           >
             {commonLookups.companyLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
@@ -114,6 +116,7 @@ const GlobalSearch: React.FC = () => {
             onChange={handleBUChange}
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
+            notFoundContent={commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null}
           >
             {commonLookups.buLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
