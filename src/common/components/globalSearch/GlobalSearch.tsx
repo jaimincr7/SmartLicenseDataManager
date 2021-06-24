@@ -23,20 +23,20 @@ const GlobalSearch: React.FC = () => {
   let searchValues = {
     tenant_id: null,
     company_id: null,
-    bu_id: null
-  }
+    bu_id: null,
+  };
 
   const handleTenantChange = (tenantId: number) => {
     searchValues = {
       ...searchValues,
-      tenant_id: tenantId ? tenantId : null
+      tenant_id: tenantId ? tenantId : null,
     };
 
     form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
     dispatch(setGlobalSearch(searchValues));
     if (tenantId) {
       dispatch(getCompanyLookup(tenantId));
-      dispatch(clearBULookUp());      
+      dispatch(clearBULookUp());
     } else {
       dispatch(clearCompanyLookUp());
       dispatch(clearBULookUp());
@@ -48,13 +48,13 @@ const GlobalSearch: React.FC = () => {
     searchValues = {
       ...searchValues,
       tenant_id: tenantId ? tenantId : null,
-      company_id: companyId ? companyId : null
+      company_id: companyId ? companyId : null,
     };
 
     form.setFieldsValue({ company_id: companyId, bu: null });
     dispatch(setGlobalSearch(searchValues));
     if (companyId) {
-      dispatch(getBULookup(companyId));      
+      dispatch(getBULookup(companyId));
     } else {
       dispatch(clearBULookUp());
     }
@@ -66,33 +66,20 @@ const GlobalSearch: React.FC = () => {
     searchValues = {
       tenant_id: tenantId ? tenantId : null,
       company_id: companyId ? companyId : null,
-      bu_id: buId ? buId : null
+      bu_id: buId ? buId : null,
     };
     form.setFieldsValue({ bu_id: buId });
-    dispatch(setGlobalSearch(searchValues))
+    dispatch(setGlobalSearch(searchValues));
   };
 
   useEffect(() => {
     dispatch(getTenantLookup());
-    // dispatch(setGlobalSearch({tenant_id: form.getFieldValue('tenant'), company_id: form.getFieldValue('company'), bu_id: form.getFieldValue('bu')}))
-    return () => {
-      dispatch(clearCompanyLookUp());
-      dispatch(clearBULookUp());
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    searchValues = {
-      tenant_id: commonLookups.search.tenant_id,
-      company_id: commonLookups.search.company_id,
-      bu_id: commonLookups.search.bu_id,
-    }
     form.setFieldsValue(commonLookups.search);
-  }, [commonLookups]);
+  }, [dispatch]);
 
   return (
     <>
-      <Form form={form} name="horizontal_filter" layout="inline">
+      <Form form={form} initialValues={commonLookups.search} name="horizontal_filter" layout="inline">
         <Form.Item name="tenant_id" className="mr-1">
           <Select
             placeholder="Filter by Tenant"

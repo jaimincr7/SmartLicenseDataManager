@@ -71,7 +71,8 @@ export const commonSlice = createSlice({
 export const commonSelector = (state: RootState) => state.common;
 
 // Actions
-export const { clearCommon, clearBULookUp, clearCompanyLookUp, setGlobalSearch } = commonSlice.actions;
+export const { clearCommon, clearBULookUp, clearCompanyLookUp, setGlobalSearch } =
+  commonSlice.actions;
 
 // The reducer
 export default commonSlice.reducer;
