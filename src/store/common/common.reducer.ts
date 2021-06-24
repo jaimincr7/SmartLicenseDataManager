@@ -25,14 +25,7 @@ export const commonSlice = createSlice({
   initialState,
   reducers: {
     setGlobalSearch: (state, action: PayloadAction<IGlobalSearch>) => {
-      const res: IGlobalSearch = {};
-      for (const key in action.payload) {
-        const element = action.payload[key];
-        if (element !== null && element !== '') {
-          res[key] = element;
-        }
-      }
-      state.search = res;
+      state.search = action.payload;
     },
     clearCompanyLookUp: (state) => {
       state.companyLookup.data = [];
@@ -78,7 +71,7 @@ export const commonSlice = createSlice({
 export const commonSelector = (state: RootState) => state.common;
 
 // Actions
-export const { clearCommon, clearBULookUp, clearCompanyLookUp } = commonSlice.actions;
+export const { clearCommon, clearBULookUp, clearCompanyLookUp, setGlobalSearch } = commonSlice.actions;
 
 // The reducer
 export default commonSlice.reducer;
