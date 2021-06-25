@@ -8,6 +8,8 @@ import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerModal from './AddSqlServer';
 import { useHistory } from 'react-router-dom';
+import { Row, Col, Button } from 'antd';
+import ProcessDataModal from './ProcessDataModel';
 
 const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -17,6 +19,8 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
@@ -45,6 +49,15 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
+      <div className="input-btns-title">
+          <Row gutter={[30, 15]}>            
+            <Col xs={24} md={24} lg={6}>
+              <div className="btns-block">
+                <Button type="primary" onClick={()=> setProcessModalVisible(true)}>Process Data</Button>
+              </div>
+            </Col>
+          </Row>
+        </div>
         <DataTable
           ref={dataTableRef}
           setSelectedId={(id) => {
@@ -58,6 +71,17 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/sql-server');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => {
+            setProcessModalVisible(false);
             history.push('/sql-server');
           }}
           id={id}
