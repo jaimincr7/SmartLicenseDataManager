@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch,DatePicker } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -142,83 +142,89 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Set Device States</label>
+                  <label className="label">Date Added</label>
+                  <DatePicker className="w-100" />
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="SetDeviceStates" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">Set Device States</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">SetDeviceStatesIncNonProd</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="SetDeviceStatesIncNonProd" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">SetDeviceStatesIncNonProd</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">SetDeviceStatesByKeyWord</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="SetDeviceStatesByKeyWord" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">SetDeviceStatesByKeyWord</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">XRefAd</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="XRefAd" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">XRefAd</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">XRefAzure</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="XRefAzure" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">XRefAzure</label>
                 </div>
               </Col>
              
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">SetDesktopsNonProd</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="SetDesktopsNonProd" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">SetDesktopsNonProd</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">UpdateRVTools_VM</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="UpdateRVTools_VM" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">UpdateRVTools_VM</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">SetDesktopsNonProd</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="SetDesktopsNonProd" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">SetDesktopsNonProd</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">UpdateRVTools_Host</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="UpdateRVTools_Host" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">UpdateRVTools_Host</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">ApplyOverrides</label>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="ApplyOverrides" className="m-0">
                     <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">ApplyOverrides</label>
                 </div>
               </Col>
 

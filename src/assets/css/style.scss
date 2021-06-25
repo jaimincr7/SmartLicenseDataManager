@@ -316,6 +316,15 @@ img {
 .form-group {
   margin-bottom: 18px;
 }
+.form-inline-pt{
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  .label{
+    margin: 0 0px 0 10px;
+    width: calc(100% - 40px);
+  }
+}
 
 .filter-input {
   min-width: 160px;
@@ -596,6 +605,23 @@ textarea.ant-input {
 .ant-checkbox-input:focus + .ant-checkbox-inner {
   border-color: #014e97;
 }
+.ant-switch {
+    min-width: 40px;
+    height: 18px;
+    line-height: 22px;
+}
+.ant-switch-handle {
+    top: 1px;
+    width: 14px;
+    height: 14px;
+}
+.ant-switch-checked .ant-switch-handle {
+    left: calc(100% - 14px - 2px);
+}
+.ant-switch-checked {
+    background-color: #014e97;
+}
+
 
 // dropdown ---------------------------
 .profile-dropdown {
@@ -986,5 +1012,8 @@ textarea.ant-input {
       width: 100%;
       margin: 0 0px 10px 0;
     }
+  }
+  .form-inline-pt{
+    padding-top: 0px;
   }
 }
