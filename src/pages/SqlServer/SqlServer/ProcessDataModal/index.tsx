@@ -218,7 +218,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </div>
             </Col>
           </Row>
-          <div className="btns-block modal-footer">
+          <div className="btns-block modal-footer pt-lg">
             <Button
               key="submit"
               type="primary"

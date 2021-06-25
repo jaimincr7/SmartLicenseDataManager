@@ -319,9 +319,11 @@ img {
 .form-inline-pt{
   padding-top: 24px;
   display: flex;
-  align-items: center;
+  .ant-form-item-control-input{
+    min-height:auto;
+  }
   .label{
-    margin: 0 0px 0 10px;
+    margin: 2px 0px 0 10px;
     width: calc(100% - 40px);
   }
 }
@@ -684,6 +686,9 @@ textarea.ant-input {
   .modal-footer {
     padding: 20px 0px 10px;
   }
+   .modal-footer.pt-lg {
+    padding: 40px 0px 10px;
+  }
 }
 
 // hamburger---------------------------------
@@ -1015,5 +1020,8 @@ textarea.ant-input {
   }
   .form-inline-pt{
     padding-top: 0px;
+  }
+  .custom-modal .modal-footer.pt-lg {
+      padding: 20px 0px 10px;
   }
 }
