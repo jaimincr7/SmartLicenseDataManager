@@ -20,20 +20,9 @@ const GlobalSearch: React.FC = () => {
 
   const [form] = Form.useForm();
 
-  let searchValues = {
-    tenant_id: null,
-    company_id: null,
-    bu_id: null,
-  };
-
   const handleTenantChange = (tenantId: number) => {
-    searchValues = {
-      ...searchValues,
-      tenant_id: tenantId ? tenantId : null,
-    };
-
     form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
-    dispatch(setGlobalSearch(searchValues));
+    setGlobalSearchValues();
     if (tenantId) {
       dispatch(getCompanyLookup(tenantId));
       dispatch(clearBULookUp());
@@ -44,15 +33,8 @@ const GlobalSearch: React.FC = () => {
   };
 
   const handleCompanyChange = (companyId: number) => {
-    const tenantId = form.getFieldValue('tenant_id');
-    searchValues = {
-      ...searchValues,
-      tenant_id: tenantId ? tenantId : null,
-      company_id: companyId ? companyId : null,
-    };
-
     form.setFieldsValue({ company_id: companyId, bu_id: null });
-    dispatch(setGlobalSearch(searchValues));
+    setGlobalSearchValues();
     if (companyId) {
       dispatch(getBULookup(companyId));
     } else {
@@ -61,14 +43,20 @@ const GlobalSearch: React.FC = () => {
   };
 
   const handleBUChange = (buId: number) => {
+    form.setFieldsValue({ bu_id: buId });
+    setGlobalSearchValues();
+  };
+
+  const setGlobalSearchValues = () => {
     const tenantId = form.getFieldValue('tenant_id');
     const companyId = form.getFieldValue('company_id');
-    searchValues = {
+    const buId = form.getFieldValue('bu_id');
+
+    const searchValues = {
       tenant_id: tenantId ? tenantId : null,
       company_id: companyId ? companyId : null,
       bu_id: buId ? buId : null,
     };
-    form.setFieldsValue({ bu_id: buId });
     dispatch(setGlobalSearch(searchValues));
   };
 
@@ -79,14 +67,21 @@ const GlobalSearch: React.FC = () => {
 
   return (
     <>
-      <Form form={form} initialValues={commonLookups.search} name="horizontal_filter" layout="inline">
+      <Form
+        form={form}
+        initialValues={commonLookups.search}
+        name="horizontal_filter"
+        layout="inline"
+      >
         <Form.Item name="tenant_id" className="mr-1">
           <Select
             placeholder="Filter by Tenant"
             onChange={handleTenantChange}
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
-            notFoundContent={commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null}
+            notFoundContent={
+              commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
+            }
           >
             {commonLookups.tenantLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
@@ -101,7 +96,9 @@ const GlobalSearch: React.FC = () => {
             onChange={handleCompanyChange}
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
-            notFoundContent={commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null}
+            notFoundContent={
+              commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+            }
           >
             {commonLookups.companyLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
@@ -116,7 +113,9 @@ const GlobalSearch: React.FC = () => {
             onChange={handleBUChange}
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
-            notFoundContent={commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null}
+            notFoundContent={
+              commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
+            }
           >
             {commonLookups.buLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>

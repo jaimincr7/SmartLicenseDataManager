@@ -156,7 +156,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   useEffect(() => {
     if (sqlServers.save.messages.length > 0) {
       if (sqlServers.save.hasErrors) {
-        toast.error(sqlServers.save.messages.join('\n'));
+        toast.error(sqlServers.save.messages.join(' '));
       } else {
         toast.success(sqlServers.save.messages.join(' '));
         handleModalClose();
@@ -223,6 +223,9 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                       }
                       onChange={handleTenantChange}
                       allowClear
+                      notFoundContent={
+                        commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
+                      }
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -248,6 +251,9 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                       }
                       onChange={handleCompanyChange}
                       allowClear
+                      notFoundContent={
+                        commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+                      }
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -268,6 +274,9 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                       }
                       onChange={handleBUChange}
                       allowClear
+                      notFoundContent={
+                        commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
+                      }
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>

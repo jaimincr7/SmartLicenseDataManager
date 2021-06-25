@@ -102,7 +102,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   useEffect(() => {
     if (sqlServersEntitlements.save.messages.length > 0) {
       if (sqlServersEntitlements.save.hasErrors) {
-        toast.error(sqlServersEntitlements.save.messages.join('\n'));
+        toast.error(sqlServersEntitlements.save.messages.join(' '));
       } else {
         toast.success(sqlServersEntitlements.save.messages.join(' '));
         handleModalClose();
@@ -187,6 +187,9 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                       }
                       onChange={handleTenantChange}
                       allowClear
+                      notFoundContent={
+                        commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
+                      }
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -212,6 +215,9 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                       }
                       onChange={handleCompanyChange}
                       allowClear
+                      notFoundContent={
+                        commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+                      }
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -232,6 +238,9 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                       }
                       onChange={handleBUChange}
                       allowClear
+                      notFoundContent={
+                        commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
+                      }
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
