@@ -6,6 +6,7 @@ import {
   deleteDataset,
   deleteSqlServer,
   getSqlServerById,
+  processData,
   saveSqlServer,
   searchSqlServer,
 } from './sqlServer.action';
@@ -39,6 +40,11 @@ export const initialState: ISqlServerState = {
     hasErrors: false,
     messages: [],
   },
+  processData: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const sqlServerSlice = createSlice({
@@ -52,6 +58,7 @@ export const sqlServerSlice = createSlice({
       state.save.messages = [];
       state.delete.messages = [];
       state.deleteDataset.messages = [];
+      state.processData.messages = [];
     },
     clearSqlServerGetById: (state) => {
       state.getById.data = null;
@@ -140,6 +147,22 @@ export const sqlServerSlice = createSlice({
       state.deleteDataset.loading = false;
       state.deleteDataset.hasErrors = true;
       state.deleteDataset.messages = action.payload.errors;
+    },
+
+    // Process Data
+    [processData.pending.type]: (state) => {
+      state.processData.loading = true;
+      state.processData.messages = [];
+    },
+    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = false;
+      state.processData.messages = action.payload.messages;
+    },
+    [processData.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = true;
+      state.processData.messages = action.payload.errors;
     },
   },
 });

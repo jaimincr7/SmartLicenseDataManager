@@ -1,5 +1,6 @@
 import {
   IDeleteDataset,
+  IProcessData,
   ISearchSqlServer,
   ISqlServer,
 } from '../../services/sqlServer/sqlServer.model';
@@ -41,6 +42,13 @@ export const deleteSqlServer = createAsyncThunk('deleteSqlServer', async (id: nu
 
 export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
   const response = await sqlServerService.deleteDataset(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
+export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
+  const response = await sqlServerService.processData(data).then((res) => {
     return res.body;
   });
   return response;

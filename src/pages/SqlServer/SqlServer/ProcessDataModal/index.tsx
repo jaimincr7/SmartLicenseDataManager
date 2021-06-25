@@ -1,28 +1,19 @@
-import {
-  Button,
-  Col,
-  Form,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Switch,
-  DatePicker,
-} from 'antd';
+import { Button, Col, Form, Modal, Row, Select, Spin, Switch, DatePicker } from 'antd';
 import { useEffect } from 'react';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import {
-  getBULookup,
-  getCompanyLookup,
-} from '../../../../store/common/common.action';
-import {
-  clearBULookUp,
-  commonSelector,
-} from '../../../../store/common/common.reducer';
+import { getBULookup, getCompanyLookup } from '../../../../store/common/common.action';
+import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
 import './processData.style.scss';
 import { IProcessDataModalProps } from './processData.model';
+import { processData } from '../../../../store/sqlServer/sqlServer.action';
+import {
+  clearSqlServerMessages,
+  sqlServerSelector,
+} from '../../../../store/sqlServer/sqlServer.reducer';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -31,6 +22,7 @@ const validateMessages = {
 };
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
+  const sqlServers = useAppSelector(sqlServerSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
@@ -38,9 +30,41 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log(values);
+  const initialValues = {
+    company_id: null,
+    bu_id: null,
+    date_added: moment(),
+    set_device_states: false,
+    set_device_states_inc_non_prod: false,
+    set_device_states_by_keyword: false,
+    x_ref_ad: false,
+    x_ref_azure: false,
+    set_desktop_non_prod: false,
+    update_rv_tools_vm: false,
+    update_rv_tools_host: false,
+    apply_overrides: false,
   };
+
+  const onFinish = (values: any) => {
+    dispatch(processData(values));
+  };
+
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current > moment().endOf('day');
+  };
+
+  useEffect(() => {
+    if (sqlServers.processData.messages.length > 0) {
+      if (sqlServers.processData.hasErrors) {
+        toast.error(sqlServers.processData.messages.join(' '));
+      } else {
+        toast.success(sqlServers.processData.messages.join(' '));
+        handleModalClose();
+      }
+      dispatch(clearSqlServerMessages());
+    }
+  }, [sqlServers.processData.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -75,6 +99,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         <Form
           form={form}
           name="processData"
+          initialValues={initialValues}
           onFinish={onFinish}
           validateMessages={validateMessages}
         >
@@ -110,7 +135,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">BU Name</label>
-                <Form.Item name="bu_id" className="m-0" label="BU">
+                <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                   <Select
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -133,12 +158,23 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Date Added</label>
-                <DatePicker className="w-100" />
+                <Form.Item
+                  name="date_added"
+                  label="Date Added"
+                  className="m-0"
+                  rules={[{ required: true }]}
+                >
+                  <DatePicker
+                    defaultValue={moment()}
+                    className="w-100"
+                    disabledDate={disabledDate}
+                  />
+                </Form.Item>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="SetDeviceStates" className="m-0">
+                <Form.Item name="set_device_states" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
                 <label className="label">Set Device States</label>
@@ -146,23 +182,31 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="SetDeviceStatesIncNonProd" className="m-0">
+                <Form.Item
+                  name="set_device_states_inc_non_prod"
+                  className="m-0"
+                  valuePropName="checked"
+                >
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">SetDeviceStatesIncNonProd</label>
+                <label className="label">Set Device States Inc NonProd</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="SetDeviceStatesByKeyWord" className="m-0">
+                <Form.Item
+                  name="set_device_states_by_keyword"
+                  className="m-0"
+                  valuePropName="checked"
+                >
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">SetDeviceStatesByKeyWord</label>
+                <label className="label">Set Device States By KeyWord</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="XRefAd" className="m-0">
+                <Form.Item name="x_ref_ad" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
                 <label className="label">XRefAd</label>
@@ -170,7 +214,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="XRefAzure" className="m-0">
+                <Form.Item name="x_ref_azure" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
                 <label className="label">XRefAzure</label>
@@ -179,42 +223,34 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
 
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="SetDesktopsNonProd" className="m-0">
+                <Form.Item name="set_desktop_non_prod" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">SetDesktopsNonProd</label>
+                <label className="label">Set Desktops Non Prod</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="UpdateRVTools_VM" className="m-0">
+                <Form.Item name="update_rv_tools_vm" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">UpdateRVTools_VM</label>
+                <label className="label">Update RVTools_VM</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="SetDesktopsNonProd" className="m-0">
+                <Form.Item name="update_rv_tools_host" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">SetDesktopsNonProd</label>
+                <label className="label">Update RVTools_Host</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="UpdateRVTools_Host" className="m-0">
+                <Form.Item name="apply_overrides" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">UpdateRVTools_Host</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="ApplyOverrides" className="m-0">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">ApplyOverrides</label>
+                <label className="label">Apply Overrides</label>
               </div>
             </Col>
           </Row>
@@ -223,7 +259,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               key="submit"
               type="primary"
               htmlType="submit"
-              // loading={sqlServers.save.loading}
+              loading={sqlServers.processData.loading}
             >
               Process
             </Button>

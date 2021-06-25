@@ -61,5 +61,12 @@ class SqlServerService {
       return res.data;
     });
   }
+
+  public async processData(data: IDeleteDataset): Promise<any> {
+    const url = `${this.ENDPOINT}/process-data`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
 }
 export default new SqlServerService();

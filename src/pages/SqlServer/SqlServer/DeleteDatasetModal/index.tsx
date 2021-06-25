@@ -1,4 +1,5 @@
 import { Button, Col, DatePicker, Form, Modal, Row, Select, Spin } from 'antd';
+import moment from 'moment';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
@@ -29,8 +30,18 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
 
   const [form] = Form.useForm();
 
+  const initialValues = {
+    company_id: null,
+    bu_id: null,
+    date_added: moment(),
+  };
   const onFinish = (values: any) => {
     dispatch(deleteDataset(values));
+  };
+
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current > moment().endOf('day');
   };
 
   useEffect(() => {
@@ -78,6 +89,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
         <Form
           form={form}
           name="deleteDataset"
+          initialValues={initialValues}
           onFinish={onFinish}
           validateMessages={validateMessages}
         >
@@ -147,7 +159,11 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                   className="m-0"
                   rules={[{ required: true }]}
                 >
-                  <DatePicker className="w-100" />
+                  <DatePicker
+                    defaultValue={moment()}
+                    className="w-100"
+                    disabledDate={disabledDate}
+                  />
                 </Form.Item>
               </div>
             </Col>
