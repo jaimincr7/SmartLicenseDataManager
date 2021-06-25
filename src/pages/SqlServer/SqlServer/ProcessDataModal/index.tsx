@@ -114,6 +114,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   rules={[{ required: true }]}
                 >
                   <Select
+                    placeholder="Select Company Name"
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                     }
@@ -137,6 +138,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 <label className="label">BU Name</label>
                 <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                   <Select
+                    placeholder="Select BU Name"
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                     }

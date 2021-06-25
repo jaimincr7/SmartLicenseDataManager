@@ -104,6 +104,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                   rules={[{ required: true }]}
                 >
                   <Select
+                    placeholder="Select Company Name"
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                     }
@@ -132,6 +133,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                   rules={[{ required: true }]}
                 >
                   <Select
+                    placeholder="Select BU Name"
                     suffixIcon={
                       <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
                     }
