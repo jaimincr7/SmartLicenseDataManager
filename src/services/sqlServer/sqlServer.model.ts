@@ -40,3 +40,11 @@ export interface ISearchSqlServer extends ISearch {
   keyword?: string;
   filter_keys?: any;
 }
+
+export interface IDeleteDataset {
+  table_name?: string;
+  company_id?: number;
+  bu_id?: number;
+  date_added?: Date;
+  debug?: boolean;
+}

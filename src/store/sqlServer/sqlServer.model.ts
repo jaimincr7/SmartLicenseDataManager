@@ -24,4 +24,9 @@ export interface ISqlServerState {
     hasErrors: boolean;
     messages: string[];
   };
+  deleteDataset: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

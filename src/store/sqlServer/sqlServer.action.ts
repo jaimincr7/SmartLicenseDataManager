@@ -1,4 +1,8 @@
-import { ISearchSqlServer, ISqlServer } from '../../services/sqlServer/sqlServer.model';
+import {
+  IDeleteDataset,
+  ISearchSqlServer,
+  ISqlServer,
+} from '../../services/sqlServer/sqlServer.model';
 import sqlServerService from '../../services/sqlServer/sqlServer.service';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -30,6 +34,13 @@ export const saveSqlServer = createAsyncThunk('saveSqlServer', async (data: ISql
 
 export const deleteSqlServer = createAsyncThunk('deleteSqlServer', async (id: number) => {
   const response = await sqlServerService.deleteSqlServer(id).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
+export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
+  const response = await sqlServerService.deleteDataset(data).then((res) => {
     return res.body;
   });
   return response;
