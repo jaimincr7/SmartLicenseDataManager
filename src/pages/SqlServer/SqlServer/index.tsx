@@ -20,11 +20,10 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
-  const [id, setId] = React.useState(0);
-
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+
+  const [id, setId] = React.useState(0);
 
   useEffect(() => {
     if (+urlId > 0) {

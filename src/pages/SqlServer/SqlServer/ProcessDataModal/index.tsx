@@ -189,7 +189,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 >
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">Set Device States Inc NonProd</label>
+                <label className="label">Set Device States Inc Non Prod</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
@@ -209,7 +209,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 <Form.Item name="x_ref_ad" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">XRefAd</label>
+                <label className="label">XRefAD</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
@@ -220,7 +220,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 <label className="label">XRefAzure</label>
               </div>
             </Col>
-
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
                 <Form.Item name="set_desktop_non_prod" className="m-0" valuePropName="checked">
@@ -268,7 +267,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Button>
           </div>
         </Form>
-        {/* )} */}
       </Modal>
     </>
   );
