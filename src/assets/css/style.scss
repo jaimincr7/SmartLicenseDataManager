@@ -316,13 +316,13 @@ img {
 .form-group {
   margin-bottom: 18px;
 }
-.form-inline-pt{
+.form-inline-pt {
   padding-top: 24px;
   display: flex;
-  .ant-form-item-control-input{
-    min-height:auto;
+  .ant-form-item-control-input {
+    min-height: auto;
   }
-  .label{
+  .label {
     margin: 2px 0px 0 10px;
     width: calc(100% - 40px);
   }
@@ -608,22 +608,21 @@ textarea.ant-input {
   border-color: #014e97;
 }
 .ant-switch {
-    min-width: 40px;
-    height: 18px;
-    line-height: 22px;
+  min-width: 40px;
+  height: 18px;
+  line-height: 22px;
 }
 .ant-switch-handle {
-    top: 1px;
-    width: 14px;
-    height: 14px;
+  top: 1px;
+  width: 14px;
+  height: 14px;
 }
 .ant-switch-checked .ant-switch-handle {
-    left: calc(100% - 14px - 2px);
+  left: calc(100% - 14px - 2px);
 }
 .ant-switch-checked {
-    background-color: #014e97;
+  background-color: #014e97;
 }
-
 
 // dropdown ---------------------------
 .profile-dropdown {
@@ -686,7 +685,7 @@ textarea.ant-input {
   .modal-footer {
     padding: 20px 0px 10px;
   }
-   .modal-footer.pt-lg {
+  .modal-footer.pt-lg {
     padding: 40px 0px 10px;
   }
 }
@@ -1018,10 +1017,10 @@ textarea.ant-input {
       margin: 0 0px 10px 0;
     }
   }
-  .form-inline-pt{
+  .form-inline-pt {
     padding-top: 0px;
   }
   .custom-modal .modal-footer.pt-lg {
-      padding: 20px 0px 10px;
+    padding: 20px 0px 10px;
   }
 }

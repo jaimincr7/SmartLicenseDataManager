@@ -21,32 +21,44 @@ import {
 } from '../../../../common/components/DataTableFilters';
 import { orderByType } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
+import { commonSelector } from '../../../../store/common/common.reducer';
 
 let pageLoaded = false;
 
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
-  const sqlServers = useAppSelector(sqlServerSelector);
+  const sqlServer = useAppSelector(sqlServerSelector);
+  const commonFilters = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
-
   const [form] = Form.useForm();
 
   const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
-  const [search, setSearch] = useState({ keyword: '' });
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
   });
-  const [sorter, setSorter] = useState({
+
+  let tableFilter = {
+    keyword: '',
     order_by: 'id',
     order_direction: 'DESC' as orderByType,
-  });
+    filter_keys: {},
+  };
+
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
-  const fetchSqlServer = () => {
-    const inlineSearchFilter = _.pickBy(inlineSearch, function (value) {
+  const fetchSqlServer = (page: number = null) => {
+    const { filter_keys, ...rest } = tableFilter;
+
+    if (page) {
+      setPagination({ ...pagination, current: page });
+    } else {
+      page = pagination.current;
+    }
+
+    const inlineSearchFilter = _.pickBy(filter_keys, function (value) {
       return !(
         value === undefined ||
         value === '' ||
@@ -54,15 +66,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         (Array.isArray(value) && value.length === 0)
       );
     });
+    setInlineSearch(inlineSearchFilter);
 
     const searchData: ISearchSqlServer = {
-      order_by: 'id',
-      order_direction: 'DESC',
       is_lookup: !pageLoaded,
       limit: pagination.pageSize,
-      offset: (pagination.current - 1) * pagination.pageSize,
-      ...(search || {}),
-      ...(sorter || {}),
+      offset: (page - 1) * pagination.pageSize,
+      ...(rest || {}),
       filter_keys: inlineSearchFilter,
     };
     pageLoaded = true;
@@ -73,50 +83,76 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       fetchSqlServer();
     },
   }));
+  React.useEffect(() => {
+    return () => {
+      pageLoaded = false;
+    };
+  }, []);
+
+  // Start: Global Search
+  React.useEffect(() => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in commonFilters.search) {
+      const element = commonFilters.search[key];
+      if (element) {
+        globalSearch[key] = [element];
+      }
+    }
+    tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
+    fetchSqlServer(1);
+  }, [commonFilters.search]);
+  // End: Global Search
 
   // Start: Pagination ans Sorting
   const handleTableChange = (paginating, filters, sorter) => {
-    setSorter({
+    tableFilter = {
+      ...tableFilter,
       order_by: sorter.field || sorter.column?.children[0]?.dataIndex || 'id',
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
-    });
+    };
     setPagination(paginating);
-  };
-  React.useEffect(() => {
     fetchSqlServer();
-  }, [pagination]);
-  // End: Pagination ans Sorting
+  };
 
   // Start: Delete action
   const removeSqlServer = (id: number) => {
     dispatch(deleteSqlServer(id));
   };
   React.useEffect(() => {
-    if (sqlServers.delete.messages.length > 0) {
-      if (sqlServers.delete.hasErrors) {
-        toast.error(sqlServers.delete.messages.join(' '));
+    if (sqlServer.delete.messages.length > 0) {
+      if (sqlServer.delete.hasErrors) {
+        toast.error(sqlServer.delete.messages.join(' '));
       } else {
-        toast.success(sqlServers.delete.messages.join(' '));
+        toast.success(sqlServer.delete.messages.join(' '));
         fetchSqlServer();
       }
       dispatch(clearSqlServerMessages());
     }
-  }, [sqlServers.delete.messages]);
+  }, [sqlServer.delete.messages]);
   // End: Delete action
 
   // Keyword search
   const onFinishSearch = (value: string) => {
-    setSearch({ ...search, keyword: value });
+    tableFilter = {
+      ...tableFilter,
+      keyword: value,
+    };
+    fetchSqlServer();
   };
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
-    setInlineSearch(values);
+    tableFilter.filter_keys = values;
+    setPagination({ ...pagination, current: 1 });
+    fetchSqlServer();
   };
   const onReset = () => {
-    form.resetFields();
-    setInlineSearch({});
+    onFinish({});
   };
+  React.useEffect(() => {
+    form.resetFields();
+  }, [inlineSearch]);
+
   const getColumnLookup = (column: string) => {
     return sqlServerService.getLookupSqlServerByFieldName(column).then((res) => {
       return res.body.data;
@@ -126,10 +162,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return FilterWithSwapOption(dataIndex, getColumnLookup, form);
   };
   // End: Column level filter
-
-  React.useEffect(() => {
-    setPagination({ ...pagination, current: 1 });
-  }, [inlineSearch, search]);
 
   // Table columns
   const columns = [
@@ -162,7 +194,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('tenant_id', sqlServers.search.lookups?.tenants),
+          title: FilterByDropdown('tenant_id', sqlServer.search.lookups?.tenants),
           dataIndex: 'tenant_name',
           key: 'tenant_name',
           ellipsis: true,
@@ -174,7 +206,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('company_id', sqlServers.search.lookups?.companies),
+          title: FilterByDropdown('company_id', sqlServer.search.lookups?.companies),
           dataIndex: 'company_name',
           key: 'company_name',
           ellipsis: true,
@@ -186,7 +218,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('bu_id', sqlServers.search.lookups?.bus),
+          title: FilterByDropdown('bu_id', sqlServer.search.lookups?.bus),
           dataIndex: 'bu_name',
           key: 'bu_name',
           ellipsis: true,
@@ -580,16 +612,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           </Button>
         </div>
       </div>
-      <Form form={form} name="searchTable" onFinish={onFinish}>
+      <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
         <Table
           scroll={{ x: true }}
           rowKey={(record) => record.id}
-          dataSource={sqlServers.search.data}
+          dataSource={sqlServer.search.data}
           columns={getColumns()}
-          loading={sqlServers.search.loading}
+          loading={sqlServer.search.loading}
           pagination={{
             ...pagination,
-            total: sqlServers.search.count,
+            total: sqlServer.search.count,
             showTotal: (total) => `Total ${total} items`,
           }}
           onChange={handleTableChange}
