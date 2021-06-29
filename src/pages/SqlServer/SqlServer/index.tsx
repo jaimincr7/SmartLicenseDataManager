@@ -53,27 +53,33 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
       </div>
       <div className="main-card">
         <div className="input-btns-title">
-          <Row gutter={[30, 15]}>
-            <Col xs={24} md={24} lg={6}>
-              <div className="btns-block">
-                <Button
-                  onClick={() => setProcessModalVisible(true)}
-                  icon={<RadiusSettingOutlined />}
-                >
-                  Process Data
-                </Button>
-                <Button
-                  onClick={() => history.push('/sql-server/update-from-excel')}
-                  icon={<FileExcelOutlined />}
-                >
-                  Update from Excel
-                </Button>
-                <Button onClick={() => setDeleteModalVisible(true)} icon={<DeleteOutlined />}>
-                  Delete Dataset
-                </Button>
-              </div>
-            </Col>
-          </Row>
+              <Row gutter={[10, 4]}>
+                <Col>
+                  <Button
+                  className="btn-icon"
+                    onClick={() => setProcessModalVisible(true)}
+                    icon={   <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+                    </em>}
+                  >
+                    Process Data
+                  </Button>  
+                </Col>
+                <Col>
+                  <Button className="btn-icon" onClick={() => history.push('sql-server/update-from-excel')} icon={   <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`} alt="" />
+                    </em>}>
+                    Update from Excel
+                  </Button>
+                </Col>
+                <Col>
+                  <Button className="btn-icon" onClick={() => setDeleteModalVisible(true)} icon={   <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>}>
+                    Delete Dataset
+                  </Button>
+                </Col>
+              </Row>
         </div>
         <DataTable
           ref={dataTableRef}

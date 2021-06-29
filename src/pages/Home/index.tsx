@@ -83,6 +83,28 @@ const Home: React.FC<IHomeProps> = () => {
         </div>
       </div>
       <div className="main-card">
+        <div className="input-btns-title no-border">
+              <Row gutter={[10, 4]}>
+                <Col>
+                  <Button
+                  className="btn-icon"
+                    icon={   <em className="anticon"><img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" /> </em>}
+                  >
+                    Process Data
+                  </Button>
+                </Col>
+                <Col>
+                  <Button className="btn-icon"  icon={   <em className="anticon"> <img src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`} alt="" /> </em>}>
+                    Update from Excel
+                  </Button>
+                </Col>
+                <Col>
+                  <Button className="btn-icon" icon={   <em className="anticon"> <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" /> </em>}>
+                    Delete Dataset
+                  </Button>
+                </Col>
+              </Row>
+        </div>
         <div className="input-btns-title">
           <Row gutter={[30, 15]}>
             <Col xs={24} md={8} lg={6}>
