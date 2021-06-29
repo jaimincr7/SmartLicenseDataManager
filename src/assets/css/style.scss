@@ -129,6 +129,9 @@ blockquote,
 q {
   quotes: none;
 }
+.strong,strong{
+  font-weight: 700;
+}
 blockquote:before,
 blockquote:after,
 q:before,
@@ -256,6 +259,9 @@ img {
 .m-0 {
   margin: 0 !important;
 }
+.f-wrap{
+  flex-wrap: wrap;
+}
 .title-block {
   display: flex;
   flex-wrap: wrap;
@@ -283,6 +289,10 @@ img {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
 }
+label{
+    font-size: 14px;
+  line-height: 18px;
+}
 .label {
   display: inline-block;
   font-size: 14px;
@@ -305,6 +315,11 @@ img {
   .ant-row {
     align-items: flex-end;
   }
+  &.no-border{
+    border:none;
+    margin-bottom: 15px;
+    padding-bottom: 0;
+  }
 }
 .w-100 {
   width: 100%;
@@ -315,6 +330,15 @@ img {
 }
 .form-group {
   margin-bottom: 18px;
+}
+
+.form-inline {
+  display: flex;
+  align-items: center;
+  .label {
+    min-width: 120px;
+    margin: 0 8px 0 0;
+  }
 }
 .form-inline-pt {
   padding-top: 24px;
@@ -391,7 +415,32 @@ img {
   justify-content: center;
 }
 
+.upload-file-path{
+  display: inline-flex;
+  align-items: center;
+  .file-name{
+    padding: 0 6px 0 0;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .ant-btn{
+    background-color: #E9E9E9;
+  }
+}
+.d-flex{
+  display: flex;
+}
+
+
 // ant-design
+.btn-icon{
+  display: inline-flex;
+  align-items: center;
+}
 .ant-btn {
   background: #ececec;
   border-color: #ececec;
@@ -938,6 +987,9 @@ textarea.ant-input {
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
 @media (max-width: 1199px) {
+  .lg-none{
+    display: none;
+  }
 }
 @media (max-width: 991px) {
   .main-navigation {
@@ -946,8 +998,14 @@ textarea.ant-input {
   .wrapper {
     padding: 60px 0 0 0px;
   }
+  .md-none{
+    display: none;
+  }
 }
 @media (max-width: 767px) {
+  .sm-none{
+    display: none;
+  }
   .main-content {
     padding: 13px 16px;
   }
@@ -1022,5 +1080,9 @@ textarea.ant-input {
   }
   .custom-modal .modal-footer.pt-lg {
     padding: 20px 0px 10px;
+  }
+  .upload-file-path .file-name{
+    padding: 0 4px;
+    max-width: 200px;
   }
 }
