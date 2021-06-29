@@ -22,6 +22,7 @@ import {
 import { orderByType } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import { commonSelector } from '../../../../store/common/common.reducer';
+import { FileExcelOutlined } from '@ant-design/icons';
 
 let pageLoaded = false;
 
@@ -49,7 +50,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
-  const fetchSqlServer = (page: number = null) => {
+  const fetchSqlServer = (page: number = null, isExportToExcel = false) => {
     const { filter_keys, ...rest } = tableFilter;
 
     if (page) {
@@ -74,6 +75,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       offset: (page - 1) * pagination.pageSize,
       ...(rest || {}),
       filter_keys: inlineSearchFilter,
+      is_export_to_excel: isExportToExcel,
     };
     pageLoaded = true;
     dispatch(searchSqlServer(searchData));
@@ -162,6 +164,39 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return FilterWithSwapOption(dataIndex, getColumnLookup, form);
   };
   // End: Column level filter
+
+  const exportExcel = (fileName: string, url: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    link.remove();
+  };
+  // Download Excel
+  const downloadExcel = () => {
+    const { filter_keys, ...rest } = tableFilter;
+
+    const searchData: ISearchSqlServer = {
+      is_lookup: !pageLoaded,
+      limit: pagination.pageSize,
+      offset: (pagination.current - 1) * pagination.pageSize,
+      ...(rest || {}),
+      filter_keys: inlineSearch,
+      is_export_to_excel: true,
+    };
+    pageLoaded = true;
+
+    return sqlServerService.searchSqlServer(searchData).then((res) => {
+      if (!res) {
+        toast.error('Document not available.');
+        return;
+      } else {
+        const fileName = `${moment().format('yyyyMMDDHHmmss')}.xlsx`; //res.headers["content-disposition"];
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        exportExcel(fileName, url);
+      }
+    });
+  };
 
   // Table columns
   const columns = [
@@ -591,6 +626,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
+          <Button onClick={downloadExcel} icon={<FileExcelOutlined />}>
+            Export
+          </Button>
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button
               icon={

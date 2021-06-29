@@ -1,3 +1,4 @@
+import { IGetExcelColumns } from './../../services/sqlServer/sqlServer.model';
 import { IDropDownOption } from '../../common/models/common';
 import { ISqlServer } from '../../services/sqlServer/sqlServer.model';
 
@@ -30,6 +31,16 @@ export interface ISqlServerState {
     messages: string[];
   };
   processData: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
+  getExcelColumns: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: IGetExcelColumns;
+  };
+  bulkInsert: {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];

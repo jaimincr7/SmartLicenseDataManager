@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import ProcessDataModal from './ProcessDataModal';
 import DeleteDatasetModal from './DeleteDatasetModal';
-import { DeleteOutlined, FileExcelOutlined, RadiusSettingOutlined } from '@ant-design/icons'
+import { DeleteOutlined, FileExcelOutlined, RadiusSettingOutlined } from '@ant-design/icons';
 
 const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -56,10 +56,16 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
           <Row gutter={[30, 15]}>
             <Col xs={24} md={24} lg={6}>
               <div className="btns-block">
-                <Button onClick={() => setProcessModalVisible(true)} icon={<RadiusSettingOutlined />}>
+                <Button
+                  onClick={() => setProcessModalVisible(true)}
+                  icon={<RadiusSettingOutlined />}
+                >
                   Process Data
                 </Button>
-                <Button onClick={() => setProcessModalVisible(true)} icon={<FileExcelOutlined />}>
+                <Button
+                  onClick={() => history.push('/sql-server/update-from-excel')}
+                  icon={<FileExcelOutlined />}
+                >
                   Update from Excel
                 </Button>
                 <Button onClick={() => setDeleteModalVisible(true)} icon={<DeleteOutlined />}>
