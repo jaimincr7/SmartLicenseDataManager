@@ -213,7 +213,9 @@ export default class Ctable extends React.Component {
     return (
       <Table
         scroll={{ x: true }}
-        pagination={pagination}
+        pagination={{...pagination,
+          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+        }}
         columns={columns}
         dataSource={data}
         className="custom-table"
