@@ -651,7 +651,11 @@ textarea.ant-input {
   color: #1890ff;
   opacity: 0.8;
 }
-
+.ant-table-pagination{
+  .ant-pagination-total-text{
+    margin-right: auto;
+  }
+}
 .ant-pagination-item a {
   color: #4f4f4f;
 }
@@ -1064,6 +1068,14 @@ textarea.ant-input {
         margin: 0;
       }
     }
+  }
+  .ant-table-pagination.ant-pagination{
+    justify-content: center;
+  }
+  .ant-table-pagination .ant-pagination-total-text {
+      margin-right: 0;
+      width: 100%;
+      text-align: center;
   }
 }
 @media (max-width: 575px) {
