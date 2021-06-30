@@ -223,13 +223,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ],
     },
     {
-      title: 'License Id',
+      title: 'Product Name',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('license_id'),
-          dataIndex: 'license_id',
-          key: 'license_id',
+          title: FilterByDropdown(
+            'license_id',
+            sqlServerEntitlements.search.lookups?.sqlServerLicenses
+          ),
+          dataIndex: 'product_name',
+          key: 'product_name',
           ellipsis: true,
         },
       ],

@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
   getCompanyLookup,
+  getLicenseLookup,
   getTenantLookup,
 } from '../../../../store/common/common.action';
 import {
@@ -139,6 +140,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
 
   useEffect(() => {
     dispatch(getTenantLookup());
+    dispatch(getLicenseLookup());
     if (+id > 0) {
       dispatch(getSqlServerEntitlementsById(+id));
     }
@@ -292,14 +294,23 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License Id</label>
-                  <Form.Item
-                    name="license_id"
-                    label="License Id"
-                    className="m-0"
-                    rules={[{ type: 'number', min: 1 }]}
-                  >
-                    <InputNumber className="form-control w-100" />
+                  <label className="label">Product Name</label>
+                  <Form.Item name="license_id" className="m-0" label="Product name">
+                    <Select
+                      suffixIcon={
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                      }
+                      allowClear
+                      notFoundContent={
+                        commonLookups.licenseLookup.data.length === 0 ? <Spin size="small" /> : null
+                      }
+                    >
+                      {commonLookups.licenseLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>

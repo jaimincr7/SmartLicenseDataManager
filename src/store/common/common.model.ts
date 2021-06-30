@@ -20,4 +20,8 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  licenseLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
 }

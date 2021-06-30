@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ILookup } from '../../services/common/common.model';
 import { RootState } from '../app.model';
-import { getBULookup, getCompanyLookup, getTenantLookup } from './common.action';
+import { getBULookup, getCompanyLookup, getLicenseLookup, getTenantLookup } from './common.action';
 import { ICommonState, IGlobalSearch } from './common.model';
 
 export const initialState: ICommonState = {
@@ -15,6 +15,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   buLookup: {
+    data: [],
+    loading: false,
+  },
+  licenseLookup: {
     data: [],
     loading: false,
   },
@@ -63,6 +67,15 @@ export const commonSlice = createSlice({
     [getBULookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.buLookup.data = action.payload;
       state.buLookup.loading = false;
+    },
+
+    // License lookup
+    [getLicenseLookup.pending.type]: (state) => {
+      state.licenseLookup.loading = true;
+    },
+    [getLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.licenseLookup.data = action.payload;
+      state.licenseLookup.loading = false;
     },
   },
 });

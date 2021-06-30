@@ -24,7 +24,7 @@ export const getSqlServerById = createAsyncThunk('getSqlServerById', async (id: 
   const response = await sqlServerService.getSqlServerById(id).then((res) => {
     return res.body;
   });
-  return response.data.name;
+  return response.data;
 });
 
 export const saveSqlServer = createAsyncThunk('saveSqlServer', async (data: ISqlServer) => {

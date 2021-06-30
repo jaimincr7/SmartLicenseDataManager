@@ -23,5 +23,12 @@ class CommonService {
       return res.data;
     });
   }
+
+  public async getLicenseLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/sql-server-license/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
 }
 export default new CommonService();
