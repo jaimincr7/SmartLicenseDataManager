@@ -1,9 +1,8 @@
-import { InteractionRequiredAuthError } from "@azure/msal-browser";
-import { toast } from "react-toastify";
-import { loginRequest, msalInstance } from "../../utils/authConfig";
+import { InteractionRequiredAuthError } from '@azure/msal-browser';
+import { toast } from 'react-toastify';
+import { loginRequest, msalInstance } from '../../utils/authConfig';
 
 class AuthService {
-
   getAuthToken = async () => {
     const instance = msalInstance;
     let account = msalInstance.getActiveAccount();
@@ -12,7 +11,7 @@ class AuthService {
         toast.error(e.message);
       });
       account = msalInstance.getActiveAccount();
-      if(!account){
+      if (!account) {
         window.location.reload();
         return false;
       }
@@ -26,13 +25,13 @@ class AuthService {
     return instance
       .acquireTokenSilent(request)
       .then((response) => {
-        return (response.accessToken);
+        return response.accessToken;
       })
       .catch((e) => {
         if (e instanceof InteractionRequiredAuthError) {
           if (account) {
             instance.acquireTokenPopup(request).then((response) => {
-              return (response.accessToken);
+              return response.accessToken;
             });
           }
         }

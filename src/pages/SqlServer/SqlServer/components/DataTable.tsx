@@ -26,6 +26,13 @@ import { FileExcelOutlined } from '@ant-design/icons';
 
 let pageLoaded = false;
 
+let tableFilter = {
+  keyword: '',
+  order_by: 'id',
+  order_direction: 'DESC' as orderByType,
+  filter_keys: {},
+};
+
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
@@ -42,22 +49,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     pageSize: DEFAULT_PAGE_SIZE,
   });
 
-  let tableFilter = {
-    keyword: '',
-    order_by: 'id',
-    order_direction: 'DESC' as orderByType,
-    filter_keys: {},
-  };
-
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
-  const getSearchData = (page: number, isExportToExcel: boolean) => {
+  const getSearchData = (page, isExportToExcel: boolean) => {
     const { filter_keys, ...rest } = tableFilter;
 
-    if (page) {
-      setPagination({ ...pagination, current: page });
-    } else {
-      page = pagination.current;
+    if (!page) {
+      page = pagination;
     }
 
     const inlineSearchFilter = _.pickBy(filter_keys, function (value) {
@@ -72,18 +70,17 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
     const searchData: ISearchSqlServer = {
       is_lookup: !pageLoaded,
-      limit: pagination.pageSize,
-      offset: (page - 1) * pagination.pageSize,
+      limit: page.pageSize,
+      offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
       filter_keys: inlineSearchFilter,
       is_export_to_excel: isExportToExcel,
     };
     pageLoaded = true;
-
     return searchData;
   };
 
-  const fetchSqlServer = (page: number = null) => {
+  const fetchSqlServer = (page = null) => {
     const searchData = getSearchData(page, false);
     dispatch(searchSqlServer(searchData));
   };
@@ -108,7 +105,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       }
     }
     tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
-    fetchSqlServer(1);
+    setPagination({ ...pagination, current: 1 });
+    fetchSqlServer({ ...pagination, current: 1 });
   }, [commonFilters.search]);
   // End: Global Search
 
@@ -120,7 +118,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     };
     setPagination(paginating);
-    fetchSqlServer();
+    fetchSqlServer(paginating);
   };
 
   // Start: Delete action
@@ -153,7 +151,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const onFinish = (values: IInlineSearch) => {
     tableFilter.filter_keys = values;
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServer();
+    fetchSqlServer({ ...pagination, current: 1 });
   };
   const onReset = () => {
     onFinish({});
@@ -182,7 +180,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   // Export Excel
   const downloadExcel = () => {
     setLoading(true);
-    const searchData = getSearchData(pagination.current, true);
+    const searchData = getSearchData(pagination, true);
 
     return sqlServerService.exportExcelFile(searchData).then((res) => {
       if (!res) {
@@ -659,7 +657,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           pagination={{
             ...pagination,
             total: sqlServer.search.count,
-            showTotal: (total) => `Total ${total} items`,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
           className="custom-table"
