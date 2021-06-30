@@ -27,7 +27,7 @@ function Sidebar() {
           <SubMenu
             key="sub1"
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-cms.svg`} alt="" />}
-            title="CMS"
+            title="SQL Server"
           >
             <Menu.Item
               key="/sql-server"
@@ -47,6 +47,32 @@ function Sidebar() {
             >
               <Link to="/sql-server/entitlements" title="Entitlements">
                 Entitlements
+              </Link>
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="sub2"
+            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-cms.svg`} alt="" />}
+            title="AD"
+          >
+            <Menu.Item
+              key="/ad/ad-devices"
+              icon={
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
+              }
+            >
+              <Link to="/ad/ad-devices" title="AD Devices">
+                AD Devices
+              </Link>
+            </Menu.Item>
+            <Menu.Item
+              key="/ad/ad-devices-exclusion"
+              icon={
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
+              }
+            >
+              <Link to="/ad/ad-devices-exclusion" title="AD-Devices Exclusion">
+                AD-Devices Exclusion
               </Link>
             </Menu.Item>
           </SubMenu>
