@@ -1,11 +1,10 @@
 import { Button, Row } from 'antd';
 import React from 'react';
-import { useMsal } from '@azure/msal-react';
-import { loginRequest } from '../../utils/authConfig';
+import { loginRequest, msalInstance } from '../../utils/authConfig';
 import { toast } from 'react-toastify';
 
 export const Login: React.FC = () => {
-  const { instance } = useMsal();
+  const instance = msalInstance;
 
   function handleLogin(instance) {
     instance.loginRedirect(loginRequest).catch((e: Error) => {

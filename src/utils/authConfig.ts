@@ -1,3 +1,4 @@
+import { PublicClientApplication } from '@azure/msal-browser';
 import config from './config';
 
 export const msalConfig = {
@@ -18,3 +19,5 @@ export const msalConfig = {
 export const loginRequest = {
   scopes: [config.msalScopes, 'openid', 'email'],
 };
+
+export const msalInstance = new PublicClientApplication(msalConfig);

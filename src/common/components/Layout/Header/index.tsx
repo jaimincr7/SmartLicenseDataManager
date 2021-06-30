@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Dropdown } from 'antd';
-import { useMsal } from '@azure/msal-react';
 import { toast } from 'react-toastify';
+import { msalInstance } from '../../../../utils/authConfig';
 
 function toggleMenu() {
   if (window.innerWidth > 991) {
@@ -24,7 +24,7 @@ window.addEventListener(
 );
 
 const profileMenu = () => {
-  const { instance } = useMsal();
+  const instance = msalInstance;
 
   function handleLogout(instance) {
     instance.logoutRedirect().catch((e: Error) => {
