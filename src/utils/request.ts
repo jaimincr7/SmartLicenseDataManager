@@ -9,6 +9,7 @@ const request = axios.create({
   headers: {
     Accept: 'application/json',
   },
+  // withCredentials: true
 });
 
 // Request interceptors Customize based on your need
@@ -54,7 +55,7 @@ request.interceptors.response.use(
     toast.error(error.response.data.body.errors);
     switch (error.response.status) {
       // Authorization Failed Response can add other status codes here to manage error Logging
-      case 403:
+      case 401:
         break;
       default:
         break;
