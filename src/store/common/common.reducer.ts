@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ILookup } from '../../services/common/common.model';
 import { RootState } from '../app.model';
-import { getBULookup, getCompanyLookup, getTenantLookup } from './common.action';
+import { getBULookup, getCompanyLookup, getLicenseLookup, getTenantLookup } from './common.action';
 import { ICommonState, IGlobalSearch } from './common.model';
 
 export const initialState: ICommonState = {
@@ -18,6 +18,10 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  licenseLookup: {
+    data: [],
+    loading: false,
+  },
 };
 
 export const commonSlice = createSlice({
@@ -25,14 +29,7 @@ export const commonSlice = createSlice({
   initialState,
   reducers: {
     setGlobalSearch: (state, action: PayloadAction<IGlobalSearch>) => {
-      const res: IGlobalSearch = {};
-      for (const key in action.payload) {
-        const element = action.payload[key];
-        if (element !== null && element !== '') {
-          res[key] = element;
-        }
-      }
-      state.search = res;
+      state.search = action.payload;
     },
     clearCompanyLookUp: (state) => {
       state.companyLookup.data = [];
@@ -71,6 +68,15 @@ export const commonSlice = createSlice({
       state.buLookup.data = action.payload;
       state.buLookup.loading = false;
     },
+
+    // License lookup
+    [getLicenseLookup.pending.type]: (state) => {
+      state.licenseLookup.loading = true;
+    },
+    [getLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.licenseLookup.data = action.payload;
+      state.licenseLookup.loading = false;
+    },
   },
 });
 
@@ -78,7 +84,8 @@ export const commonSlice = createSlice({
 export const commonSelector = (state: RootState) => state.common;
 
 // Actions
-export const { clearCommon, clearBULookUp, clearCompanyLookUp } = commonSlice.actions;
+export const { clearCommon, clearBULookUp, clearCompanyLookUp, setGlobalSearch } =
+  commonSlice.actions;
 
 // The reducer
 export default commonSlice.reducer;

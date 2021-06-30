@@ -23,3 +23,10 @@ export const getBULookup = createAsyncThunk('getBULookup', async (companyId: num
   });
   return response.data;
 });
+
+export const getLicenseLookup = createAsyncThunk('getLicenseLookup', async () => {
+  const response = await commonService.getLicenseLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});

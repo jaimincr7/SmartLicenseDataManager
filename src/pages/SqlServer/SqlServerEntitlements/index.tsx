@@ -1,41 +1,30 @@
-import { Button, Input, Menu, Dropdown, Checkbox, Form } from 'antd';
-import { useEffect, useState } from 'react';
-import { ISearchSqlServerEntitlements } from '../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
+import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../../store/app.hooks';
 import { clearSqlServerEntitlements } from '../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
-import { ISqlServerEntitlementsProps } from './sqlServerEntitlements.model';
+// import './sqlServer.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerEntitlementsModal from './AddSqlServerEntitlementsModal';
+import { useHistory } from 'react-router-dom';
+import { ISqlServerEntitlementsProps } from './sqlServerEntitlements.model';
 
-const dropdownMenu = (
-  <Menu>
-    <Menu.Item key="0">
-      <Checkbox>Tenant</Checkbox>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <Checkbox>Company</Checkbox>
-    </Menu.Item>
-  </Menu>
-);
-
-const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
+const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => {
   const dispatch = useAppDispatch();
-  const [form] = Form.useForm();
+  const dataTableRef = useRef(null);
+  const history = useHistory();
+
+  const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
-  const [search, setSearch] = useState({
-    keyword: '',
-    offset: 0,
-    is_lookup: false,
-  });
-
-  const onFinish = (values: ISearchSqlServerEntitlements) => {
-    setSearch({ ...search, keyword: values.keyword });
-  };
+  useEffect(() => {
+    if (+urlId > 0) {
+      setAddModalVisible(true);
+      setId(+urlId);
+    }
+  }, [+urlId]);
 
   useEffect(() => {
     return () => {
@@ -43,20 +32,9 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
     };
   }, []);
 
-  const Filter = () => (
-    <>
-      <Form form={form} name="horizontal_login" layout="inline" onFinish={onFinish}>
-        <Form.Item name="keyword">
-          <Input
-            placeholder="Search by keyword"
-            className="form-control sm-input"
-            prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
-            // allowClear={true}
-          />
-        </Form.Item>
-      </Form>
-    </>
-  );
+  const refreshDataTable = () => {
+    dataTableRef?.current.refreshData();
+  };
 
   return (
     <div className="homePage">
@@ -67,33 +45,8 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
         </div>
       </div>
       <div className="main-card">
-        <div className="title-block search-block">
-          <Filter />
-          <div className="btns-block">
-            <Dropdown overlay={dropdownMenu} trigger={['click']} overlayClassName="custom-dropdown">
-              <Button
-                icon={
-                  <em className="anticon">
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-lines.svg`} alt="" />
-                  </em>
-                }
-              >
-                Show/Hide Columns
-              </Button>
-            </Dropdown>
-            <Button
-              type="primary"
-              onClick={() => {
-                setAddModalVisible(true);
-                setId(0);
-              }}
-            >
-              Add Entitlements
-            </Button>
-          </div>
-        </div>
         <DataTable
-          search={search}
+          ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -103,9 +56,12 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = () => {
       {addModalVisible && (
         <AddSqlServerEntitlementsModal
           showModal={addModalVisible}
-          handleModalClose={() => setAddModalVisible(false)}
+          handleModalClose={() => {
+            setAddModalVisible(false);
+            history.push('/sql-server/entitlements');
+          }}
           id={id}
-          refreshDataTable={() => setSearch({ ...search })}
+          refreshDataTable={() => refreshDataTable()}
         />
       )}
     </div>

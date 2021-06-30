@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import authService from '../services/auth/auth.service';
 import config from './config';
 
 const request = axios.create({
@@ -8,13 +9,29 @@ const request = axios.create({
   headers: {
     Accept: 'application/json',
   },
+  // withCredentials: true
 });
 
 // Request interceptors Customize based on your need
 request.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // Add X-Access-Token header to every request, you can add other custom headers here
-    // config.headers["Authorization"] = 'Bearer ' + authToken;
+    const authToken = await authService.getAuthToken();
+    if (authToken) {
+      // Add token to auth
+      config.headers['Authorization'] = `Bearer ${authToken}`;
+    }
+
+    // Custom encrypted data
+    // if (!config.headers['X-Skip-UserEncData']) {
+    //   const userEncData = await userService.getUserEncData();
+    //   if (userEncData) {
+    //     config.headers['X-Data'] = userEncData;
+    //   }
+    // } else {
+    //   delete config.headers['X-Skip-UserEncData'];
+    // }
+
     return config;
   },
   (error) => {
@@ -38,7 +55,7 @@ request.interceptors.response.use(
     toast.error(error.response.data.body.errors);
     switch (error.response.status) {
       // Authorization Failed Response can add other status codes here to manage error Logging
-      case 403:
+      case 401:
         break;
       default:
         break;

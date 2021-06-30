@@ -1,3 +1,4 @@
+import { IDropDownOption } from '../../common/models/common';
 import { ISqlServerEntitlements } from '../../services/sqlServerEntitlements/sqlServerEntitlements.model';
 
 export interface ISqlServerEntitlementsState {
@@ -6,6 +7,7 @@ export interface ISqlServerEntitlementsState {
     hasErrors: boolean;
     data: ISqlServerEntitlements[];
     count: number;
+    lookups?: { [key: string]: IDropDownOption[] };
   };
   getById: {
     loading: boolean;

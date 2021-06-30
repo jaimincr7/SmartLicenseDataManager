@@ -2,7 +2,11 @@ import { ISearchSqlServerEntitlements } from '../../../../services/sqlServerEnti
 
 export interface IDataTable {
   search?: ISearchSqlServerEntitlements;
-  setSelectedId: Function;
+  setSelectedId: (id: number) => void;
 }
 
 export type fixedColumn = 'right' | 'left';
+
+export interface IInlineSearch {
+  [key: string]: string | string[] | number[];
+}

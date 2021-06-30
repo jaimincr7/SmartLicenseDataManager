@@ -21,42 +21,67 @@ import {
 } from '../../../../common/components/DataTableFilters';
 import { orderByType } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
+import { commonSelector } from '../../../../store/common/common.reducer';
+import { FileExcelOutlined } from '@ant-design/icons';
 
 let pageLoaded = false;
+
+let tableFilter = {
+  keyword: '',
+  order_by: 'id',
+  order_direction: 'DESC' as orderByType,
+  filter_keys: {},
+};
 
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
-  const sqlServers = useAppSelector(sqlServerSelector);
+  const sqlServer = useAppSelector(sqlServerSelector);
+  const commonFilters = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
-
   const [form] = Form.useForm();
 
   const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
-  const [search, setSearch] = useState({ keyword: '' });
+  const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
   });
-  const [sorter, setSorter] = useState({
-    order_by: 'id',
-    order_direction: 'DESC' as orderByType,
-  });
+
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
-  const fetchSqlServer = () => {
+  const getSearchData = (page, isExportToExcel: boolean) => {
+    const { filter_keys, ...rest } = tableFilter;
+
+    if (!page) {
+      page = pagination;
+    }
+
+    const inlineSearchFilter = _.pickBy(filter_keys, function (value) {
+      return !(
+        value === undefined ||
+        value === '' ||
+        _.isNull(value) ||
+        (Array.isArray(value) && value.length === 0)
+      );
+    });
+    setInlineSearch(inlineSearchFilter);
+
     const searchData: ISearchSqlServer = {
-      order_by: 'id',
-      order_direction: 'DESC',
       is_lookup: !pageLoaded,
-      limit: pagination.pageSize,
-      offset: (pagination.current - 1) * pagination.pageSize,
-      ...(search || {}),
-      ...(sorter || {}),
-      filter_keys: inlineSearch,
+      limit: page.pageSize,
+      offset: (page.current - 1) * page.pageSize,
+      ...(rest || {}),
+      filter_keys: inlineSearchFilter,
+      is_export_to_excel: isExportToExcel,
     };
     pageLoaded = true;
+    return searchData;
+  };
+
+  const fetchSqlServer = (page = null) => {
+    const searchData = getSearchData(page, false);
     dispatch(searchSqlServer(searchData));
   };
   useImperativeHandle(ref, () => ({
@@ -64,50 +89,77 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       fetchSqlServer();
     },
   }));
+  React.useEffect(() => {
+    return () => {
+      pageLoaded = false;
+    };
+  }, []);
+
+  // Start: Global Search
+  React.useEffect(() => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in commonFilters.search) {
+      const element = commonFilters.search[key];
+      if (element) {
+        globalSearch[key] = [element];
+      }
+    }
+    tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
+    setPagination({ ...pagination, current: 1 });
+    fetchSqlServer({ ...pagination, current: 1 });
+  }, [commonFilters.search]);
+  // End: Global Search
 
   // Start: Pagination ans Sorting
   const handleTableChange = (paginating, filters, sorter) => {
-    setSorter({
+    tableFilter = {
+      ...tableFilter,
       order_by: sorter.field || sorter.column?.children[0]?.dataIndex || 'id',
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
-    });
+    };
     setPagination(paginating);
+    fetchSqlServer(paginating);
   };
-  React.useEffect(() => {
-    fetchSqlServer();
-  }, [pagination]);
-  // End: Pagination ans Sorting
 
   // Start: Delete action
   const removeSqlServer = (id: number) => {
     dispatch(deleteSqlServer(id));
   };
   React.useEffect(() => {
-    if (sqlServers.delete.messages.length > 0) {
-      if (sqlServers.delete.hasErrors) {
-        toast.error(sqlServers.delete.messages.join(' '));
+    if (sqlServer.delete.messages.length > 0) {
+      if (sqlServer.delete.hasErrors) {
+        toast.error(sqlServer.delete.messages.join(' '));
       } else {
-        toast.success(sqlServers.delete.messages.join(' '));
+        toast.success(sqlServer.delete.messages.join(' '));
         fetchSqlServer();
       }
       dispatch(clearSqlServerMessages());
     }
-  }, [sqlServers.delete.messages]);
+  }, [sqlServer.delete.messages]);
   // End: Delete action
 
   // Keyword search
   const onFinishSearch = (value: string) => {
-    setSearch({ ...search, keyword: value });
+    tableFilter = {
+      ...tableFilter,
+      keyword: value,
+    };
+    fetchSqlServer();
   };
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
-    setInlineSearch(values);
+    tableFilter.filter_keys = values;
+    setPagination({ ...pagination, current: 1 });
+    fetchSqlServer({ ...pagination, current: 1 });
   };
   const onReset = () => {
-    form.resetFields();
-    setInlineSearch({});
+    onFinish({});
   };
+  React.useEffect(() => {
+    form.resetFields();
+  }, [inlineSearch]);
+
   const getColumnLookup = (column: string) => {
     return sqlServerService.getLookupSqlServerByFieldName(column).then((res) => {
       return res.body.data;
@@ -118,9 +170,30 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
   // End: Column level filter
 
-  React.useEffect(() => {
-    setPagination({ ...pagination, current: 1 });
-  }, [inlineSearch, search]);
+  const exportExcel = (fileName: string, url: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    link.remove();
+  };
+  // Export Excel
+  const downloadExcel = () => {
+    setLoading(true);
+    const searchData = getSearchData(pagination, true);
+
+    return sqlServerService.exportExcelFile(searchData).then((res) => {
+      if (!res) {
+        toast.error('Document not available.');
+        return;
+      } else {
+        const fileName = `${moment().format('yyyyMMDDHHmmss')}.xlsx`; //res.headers["content-disposition"];
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        exportExcel(fileName, url);
+        setLoading(false);
+      }
+    });
+  };
 
   // Table columns
   const columns = [
@@ -153,7 +226,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('tenant_id', sqlServers.search.lookups?.tenants),
+          title: FilterByDropdown('tenant_id', sqlServer.search.lookups?.tenants),
           dataIndex: 'tenant_name',
           key: 'tenant_name',
           ellipsis: true,
@@ -165,7 +238,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('company_id', sqlServers.search.lookups?.companies),
+          title: FilterByDropdown('company_id', sqlServer.search.lookups?.companies),
           dataIndex: 'company_name',
           key: 'company_name',
           ellipsis: true,
@@ -177,7 +250,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('bu_id', sqlServers.search.lookups?.bus),
+          title: FilterByDropdown('bu_id', sqlServer.search.lookups?.bus),
           dataIndex: 'bu_name',
           key: 'bu_name',
           ellipsis: true,
@@ -470,7 +543,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               <Button
                 htmlType="submit"
                 className={`action-btn filter-btn p-0 ${
-                  _.isEmpty(inlineSearch) ? '' : 'active'
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
                 }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
@@ -550,6 +623,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
+          <Button onClick={downloadExcel} icon={<FileExcelOutlined />} loading={loading}>
+            Export
+          </Button>
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button
               icon={
@@ -571,14 +647,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           </Button>
         </div>
       </div>
-      <Form form={form} name="searchTable" onFinish={onFinish}>
+      <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
         <Table
           scroll={{ x: true }}
           rowKey={(record) => record.id}
-          dataSource={sqlServers.search.data}
+          dataSource={sqlServer.search.data}
           columns={getColumns()}
-          loading={sqlServers.search.loading}
-          pagination={{ ...pagination, total: sqlServers.search.count }}
+          loading={sqlServer.search.loading}
+          pagination={{
+            ...pagination,
+            total: sqlServer.search.count,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+          }}
           onChange={handleTableChange}
           className="custom-table"
           sortDirections={['ascend', 'descend']}

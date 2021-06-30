@@ -8,15 +8,21 @@ import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerModal from './AddSqlServer';
 import { useHistory } from 'react-router-dom';
+import { Row, Col, Button } from 'antd';
+import ProcessDataModal from './ProcessDataModal';
+import DeleteDatasetModal from './DeleteDatasetModal';
 
 const SqlServer: React.FC<ISqlServerProps> = (props) => {
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
-  
+
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
@@ -45,6 +51,55 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
+        <div className="input-btns-title">
+          <Row gutter={[10, 4]}>
+            <Col>
+              <Button
+                className="btn-icon"
+                onClick={() => setProcessModalVisible(true)}
+                icon={
+                  <em className="anticon">
+                    <img
+                      src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
+                      alt=""
+                    />
+                  </em>
+                }
+              >
+                Process Data
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                className="btn-icon"
+                onClick={() => history.push('sql-server/update-from-excel')}
+                icon={
+                  <em className="anticon">
+                    <img
+                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                      alt=""
+                    />
+                  </em>
+                }
+              >
+                Update from Excel
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                className="btn-icon"
+                onClick={() => setDeleteModalVisible(true)}
+                icon={
+                  <em className="anticon">
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                  </em>
+                }
+              >
+                Delete Dataset
+              </Button>
+            </Col>
+          </Row>
+        </div>
         <DataTable
           ref={dataTableRef}
           setSelectedId={(id) => {
@@ -57,11 +112,23 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
         <AddSqlServerModal
           showModal={addModalVisible}
           handleModalClose={() => {
-            setAddModalVisible(false); 
+            setAddModalVisible(false);
             history.push('/sql-server');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
         />
       )}
     </div>

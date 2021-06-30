@@ -1,10 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
-import { ISqlServer } from '../../services/sqlServer/sqlServer.model';
+import { IGetExcelColumns, ISqlServer } from '../../services/sqlServer/sqlServer.model';
 import { RootState } from '../app.model';
 import {
+  bulkInsert,
+  deleteDataset,
   deleteSqlServer,
+  getExcelColumns,
   getSqlServerById,
+  processData,
   saveSqlServer,
   searchSqlServer,
 } from './sqlServer.action';
@@ -33,6 +37,26 @@ export const initialState: ISqlServerState = {
     hasErrors: false,
     messages: [],
   },
+  deleteDataset: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  processData: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  getExcelColumns: {
+    loading: false,
+    hasErrors: false,
+    data: null,
+  },
+  bulkInsert: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const sqlServerSlice = createSlice({
@@ -45,9 +69,15 @@ export const sqlServerSlice = createSlice({
     clearSqlServerMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
+      state.deleteDataset.messages = [];
+      state.processData.messages = [];
+      state.bulkInsert.messages = [];
     },
     clearSqlServerGetById: (state) => {
       state.getById.data = null;
+    },
+    clearExcelColumns: (state) => {
+      state.getExcelColumns.data = null;
     },
   },
   extraReducers: {
@@ -118,6 +148,68 @@ export const sqlServerSlice = createSlice({
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
     },
+
+    // Delete Dataset
+    [deleteDataset.pending.type]: (state) => {
+      state.deleteDataset.loading = true;
+      state.deleteDataset.messages = [];
+    },
+    [deleteDataset.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.deleteDataset.loading = false;
+      state.deleteDataset.hasErrors = false;
+      state.deleteDataset.messages = action.payload.messages;
+    },
+    [deleteDataset.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.deleteDataset.loading = false;
+      state.deleteDataset.hasErrors = true;
+      state.deleteDataset.messages = action.payload.errors;
+    },
+
+    // Process Data
+    [processData.pending.type]: (state) => {
+      state.processData.loading = true;
+      state.processData.messages = [];
+    },
+    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = false;
+      state.processData.messages = action.payload.messages;
+    },
+    [processData.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = true;
+      state.processData.messages = action.payload.errors;
+    },
+
+    // Get Excel Columns
+    [getExcelColumns.pending.type]: (state) => {
+      state.getExcelColumns.loading = true;
+    },
+    [getExcelColumns.fulfilled.type]: (state, action: PayloadAction<IGetExcelColumns>) => {
+      state.getExcelColumns.data = action.payload;
+      state.getExcelColumns.loading = false;
+      state.getExcelColumns.hasErrors = false;
+    },
+    [getExcelColumns.rejected.type]: (state) => {
+      state.getExcelColumns.loading = false;
+      state.getExcelColumns.hasErrors = true;
+    },
+
+    // Bulk Insert
+    [bulkInsert.pending.type]: (state) => {
+      state.bulkInsert.loading = true;
+      state.bulkInsert.messages = [];
+    },
+    [bulkInsert.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.bulkInsert.loading = false;
+      state.bulkInsert.hasErrors = false;
+      state.bulkInsert.messages = action.payload.messages;
+    },
+    [bulkInsert.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.bulkInsert.loading = false;
+      state.bulkInsert.hasErrors = true;
+      state.bulkInsert.messages = action.payload.errors;
+    },
   },
 });
 
@@ -125,7 +217,7 @@ export const sqlServerSlice = createSlice({
 export const sqlServerSelector = (state: RootState) => state.sqlServer;
 
 // Actions
-export const { clearSqlServer, clearSqlServerMessages, clearSqlServerGetById } =
+export const { clearSqlServer, clearSqlServerMessages, clearSqlServerGetById, clearExcelColumns } =
   sqlServerSlice.actions;
 
 // The reducer
