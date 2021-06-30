@@ -1,32 +1,23 @@
-// import { IApiResponse, ISearchResponse } from '../../common/models/common';
+import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
 import {
   IDeleteDataset,
   ISearchSqlServer,
   ISqlServer,
   IBulkInsertDataset,
+  IProcessData,
 } from './sqlServer.model';
 
 class SqlServerService {
   ENDPOINT = '/sql-server';
 
-  public async searchSqlServer(searchParams?: ISearchSqlServer): Promise<any> {
-    if (searchParams.is_export_to_excel) {
-      const url = `${this.ENDPOINT}/search`;
-      return request({
-        url,
-        method: 'POST',
-        data: searchParams,
-        responseType: 'blob' as 'json',
-      }).then((res) => {
-        return res;
-      });
-    } else {
-      const url = `${this.ENDPOINT}/search`;
-      return request({ url, method: 'POST', data: searchParams }).then((res) => {
-        return res.data;
-      });
-    }
+  public async searchSqlServer(
+    searchParams?: ISearchSqlServer
+  ): Promise<IApiResponse<ISearchResponse<ISqlServer>>> {
+    const url = `${this.ENDPOINT}/search`;
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
+      return res.data;
+    });
   }
 
   public async getLookupSqlServerByFieldName(fieldName: string): Promise<any> {
@@ -77,10 +68,22 @@ class SqlServerService {
     });
   }
 
-  public async processData(data: IDeleteDataset): Promise<any> {
+  public async processData(data: IProcessData): Promise<any> {
     const url = `${this.ENDPOINT}/process-data`;
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
+    });
+  }
+
+  public async exportExcelFile(searchParams?: ISearchSqlServer): Promise<any> {
+    const url = `${this.ENDPOINT}/search`;
+    return request({
+      url,
+      method: 'POST',
+      data: searchParams,
+      responseType: 'blob' as 'json',
+    }).then((res) => {
+      return res;
     });
   }
 

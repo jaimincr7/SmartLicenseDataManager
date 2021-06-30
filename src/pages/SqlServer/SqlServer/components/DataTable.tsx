@@ -36,6 +36,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [form] = Form.useForm();
 
   const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
+  const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -50,7 +51,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
-  const fetchSqlServer = (page: number = null, isExportToExcel = false) => {
+  const getSearchData = (page: number, isExportToExcel: boolean) => {
     const { filter_keys, ...rest } = tableFilter;
 
     if (page) {
@@ -78,6 +79,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       is_export_to_excel: isExportToExcel,
     };
     pageLoaded = true;
+
+    return searchData;
+  };
+
+  const fetchSqlServer = (page: number = null) => {
+    const searchData = getSearchData(page, false);
     dispatch(searchSqlServer(searchData));
   };
   useImperativeHandle(ref, () => ({
@@ -172,21 +179,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     link.click();
     link.remove();
   };
-  // Download Excel
+  // Export Excel
   const downloadExcel = () => {
-    const { filter_keys, ...rest } = tableFilter;
+    setLoading(true);
+    const searchData = getSearchData(pagination.current, true);
 
-    const searchData: ISearchSqlServer = {
-      is_lookup: !pageLoaded,
-      limit: pagination.pageSize,
-      offset: (pagination.current - 1) * pagination.pageSize,
-      ...(rest || {}),
-      filter_keys: inlineSearch,
-      is_export_to_excel: true,
-    };
-    pageLoaded = true;
-
-    return sqlServerService.searchSqlServer(searchData).then((res) => {
+    return sqlServerService.exportExcelFile(searchData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
@@ -194,6 +192,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         const fileName = `${moment().format('yyyyMMDDHHmmss')}.xlsx`; //res.headers["content-disposition"];
         const url = window.URL.createObjectURL(new Blob([res.data]));
         exportExcel(fileName, url);
+        setLoading(false);
       }
     });
   };
@@ -626,7 +625,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
-          <Button onClick={downloadExcel} icon={<FileExcelOutlined />}>
+          <Button onClick={downloadExcel} icon={<FileExcelOutlined />} loading={loading}>
             Export
           </Button>
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
