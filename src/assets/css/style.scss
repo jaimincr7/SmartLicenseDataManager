@@ -129,7 +129,8 @@ blockquote,
 q {
   quotes: none;
 }
-.strong,strong{
+.strong,
+strong {
   font-weight: 700;
 }
 blockquote:before,
@@ -259,8 +260,11 @@ img {
 .m-0 {
   margin: 0 !important;
 }
-.f-wrap{
+.f-wrap {
   flex-wrap: wrap;
+}
+.ant-form {
+  color: #4f4f4f;
 }
 .title-block {
   display: flex;
@@ -289,8 +293,8 @@ img {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
 }
-label{
-    font-size: 14px;
+label {
+  font-size: 14px;
   line-height: 18px;
 }
 .label {
@@ -315,8 +319,8 @@ label{
   .ant-row {
     align-items: flex-end;
   }
-  &.no-border{
-    border:none;
+  &.no-border {
+    border: none;
     margin-bottom: 15px;
     padding-bottom: 0;
   }
@@ -415,10 +419,10 @@ label{
   justify-content: center;
 }
 
-.upload-file-path{
+.upload-file-path {
   display: inline-flex;
   align-items: center;
-  .file-name{
+  .file-name {
     padding: 0 6px 0 0;
     max-width: 300px;
     overflow: hidden;
@@ -427,17 +431,46 @@ label{
     font-size: 14px;
     line-height: 18px;
   }
-  .ant-btn{
-    background-color: #E9E9E9;
+  .ant-btn {
+    background-color: #e9e9e9;
   }
 }
-.d-flex{
+.upload-file > span {
+  display: inline-flex;
+  align-items: center;
+  .ant-upload-list .ant-upload-list-item {
+    margin: 0 0 0 8px;
+  }
+  .ant-upload-list-item-card-actions-btn.ant-btn-sm {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    background-color: #e9e9e9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ant-upload-list-item-name {
+    max-width: 300px;
+    color: #4f4f4f;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .ant-upload-list-item:hover .ant-upload-list-item-info {
+    background-color: transparent;
+  }
+}
+
+.d-flex {
   display: flex;
 }
 
-
 // ant-design
-.btn-icon{
+.btn-icon {
   display: inline-flex;
   align-items: center;
 }
@@ -987,7 +1020,7 @@ textarea.ant-input {
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
 @media (max-width: 1199px) {
-  .lg-none{
+  .lg-none {
     display: none;
   }
 }
@@ -998,12 +1031,12 @@ textarea.ant-input {
   .wrapper {
     padding: 60px 0 0 0px;
   }
-  .md-none{
+  .md-none {
     display: none;
   }
 }
 @media (max-width: 767px) {
-  .sm-none{
+  .sm-none {
     display: none;
   }
   .main-content {
@@ -1081,7 +1114,7 @@ textarea.ant-input {
   .custom-modal .modal-footer.pt-lg {
     padding: 20px 0px 10px;
   }
-  .upload-file-path .file-name{
+  .upload-file-path .file-name {
     padding: 0 4px;
     max-width: 200px;
   }
