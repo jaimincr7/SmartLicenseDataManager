@@ -31,7 +31,7 @@ function AppRoutes() {
           <LayoutRoute exact path="/" layout={MainLayout} component={Home} />
           <LayoutRoute exact path="/add-event" layout={MainLayout} component={AddEvent} />
           <LayoutRoute path="/sql-server" layout={MainLayout} component={SqlServerRoutes} />
-          <LayoutRoute path="/ad/*" layout={MainLayout} component={AdRoutes} />
+          <LayoutRoute path="/ad" layout={MainLayout} component={AdRoutes} />
           <LayoutRoute path="/upload-excel" layout={MainLayout} component={UploadExcel} />
 
           {/* keep least always */}

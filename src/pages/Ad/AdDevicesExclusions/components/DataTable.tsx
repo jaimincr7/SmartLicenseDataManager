@@ -4,11 +4,10 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { fixedColumn, IDataTable, IInlineSearch } from './dataTable.model';
 import moment from 'moment';
-import { Common, DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
+import { DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
   Filter,
-  FilterByDate,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTableFilters';
@@ -17,12 +16,18 @@ import { useHistory } from 'react-router-dom';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import {
-  adDevicesSelector,
-  clearAdDeviceMessages,
-} from '../../../../store/adDevices/adDevices.reducer';
-import { IAdDevices, ISearchAdDevices } from '../../../../services/adDevices/adDevices.model';
-import { deleteAdDevice, searchAdDevices } from '../../../../store/adDevices/adDevices.action';
-import adDevicesService from '../../../../services/adDevices/adDevices.service';
+  adDevicesExclusionsSelector,
+  clearAdDevicesExclusionsMessages,
+} from '../../../../store/adDevicesExclusions/adDevicesExclusions.reducer';
+import {
+  IAdDevicesExclusions,
+  ISearchAdDevicesExclusions,
+} from '../../../../services/adDevicesExclusions/adDevicesExclusions.model';
+import {
+  deleteAdDevicesExclusions,
+  searchAdDevicesExclusions,
+} from '../../../../store/adDevicesExclusions/adDevicesExclusions.action';
+import adDevicesExclusionsService from '../../../../services/adDevicesExclusions/adDevicesExclusions.service';
 
 let pageLoaded = false;
 
@@ -36,7 +41,7 @@ let tableFilter = {
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
-  const adDevices = useAppSelector(adDevicesSelector);
+  const adDevicesExclusions = useAppSelector(adDevicesExclusionsSelector);
   const commonFilters = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -68,7 +73,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
     setInlineSearch(inlineSearchFilter);
 
-    const searchData: ISearchAdDevices = {
+    const searchData: ISearchAdDevicesExclusions = {
       is_lookup: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
@@ -80,13 +85,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return searchData;
   };
 
-  const fetchAdDevices = (page = null) => {
+  const fetchAdDevicesExclusions = (page = null) => {
     const searchData = getSearchData(page, false);
-    dispatch(searchAdDevices(searchData));
+    dispatch(searchAdDevicesExclusions(searchData));
   };
   useImperativeHandle(ref, () => ({
     refreshData() {
-      fetchAdDevices();
+      fetchAdDevicesExclusions();
     },
   }));
   React.useEffect(() => {
@@ -106,7 +111,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     }
     tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
     setPagination({ ...pagination, current: 1 });
-    fetchAdDevices({ ...pagination, current: 1 });
+    fetchAdDevicesExclusions({ ...pagination, current: 1 });
   }, [commonFilters.search]);
   // End: Global Search
 
@@ -118,24 +123,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     };
     setPagination(paginating);
-    fetchAdDevices(paginating);
+    fetchAdDevicesExclusions(paginating);
   };
 
   // Start: Delete action
-  const removeAdDevice = (id: number) => {
-    dispatch(deleteAdDevice(id));
+  const removeAdDevicesExclusions = (id: number) => {
+    dispatch(deleteAdDevicesExclusions(id));
   };
   React.useEffect(() => {
-    if (adDevices.delete.messages.length > 0) {
-      if (adDevices.delete.hasErrors) {
-        toast.error(adDevices.delete.messages.join(' '));
+    if (adDevicesExclusions.delete.messages.length > 0) {
+      if (adDevicesExclusions.delete.hasErrors) {
+        toast.error(adDevicesExclusions.delete.messages.join(' '));
       } else {
-        toast.success(adDevices.delete.messages.join(' '));
-        fetchAdDevices();
+        toast.success(adDevicesExclusions.delete.messages.join(' '));
+        fetchAdDevicesExclusions();
       }
-      dispatch(clearAdDeviceMessages());
+      dispatch(clearAdDevicesExclusionsMessages());
     }
-  }, [adDevices.delete.messages]);
+  }, [adDevicesExclusions.delete.messages]);
   // End: Delete action
 
   // Keyword search
@@ -144,14 +149,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ...tableFilter,
       keyword: value,
     };
-    fetchAdDevices();
+    fetchAdDevicesExclusions();
   };
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
     tableFilter.filter_keys = values;
     setPagination({ ...pagination, current: 1 });
-    fetchAdDevices({ ...pagination, current: 1 });
+    fetchAdDevicesExclusions({ ...pagination, current: 1 });
   };
   const onReset = () => {
     onFinish({});
@@ -161,9 +166,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   }, [inlineSearch]);
 
   const getColumnLookup = (column: string) => {
-    return adDevicesService.getLookupAdDevicesByFieldName(column).then((res) => {
-      return res.body.data;
-    });
+    return adDevicesExclusionsService
+      .getLookupAdDevicesExclusionsByFieldName(column)
+      .then((res) => {
+        return res.body.data;
+      });
   };
   const FilterBySwap = (dataIndex: string) => {
     return FilterWithSwapOption(dataIndex, getColumnLookup, form);
@@ -182,7 +189,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setLoading(true);
     const searchData = getSearchData(pagination, true);
 
-    return adDevicesService.exportExcelFile(searchData).then((res) => {
+    return adDevicesExclusionsService.exportExcelFile(searchData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
@@ -198,35 +205,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   // Table columns
   const columns = [
     {
-      title: 'Name',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('name'),
-          dataIndex: 'name',
-          key: 'name',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Device Type',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('device_type'),
-          dataIndex: 'device_type',
-          key: 'device_type',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
       title: 'Tenant Name',
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('tenant_id', adDevices.search.lookups?.tenants),
+          title: FilterByDropdown('tenant_id', adDevicesExclusions.search.lookups?.tenants),
           dataIndex: 'tenant_name',
           key: 'tenant_name',
           ellipsis: true,
@@ -238,7 +221,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('company_id', adDevices.search.lookups?.companies),
+          title: FilterByDropdown('company_id', adDevicesExclusions.search.lookups?.companies),
           dataIndex: 'company_name',
           key: 'company_name',
           ellipsis: true,
@@ -250,7 +233,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('bu_id', adDevices.search.lookups?.bus),
+          title: FilterByDropdown('bu_id', adDevicesExclusions.search.lookups?.bus),
           dataIndex: 'bu_name',
           key: 'bu_name',
           ellipsis: true,
@@ -258,316 +241,102 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ],
     },
     {
-      title: 'Date Added',
+      title: 'Field',
       sorter: true,
       children: [
         {
-          title: FilterByDate('date_added'),
-          dataIndex: 'date_added',
-          key: 'date_added',
+          title: FilterBySwap('field'),
+          dataIndex: 'field',
+          key: 'field',
           ellipsis: true,
-          render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
         },
       ],
     },
     {
-      title: 'Enabled',
+      title: 'Condition',
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('enabled', adDevices.search.lookups?.booleanLookup),
-          dataIndex: 'enabled',
-          key: 'enabled',
+          title: FilterBySwap('condition'),
+          dataIndex: 'condition',
+          key: 'condition',
+          ellipsis: true,
+        },
+      ],
+    },
+    {
+      title: 'Value',
+      sorter: true,
+      children: [
+        {
+          title: FilterBySwap('value'),
+          dataIndex: 'value',
+          key: 'value',
+          ellipsis: true,
+        },
+      ],
+    },
+    {
+      title: 'Desktop',
+      sorter: true,
+      children: [
+        {
+          title: FilterByDropdown('desktop', adDevicesExclusions.search.lookups?.booleanLookup),
+          dataIndex: 'desktop',
+          key: 'desktop',
           ellipsis: true,
           render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
         },
       ],
     },
     {
-      title: 'iPv4 Address',
+      title: 'Server',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('iPv4_address'),
-          dataIndex: 'iPv4_address',
-          key: 'iPv4_address',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Last Logon',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('last_logon'),
-          dataIndex: 'last_logon',
-          key: 'last_logon',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Last Logon Date',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDate('last_logon_date'),
-          dataIndex: 'last_logon_date',
-          key: 'last_logon_date',
-          ellipsis: true,
-          render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
-        },
-      ],
-    },
-    {
-      title: 'Last Logon Timestamp',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('last_logon_timestamp'),
-          dataIndex: 'last_logon_timestamp',
-          key: 'last_logon_timestamp',
-          ellipsis: true,
-        },
-      ],
-    },
-
-    {
-      title: 'Object Class',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('object_class'),
-          dataIndex: 'object_class',
-          key: 'object_class',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Object Guid',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('object_guid'),
-          dataIndex: 'object_guid',
-          key: 'object_guid',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Operating  System',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('operating_system'),
-          dataIndex: 'operating_system',
-          key: 'operating_system',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Password Expired',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDropdown('password_expired', adDevices.search.lookups?.booleanLookup),
-          dataIndex: 'password_expired',
-          key: 'password_expired',
+          title: FilterByDropdown('server', adDevicesExclusions.search.lookups?.booleanLookup),
+          dataIndex: 'server',
+          key: 'server',
           ellipsis: true,
           render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
         },
       ],
     },
     {
-      title: 'Source',
+      title: 'Unknown',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('source'),
-          dataIndex: 'source',
-          key: 'source',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Password Last Set',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDate('password_last_set'),
-          dataIndex: 'password_last_set',
-          key: 'password_last_set',
-          ellipsis: true,
-          render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
-        },
-      ],
-    },
-    {
-      title: 'Password Never Expires',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDropdown(
-            'password_never_expires',
-            adDevices.search.lookups?.booleanLookup
-          ),
-          dataIndex: 'password_never_expires',
-          key: 'password_never_expires',
+          title: FilterByDropdown('unknown', adDevicesExclusions.search.lookups?.booleanLookup),
+          dataIndex: 'unknown',
+          key: 'unknown',
           ellipsis: true,
           render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
         },
       ],
     },
     {
-      title: 'Sam Account Name',
+      title: 'Instance Count',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('sam_account_name'),
-          dataIndex: 'sam_account_name',
-          key: 'sam_account_name',
+          title: FilterBySwap('instance_count'),
+          dataIndex: 'instance_count',
+          key: 'instance_count',
           ellipsis: true,
         },
       ],
     },
     {
-      title: 'SId',
+      title: 'decom',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('sid'),
-          dataIndex: 'sid',
-          key: 'sid',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'User Principal Name',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('user_principal_name'),
-          dataIndex: 'user_principal_name',
-          key: 'user_principal_name',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'When Created',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDate('when_created'),
-          dataIndex: 'when_created',
-          key: 'when_created',
-          ellipsis: true,
-          render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
-        },
-      ],
-    },
-    {
-      title: 'Exclusion',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('exclusion'), //FilterByDropdown('exclusion_id', adDevices.search.lookups?.exclusion),
-          dataIndex: 'exclusion',
-          key: 'exclusion',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Distinguished Name',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('distinguished_name'),
-          dataIndex: 'distinguished_name',
-          key: 'distinguished_name',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'DNS Host Name',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('dns_host_name'),
-          dataIndex: 'dns_host_name',
-          key: 'dns_host_name',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Inventoried',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDropdown('inventoried', adDevices.search.lookups?.booleanLookup),
-          dataIndex: 'inventoried',
-          key: 'inventoried',
+          title: FilterByDropdown('decom', adDevicesExclusions.search.lookups?.booleanLookup),
+          dataIndex: 'decom',
+          key: 'decom',
           ellipsis: true,
           render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
-        },
-      ],
-    },
-    {
-      title: 'Active',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDropdown('active', adDevices.search.lookups?.booleanLookup),
-          dataIndex: 'active',
-          key: 'active',
-          ellipsis: true,
-          render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
-        },
-      ],
-    },
-    {
-      title: 'Qualified',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDropdown('qualified', adDevices.search.lookups?.booleanLookup),
-          dataIndex: 'qualified',
-          key: 'qualified',
-          ellipsis: true,
-          render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
-        },
-      ],
-    },
-    {
-      title: 'Domain',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('domain'),
-          dataIndex: 'domain',
-          key: 'domain',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
-      title: 'Description',
-      sorter: true,
-      children: [
-        {
-          title: FilterBySwap('description'),
-          dataIndex: 'description',
-          key: 'description',
-          ellipsis: true,
         },
       ],
     },
@@ -603,18 +372,21 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           key: 'Action',
           width: '80px',
           fixed: 'right' as fixedColumn,
-          render: (_, data: IAdDevices) => (
+          render: (_, data: IAdDevicesExclusions) => (
             <div className="btns-block">
               <a
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);
-                  history.push(`/ad/ad-devices/${data.id}`);
+                  history.push(`/ad/ad-devices-exclusions/${data.id}`);
                 }}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
               </a>
-              <Popconfirm title="Sure to delete?" onConfirm={() => removeAdDevice(data.id)}>
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => removeAdDevicesExclusions(data.id)}
+              >
                 <a href="#" title="" className="action-btn">
                   <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
                 </a>
@@ -680,7 +452,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               setSelectedId(0);
             }}
           >
-            Add Device
+            Add Device Exclusion
           </Button>
         </div>
       </div>
@@ -688,12 +460,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Table
           scroll={{ x: true }}
           rowKey={(record) => record.id}
-          dataSource={adDevices.search.data}
+          dataSource={adDevicesExclusions.search.data}
           columns={getColumns()}
-          loading={adDevices.search.loading}
+          loading={adDevicesExclusions.search.loading}
           pagination={{
             ...pagination,
-            total: adDevices.search.count,
+            total: adDevicesExclusions.search.count,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}

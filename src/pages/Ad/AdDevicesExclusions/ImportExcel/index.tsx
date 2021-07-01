@@ -7,11 +7,14 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
-  adDevicesSelector,
-  clearAdDeviceMessages,
+  adDevicesExclusionsSelector,
+  clearAdDevicesExclusionsMessages,
   clearExcelColumns,
-} from '../../../../store/adDevices/adDevices.reducer';
-import { bulkInsert, getExcelColumns } from '../../../../store/adDevices/adDevices.action';
+} from '../../../../store/adDevicesExclusions/adDevicesExclusions.reducer';
+import {
+  bulkInsert,
+  getExcelColumns,
+} from '../../../../store/adDevicesExclusions/adDevicesExclusions.action';
 
 const { Option } = Select;
 
@@ -20,7 +23,7 @@ const validateMessages = {
 };
 
 const ImportExcel: React.FC<IImportExcelModalProps> = () => {
-  const adDevices = useAppSelector(adDevicesSelector);
+  const adDevicesExclusions = useAppSelector(adDevicesExclusionsSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -35,7 +38,7 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('table_name', 'AdDevices');
+    formData.append('table_name', 'AdDevices_Exclusions');
     try {
       dispatch(getExcelColumns(formData));
       onSuccess('Ok');
@@ -71,7 +74,7 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
     }
     const inputValues = {
       excel_to_sql_mapping: excelToSqlMapping,
-      file_name: adDevices.getExcelColumns.data.filename,
+      file_name: adDevicesExclusions.getExcelColumns.data.filename,
     };
     dispatch(bulkInsert(inputValues));
   };
@@ -92,20 +95,20 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
   };
 
   useEffect(() => {
-    if (adDevices.bulkInsert.messages.length > 0) {
-      if (adDevices.bulkInsert.hasErrors) {
-        toast.error(adDevices.bulkInsert.messages.join(' '));
+    if (adDevicesExclusions.bulkInsert.messages.length > 0) {
+      if (adDevicesExclusions.bulkInsert.hasErrors) {
+        toast.error(adDevicesExclusions.bulkInsert.messages.join(' '));
       } else {
-        toast.success(adDevices.bulkInsert.messages.join(' '));
-        history.push('/ad/ad-devices');
+        toast.success(adDevicesExclusions.bulkInsert.messages.join(' '));
+        history.push('/ad/ad-devices-exclusions');
       }
-      dispatch(clearAdDeviceMessages());
+      dispatch(clearAdDevicesExclusionsMessages());
     }
-  }, [adDevices.bulkInsert.messages]);
+  }, [adDevicesExclusions.bulkInsert.messages]);
 
   useEffect(() => {
-    setFormFields(adDevices.getExcelColumns.data);
-  }, [adDevices.getExcelColumns.data]);
+    setFormFields(adDevicesExclusions.getExcelColumns.data);
+  }, [adDevicesExclusions.getExcelColumns.data]);
 
   useEffect(() => {
     return () => {
@@ -149,12 +152,12 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
               </Upload>
             </div>
           </div>
-          {adDevices.getExcelColumns.loading && (
+          {adDevicesExclusions.getExcelColumns.loading && (
             <div className="spin-loader">
-              <Spin spinning={adDevices.getExcelColumns.loading} />
+              <Spin spinning={adDevicesExclusions.getExcelColumns.loading} />
             </div>
           )}
-          {!adDevices.getExcelColumns.loading && excelColumns && (
+          {!adDevicesExclusions.getExcelColumns.loading && excelColumns && (
             <Form
               form={form}
               name="uploadExcelSheet"
@@ -212,7 +215,11 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
                 ))}
               </Row>
               <div className="btns-block">
-                <Button type="primary" htmlType="submit" loading={adDevices.bulkInsert.loading}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={adDevicesExclusions.bulkInsert.loading}
+                >
                   Save
                 </Button>
                 <Button onClick={() => history.push('/sql-server')}>Cancel</Button>

@@ -66,13 +66,13 @@ function Sidebar() {
               </Link>
             </Menu.Item>
             <Menu.Item
-              key="/ad/ad-devices-exclusion"
+              key="/ad/ad-devices-exclusions"
               icon={
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
               }
             >
-              <Link to="/ad/ad-devices-exclusion" title="AD-Devices Exclusion">
-                AD-Devices Exclusion
+              <Link to="/ad/ad-devices-exclusions" title="AD-Devices Exclusions">
+                Exclusions
               </Link>
             </Menu.Item>
           </SubMenu>

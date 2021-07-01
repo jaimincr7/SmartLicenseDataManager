@@ -17,7 +17,6 @@ import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { IAdDevices } from '../../../../services/adDevices/adDevices.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { ISqlServer } from '../../../../services/sqlServer/sqlServer.model';
 import { getAdDeviceById, saveAdDevice } from '../../../../store/adDevices/adDevices.action';
 import {
   adDevicesSelector,
@@ -95,7 +94,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    const inputValues: ISqlServer = {
+    const inputValues: IAdDevices = {
       ...values,
       id: id ? +id : null,
     };
@@ -323,12 +322,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">iPv4 Address</label>
-                  <Form.Item
-                    name="iPv4_address"
-                    label="iPv4 Address"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="iPv4_address" label="iPv4 Address" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -336,12 +330,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Device Type</label>
-                  <Form.Item
-                    name="device_type"
-                    label="Device type"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="device_type" label="Device type" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -349,12 +338,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Last Logon</label>
-                  <Form.Item
-                    name="last_logon"
-                    label="Last Logon"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="last_logon" label="Last Logon" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -362,12 +346,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Last Logon Date</label>
-                  <Form.Item
-                    name="last_logon_date"
-                    label="Last Logon Date"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="last_logon_date" label="Last Logon Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -379,7 +358,6 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     name="last_logon_timestamp"
                     label="Last Logon Timestamp"
                     className="m-0"
-                  // rules={[{ required: true }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -388,12 +366,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Name</label>
-                  <Form.Item
-                    name="name"
-                    label="Name"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="name" label="Name" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -401,12 +374,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Object Class</label>
-                  <Form.Item
-                    name="object_class"
-                    label="Object Class"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="object_class" label="Object Class" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -414,12 +382,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Object Guid</label>
-                  <Form.Item
-                    name="object_guid"
-                    label="Object Guid"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="object_guid" label="Object Guid" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -427,12 +390,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Source</label>
-                  <Form.Item
-                    name="source"
-                    label="Source"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="source" label="Source" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -440,12 +398,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Operating System</label>
-                  <Form.Item
-                    name="operating_system"
-                    label="Operating system"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="operating_system" label="Operating system" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -453,12 +406,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Password Last Set</label>
-                  <Form.Item
-                    name="password_last_set"
-                    label="Password Last Set"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="password_last_set" label="Password Last Set" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -466,12 +414,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Sam Account Name</label>
-                  <Form.Item
-                    name="sam_account_name"
-                    label="Sam Account Name"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="sam_account_name" label="Sam Account Name" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -479,12 +422,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">sId</label>
-                  <Form.Item
-                    name="sid"
-                    label="sId"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="sid" label="sId" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -500,12 +438,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">When Created</label>
-                  <Form.Item
-                    name="when_created"
-                    label="When Created"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="when_created" label="When Created" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -513,12 +446,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Exclusion</label>
-                  <Form.Item
-                    name="exclusion"
-                    label="Exclusion"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="exclusion" label="Exclusion" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -539,12 +467,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Domain</label>
-                  <Form.Item
-                    name="domain"
-                    label="Domain"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="domain" label="Domain" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -602,12 +525,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24}>
                 <div className="form-group m-0">
                   <label className="label">Description</label>
-                  <Form.Item
-                    name="description"
-                    label="Description"
-                    className="m-0"
-                  // rules={[{ required: true }]}
-                  >
+                  <Form.Item name="description" label="Description" className="m-0">
                     <Input.TextArea className="form-control" />
                   </Form.Item>
                 </div>

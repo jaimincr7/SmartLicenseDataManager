@@ -59,7 +59,7 @@ class AdDevicesExclusionsService {
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
     const inputValues = {
       ...data,
-      table_name: '[sql server]',
+      table_name: '[ad devices exclusions]',
       debug: false,
     };
     const url = `${this.ENDPOINT}/delete-dataset`;

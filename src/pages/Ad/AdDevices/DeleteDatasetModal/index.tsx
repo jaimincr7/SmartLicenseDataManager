@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
+import { deleteDataset } from '../../../../store/adDevices/adDevices.action';
 import {
   adDevicesSelector,
   clearAdDeviceMessages,
@@ -11,7 +12,6 @@ import {
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getBULookup, getCompanyLookup } from '../../../../store/common/common.action';
 import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
-import { deleteDataset } from '../../../../store/sqlServer/sqlServer.action';
 import { IDeleteDatasetModalProps } from './deleteDataset.modal';
 import './deleteDataset.style.scss';
 

@@ -7,13 +7,13 @@ import { getBULookup, getCompanyLookup } from '../../../../store/common/common.a
 import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
 import './processData.style.scss';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/sqlServer/sqlServer.action';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import {
   adDevicesSelector,
   clearAdDeviceMessages,
 } from '../../../../store/adDevices/adDevices.reducer';
+import { processData } from '../../../../store/adDevices/adDevices.action';
 
 const { Option } = Select;
 

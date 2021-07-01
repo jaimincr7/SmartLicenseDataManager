@@ -12,5 +12,5 @@ export const rootReducer = combineReducers({
   common: commonReducer,
   sqlServerEntitlements: sqlServerEntitlementsReducer,
   adDevices: adDevicesReducer,
-  adDevicesExclusions: adDevicesExclusionsReducer
+  adDevicesExclusions: adDevicesExclusionsReducer,
 });

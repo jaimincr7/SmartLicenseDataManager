@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
-import { IGetExcelColumns, IAdDevicesExclusions } from '../../services/adDevicesExclusions/adDevicesExclusions.model';
+import {
+  IGetExcelColumns,
+  IAdDevicesExclusions,
+} from '../../services/adDevicesExclusions/adDevicesExclusions.model';
 import { RootState } from '../app.model';
 import {
   bulkInsert,
@@ -90,10 +93,15 @@ export const adDevicesExclusionsSlice = createSlice({
       action: PayloadAction<ISearchResponse<IAdDevicesExclusions>>
     ) => {
       const { search_result, ...rest } = action.payload;
+      const booleanLookup = [
+        { id: 0, name: 'No' },
+        { id: 1, name: 'Yes' },
+      ];
+
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
       if (JSON.stringify(rest) !== '{}') {
-        state.search.lookups = { ...rest };
+        state.search.lookups = { ...rest, booleanLookup };
       }
       state.search.loading = false;
       state.search.hasErrors = false;
@@ -107,7 +115,10 @@ export const adDevicesExclusionsSlice = createSlice({
     [getAdDevicesExclusionsById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getAdDevicesExclusionsById.fulfilled.type]: (state, action: PayloadAction<IAdDevicesExclusions>) => {
+    [getAdDevicesExclusionsById.fulfilled.type]: (
+      state,
+      action: PayloadAction<IAdDevicesExclusions>
+    ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
@@ -122,12 +133,18 @@ export const adDevicesExclusionsSlice = createSlice({
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveAdDevicesExclusions.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveAdDevicesExclusions.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveAdDevicesExclusions.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveAdDevicesExclusions.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = true;
       state.save.messages = action.payload.errors;
@@ -138,12 +155,18 @@ export const adDevicesExclusionsSlice = createSlice({
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteAdDevicesExclusions.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteAdDevicesExclusions.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteAdDevicesExclusions.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteAdDevicesExclusions.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
@@ -217,8 +240,12 @@ export const adDevicesExclusionsSlice = createSlice({
 export const adDevicesExclusionsSelector = (state: RootState) => state.adDevicesExclusions;
 
 // Actions
-export const { clearAdDevicesExclusions, clearAdDevicesExclusionsMessages, clearAdDevicesExclusionsGetById, clearExcelColumns } =
-  adDevicesExclusionsSlice.actions;
+export const {
+  clearAdDevicesExclusions,
+  clearAdDevicesExclusionsMessages,
+  clearAdDevicesExclusionsGetById,
+  clearExcelColumns,
+} = adDevicesExclusionsSlice.actions;
 
 // The reducer
 export default adDevicesExclusionsSlice.reducer;

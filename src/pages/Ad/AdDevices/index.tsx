@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../../store/app.hooks';
-import { clearSqlServer } from '../../../store/sqlServer/sqlServer.reducer';
 import { IAdDevicesProps } from './adDevices.model';
 import './adDevices.style.scss';
 import React from 'react';
@@ -11,6 +10,7 @@ import { Row, Col, Button } from 'antd';
 import AddAdDeviceModal from './AddAdDeviceModal';
 import ProcessDataModal from './ProcessDataModal';
 import DeleteDatasetModal from './DeleteDatasetModal';
+import { clearAdDevices } from '../../../store/adDevices/adDevices.reducer';
 
 const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -34,7 +34,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearSqlServer());
+      dispatch(clearAdDevices());
     };
   }, []);
 
