@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import adDevicesReducer from './adDevices/adDevices.reducer';
+import adDevicesExclusionsReducer from './adDevicesExclusions/adDevicesExclusions.reducer';
 import commonReducer from './common/common.reducer';
 import errorLogReducer from './errorLog/errorLog.reducer';
 import sqlServerReducer from './sqlServer/sqlServer.reducer';
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   common: commonReducer,
   sqlServerEntitlements: sqlServerEntitlementsReducer,
   adDevices: adDevicesReducer,
+  adDevicesExclusions: adDevicesExclusionsReducer
 });
