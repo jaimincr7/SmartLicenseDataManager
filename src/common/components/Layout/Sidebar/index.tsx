@@ -75,6 +75,16 @@ function Sidebar() {
                 Exclusions
               </Link>
             </Menu.Item>
+            <Menu.Item
+              key="/ad/ad-users"
+              icon={
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
+              }
+            >
+              <Link to="/ad/ad-users" title="AD Users">
+                AD Users
+              </Link>
+            </Menu.Item>
           </SubMenu>
         </Menu>
       </Scrollbars>

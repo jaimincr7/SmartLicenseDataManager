@@ -1,20 +1,18 @@
+import { IAdUsersState } from './adUsers.model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IAdDevices, IGetExcelColumns } from './../../services/adDevices/adDevices.model';
 import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
 import { RootState } from '../app.model';
 import {
-  deleteAdDevice,
-  getAdDeviceById,
-  searchAdDevices,
-  saveAdDevice,
-  deleteDataset,
-  processData,
+  searchAdUsers,
+  getAdUserById,
+  saveAdUser,
+  deleteAdUser,
   getExcelColumns,
   bulkInsert,
-} from './adDevices.action';
-import { IAdDevicesState } from './adDevices.model';
+} from './adUsers.action';
+import { IAdUser, IGetExcelColumns } from '../../services/adUsers/adUsers.model';
 
-export const initialState: IAdDevicesState = {
+export const initialState: IAdUsersState = {
   search: {
     loading: false,
     hasErrors: false,
@@ -37,16 +35,6 @@ export const initialState: IAdDevicesState = {
     hasErrors: false,
     messages: [],
   },
-  deleteDataset: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
-  processData: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
   getExcelColumns: {
     loading: false,
     hasErrors: false,
@@ -59,21 +47,19 @@ export const initialState: IAdDevicesState = {
   },
 };
 
-export const adDevicesSlice = createSlice({
-  name: 'adDevices',
+export const adUsersSlice = createSlice({
+  name: 'adUsers',
   initialState,
   reducers: {
-    clearAdDevices: () => {
+    clearAdUsers: () => {
       return initialState;
     },
-    clearAdDeviceMessages: (state) => {
+    clearAdUsersMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
-      state.deleteDataset.messages = [];
-      state.processData.messages = [];
       state.bulkInsert.messages = [];
     },
-    clearAdDeviceGetById: (state) => {
+    clearAdUsersGetById: (state) => {
       state.getById.data = null;
     },
     clearExcelColumns: (state) => {
@@ -82,13 +68,10 @@ export const adDevicesSlice = createSlice({
   },
   extraReducers: {
     // Search
-    [searchAdDevices.pending.type]: (state) => {
+    [searchAdUsers.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchAdDevices.fulfilled.type]: (
-      state,
-      action: PayloadAction<ISearchResponse<IAdDevices>>
-    ) => {
+    [searchAdUsers.fulfilled.type]: (state, action: PayloadAction<ISearchResponse<IAdUser>>) => {
       const { search_result, ...rest } = action.payload;
       const booleanLookup = [
         { id: 0, name: 'No' },
@@ -103,87 +86,55 @@ export const adDevicesSlice = createSlice({
       state.search.loading = false;
       state.search.hasErrors = false;
     },
-    [searchAdDevices.rejected.type]: (state) => {
+    [searchAdUsers.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
 
     // Get by id
-    [getAdDeviceById.pending.type]: (state) => {
+    [getAdUserById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getAdDeviceById.fulfilled.type]: (state, action: PayloadAction<IAdDevices>) => {
+    [getAdUserById.fulfilled.type]: (state, action: PayloadAction<IAdUser>) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
     },
-    [getAdDeviceById.rejected.type]: (state) => {
+    [getAdUserById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
     },
 
     // Save
-    [saveAdDevice.pending.type]: (state) => {
+    [saveAdUser.pending.type]: (state) => {
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveAdDevice.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveAdUser.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveAdDevice.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveAdUser.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.save.loading = false;
       state.save.hasErrors = true;
       state.save.messages = action.payload.errors;
     },
 
     // Delete
-    [deleteAdDevice.pending.type]: (state) => {
+    [deleteAdUser.pending.type]: (state) => {
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteAdDevice.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteAdUser.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteAdDevice.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteAdUser.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
-    },
-
-    // Delete Dataset
-    [deleteDataset.pending.type]: (state) => {
-      state.deleteDataset.loading = true;
-      state.deleteDataset.messages = [];
-    },
-    [deleteDataset.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.deleteDataset.loading = false;
-      state.deleteDataset.hasErrors = false;
-      state.deleteDataset.messages = action.payload.messages;
-    },
-    [deleteDataset.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.deleteDataset.loading = false;
-      state.deleteDataset.hasErrors = true;
-      state.deleteDataset.messages = action.payload.errors;
-    },
-
-    // Process Data
-    [processData.pending.type]: (state) => {
-      state.processData.loading = true;
-      state.processData.messages = [];
-    },
-    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.processData.loading = false;
-      state.processData.hasErrors = false;
-      state.processData.messages = action.payload.messages;
-    },
-    [processData.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.processData.loading = false;
-      state.processData.hasErrors = true;
-      state.processData.messages = action.payload.errors;
     },
 
     // Get Excel Columns
@@ -219,11 +170,11 @@ export const adDevicesSlice = createSlice({
 });
 
 // A selector
-export const adDevicesSelector = (state: RootState) => state.adDevices;
+export const adUsersSelector = (state: RootState) => state.adUsers;
 
 // Actions
-export const { clearAdDevices, clearAdDeviceMessages, clearAdDeviceGetById, clearExcelColumns } =
-  adDevicesSlice.actions;
+export const { clearAdUsers, clearAdUsersGetById, clearAdUsersMessages, clearExcelColumns } =
+  adUsersSlice.actions;
 
 // The reducer
-export default adDevicesSlice.reducer;
+export default adUsersSlice.reducer;

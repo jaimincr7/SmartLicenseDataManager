@@ -1,18 +1,18 @@
-import { IAdDevices, IGetExcelColumns } from './../../services/adDevices/adDevices.model';
+import { IAdUser, IGetExcelColumns } from './../../services/adUsers/adUsers.model';
 import { IDropDownOption } from '../../common/models/common';
 
-export interface IAdDevicesState {
+export interface IAdUsersState {
   search: {
     loading: boolean;
     hasErrors: boolean;
-    data: IAdDevices[];
+    data: IAdUser[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
   };
   getById: {
     loading: boolean;
     hasErrors: boolean;
-    data: IAdDevices;
+    data: IAdUser;
   };
   save: {
     loading: boolean;
@@ -20,16 +20,6 @@ export interface IAdDevicesState {
     messages: string[];
   };
   delete: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
-  deleteDataset: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
-  processData: {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
