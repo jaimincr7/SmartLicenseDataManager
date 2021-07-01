@@ -11,6 +11,7 @@ import { Login } from './pages/Login';
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 import UploadExcel from './pages/Home/UploadExcel';
 import AdRoutes from './pages/Ad/ad.routes';
+import { Dashboard } from './pages/Dashboard';
 
 function AppRoutes() {
   return (
@@ -28,7 +29,8 @@ function AppRoutes() {
           <Route path="/login">
             <Redirect to="/" />
           </Route>
-          <LayoutRoute exact path="/" layout={MainLayout} component={Home} />
+          <LayoutRoute exact path="/" layout={MainLayout} component={Dashboard} />
+          <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />
           <LayoutRoute exact path="/add-event" layout={MainLayout} component={AddEvent} />
           <LayoutRoute path="/sql-server" layout={MainLayout} component={SqlServerRoutes} />
           <LayoutRoute path="/ad" layout={MainLayout} component={AdRoutes} />

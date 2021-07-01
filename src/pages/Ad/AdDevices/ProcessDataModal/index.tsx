@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Select, Spin, Switch, DatePicker } from 'antd';
+import { Button, Col, Form, Modal, Row, Select, Spin, DatePicker } from 'antd';
 import { useEffect } from 'react';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';

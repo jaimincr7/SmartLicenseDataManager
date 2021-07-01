@@ -91,7 +91,7 @@ class SqlServerService {
     const headers = {
       Accept: 'multipart/form-data',
     };
-    const url = `${this.ENDPOINT}/getExcelColumns`;
+    const url = `${this.ENDPOINT}/columns-for-import-data`;
     return request({ url, method: 'POST', data: data, headers: headers }).then((res) => {
       return res.data;
     });

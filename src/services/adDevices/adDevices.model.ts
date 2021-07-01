@@ -1,5 +1,5 @@
 import { ISearch } from '../../common/models/common';
-import { Moment } from "moment";
+import { Moment } from 'moment';
 
 export interface IAdDevices {
   id?: number;

@@ -144,7 +144,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ...tableFilter,
       keyword: value,
     };
-    fetchAdDevices();
+    setPagination({ ...pagination, current: 1 });
+    fetchAdDevices({ ...pagination, current: 1 });
   };
 
   // Start: Column level filter

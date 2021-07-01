@@ -59,7 +59,7 @@ class AdDevicesService {
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
     const inputValues = {
       ...data,
-      table_name: '[ad devices]',
+      table_name: '[AdDevices]',
       debug: false,
     };
     const url = `${this.ENDPOINT}/delete-dataset`;
@@ -95,7 +95,7 @@ class AdDevicesService {
     const headers = {
       Accept: 'multipart/form-data',
     };
-    const url = `${this.ENDPOINT}/getExcelColumns`;
+    const url = `${this.ENDPOINT}/columns-for-import-data`;
     return request({ url, method: 'POST', data: data, headers: headers }).then((res) => {
       return res.data;
     });
@@ -104,7 +104,7 @@ class AdDevicesService {
   public async bulkInsert(data: IBulkInsertDataset): Promise<any> {
     const inputValues = {
       ...data,
-      table_name: 'sql server',
+      table_name: 'AdDevices',
     };
     const url = `${this.ENDPOINT}/bulk-insert`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {

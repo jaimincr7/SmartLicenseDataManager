@@ -1,4 +1,15 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -315,33 +326,37 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                 </div>
               </Col>
             </Row>
-            <Row gutter={[30, 15]} className="form-label-hide mt-2">
-              <Col xs={24} sm={12} md={6}>
-                <div className="form-group m-0">
+            <Row gutter={[30, 15]} className="form-label-hide">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="desktop" className="m-0" valuePropName="checked">
-                    <Checkbox>Desktop</Checkbox>
+                    <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">Desktop</label>
                 </div>
               </Col>
-              <Col xs={24} sm={12} md={6}>
-                <div className="form-group m-0">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="server" className="m-0" valuePropName="checked">
-                    <Checkbox>Server</Checkbox>
+                    <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">Server</label>
                 </div>
               </Col>
-              <Col xs={24} sm={12} md={6}>
-                <div className="form-group m-0">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="unknown" className="m-0" valuePropName="checked">
-                    <Checkbox>Unknown</Checkbox>
+                    <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">Unknown</label>
                 </div>
               </Col>
-              <Col xs={24} sm={12} md={6}>
-                <div className="form-group m-0">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
                   <Form.Item name="decom" className="m-0" valuePropName="checked">
-                    <Checkbox>Decom</Checkbox>
+                    <Switch className="form-control" />
                   </Form.Item>
+                  <label className="label">Decom</label>
                 </div>
               </Col>
             </Row>
