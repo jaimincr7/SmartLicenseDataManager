@@ -9,7 +9,6 @@ import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import AddAdDeviceModal from './AddAdDeviceModal';
 import ProcessDataModal from './ProcessDataModal';
-import DeleteDatasetModal from './DeleteDatasetModal';
 import { clearAdDevices } from '../../../store/adDevices/adDevices.reducer';
 
 const AdDevices: React.FC<IAdDevicesProps> = (props) => {
@@ -21,7 +20,6 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -85,7 +83,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
                 Update from Excel
               </Button>
             </Col>
-            <Col>
+            {/* <Col>
               <Button
                 className="btn-icon"
                 onClick={() => setDeleteModalVisible(true)}
@@ -97,7 +95,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
               >
                 Delete Dataset
               </Button>
-            </Col>
+            </Col> */}
           </Row>
         </div>
         <DataTable
@@ -125,12 +123,12 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
           handleModalClose={() => setProcessModalVisible(false)}
         />
       )}
-      {deleteModalVisible && (
+      {/* {deleteModalVisible && (
         <DeleteDatasetModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
         />
-      )}
+      )} */}
     </div>
   );
 };
