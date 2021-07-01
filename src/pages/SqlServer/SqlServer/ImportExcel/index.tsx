@@ -1,6 +1,5 @@
 import { Button, Col, Form, Row, Select, Spin, Upload } from 'antd';
 import { Messages } from '../../../../common/constants/messages';
-import './importExcel.style.scss';
 import { IImportExcelModalProps } from './importExcel.model';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
@@ -60,8 +59,8 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
     Object.entries(values).forEach(([key, value]) => {
       if (key && value) {
         excelToSqlMapping.push({
-          key: `${value}`,
-          value: `${key}`,
+          key: `${key}`,
+          value: `${value}`,
         });
       }
     });
@@ -118,6 +117,20 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
       <div className="update-excel-page">
         <div className="title-block">
           <h4 className="p-0">Update from Excel</h4>
+          <div className="btns-block">
+            <Button
+              className="btn-icon"
+              type="primary"
+              onClick={() => history.push('/sql-server')}
+              icon={
+                <em className="anticon">
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-left-arrow.svg`} alt="" />
+                </em>
+              }
+            >
+              Back
+            </Button>
+          </div>
         </div>
         <div className="main-card">
           <div className="input-btns-title">
@@ -164,19 +177,19 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
               <Row gutter={[30, 0]} className="form-label-hide">
                 <Col xs={24} md={12} lg={12} xl={8}>
                   <div className="form-group form-inline">
-                    <label className="label strong">Database Name</label>
+                    <label className="label strong">Database Column</label>
                     <label className="strong">Excel Column</label>
                   </div>
                 </Col>
                 <Col xs={24} md={12} lg={12} xl={8} className="sm-none">
                   <div className="form-group form-inline">
-                    <label className="label strong">Database Name</label>
+                    <label className="label strong">Database Column</label>
                     <label className="strong">Excel Column</label>
                   </div>
                 </Col>
                 <Col xs={24} md={12} lg={12} xl={8} className="lg-none">
                   <div className="form-group form-inline">
-                    <label className="label strong">Database Name</label>
+                    <label className="label strong">Database Column</label>
                     <label className="strong">Excel Column</label>
                   </div>
                 </Col>
