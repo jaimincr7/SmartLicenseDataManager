@@ -12,6 +12,7 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
@@ -145,18 +146,18 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
         enabled: data.enabled,
         iPv4_address: data.iPv4_address,
         last_logon: data.last_logon,
-        last_logon_date: null, //_.isNull(data.last_logon_date) ? null : new Date(data.last_logon_date),
+        last_logon_date: _.isNull(data.last_logon_date) ? null : moment(data.last_logon_date),
         last_logon_timestamp: data.last_logon_timestamp,
         name: data.name,
         object_class: data.object_class,
         object_guid: data.object_guid,
         password_expired: data.password_expired,
-        password_last_set: null, //_.isNull(data.password_last_set) ? null : new Date(data.password_last_set),
+        password_last_set: _.isNull(data.password_last_set) ? null : moment(data.password_last_set),
         password_never_expires: data.password_never_expires,
         sam_account_name: data.sam_account_name,
         sid: data.sid,
         user_principal_name: data.user_principal_name,
-        when_created: null, //_.isNull(data.when_created) ? null : new Date(data.when_created),
+        when_created: _.isNull(data.when_created) ? null : moment(data.when_created),
         exclusion: data.exclusion,
         exclusion_id: data.exclusion_id,
         inventoried: data.inventoried,
