@@ -6,11 +6,11 @@ import './adDevices.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
-// import AddSqlServerModal from './AddAdDevicesModal';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
-// import ProcessDataModal from './ProcessDataModal';
-// import DeleteDatasetModal from './DeleteDatasetModal';
+import AddAdDeviceModal from './AddAdDeviceModal';
+import ProcessDataModal from './ProcessDataModal';
+import DeleteDatasetModal from './DeleteDatasetModal';
 
 const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -45,7 +45,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Sql Server</h4>
+        <h4 className="p-0">Ad Devices</h4>
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -72,7 +72,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('sql-server/update-from-excel')}
+                onClick={() => history.push('/ad/ad-devices/update-from-excel')}
                 icon={
                   <em className="anticon">
                     <img
@@ -108,12 +108,12 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
           }}
         />
       </div>
-      {/* {addModalVisible && (
-        <AddSqlServerModal
+      {addModalVisible && (
+        <AddAdDeviceModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/sql-server');
+            history.push('/ad/ad-devices');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -130,7 +130,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
         />
-      )} */}
+      )}
     </div>
   );
 };

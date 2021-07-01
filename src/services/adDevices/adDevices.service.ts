@@ -27,14 +27,14 @@ class AdDevicesService {
     });
   }
 
-  public async getSqlServerById(id: number): Promise<any> {
+  public async getAdDeviceById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }
 
-  public async saveSqlServer(data: IAdDevices): Promise<any> {
+  public async saveAdDevice(data: IAdDevices): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {
       const url = `${this.ENDPOINT}/${id}`;
@@ -59,7 +59,7 @@ class AdDevicesService {
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
     const inputValues = {
       ...data,
-      table_name: '[sql server]',
+      table_name: '[ad devices]',
       debug: false,
     };
     const url = `${this.ENDPOINT}/delete-dataset`;
