@@ -34,15 +34,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     company_id: null,
     bu_id: null,
     date_added: moment(),
-    set_device_states: false,
-    set_device_states_inc_non_prod: false,
-    set_device_states_by_keyword: false,
-    x_ref_ad: false,
-    x_ref_azure: false,
-    set_desktop_non_prod: false,
-    update_rv_tools_vm: false,
-    update_rv_tools_host: false,
-    apply_overrides: false,
   };
 
   const onFinish = (values: any) => {
@@ -172,86 +163,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                     disabledDate={disabledDate}
                   />
                 </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="set_device_states" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Set Device States</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item
-                  name="set_device_states_inc_non_prod"
-                  className="m-0"
-                  valuePropName="checked"
-                >
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Set Device States Inc Non Prod</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item
-                  name="set_device_states_by_keyword"
-                  className="m-0"
-                  valuePropName="checked"
-                >
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Set Device States By KeyWord</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="x_ref_ad" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">XRefAD</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="x_ref_azure" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">XRefAzure</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="set_desktop_non_prod" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Set Desktops Non Prod</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="update_rv_tools_vm" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Update RVTools_VM</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="update_rv_tools_host" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Update RVTools_Host</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="apply_overrides" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Apply Overrides</label>
               </div>
             </Col>
           </Row>

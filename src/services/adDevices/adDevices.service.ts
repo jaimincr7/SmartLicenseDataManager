@@ -69,8 +69,12 @@ class AdDevicesService {
   }
 
   public async processData(data: IProcessData): Promise<any> {
+    const inputValues = {
+      ...data,
+      debug: false,
+    };
     const url = `${this.ENDPOINT}/process-data`;
-    return request({ url, method: 'POST', data: data }).then((res) => {
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }
