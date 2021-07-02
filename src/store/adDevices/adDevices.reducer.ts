@@ -21,6 +21,7 @@ export const initialState: IAdDevicesState = {
     data: [],
     count: 0,
     lookups: {},
+    tableName: '',
   },
   getById: {
     loading: false,
@@ -102,6 +103,7 @@ export const adDevicesSlice = createSlice({
       }
       state.search.loading = false;
       state.search.hasErrors = false;
+      state.search.tableName = search_result.table_name;
     },
     [searchAdDevices.rejected.type]: (state) => {
       state.search.loading = false;

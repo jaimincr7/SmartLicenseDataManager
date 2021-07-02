@@ -22,6 +22,7 @@ export interface IApiResponse<T> {
 export interface ISearchResult<T> {
   records: T[];
   total_count: number;
+  table_name?: string;
 }
 
 export interface ISearchResponse<T> {

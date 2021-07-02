@@ -166,15 +166,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     form.resetFields();
   }, [inlineSearch]);
 
-  const getColumnLookup = (column: string) => {
-    return adDevicesExclusionsService
-      .getLookupAdDevicesExclusionsByFieldName(column)
-      .then((res) => {
-        return res.body.data;
-      });
-  };
   const FilterBySwap = (dataIndex: string) => {
-    return FilterWithSwapOption(dataIndex, getColumnLookup, form);
+    return FilterWithSwapOption(dataIndex, adDevicesExclusions.search.tableName, form);
   };
   // End: Column level filter
 

@@ -24,6 +24,7 @@ export const initialState: IAdDevicesExclusionsState = {
     data: [],
     count: 0,
     lookups: {},
+    tableName: '',
   },
   getById: {
     loading: false,
@@ -105,6 +106,7 @@ export const adDevicesExclusionsSlice = createSlice({
       }
       state.search.loading = false;
       state.search.hasErrors = false;
+      state.search.tableName = search_result.table_name;
     },
     [searchAdDevicesExclusions.rejected.type]: (state) => {
       state.search.loading = false;

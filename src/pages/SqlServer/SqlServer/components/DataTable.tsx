@@ -161,13 +161,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     form.resetFields();
   }, [inlineSearch]);
 
-  const getColumnLookup = (column: string) => {
-    return sqlServerService.getLookupSqlServerByFieldName(column).then((res) => {
-      return res.body.data;
-    });
-  };
   const FilterBySwap = (dataIndex: string) => {
-    return FilterWithSwapOption(dataIndex, getColumnLookup, form);
+    return FilterWithSwapOption(dataIndex, sqlServer.search.tableName, form);
   };
   // End: Column level filter
 

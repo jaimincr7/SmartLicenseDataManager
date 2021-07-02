@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { IDropDownOption } from '../../models/common';
 import { DatePicker } from 'antd';
 import React from 'react';
+import commonService from '../../../services/common/common.service';
 
 const { RangePicker } = DatePicker;
 
@@ -47,7 +48,7 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
 
 export const FilterWithSwapOption = (
   dataIndex: string,
-  getColumnLookup: (index: string) => Promise<IDropDownOption[]>,
+  tableName: string,
   form: any
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
@@ -56,7 +57,9 @@ export const FilterWithSwapOption = (
 
   React.useEffect(() => {
     if (!swap && options.length === 0) {
-      getColumnLookup(dataIndex).then((res) => {
+      commonService.getColumnLookup(tableName, dataIndex).then((res) => {
+        return res.body.data;
+      }).then((res) => {
         setOptions(res);
       });
     }

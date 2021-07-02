@@ -30,5 +30,16 @@ class CommonService {
       return res.data;
     });
   }
+
+  public async getColumnLookup(tableName:string, columnName: string): Promise<IApiResponse<any>> {
+    const url = `/app/column-lookup`;
+    const data = {
+      table_name: tableName,
+      column_name: columnName
+    }
+    return request({ url, method: 'POST', data }).then((res) => {
+      return res.data;
+    });
+  }
 }
 export default new CommonService();

@@ -8,6 +8,7 @@ export interface ISqlServerOverridesState {
     data: ISqlServerOverrides[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
+    tableName: string;
   };
   getById: {
     loading: boolean;

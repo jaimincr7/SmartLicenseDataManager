@@ -9,6 +9,7 @@ export interface ISqlServerState {
     data: ISqlServer[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
+    tableName: string;
   };
   getById: {
     loading: boolean;

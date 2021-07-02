@@ -8,6 +8,7 @@ export interface IAdDevicesState {
     data: IAdDevices[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
+    tableName: string;
   };
   getById: {
     loading: boolean;

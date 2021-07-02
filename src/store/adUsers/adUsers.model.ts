@@ -8,6 +8,7 @@ export interface IAdUsersState {
     data: IAdUser[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
+    tableName: string;
   };
   getById: {
     loading: boolean;

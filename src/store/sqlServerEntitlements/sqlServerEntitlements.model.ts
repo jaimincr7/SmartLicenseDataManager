@@ -8,6 +8,7 @@ export interface ISqlServerEntitlementsState {
     data: ISqlServerEntitlements[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
+    tableName: string;
   };
   getById: {
     loading: boolean;

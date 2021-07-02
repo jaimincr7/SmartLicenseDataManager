@@ -18,6 +18,7 @@ export const initialState: ISqlServerOverridesState = {
     data: [],
     count: 0,
     lookups: {},
+    tableName: '',
   },
   getById: {
     loading: false,
@@ -79,6 +80,7 @@ export const sqlServerOverridesSlice = createSlice({
       }
       state.search.loading = false;
       state.search.hasErrors = false;
+      state.search.tableName = search_result.table_name;
     },
     [searchSqlServerOverrides.rejected.type]: (state) => {
       state.search.loading = false;
