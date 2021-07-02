@@ -438,9 +438,14 @@ label {
 .upload-file > span {
   display: inline-flex;
   align-items: center;
-  .ant-upload-list .ant-upload-list-item {
-    margin: 0 0 0 8px;
-  }
+      width: 100%;
+     .ant-upload-list.ant-upload-list-text{
+        padding-left: 8px;
+        width: calc(100% - 140px);
+     }
+    .ant-upload-list-item{
+      margin: 0;
+    }
   .ant-upload-list-item-card-actions-btn.ant-btn-sm {
     width: 30px;
     height: 30px;
@@ -450,9 +455,10 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 1;
   }
   .ant-upload-list-item-name {
-    max-width: 300px;
+        max-width: max-content;
     color: #4f4f4f;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -473,11 +479,17 @@ label {
 .d-flex {
   display: flex;
 }
+.align-item-start {
+ align-items: flex-start !important;
+}
 
 // ant-design
 .btn-icon {
   display: inline-flex;
   align-items: center;
+  img{
+    min-width: 20px;
+  }
 }
 .ant-btn {
   background: #ececec;
