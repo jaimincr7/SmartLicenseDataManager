@@ -464,6 +464,11 @@ label {
     background-color: transparent;
   }
 }
+.update-excel-page .select-table{
+  margin-bottom: 0;
+  width: 300px;
+  max-width: 100%;
+}
 
 .d-flex {
   display: flex;
@@ -914,6 +919,9 @@ textarea.ant-input {
   .ant-menu-submenu-title {
     opacity: 0.6;
     margin: 0 !important;
+    > .ant-menu-item-icon{
+      width: 20px;
+    }
     &:hover {
       opacity: 1;
       color: #fff;
@@ -1076,6 +1084,17 @@ textarea.ant-input {
     margin-right: 0;
     width: 100%;
     text-align: center;
+  }
+
+  .update-excel-page .select-table{
+    margin: 0 0 10px;
+    width: 100%;
+    .ant-form-item-label {
+      padding: 0 !important;
+      > label::after{
+        display: inline-block;
+      }
+    }
   }
 }
 @media (max-width: 575px) {
