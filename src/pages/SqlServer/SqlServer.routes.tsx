@@ -12,13 +12,19 @@ const SqlServerRoutes: React.FC = () => {
   return (
     <div className="sqlServer">
       <Switch>
-        {/* <Route exact path={`${match.path}/overrides/update-from-excel`} component={ImportExcelOverrides} /> */}
+        {/* Pricing */}
         <Route exact path={`${match.path}/pricing`} component={SqlServerPricing} />
         <Route exact path={`${match.path}/pricing/:id`} component={SqlServerPricing} />
+
+        {/* Overrides */}
         <Route exact path={`${match.path}/overrides`} component={SqlServerOverrides} />
         <Route exact path={`${match.path}/overrides/:id`} component={SqlServerOverrides} />
+
+        {/* Entitlements */}
         <Route exact path={`${match.path}/entitlements`} component={SqlServerEntitlements} />
         <Route exact path={`${match.path}/entitlements/:id`} component={SqlServerEntitlements} />
+
+        {/* Sql Server */}
         <Route exact path={`${match.path}/update-from-excel`} component={ImportExcel} />
         <Route exact path={`${match.path}/:id`} component={SqlServer} />
 

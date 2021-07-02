@@ -18,13 +18,6 @@ class SqlServerOverridesService {
     });
   }
 
-  public async getLookupSqlServerOverridesByFieldName(fieldName: string): Promise<any> {
-    const url = `${this.ENDPOINT}/column-lookup/${fieldName}`;
-    return request({ url, method: 'GET' }).then((res) => {
-      return res.data;
-    });
-  }
-
   public async getSqlServerOverridesById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {

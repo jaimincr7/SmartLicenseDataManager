@@ -14,13 +14,6 @@ class SqlServerPricingService {
     });
   }
 
-  public async getLookupSqlServerPricingByFieldName(fieldName: string): Promise<any> {
-    const url = `${this.ENDPOINT}/column-lookup/${fieldName}`;
-    return request({ url, method: 'GET' }).then((res) => {
-      return res.data;
-    });
-  }
-
   public async getSqlServerPricingById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {

@@ -1,7 +1,7 @@
-import { ISearchSqlServer } from '../../../../services/sqlServer/sqlServer.model';
+import { ISearchSqlServerOverrides } from "../../../../services/sqlServerOverrides/sqlServerOverrides.model";
 
 export interface IDataTable {
-  search?: ISearchSqlServer;
+  search?: ISearchSqlServerOverrides;
   setSelectedId: (id: number) => void;
 }
 

@@ -20,13 +20,6 @@ class AdDevicesExclusionsService {
     });
   }
 
-  public async getLookupAdDevicesExclusionsByFieldName(fieldName: string): Promise<any> {
-    const url = `${this.ENDPOINT}/column-lookup/${fieldName}`;
-    return request({ url, method: 'GET' }).then((res) => {
-      return res.data;
-    });
-  }
-
   public async getAdDevicesExclusionsById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
