@@ -1,7 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ILookup } from '../../services/common/common.model';
 import { RootState } from '../app.model';
-import { getBULookup, getCompanyLookup, getLicenseLookup, getTenantLookup } from './common.action';
+import {
+  getBULookup,
+  getCompanyLookup,
+  getLicenseLookup,
+  getTenantLookup,
+  getAgreementTypesLookup,
+  getCurrencyLookup,
+} from './common.action';
 import { ICommonState, IGlobalSearch } from './common.model';
 
 export const initialState: ICommonState = {
@@ -19,6 +26,14 @@ export const initialState: ICommonState = {
     loading: false,
   },
   licenseLookup: {
+    data: [],
+    loading: false,
+  },
+  agreementTypesLookup: {
+    data: [],
+    loading: false,
+  },
+  currencyLookup: {
     data: [],
     loading: false,
   },
@@ -76,6 +91,24 @@ export const commonSlice = createSlice({
     [getLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.licenseLookup.data = action.payload;
       state.licenseLookup.loading = false;
+    },
+
+    // Agreement Types lookup
+    [getAgreementTypesLookup.pending.type]: (state) => {
+      state.agreementTypesLookup.loading = true;
+    },
+    [getAgreementTypesLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.agreementTypesLookup.data = action.payload;
+      state.agreementTypesLookup.loading = false;
+    },
+
+    // Currency lookup
+    [getCurrencyLookup.pending.type]: (state) => {
+      state.currencyLookup.loading = true;
+    },
+    [getCurrencyLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.currencyLookup.data = action.payload;
+      state.currencyLookup.loading = false;
     },
   },
 });

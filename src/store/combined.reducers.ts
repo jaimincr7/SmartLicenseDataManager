@@ -7,6 +7,7 @@ import errorLogReducer from './errorLog/errorLog.reducer';
 import sqlServerReducer from './sqlServer/sqlServer.reducer';
 import sqlServerEntitlementsReducer from './sqlServerEntitlements/sqlServerEntitlements.reducer';
 import sqlServerOverridesReducer from './sqlServerOverrides/sqlServerOverrides.reducer';
+import sqlServerPricingReducer from './sqlServerPricing/sqlServerPricing.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -17,4 +18,5 @@ export const rootReducer = combineReducers({
   adDevicesExclusions: adDevicesExclusionsReducer,
   adUsers: adUsersReducer,
   sqlServerOverrides: sqlServerOverridesReducer,
+  sqlServerPricing: sqlServerPricingReducer,
 });

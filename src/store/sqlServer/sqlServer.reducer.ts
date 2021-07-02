@@ -98,7 +98,7 @@ export const sqlServerSlice = createSlice({
       }
       state.search.loading = false;
       state.search.hasErrors = false;
-      state.search.tableName = search_result.table_name
+      state.search.tableName = search_result.table_name;
     },
     [searchSqlServer.rejected.type]: (state) => {
       state.search.loading = false;

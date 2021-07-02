@@ -24,4 +24,12 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  agreementTypesLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  currencyLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
 }

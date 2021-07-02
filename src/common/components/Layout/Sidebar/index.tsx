@@ -59,6 +59,16 @@ function Sidebar() {
                 Overrides
               </Link>
             </Menu.Item>
+            <Menu.Item
+              key="/sql-server/pricing"
+              icon={
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
+              }
+            >
+              <Link to="/sql-server/pricing" title="Pricing">
+                Pricing
+              </Link>
+            </Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub2"

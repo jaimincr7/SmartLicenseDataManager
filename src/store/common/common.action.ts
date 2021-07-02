@@ -30,3 +30,17 @@ export const getLicenseLookup = createAsyncThunk('getLicenseLookup', async () =>
   });
   return response.data;
 });
+
+export const getAgreementTypesLookup = createAsyncThunk('getAgreementTypesLookup', async () => {
+  const response = await commonService.getAgreementTypesLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getCurrencyLookup = createAsyncThunk('getCurrencyLookup', async () => {
+  const response = await commonService.getCurrencyLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});

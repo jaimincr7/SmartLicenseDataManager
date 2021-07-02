@@ -25,18 +25,32 @@ class CommonService {
   }
 
   public async getLicenseLookup(): Promise<IApiResponse<ILookup>> {
-    const url = `/sql-server-license/lookup`;
+    const url = `/config-sql-server-license/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }
 
-  public async getColumnLookup(tableName:string, columnName: string): Promise<IApiResponse<any>> {
+  public async getAgreementTypesLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/agreement-types/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCurrencyLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/currency/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getColumnLookup(tableName: string, columnName: string): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
     const data = {
       table_name: tableName,
-      column_name: columnName
-    }
+      column_name: columnName,
+    };
     return request({ url, method: 'POST', data }).then((res) => {
       return res.data;
     });

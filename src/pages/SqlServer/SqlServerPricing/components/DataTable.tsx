@@ -14,53 +14,54 @@ import {
 } from '../../../../common/components/DataTableFilters';
 import { orderByType } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
-import {
-  clearSqlServerEntitlementsMessages,
-  sqlServerEntitlementsSelector,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
-import {
-  ISearchSqlServerEntitlements,
-  ISqlServerEntitlements,
-} from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
-import {
-  deleteSqlServerEntitlements,
-  searchSqlServerEntitlements,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
+import { FileExcelOutlined } from '@ant-design/icons';
+import {
+  clearSqlServerPricingMessages,
+  sqlServerPricingSelector,
+} from '../../../../store/sqlServerPricing/sqlServerPricing.reducer';
+import {
+  ISearchSqlServerPricing,
+  ISqlServerPricing,
+} from '../../../../services/sqlServerPricing/sqlServerPricing.model';
+import sqlServerPricingService from '../../../../services/sqlServerPricing/sqlServerPricing.service';
+import {
+  searchSqlServerPricing,
+  deleteSqlServerPricing,
+} from '../../../../store/sqlServerPricing/sqlServerPricing.action';
 
 let pageLoaded = false;
+
+let tableFilter = {
+  keyword: '',
+  order_by: 'id',
+  order_direction: 'DESC' as orderByType,
+  filter_keys: {},
+};
 
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
-  const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
+  const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
   const commonFilters = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [form] = Form.useForm();
 
   const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
+  const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
   });
 
-  let tableFilter = {
-    keyword: '',
-    order_by: 'id',
-    order_direction: 'DESC' as orderByType,
-    filter_keys: {},
-  };
-
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
-  const fetchSqlServerEntitlements = (page: number = null) => {
+  const getSearchData = (page, isExportToExcel: boolean) => {
     const { filter_keys, ...rest } = tableFilter;
 
-    if (page) {
-      setPagination({ ...pagination, current: page });
-    } else {
-      page = pagination.current;
+    if (!page) {
+      page = pagination;
     }
 
     const inlineSearchFilter = _.pickBy(filter_keys, function (value) {
@@ -73,19 +74,25 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
     setInlineSearch(inlineSearchFilter);
 
-    const searchData: ISearchSqlServerEntitlements = {
+    const searchData: ISearchSqlServerPricing = {
       is_lookup: !pageLoaded,
-      limit: pagination.pageSize,
-      offset: (page - 1) * pagination.pageSize,
+      limit: page.pageSize,
+      offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
       filter_keys: inlineSearchFilter,
+      is_export_to_excel: isExportToExcel,
     };
     pageLoaded = true;
-    dispatch(searchSqlServerEntitlements(searchData));
+    return searchData;
+  };
+
+  const fetchSqlServerPricing = (page = null) => {
+    const searchData = getSearchData(page, false);
+    dispatch(searchSqlServerPricing(searchData));
   };
   useImperativeHandle(ref, () => ({
     refreshData() {
-      fetchSqlServerEntitlements();
+      fetchSqlServerPricing();
     },
   }));
   React.useEffect(() => {
@@ -104,7 +111,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       }
     }
     tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
-    fetchSqlServerEntitlements(1);
+    setPagination({ ...pagination, current: 1 });
+    fetchSqlServerPricing({ ...pagination, current: 1 });
   }, [commonFilters.search]);
   // End: Global Search
 
@@ -116,24 +124,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     };
     setPagination(paginating);
-    fetchSqlServerEntitlements();
+    fetchSqlServerPricing(paginating);
   };
 
   // Start: Delete action
-  const removeSqlServerEntitlements = (id: number) => {
-    dispatch(deleteSqlServerEntitlements(id));
+  const removeSqlServerPricing = (id: number) => {
+    dispatch(deleteSqlServerPricing(id));
   };
   React.useEffect(() => {
-    if (sqlServerEntitlements.delete.messages.length > 0) {
-      if (sqlServerEntitlements.delete.hasErrors) {
-        toast.error(sqlServerEntitlements.delete.messages.join(' '));
+    if (sqlServerPricing.delete.messages.length > 0) {
+      if (sqlServerPricing.delete.hasErrors) {
+        toast.error(sqlServerPricing.delete.messages.join(' '));
       } else {
-        toast.success(sqlServerEntitlements.delete.messages.join(' '));
-        fetchSqlServerEntitlements();
+        toast.success(sqlServerPricing.delete.messages.join(' '));
+        fetchSqlServerPricing();
       }
-      dispatch(clearSqlServerEntitlementsMessages());
+      dispatch(clearSqlServerPricingMessages());
     }
-  }, [sqlServerEntitlements.delete.messages]);
+  }, [sqlServerPricing.delete.messages]);
   // End: Delete action
 
   // Keyword search
@@ -142,14 +150,15 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ...tableFilter,
       keyword: value,
     };
-    fetchSqlServerEntitlements();
+    setPagination({ ...pagination, current: 1 });
+    fetchSqlServerPricing({ ...pagination, current: 1 });
   };
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
     tableFilter.filter_keys = values;
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServerEntitlements();
+    fetchSqlServerPricing({ ...pagination, current: 1 });
   };
   const onReset = () => {
     onFinish({});
@@ -159,9 +168,34 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   }, [inlineSearch]);
 
   const FilterBySwap = (dataIndex: string) => {
-    return FilterWithSwapOption(dataIndex, sqlServerEntitlements.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, sqlServerPricing.search.tableName, form);
   };
   // End: Column level filter
+
+  const exportExcel = (fileName: string, url: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    link.remove();
+  };
+  // Export Excel
+  const downloadExcel = () => {
+    setLoading(true);
+    const searchData = getSearchData(pagination, true);
+
+    return sqlServerPricingService.exportExcelFile(searchData).then((res) => {
+      if (!res) {
+        toast.error('Document not available.');
+        return;
+      } else {
+        const fileName = `${moment().format('yyyyMMDDHHmmss')}.xlsx`; //res.headers["content-disposition"];
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        exportExcel(fileName, url);
+        setLoading(false);
+      }
+    });
+  };
 
   // Table columns
   const columns = [
@@ -170,7 +204,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('tenant_id', sqlServerEntitlements.search.lookups?.tenants),
+          title: FilterByDropdown('tenant_id', sqlServerPricing.search.lookups?.tenants),
           dataIndex: 'tenant_name',
           key: 'tenant_name',
           ellipsis: true,
@@ -182,7 +216,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('company_id', sqlServerEntitlements.search.lookups?.companies),
+          title: FilterByDropdown('company_id', sqlServerPricing.search.lookups?.companies),
           dataIndex: 'company_name',
           key: 'company_name',
           ellipsis: true,
@@ -194,7 +228,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('bu_id', sqlServerEntitlements.search.lookups?.bus),
+          title: FilterByDropdown('bu_id', sqlServerPricing.search.lookups?.bus),
           dataIndex: 'bu_name',
           key: 'bu_name',
           ellipsis: true,
@@ -219,10 +253,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown(
-            'license_id',
-            sqlServerEntitlements.search.lookups?.sqlServerLicenses
-          ),
+          title: FilterByDropdown('license_id', sqlServerPricing.search.lookups?.sqlServerLicenses),
           dataIndex: 'product_name',
           key: 'product_name',
           ellipsis: true,
@@ -230,37 +261,40 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ],
     },
     {
-      title: 'Qty 01',
+      title: 'Agreement Type',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('qty_01'),
-          dataIndex: 'qty_01',
-          key: 'qty_01',
+          title: FilterByDropdown(
+            'agreement_type_id',
+            sqlServerPricing.search.lookups?.agreementTypes
+          ),
+          dataIndex: 'agreement_type',
+          key: 'agreement_type',
           ellipsis: true,
         },
       ],
     },
     {
-      title: 'Qty 02',
+      title: 'Currency Name',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('qty_02'),
-          dataIndex: 'qty_02',
-          key: 'qty_02',
+          title: FilterByDropdown('currency_id', sqlServerPricing.search.lookups?.currency),
+          dataIndex: 'currency_name',
+          key: 'currency_name',
           ellipsis: true,
         },
       ],
     },
     {
-      title: 'Qty 03',
+      title: 'Price',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('qty_03'),
-          dataIndex: 'qty_03',
-          key: 'qty_03',
+          title: FilterBySwap('price'),
+          dataIndex: 'price',
+          key: 'price',
           ellipsis: true,
         },
       ],
@@ -297,21 +331,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           key: 'Action',
           width: '80px',
           fixed: 'right' as fixedColumn,
-          render: (_, data: ISqlServerEntitlements) => (
+          render: (_, data: ISqlServerPricing) => (
             <div className="btns-block">
               <a
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);
-                  history.push(`/sql-server/entitlements/${data.id}`);
+                  history.push(`/sql-server/pricing/${data.id}`);
                 }}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
               </a>
-              <Popconfirm
-                title="Sure to delete?"
-                onConfirm={() => removeSqlServerEntitlements(data.id)}
-              >
+              <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerPricing(data.id)}>
                 <a href="#" title="" className="action-btn">
                   <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
                 </a>
@@ -357,6 +388,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
+          <Button onClick={downloadExcel} icon={<FileExcelOutlined />} loading={loading}>
+            Export
+          </Button>
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button
               icon={
@@ -374,7 +408,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               setSelectedId(0);
             }}
           >
-            Add Entitlements
+            Add Sql Server Pricing
           </Button>
         </div>
       </div>
@@ -382,13 +416,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Table
           scroll={{ x: true }}
           rowKey={(record) => record.id}
-          dataSource={sqlServerEntitlements.search.data}
+          dataSource={sqlServerPricing.search.data}
           columns={getColumns()}
-          loading={sqlServerEntitlements.search.loading}
+          loading={sqlServerPricing.search.loading}
           pagination={{
             ...pagination,
-            total: sqlServerEntitlements.search.count,
-            showTotal: (total) => `Total ${total} items`,
+            total: sqlServerPricing.search.count,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
           className="custom-table"
