@@ -411,6 +411,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Password Never Expires',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown(
