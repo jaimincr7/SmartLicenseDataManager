@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import adDevicesReducer from './adDevices/adDevices.reducer';
 import adDevicesExclusionsReducer from './adDevicesExclusions/adDevicesExclusions.reducer';
 import adUsersReducer from './adUsers/adUsers.reducer';
+import bulkImportReducer from './bulkImport/bulkImport.reducer';
 import commonReducer from './common/common.reducer';
 import errorLogReducer from './errorLog/errorLog.reducer';
 import sqlServerReducer from './sqlServer/sqlServer.reducer';
@@ -19,4 +20,5 @@ export const rootReducer = combineReducers({
   adUsers: adUsersReducer,
   sqlServerOverrides: sqlServerOverridesReducer,
   sqlServerPricing: sqlServerPricingReducer,
+  bulkImport: bulkImportReducer,
 });

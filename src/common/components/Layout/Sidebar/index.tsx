@@ -26,14 +26,12 @@ function Sidebar() {
           </Menu.Item>
           <SubMenu
             key="sub1"
-            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-cms.svg`} alt="" />}
+            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-server-outline.svg`} alt="" />}
             title="SQL Server"
+            className="no-icon"
           >
             <Menu.Item
-              key="/sql-server"
-              icon={
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
-              }
+              key="/sql-server"              
             >
               <Link to="/sql-server" title="SQL Server">
                 SQL Server
@@ -41,9 +39,6 @@ function Sidebar() {
             </Menu.Item>
             <Menu.Item
               key="/sql-server/entitlements"
-              icon={
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
-              }
             >
               <Link to="/sql-server/entitlements" title="Entitlements">
                 Entitlements
@@ -51,9 +46,6 @@ function Sidebar() {
             </Menu.Item>
             <Menu.Item
               key="/sql-server/overrides"
-              icon={
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
-              }
             >
               <Link to="/sql-server/overrides" title="Overrides">
                 Overrides
@@ -72,14 +64,12 @@ function Sidebar() {
           </SubMenu>
           <SubMenu
             key="sub2"
-            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-cms.svg`} alt="" />}
+            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-active-directory.svg`} alt="" />}
             title="AD"
+            className="no-icon"
           >
             <Menu.Item
               key="/ad/ad-devices"
-              icon={
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
-              }
             >
               <Link to="/ad/ad-devices" title="AD Devices">
                 AD Devices
@@ -87,9 +77,6 @@ function Sidebar() {
             </Menu.Item>
             <Menu.Item
               key="/ad/ad-devices-exclusions"
-              icon={
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
-              }
             >
               <Link to="/ad/ad-devices-exclusions" title="AD-Devices Exclusions">
                 Exclusions
@@ -97,9 +84,6 @@ function Sidebar() {
             </Menu.Item>
             <Menu.Item
               key="/ad/ad-users"
-              icon={
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
-              }
             >
               <Link to="/ad/ad-users" title="AD Users">
                 AD Users

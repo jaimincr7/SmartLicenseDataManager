@@ -1,6 +1,6 @@
 import { IApiResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import { ILookup } from './common.model';
+import { IBulkInsertDataset, IDeleteDataset, ILookup } from './common.model';
 
 class CommonService {
   public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
@@ -52,6 +52,47 @@ class CommonService {
       column_name: columnName,
     };
     return request({ url, method: 'POST', data }).then((res) => {
+      return res.data;
+    });
+  }
+  
+  public async getExcelColumns(file: File): Promise<IApiResponse<any>> {
+    const headers = {
+      Accept: 'multipart/form-data',
+    };
+    const url = `/app/excel-sheet-column`;
+    const data = {file};
+    return request({ url, method: 'POST', data: data, headers: headers }).then((res) => {
+      return res.data;
+    });
+  }
+
+  // Bulk import
+  public async getTableColumns(tableName:string): Promise<IApiResponse<any>> {
+    const url = `/app/table-column/${tableName}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async bulkInsert(data: IBulkInsertDataset): Promise<IApiResponse<any>> {
+    const url = `/app/bulk-insert`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getDatabaseTables(): Promise<IApiResponse<any>> {
+    const url = `/app/tables`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async deleteDataset(data: IDeleteDataset): Promise<any> {
+    const inputValues = {...data,debug: false};
+    const url = `/app/delete-dataset`;
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }

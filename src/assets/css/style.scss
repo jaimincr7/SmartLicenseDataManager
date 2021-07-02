@@ -971,6 +971,9 @@ textarea.ant-input {
   .ant-menu-submenu:hover > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
     color: #fff;
   }
+  .no-icon .ant-menu-sub .ant-menu-title-content{
+    margin-left: 6px;
+  }
 }
 
 /* Main Content
