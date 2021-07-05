@@ -13,6 +13,7 @@ import UploadExcel from './pages/Home/UploadExcel';
 import AdRoutes from './pages/Ad/ad.routes';
 import { Dashboard } from './pages/Dashboard';
 import DataInputRoutes from './pages/DataInput/DataInput.routes';
+import WindowsServerRoutes from './pages/WindowsServer/WindowsServer.routes';
 
 function AppRoutes() {
   return (
@@ -37,6 +38,7 @@ function AppRoutes() {
           <LayoutRoute path="/ad" layout={MainLayout} component={AdRoutes} />
           <LayoutRoute path="/upload-excel" layout={MainLayout} component={UploadExcel} />
           <LayoutRoute path="/data-input" layout={MainLayout} component={DataInputRoutes} />
+          <LayoutRoute path="/windows-server" layout={MainLayout} component={WindowsServerRoutes} />
 
           {/* keep least always */}
           <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />

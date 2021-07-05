@@ -84,16 +84,28 @@ function Sidebar() {
             </Menu.Item>
           </SubMenu>
           <SubMenu
-            key="data-input"
+            key="windows-server"
             icon={
-              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-data-input.svg`} alt="" />
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-server-outline.svg`} alt="" />
             }
+            title="Windows Server"
+            className="no-icon"
+          >
+            <Menu.Item key="/windows-server/inventory">
+              <Link to="/windows-server/inventory" title="Inventory">
+                Inventory
+              </Link>
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="data-input"
+            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-data-input.svg`} alt="" />}
             title="Data Input"
             className="no-icon"
           >
             <Menu.Item key="/data-input/bulk-import">
               <Link to="/data-input/bulk-import" title="Bulk Import">
-              Bulk Import
+                Bulk Import
               </Link>
             </Menu.Item>
           </SubMenu>

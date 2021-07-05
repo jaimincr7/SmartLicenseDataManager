@@ -1,27 +1,10 @@
 import { Select, Row, Col, Button, Form, Upload } from 'antd';
-import { Messages } from '../../common/constants/messages';
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/app.hooks';
-import { clearSqlServerMessages, sqlServerSelector } from '../../store/sqlServer/sqlServer.reducer';
-import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-};
+import { useState } from 'react';
 
 const { Option } = Select;
 
 function UploadExcel() {
-  const sqlServers = useAppSelector(sqlServerSelector);
-  const dispatch = useAppDispatch();
-  const history = useHistory();
-
-  const [form] = Form.useForm();
-
   const [defaultFile, setDefaultFile] = useState(null);
-  const [excelColumns, setExcelColumns] = useState(null);
-  const [tableColumns, setTableColumns] = useState([]);
 
   const uploadFile = async (options) => {
     const { onSuccess, onError, file } = options;
@@ -30,7 +13,6 @@ function UploadExcel() {
     formData.append('file', file);
     formData.append('table_name', 'sql server');
     try {
-      // dispatch(getExcelColumns(formData));
       onSuccess('Ok');
     } catch (err) {
       onError({ err });
@@ -39,10 +21,7 @@ function UploadExcel() {
 
   const handleOnChange = ({ file }) => {
     if (file.status === 'removed') {
-      // dispatch(clearExcelColumns());
       setDefaultFile(null);
-      setExcelColumns(null);
-      setTableColumns([]);
     } else if (file.status === 'done') {
       setDefaultFile(file);
     }

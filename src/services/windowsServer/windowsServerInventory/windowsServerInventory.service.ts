@@ -1,27 +1,30 @@
-import { IApiResponse, ISearchResponse } from '../../common/models/common';
-import request from '../../utils/request';
-import { ISearchSqlServer, ISqlServer, IProcessData } from './sqlServer.model';
+import {
+  ISearchWindowsServerInventory,
+  IWindowsServerInventory,
+} from './windowsServerInventory.model';
+import { IApiResponse, ISearchResponse } from '../../../common/models/common';
+import request from '../../../utils/request';
 
-class SqlServerService {
-  ENDPOINT = '/sql-server-inventory';
+class WindowsServerInventoryService {
+  ENDPOINT = '/windows-server-inventory';
 
-  public async searchSqlServer(
-    searchParams?: ISearchSqlServer
-  ): Promise<IApiResponse<ISearchResponse<ISqlServer>>> {
+  public async searchWindowsServerInventory(
+    searchParams?: ISearchWindowsServerInventory
+  ): Promise<IApiResponse<ISearchResponse<IWindowsServerInventory>>> {
     const url = `${this.ENDPOINT}/search`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
   }
 
-  public async getSqlServerById(id: number): Promise<any> {
+  public async getWindowsServerInventoryById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }
 
-  public async saveSqlServer(data: ISqlServer): Promise<any> {
+  public async saveWindowsServerInventory(data: IWindowsServerInventory): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {
       const url = `${this.ENDPOINT}/${id}`;
@@ -36,21 +39,14 @@ class SqlServerService {
     }
   }
 
-  public async deleteSqlServer(id: number): Promise<any> {
+  public async deleteWindowsServerInventory(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
       return res.data;
     });
   }
 
-  public async processData(data: IProcessData): Promise<any> {
-    const url = `${this.ENDPOINT}/process-data`;
-    return request({ url, method: 'POST', data: data }).then((res) => {
-      return res.data;
-    });
-  }
-
-  public async exportExcelFile(searchParams?: ISearchSqlServer): Promise<any> {
+  public async exportExcelFile(searchParams?: ISearchWindowsServerInventory): Promise<any> {
     const url = `${this.ENDPOINT}/search`;
     return request({
       url,
@@ -62,4 +58,4 @@ class SqlServerService {
     });
   }
 }
-export default new SqlServerService();
+export default new WindowsServerInventoryService();

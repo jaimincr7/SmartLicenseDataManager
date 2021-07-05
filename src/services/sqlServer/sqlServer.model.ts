@@ -61,20 +61,3 @@ export interface IProcessData {
   update_rv_tools_host?: boolean;
   apply_overrides?: boolean;
 }
-
-export interface IGetExcelColumns {
-  excel_column: Array<string>;
-  filename: string;
-  table_column: Array<string>;
-}
-
-export interface IBulkInsertDataset {
-  excel_to_sql_mapping?: Array<IExcelToSqlData>;
-  table_name?: string;
-  file_name?: string;
-}
-
-interface IExcelToSqlData {
-  key: string;
-  value: string;
-}
