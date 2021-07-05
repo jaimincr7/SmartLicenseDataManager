@@ -52,7 +52,7 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('sql-server/pricing/update-from-excel')}
+                onClick={() => history.push('/sql-server/pricing/update-from-excel')}
                 icon={
                   <em className="anticon">
                     <img

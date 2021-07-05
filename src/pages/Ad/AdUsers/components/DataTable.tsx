@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { fixedColumn, IDataTable, IInlineSearch } from './dataTable.model';
 import moment from 'moment';
-import { Common, DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
+import { Common, DEFAULT_PAGE_SIZE, exportExcel } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
   Filter,
@@ -163,13 +163,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
   // End: Column level filter
 
-  const exportExcel = (fileName: string, url: string) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    link.click();
-    link.remove();
-  };
   // Export Excel
   const downloadExcel = () => {
     setLoading(true);

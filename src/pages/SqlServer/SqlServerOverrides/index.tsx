@@ -52,7 +52,7 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('sql-server/overrides/update-from-excel')}
+                onClick={() => history.push('/sql-server/overrides/update-from-excel')}
                 icon={
                   <em className="anticon">
                     <img

@@ -438,14 +438,14 @@ label {
 .upload-file > span {
   display: inline-flex;
   align-items: center;
-      width: 100%;
-     .ant-upload-list.ant-upload-list-text{
-        padding-left: 8px;
-        width: calc(100% - 140px);
-     }
-    .ant-upload-list-item{
-      margin: 0;
-    }
+  width: 100%;
+  .ant-upload-list.ant-upload-list-text {
+    padding-left: 8px;
+    width: calc(100% - 140px);
+  }
+  .ant-upload-list-item {
+    margin: 0;
+  }
   .ant-upload-list-item-card-actions-btn.ant-btn-sm {
     width: 30px;
     height: 30px;
@@ -458,7 +458,7 @@ label {
     opacity: 1;
   }
   .ant-upload-list-item-name {
-        max-width: max-content;
+    max-width: max-content;
     color: #4f4f4f;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -470,7 +470,7 @@ label {
     background-color: transparent;
   }
 }
-.update-excel-page .select-table{
+.update-excel-page .select-table {
   margin-bottom: 0;
   width: 300px;
   max-width: 100%;
@@ -480,14 +480,14 @@ label {
   display: flex;
 }
 .align-item-start {
- align-items: flex-start !important;
+  align-items: flex-start !important;
 }
 
 // ant-design
 .btn-icon {
   display: inline-flex;
   align-items: center;
-  img{
+  img {
     min-width: 20px;
   }
 }
@@ -931,7 +931,7 @@ textarea.ant-input {
   .ant-menu-submenu-title {
     opacity: 0.6;
     margin: 0 !important;
-    > .ant-menu-item-icon{
+    > .ant-menu-item-icon {
       width: 20px;
     }
     &:hover {
@@ -983,7 +983,7 @@ textarea.ant-input {
   .ant-menu-submenu:hover > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
     color: #fff;
   }
-  .no-icon .ant-menu-sub .ant-menu-title-content{
+  .no-icon .ant-menu-sub .ant-menu-title-content {
     margin-left: 6px;
   }
 }
@@ -1101,12 +1101,12 @@ textarea.ant-input {
     text-align: center;
   }
 
-  .update-excel-page .select-table{
+  .update-excel-page .select-table {
     margin: 0 0 10px;
     width: 100%;
     .ant-form-item-label {
       padding: 0 !important;
-      > label::after{
+      > label::after {
         display: inline-block;
       }
     }

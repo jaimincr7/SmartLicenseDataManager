@@ -6,13 +6,14 @@ const { SubMenu } = Menu;
 
 function Sidebar() {
   const location = useLocation();
+  const defaultSubmenu: string = location.pathname.split('/')[1];
 
   return (
     <aside className="main-navigation">
       <Scrollbars renderThumbVertical={(props) => <div {...props} className="track-vartical" />}>
         <Menu
-          defaultSelectedKeys={['/']}
-          defaultOpenKeys={['sub1']}
+          // defaultSelectedKeys={['/']}
+          defaultOpenKeys={[`${defaultSubmenu}`]}
           mode="inline"
           selectedKeys={[location.pathname]}
         >
@@ -25,7 +26,7 @@ function Sidebar() {
             </a>
           </Menu.Item>
           <SubMenu
-            key="sub1"
+            key="sql-server"
             icon={
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-server-outline.svg`} alt="" />
             }
@@ -52,9 +53,14 @@ function Sidebar() {
                 Pricing
               </Link>
             </Menu.Item>
+            <Menu.Item key="/sql-server/license">
+              <Link to="/sql-server/license" title="License">
+                License
+              </Link>
+            </Menu.Item>
           </SubMenu>
           <SubMenu
-            key="sub2"
+            key="ad"
             icon={
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-active-directory.svg`} alt="" />
             }

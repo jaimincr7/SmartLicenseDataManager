@@ -1,3 +1,4 @@
+import { booleanLookup } from './../../common/constants/common';
 import { IAdUsersState } from './adUsers.model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
@@ -74,11 +75,6 @@ export const adUsersSlice = createSlice({
     },
     [searchAdUsers.fulfilled.type]: (state, action: PayloadAction<ISearchResponse<IAdUser>>) => {
       const { search_result, ...rest } = action.payload;
-      const booleanLookup = [
-        { id: 0, name: 'No' },
-        { id: 1, name: 'Yes' },
-      ];
-
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
       if (JSON.stringify(rest) !== '{}') {

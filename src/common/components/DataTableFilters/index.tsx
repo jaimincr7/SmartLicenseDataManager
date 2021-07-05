@@ -46,22 +46,21 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
   </>
 );
 
-export const FilterWithSwapOption = (
-  dataIndex: string,
-  tableName: string,
-  form: any
-) => {
+export const FilterWithSwapOption = (dataIndex: string, tableName: string, form: any) => {
   const [swap, setSwap] = useState<boolean>(true);
 
   const [options, setOptions] = useState<IDropDownOption[]>([]);
 
   React.useEffect(() => {
     if (!swap && options.length === 0) {
-      commonService.getColumnLookup(tableName, dataIndex).then((res) => {
-        return res.body.data;
-      }).then((res) => {
-        setOptions(res);
-      });
+      commonService
+        .getColumnLookup(tableName, dataIndex)
+        .then((res) => {
+          return res.body.data;
+        })
+        .then((res) => {
+          setOptions(res);
+        });
     }
     if (form.getFieldValue(dataIndex)) {
       form.setFieldsValue({ [dataIndex]: undefined });

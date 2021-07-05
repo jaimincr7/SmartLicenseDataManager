@@ -17,18 +17,18 @@ import { useHistory } from 'react-router-dom';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import {
-  clearSqlServerPricingMessages,
-  sqlServerPricingSelector,
-} from '../../../../store/sqlServerPricing/sqlServerPricing.reducer';
+  clearSqlServerLicenseMessages,
+  sqlServerLicenseSelector,
+} from '../../../../store/sqlServerLicense/sqlServerLicense.reducer';
 import {
-  ISearchSqlServerPricing,
-  ISqlServerPricing,
-} from '../../../../services/sqlServerPricing/sqlServerPricing.model';
-import sqlServerPricingService from '../../../../services/sqlServerPricing/sqlServerPricing.service';
+  ISearchSqlServerLicense,
+  ISqlServerLicense,
+} from '../../../../services/sqlServerLicense/sqlServerLicense.model';
 import {
-  searchSqlServerPricing,
-  deleteSqlServerPricing,
-} from '../../../../store/sqlServerPricing/sqlServerPricing.action';
+  deleteSqlServerLicense,
+  searchSqlServerLicense,
+} from '../../../../store/sqlServerLicense/sqlServerLicense.action';
+import sqlServerLicenseService from '../../../../services/sqlServerLicense/sqlServerLicense.service';
 
 let pageLoaded = false;
 
@@ -42,7 +42,7 @@ let tableFilter = {
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
-  const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
+  const sqlServerLicense = useAppSelector(sqlServerLicenseSelector);
   const commonFilters = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -74,7 +74,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
     setInlineSearch(inlineSearchFilter);
 
-    const searchData: ISearchSqlServerPricing = {
+    const searchData: ISearchSqlServerLicense = {
       is_lookup: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
@@ -86,13 +86,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return searchData;
   };
 
-  const fetchSqlServerPricing = (page = null) => {
+  const fetchSqlServerLicense = (page = null) => {
     const searchData = getSearchData(page, false);
-    dispatch(searchSqlServerPricing(searchData));
+    dispatch(searchSqlServerLicense(searchData));
   };
   useImperativeHandle(ref, () => ({
     refreshData() {
-      fetchSqlServerPricing();
+      fetchSqlServerLicense();
     },
   }));
   React.useEffect(() => {
@@ -112,7 +112,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     }
     tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServerPricing({ ...pagination, current: 1 });
+    fetchSqlServerLicense({ ...pagination, current: 1 });
   }, [commonFilters.search]);
   // End: Global Search
 
@@ -124,24 +124,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     };
     setPagination(paginating);
-    fetchSqlServerPricing(paginating);
+    fetchSqlServerLicense(paginating);
   };
 
   // Start: Delete action
-  const removeSqlServerPricing = (id: number) => {
-    dispatch(deleteSqlServerPricing(id));
+  const removeSqlServerLicense = (id: number) => {
+    dispatch(deleteSqlServerLicense(id));
   };
   React.useEffect(() => {
-    if (sqlServerPricing.delete.messages.length > 0) {
-      if (sqlServerPricing.delete.hasErrors) {
-        toast.error(sqlServerPricing.delete.messages.join(' '));
+    if (sqlServerLicense.delete.messages.length > 0) {
+      if (sqlServerLicense.delete.hasErrors) {
+        toast.error(sqlServerLicense.delete.messages.join(' '));
       } else {
-        toast.success(sqlServerPricing.delete.messages.join(' '));
-        fetchSqlServerPricing();
+        toast.success(sqlServerLicense.delete.messages.join(' '));
+        fetchSqlServerLicense();
       }
-      dispatch(clearSqlServerPricingMessages());
+      dispatch(clearSqlServerLicenseMessages());
     }
-  }, [sqlServerPricing.delete.messages]);
+  }, [sqlServerLicense.delete.messages]);
   // End: Delete action
 
   // Keyword search
@@ -151,14 +151,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       keyword: value,
     };
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServerPricing({ ...pagination, current: 1 });
+    fetchSqlServerLicense({ ...pagination, current: 1 });
   };
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
     tableFilter.filter_keys = values;
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServerPricing({ ...pagination, current: 1 });
+    fetchSqlServerLicense({ ...pagination, current: 1 });
   };
   const onReset = () => {
     onFinish({});
@@ -168,7 +168,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   }, [inlineSearch]);
 
   const FilterBySwap = (dataIndex: string) => {
-    return FilterWithSwapOption(dataIndex, sqlServerPricing.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, sqlServerLicense.search.tableName, form);
   };
   // End: Column level filter
 
@@ -177,7 +177,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setLoading(true);
     const searchData = getSearchData(pagination, true);
 
-    return sqlServerPricingService.exportExcelFile(searchData).then((res) => {
+    return sqlServerLicenseService.exportExcelFile(searchData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
@@ -197,7 +197,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('tenant_id', sqlServerPricing.search.lookups?.tenants),
+          title: FilterByDropdown('tenant_id', sqlServerLicense.search.lookups?.tenants),
           dataIndex: 'tenant_name',
           key: 'tenant_name',
           ellipsis: true,
@@ -209,7 +209,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('company_id', sqlServerPricing.search.lookups?.companies),
+          title: FilterByDropdown('company_id', sqlServerLicense.search.lookups?.companies),
           dataIndex: 'company_name',
           key: 'company_name',
           ellipsis: true,
@@ -221,7 +221,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('bu_id', sqlServerPricing.search.lookups?.bus),
+          title: FilterByDropdown('bu_id', sqlServerLicense.search.lookups?.bus),
           dataIndex: 'bu_name',
           key: 'bu_name',
           ellipsis: true,
@@ -242,25 +242,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ],
     },
     {
-      title: 'Product Name',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDropdown('license_id', sqlServerPricing.search.lookups?.sqlServerLicenses),
-          dataIndex: 'product_name',
-          key: 'product_name',
-          ellipsis: true,
-        },
-      ],
-    },
-    {
       title: 'Agreement Type',
       sorter: true,
       children: [
         {
           title: FilterByDropdown(
-            'agreement_type_id',
-            sqlServerPricing.search.lookups?.agreementTypes
+            'opt_agreement_type',
+            sqlServerLicense.search.lookups?.agreementTypes
           ),
           dataIndex: 'agreement_type',
           key: 'agreement_type',
@@ -269,25 +257,77 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ],
     },
     {
-      title: 'Currency Name',
+      title: 'Opt-Default to Enterprise on Hosts',
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('currency_id', sqlServerPricing.search.lookups?.currency),
-          dataIndex: 'currency_name',
-          key: 'currency_name',
+          title: FilterByDropdown(
+            'apt_default_to_enterprise_on_hosts',
+            sqlServerLicense.search.lookups?.booleanLookup
+          ),
+          dataIndex: 'apt_default_to_enterprise_on_hosts',
+          key: 'apt_default_to_enterprise_on_hosts',
           ellipsis: true,
+          render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
         },
       ],
     },
     {
-      title: 'Price',
+      title: 'Opt-Cluster Logic',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('price'),
-          dataIndex: 'price',
-          key: 'price',
+          title: FilterByDropdown(
+            'opt_cluster_logic',
+            sqlServerLicense.search.lookups?.booleanLookup
+          ),
+          dataIndex: 'opt_cluster_logic',
+          key: 'opt_cluster_logic',
+          ellipsis: true,
+          render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+        },
+      ],
+    },
+    {
+      title: 'Opt-Entitlements',
+      sorter: true,
+      children: [
+        {
+          title: FilterByDropdown(
+            'opt_entitlements',
+            sqlServerLicense.search.lookups?.booleanLookup
+          ),
+          dataIndex: 'opt_entitlements',
+          key: 'opt_entitlements',
+          ellipsis: true,
+          render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+        },
+      ],
+    },
+    {
+      title: 'Opt-Exclude Non-Prod',
+      sorter: true,
+      children: [
+        {
+          title: FilterByDropdown(
+            'opt_exclude_non_prod',
+            sqlServerLicense.search.lookups?.booleanLookup
+          ),
+          dataIndex: 'opt_exclude_non_prod',
+          key: 'opt_exclude_non_prod',
+          ellipsis: true,
+          render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+        },
+      ],
+    },
+    {
+      title: 'Notes',
+      sorter: true,
+      children: [
+        {
+          title: FilterBySwap('notes'),
+          dataIndex: 'notes',
+          key: 'notes',
           ellipsis: true,
         },
       ],
@@ -324,18 +364,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           key: 'Action',
           width: '80px',
           fixed: 'right' as fixedColumn,
-          render: (_, data: ISqlServerPricing) => (
+          render: (_, data: ISqlServerLicense) => (
             <div className="btns-block">
               <a
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);
-                  history.push(`/sql-server/pricing/${data.id}`);
+                  history.push(`/sql-server/license/${data.id}`);
                 }}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
               </a>
-              <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerPricing(data.id)}>
+              <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerLicense(data.id)}>
                 <a href="#" title="" className="action-btn">
                   <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
                 </a>
@@ -401,7 +441,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               setSelectedId(0);
             }}
           >
-            Add Sql Server Pricing
+            Add Sql Server License
           </Button>
         </div>
       </div>
@@ -409,12 +449,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Table
           scroll={{ x: true }}
           rowKey={(record) => record.id}
-          dataSource={sqlServerPricing.search.data}
+          dataSource={sqlServerLicense.search.data}
           columns={getColumns()}
-          loading={sqlServerPricing.search.loading}
+          loading={sqlServerLicense.search.loading}
           pagination={{
             ...pagination,
-            total: sqlServerPricing.search.count,
+            total: sqlServerLicense.search.count,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}

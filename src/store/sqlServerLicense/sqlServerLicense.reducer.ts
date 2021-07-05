@@ -1,18 +1,17 @@
 import { booleanLookup } from './../../common/constants/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
-import { ISqlServerOverrides } from '../../services/sqlServerOverrides/sqlServerOverrides.model';
+import { ISqlServerLicense } from '../../services/sqlServerLicense/sqlServerLicense.model';
 import { RootState } from '../app.model';
 import {
-  searchSqlServerOverrides,
-  getSqlServerOverridesById,
-  saveSqlServerOverrides,
-  deleteSqlServerOverrides,
-  processData,
-} from './sqlServerOverrides.action';
-import { ISqlServerOverridesState } from './sqlServerOverrides.model';
+  deleteSqlServerLicense,
+  getSqlServerLicenseById,
+  saveSqlServerLicense,
+  searchSqlServerLicense,
+} from './sqlServerLicense.action';
+import { ISqlServerLicenseState } from './sqlServerLicense.model';
 
-export const initialState: ISqlServerOverridesState = {
+export const initialState: ISqlServerLicenseState = {
   search: {
     loading: false,
     hasErrors: false,
@@ -36,37 +35,31 @@ export const initialState: ISqlServerOverridesState = {
     hasErrors: false,
     messages: [],
   },
-  processData: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
 };
 
-export const sqlServerOverridesSlice = createSlice({
-  name: 'sqlServerOverrides',
+export const sqlServerLicenseSlice = createSlice({
+  name: 'sqlServerLicense',
   initialState,
   reducers: {
-    clearSqlServerOverrides: () => {
+    clearSqlServerLicense: () => {
       return initialState;
     },
-    clearSqlServerOverridesMessages: (state) => {
+    clearSqlServerLicenseMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
-      state.processData.messages = [];
     },
-    clearSqlServerOverridesGetById: (state) => {
+    clearSqlServerLicenseGetById: (state) => {
       state.getById.data = null;
     },
   },
   extraReducers: {
     // Search
-    [searchSqlServerOverrides.pending.type]: (state) => {
+    [searchSqlServerLicense.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchSqlServerOverrides.fulfilled.type]: (
+    [searchSqlServerLicense.fulfilled.type]: (
       state,
-      action: PayloadAction<ISearchResponse<ISqlServerOverrides>>
+      action: PayloadAction<ISearchResponse<ISqlServerLicense>>
     ) => {
       const { search_result, ...rest } = action.payload;
       state.search.data = search_result.records;
@@ -78,34 +71,31 @@ export const sqlServerOverridesSlice = createSlice({
       state.search.hasErrors = false;
       state.search.tableName = search_result.table_name;
     },
-    [searchSqlServerOverrides.rejected.type]: (state) => {
+    [searchSqlServerLicense.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
 
     // Get by id
-    [getSqlServerOverridesById.pending.type]: (state) => {
+    [getSqlServerLicenseById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getSqlServerOverridesById.fulfilled.type]: (
-      state,
-      action: PayloadAction<ISqlServerOverrides>
-    ) => {
+    [getSqlServerLicenseById.fulfilled.type]: (state, action: PayloadAction<ISqlServerLicense>) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
     },
-    [getSqlServerOverridesById.rejected.type]: (state) => {
+    [getSqlServerLicenseById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
     },
 
     // Save
-    [saveSqlServerOverrides.pending.type]: (state) => {
+    [saveSqlServerLicense.pending.type]: (state) => {
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveSqlServerOverrides.fulfilled.type]: (
+    [saveSqlServerLicense.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -113,7 +103,7 @@ export const sqlServerOverridesSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveSqlServerOverrides.rejected.type]: (
+    [saveSqlServerLicense.rejected.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -123,11 +113,11 @@ export const sqlServerOverridesSlice = createSlice({
     },
 
     // Delete
-    [deleteSqlServerOverrides.pending.type]: (state) => {
+    [deleteSqlServerLicense.pending.type]: (state) => {
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteSqlServerOverrides.fulfilled.type]: (
+    [deleteSqlServerLicense.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -135,7 +125,7 @@ export const sqlServerOverridesSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteSqlServerOverrides.rejected.type]: (
+    [deleteSqlServerLicense.rejected.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -143,34 +133,18 @@ export const sqlServerOverridesSlice = createSlice({
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
     },
-
-    // Process Data
-    [processData.pending.type]: (state) => {
-      state.processData.loading = true;
-      state.processData.messages = [];
-    },
-    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.processData.loading = false;
-      state.processData.hasErrors = false;
-      state.processData.messages = action.payload.messages;
-    },
-    [processData.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.processData.loading = false;
-      state.processData.hasErrors = true;
-      state.processData.messages = action.payload.errors;
-    },
   },
 });
 
 // A selector
-export const sqlServerOverridesSelector = (state: RootState) => state.sqlServerOverrides;
+export const sqlServerLicenseSelector = (state: RootState) => state.sqlServerLicense;
 
 // Actions
 export const {
-  clearSqlServerOverrides,
-  clearSqlServerOverridesMessages,
-  clearSqlServerOverridesGetById,
-} = sqlServerOverridesSlice.actions;
+  clearSqlServerLicense,
+  clearSqlServerLicenseMessages,
+  clearSqlServerLicenseGetById,
+} = sqlServerLicenseSlice.actions;
 
 // The reducer
-export default sqlServerOverridesSlice.reducer;
+export default sqlServerLicenseSlice.reducer;

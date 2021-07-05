@@ -1,3 +1,4 @@
+import { booleanLookup } from './../../common/constants/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IAdDevices, IGetExcelColumns } from './../../services/adDevices/adDevices.model';
 import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
@@ -84,11 +85,6 @@ export const adDevicesSlice = createSlice({
       action: PayloadAction<ISearchResponse<IAdDevices>>
     ) => {
       const { search_result, ...rest } = action.payload;
-      const booleanLookup = [
-        { id: 0, name: 'No' },
-        { id: 1, name: 'Yes' },
-      ];
-
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
       if (JSON.stringify(rest) !== '{}') {
