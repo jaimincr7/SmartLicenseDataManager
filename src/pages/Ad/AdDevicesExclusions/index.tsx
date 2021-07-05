@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import './adDevicesExclusion.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
@@ -7,10 +7,14 @@ import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { IAdDevicesExclusionsProps } from './adDevicesExclusion.model';
-import { clearAdDevicesExclusions } from '../../../store/adDevicesExclusions/adDevicesExclusions.reducer';
+import {
+  adDevicesExclusionsSelector,
+  clearAdDevicesExclusions,
+} from '../../../store/adDevicesExclusions/adDevicesExclusions.reducer';
 import AddAdDevicesExclusionsModal from './AddAdDeviceExclusionModal';
 
 const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
+  const adDevicesExclusions = useAppSelector(adDevicesExclusionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -52,7 +56,9 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('/ad/ad-devices-exclusions/update-from-excel')}
+                onClick={() =>
+                  history.push(`/data-input/bulk-import/${adDevicesExclusions.search.tableName}`)
+                }
                 icon={
                   <em className="anticon">
                     <img

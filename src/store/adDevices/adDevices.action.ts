@@ -4,7 +4,6 @@ import {
   ISearchAdDevices,
   IAdDevices,
   IProcessData,
-  IBulkInsertDataset,
 } from './../../services/adDevices/adDevices.model';
 
 // Asynchronous thunk action
@@ -42,20 +41,6 @@ export const deleteAdDevice = createAsyncThunk('deleteAdDevice', async (id: numb
 
 export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
   const response = await adDevicesService.processData(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
-
-export const getExcelColumns = createAsyncThunk('getExcelColumns', async (data: any) => {
-  const response = await adDevicesService.getExcelColumns(data).then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
-
-export const bulkInsert = createAsyncThunk('bulkInsert', async (data: IBulkInsertDataset) => {
-  const response = await adDevicesService.bulkInsert(data).then((res) => {
     return res.body;
   });
   return response;

@@ -1,16 +1,20 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import './sqlServerPricing.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
-import { clearSqlServerPricing } from '../../../store/sqlServerPricing/sqlServerPricing.reducer';
+import {
+  clearSqlServerPricing,
+  sqlServerPricingSelector,
+} from '../../../store/sqlServerPricing/sqlServerPricing.reducer';
 import { ISqlServerPricingProps } from './sqlServerPricing.model';
 import AddSqlServerPricingModal from './AddSqlServerPricingModal';
 
 const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
+  const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -52,7 +56,9 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('/sql-server/pricing/update-from-excel')}
+                onClick={() =>
+                  history.push(`/data-input/bulk-import/${sqlServerPricing.search.tableName}`)
+                }
                 icon={
                   <em className="anticon">
                     <img

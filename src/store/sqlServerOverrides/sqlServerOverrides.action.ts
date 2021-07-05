@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  IProcessData,
   ISearchSqlServerOverrides,
   ISqlServerOverrides,
 } from '../../services/sqlServerOverrides/sqlServerOverrides.model';
@@ -49,10 +48,3 @@ export const deleteSqlServerOverrides = createAsyncThunk(
     return response;
   }
 );
-
-export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
-  const response = await sqlServerOverridesService.processData(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});

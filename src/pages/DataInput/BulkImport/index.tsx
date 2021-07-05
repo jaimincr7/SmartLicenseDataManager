@@ -166,7 +166,9 @@ const BulkImport: React.FC = () => {
 
   useEffect(() => {
     if (table) {
-      const currentTable = bulkImports.getDatabaseTables.data.filter((t) => t.name.toLowerCase() === (table || '').toLowerCase());
+      const currentTable = bulkImports.getDatabaseTables.data.filter(
+        (t) => t.name.toLowerCase() === (table || '').toLowerCase()
+      );
       if (currentTable.length > 0) {
         formUpload.setFieldsValue({ table_name: currentTable[0].name });
         dispatch(getTableColumns(currentTable[0].name));

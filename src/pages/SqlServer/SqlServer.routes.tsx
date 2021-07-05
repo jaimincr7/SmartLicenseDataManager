@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import SqlServer from './SqlServer';
-import ImportExcel from './SqlServer/ImportExcel';
 import SqlServerEntitlements from './SqlServerEntitlements';
 import SqlServerLicense from './SqlServerLicense';
 import SqlServerOverrides from './SqlServerOverrides';
@@ -30,7 +29,6 @@ const SqlServerRoutes: React.FC = () => {
         <Route exact path={`${match.path}/entitlements/:id`} component={SqlServerEntitlements} />
 
         {/* Sql Server */}
-        <Route exact path={`${match.path}/update-from-excel`} component={ImportExcel} />
         <Route exact path={`${match.path}/:id`} component={SqlServer} />
 
         {/* keep least always */}

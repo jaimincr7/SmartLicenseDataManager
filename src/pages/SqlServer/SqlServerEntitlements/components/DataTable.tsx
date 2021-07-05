@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { fixedColumn, IDataTable, IInlineSearch } from './dataTable.model';
 import moment from 'moment';
-import { Common, DEFAULT_PAGE_SIZE } from '../../../../common/constants/common';
+import { Common, DEFAULT_PAGE_SIZE, exportExcel } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
   Filter,
@@ -27,6 +27,8 @@ import {
   searchSqlServerEntitlements,
 } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
+import sqlServerEntitlementsService from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.service';
+import { FileExcelOutlined } from '@ant-design/icons';
 
 let pageLoaded = false;
 
@@ -40,6 +42,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [form] = Form.useForm();
 
   const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
+  const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -54,13 +57,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 
-  const fetchSqlServerEntitlements = (page: number = null) => {
+  const getSearchData = (page, isExportToExcel: boolean) => {
     const { filter_keys, ...rest } = tableFilter;
 
-    if (page) {
-      setPagination({ ...pagination, current: page });
-    } else {
-      page = pagination.current;
+    if (!page) {
+      page = pagination;
     }
 
     const inlineSearchFilter = _.pickBy(filter_keys, function (value) {
@@ -75,12 +76,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
     const searchData: ISearchSqlServerEntitlements = {
       is_lookup: !pageLoaded,
-      limit: pagination.pageSize,
-      offset: (page - 1) * pagination.pageSize,
+      limit: page.pageSize,
+      offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
       filter_keys: inlineSearchFilter,
+      is_export_to_excel: isExportToExcel,
     };
     pageLoaded = true;
+    return searchData;
+  };
+
+  const fetchSqlServerEntitlements = (page: number = null) => {
+    const searchData = getSearchData(page, false);
     dispatch(searchSqlServerEntitlements(searchData));
   };
   useImperativeHandle(ref, () => ({
@@ -162,6 +169,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return FilterWithSwapOption(dataIndex, sqlServerEntitlements.search.tableName, form);
   };
   // End: Column level filter
+
+  // Export Excel
+  const downloadExcel = () => {
+    setLoading(true);
+    const searchData = getSearchData(pagination, true);
+
+    return sqlServerEntitlementsService.exportExcelFile(searchData).then((res) => {
+      if (!res) {
+        toast.error('Document not available.');
+        return;
+      } else {
+        const fileName = `${moment().format('yyyyMMDDHHmmss')}.xlsx`; //res.headers["content-disposition"];
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        exportExcel(fileName, url);
+        setLoading(false);
+      }
+    });
+  };
 
   // Table columns
   const columns = [
@@ -357,6 +382,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
+          <Button onClick={downloadExcel} icon={<FileExcelOutlined />} loading={loading}>
+            Export
+          </Button>
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button
               icon={

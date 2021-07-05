@@ -25,9 +25,4 @@ export interface ISqlServerOverridesState {
     hasErrors: boolean;
     messages: string[];
   };
-  processData: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
 }

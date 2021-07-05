@@ -73,7 +73,9 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push(`/data-input/bulk-import/${sqlServer.search.tableName}`)}
+                onClick={() =>
+                  history.push(`/data-input/bulk-import/${sqlServer.search.tableName}`)
+                }
                 icon={
                   <em className="anticon">
                     <img

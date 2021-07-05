@@ -1,8 +1,4 @@
-import {
-  ISearchAdUsers,
-  IAdUser,
-  IBulkInsertDataset,
-} from './../../services/adUsers/adUsers.model';
+import { ISearchAdUsers, IAdUser } from './../../services/adUsers/adUsers.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import adUsersService from '../../services/adUsers/adUsers.service';
 
@@ -34,20 +30,6 @@ export const saveAdUser = createAsyncThunk('saveAdUser', async (data: IAdUser) =
 
 export const deleteAdUser = createAsyncThunk('deleteAdUser', async (id: number) => {
   const response = await adUsersService.deleteAdUser(id).then((res) => {
-    return res.body;
-  });
-  return response;
-});
-
-export const getExcelColumns = createAsyncThunk('getExcelColumns', async (data: any) => {
-  const response = await adUsersService.getExcelColumns(data).then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
-
-export const bulkInsert = createAsyncThunk('bulkInsert', async (data: IBulkInsertDataset) => {
-  const response = await adUsersService.bulkInsert(data).then((res) => {
     return res.body;
   });
   return response;

@@ -1,4 +1,4 @@
-import { IAdUser, IGetExcelColumns } from './../../services/adUsers/adUsers.model';
+import { IAdUser } from './../../services/adUsers/adUsers.model';
 import { IDropDownOption } from '../../common/models/common';
 
 export interface IAdUsersState {
@@ -21,16 +21,6 @@ export interface IAdUsersState {
     messages: string[];
   };
   delete: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
-  getExcelColumns: {
-    loading: boolean;
-    hasErrors: boolean;
-    data: IGetExcelColumns;
-  };
-  bulkInsert: {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];

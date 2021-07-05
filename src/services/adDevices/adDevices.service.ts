@@ -1,6 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import { ISearchAdDevices, IAdDevices, IBulkInsertDataset, IProcessData } from './adDevices.model';
+import { ISearchAdDevices, IAdDevices, IProcessData } from './adDevices.model';
 
 class AdDevicesService {
   ENDPOINT = '/ad-devices';
@@ -63,27 +63,6 @@ class AdDevicesService {
       responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
-    });
-  }
-
-  public async getExcelColumns(data: any): Promise<any> {
-    const headers = {
-      Accept: 'multipart/form-data',
-    };
-    const url = `${this.ENDPOINT}/columns-for-import-data`;
-    return request({ url, method: 'POST', data: data, headers: headers }).then((res) => {
-      return res.data;
-    });
-  }
-
-  public async bulkInsert(data: IBulkInsertDataset): Promise<any> {
-    const inputValues = {
-      ...data,
-      table_name: 'AdDevices',
-    };
-    const url = `${this.ENDPOINT}/bulk-insert`;
-    return request({ url, method: 'POST', data: inputValues }).then((res) => {
-      return res.data;
     });
   }
 }

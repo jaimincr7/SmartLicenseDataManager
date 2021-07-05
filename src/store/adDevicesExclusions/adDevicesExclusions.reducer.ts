@@ -1,17 +1,11 @@
 import { booleanLookup } from './../../common/constants/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
-import {
-  IGetExcelColumns,
-  IAdDevicesExclusions,
-} from '../../services/adDevicesExclusions/adDevicesExclusions.model';
+import { IAdDevicesExclusions } from '../../services/adDevicesExclusions/adDevicesExclusions.model';
 import { RootState } from '../app.model';
 import {
-  bulkInsert,
   deleteAdDevicesExclusions,
-  getExcelColumns,
   getAdDevicesExclusionsById,
-  processData,
   saveAdDevicesExclusions,
   searchAdDevicesExclusions,
 } from './adDevicesExclusions.action';
@@ -41,21 +35,6 @@ export const initialState: IAdDevicesExclusionsState = {
     hasErrors: false,
     messages: [],
   },
-  processData: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
-  getExcelColumns: {
-    loading: false,
-    hasErrors: false,
-    data: null,
-  },
-  bulkInsert: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
 };
 
 export const adDevicesExclusionsSlice = createSlice({
@@ -68,14 +47,9 @@ export const adDevicesExclusionsSlice = createSlice({
     clearAdDevicesExclusionsMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
-      state.processData.messages = [];
-      state.bulkInsert.messages = [];
     },
     clearAdDevicesExclusionsGetById: (state) => {
       state.getById.data = null;
-    },
-    clearExcelColumns: (state) => {
-      state.getExcelColumns.data = null;
     },
   },
   extraReducers: {
@@ -162,52 +136,6 @@ export const adDevicesExclusionsSlice = createSlice({
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
     },
-
-    // Process Data
-    [processData.pending.type]: (state) => {
-      state.processData.loading = true;
-      state.processData.messages = [];
-    },
-    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.processData.loading = false;
-      state.processData.hasErrors = false;
-      state.processData.messages = action.payload.messages;
-    },
-    [processData.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.processData.loading = false;
-      state.processData.hasErrors = true;
-      state.processData.messages = action.payload.errors;
-    },
-
-    // Get Excel Columns
-    [getExcelColumns.pending.type]: (state) => {
-      state.getExcelColumns.loading = true;
-    },
-    [getExcelColumns.fulfilled.type]: (state, action: PayloadAction<IGetExcelColumns>) => {
-      state.getExcelColumns.data = action.payload;
-      state.getExcelColumns.loading = false;
-      state.getExcelColumns.hasErrors = false;
-    },
-    [getExcelColumns.rejected.type]: (state) => {
-      state.getExcelColumns.loading = false;
-      state.getExcelColumns.hasErrors = true;
-    },
-
-    // Bulk Insert
-    [bulkInsert.pending.type]: (state) => {
-      state.bulkInsert.loading = true;
-      state.bulkInsert.messages = [];
-    },
-    [bulkInsert.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.bulkInsert.loading = false;
-      state.bulkInsert.hasErrors = false;
-      state.bulkInsert.messages = action.payload.messages;
-    },
-    [bulkInsert.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.bulkInsert.loading = false;
-      state.bulkInsert.hasErrors = true;
-      state.bulkInsert.messages = action.payload.errors;
-    },
   },
 });
 
@@ -219,7 +147,6 @@ export const {
   clearAdDevicesExclusions,
   clearAdDevicesExclusionsMessages,
   clearAdDevicesExclusionsGetById,
-  clearExcelColumns,
 } = adDevicesExclusionsSlice.actions;
 
 // The reducer

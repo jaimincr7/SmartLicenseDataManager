@@ -1,16 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import './adUsers.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
-import { clearAdUsers } from '../../../store/adUsers/adUsers.reducer';
+import { adUsersSelector, clearAdUsers } from '../../../store/adUsers/adUsers.reducer';
 import { IAdUsersProps } from './adUers.model';
 import AddAdUserModal from './AddAdUsers';
 
 const AdUsers: React.FC<IAdUsersProps> = (props) => {
+  const adUsers = useAppSelector(adUsersSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -52,7 +53,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('/ad/ad-users/update-from-excel')}
+                onClick={() => history.push(`/data-input/bulk-import/${adUsers.search.tableName}`)}
                 icon={
                   <em className="anticon">
                     <img

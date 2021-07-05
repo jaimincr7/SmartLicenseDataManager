@@ -2,12 +2,7 @@ import { Select, Row, Col, Button, Form, Upload } from 'antd';
 import { Messages } from '../../common/constants/messages';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/app.hooks';
-import { bulkInsert, getExcelColumns } from '../../store/sqlServer/sqlServer.action';
-import {
-  clearExcelColumns,
-  clearSqlServerMessages,
-  sqlServerSelector,
-} from '../../store/sqlServer/sqlServer.reducer';
+import { clearSqlServerMessages, sqlServerSelector } from '../../store/sqlServer/sqlServer.reducer';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -18,7 +13,7 @@ const validateMessages = {
 const { Option } = Select;
 
 function UploadExcel() {
-   const sqlServers = useAppSelector(sqlServerSelector);
+  const sqlServers = useAppSelector(sqlServerSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -35,16 +30,16 @@ function UploadExcel() {
     formData.append('file', file);
     formData.append('table_name', 'sql server');
     try {
-      dispatch(getExcelColumns(formData));
+      // dispatch(getExcelColumns(formData));
       onSuccess('Ok');
     } catch (err) {
       onError({ err });
     }
   };
 
-   const handleOnChange = ({ file }) => {
+  const handleOnChange = ({ file }) => {
     if (file.status === 'removed') {
-      dispatch(clearExcelColumns());
+      // dispatch(clearExcelColumns());
       setDefaultFile(null);
       setExcelColumns(null);
       setTableColumns([]);
@@ -60,77 +55,70 @@ function UploadExcel() {
       </div>
       <div className="main-card">
         <div className="input-btns-title">
-          
-       <Row gutter={[30, 20]} className="align-item-start">
-          <Col xs={24} md={8}>
-           
-            <label className="label w-100">Upload Excel</label>
-                 <div className="upload-file">
-              <Upload
-                accept=".xls,.xlsx"
-                customRequest={uploadFile}
-                onChange={handleOnChange}
-                defaultFileList={defaultFile}
-                maxCount={1}
-                showUploadList={{
-                  showRemoveIcon: true,
-                  removeIcon: (
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-                  ),
-                }}
-              >
-                <Button
-                  type="primary"
-                  className="btn-icon"
-                  icon={
-                    <em className="anticon">
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-upload.svg`} alt="" />
-                    </em>
-                  }
+          <Row gutter={[30, 20]} className="align-item-start">
+            <Col xs={24} md={8}>
+              <label className="label w-100">Upload Excel</label>
+              <div className="upload-file">
+                <Upload
+                  accept=".xls,.xlsx"
+                  customRequest={uploadFile}
+                  onChange={handleOnChange}
+                  defaultFileList={defaultFile}
+                  maxCount={1}
+                  showUploadList={{
+                    showRemoveIcon: true,
+                    removeIcon: (
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    ),
+                  }}
                 >
-                  Upload Excel
-                </Button>
-              </Upload>
-            </div>
-          </Col>
+                  <Button
+                    type="primary"
+                    className="btn-icon"
+                    icon={
+                      <em className="anticon">
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-upload.svg`} alt="" />
+                      </em>
+                    }
+                  >
+                    Upload Excel
+                  </Button>
+                </Upload>
+              </div>
+            </Col>
             <Col xs={24} md={8}>
               <div className="form-group m-0">
-                    <Form.Item
-                    className="m-0"
-                      >
-                <label className="label">Event Trigger Type</label>
-                <Select
-                  suffixIcon={
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                  }
-                >
-                  <Option value="1">John Smith</Option>
-                  <Option value="2">John Smith</Option>
-                  <Option value="3">John Smith</Option>
-                </Select>
+                <Form.Item className="m-0">
+                  <label className="label">Event Trigger Type</label>
+                  <Select
+                    suffixIcon={
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                    }
+                  >
+                    <Option value="1">John Smith</Option>
+                    <Option value="2">John Smith</Option>
+                    <Option value="3">John Smith</Option>
+                  </Select>
                 </Form.Item>
               </div>
             </Col>
             <Col xs={24} md={8}>
               <div className="form-group m-0">
-                <Form.Item
-                 className="m-0"
-                      >
-                <label className="label">Contract Type</label>
-                <Select
-                  suffixIcon={
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                  }
-                >
-                  <Option value="1">John Smith</Option>
-                  <Option value="2">John Smith</Option>
-                  <Option value="3">John Smith</Option>
-                </Select>
+                <Form.Item className="m-0">
+                  <label className="label">Contract Type</label>
+                  <Select
+                    suffixIcon={
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                    }
+                  >
+                    <Option value="1">John Smith</Option>
+                    <Option value="2">John Smith</Option>
+                    <Option value="3">John Smith</Option>
+                  </Select>
                 </Form.Item>
               </div>
             </Col>
-            </Row>
-      
+          </Row>
         </div>
         <Row gutter={[30, 0]}>
           <Col xs={24} md={12} lg={12} xl={8}>

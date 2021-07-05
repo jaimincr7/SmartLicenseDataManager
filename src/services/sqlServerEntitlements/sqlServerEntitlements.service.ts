@@ -45,5 +45,17 @@ class SqlServerEntitlementsService {
       return res.data;
     });
   }
+
+  public async exportExcelFile(searchParams?: ISearchSqlServerEntitlements): Promise<any> {
+    const url = `${this.ENDPOINT}/search`;
+    return request({
+      url,
+      method: 'POST',
+      data: searchParams,
+      responseType: 'blob' as 'json',
+    }).then((res) => {
+      return res;
+    });
+  }
 }
 export default new SqlServerEntitlementsService();

@@ -1,4 +1,4 @@
-import { IAdDevices, IGetExcelColumns } from './../../services/adDevices/adDevices.model';
+import { IAdDevices } from './../../services/adDevices/adDevices.model';
 import { IDropDownOption } from '../../common/models/common';
 
 export interface IAdDevicesState {
@@ -26,16 +26,6 @@ export interface IAdDevicesState {
     messages: string[];
   };
   processData: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
-  getExcelColumns: {
-    loading: boolean;
-    hasErrors: boolean;
-    data: IGetExcelColumns;
-  };
-  bulkInsert: {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];

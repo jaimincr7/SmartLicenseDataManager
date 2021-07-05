@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import './sqlServerLicense.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
@@ -7,10 +7,14 @@ import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { ISqlServerLicenseProps } from './sqlServerLicense.model';
-import { clearSqlServerLicense } from '../../../store/sqlServerLicense/sqlServerLicense.reducer';
+import {
+  clearSqlServerLicense,
+  sqlServerLicenseSelector,
+} from '../../../store/sqlServerLicense/sqlServerLicense.reducer';
 import AddSqlServerLicenseModal from './AddSqlServerLicense';
 
 const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
+  const sqlServerLicense = useAppSelector(sqlServerLicenseSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -18,8 +22,6 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-  // const [processModalVisible, setProcessModalVisible] = React.useState(false);
-  // const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -51,26 +53,12 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            {/* <Col>
-              <Button
-                className="btn-icon"
-                onClick={() => setProcessModalVisible(true)}
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Process Data
-              </Button>
-            </Col> */}
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('/sql-server/license/update-from-excel')}
+                onClick={() =>
+                  history.push(`/data-input/bulk-import/${sqlServerLicense.search.tableName}`)
+                }
                 icon={
                   <em className="anticon">
                     <img
@@ -83,19 +71,6 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
                 Update from Excel
               </Button>
             </Col>
-            {/* <Col>
-              <Button
-                className="btn-icon"
-                onClick={() => setDeleteModalVisible(true)}
-                icon={
-                  <em className="anticon">
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-                  </em>
-                }
-              >
-                Delete Dataset
-              </Button>
-            </Col> */}
           </Row>
         </div>
         <DataTable
@@ -117,20 +92,6 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
           refreshDataTable={() => refreshDataTable()}
         />
       )}
-      {/* {processModalVisible && (
-        <ProcessDataModal
-          showModal={processModalVisible}
-          handleModalClose={() => setProcessModalVisible(false)}
-        />
-      )}
-      {deleteModalVisible && (
-        <DeleteDatasetModal
-          showModal={deleteModalVisible}
-          handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={sqlServerLicense.search.tableName}
-          refreshDataTable={() => refreshDataTable()}
-        />
-      )} */}
     </div>
   );
 };

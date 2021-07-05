@@ -8,7 +8,6 @@ import {
   getSqlServerOverridesById,
   saveSqlServerOverrides,
   deleteSqlServerOverrides,
-  processData,
 } from './sqlServerOverrides.action';
 import { ISqlServerOverridesState } from './sqlServerOverrides.model';
 
@@ -36,11 +35,6 @@ export const initialState: ISqlServerOverridesState = {
     hasErrors: false,
     messages: [],
   },
-  processData: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
 };
 
 export const sqlServerOverridesSlice = createSlice({
@@ -53,7 +47,6 @@ export const sqlServerOverridesSlice = createSlice({
     clearSqlServerOverridesMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
-      state.processData.messages = [];
     },
     clearSqlServerOverridesGetById: (state) => {
       state.getById.data = null;
@@ -142,22 +135,6 @@ export const sqlServerOverridesSlice = createSlice({
       state.delete.loading = false;
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
-    },
-
-    // Process Data
-    [processData.pending.type]: (state) => {
-      state.processData.loading = true;
-      state.processData.messages = [];
-    },
-    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.processData.loading = false;
-      state.processData.hasErrors = false;
-      state.processData.messages = action.payload.messages;
-    },
-    [processData.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.processData.loading = false;
-      state.processData.hasErrors = true;
-      state.processData.messages = action.payload.errors;
     },
   },
 });

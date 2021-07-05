@@ -1,11 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import {
-  ISearchAdDevicesExclusions,
-  IAdDevicesExclusions,
-  IBulkInsertDataset,
-  IProcessData,
-} from './adDevicesExclusions.model';
+import { ISearchAdDevicesExclusions, IAdDevicesExclusions } from './adDevicesExclusions.model';
 
 class AdDevicesExclusionsService {
   ENDPOINT = '/ad-devices-exclusions';
@@ -48,13 +43,6 @@ class AdDevicesExclusionsService {
     });
   }
 
-  public async processData(data: IProcessData): Promise<any> {
-    const url = `${this.ENDPOINT}/process-data`;
-    return request({ url, method: 'POST', data: data }).then((res) => {
-      return res.data;
-    });
-  }
-
   public async exportExcelFile(searchParams?: ISearchAdDevicesExclusions): Promise<any> {
     const url = `${this.ENDPOINT}/search`;
     return request({
@@ -64,27 +52,6 @@ class AdDevicesExclusionsService {
       responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
-    });
-  }
-
-  public async getExcelColumns(data: any): Promise<any> {
-    const headers = {
-      Accept: 'multipart/form-data',
-    };
-    const url = `${this.ENDPOINT}/columns-for-import-data`;
-    return request({ url, method: 'POST', data: data, headers: headers }).then((res) => {
-      return res.data;
-    });
-  }
-
-  public async bulkInsert(data: IBulkInsertDataset): Promise<any> {
-    const inputValues = {
-      ...data,
-      table_name: 'AdDevices_Exclusions',
-    };
-    const url = `${this.ENDPOINT}/bulk-insert`;
-    return request({ url, method: 'POST', data: inputValues }).then((res) => {
-      return res.data;
     });
   }
 }

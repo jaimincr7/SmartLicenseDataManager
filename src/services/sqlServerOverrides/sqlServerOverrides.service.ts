@@ -1,10 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import {
-  IProcessData,
-  ISearchSqlServerOverrides,
-  ISqlServerOverrides,
-} from './sqlServerOverrides.model';
+import { ISearchSqlServerOverrides, ISqlServerOverrides } from './sqlServerOverrides.model';
 
 class SqlServerOverridesService {
   ENDPOINT = '/sql-server-overrides';
@@ -43,13 +39,6 @@ class SqlServerOverridesService {
   public async deleteSqlServerOverrides(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
-      return res.data;
-    });
-  }
-
-  public async processData(data: IProcessData): Promise<any> {
-    const url = `${this.ENDPOINT}/process-data`;
-    return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }

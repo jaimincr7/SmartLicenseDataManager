@@ -1,6 +1,4 @@
-import { IBulkInsertDataset } from '../../services/adDevicesExclusions/adDevicesExclusions.model';
 import {
-  IProcessData,
   ISearchAdDevicesExclusions,
   IAdDevicesExclusions,
 } from '../../services/adDevicesExclusions/adDevicesExclusions.model';
@@ -50,24 +48,3 @@ export const deleteAdDevicesExclusions = createAsyncThunk(
     return response;
   }
 );
-
-export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
-  const response = await adDevicesExclusionsService.processData(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
-
-export const getExcelColumns = createAsyncThunk('getExcelColumns', async (data: any) => {
-  const response = await adDevicesExclusionsService.getExcelColumns(data).then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
-
-export const bulkInsert = createAsyncThunk('bulkInsert', async (data: IBulkInsertDataset) => {
-  const response = await adDevicesExclusionsService.bulkInsert(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});

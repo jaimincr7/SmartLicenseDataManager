@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import { IAdDevicesProps } from './adDevices.model';
 import './adDevices.style.scss';
 import React from 'react';
@@ -9,9 +9,10 @@ import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import AddAdDeviceModal from './AddAdDeviceModal';
 import ProcessDataModal from './ProcessDataModal';
-import { clearAdDevices } from '../../../store/adDevices/adDevices.reducer';
+import { adDevicesSelector, clearAdDevices } from '../../../store/adDevices/adDevices.reducer';
 
 const AdDevices: React.FC<IAdDevicesProps> = (props) => {
+  const adDevices = useAppSelector(adDevicesSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -70,7 +71,9 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('/ad/ad-devices/update-from-excel')}
+                onClick={() =>
+                  history.push(`/data-input/bulk-import/${adDevices.search.tableName}`)
+                }
                 icon={
                   <em className="anticon">
                     <img

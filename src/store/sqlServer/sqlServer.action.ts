@@ -1,4 +1,3 @@
-import { IBulkInsertDataset } from './../../services/sqlServer/sqlServer.model';
 import {
   IProcessData,
   ISearchSqlServer,
@@ -42,20 +41,6 @@ export const deleteSqlServer = createAsyncThunk('deleteSqlServer', async (id: nu
 
 export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
   const response = await sqlServerService.processData(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
-
-export const getExcelColumns = createAsyncThunk('getExcelColumns', async (data: any) => {
-  const response = await sqlServerService.getExcelColumns(data).then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
-
-export const bulkInsert = createAsyncThunk('bulkInsert', async (data: IBulkInsertDataset) => {
-  const response = await sqlServerService.bulkInsert(data).then((res) => {
     return res.body;
   });
   return response;

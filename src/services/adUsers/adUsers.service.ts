@@ -1,4 +1,4 @@
-import { IAdUser, IBulkInsertDataset, ISearchAdUsers } from './adUsers.model';
+import { IAdUser, ISearchAdUsers } from './adUsers.model';
 import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
 
@@ -52,27 +52,6 @@ class AdUsersService {
       responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
-    });
-  }
-
-  public async getExcelColumns(data: any): Promise<any> {
-    const headers = {
-      Accept: 'multipart/form-data',
-    };
-    const url = `${this.ENDPOINT}/columns-for-import-data`;
-    return request({ url, method: 'POST', data: data, headers: headers }).then((res) => {
-      return res.data;
-    });
-  }
-
-  public async bulkInsert(data: IBulkInsertDataset): Promise<any> {
-    const inputValues = {
-      ...data,
-      table_name: 'AdUsers',
-    };
-    const url = `${this.ENDPOINT}/bulk-insert`;
-    return request({ url, method: 'POST', data: inputValues }).then((res) => {
-      return res.data;
     });
   }
 }
