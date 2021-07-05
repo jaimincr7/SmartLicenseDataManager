@@ -3,7 +3,7 @@ import request from '../../utils/request';
 import { ISearchSqlServer, ISqlServer, IBulkInsertDataset, IProcessData } from './sqlServer.model';
 
 class SqlServerService {
-  ENDPOINT = '/sql-server';
+  ENDPOINT = '/sql-server-inventory';
 
   public async searchSqlServer(
     searchParams?: ISearchSqlServer
