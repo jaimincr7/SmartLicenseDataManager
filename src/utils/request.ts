@@ -22,16 +22,6 @@ request.interceptors.request.use(
       config.headers['Authorization'] = `Bearer ${authToken}`;
     }
 
-    // Custom encrypted data
-    // if (!config.headers['X-Skip-UserEncData']) {
-    //   const userEncData = await userService.getUserEncData();
-    //   if (userEncData) {
-    //     config.headers['X-Data'] = userEncData;
-    //   }
-    // } else {
-    //   delete config.headers['X-Skip-UserEncData'];
-    // }
-
     return config;
   },
   (error) => {
@@ -52,7 +42,7 @@ request.interceptors.response.use(
   },
   (error) => {
     // Log somewhere
-    toast.error(error.response.data.body.errors);
+    toast.error(error.response.data.body.errors.join(''));
     switch (error.response.status) {
       // Authorization Failed Response can add other status codes here to manage error Logging
       case 401:
