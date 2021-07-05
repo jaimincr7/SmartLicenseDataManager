@@ -3,12 +3,15 @@ import { Route } from 'react-router-dom';
 import { useMsal, useAccount } from '@azure/msal-react';
 import { loginRequest, msalInstance } from '../../../utils/authConfig';
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
+import { useAppDispatch } from '../../../store/app.hooks';
+import { setActiveAccount } from '../../../store/user/user.reducer';
 
 const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...rest }) => {
   const { accounts, inProgress } = useMsal();
   const instance = msalInstance;
   const [accessToken, setAccessToken] = React.useState(null);
   const account = useAccount(accounts[0] || {});
+  const dispatch = useAppDispatch();
 
   function RequestAccessToken() {
     const request = {
@@ -20,8 +23,9 @@ const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...r
     instance
       .acquireTokenSilent(request)
       .then((response) => {
-        setAccessToken(response.accessToken);
         msalInstance.setActiveAccount(response.account);
+        dispatch(setActiveAccount(response.account));
+        setAccessToken(response.accessToken);
       })
       .catch((e) => {
         if (e instanceof InteractionRequiredAuthError) {

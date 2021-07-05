@@ -2,6 +2,9 @@ import React from 'react';
 import { Menu, Dropdown } from 'antd';
 import { toast } from 'react-toastify';
 import { msalInstance } from '../../../../utils/authConfig';
+import authService from '../../../../services/auth/auth.service';
+import { userSelector } from '../../../../store/user/user.reducer';
+import { useAppSelector } from '../../../../store/app.hooks';
 
 function toggleMenu() {
   if (window.innerWidth > 991) {
@@ -55,6 +58,9 @@ const profileMenu = () => {
 };
 
 function Header() {
+  
+  const userDetails = useAppSelector(userSelector);
+
   return (
     <header className="header">
       <div className="left-header">
@@ -74,7 +80,7 @@ function Header() {
               <em className="dp">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/dp.jpg`} alt="" />
               </em>
-              <span className="username">Vishal Patel</span>
+              <span className="username">{userDetails.activeAccount?.name}</span>
             </a>
           </Dropdown>
         </div>
