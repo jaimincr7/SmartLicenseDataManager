@@ -26,6 +26,30 @@ function Sidebar() {
             </a>
           </Menu.Item>
           <SubMenu
+            key="ad"
+            icon={
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-active-directory.svg`} alt="" />
+            }
+            title="AD"
+            className="no-icon"
+          >
+            <Menu.Item key="/ad/ad-devices">
+              <Link to="/ad/ad-devices" title="AD Devices">
+                AD Devices
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/ad/ad-devices-exclusions">
+              <Link to="/ad/ad-devices-exclusions" title="AD-Devices Exclusions">
+                Exclusions
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/ad/ad-users">
+              <Link to="/ad/ad-users" title="AD Users">
+                AD Users
+              </Link>
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu
             key="sql-server"
             icon={
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-server-outline.svg`} alt="" />
@@ -60,26 +84,16 @@ function Sidebar() {
             </Menu.Item>
           </SubMenu>
           <SubMenu
-            key="ad"
+            key="data-input"
             icon={
-              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-active-directory.svg`} alt="" />
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-data-input.svg`} alt="" />
             }
-            title="AD"
+            title="Data Input"
             className="no-icon"
           >
-            <Menu.Item key="/ad/ad-devices">
-              <Link to="/ad/ad-devices" title="AD Devices">
-                AD Devices
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/ad/ad-devices-exclusions">
-              <Link to="/ad/ad-devices-exclusions" title="AD-Devices Exclusions">
-                Exclusions
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/ad/ad-users">
-              <Link to="/ad/ad-users" title="AD Users">
-                AD Users
+            <Menu.Item key="/data-input/bulk-import">
+              <Link to="/data-input/bulk-import" title="Bulk Import">
+              Bulk Import
               </Link>
             </Menu.Item>
           </SubMenu>

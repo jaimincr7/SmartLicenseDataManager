@@ -34,7 +34,12 @@ export interface ITableColumn {
   length?: number;
 }
 
+export interface IExcelSheetColumn {
+  sheet: string;
+  columns: string[];
+}
+
 export interface IGetExcelColumns {
-  excel_column: Array<string>;
+  excel_sheet_columns: IExcelSheetColumn[];
   filename: string;
 }

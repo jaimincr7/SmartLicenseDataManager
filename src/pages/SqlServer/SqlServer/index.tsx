@@ -73,7 +73,7 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
             <Col>
               <Button
                 className="btn-icon"
-                onClick={() => history.push('sql-server/update-from-excel')}
+                onClick={() => history.push(`/data-input/bulk-import/${sqlServer.search.tableName}`)}
                 icon={
                   <em className="anticon">
                     <img

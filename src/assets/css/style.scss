@@ -342,6 +342,7 @@ label {
   .label {
     min-width: 120px;
     margin: 0 8px 0 0;
+    word-break: break-all;
   }
 }
 .form-inline-pt {

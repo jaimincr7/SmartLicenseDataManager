@@ -12,6 +12,7 @@ import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-reac
 import UploadExcel from './pages/Home/UploadExcel';
 import AdRoutes from './pages/Ad/ad.routes';
 import { Dashboard } from './pages/Dashboard';
+import DataInputRoutes from './pages/DataInput/DataInput.routes';
 
 function AppRoutes() {
   return (
@@ -35,6 +36,7 @@ function AppRoutes() {
           <LayoutRoute path="/sql-server" layout={MainLayout} component={SqlServerRoutes} />
           <LayoutRoute path="/ad" layout={MainLayout} component={AdRoutes} />
           <LayoutRoute path="/upload-excel" layout={MainLayout} component={UploadExcel} />
+          <LayoutRoute path="/data-input" layout={MainLayout} component={DataInputRoutes} />
 
           {/* keep least always */}
           <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />
