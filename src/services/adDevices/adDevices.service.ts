@@ -1,12 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import {
-  IDeleteDataset,
-  ISearchAdDevices,
-  IAdDevices,
-  IBulkInsertDataset,
-  IProcessData,
-} from './adDevices.model';
+import { ISearchAdDevices, IAdDevices, IBulkInsertDataset, IProcessData } from './adDevices.model';
 
 class AdDevicesService {
   ENDPOINT = '/ad-devices';
@@ -45,18 +39,6 @@ class AdDevicesService {
   public async deleteAdDevice(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
-      return res.data;
-    });
-  }
-
-  public async deleteDataset(data: IDeleteDataset): Promise<any> {
-    const inputValues = {
-      ...data,
-      table_name: '[AdDevices]',
-      debug: false,
-    };
-    const url = `${this.ENDPOINT}/delete-dataset`;
-    return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }

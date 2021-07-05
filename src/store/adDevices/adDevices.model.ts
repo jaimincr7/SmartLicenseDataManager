@@ -25,11 +25,6 @@ export interface IAdDevicesState {
     hasErrors: boolean;
     messages: string[];
   };
-  deleteDataset: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
   processData: {
     loading: boolean;
     hasErrors: boolean;

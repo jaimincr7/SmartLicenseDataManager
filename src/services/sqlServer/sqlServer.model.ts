@@ -33,6 +33,11 @@ export interface ISqlServer {
   data_center?: string;
   serial_number?: string;
   sql_cluster_node_type?: string;
+  cores?: number;
+  procs?: number;
+  vCPU?: number;
+  ha_enabled?: boolean;
+  azure_hosted?: boolean;
 }
 
 export interface ISearchSqlServer extends ISearch {
@@ -40,14 +45,6 @@ export interface ISearchSqlServer extends ISearch {
   keyword?: string;
   filter_keys?: any;
   is_export_to_excel?: boolean;
-}
-
-export interface IDeleteDataset {
-  table_name?: string;
-  company_id?: number;
-  bu_id?: number;
-  date_added?: Date;
-  debug?: boolean;
 }
 
 export interface IProcessData {

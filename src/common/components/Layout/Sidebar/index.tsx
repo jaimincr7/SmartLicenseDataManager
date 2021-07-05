@@ -26,37 +26,28 @@ function Sidebar() {
           </Menu.Item>
           <SubMenu
             key="sub1"
-            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-server-outline.svg`} alt="" />}
+            icon={
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-server-outline.svg`} alt="" />
+            }
             title="SQL Server"
             className="no-icon"
           >
-            <Menu.Item
-              key="/sql-server"              
-            >
+            <Menu.Item key="/sql-server">
               <Link to="/sql-server" title="SQL Server">
                 SQL Server
               </Link>
             </Menu.Item>
-            <Menu.Item
-              key="/sql-server/entitlements"
-            >
+            <Menu.Item key="/sql-server/entitlements">
               <Link to="/sql-server/entitlements" title="Entitlements">
                 Entitlements
               </Link>
             </Menu.Item>
-            <Menu.Item
-              key="/sql-server/overrides"
-            >
+            <Menu.Item key="/sql-server/overrides">
               <Link to="/sql-server/overrides" title="Overrides">
                 Overrides
               </Link>
             </Menu.Item>
-            <Menu.Item
-              key="/sql-server/pricing"
-              icon={
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-entitlements.svg`} alt="" />
-              }
-            >
+            <Menu.Item key="/sql-server/pricing">
               <Link to="/sql-server/pricing" title="Pricing">
                 Pricing
               </Link>
@@ -64,27 +55,23 @@ function Sidebar() {
           </SubMenu>
           <SubMenu
             key="sub2"
-            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-active-directory.svg`} alt="" />}
+            icon={
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-active-directory.svg`} alt="" />
+            }
             title="AD"
             className="no-icon"
           >
-            <Menu.Item
-              key="/ad/ad-devices"
-            >
+            <Menu.Item key="/ad/ad-devices">
               <Link to="/ad/ad-devices" title="AD Devices">
                 AD Devices
               </Link>
             </Menu.Item>
-            <Menu.Item
-              key="/ad/ad-devices-exclusions"
-            >
+            <Menu.Item key="/ad/ad-devices-exclusions">
               <Link to="/ad/ad-devices-exclusions" title="AD-Devices Exclusions">
                 Exclusions
               </Link>
             </Menu.Item>
-            <Menu.Item
-              key="/ad/ad-users"
-            >
+            <Menu.Item key="/ad/ad-users">
               <Link to="/ad/ad-users" title="AD Users">
                 AD Users
               </Link>

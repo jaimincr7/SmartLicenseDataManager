@@ -32,4 +32,9 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  deleteDataset: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

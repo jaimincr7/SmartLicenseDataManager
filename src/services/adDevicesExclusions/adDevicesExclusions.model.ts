@@ -25,14 +25,6 @@ export interface ISearchAdDevicesExclusions extends ISearch {
   is_export_to_excel?: boolean;
 }
 
-export interface IDeleteDataset {
-  table_name?: string;
-  company_id?: number;
-  bu_id?: number;
-  date_added?: Date;
-  debug?: boolean;
-}
-
 export interface IProcessData {
   company_id?: number;
   bu_id?: number;

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { IDeleteDataset } from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
 // Asynchronous thunk action
@@ -43,4 +44,11 @@ export const getCurrencyLookup = createAsyncThunk('getCurrencyLookup', async () 
     return res.body;
   });
   return response.data;
+});
+
+export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
+  const response = await commonService.deleteDataset(data).then((res) => {
+    return res.body;
+  });
+  return response;
 });

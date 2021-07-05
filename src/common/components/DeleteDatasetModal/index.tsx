@@ -2,18 +2,17 @@ import { Button, Col, DatePicker, Form, Modal, Row, Select, Spin } from 'antd';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
-import { ILookup } from '../../../../services/common/common.model';
-import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getBULookup, getCompanyLookup } from '../../../../store/common/common.action';
-import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
-import { deleteDataset } from '../../../../store/sqlServer/sqlServer.action';
+import { ILookup } from '../../../services/common/common.model';
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
+import { deleteDataset, getBULookup, getCompanyLookup } from '../../../store/common/common.action';
 import {
-  clearSqlServerMessages,
-  sqlServerSelector,
-} from '../../../../store/sqlServer/sqlServer.reducer';
-import { IDeleteDatasetModalProps } from './deleteDataset.modal';
-import './deleteDataset.style.scss';
+  clearBULookUp,
+  clearDeleteDatasetMessages,
+  commonSelector,
+} from '../../../store/common/common.reducer';
+import { Messages } from '../../constants/messages';
+import { IDeleteDatasetModalProps } from './deleteDatasetModal.model';
+import './deleteDatasetModal.style.scss';
 
 const { Option } = Select;
 
@@ -22,11 +21,10 @@ const validateMessages = {
 };
 
 const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
-  const sqlServers = useAppSelector(sqlServerSelector);
-  const commonLookups = useAppSelector(commonSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { showModal, handleModalClose } = props;
+  const { showModal, handleModalClose, refreshDataTable, tableName } = props;
 
   const [form] = Form.useForm();
 
@@ -36,7 +34,11 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
     date_added: moment(),
   };
   const onFinish = (values: any) => {
-    dispatch(deleteDataset(values));
+    const inputValues = {
+      ...values,
+      table_name: tableName,
+    };
+    dispatch(deleteDataset(inputValues));
   };
 
   const disabledDate = (current) => {
@@ -45,16 +47,17 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
   };
 
   useEffect(() => {
-    if (sqlServers.deleteDataset.messages.length > 0) {
-      if (sqlServers.deleteDataset.hasErrors) {
-        toast.error(sqlServers.deleteDataset.messages.join(' '));
+    if (common.deleteDataset.messages.length > 0) {
+      if (common.deleteDataset.hasErrors) {
+        toast.error(common.deleteDataset.messages.join(' '));
       } else {
-        toast.success(sqlServers.deleteDataset.messages.join(' '));
+        toast.success(common.deleteDataset.messages.join(' '));
         handleModalClose();
+        refreshDataTable();
       }
-      dispatch(clearSqlServerMessages());
+      dispatch(clearDeleteDatasetMessages());
     }
-  }, [sqlServers.deleteDataset.messages]);
+  }, [common.deleteDataset.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -111,10 +114,10 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     onChange={handleCompanyChange}
                     allowClear
                     notFoundContent={
-                      commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+                      common.companyLookup.data.length === 0 ? <Spin size="small" /> : null
                     }
                   >
-                    {commonLookups.companyLookup.data.map((option: ILookup) => (
+                    {common.companyLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
                         {option.name}
                       </Option>
@@ -140,10 +143,10 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     onChange={handleBUChange}
                     allowClear
                     notFoundContent={
-                      commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
+                      common.buLookup.data.length === 0 ? <Spin size="small" /> : null
                     }
                   >
-                    {commonLookups.buLookup.data.map((option: ILookup) => (
+                    {common.buLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
                         {option.name}
                       </Option>
@@ -175,7 +178,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
               key="submit"
               type="primary"
               htmlType="submit"
-              loading={sqlServers.deleteDataset.loading}
+              loading={common.deleteDataset.loading}
             >
               Delete
             </Button>

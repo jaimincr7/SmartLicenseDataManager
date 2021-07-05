@@ -24,7 +24,7 @@ export interface IDeleteDataset {
 }
 
 export interface IDatabaseTable {
-  name: string
+  name: string;
 }
 
 export interface ITableColumn {

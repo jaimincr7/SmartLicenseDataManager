@@ -49,22 +49,6 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            {/* <Col>
-              <Button
-                className="btn-icon"
-                onClick={() => setProcessModalVisible(true)}
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Process Data
-              </Button>
-            </Col> */}
             <Col>
               <Button
                 className="btn-icon"
@@ -81,19 +65,6 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
                 Update from Excel
               </Button>
             </Col>
-            {/* <Col>
-              <Button
-                className="btn-icon"
-                onClick={() => setDeleteModalVisible(true)}
-                icon={
-                  <em className="anticon">
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-                  </em>
-                }
-              >
-                Delete Dataset
-              </Button>
-            </Col> */}
           </Row>
         </div>
         <DataTable
@@ -115,18 +86,6 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
           refreshDataTable={() => refreshDataTable()}
         />
       )}
-      {/* {processModalVisible && (
-        <ProcessDataModal
-          showModal={processModalVisible}
-          handleModalClose={() => setProcessModalVisible(false)}
-        />
-      )}
-      {deleteModalVisible && (
-        <DeleteDatasetModal
-          showModal={deleteModalVisible}
-          handleModalClose={() => setDeleteModalVisible(false)}
-        />
-      )} */}
     </div>
   );
 };

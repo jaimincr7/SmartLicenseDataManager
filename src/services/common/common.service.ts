@@ -55,20 +55,20 @@ class CommonService {
       return res.data;
     });
   }
-  
+
   public async getExcelColumns(file: File): Promise<IApiResponse<any>> {
     const headers = {
       Accept: 'multipart/form-data',
     };
     const url = `/app/excel-sheet-column`;
-    const data = {file};
+    const data = { file };
     return request({ url, method: 'POST', data: data, headers: headers }).then((res) => {
       return res.data;
     });
   }
 
   // Bulk import
-  public async getTableColumns(tableName:string): Promise<IApiResponse<any>> {
+  public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
     const url = `/app/table-column/${tableName}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
@@ -90,7 +90,7 @@ class CommonService {
   }
 
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
-    const inputValues = {...data,debug: false};
+    const inputValues = { ...data, debug: false };
     const url = `/app/delete-dataset`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;

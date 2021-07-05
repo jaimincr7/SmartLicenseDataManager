@@ -1,4 +1,4 @@
-import { IDatabaseTable, IGetExcelColumns, ITableColumn } from "../../services/common/common.model";
+import { IDatabaseTable, IGetExcelColumns, ITableColumn } from '../../services/common/common.model';
 
 export interface IBulkImportState {
   getDatabaseTables: {

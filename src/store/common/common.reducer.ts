@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IApiResponseBody } from '../../common/models/common';
 import { ILookup } from '../../services/common/common.model';
 import { RootState } from '../app.model';
 import {
@@ -8,6 +9,7 @@ import {
   getTenantLookup,
   getAgreementTypesLookup,
   getCurrencyLookup,
+  deleteDataset,
 } from './common.action';
 import { ICommonState, IGlobalSearch } from './common.model';
 
@@ -37,6 +39,11 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  deleteDataset: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const commonSlice = createSlice({
@@ -45,6 +52,9 @@ export const commonSlice = createSlice({
   reducers: {
     setGlobalSearch: (state, action: PayloadAction<IGlobalSearch>) => {
       state.search = action.payload;
+    },
+    clearDeleteDatasetMessages: (state) => {
+      state.deleteDataset.messages = [];
     },
     clearCompanyLookUp: (state) => {
       state.companyLookup.data = [];
@@ -110,6 +120,22 @@ export const commonSlice = createSlice({
       state.currencyLookup.data = action.payload;
       state.currencyLookup.loading = false;
     },
+
+    // Delete Dataset
+    [deleteDataset.pending.type]: (state) => {
+      state.deleteDataset.loading = true;
+      state.deleteDataset.messages = [];
+    },
+    [deleteDataset.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.deleteDataset.loading = false;
+      state.deleteDataset.hasErrors = false;
+      state.deleteDataset.messages = action.payload.messages;
+    },
+    [deleteDataset.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.deleteDataset.loading = false;
+      state.deleteDataset.hasErrors = true;
+      state.deleteDataset.messages = action.payload.errors;
+    },
   },
 });
 
@@ -117,8 +143,13 @@ export const commonSlice = createSlice({
 export const commonSelector = (state: RootState) => state.common;
 
 // Actions
-export const { clearCommon, clearBULookUp, clearCompanyLookUp, setGlobalSearch } =
-  commonSlice.actions;
+export const {
+  clearCommon,
+  clearBULookUp,
+  clearCompanyLookUp,
+  setGlobalSearch,
+  clearDeleteDatasetMessages,
+} = commonSlice.actions;
 
 // The reducer
 export default commonSlice.reducer;

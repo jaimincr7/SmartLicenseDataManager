@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -29,6 +29,9 @@ const { Option } = Select;
 
 const validateMessages = {
   required: Messages.FIELD_REQUIRED,
+  string: {
+    max: Messages.MAXLENGTH,
+  },
 };
 
 const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
@@ -78,6 +81,11 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
     application: '',
     serial_number: '',
     sql_cluster_node_type: '',
+    cores: null,
+    procs: null,
+    vCPU: null,
+    ha_enabled: false,
+    azure_hosted: false,
   };
 
   const onFinish = (values: any) => {
@@ -112,7 +120,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
     form.setFieldsValue({ bu_id: buId });
   };
 
-  const fillValuesOnEdit = async (data) => {
+  const fillValuesOnEdit = async (data: ISqlServer) => {
     if (data.tenant_id) {
       await dispatch(getCompanyLookup(data.tenant_id));
     }
@@ -148,6 +156,11 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
         application: data.application,
         serial_number: data.serial_number,
         sql_cluster_node_type: data.sql_cluster_node_type,
+        cores: data.cores,
+        procs: data.procs,
+        vCPU: data.vCPU,
+        ha_enabled: data.ha_enabled,
+        azure_hosted: data.azure_hosted,
       };
       form.setFieldsValue(initialValues);
     }
@@ -239,12 +252,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Company</label>
-                  <Form.Item
-                    name="company_id"
-                    className="m-0"
-                    label="Company"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -267,7 +275,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
+                  <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -290,7 +298,12 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Sql Cluster</label>
-                  <Form.Item name="sql_cluster" label="Sql Cluster" className="m-0">
+                  <Form.Item
+                    name="sql_cluster"
+                    label="Sql Cluster"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -298,37 +311,37 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Host</label>
-                  <Form.Item name="host" className="m-0" label="Host" rules={[{ required: true }]}>
+                  <Form.Item name="host" className="m-0" label="Host" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
-              {/* <Col xs={24} sm={12} md={8}>
-                            <div className="form-group m-0">
-                                <label className="label">Procs</label>
-                                <Form.Item
-                                    name="procs"
-                                    label="Procs"
-                                    className="m-0"
-                                    rules={[{ type: 'number'}]}
-                                >
-                                    <InputNumber className="form-control w-100" />
-                                </Form.Item>                      
-                            </div>
-                        </Col>
-                        <Col xs={24} sm={12} md={8}>
-                            <div className="form-group m-0">
-                                <label className="label">Cores</label>
-                                <Form.Item
-                                    name="cores"
-                                    label="Cores"
-                                    className="m-0"
-                                    rules={[{ type: 'number'}]}
-                                    >
-                                    <InputNumber className="form-control w-100" />
-                                </Form.Item>                         
-                            </div>
-                        </Col> */}
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Procs</label>
+                  <Form.Item
+                    name="procs"
+                    label="Procs"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Cores</label>
+                  <Form.Item
+                    name="cores"
+                    label="Cores"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Device Name</label>
@@ -336,7 +349,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="device_name"
                     label="Device name"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -349,7 +362,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="device_type"
                     label="Device type"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -362,7 +375,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="product_family"
                     label="Product family"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -371,12 +384,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Version</label>
-                  <Form.Item
-                    name="version"
-                    label="Version"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="version" label="Version" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -384,29 +392,19 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Edition</label>
-                  <Form.Item
-                    name="edition"
-                    label="Edition"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="edition" label="Edition" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
-              {/* <Col xs={24} sm={12} md={8}>
-                            <div className="form-group m-0">
-                                <label className="label">vCPU</label>
-                                <Form.Item
-                                    name="vCPU"
-                                    label="vCPU"
-                                    className="m-0"
-                                    rules={[{ type: 'number'}]}
-                                    >
-                                    <InputNumber className="form-control w-100" />
-                                </Form.Item>                      
-                            </div>
-                        </Col> */}
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">vCPU</label>
+                  <Form.Item name="vCPU" label="vCPU" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Device State</label>
@@ -414,7 +412,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="device_state"
                     label="Device state"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -427,7 +425,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="software_state"
                     label="Software state"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -436,12 +434,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Cluster</label>
-                  <Form.Item
-                    name="cluster"
-                    label="Cluster"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="cluster" label="Cluster" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -449,12 +442,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Source</label>
-                  <Form.Item
-                    name="source"
-                    label="Source"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -466,7 +454,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="operating_system"
                     label="Operating system"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -475,12 +463,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">OS Type</label>
-                  <Form.Item
-                    name="os_type"
-                    label="OS type"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="os_type" label="OS type" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -492,7 +475,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="raw_software_title"
                     label="Raw software title"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -505,7 +488,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="product_name"
                     label="Product name"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -514,7 +497,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">FQDN</label>
-                  <Form.Item name="fqdn" label="FQDN" className="m-0" rules={[{ required: true }]}>
+                  <Form.Item name="fqdn" label="FQDN" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -522,12 +505,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Service</label>
-                  <Form.Item
-                    name="service"
-                    label="Service"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="service" label="Service" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -539,7 +517,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="cost_code"
                     label="Cost code"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -552,7 +530,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="line_of_business"
                     label="Line of bussiness"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -561,12 +539,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Market</label>
-                  <Form.Item
-                    name="market"
-                    label="Market"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="market" label="Market" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -578,7 +551,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="application"
                     label="Application"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -591,7 +564,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="data_center"
                     label="Data center"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -604,7 +577,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="serial_number"
                     label="Serial number"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -617,19 +590,28 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                     name="sql_cluster_node_type"
                     label="SQL cluster node type"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
-              {/* <Col xs={24} sm={12} md={8}>
-                            <div className="form-group m-0">
-                                <Form.Item name="ha_enabled" className="m-0" valuePropName="checked">
-                                    <Checkbox>Enabled</Checkbox>
-                                </Form.Item>                        
-                            </div>
-                        </Col> */}
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="ha_enabled" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  <label className="label">HA Enabled</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="azure_hosted" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  <label className="label">Azure Hosted</label>
+                </div>
+              </Col>
             </Row>
             <div className="btns-block modal-footer">
               <Button

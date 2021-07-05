@@ -32,6 +32,9 @@ const { Option } = Select;
 
 const validateMessages = {
   required: Messages.FIELD_REQUIRED,
+  string: {
+    max: Messages.MAXLENGTH,
+  },
   types: {
     number: Messages.NUMBER,
   },
@@ -186,12 +189,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Tenant</label>
-                  <Form.Item
-                    name="tenant_id"
-                    className="m-0"
-                    label="Tenant"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="tenant_id" className="m-0" label="Tenant">
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -214,12 +212,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Company</label>
-                  <Form.Item
-                    name="company_id"
-                    className="m-0"
-                    label="Company"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -242,7 +235,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
+                  <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -269,7 +262,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                     name="field"
                     label="Field"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -282,7 +275,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                     name="condition"
                     className="m-0"
                     label="Condition"
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -295,7 +288,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                     name="value"
                     label="Value"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

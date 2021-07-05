@@ -1,6 +1,5 @@
 import { IBulkInsertDataset } from '../../services/adDevicesExclusions/adDevicesExclusions.model';
 import {
-  IDeleteDataset,
   IProcessData,
   ISearchAdDevicesExclusions,
   IAdDevicesExclusions,
@@ -51,13 +50,6 @@ export const deleteAdDevicesExclusions = createAsyncThunk(
     return response;
   }
 );
-
-export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
-  const response = await adDevicesExclusionsService.deleteDataset(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
 
 export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
   const response = await adDevicesExclusionsService.processData(data).then((res) => {

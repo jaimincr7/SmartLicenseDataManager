@@ -313,7 +313,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Name</label>
-                  <Form.Item name="name" label="Name" className="m-0">
+                  <Form.Item name="name" label="Name" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -321,7 +321,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Surname</label>
-                  <Form.Item name="surname" label="Surname" className="m-0">
+                  <Form.Item name="surname" label="Surname" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -329,7 +329,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Display Name</label>
-                  <Form.Item name="display_name" label="Display Name" className="m-0">
+                  <Form.Item
+                    name="display_name"
+                    label="Display Name"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -337,7 +342,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Given Name</label>
-                  <Form.Item name="given_name" label="Given Name" className="m-0">
+                  <Form.Item
+                    name="given_name"
+                    label="Given Name"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -345,7 +355,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Distinguished Name</label>
-                  <Form.Item name="distinguished_name" label="Distinguished Name" className="m-0">
+                  <Form.Item
+                    name="distinguished_name"
+                    label="Distinguished Name"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -373,6 +388,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     name="last_logon_timestamp"
                     label="Last Logon Timestamp"
                     className="m-0"
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -381,7 +397,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Object Class</label>
-                  <Form.Item name="object_class" label="Object Class" className="m-0">
+                  <Form.Item
+                    name="object_class"
+                    label="Object Class"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -389,7 +410,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Object Guid</label>
-                  <Form.Item name="object_guid" label="Object Guid" className="m-0">
+                  <Form.Item
+                    name="object_guid"
+                    label="Object Guid"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -397,7 +423,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Source</label>
-                  <Form.Item name="source" label="Source" className="m-0">
+                  <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -405,7 +431,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Operating System</label>
-                  <Form.Item name="operating_system" label="Operating system" className="m-0">
+                  <Form.Item
+                    name="operating_system"
+                    label="Operating system"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -421,7 +452,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Sam Account Name</label>
-                  <Form.Item name="sam_account_name" label="Sam Account Name" className="m-0">
+                  <Form.Item
+                    name="sam_account_name"
+                    label="Sam Account Name"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -429,7 +465,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">sId</label>
-                  <Form.Item name="sid" label="sId" className="m-0">
+                  <Form.Item name="sid" label="sId" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -437,7 +473,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">User Principal Name</label>
-                  <Form.Item name="user_principal_name" label="User Principal Name" className="m-0">
+                  <Form.Item
+                    name="user_principal_name"
+                    label="User Principal Name"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -461,7 +502,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Exclusion</label>
-                  <Form.Item name="exclusion" label="Exclusion" className="m-0">
+                  <Form.Item
+                    name="exclusion"
+                    label="Exclusion"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -490,7 +536,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Domain</label>
-                  <Form.Item name="domain" label="Domain" className="m-0">
+                  <Form.Item name="domain" label="Domain" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>

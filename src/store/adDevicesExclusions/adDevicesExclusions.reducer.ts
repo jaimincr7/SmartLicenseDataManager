@@ -7,7 +7,6 @@ import {
 import { RootState } from '../app.model';
 import {
   bulkInsert,
-  deleteDataset,
   deleteAdDevicesExclusions,
   getExcelColumns,
   getAdDevicesExclusionsById,
@@ -41,11 +40,6 @@ export const initialState: IAdDevicesExclusionsState = {
     hasErrors: false,
     messages: [],
   },
-  deleteDataset: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
   processData: {
     loading: false,
     hasErrors: false,
@@ -73,7 +67,6 @@ export const adDevicesExclusionsSlice = createSlice({
     clearAdDevicesExclusionsMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
-      state.deleteDataset.messages = [];
       state.processData.messages = [];
       state.bulkInsert.messages = [];
     },
@@ -172,22 +165,6 @@ export const adDevicesExclusionsSlice = createSlice({
       state.delete.loading = false;
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
-    },
-
-    // Delete Dataset
-    [deleteDataset.pending.type]: (state) => {
-      state.deleteDataset.loading = true;
-      state.deleteDataset.messages = [];
-    },
-    [deleteDataset.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.deleteDataset.loading = false;
-      state.deleteDataset.hasErrors = false;
-      state.deleteDataset.messages = action.payload.messages;
-    },
-    [deleteDataset.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.deleteDataset.loading = false;
-      state.deleteDataset.hasErrors = true;
-      state.deleteDataset.messages = action.payload.errors;
     },
 
     // Process Data

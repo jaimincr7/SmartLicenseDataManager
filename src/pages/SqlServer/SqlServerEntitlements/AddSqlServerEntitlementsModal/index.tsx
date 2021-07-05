@@ -205,12 +205,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Company</label>
-                  <Form.Item
-                    name="company_id"
-                    className="m-0"
-                    label="Company"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -233,7 +228,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
+                  <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />

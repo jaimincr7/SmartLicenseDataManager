@@ -3,7 +3,6 @@ import adDevicesService from '../../services/adDevices/adDevices.service';
 import {
   ISearchAdDevices,
   IAdDevices,
-  IDeleteDataset,
   IProcessData,
   IBulkInsertDataset,
 } from './../../services/adDevices/adDevices.model';
@@ -36,13 +35,6 @@ export const saveAdDevice = createAsyncThunk('saveAdDevice', async (data: IAdDev
 
 export const deleteAdDevice = createAsyncThunk('deleteAdDevice', async (id: number) => {
   const response = await adDevicesService.deleteAdDevice(id).then((res) => {
-    return res.body;
-  });
-  return response;
-});
-
-export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
-  const response = await adDevicesService.deleteDataset(data).then((res) => {
     return res.body;
   });
   return response;

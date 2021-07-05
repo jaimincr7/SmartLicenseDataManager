@@ -7,7 +7,6 @@ import {
   getAdDeviceById,
   searchAdDevices,
   saveAdDevice,
-  deleteDataset,
   processData,
   getExcelColumns,
   bulkInsert,
@@ -34,11 +33,6 @@ export const initialState: IAdDevicesState = {
     messages: [],
   },
   delete: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
-  deleteDataset: {
     loading: false,
     hasErrors: false,
     messages: [],
@@ -70,7 +64,6 @@ export const adDevicesSlice = createSlice({
     clearAdDeviceMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
-      state.deleteDataset.messages = [];
       state.processData.messages = [];
       state.bulkInsert.messages = [];
     },
@@ -154,22 +147,6 @@ export const adDevicesSlice = createSlice({
       state.delete.loading = false;
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
-    },
-
-    // Delete Dataset
-    [deleteDataset.pending.type]: (state) => {
-      state.deleteDataset.loading = true;
-      state.deleteDataset.messages = [];
-    },
-    [deleteDataset.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.deleteDataset.loading = false;
-      state.deleteDataset.hasErrors = false;
-      state.deleteDataset.messages = action.payload.messages;
-    },
-    [deleteDataset.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.deleteDataset.loading = false;
-      state.deleteDataset.hasErrors = true;
-      state.deleteDataset.messages = action.payload.errors;
     },
 
     // Process Data

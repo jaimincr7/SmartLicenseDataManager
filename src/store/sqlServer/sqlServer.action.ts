@@ -1,6 +1,5 @@
 import { IBulkInsertDataset } from './../../services/sqlServer/sqlServer.model';
 import {
-  IDeleteDataset,
   IProcessData,
   ISearchSqlServer,
   ISqlServer,
@@ -36,13 +35,6 @@ export const saveSqlServer = createAsyncThunk('saveSqlServer', async (data: ISql
 
 export const deleteSqlServer = createAsyncThunk('deleteSqlServer', async (id: number) => {
   const response = await sqlServerService.deleteSqlServer(id).then((res) => {
-    return res.body;
-  });
-  return response;
-});
-
-export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
-  const response = await sqlServerService.deleteDataset(data).then((res) => {
     return res.body;
   });
   return response;

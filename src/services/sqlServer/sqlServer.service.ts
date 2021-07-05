@@ -1,12 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import {
-  IDeleteDataset,
-  ISearchSqlServer,
-  ISqlServer,
-  IBulkInsertDataset,
-  IProcessData,
-} from './sqlServer.model';
+import { ISearchSqlServer, ISqlServer, IBulkInsertDataset, IProcessData } from './sqlServer.model';
 
 class SqlServerService {
   ENDPOINT = '/sql-server';
@@ -45,18 +39,6 @@ class SqlServerService {
   public async deleteSqlServer(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
-      return res.data;
-    });
-  }
-
-  public async deleteDataset(data: IDeleteDataset): Promise<any> {
-    const inputValues = {
-      ...data,
-      table_name: '[sql server]',
-      debug: false,
-    };
-    const url = `${this.ENDPOINT}/delete-dataset`;
-    return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }

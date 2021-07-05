@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
-import { clearSqlServer } from '../../../store/sqlServer/sqlServer.reducer';
+import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
+import { clearSqlServer, sqlServerSelector } from '../../../store/sqlServer/sqlServer.reducer';
 import { ISqlServerProps } from './sqlServer.model';
 import './sqlServer.style.scss';
 import React from 'react';
@@ -10,9 +10,10 @@ import AddSqlServerModal from './AddSqlServer';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import ProcessDataModal from './ProcessDataModal';
-import DeleteDatasetModal from './DeleteDatasetModal';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const SqlServer: React.FC<ISqlServerProps> = (props) => {
+  const sqlServer = useAppSelector(sqlServerSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -129,6 +130,8 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
         <DeleteDatasetModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={sqlServer.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
         />
       )}
     </div>

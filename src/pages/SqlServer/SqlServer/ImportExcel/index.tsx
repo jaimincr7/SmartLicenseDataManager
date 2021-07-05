@@ -134,26 +134,19 @@ const ImportExcel: React.FC<IImportExcelModalProps> = () => {
         </div>
         <div className="main-card">
           <div className="input-btns-title btns-block f-wrap">
-            <Form.Item
-                        name={'test'}
-                        className="select-table"
-                        label={'test'}
-                      >
-                        <Select
-                          showSearch
-                          allowClear
-                          suffixIcon={
-                            <img
-                              src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
-                              alt=""
-                            />
-                          }
-                        >
-                            <Option key={'index'} value={'option'}>
-                              {'option'}
-                            </Option>
-                        </Select>
-                      </Form.Item>
+            <Form.Item name={'test'} className="select-table" label={'test'}>
+              <Select
+                showSearch
+                allowClear
+                suffixIcon={
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                }
+              >
+                <Option key={'index'} value={'option'}>
+                  {'option'}
+                </Option>
+              </Select>
+            </Form.Item>
             <div className="upload-file">
               <Upload
                 accept=".xls,.xlsx"

@@ -6,7 +6,7 @@ import {
   getDatabaseTables,
   getTableColumns,
   getExcelColumns,
-  bulkInsert
+  bulkInsert,
 } from './bulkImport.action';
 import { IBulkImportState } from './bulkImport.model';
 
@@ -14,23 +14,23 @@ export const initialState: IBulkImportState = {
   getDatabaseTables: {
     loading: false,
     hasErrors: false,
-    data: []
+    data: [],
   },
   getTableColumns: {
     loading: false,
     hasErrors: false,
-    data: []
+    data: [],
   },
   getExcelColumns: {
     loading: false,
     hasErrors: false,
-    data: null
+    data: null,
   },
   bulkInsert: {
     loading: false,
     hasErrors: false,
-    messages: []
-  }
+    messages: [],
+  },
 };
 
 export const bulkImportSlice = createSlice({
@@ -51,7 +51,6 @@ export const bulkImportSlice = createSlice({
     },
   },
   extraReducers: {
-
     // Get Table Columns
     [getDatabaseTables.pending.type]: (state) => {
       state.getDatabaseTables.loading = true;
