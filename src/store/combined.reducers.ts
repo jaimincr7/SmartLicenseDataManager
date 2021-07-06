@@ -11,7 +11,9 @@ import sqlServerLicenseReducer from './sqlServerLicense/sqlServerLicense.reducer
 import sqlServerOverridesReducer from './sqlServerOverrides/sqlServerOverrides.reducer';
 import sqlServerPricingReducer from './sqlServerPricing/sqlServerPricing.reducer';
 import userReducer from './user/user.reducer';
+import windowsServerEntitlementsReducer from './windowsServer/windowsServerEntitlements/windowsServerEntitlements.reducer';
 import windowsServerInventoryReducer from './windowsServer/windowsServerInventory/windowsServerInventory.reducer';
+import windowsServerOverridesReducer from './windowsServer/windowsServerOverrides/windowsServerOverrides.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -27,4 +29,6 @@ export const rootReducer = combineReducers({
   sqlServerLicense: sqlServerLicenseReducer,
   windowsServerInventory: windowsServerInventoryReducer,
   user: userReducer,
+  windowsServerEntitlements: windowsServerEntitlementsReducer,
+  windowsServerOverrides: windowsServerOverridesReducer,
 });

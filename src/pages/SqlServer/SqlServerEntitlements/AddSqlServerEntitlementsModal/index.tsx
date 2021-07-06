@@ -9,7 +9,7 @@ import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
   getCompanyLookup,
-  getLicenseLookup,
+  getSqlServerLicenseLookup,
   getTenantLookup,
 } from '../../../../store/common/common.action';
 import {
@@ -50,7 +50,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Sql Server Entitlements' : 'Edit Sql Server Entitlements';
+    return isNew ? 'Add Sql Server Entitlement' : 'Edit Sql Server Entitlement';
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
@@ -140,7 +140,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
 
   useEffect(() => {
     dispatch(getTenantLookup());
-    dispatch(getLicenseLookup());
+    dispatch(getSqlServerLicenseLookup());
     if (+id > 0) {
       dispatch(getSqlServerEntitlementsById(+id));
     }
@@ -297,10 +297,12 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                       }
                       allowClear
                       notFoundContent={
-                        commonLookups.licenseLookup.data.length === 0 ? <Spin size="small" /> : null
+                        commonLookups.sqlServerLicenseLookup.data.length === 0 ? (
+                          <Spin size="small" />
+                        ) : null
                       }
                     >
-                      {commonLookups.licenseLookup.data.map((option: ILookup) => (
+                      {commonLookups.sqlServerLicenseLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
                         </Option>

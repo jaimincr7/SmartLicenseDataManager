@@ -5,11 +5,12 @@ import { RootState } from '../app.model';
 import {
   getBULookup,
   getCompanyLookup,
-  getLicenseLookup,
+  getSqlServerLicenseLookup,
   getTenantLookup,
   getAgreementTypesLookup,
   getCurrencyLookup,
   deleteDataset,
+  getWindowsServerLicenseLookup,
 } from './common.action';
 import { ICommonState, IGlobalSearch } from './common.model';
 
@@ -27,7 +28,7 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
-  licenseLookup: {
+  sqlServerLicenseLookup: {
     data: [],
     loading: false,
   },
@@ -36,6 +37,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   currencyLookup: {
+    data: [],
+    loading: false,
+  },
+  windowsServerLicenseLookup: {
     data: [],
     loading: false,
   },
@@ -94,13 +99,13 @@ export const commonSlice = createSlice({
       state.buLookup.loading = false;
     },
 
-    // License lookup
-    [getLicenseLookup.pending.type]: (state) => {
-      state.licenseLookup.loading = true;
+    // Sql Server License lookup
+    [getSqlServerLicenseLookup.pending.type]: (state) => {
+      state.sqlServerLicenseLookup.loading = true;
     },
-    [getLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
-      state.licenseLookup.data = action.payload;
-      state.licenseLookup.loading = false;
+    [getSqlServerLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.sqlServerLicenseLookup.data = action.payload;
+      state.sqlServerLicenseLookup.loading = false;
     },
 
     // Agreement Types lookup
@@ -119,6 +124,15 @@ export const commonSlice = createSlice({
     [getCurrencyLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.currencyLookup.data = action.payload;
       state.currencyLookup.loading = false;
+    },
+
+    // Windows Server License lookup
+    [getWindowsServerLicenseLookup.pending.type]: (state) => {
+      state.windowsServerLicenseLookup.loading = true;
+    },
+    [getWindowsServerLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.windowsServerLicenseLookup.data = action.payload;
+      state.windowsServerLicenseLookup.loading = false;
     },
 
     // Delete Dataset

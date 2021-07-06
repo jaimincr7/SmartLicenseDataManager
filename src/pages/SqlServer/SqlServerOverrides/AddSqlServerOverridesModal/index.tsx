@@ -46,7 +46,7 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Sql Server Overrides' : 'Edit Sql Server Overrides';
+    return isNew ? 'Add Sql Server Override' : 'Edit Sql Server Override';
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
@@ -328,7 +328,7 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               <Col xs={24}>
                 <div className="form-group m-0">
                   <label className="label">Notes</label>
-                  <Form.Item name="notes" label="Notes" className="m-0" rules={[{ max: 16 }]}>
+                  <Form.Item name="notes" label="Notes" className="m-0">
                     <Input.TextArea className="form-control" />
                   </Form.Item>
                 </div>

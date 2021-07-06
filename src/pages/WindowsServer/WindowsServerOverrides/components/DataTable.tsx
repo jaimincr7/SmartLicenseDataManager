@@ -4,31 +4,30 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { fixedColumn, IDataTable, IInlineSearch } from './dataTable.model';
 import moment from 'moment';
-import { Common, DEFAULT_PAGE_SIZE, exportExcel } from '../../../../common/constants/common';
+import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
   Filter,
-  FilterByDate,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTableFilters';
 import { orderByType } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
-import {
-  clearSqlServerEntitlementsMessages,
-  sqlServerEntitlementsSelector,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
-import {
-  ISearchSqlServerEntitlements,
-  ISqlServerEntitlements,
-} from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
-import {
-  deleteSqlServerEntitlements,
-  searchSqlServerEntitlements,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
-import sqlServerEntitlementsService from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.service';
 import { FileExcelOutlined } from '@ant-design/icons';
+import {
+  clearWindowsServerOverridesMessages,
+  windowsServerOverridesSelector,
+} from '../../../../store/windowsServer/windowsServerOverrides/windowsServerOverrides.reducer';
+import windowsServerOverridesService from '../../../../services/windowsServer/windowsServerOverrides/windowsServerOverrides.service';
+import {
+  deleteWindowsServerOverrides,
+  searchWindowsServerOverrides,
+} from '../../../../store/windowsServer/windowsServerOverrides/windowsServerOverrides.action';
+import {
+  ISearchWindowsServerOverrides,
+  IWindowsServerOverrides,
+} from '../../../../services/windowsServer/windowsServerOverrides/windowsServerOverrides.model';
 
 let pageLoaded = false;
 
@@ -42,7 +41,7 @@ let tableFilter = {
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
-  const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
+  const overrides = useAppSelector(windowsServerOverridesSelector);
   const commonFilters = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -74,7 +73,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
     setInlineSearch(inlineSearchFilter);
 
-    const searchData: ISearchSqlServerEntitlements = {
+    const searchData: ISearchWindowsServerOverrides = {
       is_lookup: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
@@ -86,13 +85,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return searchData;
   };
 
-  const fetchSqlServerEntitlements = (page: number = null) => {
+  const fetchWindowsServerOverrides = (page = null) => {
     const searchData = getSearchData(page, false);
-    dispatch(searchSqlServerEntitlements(searchData));
+    dispatch(searchWindowsServerOverrides(searchData));
   };
   useImperativeHandle(ref, () => ({
     refreshData() {
-      fetchSqlServerEntitlements();
+      fetchWindowsServerOverrides();
     },
   }));
   React.useEffect(() => {
@@ -111,7 +110,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       }
     }
     tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
-    fetchSqlServerEntitlements(1);
+    setPagination({ ...pagination, current: 1 });
+    fetchWindowsServerOverrides({ ...pagination, current: 1 });
   }, [commonFilters.search]);
   // End: Global Search
 
@@ -123,24 +123,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     };
     setPagination(paginating);
-    fetchSqlServerEntitlements();
+    fetchWindowsServerOverrides(paginating);
   };
 
   // Start: Delete action
-  const removeSqlServerEntitlements = (id: number) => {
-    dispatch(deleteSqlServerEntitlements(id));
+  const removeWindowsServerOverrides = (id: number) => {
+    dispatch(deleteWindowsServerOverrides(id));
   };
   React.useEffect(() => {
-    if (sqlServerEntitlements.delete.messages.length > 0) {
-      if (sqlServerEntitlements.delete.hasErrors) {
-        toast.error(sqlServerEntitlements.delete.messages.join(' '));
+    if (overrides.delete.messages.length > 0) {
+      if (overrides.delete.hasErrors) {
+        toast.error(overrides.delete.messages.join(' '));
       } else {
-        toast.success(sqlServerEntitlements.delete.messages.join(' '));
-        fetchSqlServerEntitlements();
+        toast.success(overrides.delete.messages.join(' '));
+        fetchWindowsServerOverrides();
       }
-      dispatch(clearSqlServerEntitlementsMessages());
+      dispatch(clearWindowsServerOverridesMessages());
     }
-  }, [sqlServerEntitlements.delete.messages]);
+  }, [overrides.delete.messages]);
   // End: Delete action
 
   // Keyword search
@@ -149,14 +149,15 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ...tableFilter,
       keyword: value,
     };
-    fetchSqlServerEntitlements();
+    setPagination({ ...pagination, current: 1 });
+    fetchWindowsServerOverrides({ ...pagination, current: 1 });
   };
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
     tableFilter.filter_keys = values;
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServerEntitlements();
+    fetchWindowsServerOverrides({ ...pagination, current: 1 });
   };
   const onReset = () => {
     onFinish({});
@@ -166,7 +167,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   }, [inlineSearch]);
 
   const FilterBySwap = (dataIndex: string) => {
-    return FilterWithSwapOption(dataIndex, sqlServerEntitlements.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, overrides.search.tableName, form);
   };
   // End: Column level filter
 
@@ -175,7 +176,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setLoading(true);
     const searchData = getSearchData(pagination, true);
 
-    return sqlServerEntitlementsService.exportExcelFile(searchData).then((res) => {
+    return windowsServerOverridesService.exportExcelFile(searchData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
@@ -195,7 +196,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('tenant_id', sqlServerEntitlements.search.lookups?.tenants),
+          title: FilterByDropdown('tenant_id', overrides.search.lookups?.tenants),
           dataIndex: 'tenant_name',
           key: 'tenant_name',
           ellipsis: true,
@@ -207,7 +208,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('company_id', sqlServerEntitlements.search.lookups?.companies),
+          title: FilterByDropdown('company_id', overrides.search.lookups?.companies),
           dataIndex: 'company_name',
           key: 'company_name',
           ellipsis: true,
@@ -219,7 +220,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('bu_id', sqlServerEntitlements.search.lookups?.bus),
+          title: FilterByDropdown('bu_id', overrides.search.lookups?.bus),
           dataIndex: 'bu_name',
           key: 'bu_name',
           ellipsis: true,
@@ -227,65 +228,134 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ],
     },
     {
-      title: 'Date Added',
+      title: 'Device Name',
       sorter: true,
       children: [
         {
-          title: FilterByDate('date_added'),
-          dataIndex: 'date_added',
-          key: 'date_added',
-          ellipsis: true,
-          render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
-        },
-      ],
-    },
-    {
-      title: 'Product Name',
-      sorter: true,
-      children: [
-        {
-          title: FilterByDropdown(
-            'license_id',
-            sqlServerEntitlements.search.lookups?.sqlServerLicenses
-          ),
-          dataIndex: 'product_name',
-          key: 'product_name',
+          title: FilterBySwap('device_name'),
+          dataIndex: 'device_name',
+          key: 'device_name',
           ellipsis: true,
         },
       ],
     },
     {
-      title: 'Qty 01',
+      title: 'Device Type',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('qty_01'),
-          dataIndex: 'qty_01',
-          key: 'qty_01',
+          title: FilterBySwap('id_device_type'),
+          dataIndex: 'id_device_type',
+          key: 'id_device_type',
           ellipsis: true,
         },
       ],
     },
     {
-      title: 'Qty 02',
+      title: 'Field',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('qty_02'),
-          dataIndex: 'qty_02',
-          key: 'qty_02',
+          title: FilterBySwap('id_field'),
+          dataIndex: 'id_field',
+          key: 'id_field',
           ellipsis: true,
         },
       ],
     },
     {
-      title: 'Qty 03',
+      title: 'Value',
       sorter: true,
       children: [
         {
-          title: FilterBySwap('qty_03'),
-          dataIndex: 'qty_03',
-          key: 'qty_03',
+          title: FilterBySwap('id_value'),
+          dataIndex: 'id_value',
+          key: 'id_value',
+          ellipsis: true,
+        },
+      ],
+    },
+    {
+      title: 'Override Field',
+      sorter: true,
+      children: [
+        {
+          title: FilterBySwap('override_field'),
+          dataIndex: 'override_field',
+          key: 'override_field',
+          ellipsis: true,
+        },
+      ],
+    },
+    {
+      title: 'Override Value',
+      sorter: true,
+      children: [
+        {
+          title: FilterBySwap('override_value'),
+          dataIndex: 'override_value',
+          key: 'override_value',
+          ellipsis: true,
+        },
+      ],
+    },
+    {
+      title: 'Enabled',
+      sorter: true,
+      children: [
+        {
+          title: FilterByDropdown('enabled', overrides.search.lookups?.booleanLookup),
+          dataIndex: 'enabled',
+          key: 'enabled',
+          ellipsis: true,
+          render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+        },
+      ],
+    },
+    {
+      title: 'Version',
+      sorter: true,
+      children: [
+        {
+          title: FilterBySwap('version'),
+          dataIndex: 'version',
+          key: 'version',
+          ellipsis: true,
+        },
+      ],
+    },
+    {
+      title: 'Edition',
+      sorter: true,
+      children: [
+        {
+          title: FilterBySwap('edition'),
+          dataIndex: 'edition',
+          key: 'edition',
+          ellipsis: true,
+        },
+      ],
+    },
+    {
+      title: 'Source',
+      sorter: true,
+      children: [
+        {
+          title: FilterBySwap('source'),
+          dataIndex: 'source',
+          key: 'source',
+          ellipsis: true,
+        },
+      ],
+    },
+    {
+      title: 'Notes',
+      sorter: true,
+      children: [
+        {
+          title: FilterBySwap('notes'),
+          dataIndex: 'notes',
+          key: 'notes',
           ellipsis: true,
         },
       ],
@@ -298,8 +368,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -321,20 +392,20 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           key: 'Action',
           width: '80px',
           fixed: 'right' as fixedColumn,
-          render: (_, data: ISqlServerEntitlements) => (
+          render: (_, data: IWindowsServerOverrides) => (
             <div className="btns-block">
               <a
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);
-                  history.push(`/sql-server/entitlements/${data.id}`);
+                  history.push(`/windows-server/overrides/${data.id}`);
                 }}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
               </a>
               <Popconfirm
                 title="Sure to delete?"
-                onConfirm={() => removeSqlServerEntitlements(data.id)}
+                onConfirm={() => removeWindowsServerOverrides(data.id)}
               >
                 <a href="#" title="" className="action-btn">
                   <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
@@ -401,7 +472,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               setSelectedId(0);
             }}
           >
-            Add Entitlement
+            Add Override
           </Button>
         </div>
       </div>
@@ -409,13 +480,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Table
           scroll={{ x: true }}
           rowKey={(record) => record.id}
-          dataSource={sqlServerEntitlements.search.data}
+          dataSource={overrides.search.data}
           columns={getColumns()}
-          loading={sqlServerEntitlements.search.loading}
+          loading={overrides.search.loading}
           pagination={{
             ...pagination,
-            total: sqlServerEntitlements.search.count,
-            showTotal: (total) => `Total ${total} items`,
+            total: overrides.search.count,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
           className="custom-table"

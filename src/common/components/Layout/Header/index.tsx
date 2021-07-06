@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu, Dropdown } from 'antd';
 import { toast } from 'react-toastify';
 import { msalInstance } from '../../../../utils/authConfig';
-import authService from '../../../../services/auth/auth.service';
+// import authService from '../../../../services/auth/auth.service';
 import { userSelector } from '../../../../store/user/user.reducer';
 import { useAppSelector } from '../../../../store/app.hooks';
 
@@ -58,7 +58,6 @@ const profileMenu = () => {
 };
 
 function Header() {
-  
   const userDetails = useAppSelector(userSelector);
 
   return (

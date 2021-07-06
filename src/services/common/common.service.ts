@@ -24,7 +24,7 @@ class CommonService {
     });
   }
 
-  public async getLicenseLookup(): Promise<IApiResponse<ILookup>> {
+  public async getSqlServerLicenseLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-sql-server-license/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
@@ -40,6 +40,13 @@ class CommonService {
 
   public async getCurrencyLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/currency/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getWindowsServerLicenseLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-windows-server-license/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

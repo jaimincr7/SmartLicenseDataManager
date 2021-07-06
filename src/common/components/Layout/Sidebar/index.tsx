@@ -86,7 +86,7 @@ function Sidebar() {
           <SubMenu
             key="windows-server"
             icon={
-              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-server-outline.svg`} alt="" />
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-windows-server.svg`} alt="" />
             }
             title="Windows Server"
             className="no-icon"
@@ -94,6 +94,16 @@ function Sidebar() {
             <Menu.Item key="/windows-server/inventory">
               <Link to="/windows-server/inventory" title="Inventory">
                 Inventory
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/windows-server/entitlements">
+              <Link to="/windows-server/entitlements" title="Entitlements">
+                Entitlements
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/windows-server/overrides">
+              <Link to="/windows-server/overrides" title="Overrides">
+                Overrides
               </Link>
             </Menu.Item>
           </SubMenu>

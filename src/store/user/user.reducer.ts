@@ -3,7 +3,7 @@ import { RootState } from '../app.model';
 import { IActiveAccount, IUserState } from './user.model';
 
 export const initialState: IUserState = {
-  activeAccount: null
+  activeAccount: null,
 };
 
 export const userSlice = createSlice({
@@ -23,7 +23,7 @@ export const userSlice = createSlice({
 export const userSelector = (state: RootState) => state.user;
 
 // Actions
-export const {setActiveAccount, clearActiveAccount} = userSlice.actions;
+export const { setActiveAccount, clearActiveAccount } = userSlice.actions;
 
 // The reducer
 export default userSlice.reducer;

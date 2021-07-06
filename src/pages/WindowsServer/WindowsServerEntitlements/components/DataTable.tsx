@@ -14,21 +14,21 @@ import {
 } from '../../../../common/components/DataTableFilters';
 import { orderByType } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
-import {
-  clearSqlServerEntitlementsMessages,
-  sqlServerEntitlementsSelector,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
-import {
-  ISearchSqlServerEntitlements,
-  ISqlServerEntitlements,
-} from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
-import {
-  deleteSqlServerEntitlements,
-  searchSqlServerEntitlements,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
-import sqlServerEntitlementsService from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.service';
 import { FileExcelOutlined } from '@ant-design/icons';
+import {
+  clearWindowsServerEntitlementsMessages,
+  windowsServerEntitlementsSelector,
+} from '../../../../store/windowsServer/windowsServerEntitlements/windowsServerEntitlements.reducer';
+import {
+  ISearchWindowsServerEntitlements,
+  IWindowsServerEntitlements,
+} from '../../../../services/windowsServer/windowsServerEntitlements/windowsServerEntitlements.model';
+import {
+  deleteWindowsServerEntitlements,
+  searchWindowsServerEntitlements,
+} from '../../../../store/windowsServer/windowsServerEntitlements/windowsServerEntitlements.action';
+import windowsServerEntitlementsService from '../../../../services/windowsServer/windowsServerEntitlements/windowsServerEntitlements.service';
 
 let pageLoaded = false;
 
@@ -42,7 +42,7 @@ let tableFilter = {
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
-  const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
+  const entitlements = useAppSelector(windowsServerEntitlementsSelector);
   const commonFilters = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -74,7 +74,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
     setInlineSearch(inlineSearchFilter);
 
-    const searchData: ISearchSqlServerEntitlements = {
+    const searchData: ISearchWindowsServerEntitlements = {
       is_lookup: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
@@ -86,13 +86,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return searchData;
   };
 
-  const fetchSqlServerEntitlements = (page: number = null) => {
+  const fetchWindowsServerEntitlements = (page = null) => {
     const searchData = getSearchData(page, false);
-    dispatch(searchSqlServerEntitlements(searchData));
+    dispatch(searchWindowsServerEntitlements(searchData));
   };
   useImperativeHandle(ref, () => ({
     refreshData() {
-      fetchSqlServerEntitlements();
+      fetchWindowsServerEntitlements();
     },
   }));
   React.useEffect(() => {
@@ -111,7 +111,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       }
     }
     tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
-    fetchSqlServerEntitlements(1);
+    setPagination({ ...pagination, current: 1 });
+    fetchWindowsServerEntitlements({ ...pagination, current: 1 });
   }, [commonFilters.search]);
   // End: Global Search
 
@@ -123,24 +124,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     };
     setPagination(paginating);
-    fetchSqlServerEntitlements();
+    fetchWindowsServerEntitlements(paginating);
   };
 
   // Start: Delete action
-  const removeSqlServerEntitlements = (id: number) => {
-    dispatch(deleteSqlServerEntitlements(id));
+  const removeWindowsServerEntitlements = (id: number) => {
+    dispatch(deleteWindowsServerEntitlements(id));
   };
   React.useEffect(() => {
-    if (sqlServerEntitlements.delete.messages.length > 0) {
-      if (sqlServerEntitlements.delete.hasErrors) {
-        toast.error(sqlServerEntitlements.delete.messages.join(' '));
+    if (entitlements.delete.messages.length > 0) {
+      if (entitlements.delete.hasErrors) {
+        toast.error(entitlements.delete.messages.join(' '));
       } else {
-        toast.success(sqlServerEntitlements.delete.messages.join(' '));
-        fetchSqlServerEntitlements();
+        toast.success(entitlements.delete.messages.join(' '));
+        fetchWindowsServerEntitlements();
       }
-      dispatch(clearSqlServerEntitlementsMessages());
+      dispatch(clearWindowsServerEntitlementsMessages());
     }
-  }, [sqlServerEntitlements.delete.messages]);
+  }, [entitlements.delete.messages]);
   // End: Delete action
 
   // Keyword search
@@ -149,14 +150,15 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ...tableFilter,
       keyword: value,
     };
-    fetchSqlServerEntitlements();
+    setPagination({ ...pagination, current: 1 });
+    fetchWindowsServerEntitlements({ ...pagination, current: 1 });
   };
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
     tableFilter.filter_keys = values;
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServerEntitlements();
+    fetchWindowsServerEntitlements({ ...pagination, current: 1 });
   };
   const onReset = () => {
     onFinish({});
@@ -166,7 +168,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   }, [inlineSearch]);
 
   const FilterBySwap = (dataIndex: string) => {
-    return FilterWithSwapOption(dataIndex, sqlServerEntitlements.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, entitlements.search.tableName, form);
   };
   // End: Column level filter
 
@@ -175,7 +177,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setLoading(true);
     const searchData = getSearchData(pagination, true);
 
-    return sqlServerEntitlementsService.exportExcelFile(searchData).then((res) => {
+    return windowsServerEntitlementsService.exportExcelFile(searchData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
@@ -195,7 +197,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('tenant_id', sqlServerEntitlements.search.lookups?.tenants),
+          title: FilterByDropdown('tenant_id', entitlements.search.lookups?.tenants),
           dataIndex: 'tenant_name',
           key: 'tenant_name',
           ellipsis: true,
@@ -207,7 +209,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('company_id', sqlServerEntitlements.search.lookups?.companies),
+          title: FilterByDropdown('company_id', entitlements.search.lookups?.companies),
           dataIndex: 'company_name',
           key: 'company_name',
           ellipsis: true,
@@ -219,7 +221,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('bu_id', sqlServerEntitlements.search.lookups?.bus),
+          title: FilterByDropdown('bu_id', entitlements.search.lookups?.bus),
           dataIndex: 'bu_name',
           key: 'bu_name',
           ellipsis: true,
@@ -246,7 +248,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         {
           title: FilterByDropdown(
             'license_id',
-            sqlServerEntitlements.search.lookups?.sqlServerLicenses
+            entitlements.search.lookups?.config_windows_server_licenses
           ),
           dataIndex: 'product_name',
           key: 'product_name',
@@ -321,20 +323,20 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           key: 'Action',
           width: '80px',
           fixed: 'right' as fixedColumn,
-          render: (_, data: ISqlServerEntitlements) => (
+          render: (_, data: IWindowsServerEntitlements) => (
             <div className="btns-block">
               <a
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);
-                  history.push(`/sql-server/entitlements/${data.id}`);
+                  history.push(`/windows-server/entitlements/${data.id}`);
                 }}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
               </a>
               <Popconfirm
                 title="Sure to delete?"
-                onConfirm={() => removeSqlServerEntitlements(data.id)}
+                onConfirm={() => removeWindowsServerEntitlements(data.id)}
               >
                 <a href="#" title="" className="action-btn">
                   <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
@@ -409,13 +411,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Table
           scroll={{ x: true }}
           rowKey={(record) => record.id}
-          dataSource={sqlServerEntitlements.search.data}
+          dataSource={entitlements.search.data}
           columns={getColumns()}
-          loading={sqlServerEntitlements.search.loading}
+          loading={entitlements.search.loading}
           pagination={{
             ...pagination,
-            total: sqlServerEntitlements.search.count,
-            showTotal: (total) => `Total ${total} items`,
+            total: entitlements.search.count,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
           className="custom-table"

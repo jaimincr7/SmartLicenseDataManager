@@ -20,7 +20,7 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
-  licenseLookup: {
+  sqlServerLicenseLookup: {
     data: ILookup[];
     loading: boolean;
   };
@@ -29,6 +29,10 @@ export interface ICommonState {
     loading: boolean;
   };
   currencyLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  windowsServerLicenseLookup: {
     data: ILookup[];
     loading: boolean;
   };

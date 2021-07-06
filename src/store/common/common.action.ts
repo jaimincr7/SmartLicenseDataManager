@@ -25,8 +25,8 @@ export const getBULookup = createAsyncThunk('getBULookup', async (companyId: num
   return response.data;
 });
 
-export const getLicenseLookup = createAsyncThunk('getLicenseLookup', async () => {
-  const response = await commonService.getLicenseLookup().then((res) => {
+export const getSqlServerLicenseLookup = createAsyncThunk('getSqlServerLicenseLookup', async () => {
+  const response = await commonService.getSqlServerLicenseLookup().then((res) => {
     return res.body;
   });
   return response.data;
@@ -45,6 +45,16 @@ export const getCurrencyLookup = createAsyncThunk('getCurrencyLookup', async () 
   });
   return response.data;
 });
+
+export const getWindowsServerLicenseLookup = createAsyncThunk(
+  'getWindowsServerLicenseLookup',
+  async () => {
+    const response = await commonService.getWindowsServerLicenseLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
   const response = await commonService.deleteDataset(data).then((res) => {
