@@ -32,6 +32,13 @@ import { FileExcelOutlined } from '@ant-design/icons';
 
 let pageLoaded = false;
 
+let tableFilter = {
+  keyword: '',
+  order_by: 'id',
+  order_direction: 'DESC' as orderByType,
+  filter_keys: {},
+};
+
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
@@ -46,14 +53,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
-  });
-
-  let tableFilter = {
-    keyword: '',
-    order_by: 'id',
-    order_direction: 'DESC' as orderByType,
-    filter_keys: {},
-  };
+  });  
 
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
 

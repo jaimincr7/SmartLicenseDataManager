@@ -182,18 +182,20 @@ const BulkImport: React.FC = () => {
         <div className="title-block">
           <h4 className="p-0">Update from Excel</h4>
           <div className="btns-block">
-            <Button
-              className="btn-icon"
-              type="primary"
-              onClick={() => history.goBack()}
-              icon={
-                <em className="anticon">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-left-arrow.svg`} alt="" />
-                </em>
-              }
-            >
-              Back
-            </Button>
+            {table && (
+              <Button
+                className="btn-icon"
+                type="primary"
+                onClick={() => history.goBack()}
+                icon={
+                  <em className="anticon">
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-left-arrow.svg`} alt="" />
+                  </em>
+                }
+              >
+                Back
+              </Button>
+            )}
           </div>
         </div>
         <div className="main-card">
