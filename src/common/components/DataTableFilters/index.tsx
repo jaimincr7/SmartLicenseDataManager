@@ -4,13 +4,14 @@ import { IDropDownOption } from '../../models/common';
 import { DatePicker } from 'antd';
 import React from 'react';
 import commonService from '../../../services/common/common.service';
+import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
 export const FilterByDate = (dataIndex: string) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input lg">
-      <RangePicker />
+      <RangePicker defaultPickerValue={[moment().set({hour:0,minute:0,second:0,millisecond:0}),moment().set({hour:23,minute:59,second:59,millisecond:999})]} />
     </Form.Item>
   </>
 );
