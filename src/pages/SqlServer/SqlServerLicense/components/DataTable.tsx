@@ -367,6 +367,17 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           render: (_, data: ISqlServerLicense) => (
             <div className="btns-block">
               <a
+                title=""
+                className="action-btn"
+                onClick={() => {
+                  setSelectedId(data.id);
+                  history.push(`/sql-server/license/edit/${data.id}`);
+                }}
+              >
+                View
+                {/* <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" /> */}
+              </a>
+              <a
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);

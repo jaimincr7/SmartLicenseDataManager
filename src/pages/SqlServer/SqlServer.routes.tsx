@@ -3,6 +3,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import SqlServer from './SqlServer';
 import SqlServerEntitlements from './SqlServerEntitlements';
 import SqlServerLicense from './SqlServerLicense';
+import EditSqlServerLicense from './SqlServerLicense/EditSqlServerLicense';
 import SqlServerOverrides from './SqlServerOverrides';
 import SqlServerPricing from './SqlServerPricing';
 
@@ -13,6 +14,7 @@ const SqlServerRoutes: React.FC = () => {
     <div className="sqlServer">
       <Switch>
         {/* License */}
+        <Route exact path={`${match.path}/license/edit/:id`} component={EditSqlServerLicense} />
         <Route exact path={`${match.path}/license`} component={SqlServerLicense} />
         <Route exact path={`${match.path}/license/:id`} component={SqlServerLicense} />
 

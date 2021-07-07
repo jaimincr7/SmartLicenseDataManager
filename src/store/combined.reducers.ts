@@ -8,6 +8,7 @@ import errorLogReducer from './errorLog/errorLog.reducer';
 import sqlServerReducer from './sqlServer/sqlServer.reducer';
 import sqlServerEntitlementsReducer from './sqlServerEntitlements/sqlServerEntitlements.reducer';
 import sqlServerLicenseReducer from './sqlServerLicense/sqlServerLicense.reducer';
+import sqlServerLicenseDetailReducer from './sqlServerLicenseDetail/sqlServerLicenseDetail.reducer';
 import sqlServerOverridesReducer from './sqlServerOverrides/sqlServerOverrides.reducer';
 import sqlServerPricingReducer from './sqlServerPricing/sqlServerPricing.reducer';
 import userReducer from './user/user.reducer';
@@ -31,4 +32,5 @@ export const rootReducer = combineReducers({
   user: userReducer,
   windowsServerEntitlements: windowsServerEntitlementsReducer,
   windowsServerOverrides: windowsServerOverridesReducer,
+  sqlServerLicenseDetail: sqlServerLicenseDetailReducer,
 });
