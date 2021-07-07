@@ -3,6 +3,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import WindowsServerEntitlements from './WindowsServerEntitlements';
 import WindowsServerInventory from './WindowsServerInventory';
 import WindowsServerOverrides from './WindowsServerOverrides';
+import WindowsServerPricing from './WindowsServerPricing';
 
 const WindowsServerRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -10,6 +11,10 @@ const WindowsServerRoutes: React.FC = () => {
   return (
     <div className="sqlServer">
       <Switch>
+        {/* Pricing */}
+        <Route exact path={`${match.path}/pricing`} component={WindowsServerPricing} />
+        <Route exact path={`${match.path}/pricing/:id`} component={WindowsServerPricing} />
+
         {/* Overrides */}
         <Route exact path={`${match.path}/overrides`} component={WindowsServerOverrides} />
         <Route exact path={`${match.path}/overrides/:id`} component={WindowsServerOverrides} />

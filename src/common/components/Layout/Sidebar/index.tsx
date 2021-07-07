@@ -106,6 +106,11 @@ function Sidebar() {
                 Overrides
               </Link>
             </Menu.Item>
+            <Menu.Item key="/windows-server/pricing">
+              <Link to="/windows-server/pricing" title="Pricing">
+                Pricing
+              </Link>
+            </Menu.Item>
           </SubMenu>
           <SubMenu
             key="data-input"

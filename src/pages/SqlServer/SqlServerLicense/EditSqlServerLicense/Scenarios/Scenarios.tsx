@@ -93,12 +93,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
                 <Col xs={24} sm={12} md={8}>
                   <div className="form-group m-0">
                     <label className="label">Company</label>
-                    <Form.Item
-                      name="company_id"
-                      className="m-0"
-                      label="Company"
-                      rules={[{ required: true }]}
-                    >
+                    <Form.Item name="company_id" className="m-0" label="Company">
                       <Select disabled suffixIcon={false}>
                         {commonLookups.companyLookup.data.map((option: ILookup) => (
                           <Option key={option.id} value={option.id}>
