@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import _ from 'lodash';
 import { FileExcelOutlined } from '@ant-design/icons';
-import { fixedColumn, IDetailDataTableProps, IInlineSearch } from './detailDataTable.model';
-import { orderByType } from '../../../../../common/models/common';
+import { IDetailDataTableProps } from './detailDataTable.model';
+import { fixedColumn, IInlineSearch, orderByType } from '../../../../../common/models/common';
 import { useAppSelector, useAppDispatch } from '../../../../../store/app.hooks';
 import { ISearchSqlServerLicenseDetail } from '../../../../../services/sqlServerLicenseDetail/sqlServerLicenseDetail.model';
 import {

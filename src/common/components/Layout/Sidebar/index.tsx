@@ -82,6 +82,11 @@ function Sidebar() {
                 License
               </Link>
             </Menu.Item>
+            <Menu.Item key="/sql-server/exclusions">
+              <Link to="/sql-server/exclusions" title="Exclusions">
+                Exclusions
+              </Link>
+            </Menu.Item>
           </SubMenu>
           <SubMenu
             key="windows-server"
