@@ -9,6 +9,7 @@ import {
 } from '../../../../store/sqlServerLicense/sqlServerLicense.reducer';
 import DetailsDataTable from './Details/DetailDataTable';
 import { IEditSqlServerLicenseProps } from './editSqlServerLicense.model';
+import Scenarios from './Scenarios/Scenarios';
 
 const { TabPane } = Tabs;
 
@@ -59,7 +60,7 @@ const EditSqlServerLicense: React.FC<IEditSqlServerLicenseProps> = (props) => {
         <div className="main-card">
           <Tabs defaultActiveKey="Scenario">
             <TabPane tab="Scenario" key="Scenario">
-              Scenarios
+              <Scenarios licenseId={+licenseId} />
             </TabPane>
             <TabPane tab="Detail" key="Detail">
               <DetailsDataTable licenseId={+licenseId} />

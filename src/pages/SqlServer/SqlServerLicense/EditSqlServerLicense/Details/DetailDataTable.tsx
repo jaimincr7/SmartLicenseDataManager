@@ -111,7 +111,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
   }, [inlineSearch]);
 
   const FilterBySwap = (dataIndex: string) => {
-    return FilterWithSwapOption(dataIndex, licenseDetail.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, licenseDetail.search.tableName, form, licenseId);
   };
   // End: Column level filter
 

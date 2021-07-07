@@ -5,6 +5,7 @@ import { DatePicker } from 'antd';
 import React from 'react';
 import commonService from '../../../services/common/common.service';
 import moment from 'moment';
+import sqlServerLicenseDetailService from '../../../services/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
 
 const { RangePicker } = DatePicker;
 
@@ -52,13 +53,28 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
   </>
 );
 
-export const FilterWithSwapOption = (dataIndex: string, tableName: string, form: any) => {
+export const FilterWithSwapOption = (
+  dataIndex: string,
+  tableName: string,
+  form: any,
+  licenseId?: number
+) => {
   const [swap, setSwap] = useState<boolean>(true);
 
   const [options, setOptions] = useState<IDropDownOption[]>([]);
 
   React.useEffect(() => {
-    if (!swap && options.length === 0) {
+    if (!swap && licenseId && options.length === 0) {
+      sqlServerLicenseDetailService
+        .getLicenseDetailColumnLookup(licenseId, dataIndex)
+        .then((res) => {
+          return res.body.data;
+        })
+        .then((res) => {
+          setOptions(res);
+        });
+    }
+    if (!swap && !licenseId && options.length === 0) {
       commonService
         .getColumnLookup(tableName, dataIndex)
         .then((res) => {
