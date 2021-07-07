@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import './adUsers.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
@@ -40,7 +39,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
   };
 
   return (
-    <div className="sqlServer">
+    <div className="ad">
       <div className="title-block">
         <h4 className="p-0">Ad Users</h4>
         <div className="right-title">

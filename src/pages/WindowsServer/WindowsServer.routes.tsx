@@ -9,7 +9,7 @@ const WindowsServerRoutes: React.FC = () => {
   const match = useRouteMatch();
 
   return (
-    <div className="sqlServer">
+    <div className="windowsServer">
       <Switch>
         {/* Pricing */}
         <Route exact path={`${match.path}/pricing`} component={WindowsServerPricing} />

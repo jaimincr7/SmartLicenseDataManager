@@ -2,7 +2,7 @@ import { Table, Popconfirm, Form, Button, Checkbox, Popover } from 'antd';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { toast } from 'react-toastify';
-import { fixedColumn, IDataTable, IInlineSearch } from './dataTable.model';
+import { IDataTable } from './dataTable.model';
 import moment from 'moment';
 import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../../common/constants/common';
 import _ from 'lodash';
@@ -11,7 +11,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTableFilters';
-import { orderByType } from '../../../../common/models/common';
+import { fixedColumn, IInlineSearch, orderByType } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';

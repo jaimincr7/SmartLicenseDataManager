@@ -86,8 +86,5 @@ export interface ISqlServerLicenseDetail {
 }
 
 export interface ISearchSqlServerLicenseDetail extends ISearch {
-  keyword?: string;
-  filter_keys?: any;
-  is_export_to_excel?: boolean;
   sql_server_license_id: number;
 }

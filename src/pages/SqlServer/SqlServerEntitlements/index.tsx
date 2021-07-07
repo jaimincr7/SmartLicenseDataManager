@@ -4,7 +4,6 @@ import {
   clearSqlServerEntitlements,
   sqlServerEntitlementsSelector,
 } from '../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
-// import './sqlServer.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
@@ -42,7 +41,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
   };
 
   return (
-    <div className="homePage">
+    <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">Sql Server Entitlements</h4>
         <div className="right-title">

@@ -10,10 +10,10 @@ import AddEvent from './pages/Home/AddEvent';
 import { Login } from './pages/Login';
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 import UploadExcel from './pages/Home/UploadExcel';
-import AdRoutes from './pages/Ad/ad.routes';
 import { Dashboard } from './pages/Dashboard';
 import DataInputRoutes from './pages/DataInput/DataInput.routes';
 import WindowsServerRoutes from './pages/WindowsServer/WindowsServer.routes';
+import AdRoutes from './pages/Ad/Ad.routes';
 
 function AppRoutes() {
   return (

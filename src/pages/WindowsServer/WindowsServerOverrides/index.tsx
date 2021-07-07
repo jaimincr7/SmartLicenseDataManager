@@ -41,7 +41,7 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
   };
 
   return (
-    <div className="sqlServer">
+    <div className="windowsServer">
       <div className="title-block">
         <h4 className="p-0">Windows Server Overrides</h4>
         <div className="right-title">

@@ -8,7 +8,7 @@ const AdRoutes: React.FC = () => {
   const match = useRouteMatch();
 
   return (
-    <div className="sqlServer">
+    <div className="ad">
       <Switch>
         <Route exact path={`${match.path}/ad-users/:id`} component={AdUsers} />
         <Route exact path={`${match.path}/ad-users`} component={AdUsers} />

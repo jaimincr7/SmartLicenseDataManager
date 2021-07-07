@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import { IAdDevicesProps } from './adDevices.model';
-import './adDevices.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
@@ -42,7 +41,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   };
 
   return (
-    <div className="sqlServer">
+    <div className="ad">
       <div className="title-block">
         <h4 className="p-0">Ad Devices</h4>
         <div className="right-title">

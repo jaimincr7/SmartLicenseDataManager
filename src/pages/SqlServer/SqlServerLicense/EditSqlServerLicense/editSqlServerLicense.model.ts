@@ -1,9 +1,6 @@
 import { match } from 'react-router-dom';
 
-interface IDetailParams {
-  id: string;
-}
-
+import { IDetailParams } from '../../../common/models/common';
 export interface IEditSqlServerLicenseProps {
   match?: match<IDetailParams>;
 }

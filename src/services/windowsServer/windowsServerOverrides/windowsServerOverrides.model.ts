@@ -20,7 +20,4 @@ export interface IWindowsServerOverrides {
 
 export interface ISearchWindowsServerOverrides extends ISearch {
   is_lookup?: boolean;
-  keyword?: string;
-  filter_keys?: any;
-  is_export_to_excel?: boolean;
 }

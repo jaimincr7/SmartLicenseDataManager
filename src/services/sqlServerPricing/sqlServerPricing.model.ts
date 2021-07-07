@@ -13,7 +13,4 @@ export interface ISqlServerPricing {
 
 export interface ISearchSqlServerPricing extends ISearch {
   is_lookup?: boolean;
-  keyword?: string;
-  filter_keys?: any;
-  is_export_to_excel?: boolean;
 }

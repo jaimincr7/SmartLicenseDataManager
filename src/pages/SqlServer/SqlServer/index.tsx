@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import { clearSqlServer, sqlServerSelector } from '../../../store/sqlServer/sqlServer.reducer';
 import { ISqlServerProps } from './sqlServer.model';
-import './sqlServer.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';

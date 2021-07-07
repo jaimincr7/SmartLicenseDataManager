@@ -6,6 +6,8 @@ export interface ISearch {
   order_by?: string;
   order_direction?: orderByType;
   keyword?: string;
+  filter_keys?: any;
+  is_export_to_excel?: boolean;
 }
 
 export interface IApiResponseBody<T> {
@@ -32,4 +34,14 @@ export interface ISearchResponse<T> {
 export interface IDropDownOption {
   id: number;
   name: string;
+}
+
+export type fixedColumn = 'right' | 'left';
+
+export interface IInlineSearch {
+  [key: string]: string | string[] | number[];
+}
+
+export interface IDetailParams {
+  id: string;
 }

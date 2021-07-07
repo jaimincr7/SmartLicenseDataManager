@@ -1,8 +1,5 @@
 import { match } from 'react-router-dom';
-
-interface IDetailParams {
-  id: string;
-}
+import { IDetailParams } from '../../../common/models/common';
 
 export interface IAdDevicesExclusionsProps {
   match?: match<IDetailParams>;

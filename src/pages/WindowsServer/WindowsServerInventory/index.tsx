@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import './windowsServerInventory.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
@@ -42,7 +41,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
   };
 
   return (
-    <div className="sqlServer">
+    <div className="windowsServer">
       <div className="title-block">
         <h4 className="p-0">Windows Server Inventory</h4>
         <div className="right-title">

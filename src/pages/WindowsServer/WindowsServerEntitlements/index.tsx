@@ -41,7 +41,7 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
   };
 
   return (
-    <div className="sqlServer">
+    <div className="windowsServer">
       <div className="title-block">
         <h4 className="p-0">Windows Server Entitlements</h4>
         <div className="right-title">

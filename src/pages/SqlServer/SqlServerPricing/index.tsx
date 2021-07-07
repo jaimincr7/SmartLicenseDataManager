@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
-import './sqlServerPricing.style.scss';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
