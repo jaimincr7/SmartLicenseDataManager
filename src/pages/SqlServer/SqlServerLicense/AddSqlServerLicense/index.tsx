@@ -47,7 +47,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Sql Server License' : 'Edit Sql Server License';
+    return isNew ? 'Add License Scenario' : 'Edit License Scenario';
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

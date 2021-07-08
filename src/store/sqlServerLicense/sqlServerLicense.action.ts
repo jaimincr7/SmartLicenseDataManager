@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
+  IReRunAllScenarios,
   ISearchSqlServerLicense,
   ISqlServerLicense,
 } from '../../services/sqlServerLicense/sqlServerLicense.model';
@@ -43,6 +44,16 @@ export const deleteSqlServerLicense = createAsyncThunk(
   'deleteSqlServerLicense',
   async (id: number) => {
     const response = await sqlServerLicenseService.deleteSqlServerLicense(id).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
+
+export const reRunAllScenarios = createAsyncThunk(
+  'reRunAllScenarios',
+  async (data: IReRunAllScenarios) => {
+    const response = await sqlServerLicenseService.reRunAllScenarios(data).then((res) => {
       return res.body;
     });
     return response;

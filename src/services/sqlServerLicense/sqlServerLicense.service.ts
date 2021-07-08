@@ -1,6 +1,10 @@
 import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import { ISearchSqlServerLicense, ISqlServerLicense } from './sqlServerLicense.model';
+import {
+  IReRunAllScenarios,
+  ISearchSqlServerLicense,
+  ISqlServerLicense,
+} from './sqlServerLicense.model';
 
 class SqlServerLicenseService {
   ENDPOINT = '/sql-server-license';
@@ -52,6 +56,14 @@ class SqlServerLicenseService {
       responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
+    });
+  }
+
+  public async reRunAllScenarios(data: IReRunAllScenarios): Promise<any> {
+    const dataInput = { ...data, debug: false };
+    const url = `${this.ENDPOINT}/run-all-license-scenario`;
+    return request({ url, method: 'POST', data: dataInput }).then((res) => {
+      return res.data;
     });
   }
 }

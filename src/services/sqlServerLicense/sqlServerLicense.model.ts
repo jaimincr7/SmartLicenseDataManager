@@ -22,3 +22,9 @@ export interface ISqlServerLicense {
 export interface ISearchSqlServerLicense extends ISearch {
   is_lookup?: boolean;
 }
+
+export interface IReRunAllScenarios {
+  company_id?: number;
+  bu_id?: number;
+  debug?: boolean;
+}

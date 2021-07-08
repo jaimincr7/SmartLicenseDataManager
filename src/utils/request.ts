@@ -42,7 +42,10 @@ request.interceptors.response.use(
   },
   (error) => {
     // Log somewhere
-    toast.error(error.response.data.body.errors.join(''));
+    const e = Array.isArray(error.response.data.body.errors)
+      ? error.response.data.body.errors.join(' ')
+      : error.response.data.body.errors;
+    toast.error(e);
     switch (error.response.status) {
       // Authorization Failed Response can add other status codes here to manage error Logging
       case 401:

@@ -6,6 +6,7 @@ import { RootState } from '../app.model';
 import {
   deleteSqlServerLicense,
   getSqlServerLicenseById,
+  reRunAllScenarios,
   saveSqlServerLicense,
   searchSqlServerLicense,
 } from './sqlServerLicense.action';
@@ -35,6 +36,11 @@ export const initialState: ISqlServerLicenseState = {
     hasErrors: false,
     messages: [],
   },
+  reRunAllScenarios: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const sqlServerLicenseSlice = createSlice({
@@ -50,6 +56,9 @@ export const sqlServerLicenseSlice = createSlice({
     },
     clearSqlServerLicenseGetById: (state) => {
       state.getById.data = null;
+    },
+    clearSqlServerLicenseReRunAllScenariosMessages: (state) => {
+      state.reRunAllScenarios.messages = [];
     },
   },
   extraReducers: {
@@ -133,6 +142,28 @@ export const sqlServerLicenseSlice = createSlice({
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
     },
+
+    // Re-run all scenario
+    [reRunAllScenarios.pending.type]: (state) => {
+      state.reRunAllScenarios.loading = true;
+      state.reRunAllScenarios.messages = [];
+    },
+    [reRunAllScenarios.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.reRunAllScenarios.loading = false;
+      state.reRunAllScenarios.hasErrors = false;
+      state.reRunAllScenarios.messages = action.payload.messages;
+    },
+    [reRunAllScenarios.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.reRunAllScenarios.loading = false;
+      state.reRunAllScenarios.hasErrors = true;
+      state.reRunAllScenarios.messages = action.payload.errors;
+    },
   },
 });
 
@@ -144,6 +175,7 @@ export const {
   clearSqlServerLicense,
   clearSqlServerLicenseMessages,
   clearSqlServerLicenseGetById,
+  clearSqlServerLicenseReRunAllScenariosMessages,
 } = sqlServerLicenseSlice.actions;
 
 // The reducer

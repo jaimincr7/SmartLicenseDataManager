@@ -195,6 +195,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Tenant Name',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('tenant_id', sqlServerLicense.search.lookups?.tenants),
@@ -207,6 +208,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Company Name',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('company_id', sqlServerLicense.search.lookups?.companies),
@@ -219,6 +221,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Bu Name',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('bu_id', sqlServerLicense.search.lookups?.bus),
@@ -231,6 +234,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Date Added',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDate('date_added'),
@@ -244,6 +248,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Agreement Type',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown(
@@ -259,6 +264,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Opt-Default to Enterprise on Hosts',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown(
@@ -275,6 +281,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Opt-Cluster Logic',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown(
@@ -291,6 +298,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Opt-Entitlements',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown(
@@ -307,6 +315,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Opt-Exclude Non-Prod',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown(
@@ -323,6 +332,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     {
       title: 'Notes',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('notes'),
@@ -374,8 +384,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                   history.push(`/sql-server/license/edit/${data.id}`);
                 }}
               >
-                View
-                {/* <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" /> */}
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
               </a>
               <a
                 className="action-btn"
@@ -446,14 +455,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Show/Hide Columns
             </Button>
           </Popover>
-          <Button
-            type="primary"
-            onClick={() => {
-              setSelectedId(0);
-            }}
-          >
-            Add Sql Server License
-          </Button>
         </div>
       </div>
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>

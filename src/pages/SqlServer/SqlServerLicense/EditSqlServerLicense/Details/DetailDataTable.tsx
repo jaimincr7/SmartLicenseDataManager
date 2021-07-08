@@ -110,6 +110,10 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     form.resetFields();
   }, [inlineSearch]);
 
+  React.useEffect(() => {
+    fetchSqlServerLicense();
+  }, [licenseId]);
+
   const FilterBySwap = (dataIndex: string) => {
     return FilterWithSwapOption(dataIndex, licenseDetail.search.tableName, form, licenseId);
   };
@@ -138,6 +142,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Sql Server Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('sql_server_id'),
@@ -150,6 +155,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Date Added',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDate('date_added'),
@@ -163,6 +169,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Source',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('source'),
@@ -175,6 +182,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Data Center',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('data_center'),
@@ -187,6 +195,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Cluster',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('cluster'),
@@ -199,6 +208,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'HA Enabled',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('ha_enabled', licenseDetail.search.lookups?.booleanLookup),
@@ -212,6 +222,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Host',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('host'),
@@ -224,6 +235,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Procs',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('procs'),
@@ -236,6 +248,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Cores',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('cores'),
@@ -248,6 +261,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Device Name',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('device_name'),
@@ -260,6 +274,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Device Type',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('device_type'),
@@ -272,42 +287,28 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Tenant Id',
       sorter: true,
-      children: [
-        {
-          title: FilterBySwap('tenant_id'),
-          dataIndex: 'tenant_id',
-          key: 'tenant_id',
-          ellipsis: true,
-        },
-      ],
+      dataIndex: 'tenant_id',
+      key: 'tenant_id',
+      ellipsis: true,
     },
     {
       title: 'Company Id',
       sorter: true,
-      children: [
-        {
-          title: FilterBySwap('company_id'),
-          dataIndex: 'company_id',
-          key: 'company_id',
-          ellipsis: true,
-        },
-      ],
+      dataIndex: 'company_id',
+      key: 'company_id',
+      ellipsis: true,
     },
     {
       title: 'BU Id',
       sorter: true,
-      children: [
-        {
-          title: FilterBySwap('bu_id'),
-          dataIndex: 'bu_id',
-          key: 'bu_id',
-          ellipsis: true,
-        },
-      ],
+      dataIndex: 'bu_id',
+      key: 'bu_id',
+      ellipsis: true,
     },
     {
       title: 'SQL Cluster',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('sql_cluster'),
@@ -320,6 +321,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Product Family',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('product_family'),
@@ -332,6 +334,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Version',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('version'),
@@ -344,6 +347,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Edition',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('edition'),
@@ -356,6 +360,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Device State',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('device_state'),
@@ -368,6 +373,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Software State',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('software_state'),
@@ -380,6 +386,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'OS Type',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('os_type'),
@@ -392,6 +399,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Raw Software Title',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('raw_software_title'),
@@ -404,6 +412,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'FQDN',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('fqdn'),
@@ -416,6 +425,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Service',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('service'),
@@ -428,6 +438,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Cost Code',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('cost_code'),
@@ -440,6 +451,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Line of Business',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('line_of_business'),
@@ -452,6 +464,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Market',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('market'),
@@ -464,6 +477,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Application',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('application'),
@@ -476,6 +490,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Serial Number',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('serial_number'),
@@ -488,6 +503,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'SQL Cluster Node Type',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('sql_cluster_node_type'),
@@ -500,6 +516,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'vCPU',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('vCPU'),
@@ -512,6 +529,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Azure Hosted',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('azure_hosted', licenseDetail.search.lookups?.booleanLookup),
@@ -525,6 +543,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Name',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('name'),
@@ -537,6 +556,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Opt-Agreement Type',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('opt_agreement_type'),
@@ -549,6 +569,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Opt-Default to Enterprise on Hosts',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown(
@@ -565,6 +586,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Opt-Cluster Logic',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('opt_cluster_logic', licenseDetail.search.lookups?.booleanLookup),
@@ -578,6 +600,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Opt-Entitlements',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('opt_entitlements', licenseDetail.search.lookups?.booleanLookup),
@@ -591,6 +614,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Opt-Exclude Non-Prod',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown(
@@ -607,6 +631,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Notes',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('notes'),
@@ -619,6 +644,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Orphaned VM',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('orphaned_vm', licenseDetail.search.lookups?.booleanLookup),
@@ -632,6 +658,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Licensable',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterByDropdown('licensable', licenseDetail.search.lookups?.booleanLookup),
@@ -645,6 +672,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Service Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('service_id'),
@@ -657,6 +685,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Version Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('version_id'),
@@ -669,6 +698,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Edition Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('edition_id'),
@@ -681,6 +711,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Host Max Version Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('host_max_version_id'),
@@ -693,6 +724,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Host Max Edition Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('host_max_edition_id'),
@@ -705,6 +737,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Cluster Max Version Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('cluster_max_version_id'),
@@ -717,6 +750,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Cluster Max Edition Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('cluster_max_edition_id'),
@@ -729,6 +763,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Cluster Seq Num',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('cluster_seq_num'),
@@ -741,6 +776,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Host Seq Num',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('host_seq_num'),
@@ -753,6 +789,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Device Seq Num',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('device_seq_num'),
@@ -765,6 +802,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Effective Processors',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('effective_processors'),
@@ -777,6 +815,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Effective Cores',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('effective_cores'),
@@ -789,6 +828,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Effective vCPU',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('effective_vcpu'),
@@ -801,6 +841,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Effective vCPU for Proc Licenses',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('effective_vcpu_for_proc_licenses'),
@@ -813,6 +854,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Core Density',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('core_density'),
@@ -825,6 +867,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Excluded',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('excluded'),
@@ -837,6 +880,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Licensable Cluster Seq Num',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('licensable_cluster_seq_num'),
@@ -849,6 +893,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Licensable Host Seq Num',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('licensable_host_seq_num'),
@@ -861,6 +906,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Licensable Device Seq Num',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('licensable_device_seq_num'),
@@ -873,6 +919,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Licensed At',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('licensed_at'),
@@ -885,6 +932,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'License Type',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('license_type'),
@@ -897,6 +945,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'License Count',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('license_count'),
@@ -909,6 +958,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'License Cost',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('license_cost'),
@@ -921,6 +971,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'S - License Type - Device',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('s_license_type_device'),
@@ -933,6 +984,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'S - License Count - Device',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('s_license_count_device'),
@@ -945,6 +997,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'S - License Cost - Device',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('s_license_cost_device'),
@@ -957,6 +1010,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'S - License Cost - Host - Device Licensed',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('s_license_cost_host_device_licensed'),
@@ -969,6 +1023,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'S - License Type - Host',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('s_license_type_host'),
@@ -981,6 +1036,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'S - License Count - Host',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('s_license_count_host'),
@@ -993,6 +1049,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'S - License Cost - Host',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('s_license_cost_host'),
@@ -1005,6 +1062,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Comment',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('comment'),
@@ -1017,6 +1075,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'License Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('license_id'),
@@ -1029,6 +1088,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'License Qty',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('license_qty'),
@@ -1041,6 +1101,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Assigned License Id',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('assigned_license_id'),
@@ -1053,6 +1114,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Assigned License Qty',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('assigned_license_qty'),
@@ -1065,6 +1127,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'Requires Server Mobility',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('requires_server_mobility'),
@@ -1077,6 +1140,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     {
       title: 'License Requires SA',
       sorter: true,
+      ellipsis: true,
       children: [
         {
           title: FilterBySwap('license_requires_sa'),

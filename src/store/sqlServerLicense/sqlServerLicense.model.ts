@@ -25,4 +25,9 @@ export interface ISqlServerLicenseState {
     hasErrors: boolean;
     messages: string[];
   };
+  reRunAllScenarios: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

@@ -25,7 +25,7 @@ const EditSqlServerLicense: React.FC<IEditSqlServerLicenseProps> = (props) => {
       ? sqlServerLicense.getById.data.notes
       : '';
   const title = useMemo(() => {
-    return notes ? `Edit Sql Server License(${notes})` : 'Edit Sql Server License';
+    return notes ? `Edit Sql Server License (${notes})` : 'Edit Sql Server License';
   }, [notes]);
 
   useEffect(() => {

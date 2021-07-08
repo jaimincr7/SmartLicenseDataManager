@@ -11,6 +11,7 @@ import {
   sqlServerLicenseSelector,
 } from '../../../store/sqlServerLicense/sqlServerLicense.reducer';
 import AddSqlServerLicenseModal from './AddSqlServerLicense';
+import ReRunAllScenariosModal from './ReRunAllScenariosModal';
 
 const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
   const sqlServerLicense = useAppSelector(sqlServerLicenseSelector);
@@ -21,6 +22,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [runAllScenariosModalVisible, setRunAllScenariosModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -70,6 +72,41 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
                 Update from Excel
               </Button>
             </Col>
+            <Col>
+              <Button
+                onClick={() => {
+                  setId(0);
+                  setAddModalVisible(true);
+                }}
+                icon={
+                  <em className="anticon">
+                    <img
+                      src={`${process.env.PUBLIC_URL}/assets/images/ic-run-license.svg`}
+                      alt=""
+                    />
+                  </em>
+                }
+              >
+                Run License Scenario
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                onClick={() => {
+                  setRunAllScenariosModalVisible(true);
+                }}
+                icon={
+                  <em className="anticon">
+                    <img
+                      src={`${process.env.PUBLIC_URL}/assets/images/ic-re-run-license.svg`}
+                      alt=""
+                    />
+                  </em>
+                }
+              >
+                Re-Run All License Scenarios
+              </Button>
+            </Col>
           </Row>
         </div>
         <DataTable
@@ -89,6 +126,12 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {runAllScenariosModalVisible && (
+        <ReRunAllScenariosModal
+          showModal={runAllScenariosModalVisible}
+          handleModalClose={() => setRunAllScenariosModalVisible(false)}
         />
       )}
     </div>
