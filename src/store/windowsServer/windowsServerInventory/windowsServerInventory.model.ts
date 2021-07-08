@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { IWindowsServerInventory } from '../../../services/windowsServer/windowsServerInventory/windowsServerInventory.model';
 
 export interface IWindowsServerInventoryState {
@@ -10,6 +10,7 @@ export interface IWindowsServerInventoryState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

@@ -1,4 +1,4 @@
-import { IApiResponse } from '../../common/models/common';
+import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
 import { IBulkInsertDataset, IDeleteDataset, ILookup } from './common.model';
 
@@ -98,6 +98,17 @@ class CommonService {
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
     const inputValues = { ...data, debug: false };
     const url = `/app/delete-dataset`;
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async saveTableColumnSelection(data: ITableColumnSelection): Promise<any> {
+    const inputValues = {
+      ...data,
+      columns: JSON.stringify(data.columns),
+    };
+    const url = `/table-column-selection`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });

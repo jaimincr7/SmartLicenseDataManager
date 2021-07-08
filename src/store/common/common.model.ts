@@ -41,4 +41,9 @@ export interface ICommonState {
     hasErrors: boolean;
     messages: string[];
   };
+  saveTableColumnSelection: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

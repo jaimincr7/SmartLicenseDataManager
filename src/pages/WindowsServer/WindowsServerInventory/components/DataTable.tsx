@@ -18,6 +18,7 @@ import { commonSelector } from '../../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import {
   clearWindowsServerInventoryMessages,
+  setTableColumnSelection,
   windowsServerInventorySelector,
 } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.reducer';
 import {
@@ -29,6 +30,7 @@ import {
   searchWindowsServerInventory,
 } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.action';
 import windowsServerInventoryService from '../../../../services/windowsServer/windowsServerInventory/windowsServerInventory.service';
+import { saveTableColumnSelection } from '../../../../store/common/common.action';
 
 let pageLoaded = false;
 
@@ -48,7 +50,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const history = useHistory();
   const [form] = Form.useForm();
 
-  const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -76,6 +77,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
     const searchData: ISearchWindowsServerInventory = {
       is_lookup: !pageLoaded,
+      is_column_selection: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
@@ -657,17 +659,31 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   // Start: Hide-show columns
   const hideShowColumn = (e, title) => {
     if (e.target.checked) {
-      setTableColumn({ ...tableColumn, [title]: true });
+      dispatch(
+        setTableColumnSelection({ ...inventory.tableColumnSelection.columns, [title]: true })
+      );
     } else {
-      setTableColumn({ ...tableColumn, [title]: false });
+      dispatch(
+        setTableColumnSelection({ ...inventory.tableColumnSelection.columns, [title]: false })
+      );
     }
   };
   const dropdownMenu = (
     <ul className="checkbox-list">
+      <li>
+        <Button
+          loading={commonFilters.saveTableColumnSelection.loading}
+          onClick={() => {
+            dispatch(saveTableColumnSelection(inventory.tableColumnSelection));
+          }}
+        >
+          Save
+        </Button>
+      </li>
       {columns.map((col) => (
         <li key={col.title}>
           <Checkbox
-            checked={tableColumn[col.title] !== false}
+            checked={inventory.tableColumnSelection.columns[col.title] !== false}
             onClick={(e) => hideShowColumn(e, col.title)}
           >
             {col.title}
@@ -678,7 +694,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   );
   const getColumns = () => {
     return columns.filter((col) => {
-      return tableColumn[col.title] !== false;
+      return inventory.tableColumnSelection.columns[col.title] !== false;
     });
   };
   // End: Hide-show columns

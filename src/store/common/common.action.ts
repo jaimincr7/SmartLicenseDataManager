@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ITableColumnSelection } from '../../common/models/common';
 import { IDeleteDataset } from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
@@ -62,3 +63,13 @@ export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDel
   });
   return response;
 });
+
+export const saveTableColumnSelection = createAsyncThunk(
+  'saveTableColumnSelection',
+  async (data: ITableColumnSelection) => {
+    const response = await commonService.saveTableColumnSelection(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);

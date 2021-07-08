@@ -11,6 +11,7 @@ import {
   getCurrencyLookup,
   deleteDataset,
   getWindowsServerLicenseLookup,
+  saveTableColumnSelection,
 } from './common.action';
 import { ICommonState, IGlobalSearch } from './common.model';
 
@@ -49,6 +50,11 @@ export const initialState: ICommonState = {
     hasErrors: false,
     messages: [],
   },
+  saveTableColumnSelection: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const commonSlice = createSlice({
@@ -69,6 +75,9 @@ export const commonSlice = createSlice({
     },
     clearCommon: () => {
       return initialState;
+    },
+    clearSaveTableColumnSelection: (state) => {
+      state.saveTableColumnSelection.messages = [];
     },
   },
   extraReducers: {
@@ -150,6 +159,28 @@ export const commonSlice = createSlice({
       state.deleteDataset.hasErrors = true;
       state.deleteDataset.messages = action.payload.errors;
     },
+
+    // Save Table Column Selection
+    [saveTableColumnSelection.pending.type]: (state) => {
+      state.saveTableColumnSelection.loading = true;
+      state.saveTableColumnSelection.messages = [];
+    },
+    [saveTableColumnSelection.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveTableColumnSelection.loading = false;
+      state.saveTableColumnSelection.hasErrors = false;
+      state.saveTableColumnSelection.messages = action.payload.messages;
+    },
+    [saveTableColumnSelection.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveTableColumnSelection.loading = false;
+      state.saveTableColumnSelection.hasErrors = true;
+      state.saveTableColumnSelection.messages = action.payload.errors;
+    },
   },
 });
 
@@ -163,6 +194,7 @@ export const {
   clearCompanyLookUp,
   setGlobalSearch,
   clearDeleteDatasetMessages,
+  clearSaveTableColumnSelection,
 } = commonSlice.actions;
 
 // The reducer

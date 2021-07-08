@@ -8,6 +8,7 @@ export interface ISearch {
   keyword?: string;
   filter_keys?: any;
   is_export_to_excel?: boolean;
+  is_column_selection?: boolean;
 }
 
 export interface IApiResponseBody<T> {
@@ -21,10 +22,17 @@ export interface IApiResponse<T> {
   body: IApiResponseBody<T>;
 }
 
+export interface ITableColumnSelection {
+  id?: number;
+  table_name?: string;
+  columns?: { [key: string]: boolean };
+}
+
 export interface ISearchResult<T> {
   records: T[];
   total_count: number;
   table_name?: string;
+  column_selection?: ITableColumnSelection;
 }
 
 export interface ISearchResponse<T> {
