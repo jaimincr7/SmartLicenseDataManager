@@ -239,7 +239,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU">
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
@@ -262,7 +262,12 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Agreement Type</label>
-                  <Form.Item name="opt_agreement_type" className="m-0" label="Agreement Type">
+                  <Form.Item
+                    name="opt_agreement_type"
+                    className="m-0"
+                    label="Agreement Type"
+                    rules={[{ required: true }]}
+                  >
                     <Select
                       suffixIcon={
                         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
