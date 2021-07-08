@@ -116,6 +116,11 @@ function Sidebar() {
                 Pricing
               </Link>
             </Menu.Item>
+            <Menu.Item key="/windows-server/exclusions">
+              <Link to="/windows-server/exclusions" title="Exclusions">
+                Exclusions
+              </Link>
+            </Menu.Item>
           </SubMenu>
           <SubMenu
             key="data-input"

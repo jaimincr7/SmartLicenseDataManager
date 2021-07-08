@@ -1,4 +1,4 @@
-import { Form, Col, Input, Row, Select, Spin, Switch } from 'antd';
+import { Form, Col, Input, Row, Select, Spin, Switch, Button } from 'antd';
 import React, { useEffect } from 'react';
 import { ISqlServerLicense } from '../../../../../services/sqlServerLicense/sqlServerLicense.model';
 import { useAppDispatch, useAppSelector } from '../../../../../store/app.hooks';
@@ -81,6 +81,19 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
       <div className="sqlServer">
         <div className="title-block">
           <h4 className="p-0">Scenarios</h4>
+          <div className="btns-block">
+            <Button>Update</Button>
+            <Button>Save</Button>
+            <Button
+              icon={
+                <em className="anticon">
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                </em>
+              }
+            >
+              Delete
+            </Button>
+          </div>
         </div>
         <div className="main-card">
           {sqlServerLicense.getById.loading ? (

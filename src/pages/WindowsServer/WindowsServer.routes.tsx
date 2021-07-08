@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import WindowsServerEntitlements from './WindowsServerEntitlements';
+import WindowsServerExclusions from './WindowsServerExclusions';
 import WindowsServerInventory from './WindowsServerInventory';
 import WindowsServerOverrides from './WindowsServerOverrides';
 import WindowsServerPricing from './WindowsServerPricing';
@@ -11,6 +12,10 @@ const WindowsServerRoutes: React.FC = () => {
   return (
     <div className="windowsServer">
       <Switch>
+        {/* Exclusions */}
+        <Route exact path={`${match.path}/exclusions`} component={WindowsServerExclusions} />
+        <Route exact path={`${match.path}/exclusions/:id`} component={WindowsServerExclusions} />
+
         {/* Pricing */}
         <Route exact path={`${match.path}/pricing`} component={WindowsServerPricing} />
         <Route exact path={`${match.path}/pricing/:id`} component={WindowsServerPricing} />

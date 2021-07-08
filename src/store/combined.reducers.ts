@@ -14,6 +14,7 @@ import sqlServerOverridesReducer from './sqlServerOverrides/sqlServerOverrides.r
 import sqlServerPricingReducer from './sqlServerPricing/sqlServerPricing.reducer';
 import userReducer from './user/user.reducer';
 import windowsServerEntitlementsReducer from './windowsServer/windowsServerEntitlements/windowsServerEntitlements.reducer';
+import windowsServerExclusionsReducer from './windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
 import windowsServerInventoryReducer from './windowsServer/windowsServerInventory/windowsServerInventory.reducer';
 import windowsServerOverridesReducer from './windowsServer/windowsServerOverrides/windowsServerOverrides.reducer';
 import windowsServerPricingReducer from './windowsServer/windowsServerPricing/windowsServerPricing.reducer';
@@ -37,4 +38,5 @@ export const rootReducer = combineReducers({
   sqlServerLicenseDetail: sqlServerLicenseDetailReducer,
   windowsServerPricing: windowsServerPricingReducer,
   sqlServerExclusions: sqlServerExclusionsReducer,
+  windowsServerExclusions: windowsServerExclusionsReducer,
 });

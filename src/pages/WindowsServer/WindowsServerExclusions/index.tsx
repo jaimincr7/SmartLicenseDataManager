@@ -1,16 +1,19 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
-import { ISqlServerLicenseProps } from './sqlServerLicense.model';
-import { clearSqlServerLicense } from '../../../store/sqlServerLicense/sqlServerLicense.reducer';
-import AddSqlServerLicenseModal from './AddSqlServerLicense';
-import ReRunAllScenariosModal from './ReRunAllScenariosModal';
+import { IWindowsServerExclusionsProps } from './windowsServerExclusions.model';
+import AddWindowsServerExclusionsModal from './AddWindowsServerExclusionModal';
+import {
+  clearWindowsServerExclusions,
+  windowsServerExclusionsSelector,
+} from '../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
 
-const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
+const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props) => {
+  const windowsServerExclusions = useAppSelector(windowsServerExclusionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -18,7 +21,6 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-  const [runAllScenariosModalVisible, setRunAllScenariosModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -31,7 +33,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearSqlServerLicense());
+      dispatch(clearWindowsServerExclusions());
     };
   }, []);
 
@@ -40,9 +42,9 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
   };
 
   return (
-    <div className="sqlServer">
+    <div className="ad">
       <div className="title-block">
-        <h4 className="p-0">Sql Server License</h4>
+        <h4 className="p-0">Windows Server Exclusions</h4>
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -52,37 +54,22 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
           <Row gutter={[10, 4]}>
             <Col>
               <Button
-                onClick={() => {
-                  setId(0);
-                  setAddModalVisible(true);
-                }}
+                className="btn-icon"
+                onClick={() =>
+                  history.push(
+                    `/data-input/bulk-import/${windowsServerExclusions.search.tableName}`
+                  )
+                }
                 icon={
                   <em className="anticon">
                     <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-run-license.svg`}
+                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
                       alt=""
                     />
                   </em>
                 }
               >
-                Run License Scenario
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                onClick={() => {
-                  setRunAllScenariosModalVisible(true);
-                }}
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-re-run-license.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Re-Run All License Scenarios
+                Update from Excel
               </Button>
             </Col>
           </Row>
@@ -96,24 +83,18 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddSqlServerLicenseModal
+        <AddWindowsServerExclusionsModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/sql-server/license');
+            history.push('/windows-server/exclusions');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
-        />
-      )}
-      {runAllScenariosModalVisible && (
-        <ReRunAllScenariosModal
-          showModal={runAllScenariosModalVisible}
-          handleModalClose={() => setRunAllScenariosModalVisible(false)}
         />
       )}
     </div>
   );
 };
 
-export default SqlServerLicense;
+export default WindowsServerExclusions;
