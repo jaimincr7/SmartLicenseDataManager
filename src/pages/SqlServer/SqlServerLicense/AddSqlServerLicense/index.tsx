@@ -62,7 +62,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
     opt_agreement_type: null,
     opt_exclude_non_prod: false,
     opt_cluster_logic: false,
-    apt_default_to_enterprise_on_hosts: false,
+    opt_default_to_enterprise_on_hosts: false,
     notes: '',
     opt_entitlements: false,
   };
@@ -113,7 +113,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         opt_agreement_type: _.isNull(data.opt_agreement_type) ? null : data.opt_agreement_type,
         notes: data.notes,
-        apt_default_to_enterprise_on_hosts: data.apt_default_to_enterprise_on_hosts,
+        opt_default_to_enterprise_on_hosts: data.opt_default_to_enterprise_on_hosts,
         opt_cluster_logic: data.opt_cluster_logic,
         opt_exclude_non_prod: data.opt_exclude_non_prod,
         opt_entitlements: data.opt_entitlements,

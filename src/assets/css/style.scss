@@ -484,6 +484,10 @@ label {
   align-items: flex-start !important;
 }
 
+.form-label-hide .ant-form-item-label > label {
+  display: none;
+}
+
 // ant-design
 .btn-icon {
   display: inline-flex;

@@ -14,7 +14,7 @@ export interface ISqlServerLicense {
   agreement_type?: string;
   opt_exclude_non_prod?: boolean;
   opt_cluster_logic?: boolean;
-  apt_default_to_enterprise_on_hosts?: boolean;
+  opt_default_to_enterprise_on_hosts?: boolean;
   notes?: string;
   opt_entitlements?: boolean;
 }

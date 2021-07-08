@@ -1,4 +1,4 @@
-import { Form, Col, Input, Row, Select, Spin, Switch, Button } from 'antd';
+import { Form, Col, Input, Row, Select, Spin, Switch } from 'antd';
 import React, { useEffect } from 'react';
 import { ISqlServerLicense } from '../../../../../services/sqlServerLicense/sqlServerLicense.model';
 import { useAppDispatch, useAppSelector } from '../../../../../store/app.hooks';
@@ -47,7 +47,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         opt_agreement_type: _.isNull(data.opt_agreement_type) ? null : data.opt_agreement_type,
         notes: data.notes,
-        apt_default_to_enterprise_on_hosts: data.apt_default_to_enterprise_on_hosts,
+        opt_default_to_enterprise_on_hosts: data.opt_default_to_enterprise_on_hosts,
         opt_cluster_logic: data.opt_cluster_logic,
         opt_exclude_non_prod: data.opt_exclude_non_prod,
         opt_entitlements: data.opt_entitlements,
@@ -81,126 +81,113 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
       <div className="sqlServer">
         <div className="title-block">
           <h4 className="p-0">Scenarios</h4>
-          <div className="btns-block">
-            <Button>Update</Button>
-            <Button>Save</Button>
-            <Button
-              icon={
-                <em className="anticon">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-                </em>
-              }
-            >
-              Delete
-            </Button>
+        </div>
+        {/* <div className="main-card"> */}
+        {sqlServerLicense.getById.loading ? (
+          <div className="spin-loader">
+            <Spin spinning={sqlServerLicense.getById.loading} />
           </div>
-        </div>
-        <div className="main-card">
-          {sqlServerLicense.getById.loading ? (
-            <div className="spin-loader">
-              <Spin spinning={sqlServerLicense.getById.loading} />
-            </div>
-          ) : (
-            <Form form={form} name="addSqlServerLicense" initialValues={values}>
-              <Row gutter={[30, 15]} className="form-label-hide">
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Company</label>
-                    <Form.Item name="company_id" className="m-0" label="Company">
-                      <Select disabled suffixIcon={false}>
-                        {commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">BU</label>
-                    <Form.Item name="bu_id" className="m-0" label="BU">
-                      <Select disabled suffixIcon={false}>
-                        {commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Date Added</label>
-                    <Form.Item name="date_added" className="m-0">
-                      <Input disabled className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Agreement Type</label>
-                    <Form.Item name="opt_agreement_type" className="m-0" label="Agreement Type">
-                      <Select disabled suffixIcon={false}>
-                        {commonLookups.agreementTypesLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group form-inline-pt m-0">
-                    <Form.Item name="opt_exclude_non_prod" className="m-0" valuePropName="checked">
-                      <Switch disabled className="form-control" />
-                    </Form.Item>
-                    <label className="label">Opt Exclude Non-Prod</label>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group form-inline-pt m-0">
-                    <Form.Item name="opt_cluster_logic" className="m-0" valuePropName="checked">
-                      <Switch disabled className="form-control" />
-                    </Form.Item>
-                    <label className="label">Opt Cluster Logic</label>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group form-inline-pt m-0">
-                    <Form.Item
-                      name="apt_default_to_enterprise_on_hosts"
-                      className="m-0"
-                      valuePropName="checked"
-                    >
-                      <Switch disabled className="form-control" />
-                    </Form.Item>
-                    <label className="label">Opt Default to Enterprise on Hosts</label>
-                  </div>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <div className="form-group form-inline-pt m-0">
-                    <Form.Item name="opt_entitlements" className="m-0" valuePropName="checked">
-                      <Switch disabled className="form-control" />
-                    </Form.Item>
-                    <label className="label">Opt Entitlements</label>
-                  </div>
-                </Col>
-                <Col xs={24}>
-                  <div className="form-group m-0">
-                    <label className="label">Notes</label>
-                    <Form.Item name="notes" label="Notes" className="m-0">
-                      <Input.TextArea disabled className="form-control" />
-                    </Form.Item>
-                  </div>
-                </Col>
-              </Row>
-            </Form>
-          )}
-        </div>
+        ) : (
+          <Form form={form} name="addSqlServerLicense" initialValues={values}>
+            <Row gutter={[30, 15]} className="form-label-hide">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Company</label>
+                  <Form.Item name="company_id" className="m-0" label="Company">
+                    <Select disabled suffixIcon={false}>
+                      {commonLookups.companyLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">BU</label>
+                  <Form.Item name="bu_id" className="m-0" label="BU">
+                    <Select disabled suffixIcon={false}>
+                      {commonLookups.buLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Date Added</label>
+                  <Form.Item name="date_added" className="m-0">
+                    <Input disabled className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Agreement Type</label>
+                  <Form.Item name="opt_agreement_type" className="m-0" label="Agreement Type">
+                    <Select disabled suffixIcon={false}>
+                      {commonLookups.agreementTypesLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="opt_exclude_non_prod" className="m-0" valuePropName="checked">
+                    <Switch disabled className="form-control" />
+                  </Form.Item>
+                  <label className="label">Opt Exclude Non-Prod</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="opt_cluster_logic" className="m-0" valuePropName="checked">
+                    <Switch disabled className="form-control" />
+                  </Form.Item>
+                  <label className="label">Opt Cluster Logic</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item
+                    name="apt_default_to_enterprise_on_hosts"
+                    className="m-0"
+                    valuePropName="checked"
+                  >
+                    <Switch disabled className="form-control" />
+                  </Form.Item>
+                  <label className="label">Opt Default to Enterprise on Hosts</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="opt_entitlements" className="m-0" valuePropName="checked">
+                    <Switch disabled className="form-control" />
+                  </Form.Item>
+                  <label className="label">Opt Entitlements</label>
+                </div>
+              </Col>
+              <Col xs={24}>
+                <div className="form-group m-0">
+                  <label className="label">Notes</label>
+                  <Form.Item name="notes" label="Notes" className="m-0">
+                    <Input.TextArea disabled className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        )}
+        {/* </div> */}
       </div>
     </>
   );

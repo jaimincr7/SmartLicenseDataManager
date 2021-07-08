@@ -268,11 +268,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       children: [
         {
           title: FilterByDropdown(
-            'apt_default_to_enterprise_on_hosts',
+            'opt_default_to_enterprise_on_hosts',
             sqlServerLicense.search.lookups?.booleanLookup
           ),
-          dataIndex: 'apt_default_to_enterprise_on_hosts',
-          key: 'apt_default_to_enterprise_on_hosts',
+          dataIndex: 'opt_default_to_enterprise_on_hosts',
+          key: 'opt_default_to_enterprise_on_hosts',
           ellipsis: true,
           render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
         },
@@ -350,9 +350,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
