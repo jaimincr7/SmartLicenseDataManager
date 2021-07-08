@@ -29,7 +29,6 @@ import {
   clearWindowsServerPricingGetById,
 } from '../../../../store/windowsServer/windowsServerPricing/windowsServerPricing.reducer';
 import { IAddWindowsServerPricingProps } from './addWindowsServerPricing.model';
-import './addWindowsServerPricing.style.scss';
 
 const { Option } = Select;
 

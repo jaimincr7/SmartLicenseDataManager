@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../common/models/common';
-import { ISqlServer } from '../../services/sqlServer/sqlServer.model';
+import { ISqlServerInventory } from '../../services/sqlServerInventory/sqlServerInventory.model';
 import { RootState } from '../app.model';
 import {
-  deleteSqlServer,
-  getSqlServerById,
+  deleteSqlServerInventory,
+  getSqlServerInventoryById,
   processData,
-  saveSqlServer,
-  searchSqlServer,
-} from './sqlServer.action';
-import { ISqlServerState } from './sqlServer.model';
+  saveSqlServerInventory,
+  searchSqlServerInventory,
+} from './sqlServerInventory.action';
+import { ISqlServerInventoryState } from './sqlServerInventory.model';
 
-export const initialState: ISqlServerState = {
+export const initialState: ISqlServerInventoryState = {
   search: {
     loading: false,
     hasErrors: false,
@@ -42,30 +42,30 @@ export const initialState: ISqlServerState = {
   },
 };
 
-export const sqlServerSlice = createSlice({
-  name: 'sqlServer',
+export const sqlServerInventorySlice = createSlice({
+  name: 'sqlServerInventory',
   initialState,
   reducers: {
-    clearSqlServer: () => {
+    clearSqlServerInventory: () => {
       return initialState;
     },
-    clearSqlServerMessages: (state) => {
+    clearSqlServerInventoryMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
       state.processData.messages = [];
     },
-    clearSqlServerGetById: (state) => {
+    clearSqlServerInventoryGetById: (state) => {
       state.getById.data = null;
     },
   },
   extraReducers: {
     // Search
-    [searchSqlServer.pending.type]: (state) => {
+    [searchSqlServerInventory.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchSqlServer.fulfilled.type]: (
+    [searchSqlServerInventory.fulfilled.type]: (
       state,
-      action: PayloadAction<ISearchResponse<ISqlServer>>
+      action: PayloadAction<ISearchResponse<ISqlServerInventory>>
     ) => {
       const { search_result, ...rest } = action.payload;
       state.search.data = search_result.records;
@@ -77,52 +77,67 @@ export const sqlServerSlice = createSlice({
       state.search.hasErrors = false;
       state.search.tableName = search_result.table_name;
     },
-    [searchSqlServer.rejected.type]: (state) => {
+    [searchSqlServerInventory.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
 
     // Get by id
-    [getSqlServerById.pending.type]: (state) => {
+    [getSqlServerInventoryById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getSqlServerById.fulfilled.type]: (state, action: PayloadAction<ISqlServer>) => {
+    [getSqlServerInventoryById.fulfilled.type]: (
+      state,
+      action: PayloadAction<ISqlServerInventory>
+    ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
     },
-    [getSqlServerById.rejected.type]: (state) => {
+    [getSqlServerInventoryById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
     },
 
     // Save
-    [saveSqlServer.pending.type]: (state) => {
+    [saveSqlServerInventory.pending.type]: (state) => {
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveSqlServer.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveSqlServerInventory.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveSqlServer.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveSqlServerInventory.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = true;
       state.save.messages = action.payload.errors;
     },
 
     // Delete
-    [deleteSqlServer.pending.type]: (state) => {
+    [deleteSqlServerInventory.pending.type]: (state) => {
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteSqlServer.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteSqlServerInventory.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteSqlServer.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteSqlServerInventory.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
       state.delete.messages = action.payload.errors;
@@ -147,11 +162,14 @@ export const sqlServerSlice = createSlice({
 });
 
 // A selector
-export const sqlServerSelector = (state: RootState) => state.sqlServer;
+export const sqlServerInventorySelector = (state: RootState) => state.sqlServerInventory;
 
 // Actions
-export const { clearSqlServer, clearSqlServerMessages, clearSqlServerGetById } =
-  sqlServerSlice.actions;
+export const {
+  clearSqlServerInventory,
+  clearSqlServerInventoryMessages,
+  clearSqlServerInventoryGetById,
+} = sqlServerInventorySlice.actions;
 
 // The reducer
-export default sqlServerSlice.reducer;
+export default sqlServerInventorySlice.reducer;

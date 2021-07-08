@@ -26,7 +26,6 @@ import {
   sqlServerOverridesSelector,
 } from '../../../../store/sqlServerOverrides/sqlServerOverrides.reducer';
 import { IAddSqlServerOverridesProps } from './addSqlServerOverrides.model';
-import './addSqlServerOverrides.style.scss';
 
 const { Option } = Select;
 

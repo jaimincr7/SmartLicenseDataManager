@@ -27,7 +27,6 @@ import {
   windowsServerEntitlementsSelector,
 } from '../../../../store/windowsServer/windowsServerEntitlements/windowsServerEntitlements.reducer';
 import { IAddWindowsServerEntitlementsProps } from './addWindowsServerEntitlements.model';
-import './addWindowsServerEntitlements.style.scss';
 
 const { Option } = Select;
 

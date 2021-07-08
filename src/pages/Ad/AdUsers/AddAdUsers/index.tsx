@@ -36,7 +36,6 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddAdUsersProps } from './addAdUsers.model';
-import './addAdUsers.style.scss';
 
 const { Option } = Select;
 

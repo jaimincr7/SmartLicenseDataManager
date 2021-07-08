@@ -1,18 +1,21 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import { clearSqlServer, sqlServerSelector } from '../../../store/sqlServer/sqlServer.reducer';
-import { ISqlServerProps } from './sqlServer.model';
+import {
+  clearSqlServerInventory,
+  sqlServerInventorySelector,
+} from '../../../store/sqlServerInventory/sqlServerInventory.reducer';
+import { ISqlServerInventoryProps } from './sqlServerInventory.model';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
-import AddSqlServerModal from './AddSqlServer';
+import AddSqlServerInventoryModal from './AddSqlServerInventoryModal';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import ProcessDataModal from './ProcessDataModal';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
-const SqlServer: React.FC<ISqlServerProps> = (props) => {
-  const sqlServer = useAppSelector(sqlServerSelector);
+const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
+  const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -34,7 +37,7 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearSqlServer());
+      dispatch(clearSqlServerInventory());
     };
   }, []);
 
@@ -45,7 +48,7 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Sql Server</h4>
+        <h4 className="p-0">Sql Server Inventory</h4>
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -73,7 +76,7 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
               <Button
                 className="btn-icon"
                 onClick={() =>
-                  history.push(`/data-input/bulk-import/${sqlServer.search.tableName}`)
+                  history.push(`/data-input/bulk-import/${sqlServerInventory.search.tableName}`)
                 }
                 icon={
                   <em className="anticon">
@@ -111,11 +114,11 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddSqlServerModal
+        <AddSqlServerInventoryModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/sql-server');
+            history.push('/sql-server/inventory');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -131,7 +134,7 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
         <DeleteDatasetModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={sqlServer.search.tableName}
+          tableName={sqlServerInventory.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
@@ -139,4 +142,4 @@ const SqlServer: React.FC<ISqlServerProps> = (props) => {
   );
 };
 
-export default SqlServer;
+export default SqlServerInventory;

@@ -27,7 +27,6 @@ import {
   sqlServerLicenseSelector,
 } from '../../../../store/sqlServerLicense/sqlServerLicense.reducer';
 import { IAddSqlServerLicenseProps } from './addSqlServerLicense.model';
-import './addSqlServerLicense.style.scss';
 
 const { Option } = Select;
 

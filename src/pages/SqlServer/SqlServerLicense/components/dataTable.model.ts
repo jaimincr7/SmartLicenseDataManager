@@ -1,6 +1,6 @@
-import { ISearchSqlServer } from '../../../../services/sqlServer/sqlServer.model';
+import { ISearchSqlServerLicense } from '../../../../services/sqlServerLicense/sqlServerLicense.model';
 
 export interface IDataTable {
-  search?: ISearchSqlServer;
+  search?: ISearchSqlServerLicense;
   setSelectedId: (id: number) => void;
 }

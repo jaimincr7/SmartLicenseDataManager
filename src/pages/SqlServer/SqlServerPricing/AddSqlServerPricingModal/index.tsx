@@ -29,7 +29,6 @@ import {
   sqlServerPricingSelector,
 } from '../../../../store/sqlServerPricing/sqlServerPricing.reducer';
 import { IAddSqlServerPricingProps } from './addSqlServerPricing.model';
-import './addSqlServerPricing.style.scss';
 
 const { Option } = Select;
 

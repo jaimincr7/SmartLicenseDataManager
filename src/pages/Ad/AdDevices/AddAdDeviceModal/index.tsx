@@ -36,7 +36,6 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddAdDeviceProps } from './addAdDevice.model';
-import './addAdDevice.style.scss';
 
 const { Option } = Select;
 

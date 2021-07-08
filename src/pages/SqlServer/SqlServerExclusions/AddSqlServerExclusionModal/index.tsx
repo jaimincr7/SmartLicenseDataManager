@@ -15,7 +15,6 @@ import {
   clearCompanyLookUp,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import './addSqlServerExclusions.style.scss';
 import { IAddSqlServerExclusionsProps } from './addSqlServerExclusions.model';
 import {
   sqlServerExclusionsSelector,

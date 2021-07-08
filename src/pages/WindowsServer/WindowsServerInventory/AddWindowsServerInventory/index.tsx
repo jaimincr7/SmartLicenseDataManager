@@ -26,7 +26,6 @@ import {
   windowsServerInventorySelector,
 } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.reducer';
 import { IAddWindowsServerInventoryProps } from './addWindowsServerInventory.model';
-import './addWindowsServerInventory.style.scss';
 
 const { Option } = Select;
 

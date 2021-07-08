@@ -15,7 +15,6 @@ import {
   clearCompanyLookUp,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import './addWindowsServerExclusions.style.scss';
 import { IAddWindowsServerExclusionsProps } from './addWindowsServerExclusions.model';
 import { IWindowsServerExclusions } from '../../../../services/windowsServer/windowsServerExclusions/windowsServerExclusions.model';
 import {

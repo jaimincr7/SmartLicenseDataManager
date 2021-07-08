@@ -27,7 +27,6 @@ import {
   sqlServerEntitlementsSelector,
 } from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
 import { IAddSqlServerEntitlementsProps } from './addSqlServerEntitlements.model';
-import './addSqlServerEntitlements.style.scss';
 
 const { Option } = Select;
 

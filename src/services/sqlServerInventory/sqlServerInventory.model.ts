@@ -1,6 +1,6 @@
 import { ISearch } from '../../common/models/common';
 
-export interface ISqlServer {
+export interface ISqlServerInventory {
   id?: number;
   company_id?: number;
   company_name?: string;
@@ -40,7 +40,7 @@ export interface ISqlServer {
   azure_hosted?: boolean;
 }
 
-export interface ISearchSqlServer extends ISearch {
+export interface ISearchSqlServerInventory extends ISearch {
   is_lookup?: boolean;
 }
 

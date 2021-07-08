@@ -1,11 +1,11 @@
 import { IDropDownOption } from '../../common/models/common';
-import { ISqlServer } from '../../services/sqlServer/sqlServer.model';
+import { ISqlServerInventory } from '../../services/sqlServerInventory/sqlServerInventory.model';
 
-export interface ISqlServerState {
+export interface ISqlServerInventoryState {
   search: {
     loading: boolean;
     hasErrors: boolean;
-    data: ISqlServer[];
+    data: ISqlServerInventory[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
@@ -13,7 +13,7 @@ export interface ISqlServerState {
   getById: {
     loading: boolean;
     hasErrors: boolean;
-    data: ISqlServer;
+    data: ISqlServerInventory;
   };
   save: {
     loading: boolean;

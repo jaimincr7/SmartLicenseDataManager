@@ -15,7 +15,6 @@ import {
   clearCompanyLookUp,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import './addAdDeviceExclusion.style.scss';
 import { IAddAdDevicesExclusionsProps } from './addAdDeviceExclusion.model';
 import {
   adDevicesExclusionsSelector,

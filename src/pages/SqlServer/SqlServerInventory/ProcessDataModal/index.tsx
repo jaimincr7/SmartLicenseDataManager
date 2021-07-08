@@ -5,13 +5,12 @@ import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getBULookup, getCompanyLookup } from '../../../../store/common/common.action';
 import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
-import './processData.style.scss';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/sqlServer/sqlServer.action';
+import { processData } from '../../../../store/sqlServerInventory/sqlServerInventory.action';
 import {
-  clearSqlServerMessages,
-  sqlServerSelector,
-} from '../../../../store/sqlServer/sqlServer.reducer';
+  clearSqlServerInventoryMessages,
+  sqlServerInventorySelector,
+} from '../../../../store/sqlServerInventory/sqlServerInventory.reducer';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
@@ -22,7 +21,7 @@ const validateMessages = {
 };
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
-  const sqlServers = useAppSelector(sqlServerSelector);
+  const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
@@ -55,16 +54,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   useEffect(() => {
-    if (sqlServers.processData.messages.length > 0) {
-      if (sqlServers.processData.hasErrors) {
-        toast.error(sqlServers.processData.messages.join(' '));
+    if (sqlServerInventory.processData.messages.length > 0) {
+      if (sqlServerInventory.processData.hasErrors) {
+        toast.error(sqlServerInventory.processData.messages.join(' '));
       } else {
-        toast.success(sqlServers.processData.messages.join(' '));
+        toast.success(sqlServerInventory.processData.messages.join(' '));
         handleModalClose();
       }
-      dispatch(clearSqlServerMessages());
+      dispatch(clearSqlServerInventoryMessages());
     }
-  }, [sqlServers.processData.messages]);
+  }, [sqlServerInventory.processData.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -260,7 +259,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               key="submit"
               type="primary"
               htmlType="submit"
-              loading={sqlServers.processData.loading}
+              loading={sqlServerInventory.processData.loading}
             >
               Process
             </Button>

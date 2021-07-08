@@ -57,8 +57,8 @@ function Sidebar() {
             title="SQL Server"
             className="no-icon"
           >
-            <Menu.Item key="/sql-server">
-              <Link to="/sql-server" title="Inventory">
+            <Menu.Item key="/sql-server/inventory">
+              <Link to="/sql-server/inventory" title="Inventory">
                 Inventory
               </Link>
             </Menu.Item>

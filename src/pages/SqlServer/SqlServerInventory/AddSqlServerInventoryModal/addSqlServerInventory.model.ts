@@ -1,4 +1,4 @@
-export interface IAddSqlServerProps {
+export interface IAddSqlServerInventoryProps {
   id: number;
   showModal: boolean;
   handleModalClose: () => void;

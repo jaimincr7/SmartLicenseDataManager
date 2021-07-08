@@ -1,27 +1,31 @@
 import { IApiResponse, ISearchResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import { ISearchSqlServer, ISqlServer, IProcessData } from './sqlServer.model';
+import {
+  ISearchSqlServerInventory,
+  ISqlServerInventory,
+  IProcessData,
+} from './sqlServerInventory.model';
 
-class SqlServerService {
+class SqlServerInventoryService {
   ENDPOINT = '/sql-server-inventory';
 
-  public async searchSqlServer(
-    searchParams?: ISearchSqlServer
-  ): Promise<IApiResponse<ISearchResponse<ISqlServer>>> {
+  public async searchSqlServerInventory(
+    searchParams?: ISearchSqlServerInventory
+  ): Promise<IApiResponse<ISearchResponse<ISqlServerInventory>>> {
     const url = `${this.ENDPOINT}/search`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
   }
 
-  public async getSqlServerById(id: number): Promise<any> {
+  public async getSqlServerInventoryById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }
 
-  public async saveSqlServer(data: ISqlServer): Promise<any> {
+  public async saveSqlServerInventory(data: ISqlServerInventory): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {
       const url = `${this.ENDPOINT}/${id}`;
@@ -36,7 +40,7 @@ class SqlServerService {
     }
   }
 
-  public async deleteSqlServer(id: number): Promise<any> {
+  public async deleteSqlServerInventory(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
       return res.data;
@@ -50,7 +54,7 @@ class SqlServerService {
     });
   }
 
-  public async exportExcelFile(searchParams?: ISearchSqlServer): Promise<any> {
+  public async exportExcelFile(searchParams?: ISearchSqlServerInventory): Promise<any> {
     const url = `${this.ENDPOINT}/search`;
     return request({
       url,
@@ -62,4 +66,4 @@ class SqlServerService {
     });
   }
 }
-export default new SqlServerService();
+export default new SqlServerInventoryService();

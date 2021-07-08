@@ -1,18 +1,24 @@
 import { Table, Popconfirm, Form, Button, Checkbox, Popover } from 'antd';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
-  clearSqlServerMessages,
-  sqlServerSelector,
-} from '../../../../store/sqlServer/sqlServer.reducer';
+  clearSqlServerInventoryMessages,
+  sqlServerInventorySelector,
+} from '../../../../store/sqlServerInventory/sqlServerInventory.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { ISearchSqlServer, ISqlServer } from '../../../../services/sqlServer/sqlServer.model';
-import { deleteSqlServer, searchSqlServer } from '../../../../store/sqlServer/sqlServer.action';
+import {
+  ISearchSqlServerInventory,
+  ISqlServerInventory,
+} from '../../../../services/sqlServerInventory/sqlServerInventory.model';
+import {
+  deleteSqlServerInventory,
+  searchSqlServerInventory,
+} from '../../../../store/sqlServerInventory/sqlServerInventory.action';
 import { toast } from 'react-toastify';
 import { IDataTable } from './dataTable.model';
 import moment from 'moment';
 import { Common, DEFAULT_PAGE_SIZE, exportExcel } from '../../../../common/constants/common';
 import _ from 'lodash';
-import sqlServerService from '../../../../services/sqlServer/sqlServer.service';
+import sqlServerInventoryService from '../../../../services/sqlServerInventory/sqlServerInventory.service';
 import {
   Filter,
   FilterByDate,
@@ -36,7 +42,7 @@ let tableFilter = {
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const { setSelectedId } = props;
 
-  const sqlServer = useAppSelector(sqlServerSelector);
+  const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
   const commonFilters = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -68,7 +74,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
     setInlineSearch(inlineSearchFilter);
 
-    const searchData: ISearchSqlServer = {
+    const searchData: ISearchSqlServerInventory = {
       is_lookup: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
@@ -80,13 +86,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return searchData;
   };
 
-  const fetchSqlServer = (page = null) => {
+  const fetchSqlServerInventory = (page = null) => {
     const searchData = getSearchData(page, false);
-    dispatch(searchSqlServer(searchData));
+    dispatch(searchSqlServerInventory(searchData));
   };
   useImperativeHandle(ref, () => ({
     refreshData() {
-      fetchSqlServer();
+      fetchSqlServerInventory();
     },
   }));
   React.useEffect(() => {
@@ -106,7 +112,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     }
     tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServer({ ...pagination, current: 1 });
+    fetchSqlServerInventory({ ...pagination, current: 1 });
   }, [commonFilters.search]);
   // End: Global Search
 
@@ -118,24 +124,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     };
     setPagination(paginating);
-    fetchSqlServer(paginating);
+    fetchSqlServerInventory(paginating);
   };
 
   // Start: Delete action
-  const removeSqlServer = (id: number) => {
-    dispatch(deleteSqlServer(id));
+  const removeSqlServerInventory = (id: number) => {
+    dispatch(deleteSqlServerInventory(id));
   };
   React.useEffect(() => {
-    if (sqlServer.delete.messages.length > 0) {
-      if (sqlServer.delete.hasErrors) {
-        toast.error(sqlServer.delete.messages.join(' '));
+    if (sqlServerInventory.delete.messages.length > 0) {
+      if (sqlServerInventory.delete.hasErrors) {
+        toast.error(sqlServerInventory.delete.messages.join(' '));
       } else {
-        toast.success(sqlServer.delete.messages.join(' '));
-        fetchSqlServer();
+        toast.success(sqlServerInventory.delete.messages.join(' '));
+        fetchSqlServerInventory();
       }
-      dispatch(clearSqlServerMessages());
+      dispatch(clearSqlServerInventoryMessages());
     }
-  }, [sqlServer.delete.messages]);
+  }, [sqlServerInventory.delete.messages]);
   // End: Delete action
 
   // Keyword search
@@ -145,14 +151,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       keyword: value,
     };
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServer({ ...pagination, current: 1 });
+    fetchSqlServerInventory({ ...pagination, current: 1 });
   };
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
     tableFilter.filter_keys = values;
     setPagination({ ...pagination, current: 1 });
-    fetchSqlServer({ ...pagination, current: 1 });
+    fetchSqlServerInventory({ ...pagination, current: 1 });
   };
   const onReset = () => {
     onFinish({});
@@ -162,7 +168,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   }, [inlineSearch]);
 
   const FilterBySwap = (dataIndex: string) => {
-    return FilterWithSwapOption(dataIndex, sqlServer.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, sqlServerInventory.search.tableName, form);
   };
   // End: Column level filter
 
@@ -171,7 +177,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setLoading(true);
     const searchData = getSearchData(pagination, true);
 
-    return sqlServerService.exportExcelFile(searchData).then((res) => {
+    return sqlServerInventoryService.exportExcelFile(searchData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
@@ -215,7 +221,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('tenant_id', sqlServer.search.lookups?.tenants),
+          title: FilterByDropdown('tenant_id', sqlServerInventory.search.lookups?.tenants),
           dataIndex: 'tenant_name',
           key: 'tenant_name',
           ellipsis: true,
@@ -227,7 +233,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('company_id', sqlServer.search.lookups?.companies),
+          title: FilterByDropdown('company_id', sqlServerInventory.search.lookups?.companies),
           dataIndex: 'company_name',
           key: 'company_name',
           ellipsis: true,
@@ -239,7 +245,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       sorter: true,
       children: [
         {
-          title: FilterByDropdown('bu_id', sqlServer.search.lookups?.bus),
+          title: FilterByDropdown('bu_id', sqlServerInventory.search.lookups?.bus),
           dataIndex: 'bu_name',
           key: 'bu_name',
           ellipsis: true,
@@ -555,18 +561,21 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           key: 'Action',
           width: '80px',
           fixed: 'right' as fixedColumn,
-          render: (_, data: ISqlServer) => (
+          render: (_, data: ISqlServerInventory) => (
             <div className="btns-block">
               <a
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);
-                  history.push(`/sql-server/${data.id}`);
+                  history.push(`/sql-server/inventory/${data.id}`);
                 }}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
               </a>
-              <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServer(data.id)}>
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => removeSqlServerInventory(data.id)}
+              >
                 <a href="#" title="" className="action-btn">
                   <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
                 </a>
@@ -632,7 +641,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               setSelectedId(0);
             }}
           >
-            Add Sql Server
+            Add Inventory
           </Button>
         </div>
       </div>
@@ -640,12 +649,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Table
           scroll={{ x: true }}
           rowKey={(record) => record.id}
-          dataSource={sqlServer.search.data}
+          dataSource={sqlServerInventory.search.data}
           columns={getColumns()}
-          loading={sqlServer.search.loading}
+          loading={sqlServerInventory.search.loading}
           pagination={{
             ...pagination,
-            total: sqlServer.search.count,
+            total: sqlServerInventory.search.count,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}

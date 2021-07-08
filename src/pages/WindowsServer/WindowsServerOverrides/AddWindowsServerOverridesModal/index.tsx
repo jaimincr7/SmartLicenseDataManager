@@ -26,7 +26,6 @@ import {
   windowsServerOverridesSelector,
 } from '../../../../store/windowsServer/windowsServerOverrides/windowsServerOverrides.reducer';
 import { IAddWindowsServerOverridesProps } from './addWindowsServerOverrides.model';
-import './addWindowsServerOverrides.style.scss';
 
 const { Option } = Select;
 

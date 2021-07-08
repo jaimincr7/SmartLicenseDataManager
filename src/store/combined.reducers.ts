@@ -5,7 +5,7 @@ import adUsersReducer from './adUsers/adUsers.reducer';
 import bulkImportReducer from './bulkImport/bulkImport.reducer';
 import commonReducer from './common/common.reducer';
 import errorLogReducer from './errorLog/errorLog.reducer';
-import sqlServerReducer from './sqlServer/sqlServer.reducer';
+import sqlServerInventoryReducer from './sqlServerInventory/sqlServerInventory.reducer';
 import sqlServerEntitlementsReducer from './sqlServerEntitlements/sqlServerEntitlements.reducer';
 import sqlServerExclusionsReducer from './sqlServerExclusions/sqlServerExclusions.reducer';
 import sqlServerLicenseReducer from './sqlServerLicense/sqlServerLicense.reducer';
@@ -21,7 +21,7 @@ import windowsServerPricingReducer from './windowsServer/windowsServerPricing/wi
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
-  sqlServer: sqlServerReducer,
+  sqlServerInventory: sqlServerInventoryReducer,
   common: commonReducer,
   sqlServerEntitlements: sqlServerEntitlementsReducer,
   adDevices: adDevicesReducer,

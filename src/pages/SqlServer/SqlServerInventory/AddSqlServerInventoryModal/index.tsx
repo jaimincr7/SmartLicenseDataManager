@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
-import { ISqlServer } from '../../../../services/sqlServer/sqlServer.model';
+import { ISqlServerInventory } from '../../../../services/sqlServerInventory/sqlServerInventory.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
@@ -16,14 +16,16 @@ import {
   clearCompanyLookUp,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { saveSqlServer, getSqlServerById } from '../../../../store/sqlServer/sqlServer.action';
 import {
-  sqlServerSelector,
-  clearSqlServerMessages,
-  clearSqlServerGetById,
-} from '../../../../store/sqlServer/sqlServer.reducer';
-import { IAddSqlServerProps } from './addSqlServer.model';
-import './addSqlServer.style.scss';
+  saveSqlServerInventory,
+  getSqlServerInventoryById,
+} from '../../../../store/sqlServerInventory/sqlServerInventory.action';
+import {
+  sqlServerInventorySelector,
+  clearSqlServerInventoryMessages,
+  clearSqlServerInventoryGetById,
+} from '../../../../store/sqlServerInventory/sqlServerInventory.reducer';
+import { IAddSqlServerInventoryProps } from './addSqlServerInventory.model';
 
 const { Option } = Select;
 
@@ -34,8 +36,8 @@ const validateMessages = {
   },
 };
 
-const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
-  const sqlServers = useAppSelector(sqlServerSelector);
+const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props) => {
+  const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
@@ -43,7 +45,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Sql Server' : 'Edit Sql Server';
+    return isNew ? 'Add Sql Server Inventory' : 'Edit Sql Server Inventory';
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
@@ -51,7 +53,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  let initialValues: ISqlServer = {
+  let initialValues: ISqlServerInventory = {
     bu_id: null,
     company_id: null,
     cluster: '',
@@ -89,11 +91,11 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    const inputValues: ISqlServer = {
+    const inputValues: ISqlServerInventory = {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveSqlServer(inputValues));
+    dispatch(saveSqlServerInventory(inputValues));
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -120,7 +122,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
     form.setFieldsValue({ bu_id: buId });
   };
 
-  const fillValuesOnEdit = async (data: ISqlServer) => {
+  const fillValuesOnEdit = async (data: ISqlServerInventory) => {
     if (data.tenant_id) {
       await dispatch(getCompanyLookup(data.tenant_id));
     }
@@ -167,32 +169,32 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
   };
 
   useEffect(() => {
-    if (sqlServers.save.messages.length > 0) {
-      if (sqlServers.save.hasErrors) {
-        toast.error(sqlServers.save.messages.join(' '));
+    if (sqlServerInventory.save.messages.length > 0) {
+      if (sqlServerInventory.save.hasErrors) {
+        toast.error(sqlServerInventory.save.messages.join(' '));
       } else {
-        toast.success(sqlServers.save.messages.join(' '));
+        toast.success(sqlServerInventory.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearSqlServerMessages());
+      dispatch(clearSqlServerInventoryMessages());
     }
-  }, [sqlServers.save.messages]);
+  }, [sqlServerInventory.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && sqlServers.getById.data) {
-      const data = sqlServers.getById.data;
+    if (+id > 0 && sqlServerInventory.getById.data) {
+      const data = sqlServerInventory.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [sqlServers.getById.data]);
+  }, [sqlServerInventory.getById.data]);
 
   useEffect(() => {
     dispatch(getTenantLookup());
     if (+id > 0) {
-      dispatch(getSqlServerById(+id));
+      dispatch(getSqlServerInventoryById(+id));
     }
     return () => {
-      dispatch(clearSqlServerGetById());
+      dispatch(clearSqlServerInventoryGetById());
       dispatch(clearCompanyLookUp());
       dispatch(clearBULookUp());
     };
@@ -208,14 +210,14 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
         onCancel={handleModalClose}
         footer={false}
       >
-        {sqlServers.getById.loading ? (
+        {sqlServerInventory.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={sqlServers.getById.loading} />
+            <Spin spinning={sqlServerInventory.getById.loading} />
           </div>
         ) : (
           <Form
             form={form}
-            name="addSqlServer"
+            name="addSqlServerInventory"
             initialValues={initialValues}
             onFinish={onFinish}
             validateMessages={validateMessages}
@@ -618,7 +620,7 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={sqlServers.save.loading}
+                loading={sqlServerInventory.save.loading}
               >
                 {submitButtonText}
               </Button>
@@ -632,4 +634,4 @@ const AddSqlServerModal: React.FC<IAddSqlServerProps> = (props) => {
     </>
   );
 };
-export default AddSqlServerModal;
+export default AddSqlServerInventoryModal;
