@@ -18,16 +18,16 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import {
   clearSqlServerOverridesMessages,
   sqlServerOverridesSelector,
-} from '../../../../store/sqlServerOverrides/sqlServerOverrides.reducer';
+} from '../../../../store/sqlServer/sqlServerOverrides/sqlServerOverrides.reducer';
 import {
   ISearchSqlServerOverrides,
   ISqlServerOverrides,
-} from '../../../../services/sqlServerOverrides/sqlServerOverrides.model';
+} from '../../../../services/sqlServer/sqlServerOverrides/sqlServerOverrides.model';
 import {
   deleteSqlServerOverrides,
   searchSqlServerOverrides,
-} from '../../../../store/sqlServerOverrides/sqlServerOverrides.action';
-import sqlServerOverridesService from '../../../../services/sqlServerOverrides/sqlServerOverrides.service';
+} from '../../../../store/sqlServer/sqlServerOverrides/sqlServerOverrides.action';
+import sqlServerOverridesService from '../../../../services/sqlServer/sqlServerOverrides/sqlServerOverrides.service';
 
 let pageLoaded = false;
 

@@ -16,14 +16,14 @@ import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
-import { IAdUser } from '../../../../services/adUsers/adUsers.model';
+import { IAdUser } from '../../../../services/ad/adUsers/adUsers.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { getAdUserById, saveAdUser } from '../../../../store/adUsers/adUsers.action';
+import { getAdUserById, saveAdUser } from '../../../../store/ad/adUsers/adUsers.action';
 import {
   adUsersSelector,
   clearAdUsersGetById,
   clearAdUsersMessages,
-} from '../../../../store/adUsers/adUsers.reducer';
+} from '../../../../store/ad/adUsers/adUsers.reducer';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,

@@ -17,17 +17,17 @@ import { useHistory } from 'react-router-dom';
 import {
   clearSqlServerEntitlementsMessages,
   sqlServerEntitlementsSelector,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
+} from '../../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.reducer';
 import {
   ISearchSqlServerEntitlements,
   ISqlServerEntitlements,
-} from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
+} from '../../../../services/sqlServer/sqlServerEntitlements/sqlServerEntitlements.model';
 import {
   deleteSqlServerEntitlements,
   searchSqlServerEntitlements,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
+} from '../../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
-import sqlServerEntitlementsService from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.service';
+import sqlServerEntitlementsService from '../../../../services/sqlServer/sqlServerEntitlements/sqlServerEntitlements.service';
 import { FileExcelOutlined } from '@ant-design/icons';
 
 let pageLoaded = false;

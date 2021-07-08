@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
-import { ISqlServerLicense } from '../../../../services/sqlServerLicense/sqlServerLicense.model';
+import { ISqlServerLicense } from '../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getAgreementTypesLookup,
@@ -20,12 +20,12 @@ import {
 import {
   getSqlServerLicenseById,
   saveSqlServerLicense,
-} from '../../../../store/sqlServerLicense/sqlServerLicense.action';
+} from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.action';
 import {
   clearSqlServerLicenseGetById,
   clearSqlServerLicenseMessages,
   sqlServerLicenseSelector,
-} from '../../../../store/sqlServerLicense/sqlServerLicense.reducer';
+} from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 import { IAddSqlServerLicenseProps } from './addSqlServerLicense.model';
 
 const { Option } = Select;

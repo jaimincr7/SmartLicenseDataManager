@@ -9,7 +9,7 @@ import { ISqlServerOverridesProps } from './sqlServerOverrides.model';
 import {
   clearSqlServerOverrides,
   sqlServerOverridesSelector,
-} from '../../../store/sqlServerOverrides/sqlServerOverrides.reducer';
+} from '../../../store/sqlServer/sqlServerOverrides/sqlServerOverrides.reducer';
 import AddSqlServerOverridesModal from './AddSqlServerOverridesModal';
 
 const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {

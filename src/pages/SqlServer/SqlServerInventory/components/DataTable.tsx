@@ -3,22 +3,22 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
   clearSqlServerInventoryMessages,
   sqlServerInventorySelector,
-} from '../../../../store/sqlServerInventory/sqlServerInventory.reducer';
+} from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   ISearchSqlServerInventory,
   ISqlServerInventory,
-} from '../../../../services/sqlServerInventory/sqlServerInventory.model';
+} from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.model';
 import {
   deleteSqlServerInventory,
   searchSqlServerInventory,
-} from '../../../../store/sqlServerInventory/sqlServerInventory.action';
+} from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.action';
 import { toast } from 'react-toastify';
 import { IDataTable } from './dataTable.model';
 import moment from 'moment';
 import { Common, DEFAULT_PAGE_SIZE, exportExcel } from '../../../../common/constants/common';
 import _ from 'lodash';
-import sqlServerInventoryService from '../../../../services/sqlServerInventory/sqlServerInventory.service';
+import sqlServerInventoryService from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.service';
 import {
   Filter,
   FilterByDate,

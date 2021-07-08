@@ -6,7 +6,7 @@ import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { ISqlServerLicenseProps } from './sqlServerLicense.model';
-import { clearSqlServerLicense } from '../../../store/sqlServerLicense/sqlServerLicense.reducer';
+import { clearSqlServerLicense } from '../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 import AddSqlServerLicenseModal from './AddSqlServerLicense';
 import ReRunAllScenariosModal from './ReRunAllScenariosModal';
 

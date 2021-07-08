@@ -19,10 +19,10 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import {
   adDevicesSelector,
   clearAdDeviceMessages,
-} from '../../../../store/adDevices/adDevices.reducer';
-import { IAdDevices, ISearchAdDevices } from '../../../../services/adDevices/adDevices.model';
-import { deleteAdDevice, searchAdDevices } from '../../../../store/adDevices/adDevices.action';
-import adDevicesService from '../../../../services/adDevices/adDevices.service';
+} from '../../../../store/ad/adDevices/adDevices.reducer';
+import { IAdDevices, ISearchAdDevices } from '../../../../services/ad/adDevices/adDevices.model';
+import { deleteAdDevice, searchAdDevices } from '../../../../store/ad/adDevices/adDevices.action';
+import adDevicesService from '../../../../services/ad/adDevices/adDevices.service';
 
 let pageLoaded = false;
 

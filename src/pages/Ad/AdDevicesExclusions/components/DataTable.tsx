@@ -18,16 +18,16 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import {
   adDevicesExclusionsSelector,
   clearAdDevicesExclusionsMessages,
-} from '../../../../store/adDevicesExclusions/adDevicesExclusions.reducer';
-import {
-  IAdDevicesExclusions,
-  ISearchAdDevicesExclusions,
-} from '../../../../services/adDevicesExclusions/adDevicesExclusions.model';
+} from '../../../../store/ad/adDevicesExclusions/adDevicesExclusions.reducer';
 import {
   deleteAdDevicesExclusions,
   searchAdDevicesExclusions,
-} from '../../../../store/adDevicesExclusions/adDevicesExclusions.action';
-import adDevicesExclusionsService from '../../../../services/adDevicesExclusions/adDevicesExclusions.service';
+} from '../../../../store/ad/adDevicesExclusions/adDevicesExclusions.action';
+import {
+  ISearchAdDevicesExclusions,
+  IAdDevicesExclusions,
+} from '../../../../services/ad/adDevicesExclusions/adDevicesExclusions.model';
+import adDevicesExclusionsService from '../../../../services/ad/adDevicesExclusions/adDevicesExclusions.service';
 
 let pageLoaded = false;
 

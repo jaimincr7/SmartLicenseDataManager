@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import {
   clearSqlServerInventory,
   sqlServerInventorySelector,
-} from '../../../store/sqlServerInventory/sqlServerInventory.reducer';
+} from '../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import { ISqlServerInventoryProps } from './sqlServerInventory.model';
 import React from 'react';
 import DataTable from './components/DataTable';

@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
-import { ISqlServerOverrides } from '../../../../services/sqlServerOverrides/sqlServerOverrides.model';
+import { ISqlServerOverrides } from '../../../../services/sqlServer/sqlServerOverrides/sqlServerOverrides.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
@@ -19,12 +19,12 @@ import {
 import {
   getSqlServerOverridesById,
   saveSqlServerOverrides,
-} from '../../../../store/sqlServerOverrides/sqlServerOverrides.action';
+} from '../../../../store/sqlServer/sqlServerOverrides/sqlServerOverrides.action';
 import {
   clearSqlServerOverridesGetById,
   clearSqlServerOverridesMessages,
   sqlServerOverridesSelector,
-} from '../../../../store/sqlServerOverrides/sqlServerOverrides.reducer';
+} from '../../../../store/sqlServer/sqlServerOverrides/sqlServerOverrides.reducer';
 import { IAddSqlServerOverridesProps } from './addSqlServerOverrides.model';
 
 const { Option } = Select;

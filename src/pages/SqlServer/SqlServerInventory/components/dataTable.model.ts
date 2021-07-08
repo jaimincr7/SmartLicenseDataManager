@@ -1,4 +1,4 @@
-import { ISearchSqlServerInventory } from '../../../../services/sqlServerInventory/sqlServerInventory.model';
+import { ISearchSqlServerInventory } from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.model';
 
 export interface IDataTable {
   search?: ISearchSqlServerInventory;

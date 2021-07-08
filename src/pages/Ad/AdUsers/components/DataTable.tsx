@@ -16,10 +16,13 @@ import { fixedColumn, IInlineSearch, orderByType } from '../../../../common/mode
 import { useHistory } from 'react-router-dom';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
-import { adUsersSelector, clearAdUsersMessages } from '../../../../store/adUsers/adUsers.reducer';
-import { IAdUser, ISearchAdUsers } from '../../../../services/adUsers/adUsers.model';
-import { deleteAdUser, searchAdUsers } from '../../../../store/adUsers/adUsers.action';
-import adUsersService from '../../../../services/adUsers/adUsers.service';
+import {
+  adUsersSelector,
+  clearAdUsersMessages,
+} from '../../../../store/ad/adUsers/adUsers.reducer';
+import { deleteAdUser, searchAdUsers } from '../../../../store/ad/adUsers/adUsers.action';
+import { IAdUser, ISearchAdUsers } from '../../../../services/ad/adUsers/adUsers.model';
+import adUsersService from '../../../../services/ad/adUsers/adUsers.service';
 
 let pageLoaded = false;
 

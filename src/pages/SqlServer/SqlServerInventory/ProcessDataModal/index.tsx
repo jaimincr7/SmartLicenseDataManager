@@ -6,11 +6,11 @@ import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getBULookup, getCompanyLookup } from '../../../../store/common/common.action';
 import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/sqlServerInventory/sqlServerInventory.action';
+import { processData } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.action';
 import {
   clearSqlServerInventoryMessages,
   sqlServerInventorySelector,
-} from '../../../../store/sqlServerInventory/sqlServerInventory.reducer';
+} from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 

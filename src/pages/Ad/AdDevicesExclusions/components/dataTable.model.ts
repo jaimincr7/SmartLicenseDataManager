@@ -1,4 +1,4 @@
-import { ISearchAdDevicesExclusions } from './../../../../services/adDevicesExclusions/adDevicesExclusions.model';
+import { ISearchAdDevicesExclusions } from '../../../../services/ad/adDevicesExclusions/adDevicesExclusions.model';
 
 export interface IDataTable {
   search?: ISearchAdDevicesExclusions;

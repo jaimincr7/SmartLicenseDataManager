@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
   clearSqlServerEntitlements,
   sqlServerEntitlementsSelector,
-} from '../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
+} from '../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.reducer';
 import React from 'react';
 import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';

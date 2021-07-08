@@ -5,7 +5,7 @@ import { DatePicker } from 'antd';
 import React from 'react';
 import commonService from '../../../services/common/common.service';
 import moment from 'moment';
-import sqlServerLicenseDetailService from '../../../services/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
+import sqlServerLicenseDetailService from '../../../services/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
 
 const { RangePicker } = DatePicker;
 

@@ -9,7 +9,7 @@ import { IAdDevicesExclusionsProps } from './adDevicesExclusion.model';
 import {
   adDevicesExclusionsSelector,
   clearAdDevicesExclusions,
-} from '../../../store/adDevicesExclusions/adDevicesExclusions.reducer';
+} from '../../../store/ad/adDevicesExclusions/adDevicesExclusions.reducer';
 import AddAdDevicesExclusionsModal from './AddAdDeviceExclusionModal';
 
 const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {

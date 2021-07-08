@@ -7,7 +7,7 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import { IDetailDataTableProps } from './detailDataTable.model';
 import { fixedColumn, IInlineSearch, orderByType } from '../../../../../common/models/common';
 import { useAppSelector, useAppDispatch } from '../../../../../store/app.hooks';
-import { ISearchSqlServerLicenseDetail } from '../../../../../services/sqlServerLicenseDetail/sqlServerLicenseDetail.model';
+import { ISearchSqlServerLicenseDetail } from '../../../../../services/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.model';
 import {
   Filter,
   FilterByDate,
@@ -15,9 +15,9 @@ import {
   FilterWithSwapOption,
 } from '../../../../../common/components/DataTableFilters';
 import { Common, DEFAULT_PAGE_SIZE, exportExcel } from '../../../../../common/constants/common';
-import sqlServerLicenseDetailService from '../../../../../services/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
-import { sqlServerLicenseDetailSelector } from '../../../../../store/sqlServerLicenseDetail/sqlServerLicenseDetail.reducer';
-import { searchSqlServerLicenseDetail } from '../../../../../store/sqlServerLicenseDetail/sqlServerLicenseDetail.action';
+import sqlServerLicenseDetailService from '../../../../../services/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
+import { sqlServerLicenseDetailSelector } from '../../../../../store/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.reducer';
+import { searchSqlServerLicenseDetail } from '../../../../../store/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.action';
 
 let tableFilter = {
   keyword: '',

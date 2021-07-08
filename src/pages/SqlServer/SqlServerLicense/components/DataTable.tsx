@@ -19,16 +19,16 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import {
   clearSqlServerLicenseMessages,
   sqlServerLicenseSelector,
-} from '../../../../store/sqlServerLicense/sqlServerLicense.reducer';
+} from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 import {
   ISearchSqlServerLicense,
   ISqlServerLicense,
-} from '../../../../services/sqlServerLicense/sqlServerLicense.model';
+} from '../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.model';
 import {
   deleteSqlServerLicense,
   searchSqlServerLicense,
-} from '../../../../store/sqlServerLicense/sqlServerLicense.action';
-import sqlServerLicenseService from '../../../../services/sqlServerLicense/sqlServerLicense.service';
+} from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.action';
+import sqlServerLicenseService from '../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.service';
 
 let pageLoaded = false;
 

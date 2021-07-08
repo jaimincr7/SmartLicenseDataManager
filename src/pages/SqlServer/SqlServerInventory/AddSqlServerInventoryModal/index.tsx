@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
-import { ISqlServerInventory } from '../../../../services/sqlServerInventory/sqlServerInventory.model';
+import { ISqlServerInventory } from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
@@ -19,12 +19,12 @@ import {
 import {
   saveSqlServerInventory,
   getSqlServerInventoryById,
-} from '../../../../store/sqlServerInventory/sqlServerInventory.action';
+} from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.action';
 import {
   sqlServerInventorySelector,
   clearSqlServerInventoryMessages,
   clearSqlServerInventoryGetById,
-} from '../../../../store/sqlServerInventory/sqlServerInventory.reducer';
+} from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import { IAddSqlServerInventoryProps } from './addSqlServerInventory.model';
 
 const { Option } = Select;

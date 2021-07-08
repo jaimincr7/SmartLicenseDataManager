@@ -1,6 +1,6 @@
 import { Form, Col, Input, Row, Select, Spin, Switch } from 'antd';
 import React, { useEffect } from 'react';
-import { ISqlServerLicense } from '../../../../../services/sqlServerLicense/sqlServerLicense.model';
+import { ISqlServerLicense } from '../../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.model';
 import { useAppDispatch, useAppSelector } from '../../../../../store/app.hooks';
 import {
   getAgreementTypesLookup,
@@ -9,11 +9,11 @@ import {
   getTenantLookup,
 } from '../../../../../store/common/common.action';
 import { commonSelector } from '../../../../../store/common/common.reducer';
-import { getSqlServerLicenseById } from '../../../../../store/sqlServerLicense/sqlServerLicense.action';
+import { getSqlServerLicenseById } from '../../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.action';
 import {
   clearSqlServerLicenseGetById,
   sqlServerLicenseSelector,
-} from '../../../../../store/sqlServerLicense/sqlServerLicense.reducer';
+} from '../../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 import _ from 'lodash';
 import { ILookup } from '../../../../../services/common/common.model';
 import { IScenariosProps } from './scenarios.model';

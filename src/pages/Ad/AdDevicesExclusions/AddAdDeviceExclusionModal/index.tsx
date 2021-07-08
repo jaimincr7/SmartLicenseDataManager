@@ -20,12 +20,12 @@ import {
   adDevicesExclusionsSelector,
   clearAdDevicesExclusionsGetById,
   clearAdDevicesExclusionsMessages,
-} from '../../../../store/adDevicesExclusions/adDevicesExclusions.reducer';
+} from '../../../../store/ad/adDevicesExclusions/adDevicesExclusions.reducer';
 import {
   getAdDevicesExclusionsById,
   saveAdDevicesExclusions,
-} from '../../../../store/adDevicesExclusions/adDevicesExclusions.action';
-import { IAdDevicesExclusions } from '../../../../services/adDevicesExclusions/adDevicesExclusions.model';
+} from '../../../../store/ad/adDevicesExclusions/adDevicesExclusions.action';
+import { IAdDevicesExclusions } from '../../../../services/ad/adDevicesExclusions/adDevicesExclusions.model';
 
 const { Option } = Select;
 

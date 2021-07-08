@@ -8,7 +8,7 @@ import { Row, Col, Button } from 'antd';
 import {
   clearSqlServerPricing,
   sqlServerPricingSelector,
-} from '../../../store/sqlServerPricing/sqlServerPricing.reducer';
+} from '../../../store/sqlServer/sqlServerPricing/sqlServerPricing.reducer';
 import { ISqlServerPricingProps } from './sqlServerPricing.model';
 import AddSqlServerPricingModal from './AddSqlServerPricingModal';
 

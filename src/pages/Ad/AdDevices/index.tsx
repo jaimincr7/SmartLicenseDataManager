@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import AddAdDeviceModal from './AddAdDeviceModal';
 import ProcessDataModal from './ProcessDataModal';
-import { adDevicesSelector, clearAdDevices } from '../../../store/adDevices/adDevices.reducer';
+import { adDevicesSelector, clearAdDevices } from '../../../store/ad/adDevices/adDevices.reducer';
 
 const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   const adDevices = useAppSelector(adDevicesSelector);

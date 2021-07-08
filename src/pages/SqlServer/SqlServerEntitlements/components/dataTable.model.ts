@@ -1,4 +1,4 @@
-import { ISearchSqlServerEntitlements } from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
+import { ISearchSqlServerEntitlements } from '../../../../services/sqlServer/sqlServerEntitlements/sqlServerEntitlements.model';
 
 export interface IDataTable {
   search?: ISearchSqlServerEntitlements;

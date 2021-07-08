@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
-import { ISqlServerEntitlements } from '../../../../services/sqlServerEntitlements/sqlServerEntitlements.model';
+import { ISqlServerEntitlements } from '../../../../services/sqlServer/sqlServerEntitlements/sqlServerEntitlements.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
@@ -20,12 +20,12 @@ import {
 import {
   getSqlServerEntitlementsById,
   saveSqlServerEntitlements,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.action';
+} from '../../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.action';
 import {
   clearSqlServerEntitlementsGetById,
   clearSqlServerEntitlementsMessages,
   sqlServerEntitlementsSelector,
-} from '../../../../store/sqlServerEntitlements/sqlServerEntitlements.reducer';
+} from '../../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.reducer';
 import { IAddSqlServerEntitlementsProps } from './addSqlServerEntitlements.model';
 
 const { Option } = Select;

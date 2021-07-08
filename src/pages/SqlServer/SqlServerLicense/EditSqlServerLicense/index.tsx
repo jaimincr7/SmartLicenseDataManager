@@ -2,11 +2,11 @@ import { Button, Tabs } from 'antd';
 import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { getSqlServerLicenseById } from '../../../../store/sqlServerLicense/sqlServerLicense.action';
+import { getSqlServerLicenseById } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.action';
 import {
   clearSqlServerLicenseGetById,
   sqlServerLicenseSelector,
-} from '../../../../store/sqlServerLicense/sqlServerLicense.reducer';
+} from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 import DetailsDataTable from './Details/DetailDataTable';
 import { IEditSqlServerLicenseProps } from './editSqlServerLicense.model';
 import Scenarios from './Scenarios/Scenarios';

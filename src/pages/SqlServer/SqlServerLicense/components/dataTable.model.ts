@@ -1,4 +1,4 @@
-import { ISearchSqlServerLicense } from '../../../../services/sqlServerLicense/sqlServerLicense.model';
+import { ISearchSqlServerLicense } from '../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.model';
 
 export interface IDataTable {
   search?: ISearchSqlServerLicense;

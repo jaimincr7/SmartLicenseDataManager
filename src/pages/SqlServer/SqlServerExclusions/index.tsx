@@ -9,7 +9,7 @@ import { ISqlServerExclusionsProps } from './sqlServerExclusions.model';
 import {
   sqlServerExclusionsSelector,
   clearSqlServerExclusions,
-} from '../../../store/sqlServerExclusions/sqlServerExclusions.reducer';
+} from '../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.reducer';
 import AddSqlServerExclusionsModal from './AddSqlServerExclusionModal';
 
 const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {

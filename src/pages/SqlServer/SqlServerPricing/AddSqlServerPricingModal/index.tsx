@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
-import { ISqlServerPricing } from '../../../../services/sqlServerPricing/sqlServerPricing.model';
+import { ISqlServerPricing } from '../../../../services/sqlServer/sqlServerPricing/sqlServerPricing.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getAgreementTypesLookup,
@@ -22,12 +22,12 @@ import {
 import {
   getSqlServerPricingById,
   saveSqlServerPricing,
-} from '../../../../store/sqlServerPricing/sqlServerPricing.action';
+} from '../../../../store/sqlServer/sqlServerPricing/sqlServerPricing.action';
 import {
   clearSqlServerPricingGetById,
   clearSqlServerPricingMessages,
   sqlServerPricingSelector,
-} from '../../../../store/sqlServerPricing/sqlServerPricing.reducer';
+} from '../../../../store/sqlServer/sqlServerPricing/sqlServerPricing.reducer';
 import { IAddSqlServerPricingProps } from './addSqlServerPricing.model';
 
 const { Option } = Select;

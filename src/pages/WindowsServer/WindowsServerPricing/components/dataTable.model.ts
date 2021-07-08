@@ -1,4 +1,4 @@
-import { ISearchSqlServerPricing } from '../../../../services/sqlServerPricing/sqlServerPricing.model';
+import { ISearchSqlServerPricing } from '../../../../services/sqlServer/sqlServerPricing/sqlServerPricing.model';
 
 export interface IDataTable {
   search?: ISearchSqlServerPricing;

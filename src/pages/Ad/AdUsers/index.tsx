@@ -5,7 +5,7 @@ import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
-import { adUsersSelector, clearAdUsers } from '../../../store/adUsers/adUsers.reducer';
+import { adUsersSelector, clearAdUsers } from '../../../store/ad/adUsers/adUsers.reducer';
 import { IAdUsersProps } from './adUers.model';
 import AddAdUserModal from './AddAdUsers';
 

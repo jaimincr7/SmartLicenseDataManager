@@ -19,16 +19,16 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import {
   clearSqlServerPricingMessages,
   sqlServerPricingSelector,
-} from '../../../../store/sqlServerPricing/sqlServerPricing.reducer';
+} from '../../../../store/sqlServer/sqlServerPricing/sqlServerPricing.reducer';
 import {
   ISearchSqlServerPricing,
   ISqlServerPricing,
-} from '../../../../services/sqlServerPricing/sqlServerPricing.model';
-import sqlServerPricingService from '../../../../services/sqlServerPricing/sqlServerPricing.service';
+} from '../../../../services/sqlServer/sqlServerPricing/sqlServerPricing.model';
+import sqlServerPricingService from '../../../../services/sqlServer/sqlServerPricing/sqlServerPricing.service';
 import {
   searchSqlServerPricing,
   deleteSqlServerPricing,
-} from '../../../../store/sqlServerPricing/sqlServerPricing.action';
+} from '../../../../store/sqlServer/sqlServerPricing/sqlServerPricing.action';
 
 let pageLoaded = false;
 

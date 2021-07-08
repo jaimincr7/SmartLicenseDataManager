@@ -7,12 +7,12 @@ import { getBULookup, getCompanyLookup } from '../../../../store/common/common.a
 import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
 import './reRunAllScenarios.style.scss';
 import { IReRunAllScenariosModalProps } from './reRunAllScenarios.model';
-import { reRunAllScenarios } from '../../../../store/sqlServerLicense/sqlServerLicense.action';
+import { reRunAllScenarios } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.action';
 import { toast } from 'react-toastify';
 import {
   clearSqlServerLicenseReRunAllScenariosMessages,
   sqlServerLicenseSelector,
-} from '../../../../store/sqlServerLicense/sqlServerLicense.reducer';
+} from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 
 const { Option } = Select;
 

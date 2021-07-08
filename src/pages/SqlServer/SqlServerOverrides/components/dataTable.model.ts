@@ -1,4 +1,4 @@
-import { ISearchSqlServerOverrides } from '../../../../services/sqlServerOverrides/sqlServerOverrides.model';
+import { ISearchSqlServerOverrides } from '../../../../services/sqlServer/sqlServerOverrides/sqlServerOverrides.model';
 
 export interface IDataTable {
   search?: ISearchSqlServerOverrides;

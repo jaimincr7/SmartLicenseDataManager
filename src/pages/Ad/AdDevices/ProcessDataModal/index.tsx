@@ -12,8 +12,8 @@ import moment from 'moment';
 import {
   adDevicesSelector,
   clearAdDeviceMessages,
-} from '../../../../store/adDevices/adDevices.reducer';
-import { processData } from '../../../../store/adDevices/adDevices.action';
+} from '../../../../store/ad/adDevices/adDevices.reducer';
+import { processData } from '../../../../store/ad/adDevices/adDevices.action';
 
 const { Option } = Select;
 

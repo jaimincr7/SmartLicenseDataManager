@@ -20,12 +20,12 @@ import {
   sqlServerExclusionsSelector,
   clearSqlServerExclusionsGetById,
   clearSqlServerExclusionsMessages,
-} from '../../../../store/sqlServerExclusions/sqlServerExclusions.reducer';
+} from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.reducer';
 import {
   getSqlServerExclusionsById,
   saveSqlServerExclusions,
-} from '../../../../store/sqlServerExclusions/sqlServerExclusions.action';
-import { ISqlServerExclusions } from '../../../../services/sqlServerExclusions/sqlServerExclusions.model';
+} from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
+import { ISqlServerExclusions } from '../../../../services/sqlServer/sqlServerExclusions/sqlServerExclusions.model';
 
 const { Option } = Select;
 

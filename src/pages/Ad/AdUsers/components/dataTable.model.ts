@@ -1,4 +1,4 @@
-import { ISearchAdUsers } from './../../../../services/adUsers/adUsers.model';
+import { ISearchAdUsers } from '../../../../services/ad/adUsers/adUsers.model';
 
 export interface IDataTable {
   search?: ISearchAdUsers;

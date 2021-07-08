@@ -18,16 +18,16 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import {
   sqlServerExclusionsSelector,
   clearSqlServerExclusionsMessages,
-} from '../../../../store/sqlServerExclusions/sqlServerExclusions.reducer';
+} from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.reducer';
 import {
   ISqlServerExclusions,
   ISearchSqlServerExclusions,
-} from '../../../../services/sqlServerExclusions/sqlServerExclusions.model';
+} from '../../../../services/sqlServer/sqlServerExclusions/sqlServerExclusions.model';
 import {
   deleteSqlServerExclusions,
   searchSqlServerExclusions,
-} from '../../../../store/sqlServerExclusions/sqlServerExclusions.action';
-import sqlServerExclusionsService from '../../../../services/sqlServerExclusions/sqlServerExclusions.service';
+} from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
+import sqlServerExclusionsService from '../../../../services/sqlServer/sqlServerExclusions/sqlServerExclusions.service';
 
 let pageLoaded = false;
 
