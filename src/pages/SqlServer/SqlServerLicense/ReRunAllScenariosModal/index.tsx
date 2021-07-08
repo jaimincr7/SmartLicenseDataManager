@@ -1,11 +1,10 @@
-import { Button, Col, Form, Modal, Row, Select, Spin } from 'antd';
+import { Button, Col, DatePicker, Form, Modal, Row, Select, Spin } from 'antd';
 import { useEffect } from 'react';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getBULookup, getCompanyLookup } from '../../../../store/common/common.action';
 import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
-import './reRunAllScenarios.style.scss';
 import { IReRunAllScenariosModalProps } from './reRunAllScenarios.model';
 import { reRunAllScenarios } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.action';
 import { toast } from 'react-toastify';
@@ -13,6 +12,7 @@ import {
   clearSqlServerLicenseReRunAllScenariosMessages,
   sqlServerLicenseSelector,
 } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -32,6 +32,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
   const initialValues = {
     company_id: null,
     bu_id: null,
+    selected_date: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -138,6 +139,19 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
                       </Option>
                     ))}
                   </Select>
+                </Form.Item>
+              </div>
+            </Col>
+            <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
+                <label className="label">Selected Date</label>
+                <Form.Item
+                  name="selected_date"
+                  label="Selected Date"
+                  className="m-0"
+                  rules={[{ required: true }]}
+                >
+                  <DatePicker defaultValue={moment()} className="w-100" />
                 </Form.Item>
               </div>
             </Col>

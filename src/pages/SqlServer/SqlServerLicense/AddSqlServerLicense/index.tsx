@@ -1,5 +1,6 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
@@ -64,6 +65,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
     opt_default_to_enterprise_on_hosts: false,
     notes: '',
     opt_entitlements: false,
+    selected_date: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -116,6 +118,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
         opt_cluster_logic: data.opt_cluster_logic,
         opt_exclude_non_prod: data.opt_exclude_non_prod,
         opt_entitlements: data.opt_entitlements,
+        selected_date: _.isNull(data.selected_date) ? null : moment(data.selected_date),
       };
       form.setFieldsValue(initialValues);
     }
@@ -281,6 +284,19 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Selected Date</label>
+                  <Form.Item
+                    name="selected_date"
+                    label="Selected Date"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker defaultValue={moment()} className="w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item name="opt_exclude_non_prod" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
@@ -299,7 +315,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item
-                    name="apt_default_to_enterprise_on_hosts"
+                    name="opt_default_to_enterprise_on_hosts"
                     className="m-0"
                     valuePropName="checked"
                   >

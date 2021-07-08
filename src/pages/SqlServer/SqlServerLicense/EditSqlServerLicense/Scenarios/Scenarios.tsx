@@ -120,7 +120,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Date Added</label>
+                  <label className="label">Selected Date</label>
                   <Form.Item name="date_added" className="m-0">
                     <Input disabled className="form-control" />
                   </Form.Item>
@@ -159,7 +159,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item
-                    name="apt_default_to_enterprise_on_hosts"
+                    name="opt_default_to_enterprise_on_hosts"
                     className="m-0"
                     valuePropName="checked"
                   >

@@ -12,7 +12,6 @@ import {
 } from '../../../store/common/common.reducer';
 import { Messages } from '../../constants/messages';
 import { IDeleteDatasetModalProps } from './deleteDatasetModal.model';
-import './deleteDatasetModal.style.scss';
 
 const { Option } = Select;
 

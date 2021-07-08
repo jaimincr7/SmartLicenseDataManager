@@ -387,6 +387,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
               </a>
               <a
+                hidden
                 className="action-btn"
                 onClick={() => {
                   setSelectedId(data.id);

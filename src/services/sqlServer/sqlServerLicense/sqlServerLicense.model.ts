@@ -17,6 +17,7 @@ export interface ISqlServerLicense {
   opt_default_to_enterprise_on_hosts?: boolean;
   notes?: string;
   opt_entitlements?: boolean;
+  selected_date?: string | Moment;
 }
 
 export interface ISearchSqlServerLicense extends ISearch {
@@ -27,4 +28,5 @@ export interface IReRunAllScenarios {
   company_id?: number;
   bu_id?: number;
   debug?: boolean;
+  selected_date?: string | Moment;
 }
