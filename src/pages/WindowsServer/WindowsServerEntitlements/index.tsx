@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
@@ -11,6 +10,7 @@ import {
 } from '../../../store/windowsServer/windowsServerEntitlements/windowsServerEntitlements.reducer';
 import { IWindowsServerEntitlementsProps } from './windowsServerEntitlements.model';
 import AddWindowsServerEntitlementsModal from './AddWindowsServerEntitlementsModal';
+import MainTable from './MainTable';
 
 const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (props) => {
   const entitlements = useAppSelector(windowsServerEntitlementsSelector);
@@ -71,7 +71,7 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { ISqlServerLicenseProps } from './sqlServerLicense.model';
 import { clearSqlServerLicense } from '../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
-import AddSqlServerLicenseModal from './AddSqlServerLicense';
+import AddSqlServerLicenseModal from './AddSqlServerLicenseModal';
 import ReRunAllScenariosModal from './ReRunAllScenariosModal';
+import MainTable from './MainTable';
 
 const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -87,7 +87,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

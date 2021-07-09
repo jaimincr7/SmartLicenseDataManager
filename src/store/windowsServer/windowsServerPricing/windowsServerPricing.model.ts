@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { IWindowsServerPricing } from '../../../services/windowsServer/windowsServerPricing/windowsServerPricing.model';
 
 export interface IWindowsServerPricingState {
@@ -10,6 +10,7 @@ export interface IWindowsServerPricingState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

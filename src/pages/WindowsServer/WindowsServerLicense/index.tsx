@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
@@ -9,6 +8,7 @@ import { IWindowsServerLicenseProps } from './windowsServerLicense.model';
 import { clearWindowsServerLicense } from '../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import AddWindowsServerLicenseModal from './AddWindowsServerLicenseModal';
 import ReRunAllScenariosModal from './ReRunAllScenariosModal';
+import MainTable from './MainTable';
 
 const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -87,7 +87,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

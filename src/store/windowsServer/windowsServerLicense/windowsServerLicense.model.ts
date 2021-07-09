@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { IWindowsServerLicense } from '../../../services/windowsServer/windowsServerLicense/windowsServerLicense.model';
 
 export interface IWindowsServerLicenseState {
@@ -10,6 +10,7 @@ export interface IWindowsServerLicenseState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

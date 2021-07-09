@@ -7,12 +7,7 @@ import moment from 'moment';
 import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
 import _ from 'lodash';
 import { Filter } from './DataTableFilters';
-import {
-  fixedColumn,
-  IInlineSearch,
-  ISearch,
-  orderByType,
-} from '../../../common/models/common';
+import { fixedColumn, IInlineSearch, ISearch, orderByType } from '../../../common/models/common';
 import { commonSelector } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
@@ -30,6 +25,7 @@ let tableFilter = {
 
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const {
+    showAddButton,
     setSelectedId,
     getTableColumns,
     reduxSelector,
@@ -194,8 +190,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -315,14 +312,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Show/Hide Columns
             </Button>
           </Popover>
-          <Button
-            type="primary"
-            onClick={() => {
-              setSelectedId(0);
-            }}
-          >
-            Add
-          </Button>
+          {showAddButton && (
+            <Button
+              type="primary"
+              onClick={() => {
+                setSelectedId(0);
+              }}
+            >
+              Add
+            </Button>
+          )}
         </div>
       </div>
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>

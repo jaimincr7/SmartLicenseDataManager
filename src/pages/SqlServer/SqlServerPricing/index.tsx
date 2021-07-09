@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
@@ -11,6 +10,7 @@ import {
 } from '../../../store/sqlServer/sqlServerPricing/sqlServerPricing.reducer';
 import { ISqlServerPricingProps } from './sqlServerPricing.model';
 import AddSqlServerPricingModal from './AddSqlServerPricingModal';
+import MainTable from './MainTable';
 
 const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
   const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
@@ -72,7 +72,7 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

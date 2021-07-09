@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { ISqlServerOverrides } from '../../../services/sqlServer/sqlServerOverrides/sqlServerOverrides.model';
 
 export interface ISqlServerOverridesState {
@@ -10,6 +10,7 @@ export interface ISqlServerOverridesState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

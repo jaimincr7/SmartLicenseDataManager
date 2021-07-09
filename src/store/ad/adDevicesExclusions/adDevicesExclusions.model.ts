@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { IAdDevicesExclusions } from '../../../services/ad/adDevicesExclusions/adDevicesExclusions.model';
 
 export interface IAdDevicesExclusionsState {
@@ -10,6 +10,7 @@ export interface IAdDevicesExclusionsState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

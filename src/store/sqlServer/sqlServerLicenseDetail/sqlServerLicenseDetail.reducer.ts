@@ -15,6 +15,11 @@ export const initialState: ISqlServerLicenseDetailState = {
     lookups: {},
     tableName: '',
   },
+  tableColumnSelection: {
+    id: null,
+    table_name: null,
+    columns: {},
+  },
 };
 
 export const sqlServerLicenseDetailSlice = createSlice({
@@ -23,6 +28,9 @@ export const sqlServerLicenseDetailSlice = createSlice({
   reducers: {
     clearSqlServerLicense: () => {
       return initialState;
+    },
+    setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
+      state.tableColumnSelection.columns = action.payload;
     },
   },
   extraReducers: {
@@ -41,6 +49,13 @@ export const sqlServerLicenseDetailSlice = createSlice({
       state.search.loading = false;
       state.search.hasErrors = false;
       state.search.tableName = search_result.table_name;
+      if (search_result.column_selection) {
+        state.tableColumnSelection.id = search_result.column_selection.id;
+        state.tableColumnSelection.columns = JSON.parse(
+          search_result.column_selection.columns as any
+        );
+      }
+      state.tableColumnSelection.table_name = search_result.table_name;
     },
     [searchSqlServerLicenseDetail.rejected.type]: (state) => {
       state.search.loading = false;
@@ -53,7 +68,8 @@ export const sqlServerLicenseDetailSlice = createSlice({
 export const sqlServerLicenseDetailSelector = (state: RootState) => state.sqlServerLicenseDetail;
 
 // Actions
-export const { clearSqlServerLicense } = sqlServerLicenseDetailSlice.actions;
+export const { clearSqlServerLicense, setTableColumnSelection } =
+  sqlServerLicenseDetailSlice.actions;
 
 // The reducer
 export default sqlServerLicenseDetailSlice.reducer;

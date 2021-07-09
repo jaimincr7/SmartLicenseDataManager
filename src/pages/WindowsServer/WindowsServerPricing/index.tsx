@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
@@ -11,6 +10,7 @@ import {
   windowsServerPricingSelector,
   clearWindowsServerPricing,
 } from '../../../store/windowsServer/windowsServerPricing/windowsServerPricing.reducer';
+import MainTable from './MainTable';
 
 const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   const windowsServerPricing = useAppSelector(windowsServerPricingSelector);
@@ -72,7 +72,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

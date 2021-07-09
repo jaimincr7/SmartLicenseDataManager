@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
@@ -11,6 +10,7 @@ import {
   clearWindowsServerOverrides,
   windowsServerOverridesSelector,
 } from '../../../store/windowsServer/windowsServerOverrides/windowsServerOverrides.reducer';
+import MainTable from './MainTable';
 
 const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) => {
   const overrides = useAppSelector(windowsServerOverridesSelector);
@@ -71,7 +71,7 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
@@ -11,6 +10,7 @@ import {
   clearSqlServerExclusions,
 } from '../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.reducer';
 import AddSqlServerExclusionsModal from './AddSqlServerExclusionModal';
+import MainTable from './MainTable';
 
 const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   const sqlServerExclusions = useAppSelector(sqlServerExclusionsSelector);
@@ -72,7 +72,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

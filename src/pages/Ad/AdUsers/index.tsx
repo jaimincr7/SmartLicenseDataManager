@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { adUsersSelector, clearAdUsers } from '../../../store/ad/adUsers/adUsers.reducer';
 import { IAdUsersProps } from './adUers.model';
-import AddAdUserModal from './AddAdUsers';
+import AddAdUserModal from './AddAdUsersModal';
+import MainTable from './MainTable';
 
 const AdUsers: React.FC<IAdUsersProps> = (props) => {
   const adUsers = useAppSelector(adUsersSelector);
@@ -67,7 +67,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

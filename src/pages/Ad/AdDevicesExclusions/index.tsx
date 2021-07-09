@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
@@ -11,6 +10,7 @@ import {
   clearAdDevicesExclusions,
 } from '../../../store/ad/adDevicesExclusions/adDevicesExclusions.reducer';
 import AddAdDevicesExclusionsModal from './AddAdDeviceExclusionModal';
+import MainTable from './MainTable';
 
 const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   const adDevicesExclusions = useAppSelector(adDevicesExclusionsSelector);
@@ -72,7 +72,7 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

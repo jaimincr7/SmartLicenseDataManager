@@ -5,6 +5,7 @@ import { ISearch, ISearchResponse } from '../../../common/models/common';
 import { RootState } from '../../../store/app.model';
 
 export interface IDataTable {
+  showAddButton?: boolean;
   setSelectedId: (id: number) => void;
   getTableColumns: (form: FormInstance<any>) => any[];
   reduxSelector: (state: RootState) => any;

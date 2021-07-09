@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { IWindowsServerOverrides } from '../../../services/windowsServer/windowsServerOverrides/windowsServerOverrides.model';
 
 export interface IWindowsServerOverridesState {
@@ -10,6 +10,7 @@ export interface IWindowsServerOverridesState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

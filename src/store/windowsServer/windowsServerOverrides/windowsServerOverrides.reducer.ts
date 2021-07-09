@@ -20,6 +20,11 @@ export const initialState: IWindowsServerOverridesState = {
     lookups: {},
     tableName: '',
   },
+  tableColumnSelection: {
+    id: null,
+    table_name: null,
+    columns: {},
+  },
   getById: {
     loading: false,
     hasErrors: false,
@@ -51,6 +56,9 @@ export const windowsServerOverridesSlice = createSlice({
     clearWindowsServerOverridesGetById: (state) => {
       state.getById.data = null;
     },
+    setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
+      state.tableColumnSelection.columns = action.payload;
+    },
   },
   extraReducers: {
     // Search
@@ -70,6 +78,13 @@ export const windowsServerOverridesSlice = createSlice({
       state.search.loading = false;
       state.search.hasErrors = false;
       state.search.tableName = search_result.table_name;
+      if (search_result.column_selection) {
+        state.tableColumnSelection.id = search_result.column_selection.id;
+        state.tableColumnSelection.columns = JSON.parse(
+          search_result.column_selection.columns as any
+        );
+      }
+      state.tableColumnSelection.table_name = search_result.table_name;
     },
     [searchWindowsServerOverrides.rejected.type]: (state) => {
       state.search.loading = false;
@@ -147,6 +162,7 @@ export const {
   clearWindowsServerOverrides,
   clearWindowsServerOverridesMessages,
   clearWindowsServerOverridesGetById,
+  setTableColumnSelection,
 } = windowsServerOverridesSlice.actions;
 
 // The reducer

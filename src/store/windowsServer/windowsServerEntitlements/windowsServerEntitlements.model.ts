@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { IWindowsServerEntitlements } from '../../../services/windowsServer/windowsServerEntitlements/windowsServerEntitlements.model';
 
 export interface IWindowsServerEntitlementsState {
@@ -10,6 +10,7 @@ export interface IWindowsServerEntitlementsState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

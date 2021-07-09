@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { ISqlServerPricing } from '../../../services/sqlServer/sqlServerPricing/sqlServerPricing.model';
 
 export interface ISqlServerPricingState {
@@ -10,6 +10,7 @@ export interface ISqlServerPricingState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

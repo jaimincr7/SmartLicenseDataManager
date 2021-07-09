@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { ISqlServerLicense } from '../../../services/sqlServer/sqlServerLicense/sqlServerLicense.model';
 
 export interface ISqlServerLicenseState {
@@ -10,6 +10,7 @@ export interface ISqlServerLicenseState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

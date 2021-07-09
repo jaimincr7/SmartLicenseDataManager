@@ -5,12 +5,12 @@ import {
   sqlServerEntitlementsSelector,
 } from '../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.reducer';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerEntitlementsModal from './AddSqlServerEntitlementsModal';
 import { useHistory } from 'react-router-dom';
 import { ISqlServerEntitlementsProps } from './sqlServerEntitlements.model';
 import { Button, Col, Row } from 'antd';
+import MainTable from './MainTable';
 
 const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => {
   const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
@@ -71,7 +71,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

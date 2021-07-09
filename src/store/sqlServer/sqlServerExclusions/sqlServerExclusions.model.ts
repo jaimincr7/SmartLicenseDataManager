@@ -1,4 +1,4 @@
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { ISqlServerExclusions } from '../../../services/sqlServer/sqlServerExclusions/sqlServerExclusions.model';
 
 export interface ISqlServerExclusionsState {
@@ -10,6 +10,7 @@ export interface ISqlServerExclusionsState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
   getById: {
     loading: boolean;
     hasErrors: boolean;

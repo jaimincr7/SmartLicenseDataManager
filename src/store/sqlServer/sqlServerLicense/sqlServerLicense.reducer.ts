@@ -21,6 +21,11 @@ export const initialState: ISqlServerLicenseState = {
     lookups: {},
     tableName: '',
   },
+  tableColumnSelection: {
+    id: null,
+    table_name: null,
+    columns: {},
+  },
   getById: {
     loading: false,
     hasErrors: false,
@@ -60,6 +65,9 @@ export const sqlServerLicenseSlice = createSlice({
     clearSqlServerLicenseReRunAllScenariosMessages: (state) => {
       state.reRunAllScenarios.messages = [];
     },
+    setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
+      state.tableColumnSelection.columns = action.payload;
+    },
   },
   extraReducers: {
     // Search
@@ -79,6 +87,13 @@ export const sqlServerLicenseSlice = createSlice({
       state.search.loading = false;
       state.search.hasErrors = false;
       state.search.tableName = search_result.table_name;
+      if (search_result.column_selection) {
+        state.tableColumnSelection.id = search_result.column_selection.id;
+        state.tableColumnSelection.columns = JSON.parse(
+          search_result.column_selection.columns as any
+        );
+      }
+      state.tableColumnSelection.table_name = search_result.table_name;
     },
     [searchSqlServerLicense.rejected.type]: (state) => {
       state.search.loading = false;
@@ -176,6 +191,7 @@ export const {
   clearSqlServerLicenseMessages,
   clearSqlServerLicenseGetById,
   clearSqlServerLicenseReRunAllScenariosMessages,
+  setTableColumnSelection,
 } = sqlServerLicenseSlice.actions;
 
 // The reducer

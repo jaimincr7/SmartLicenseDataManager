@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
@@ -11,6 +10,7 @@ import {
   sqlServerOverridesSelector,
 } from '../../../store/sqlServer/sqlServerOverrides/sqlServerOverrides.reducer';
 import AddSqlServerOverridesModal from './AddSqlServerOverridesModal';
+import MainTable from './MainTable';
 
 const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
   const sqlServerOverrides = useAppSelector(sqlServerOverridesSelector);
@@ -72,7 +72,7 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);

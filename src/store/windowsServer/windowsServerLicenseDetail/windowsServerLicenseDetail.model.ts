@@ -1,5 +1,5 @@
 import { IWindowsServerLicenseDetail } from '../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.model';
-import { IDropDownOption } from '../../../common/models/common';
+import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 
 export interface IWindowsServerLicenseDetailState {
   search: {
@@ -10,4 +10,5 @@ export interface IWindowsServerLicenseDetailState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
+  tableColumnSelection?: ITableColumnSelection;
 }

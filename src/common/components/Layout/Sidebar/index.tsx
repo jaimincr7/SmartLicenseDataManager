@@ -4,22 +4,23 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useLocation } from 'react-router-dom';
 const { SubMenu } = Menu;
 
-
-
 function Sidebar() {
   const location = useLocation();
   const defaultSubmenu: string = location.pathname.split('/')[1];
-	
-  window.addEventListener('click', function(e){
-    if (document.querySelector('.main-navigation').contains(e.target as Node) || document.querySelector('.hamburger').contains(e.target as Node)){
+
+  window.addEventListener('click', function (e) {
+    if (
+      document.querySelector('.main-navigation').contains(e.target as Node) ||
+      document.querySelector('.hamburger').contains(e.target as Node)
+    ) {
       //console.log("Clicked in Box");
-    } else{
+    } else {
       //console.log("Clicked outside Box");
-        if (window.innerWidth > 991) {
-          document.body.classList.remove('toggle-menu');
-        } else {
-          document.body.classList.remove('show-menu');
-        }
+      if (window.innerWidth > 991) {
+        document.body.classList.remove('toggle-menu');
+      } else {
+        document.body.classList.remove('show-menu');
+      }
     }
   });
 
