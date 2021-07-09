@@ -7,7 +7,11 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 const dropdownMenu = (
+  <div className="checkbox-list-wrapper">
   <ul className="checkbox-list">
+    <li className="line-bottom">
+      <Checkbox className="strong">Select All</Checkbox>
+    </li>
     <li>
       <Checkbox>Tenant</Checkbox>
     </li>
@@ -39,6 +43,12 @@ const dropdownMenu = (
       <Checkbox>Expenditure Type</Checkbox>
     </li>
   </ul>
+  <div className="bottom-fix">
+        <Button type="primary" className="w-100">
+             Save
+        </Button>
+    </div>
+  </div>
 );
 
 const Home: React.FC<IHomeProps> = () => {
@@ -186,7 +196,7 @@ const Home: React.FC<IHomeProps> = () => {
             prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
           />
           <div className="btns-block">
-            <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
+            <Popover content={dropdownMenu} placement="topRight" trigger="click" overlayClassName="custom-popover">
               <Button
                 icon={
                   <em className="anticon">

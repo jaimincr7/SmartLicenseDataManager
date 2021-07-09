@@ -360,11 +360,10 @@ label {
 .filter-input {
   min-width: 160px;
   width: 100%;
+  &.lg {
+    min-width: 208px;
+  }
 }
-.filter-input.lg {
-  min-width: 208px;
-}
-
 .ovarlap {
   visibility: hidden;
   opacity: 0;
@@ -375,24 +374,23 @@ label {
   border-color: #dddddd;
   color: #4f4f4f;
   position: relative;
-}
-.filter-btn.ant-btn img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.filter-btn.ant-btn.active {
-  background: #014e97;
-  border-color: #014e97;
   img {
-    visibility: hidden;
-    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
-  .ovarlap {
-    visibility: visible;
-    opacity: 1;
+  &.active {
+    background: #014e97;
+    border-color: #014e97;
+    img {
+      visibility: hidden;
+      opacity: 0;
+    }
+    .ovarlap {
+      visibility: visible;
+      opacity: 1;
+    }
   }
 }
 
@@ -752,19 +750,39 @@ textarea.ant-input {
   }
   .ant-popover-inner {
     width: 225px;
-    max-height: 376px;
     background-color: #ffffff;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
     border-radius: 4px;
-    overflow-y: auto;
   }
   .ant-popover-inner-content {
     padding: 15px 22px;
     color: #4f4f4f;
   }
-  .checkbox-list {
-    li + li {
-      margin-top: 15px;
+  .checkbox-list-wrapper {
+    position: relative;
+    .checkbox-list {
+      margin:  0 -22px 10px;
+      max-height: 376px;
+      overflow-y: auto;
+      li{
+         padding: 0px 8px 0px 22px;
+      }
+      .line-bottom{
+        position: relative;
+        &::before{
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -8px;
+          width: 100%;
+          height: 1px;
+          background-color: #dddddd ;
+        }
+      }
+      li + li {
+        margin-top: 15px;
+      }
     }
   }
 }
