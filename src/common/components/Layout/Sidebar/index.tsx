@@ -116,6 +116,11 @@ function Sidebar() {
                 Pricing
               </Link>
             </Menu.Item>
+            <Menu.Item key="/windows-server/license">
+              <Link to="/windows-server/license" title="License">
+                License
+              </Link>
+            </Menu.Item>
             <Menu.Item key="/windows-server/exclusions">
               <Link to="/windows-server/exclusions" title="Exclusions">
                 Exclusions

@@ -180,6 +180,9 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
   }, [inventory.save.messages]);
 
   useEffect(() => {
+    if (+id > 0 && !inventory.getById.data) {
+      handleModalClose();
+    }
     if (+id > 0 && inventory.getById.data) {
       const data = inventory.getById.data;
       fillValuesOnEdit(data);

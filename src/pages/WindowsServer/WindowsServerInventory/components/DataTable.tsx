@@ -606,8 +606,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -669,47 +670,36 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const saveTableColumns = () => {
-    const isAllDeselected = Object.values(inventory.tableColumnSelection.columns).every(col => col === false);
+    const isAllDeselected = Object.values(inventory.tableColumnSelection.columns).every(
+      (col) => col === false
+    );
     if (isAllDeselected) {
-      toast.warning('Please select some columns.')
+      toast.info('Please select some columns.');
       return false;
     }
     dispatch(saveTableColumnSelection(inventory.tableColumnSelection));
-  }
+  };
 
   const handleSelectAllChange = (value: boolean) => {
     let selectedColumns: { [key: string]: boolean } = {};
-    columns.forEach(col => {
-      selectedColumns = { ...selectedColumns, [col.title]: value }
+    columns.forEach((col) => {
+      selectedColumns = { ...selectedColumns, [col.title]: value };
     });
-    dispatch(
-      setTableColumnSelection(selectedColumns)
-    );
+    dispatch(setTableColumnSelection(selectedColumns));
   };
 
   const dropdownMenu = (
     <ul className="checkbox-list">
       <li>
-        <Button
-          loading={commonFilters.saveTableColumnSelection.loading}
-          onClick={saveTableColumns}
-        >
+        <Button loading={commonFilters.saveTableColumnSelection.loading} onClick={saveTableColumns}>
           Save
         </Button>
       </li>
       <li>
-        <Button
-          onClick={() => handleSelectAllChange(true)}
-        >
-          Select All
-        </Button>
+        <Button onClick={() => handleSelectAllChange(true)}>Select All</Button>
       </li>
       <li>
-        <Button
-          onClick={() => handleSelectAllChange(false)}
-        >
-          Deselect All
-        </Button>
+        <Button onClick={() => handleSelectAllChange(false)}>Deselect All</Button>
       </li>
       {columns.map((col) => (
         <li key={col.title}>

@@ -3,6 +3,8 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import WindowsServerEntitlements from './WindowsServerEntitlements';
 import WindowsServerExclusions from './WindowsServerExclusions';
 import WindowsServerInventory from './WindowsServerInventory';
+import WindowsServerLicense from './WindowsServerLicense';
+import EditWindowsServerLicense from './WindowsServerLicense/EditWindowsServerLicense';
 import WindowsServerOverrides from './WindowsServerOverrides';
 import WindowsServerPricing from './WindowsServerPricing';
 
@@ -15,6 +17,11 @@ const WindowsServerRoutes: React.FC = () => {
         {/* Exclusions */}
         <Route exact path={`${match.path}/exclusions`} component={WindowsServerExclusions} />
         <Route exact path={`${match.path}/exclusions/:id`} component={WindowsServerExclusions} />
+
+        {/* License */}
+        <Route exact path={`${match.path}/license/edit/:id`} component={EditWindowsServerLicense} />
+        <Route exact path={`${match.path}/license`} component={WindowsServerLicense} />
+        <Route exact path={`${match.path}/license/:id`} component={WindowsServerLicense} />
 
         {/* Pricing */}
         <Route exact path={`${match.path}/pricing`} component={WindowsServerPricing} />

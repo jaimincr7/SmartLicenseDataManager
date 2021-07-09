@@ -6,6 +6,7 @@ import React from 'react';
 import commonService from '../../../services/common/common.service';
 import moment from 'moment';
 import sqlServerLicenseDetailService from '../../../services/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
+import windowsServerLicenseDetailService from '../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.service';
 
 const { RangePicker } = DatePicker;
 
@@ -65,14 +66,25 @@ export const FilterWithSwapOption = (
 
   React.useEffect(() => {
     if (!swap && licenseId && options.length === 0) {
-      sqlServerLicenseDetailService
-        .getLicenseDetailColumnLookup(licenseId, dataIndex)
-        .then((res) => {
-          return res.body.data;
-        })
-        .then((res) => {
-          setOptions(res);
-        });
+      if (tableName === 'vWindowsServerLicense') {
+        windowsServerLicenseDetailService
+          .getLicenseDetailColumnLookup(licenseId, dataIndex)
+          .then((res) => {
+            return res.body.data;
+          })
+          .then((res) => {
+            setOptions(res);
+          });
+      } else if (tableName === 'vSqlServerLicense') {
+        sqlServerLicenseDetailService
+          .getLicenseDetailColumnLookup(licenseId, dataIndex)
+          .then((res) => {
+            return res.body.data;
+          })
+          .then((res) => {
+            setOptions(res);
+          });
+      }
     }
     if (!swap && !licenseId && options.length === 0) {
       commonService
