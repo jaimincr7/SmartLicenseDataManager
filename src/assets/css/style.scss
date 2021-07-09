@@ -761,15 +761,15 @@ textarea.ant-input {
   .checkbox-list-wrapper {
     position: relative;
     .checkbox-list {
-      margin:  0 -22px 10px;
+      margin: 0 -22px 10px;
       max-height: 376px;
       overflow-y: auto;
-      li{
-         padding: 0px 8px 0px 22px;
+      li {
+        padding: 0px 8px 0px 22px;
       }
-      .line-bottom{
+      .line-bottom {
         position: relative;
-        &::before{
+        &::before {
           content: '';
           position: absolute;
           left: 0;
@@ -777,7 +777,7 @@ textarea.ant-input {
           bottom: -8px;
           width: 100%;
           height: 1px;
-          background-color: #dddddd ;
+          background-color: #dddddd;
         }
       }
       li + li {

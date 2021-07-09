@@ -9,6 +9,7 @@ export interface ISearch {
   filter_keys?: any;
   is_export_to_excel?: boolean;
   is_column_selection?: boolean;
+  is_lookup?: boolean;
 }
 
 export interface IApiResponseBody<T> {

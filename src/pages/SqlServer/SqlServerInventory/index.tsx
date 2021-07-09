@@ -6,13 +6,13 @@ import {
 } from '../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import { ISqlServerInventoryProps } from './sqlServerInventory.model';
 import React from 'react';
-import DataTable from './components/DataTable';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import AddSqlServerInventoryModal from './AddSqlServerInventoryModal';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import ProcessDataModal from './ProcessDataModal';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import MainTable from './MainTable';
 
 const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
@@ -105,7 +105,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
             </Col>
           </Row>
         </div>
-        <DataTable
+        <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {
             setId(id);
