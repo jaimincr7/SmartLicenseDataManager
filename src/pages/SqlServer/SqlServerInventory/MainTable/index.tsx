@@ -18,10 +18,11 @@ import {
   FilterByDate,
   FilterByDropdown,
   FilterWithSwapOption,
-} from '../../../../common/components/DataTableFilters';
+} from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
+import { setTableColumnSelection } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
@@ -413,12 +414,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       <DataTable
         ref={dataTableRef}
         setSelectedId={setSelectedId}
+        tableAction={tableAction}
+        exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
         reduxSelector={sqlServerInventorySelector}
         searchTableData={searchSqlServerInventory}
-        tableAction={tableAction}
         clearTableDataMessages={clearSqlServerInventoryMessages}
-        exportExcelFile={exportExcelFile}
+        setTableColumnSelection={setTableColumnSelection}
       />
     </>
   );

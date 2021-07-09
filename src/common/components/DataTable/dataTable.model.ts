@@ -1,3 +1,4 @@
+import { ITableColumnSelection } from './../../models/common';
 import { AsyncThunkAction } from '@reduxjs/toolkit';
 import { FormInstance } from 'antd';
 import { ISearch, ISearchResponse } from '../../../common/models/common';
@@ -11,4 +12,8 @@ export interface IDataTable {
   searchTableData: (arg: ISearch) => AsyncThunkAction<ISearchResponse<any>, any, {}>;
   clearTableDataMessages: () => { payload: undefined; type: string };
   exportExcelFile?: (arg: ISearch) => Promise<any>;
+  setTableColumnSelection: (arg: ITableColumnSelection) => {
+    payload: { [key: string]: boolean };
+    type: string;
+  };
 }

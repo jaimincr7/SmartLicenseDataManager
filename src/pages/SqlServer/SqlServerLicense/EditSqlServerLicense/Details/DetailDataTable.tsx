@@ -13,7 +13,7 @@ import {
   FilterByDate,
   FilterByDropdown,
   FilterWithSwapOption,
-} from '../../../../../common/components/DataTableFilters';
+} from '../../../../../common/components/DataTable/DataTableFilters';
 import { Common, DEFAULT_PAGE_SIZE, exportExcel } from '../../../../../common/constants/common';
 import sqlServerLicenseDetailService from '../../../../../services/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
 import { sqlServerLicenseDetailSelector } from '../../../../../store/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.reducer';

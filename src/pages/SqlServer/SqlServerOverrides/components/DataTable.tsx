@@ -10,7 +10,7 @@ import {
   Filter,
   FilterByDropdown,
   FilterWithSwapOption,
-} from '../../../../common/components/DataTableFilters';
+} from '../../../../common/components/DataTable/DataTableFilters';
 import { fixedColumn, IInlineSearch, orderByType } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import { commonSelector } from '../../../../store/common/common.reducer';

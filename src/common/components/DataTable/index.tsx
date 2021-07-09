@@ -6,12 +6,20 @@ import { IDataTable } from './dataTable.model';
 import moment from 'moment';
 import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
 import _ from 'lodash';
-import { Filter, FilterWithSwapOption } from '../../../common/components/DataTableFilters';
-import { fixedColumn, IInlineSearch, ISearch, orderByType } from '../../../common/models/common';
+import { Filter } from './DataTableFilters';
+import {
+  fixedColumn,
+  IInlineSearch,
+  ISearch,
+  orderByType,
+} from '../../../common/models/common';
 import { commonSelector } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
+import { saveTableColumnSelection } from '../../../store/common/common.action';
 
 let pageLoaded = false;
+let selectAllColumns = false;
+// let indeterminate = false;
 
 let tableFilter = {
   keyword: '',
@@ -29,6 +37,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     searchTableData,
     clearTableDataMessages,
     exportExcelFile,
+    setTableColumnSelection,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -36,8 +45,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
-  const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
+  // const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
   const [loading, setLoading] = useState(false);
+  // const [selectAllColumns, setSelectAllColumns] = useState(false);
+  // const [indeterminate, setIndeterminate] = React.useState(true);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -64,6 +75,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
     const searchData: ISearch = {
       is_lookup: !pageLoaded,
+      is_column_selection: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
@@ -182,9 +194,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -214,29 +225,73 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Start: Hide-show columns
   const hideShowColumn = (e, title) => {
+    selectAllColumns = false;
     if (e.target.checked) {
-      setTableColumn({ ...tableColumn, [title]: true });
+      dispatch(
+        setTableColumnSelection({ ...reduxStoreData.tableColumnSelection.columns, [title]: true })
+      );
     } else {
-      setTableColumn({ ...tableColumn, [title]: false });
+      dispatch(
+        setTableColumnSelection({ ...reduxStoreData.tableColumnSelection.columns, [title]: false })
+      );
     }
   };
+
+  const saveTableColumns = () => {
+    const isAllDeselected = Object.values(reduxStoreData.tableColumnSelection.columns).every(
+      (col) => col === false
+    );
+    if (isAllDeselected) {
+      toast.info('Please select some columns.');
+      return false;
+    }
+    dispatch(saveTableColumnSelection(reduxStoreData.tableColumnSelection));
+  };
+
+  const handleSelectAllChange = (e) => {
+    let selectedColumns: { [key: string]: boolean } = {};
+
+    selectAllColumns = e.target.checked;
+    columns.forEach((col) => {
+      selectedColumns = { ...selectedColumns, [col.title]: e.target.checked };
+    });
+    dispatch(setTableColumnSelection(selectedColumns));
+  };
+
   const dropdownMenu = (
-    <ul className="checkbox-list">
-      {columns.map((col) => (
-        <li key={col.title}>
-          <Checkbox
-            checked={tableColumn[col.title] !== false}
-            onClick={(e) => hideShowColumn(e, col.title)}
-          >
-            {col.title}
+    <div className="checkbox-list-wrapper">
+      <ul className="checkbox-list">
+        <li className="line-bottom">
+          <Checkbox className="strong" checked={selectAllColumns} onClick={handleSelectAllChange}>
+            Select All
           </Checkbox>
         </li>
-      ))}
-    </ul>
+        {columns.map((col) => (
+          <li key={col.title}>
+            <Checkbox
+              checked={reduxStoreData.tableColumnSelection.columns[col.title] !== false}
+              onClick={(e) => hideShowColumn(e, col.title)}
+            >
+              {col.title}
+            </Checkbox>
+          </li>
+        ))}
+      </ul>
+      <div className="bottom-fix">
+        <Button
+          type="primary"
+          className="w-100"
+          loading={commonFilters.saveTableColumnSelection.loading}
+          onClick={saveTableColumns}
+        >
+          Save
+        </Button>
+      </div>
+    </div>
   );
   const getColumns = () => {
     return columns.filter((col) => {
-      return tableColumn[col.title] !== false;
+      return reduxStoreData.tableColumnSelection.columns[col.title] !== false;
     });
   };
   // End: Hide-show columns

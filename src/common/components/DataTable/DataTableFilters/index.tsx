@@ -1,12 +1,12 @@
 import { Form, Input, Select, Spin, Button } from 'antd';
 import { useState } from 'react';
-import { IDropDownOption } from '../../models/common';
+import { IDropDownOption } from '../../../models/common';
 import { DatePicker } from 'antd';
 import React from 'react';
-import commonService from '../../../services/common/common.service';
+import commonService from '../../../../services/common/common.service';
 import moment from 'moment';
-import sqlServerLicenseDetailService from '../../../services/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
-import windowsServerLicenseDetailService from '../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.service';
+import sqlServerLicenseDetailService from '../../../../services/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.service';
+import windowsServerLicenseDetailService from '../../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.service';
 
 const { RangePicker } = DatePicker;
 
