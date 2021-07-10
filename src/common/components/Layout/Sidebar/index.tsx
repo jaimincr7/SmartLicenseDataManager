@@ -155,6 +155,18 @@ function Sidebar() {
               </Link>
             </Menu.Item>
           </SubMenu>
+          <SubMenu
+            key="user"
+            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-administrator.svg`} alt="" />}
+            title="Administration"
+            className="no-icon"
+          >
+            <Menu.Item key="/user/menu-rights">
+              <Link to="/user/menu-rights" title="Menu Rights">
+                Menu Rights
+              </Link>
+            </Menu.Item>
+          </SubMenu>
         </Menu>
       </Scrollbars>
     </aside>

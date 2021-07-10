@@ -14,6 +14,7 @@ import { Dashboard } from './pages/Dashboard';
 import DataInputRoutes from './pages/DataInput/DataInput.routes';
 import WindowsServerRoutes from './pages/WindowsServer/WindowsServer.routes';
 import AdRoutes from './pages/Ad/Ad.routes';
+import UserRoutes from './pages/User/User.routes';
 
 function AppRoutes() {
   return (
@@ -32,13 +33,16 @@ function AppRoutes() {
             <Redirect to="/" />
           </Route>
           <LayoutRoute exact path="/" layout={MainLayout} component={Dashboard} />
-          <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />
-          <LayoutRoute exact path="/add-event" layout={MainLayout} component={AddEvent} />
           <LayoutRoute path="/sql-server" layout={MainLayout} component={SqlServerRoutes} />
           <LayoutRoute path="/ad" layout={MainLayout} component={AdRoutes} />
-          <LayoutRoute path="/upload-excel" layout={MainLayout} component={UploadExcel} />
           <LayoutRoute path="/data-input" layout={MainLayout} component={DataInputRoutes} />
           <LayoutRoute path="/windows-server" layout={MainLayout} component={WindowsServerRoutes} />
+          <LayoutRoute path="/user" layout={MainLayout} component={UserRoutes} />
+
+          {/* Dummy routes for designers */}
+          <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />
+          <LayoutRoute exact path="/add-event" layout={MainLayout} component={AddEvent} />
+          <LayoutRoute path="/upload-excel" layout={MainLayout} component={UploadExcel} />
 
           {/* keep least always */}
           <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />

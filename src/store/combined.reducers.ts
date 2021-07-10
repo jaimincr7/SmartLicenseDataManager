@@ -20,6 +20,7 @@ import windowsServerOverridesReducer from './windowsServer/windowsServerOverride
 import windowsServerPricingReducer from './windowsServer/windowsServerPricing/windowsServerPricing.reducer';
 import windowsServerLicenseReducer from './windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import windowsServerLicenseDetailReducer from './windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.reducer';
+import menuReducer from './user/menu/menu.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -43,4 +44,5 @@ export const rootReducer = combineReducers({
   windowsServerExclusions: windowsServerExclusionsReducer,
   windowsServerLicense: windowsServerLicenseReducer,
   windowsServerLicenseDetail: windowsServerLicenseDetailReducer,
+  menu: menuReducer,
 });
