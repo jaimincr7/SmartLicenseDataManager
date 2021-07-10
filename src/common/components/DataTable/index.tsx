@@ -13,8 +13,6 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
 
 let pageLoaded = false;
-let selectAllColumns = false;
-// let indeterminate = false;
 
 let tableFilter = {
   keyword: '',
@@ -41,10 +39,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
-  // const [tableColumn, setTableColumn] = useState<{ [key: string]: boolean }>({});
   const [loading, setLoading] = useState(false);
-  // const [selectAllColumns, setSelectAllColumns] = useState(false);
-  // const [indeterminate, setIndeterminate] = React.useState(true);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -94,6 +89,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   React.useEffect(() => {
     return () => {
       pageLoaded = false;
+      tableFilter = {
+        keyword: '',
+        order_by: 'id',
+        order_direction: 'DESC' as orderByType,
+        filter_keys: {},
+      };
     };
   }, []);
 
@@ -222,7 +223,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Start: Hide-show columns
   const hideShowColumn = (e, title) => {
-    selectAllColumns = false;
     if (e.target.checked) {
       dispatch(
         setTableColumnSelection({ ...reduxStoreData.tableColumnSelection.columns, [title]: true })
@@ -247,8 +247,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const handleSelectAllChange = (e) => {
     let selectedColumns: { [key: string]: boolean } = {};
-
-    selectAllColumns = e.target.checked;
     columns.forEach((col) => {
       selectedColumns = { ...selectedColumns, [col.title]: e.target.checked };
     });
@@ -259,7 +257,21 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     <div className="checkbox-list-wrapper">
       <ul className="checkbox-list">
         <li className="line-bottom">
-          <Checkbox className="strong" checked={selectAllColumns} onClick={handleSelectAllChange}>
+          <Checkbox
+            className="strong"
+            checked={Object.values(reduxStoreData.tableColumnSelection.columns).every(
+              (el) => el === true
+            )}
+            onClick={handleSelectAllChange}
+            indeterminate={
+              !Object.values(reduxStoreData.tableColumnSelection.columns).every(
+                (el) => el === true
+              ) &&
+              !Object.values(reduxStoreData.tableColumnSelection.columns).every(
+                (el) => el === false
+              )
+            }
+          >
             Select All
           </Checkbox>
         </li>

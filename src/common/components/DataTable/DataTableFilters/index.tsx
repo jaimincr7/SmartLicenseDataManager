@@ -45,7 +45,7 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
         notFoundContent={dropdownOptions.length === 0 ? <Spin size="small" /> : null}
       >
         {dropdownOptions.map((option: IDropDownOption) => (
-          <Select.Option key={option.name} value={option.id}>
+          <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
             {option.name}
           </Select.Option>
         ))}
