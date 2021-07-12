@@ -1,6 +1,12 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import { IMenu, IMenuRightsByRoleId, ISearchMenu } from './menu.model';
+import {
+  IMenu,
+  IMenuRightsByRoleId,
+  ISearchMenu,
+  IAccessMenuRights,
+  IRoleLookup,
+} from './menu.model';
 
 class MenuService {
   ENDPOINT = '/menu';
@@ -38,6 +44,27 @@ class MenuService {
 
   public async getMenuRightsByRoleId(roleId: number): Promise<IApiResponse<IMenuRightsByRoleId>> {
     const url = `${this.ENDPOINT}/menu-rights/${roleId}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async saveMenuAccessRights(data: IAccessMenuRights): Promise<any> {
+    const url = `/role-menu-access-right`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async deleteMenuAccessRights(data: IAccessMenuRights): Promise<any> {
+    const url = `/role-menu-access-right`;
+    return request({ url, method: 'DELETE', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getRoleLookup(): Promise<IApiResponse<IRoleLookup>> {
+    const url = `/role/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

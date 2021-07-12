@@ -1,8 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
-import { IMenu, IMenuRightsByRoleId } from '../../../services/user/menu/menu.model';
+import { IMenu, IMenuRightsByRoleId, IRoleLookup } from '../../../services/user/menu/menu.model';
 import { RootState } from '../../app.model';
-import { searchMenu, getMenuById, saveMenu, getMenuRightsByRoleId } from './menu.action';
+import {
+  searchMenu,
+  getMenuById,
+  saveMenu,
+  getMenuRightsByRoleId,
+  saveMenuAccessRights,
+  deleteMenuAccessRights,
+  getRoleLookup,
+} from './menu.action';
 import { IMenuState } from './menu.model';
 
 export const initialState: IMenuState = {
@@ -34,6 +42,20 @@ export const initialState: IMenuState = {
     hasErrors: false,
     data: null,
   },
+  saveMenuAccessRights: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  deleteMenuAccessRights: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  roleLookup: {
+    data: [],
+    loading: false,
+  },
 };
 
 export const menuSlice = createSlice({
@@ -45,6 +67,8 @@ export const menuSlice = createSlice({
     },
     clearMenuMessages: (state) => {
       state.save.messages = [];
+      state.saveMenuAccessRights.messages = [];
+      state.deleteMenuAccessRights.messages = [];
     },
     clearMenuGetById: (state) => {
       state.getById.data = null;
@@ -123,6 +147,59 @@ export const menuSlice = createSlice({
     [getMenuRightsByRoleId.rejected.type]: (state) => {
       state.getMenuRightsByRoleId.loading = false;
       state.getMenuRightsByRoleId.hasErrors = true;
+    },
+
+    // Save Menu Access Rights
+    [saveMenuAccessRights.pending.type]: (state) => {
+      state.saveMenuAccessRights.loading = true;
+      state.saveMenuAccessRights.messages = [];
+    },
+    [saveMenuAccessRights.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveMenuAccessRights.loading = false;
+      state.saveMenuAccessRights.hasErrors = false;
+      state.saveMenuAccessRights.messages = action.payload.messages;
+    },
+    [saveMenuAccessRights.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveMenuAccessRights.loading = false;
+      state.saveMenuAccessRights.hasErrors = true;
+      state.saveMenuAccessRights.messages = action.payload.errors;
+    },
+
+    // Delete Menu Access Rights
+    [deleteMenuAccessRights.pending.type]: (state) => {
+      state.deleteMenuAccessRights.loading = true;
+      state.deleteMenuAccessRights.messages = [];
+    },
+    [deleteMenuAccessRights.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.deleteMenuAccessRights.loading = false;
+      state.deleteMenuAccessRights.hasErrors = false;
+      state.deleteMenuAccessRights.messages = action.payload.messages;
+    },
+    [deleteMenuAccessRights.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.deleteMenuAccessRights.loading = false;
+      state.deleteMenuAccessRights.hasErrors = true;
+      state.deleteMenuAccessRights.messages = action.payload.errors;
+    },
+
+    // Role lookup
+    [getRoleLookup.pending.type]: (state) => {
+      state.roleLookup.loading = true;
+    },
+    [getRoleLookup.fulfilled.type]: (state, action: PayloadAction<IRoleLookup[]>) => {
+      state.roleLookup.data = action.payload;
+      state.roleLookup.loading = false;
     },
   },
 });

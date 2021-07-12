@@ -23,7 +23,9 @@ let tableFilter = {
 
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const {
+    defaultOrderBy,
     showAddButton,
+    extraSearchData,
     setSelectedId,
     getTableColumns,
     reduxSelector,
@@ -46,6 +48,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   });
 
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
+
+  tableFilter.order_by = defaultOrderBy ? defaultOrderBy : tableFilter.order_by;
 
   const getSearchData = (page, isExportToExcel: boolean) => {
     const { filter_keys, ...rest } = tableFilter;
@@ -72,6 +76,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       ...(rest || {}),
       filter_keys: inlineSearchFilter,
       is_export_to_excel: isExportToExcel,
+      ...(extraSearchData || {}),
     };
     pageLoaded = true;
     return searchData;
@@ -117,7 +122,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const handleTableChange = (paginating, filters, sorter) => {
     tableFilter = {
       ...tableFilter,
-      order_by: sorter.field || sorter.column?.children[0]?.dataIndex || 'id',
+      order_by:
+        sorter.field ||
+        sorter.column?.children[0]?.dataIndex ||
+        (defaultOrderBy ? defaultOrderBy : 'id'),
       order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
     };
     setPagination(paginating);
@@ -125,16 +133,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   React.useEffect(() => {
-    if (reduxStoreData.delete.messages.length > 0) {
+    if (reduxStoreData.delete?.messages && reduxStoreData.delete?.messages.length > 0) {
       if (reduxStoreData.delete.hasErrors) {
-        toast.error(reduxStoreData.delete.messages.join(' '));
+        toast.error(reduxStoreData.delete?.messages.join(' '));
       } else {
-        toast.success(reduxStoreData.delete.messages.join(' '));
+        toast.success(reduxStoreData.delete?.messages.join(' '));
         fetchTableData();
       }
       dispatch(clearTableDataMessages());
     }
-  }, [reduxStoreData.delete.messages]);
+  }, [reduxStoreData?.delete?.messages]);
   // End: Delete action
 
   // Keyword search
@@ -159,7 +167,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   React.useEffect(() => {
     form.resetFields();
   }, [inlineSearch]);
-
   // End: Column level filter
 
   // Export Excel
@@ -215,7 +222,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           key: 'Action',
           width: '80px',
           fixed: 'right' as fixedColumn,
-          render: tableAction,
+          render: tableAction ? tableAction : () => <></>,
         },
       ],
     },
@@ -310,7 +317,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
-          <Button onClick={downloadExcel} icon={<FileExcelOutlined />} loading={loading}>
+          <Button
+            onClick={downloadExcel}
+            icon={<FileExcelOutlined />}
+            loading={loading}
+            disabled={reduxStoreData.search.count === 0}
+          >
             Export
           </Button>
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
@@ -339,7 +351,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
         <Table
           scroll={{ x: true }}
-          rowKey={(record) => record.id}
+          rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
           dataSource={reduxStoreData.search.data}
           columns={getColumns()}
           loading={reduxStoreData.search.loading}

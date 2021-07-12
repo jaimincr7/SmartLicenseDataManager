@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ISearchMenu, IMenu } from '../../../services/user/menu/menu.model';
+import { ISearchMenu, IMenu, IAccessMenuRights } from '../../../services/user/menu/menu.model';
 import menuService from '../../../services/user/menu/menu.service';
 
 // Asynchronous thunk action
@@ -25,8 +25,35 @@ export const saveMenu = createAsyncThunk('saveMenu', async (data: IMenu) => {
   return response;
 });
 
+export const saveMenuAccessRights = createAsyncThunk(
+  'saveMenuAccessRights',
+  async (data: IAccessMenuRights) => {
+    const response = await menuService.saveMenuAccessRights(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
+
+export const deleteMenuAccessRights = createAsyncThunk(
+  'deleteMenuAccessRights',
+  async (data: IAccessMenuRights) => {
+    const response = await menuService.deleteMenuAccessRights(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
+
+export const getRoleLookup = createAsyncThunk('getRoleLookup', async () => {
+  const response = await menuService.getRoleLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 // Get child menu
-const getChildMenus = (menus: IMenu[] , menuId: number, result: IMenu[]) =>{
+const getChildMenus = (menus: IMenu[], menuId: number, result: IMenu[]) => {
   menus.map((c: IMenu) => {
     if (menuId === +c.parent_menu_id) {
       result.push(c);
@@ -34,7 +61,7 @@ const getChildMenus = (menus: IMenu[] , menuId: number, result: IMenu[]) =>{
     }
   });
   return result;
-}
+};
 
 export const getMenuRightsByRoleId = createAsyncThunk(
   'getMenuRightsByRoleId',

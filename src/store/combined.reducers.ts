@@ -21,6 +21,9 @@ import windowsServerPricingReducer from './windowsServer/windowsServerPricing/wi
 import windowsServerLicenseReducer from './windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import windowsServerLicenseDetailReducer from './windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.reducer';
 import menuReducer from './user/menu/menu.reducer';
+import tenantReducer from './master/tenant/tenant.reducer';
+import companyReducer from './master/company/company.reducer';
+import buReducer from './master/bu/bu.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -45,4 +48,7 @@ export const rootReducer = combineReducers({
   windowsServerLicense: windowsServerLicenseReducer,
   windowsServerLicenseDetail: windowsServerLicenseDetailReducer,
   menu: menuReducer,
+  tenant: tenantReducer,
+  company: companyReducer,
+  bu: buReducer,
 });

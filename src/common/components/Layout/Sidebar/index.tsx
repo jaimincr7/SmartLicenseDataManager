@@ -157,13 +157,25 @@ function Sidebar() {
           </SubMenu>
           <SubMenu
             key="user"
-            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-administrator.svg`} alt="" />}
+            icon={
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-administrator.svg`} alt="" />
+            }
             title="Administration"
             className="no-icon"
           >
             <Menu.Item key="/user/menu-rights">
               <Link to="/user/menu-rights" title="Menu Rights">
                 Menu Rights
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/user/tenant">
+              <Link to="/user/tenant" title="Tenant">
+                Tenant
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/user/company">
+              <Link to="/user/company" title="Company">
+                Company
               </Link>
             </Menu.Item>
           </SubMenu>

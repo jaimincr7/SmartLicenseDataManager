@@ -1,14 +1,19 @@
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IMenuRights } from './menuRights.model';
 import { clearMenuMessages, menuSelector } from '../../../store/user/menu/menu.reducer';
 import { Button, Form, Select, Switch, Table } from 'antd';
-import { getMenuRightsByRoleId } from '../../../store/user/menu/menu.action';
-import { IMenu } from '../../../services/user/menu/menu.model';
-import { ILookup } from '../../../services/common/common.model';
+import {
+  deleteMenuAccessRights,
+  getMenuRightsByRoleId,
+  getRoleLookup,
+  saveMenuAccessRights,
+} from '../../../store/user/menu/menu.action';
+import { IMenu, IRoleLookup } from '../../../services/user/menu/menu.model';
 import _ from 'lodash';
 import EditMenuModal from './EditMenuModal';
 import { EditOutlined } from '@ant-design/icons';
+import { toast } from 'react-toastify';
 
 const MenuRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -19,38 +24,35 @@ const MenuRights: React.FC<IMenuRights> = () => {
   const [selectedMenu, setSelectedMenu] = React.useState<IMenu>(null);
 
   const onFinish = (values: any) => {
-    values.menu_rights = Object.keys(_.pickBy(values.menu_rights, _.identity));
-    console.log('---------values', values);
+    const accessRights = Object.keys(_.pickBy(values.menu_rights, _.identity));
+    const deleteRights = Object.keys(values.menu_rights).filter((i) => !accessRights.includes(i));
+    const accessRightsInputValues = {
+      role_id: values.role_id,
+      menu_access_right_ids: accessRights,
+    };
+    const deleteRightsInputValues = {
+      role_id: values.role_id,
+      menu_access_right_ids: deleteRights,
+    };
+    dispatch(saveMenuAccessRights(accessRightsInputValues));
+    dispatch(deleteMenuAccessRights(deleteRightsInputValues));
   };
 
-  const roles = [
-    {
-      id: 1,
-      name: 'Global Admin',
-    },
-    {
-      id: 2,
-      name: 'Tenant Admin',
-    },
-    {
-      id: 3,
-      name: 'Company Admin',
-    },
-    {
-      id: 4,
-      name: 'User',
-    },
-    {
-      id: 5,
-      name: 'Trusted Customer Evaluation',
-    },
-  ];
+  useEffect(() => {
+    if (reduxStoreData.saveMenuAccessRights.messages.length > 0) {
+      if (reduxStoreData.saveMenuAccessRights.hasErrors) {
+        toast.error(reduxStoreData.saveMenuAccessRights.messages.join(' '));
+      } else {
+        toast.success(reduxStoreData.saveMenuAccessRights.messages.join(' '));
+      }
+      dispatch(clearMenuMessages());
+    }
+  }, [reduxStoreData.saveMenuAccessRights.messages]);
 
   const editMenu = (menu: IMenu) => {
     setSelectedMenu(menu);
     setEditModalVisible(true);
   };
-
 
   const getMenuDropdown = (selectedMenuId: number, menuId = 0) => {
     const dropdown = [];
@@ -69,6 +71,7 @@ const MenuRights: React.FC<IMenuRights> = () => {
   };
 
   React.useEffect(() => {
+    dispatch(getRoleLookup());
     dispatch(getMenuRightsByRoleId(1));
     return () => {
       dispatch(clearMenuMessages());
@@ -84,7 +87,7 @@ const MenuRights: React.FC<IMenuRights> = () => {
     const maxLevel = reduxStoreData.getMenuRightsByRoleId.data?.maxLevel;
     for (let index = 1; index <= maxLevel; index++) {
       mainColumns.push({
-        title: index == 1 ? 'Menu' : `Sub Menu ${index-1}`,
+        title: index == 1 ? 'Menu' : `Sub Menu ${index - 1}`,
         dataIndex: 'description',
         key: 'description',
         render: (_, data: IMenu) => (
@@ -154,8 +157,8 @@ const MenuRights: React.FC<IMenuRights> = () => {
               initialValue={1}
             >
               <Select onChange={handleRoleIdChange} loading={false} style={{ width: '200px' }}>
-                {roles.map((option: ILookup) => (
-                  <Select.Option key={option.id} value={option.id}>
+                {reduxStoreData.roleLookup.data.map((option: IRoleLookup) => (
+                  <Select.Option key={option.c_RoleId} value={option.c_RoleId}>
                     {option.name}
                   </Select.Option>
                 ))}
@@ -167,6 +170,10 @@ const MenuRights: React.FC<IMenuRights> = () => {
                 onClick={() => {
                   form.submit();
                 }}
+                loading={
+                  reduxStoreData.saveMenuAccessRights.loading ||
+                  reduxStoreData.deleteMenuAccessRights.loading
+                }
               >
                 Save
               </Button>

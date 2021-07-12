@@ -7,7 +7,7 @@ import {
   clearWindowsServerLicenseGetById,
   windowsServerLicenseSelector,
 } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
-import DetailsDataTable from './Details/DetailDataTable';
+import DetailDataTable from './Details/DetailDataTable';
 import { IEditWindowsServerLicenseProps } from './editWindowsServerLicense.model';
 import Scenarios from './Scenarios/Scenarios';
 
@@ -63,7 +63,7 @@ const EditWindowsServerLicense: React.FC<IEditWindowsServerLicenseProps> = (prop
               <Scenarios licenseId={+licenseId} />
             </TabPane>
             <TabPane tab="Detail" key="Detail">
-              <DetailsDataTable licenseId={+licenseId} />
+              <DetailDataTable licenseId={+licenseId} />
             </TabPane>
           </Tabs>
         </div>

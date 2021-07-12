@@ -1,24 +1,11 @@
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Spin,
-  Switch,
-  TreeSelect,
-} from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Spin, Switch, TreeSelect } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Messages } from '../../../../common/constants/messages';
 import { IMenu } from '../../../../services/user/menu/menu.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import {  saveMenu } from '../../../../store/user/menu/menu.action';
-import {
-  clearMenuMessages,
-  menuSelector,
-} from '../../../../store/user/menu/menu.reducer';
+import { saveMenu } from '../../../../store/user/menu/menu.action';
+import { clearMenuMessages, menuSelector } from '../../../../store/user/menu/menu.reducer';
 import { IEditMenuModal } from './editMenu.model';
 
 const validateMessages = {

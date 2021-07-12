@@ -3,4 +3,5 @@ export const Messages = {
   NUMBER: '${label} is not a valid number',
   MIN: '${label} should be greater than or equal to ${min}',
   MAXLENGTH: '${label} has a maximum length of ${max} characters',
+  INVALID: 'Please enter valid ${label}',
 };
