@@ -433,9 +433,9 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('vCPU', form),
-            dataIndex: 'vCPU',
-            key: 'vCPU',
+            title: FilterBySwap('vcpu', form),
+            dataIndex: 'vcpu',
+            key: 'vcpu',
             ellipsis: true,
           },
         ],

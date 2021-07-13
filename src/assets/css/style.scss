@@ -690,6 +690,12 @@ textarea.ant-input {
   color: #4f4f4f;
 }
 
+.ant-select-tree-node-selected:not(.ant-select-tree-node-disabled) {
+  color: #fff;
+  font-weight: 500;
+  background-color: #014e97 !important;
+}
+
 // checkbox
 .ant-checkbox-wrapper {
   color: #4f4f4f;
@@ -714,6 +720,14 @@ textarea.ant-input {
 .ant-checkbox-input:focus + .ant-checkbox-inner {
   border-color: #014e97;
 }
+
+.ant-checkbox-indeterminate .ant-checkbox-inner {
+  border-color: #014e97;
+}
+.ant-checkbox-indeterminate .ant-checkbox-inner::after {
+  background-color: #014e97;
+}
+
 .ant-switch {
   min-width: 40px;
   height: 18px;
