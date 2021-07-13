@@ -301,7 +301,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                   <Form.Item name="opt_exclude_non_prod" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Exclude Non-Prod</label>
+                  <label className="label">Exclude Non-Prod</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -309,7 +309,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                   <Form.Item name="opt_cluster_logic" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Cluster Logic</label>
+                  <label className="label">Cluster Logic</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -321,7 +321,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                   >
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Default to Enterprise on Hosts</label>
+                  <label className="label">Default to Enterprise on Hosts</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -329,7 +329,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                   <Form.Item name="opt_entitlements" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Entitlements</label>
+                  <label className="label">Assign Entitlements</label>
                 </div>
               </Col>
               <Col xs={24}>

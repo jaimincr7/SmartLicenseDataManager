@@ -17,6 +17,13 @@ class CommonService {
     });
   }
 
+  public async getAllCompanyLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/company/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getBULookup(companyId: number): Promise<IApiResponse<ILookup>> {
     const url = `/bu/lookup/${companyId}`;
     return request({ url, method: 'GET' }).then((res) => {

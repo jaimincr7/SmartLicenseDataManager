@@ -471,7 +471,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Opt-Agreement Type',
+        title: 'Agreement Type',
         sorter: true,
         ellipsis: true,
         children: [
@@ -484,7 +484,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Opt-Default to Enterprise on Hosts',
+        title: 'Default to Enterprise on Hosts',
         sorter: true,
         ellipsis: true,
         children: [
@@ -501,7 +501,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Opt-Cluster Logic',
+        title: 'Cluster Logic',
         sorter: true,
         ellipsis: true,
         children: [
@@ -518,7 +518,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Opt-Entitlements',
+        title: 'Entitlements',
         sorter: true,
         ellipsis: true,
         children: [
@@ -535,7 +535,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Opt-Exclude Non-Prod',
+        title: 'Exclude Non-Prod',
         sorter: true,
         ellipsis: true,
         children: [

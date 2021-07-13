@@ -12,16 +12,20 @@ import {
   deleteDataset,
   getWindowsServerLicenseLookup,
   saveTableColumnSelection,
+  getAllCompanyLookup,
 } from './common.action';
-import { ICommonState, IGlobalSearch } from './common.model';
+import { ICommonState } from './common.model';
 
 export const initialState: ICommonState = {
-  search: {},
   tenantLookup: {
     data: [],
     loading: false,
   },
   companyLookup: {
+    data: [],
+    loading: false,
+  },
+  allCompanyLookup: {
     data: [],
     loading: false,
   },
@@ -61,9 +65,9 @@ export const commonSlice = createSlice({
   name: 'common',
   initialState,
   reducers: {
-    setGlobalSearch: (state, action: PayloadAction<IGlobalSearch>) => {
-      state.search = action.payload;
-    },
+    // setGlobalSearch: (state, action: PayloadAction<IGlobalSearch>) => {
+    //   state.search = action.payload;
+    // },
     clearDeleteDatasetMessages: (state) => {
       state.deleteDataset.messages = [];
     },
@@ -97,6 +101,15 @@ export const commonSlice = createSlice({
     [getCompanyLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.companyLookup.data = action.payload;
       state.companyLookup.loading = false;
+    },
+
+    // All Company lookup
+    [getAllCompanyLookup.pending.type]: (state) => {
+      state.allCompanyLookup.loading = true;
+    },
+    [getAllCompanyLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.allCompanyLookup.data = action.payload;
+      state.allCompanyLookup.loading = false;
     },
 
     // BU lookup
@@ -192,7 +205,7 @@ export const {
   clearCommon,
   clearBULookUp,
   clearCompanyLookUp,
-  setGlobalSearch,
+  // setGlobalSearch,
   clearDeleteDatasetMessages,
   clearSaveTableColumnSelection,
 } = commonSlice.actions;

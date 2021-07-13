@@ -3,19 +3,19 @@ import { useEffect } from 'react';
 import { ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
-  getBULookup,
-  getCompanyLookup,
-  getTenantLookup,
-} from '../../../store/common/common.action';
+  getGlobalTenantLookup,
+  getGlobalCompanyLookup,
+  getGlobalBULookup,
+} from '../../../store/globalSearch/globalSearch.action';
 import {
-  clearBULookUp,
-  clearCompanyLookUp,
-  commonSelector,
+  clearGlobalBULookUp,
+  clearGlobalCompanyLookUp,
+  globalSearchSelector,
   setGlobalSearch,
-} from '../../../store/common/common.reducer';
+} from '../../../store/globalSearch/globalSearch.reducer';
 
 const GlobalSearch: React.FC = () => {
-  const commonLookups = useAppSelector(commonSelector);
+  const globalLookups = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
 
   const [form] = Form.useForm();
@@ -24,11 +24,11 @@ const GlobalSearch: React.FC = () => {
     form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
     setGlobalSearchValues();
     if (tenantId) {
-      dispatch(getCompanyLookup(tenantId));
-      dispatch(clearBULookUp());
+      dispatch(getGlobalCompanyLookup(tenantId));
+      dispatch(clearGlobalBULookUp());
     } else {
-      dispatch(clearCompanyLookUp());
-      dispatch(clearBULookUp());
+      dispatch(clearGlobalCompanyLookUp());
+      dispatch(clearGlobalBULookUp());
     }
   };
 
@@ -36,9 +36,9 @@ const GlobalSearch: React.FC = () => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
     setGlobalSearchValues();
     if (companyId) {
-      dispatch(getBULookup(companyId));
+      dispatch(getGlobalBULookup(companyId));
     } else {
-      dispatch(clearBULookUp());
+      dispatch(clearGlobalBULookUp());
     }
   };
 
@@ -61,15 +61,15 @@ const GlobalSearch: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(getTenantLookup());
-    form.setFieldsValue(commonLookups.search);
+    dispatch(getGlobalTenantLookup());
+    form.setFieldsValue(globalLookups.search);
   }, [dispatch]);
 
   return (
     <>
       <Form
         form={form}
-        initialValues={commonLookups.search}
+        initialValues={globalLookups.search}
         name="horizontal_filter"
         layout="inline"
       >
@@ -80,10 +80,10 @@ const GlobalSearch: React.FC = () => {
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
             notFoundContent={
-              commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
+              globalLookups.globalTenantLookup.data.length === 0 ? <Spin size="small" /> : null
             }
           >
-            {commonLookups.tenantLookup.data.map((option: ILookup) => (
+            {globalLookups.globalTenantLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
                 {option.name}
               </Select.Option>
@@ -97,10 +97,10 @@ const GlobalSearch: React.FC = () => {
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
             notFoundContent={
-              commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+              globalLookups.globalCompanyLookup.data.length === 0 ? <Spin size="small" /> : null
             }
           >
-            {commonLookups.companyLookup.data.map((option: ILookup) => (
+            {globalLookups.globalCompanyLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
                 {option.name}
               </Select.Option>
@@ -114,10 +114,10 @@ const GlobalSearch: React.FC = () => {
             suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
             allowClear
             notFoundContent={
-              commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
+              globalLookups.globalBULookup.data.length === 0 ? <Spin size="small" /> : null
             }
           >
-            {commonLookups.buLookup.data.map((option: ILookup) => (
+            {globalLookups.globalBULookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
                 {option.name}
               </Select.Option>

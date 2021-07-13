@@ -181,6 +181,42 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: 'Procs',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('procs', form),
+            dataIndex: 'procs',
+            key: 'procs',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: 'Cores',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('cores', form),
+            dataIndex: 'cores',
+            key: 'cores',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: 'vCPU',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('vCPU', form),
+            dataIndex: 'vCPU',
+            key: 'vCPU',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: 'Version',
         sorter: true,
         children: [
@@ -345,6 +381,35 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'application',
             key: 'application',
             ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: 'Azure Hosted',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'azure_hosted',
+              sqlServerInventory.search.lookups?.booleanLookup
+            ),
+            dataIndex: 'azure_hosted',
+            key: 'azure_hosted',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+      {
+        title: 'HA Enabled',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('ha_enabled', sqlServerInventory.search.lookups?.booleanLookup),
+            dataIndex: 'ha_enabled',
+            key: 'ha_enabled',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
           },
         ],
       },

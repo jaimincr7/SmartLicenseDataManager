@@ -4,7 +4,11 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
-import { deleteDataset, getBULookup, getCompanyLookup } from '../../../store/common/common.action';
+import {
+  deleteDataset,
+  getAllCompanyLookup,
+  getBULookup,
+} from '../../../store/common/common.action';
 import {
   clearBULookUp,
   clearDeleteDatasetMessages,
@@ -72,7 +76,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
   };
 
   useEffect(() => {
-    dispatch(getCompanyLookup(40));
+    dispatch(getAllCompanyLookup());
     return () => {
       dispatch(clearBULookUp());
     };
@@ -113,10 +117,10 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     onChange={handleCompanyChange}
                     allowClear
                     notFoundContent={
-                      common.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+                      common.allCompanyLookup.data.length === 0 ? <Spin size="small" /> : null
                     }
                   >
-                    {common.companyLookup.data.map((option: ILookup) => (
+                    {common.allCompanyLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
                         {option.name}
                       </Option>
@@ -163,11 +167,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                   className="m-0"
                   rules={[{ required: true }]}
                 >
-                  <DatePicker
-                    defaultValue={moment()}
-                    className="w-100"
-                    disabledDate={disabledDate}
-                  />
+                  <DatePicker className="w-100" disabledDate={disabledDate} />
                 </Form.Item>
               </div>
             </Col>

@@ -505,7 +505,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Opt-Entitlements',
+        title: 'Entitlements',
         sorter: true,
         ellipsis: true,
         children: [
@@ -522,7 +522,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Opt-Exclude Non-Prod',
+        title: 'Exclude Non-Prod',
         sorter: true,
         ellipsis: true,
         children: [

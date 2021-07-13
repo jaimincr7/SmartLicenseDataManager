@@ -24,6 +24,7 @@ import menuReducer from './user/menu/menu.reducer';
 import tenantReducer from './master/tenant/tenant.reducer';
 import companyReducer from './master/company/company.reducer';
 import buReducer from './master/bu/bu.reducer';
+import globalSearchReducer from './globalSearch/globalSearch.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -51,4 +52,5 @@ export const rootReducer = combineReducers({
   tenant: tenantReducer,
   company: companyReducer,
   bu: buReducer,
+  globalSearch: globalSearchReducer,
 });

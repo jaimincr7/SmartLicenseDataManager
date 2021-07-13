@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getBULookup, getCompanyLookup } from '../../../../store/common/common.action';
+import { getAllCompanyLookup, getBULookup } from '../../../../store/common/common.action';
 import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
 import { IReRunAllScenariosModalProps } from './reRunAllScenarios.model';
 import { reRunAllScenarios } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.action';
@@ -65,7 +65,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
   };
 
   useEffect(() => {
-    dispatch(getCompanyLookup(40));
+    dispatch(getAllCompanyLookup());
     return () => {
       dispatch(clearBULookUp());
     };
@@ -106,10 +106,12 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
                     onChange={handleCompanyChange}
                     allowClear
                     notFoundContent={
-                      commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+                      commonLookups.allCompanyLookup.data.length === 0 ? (
+                        <Spin size="small" />
+                      ) : null
                     }
                   >
-                    {commonLookups.companyLookup.data.map((option: ILookup) => (
+                    {commonLookups.allCompanyLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
                         {option.name}
                       </Option>
@@ -151,7 +153,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
                   className="m-0"
                   rules={[{ required: true }]}
                 >
-                  <DatePicker defaultValue={moment()} className="w-100" />
+                  <DatePicker className="w-100" />
                 </Form.Item>
               </div>
             </Col>

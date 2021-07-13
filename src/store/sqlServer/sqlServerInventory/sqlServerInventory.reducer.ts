@@ -1,3 +1,4 @@
+import { booleanLookup } from './../../../common/constants/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ISqlServerInventory } from '../../../services/sqlServer/sqlServerInventory/sqlServerInventory.model';
@@ -80,7 +81,7 @@ export const sqlServerInventorySlice = createSlice({
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
       if (JSON.stringify(rest) !== '{}') {
-        state.search.lookups = { ...rest };
+        state.search.lookups = { ...rest, booleanLookup };
       }
       state.search.loading = false;
       state.search.hasErrors = false;

@@ -9,8 +9,8 @@ import { IWindowsServerLicense } from '../../../../services/windowsServer/window
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getAgreementTypesLookup,
+  getAllCompanyLookup,
   getBULookup,
-  getCompanyLookup,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
@@ -122,7 +122,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
   }, [windowsServerLicense.getById.data]);
 
   useEffect(() => {
-    dispatch(getCompanyLookup(40)); //temporarily passed static id
+    dispatch(getAllCompanyLookup());
     dispatch(getAgreementTypesLookup());
     if (+id > 0) {
       dispatch(getWindowsServerLicenseById(+id));
@@ -173,10 +173,12 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                       onChange={handleCompanyChange}
                       allowClear
                       notFoundContent={
-                        commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+                        commonLookups.allCompanyLookup.data.length === 0 ? (
+                          <Spin size="small" />
+                        ) : null
                       }
                     >
-                      {commonLookups.companyLookup.data.map((option: ILookup) => (
+                      {commonLookups.allCompanyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
                         </Option>
@@ -237,7 +239,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                   <Form.Item name="opt_exclude_non_prod" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Exclude Non-Prod</label>
+                  <label className="label">Exclude Non-Prod</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -249,7 +251,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                   >
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Default to Data Center on Hosts</label>
+                  <label className="label">Default to Data Center on Hosts</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -257,7 +259,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                   <Form.Item name="opt_entitlements" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Entitlements</label>
+                  <label className="label">Assign Entitlements</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>

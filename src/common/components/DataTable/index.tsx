@@ -11,7 +11,7 @@ import { fixedColumn, IInlineSearch, ISearch, orderByType } from '../../../commo
 import { commonSelector } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
-// import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
+import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 
 let pageLoaded = false;
 
@@ -39,8 +39,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
-  const commonFilters = useAppSelector(commonSelector);
-  // const globalFilters = useAppSelector(globalSearchSelector);
+  const common = useAppSelector(commonSelector);
+  const globalFilters = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
@@ -111,8 +111,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const isGlobalSearchExist: boolean = globalSearchExist === undefined ? true : globalSearchExist;
     if (isGlobalSearchExist) {
       const globalSearch: IInlineSearch = {};
-      for (const key in commonFilters.search) {
-        const element = commonFilters.search[key];
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
         if (element) {
           globalSearch[key] = [element];
         }
@@ -124,7 +124,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       setPagination({ ...pagination, current: 1 });
       fetchTableData({ ...pagination, current: 1 });
     }
-  }, [commonFilters.search]);
+  }, [globalFilters.search]);
   // End: Global Search
 
   // Start: Pagination ans Sorting
@@ -207,8 +207,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -305,7 +306,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Button
           type="primary"
           className="w-100"
-          loading={commonFilters.saveTableColumnSelection.loading}
+          loading={common.saveTableColumnSelection.loading}
           onClick={saveTableColumns}
         >
           Save

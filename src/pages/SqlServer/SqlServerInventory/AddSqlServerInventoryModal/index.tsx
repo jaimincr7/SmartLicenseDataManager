@@ -239,7 +239,11 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
                       onChange={handleTenantChange}
                       allowClear
                       notFoundContent={
-                        commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
+                        commonLookups.tenantLookup.loading ? (
+                          <Spin size="small" />
+                        ) : commonLookups.tenantLookup.data.length === 0 ? (
+                          <>No Data</>
+                        ) : null
                       }
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
@@ -262,8 +266,15 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
                       onChange={handleCompanyChange}
                       allowClear
                       notFoundContent={
-                        commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+                        commonLookups.companyLookup.loading ? (
+                          <Spin size="small" />
+                        ) : commonLookups.companyLookup.data.length === 0 ? (
+                          <>No Data</>
+                        ) : null
                       }
+                    // notFoundContent={
+                    //   commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
+                    // }
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -285,8 +296,15 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
                       onChange={handleBUChange}
                       allowClear
                       notFoundContent={
-                        commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
+                        commonLookups.buLookup.loading ? (
+                          <Spin size="small" />
+                        ) : commonLookups.buLookup.data.length === 0 ? (
+                          <>No Data</>
+                        ) : null
                       }
+                    // notFoundContent={
+                    //   commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
+                    // }
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>

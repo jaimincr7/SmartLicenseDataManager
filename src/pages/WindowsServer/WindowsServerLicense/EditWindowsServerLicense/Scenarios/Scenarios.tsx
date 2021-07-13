@@ -133,7 +133,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
                   <Form.Item name="opt_exclude_non_prod" className="m-0" valuePropName="checked">
                     <Switch disabled className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Exclude Non-Prod</label>
+                  <label className="label">Exclude Non-Prod</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -145,7 +145,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
                   >
                     <Switch disabled className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Default to Data Center on Hosts</label>
+                  <label className="label">Default to Data Center on Hosts</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -153,7 +153,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
                   <Form.Item name="opt_entitlements" className="m-0" valuePropName="checked">
                     <Switch disabled className="form-control" />
                   </Form.Item>
-                  <label className="label">Opt Entitlements</label>
+                  <label className="label">Assign Entitlements</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
