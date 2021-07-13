@@ -2,21 +2,25 @@ import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
-import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
+import _ from 'lodash';
+import {
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import {
-  clearTenantMessages,
+  clearBUMessages,
   setTableColumnSelection,
-  tenantSelector,
-} from '../../../../store/master/tenant/tenant.reducer';
-import tenantService from '../../../../services/master/tenant/tenant.service';
-import { deleteTenant, searchTenant } from '../../../../store/master/tenant/tenant.action';
+  buSelector,
+} from '../../../../store/master/bu/bu.reducer';
+import buService from '../../../../services/master/bu/bu.service';
+import { deleteBU, searchBU } from '../../../../store/master/bu/bu.action';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
-  const tenant = useAppSelector(tenantSelector);
+  const bu = useAppSelector(buSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -28,17 +32,43 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }));
 
   const exportExcelFile = (searchData: ISearch) => {
-    return tenantService.exportExcelFile(searchData);
+    return buService.exportExcelFile(searchData);
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, tenant.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, bu.search.tableName, form);
   };
 
   const getTableColumns = (form) => {
     return [
       {
         title: 'Tenant Name',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown('tenant_id', bu.search.lookups?.tenants),
+            dataIndex: 'tenant_name',
+            key: 'tenant_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: 'Company Name',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown('company_id', bu.search.lookups?.companies),
+            dataIndex: 'company_name',
+            key: 'company_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: 'BU Name',
         sorter: true,
         children: [
           {
@@ -49,11 +79,25 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      {
+        title: 'Active',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown('active', bu.search.lookups?.booleanLookup),
+            dataIndex: 'active',
+            key: 'active',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
     ];
   };
 
-  const removeTenant = (id: number) => {
-    dispatch(deleteTenant(id));
+  const removeBU = (id: number) => {
+    dispatch(deleteBU(id));
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
@@ -61,12 +105,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         className="action-btn"
         onClick={() => {
           setSelectedId(data.id);
-          history.push(`/user/tenant/${data.id}`);
+          history.push(`/user/bu/${data.id}`);
         }}
       >
         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
       </a>
-      <Popconfirm title="Sure to delete?" onConfirm={() => removeTenant(data.id)}>
+      <Popconfirm title="Sure to delete?" onConfirm={() => removeBU(data.id)}>
         <a href="#" title="" className="action-btn">
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
         </a>
@@ -84,9 +128,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
-        reduxSelector={tenantSelector}
-        searchTableData={searchTenant}
-        clearTableDataMessages={clearTenantMessages}
+        reduxSelector={buSelector}
+        searchTableData={searchBU}
+        clearTableDataMessages={clearBUMessages}
         setTableColumnSelection={setTableColumnSelection}
       />
     </>

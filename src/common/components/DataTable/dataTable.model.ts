@@ -7,6 +7,7 @@ import { RootState } from '../../../store/app.model';
 export interface IDataTable {
   defaultOrderBy?: string;
   showAddButton?: boolean;
+  globalSearchExist?: boolean;
   extraSearchData?: { [key: string]: any };
   setSelectedId?: (id: number) => void;
   getTableColumns: (form: FormInstance<any>) => any[];

@@ -1214,6 +1214,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
       <DataTable
         ref={dataTableRef}
         showAddButton={false}
+        globalSearchExist={false}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
         reduxSelector={windowsServerLicenseDetailSelector}

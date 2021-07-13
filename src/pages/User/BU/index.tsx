@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../../store/app.hooks';
-import { ITenantProps } from './tenant.model';
+import { IBUProps } from './bu.model';
 import React from 'react';
-import AddTenantModal from './AddTenantModal';
+import AddBUModal from './AddBUModal';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
-import { clearTenant } from '../../../store/master/tenant/tenant.reducer';
+import { clearBU } from '../../../store/master/bu/bu.reducer';
 
-const Tenant: React.FC<ITenantProps> = (props) => {
+const BU: React.FC<IBUProps> = (props) => {
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -27,7 +27,7 @@ const Tenant: React.FC<ITenantProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearTenant());
+      dispatch(clearBU());
     };
   }, []);
 
@@ -36,9 +36,9 @@ const Tenant: React.FC<ITenantProps> = (props) => {
   };
 
   return (
-    <div className="tenant">
+    <div className="bu">
       <div className="title-block">
-        <h4 className="p-0">Tenant</h4>
+        <h4 className="p-0">BU</h4>
       </div>
       <div className="main-card">
         <MainTable
@@ -50,11 +50,11 @@ const Tenant: React.FC<ITenantProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddTenantModal
+        <AddBUModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/user/tenant');
+            history.push('/user/bu');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -64,4 +64,4 @@ const Tenant: React.FC<ITenantProps> = (props) => {
   );
 };
 
-export default Tenant;
+export default BU;

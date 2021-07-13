@@ -11,6 +11,7 @@ import { fixedColumn, IInlineSearch, ISearch, orderByType } from '../../../commo
 import { commonSelector } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
+// import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 
 let pageLoaded = false;
 
@@ -25,6 +26,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const {
     defaultOrderBy,
     showAddButton,
+    globalSearchExist,
     extraSearchData,
     setSelectedId,
     getTableColumns,
@@ -38,6 +40,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const reduxStoreData = useAppSelector(reduxSelector);
   const commonFilters = useAppSelector(commonSelector);
+  // const globalFilters = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
@@ -105,16 +108,22 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Start: Global Search
   React.useEffect(() => {
-    const globalSearch: IInlineSearch = {};
-    for (const key in commonFilters.search) {
-      const element = commonFilters.search[key];
-      if (element) {
-        globalSearch[key] = [element];
+    const isGlobalSearchExist: boolean = globalSearchExist === undefined ? true : globalSearchExist;
+    if (isGlobalSearchExist) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in commonFilters.search) {
+        const element = commonFilters.search[key];
+        if (element) {
+          globalSearch[key] = [element];
+        }
       }
+      tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
+      setPagination({ ...pagination, current: 1 });
+      fetchTableData({ ...pagination, current: 1 });
+    } else {
+      setPagination({ ...pagination, current: 1 });
+      fetchTableData({ ...pagination, current: 1 });
     }
-    tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
-    setPagination({ ...pagination, current: 1 });
-    fetchTableData({ ...pagination, current: 1 });
   }, [commonFilters.search]);
   // End: Global Search
 
@@ -198,9 +207,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img

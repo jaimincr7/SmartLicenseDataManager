@@ -178,6 +178,11 @@ function Sidebar() {
                 Company
               </Link>
             </Menu.Item>
+            <Menu.Item key="/user/bu">
+              <Link to="/user/bu" title="BU">
+                BU
+              </Link>
+            </Menu.Item>
           </SubMenu>
         </Menu>
       </Scrollbars>
