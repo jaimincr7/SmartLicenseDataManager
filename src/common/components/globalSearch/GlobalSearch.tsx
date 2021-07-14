@@ -1,4 +1,4 @@
-import { Form, Select, Spin } from 'antd';
+import { Form, Select } from 'antd';
 import { useEffect } from 'react';
 import { ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
@@ -77,11 +77,8 @@ const GlobalSearch: React.FC = () => {
           <Select
             placeholder="Filter by Tenant"
             onChange={handleTenantChange}
-            suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
+            loading={globalLookups.globalTenantLookup.loading}
             allowClear
-            notFoundContent={
-              globalLookups.globalTenantLookup.data.length === 0 ? <Spin size="small" /> : null
-            }
           >
             {globalLookups.globalTenantLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
@@ -94,11 +91,8 @@ const GlobalSearch: React.FC = () => {
           <Select
             placeholder="Filter by Company"
             onChange={handleCompanyChange}
-            suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
+            loading={globalLookups.globalCompanyLookup.loading}
             allowClear
-            notFoundContent={
-              globalLookups.globalCompanyLookup.data.length === 0 ? <Spin size="small" /> : null
-            }
           >
             {globalLookups.globalCompanyLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
@@ -111,11 +105,8 @@ const GlobalSearch: React.FC = () => {
           <Select
             placeholder="Filter by BU"
             onChange={handleBUChange}
-            suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
+            loading={globalLookups.globalBULookup.loading}
             allowClear
-            notFoundContent={
-              globalLookups.globalBULookup.data.length === 0 ? <Spin size="small" /> : null
-            }
           >
             {globalLookups.globalBULookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>

@@ -184,14 +184,9 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                     rules={[{ required: true }]}
                   >
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleTenantChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.tenantLookup.loading}
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -207,14 +202,9 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                   <label className="label">Company</label>
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleCompanyChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.companyLookup.loading}
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -230,14 +220,9 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                   <label className="label">BU</label>
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleBUChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -252,17 +237,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                 <div className="form-group m-0">
                   <label className="label">Product Name</label>
                   <Form.Item name="license_id" className="m-0" label="Product Name">
-                    <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
-                      allowClear
-                      notFoundContent={
-                        commonLookups.sqlServerLicenseLookup.data.length === 0 ? (
-                          <Spin size="small" />
-                        ) : null
-                      }
-                    >
+                    <Select loading={commonLookups.sqlServerLicenseLookup.loading} allowClear>
                       {commonLookups.sqlServerLicenseLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
@@ -276,17 +251,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                 <div className="form-group m-0">
                   <label className="label">Agreement Type</label>
                   <Form.Item name="agreement_type_id" className="m-0" label="Agreement Type">
-                    <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
-                      allowClear
-                      notFoundContent={
-                        commonLookups.agreementTypesLookup.data.length === 0 ? (
-                          <Spin size="small" />
-                        ) : null
-                      }
-                    >
+                    <Select loading={commonLookups.agreementTypesLookup.loading} allowClear>
                       {commonLookups.agreementTypesLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
@@ -300,17 +265,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                 <div className="form-group m-0">
                   <label className="label">Currency</label>
                   <Form.Item name="currency_id" className="m-0" label="Currency">
-                    <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
-                      allowClear
-                      notFoundContent={
-                        commonLookups.currencyLookup.data.length === 0 ? (
-                          <Spin size="small" />
-                        ) : null
-                      }
-                    >
+                    <Select loading={commonLookups.currencyLookup.loading} allowClear>
                       {commonLookups.currencyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}

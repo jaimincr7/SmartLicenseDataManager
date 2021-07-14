@@ -167,16 +167,9 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                     rules={[{ required: true }]}
                   >
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
+                      loading={commonLookups.allCompanyLookup.loading}
                       onChange={handleCompanyChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.allCompanyLookup.data.length === 0 ? (
-                          <Spin size="small" />
-                        ) : null
-                      }
                     >
                       {commonLookups.allCompanyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -192,14 +185,9 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                   <label className="label">BU</label>
                   <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleBUChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -214,17 +202,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                 <div className="form-group m-0">
                   <label className="label">Agreement Type</label>
                   <Form.Item name="opt_agreement_type" className="m-0" label="Agreement Type">
-                    <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
-                      allowClear
-                      notFoundContent={
-                        commonLookups.agreementTypesLookup.data.length === 0 ? (
-                          <Spin size="small" />
-                        ) : null
-                      }
-                    >
+                    <Select loading={commonLookups.agreementTypesLookup.loading} allowClear>
                       {commonLookups.agreementTypesLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}

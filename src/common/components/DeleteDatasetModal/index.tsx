@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Modal, Row, Select, Spin } from 'antd';
+import { Button, Col, DatePicker, Form, Modal, Row, Select } from 'antd';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -111,14 +111,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                 >
                   <Select
                     placeholder="Select Company Name"
-                    suffixIcon={
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                    }
                     onChange={handleCompanyChange}
                     allowClear
-                    notFoundContent={
-                      common.allCompanyLookup.data.length === 0 ? <Spin size="small" /> : null
-                    }
+                    loading={common.allCompanyLookup.loading}
                   >
                     {common.allCompanyLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
@@ -140,14 +135,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                 >
                   <Select
                     placeholder="Select BU Name"
-                    suffixIcon={
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                    }
                     onChange={handleBUChange}
                     allowClear
-                    notFoundContent={
-                      common.buLookup.data.length === 0 ? <Spin size="small" /> : null
-                    }
+                    loading={common.buLookup.loading}
                   >
                     {common.buLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>

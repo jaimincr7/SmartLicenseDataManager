@@ -184,14 +184,9 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
                   <label className="label">Tenant</label>
                   <Form.Item name="tenant_id" className="m-0" label="Tenant">
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleTenantChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.tenantLookup.loading}
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -207,14 +202,9 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
                   <label className="label">Company</label>
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleCompanyChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.companyLookup.loading}
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -230,14 +220,9 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
                   <label className="label">BU</label>
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleBUChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>

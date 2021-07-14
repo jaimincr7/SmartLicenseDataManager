@@ -156,15 +156,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
                 <div className="form-group m-0">
                   <label className="label">Tenant</label>
                   <Form.Item name="tenant_id" className="m-0" label="Tenant">
-                    <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
-                      allowClear
-                      notFoundContent={
-                        commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
-                    >
+                    <Select allowClear loading={commonLookups.tenantLookup.loading}>
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
@@ -178,17 +170,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
                 <div className="form-group m-0">
                   <label className="label">Currency</label>
                   <Form.Item name="currency_id" className="m-0" label="Currency">
-                    <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
-                      allowClear
-                      notFoundContent={
-                        commonLookups.currencyLookup.data.length === 0 ? (
-                          <Spin size="small" />
-                        ) : null
-                      }
-                    >
+                    <Select loading={commonLookups.currencyLookup.loading} allowClear>
                       {commonLookups.currencyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}

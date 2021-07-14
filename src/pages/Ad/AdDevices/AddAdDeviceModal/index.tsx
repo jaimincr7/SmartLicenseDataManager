@@ -237,14 +237,9 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     rules={[{ required: true }]}
                   >
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleTenantChange}
+                      loading={commonLookups.tenantLookup.loading}
                       allowClear
-                      notFoundContent={
-                        commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -260,14 +255,9 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <label className="label">Company</label>
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleCompanyChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.companyLookup.loading}
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -283,14 +273,9 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <label className="label">BU</label>
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleBUChange}
+                      loading={commonLookups.buLookup.loading}
                       allowClear
-                      notFoundContent={
-                        commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>

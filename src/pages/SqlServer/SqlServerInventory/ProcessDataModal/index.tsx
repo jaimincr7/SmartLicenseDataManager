@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Select, Spin, Switch, DatePicker } from 'antd';
+import { Button, Col, Form, Modal, Row, Select, Switch, DatePicker } from 'antd';
 import { useEffect } from 'react';
 import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
@@ -114,16 +114,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 >
                   <Select
                     placeholder="Select Company Name"
-                    suffixIcon={
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                    }
+                    loading={commonLookups.allCompanyLookup.loading}
                     onChange={handleCompanyChange}
                     allowClear
-                    notFoundContent={
-                      commonLookups.allCompanyLookup.data.length === 0 ? (
-                        <Spin size="small" />
-                      ) : null
-                    }
                   >
                     {commonLookups.allCompanyLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
@@ -140,14 +133,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                   <Select
                     placeholder="Select BU Name"
-                    suffixIcon={
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                    }
+                    loading={commonLookups.buLookup.loading}
                     onChange={handleBUChange}
                     allowClear
-                    notFoundContent={
-                      commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
-                    }
                   >
                     {commonLookups.buLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>

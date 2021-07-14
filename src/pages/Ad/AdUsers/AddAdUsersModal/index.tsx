@@ -240,14 +240,9 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     rules={[{ required: true }]}
                   >
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleTenantChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.tenantLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.tenantLookup.loading}
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -268,14 +263,9 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     rules={[{ required: true }]}
                   >
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleCompanyChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.companyLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.companyLookup.loading}
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -291,14 +281,9 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                   <label className="label">BU</label>
                   <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                     <Select
-                      suffixIcon={
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
-                      }
                       onChange={handleBUChange}
                       allowClear
-                      notFoundContent={
-                        commonLookups.buLookup.data.length === 0 ? <Spin size="small" /> : null
-                      }
+                      loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
