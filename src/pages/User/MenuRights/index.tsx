@@ -2,9 +2,8 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React, { useEffect } from 'react';
 import { IMenuRights } from './menuRights.model';
 import { clearMenuMessages, menuSelector } from '../../../store/user/menu/menu.reducer';
-import { Button, Form, Select, Switch, Table } from 'antd';
+import { Button, Checkbox, Form, Select, Switch, Table } from 'antd';
 import {
-  deleteMenuAccessRights,
   getMenuRightsByRoleId,
   getRoleLookup,
   saveMenuAccessRights,
@@ -25,17 +24,11 @@ const MenuRights: React.FC<IMenuRights> = () => {
 
   const onFinish = (values: any) => {
     const accessRights = Object.keys(_.pickBy(values.menu_rights, _.identity));
-    const deleteRights = Object.keys(values.menu_rights).filter((i) => !accessRights.includes(i));
     const accessRightsInputValues = {
       role_id: values.role_id,
       menu_access_right_ids: accessRights,
     };
-    const deleteRightsInputValues = {
-      role_id: values.role_id,
-      menu_access_right_ids: deleteRights,
-    };
     dispatch(saveMenuAccessRights(accessRightsInputValues));
-    dispatch(deleteMenuAccessRights(deleteRightsInputValues));
   };
 
   useEffect(() => {
@@ -82,6 +75,33 @@ const MenuRights: React.FC<IMenuRights> = () => {
     dispatch(getMenuRightsByRoleId(roleId));
   };
 
+  const handleAllChange = (checked, menu: IMenu) => {
+    const menuRights = form.getFieldValue('menu_rights');
+    const selectRight: any = {};
+    menu.child_menu_rights.map((m) => {
+      selectRight[m] = checked;
+    });
+    form.setFieldsValue({ menu_rights: { ...menuRights, ...selectRight } });
+    setTimeout(() => {
+      checkAllRights();
+    });
+  };
+
+  const checkAllRights = () => {
+    const checkbox: any = {};
+    reduxStoreData.getMenuRightsByRoleId.data?.menus.map((m: IMenu) => {
+      const selectRight: any = {};
+      m.child_menu_rights.map((mr) => {
+        selectRight[mr] = form.getFieldValue(['menu_rights', mr]);
+      });
+      checkbox[m.id] = false;
+      if (Object.values(selectRight).every((el) => el === true)) {
+        checkbox[m.id] = true;
+      }
+    });
+    form.setFieldsValue({ selectAll: checkbox });
+  };
+
   React.useEffect(() => {
     const mainColumns = [];
     const maxLevel = reduxStoreData.getMenuRightsByRoleId.data?.maxLevel;
@@ -94,7 +114,11 @@ const MenuRights: React.FC<IMenuRights> = () => {
           <>
             {data.level === index && (
               <>
-                {data.description}{' '}
+                <Form.Item noStyle name={['selectAll', `${data.id}`]} valuePropName="checked">
+                  <Checkbox onChange={(e) => handleAllChange(e.target.checked, data)}>
+                    {data.description}
+                  </Checkbox>
+                </Form.Item>{' '}
                 <a
                   title="Edit"
                   onClick={() => {
@@ -127,7 +151,13 @@ const MenuRights: React.FC<IMenuRights> = () => {
                   valuePropName="checked"
                   initialValue={result?.is_rights}
                 >
-                  <Switch />
+                  <Switch
+                    onChange={() => {
+                      setTimeout(() => {
+                        checkAllRights();
+                      });
+                    }}
+                  />
                 </Form.Item>
               )}
             </>
@@ -139,6 +169,9 @@ const MenuRights: React.FC<IMenuRights> = () => {
     const roleId = form.getFieldValue('role_id');
     form.resetFields();
     form.setFieldsValue({ role_id: roleId });
+    setTimeout(() => {
+      checkAllRights();
+    });
   }, [reduxStoreData.getMenuRightsByRoleId.data]);
 
   return (
@@ -170,10 +203,7 @@ const MenuRights: React.FC<IMenuRights> = () => {
                 onClick={() => {
                   form.submit();
                 }}
-                loading={
-                  reduxStoreData.saveMenuAccessRights.loading ||
-                  reduxStoreData.deleteMenuAccessRights.loading
-                }
+                loading={reduxStoreData.saveMenuAccessRights.loading}
               >
                 Save
               </Button>

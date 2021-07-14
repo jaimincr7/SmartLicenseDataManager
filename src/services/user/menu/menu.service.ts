@@ -56,13 +56,6 @@ class MenuService {
     });
   }
 
-  public async deleteMenuAccessRights(data: IAccessMenuRights): Promise<any> {
-    const url = `/role-menu-access-right`;
-    return request({ url, method: 'DELETE', data: data }).then((res) => {
-      return res.data;
-    });
-  }
-
   public async getRoleLookup(): Promise<IApiResponse<IRoleLookup>> {
     const url = `/role/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

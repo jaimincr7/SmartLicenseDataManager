@@ -35,16 +35,6 @@ export const saveMenuAccessRights = createAsyncThunk(
   }
 );
 
-export const deleteMenuAccessRights = createAsyncThunk(
-  'deleteMenuAccessRights',
-  async (data: IAccessMenuRights) => {
-    const response = await menuService.deleteMenuAccessRights(data).then((res) => {
-      return res.body;
-    });
-    return response;
-  }
-);
-
 export const getRoleLookup = createAsyncThunk('getRoleLookup', async () => {
   const response = await menuService.getRoleLookup().then((res) => {
     return res.body;
@@ -58,6 +48,21 @@ const getChildMenus = (menus: IMenu[], menuId: number, result: IMenu[]) => {
     if (menuId === +c.parent_menu_id) {
       result.push(c);
       result = getChildMenus(menus, c.id, result);
+    }
+  });
+  return result;
+};
+
+const getChildMenuRights = (menus: IMenu[], menuId: number) => {
+  let result: number[] = [];
+  menus.map((m: IMenu) => {
+    if (m.id === menuId) {
+      const right = m.menu_rights.map((mr) => {
+        return mr.id;
+      });
+      result = [...result, ...right];
+    } else if (+m.parent_menu_id === menuId) {
+      result = [...result, ...getChildMenuRights(menus, m.id)];
     }
   });
   return result;
@@ -90,6 +95,13 @@ export const getMenuRightsByRoleId = createAsyncThunk(
       }
       return m;
     });
+
+    // set child menu rights array to parent
+    menuArray = menuArray.map((m: IMenu) => {
+      m.child_menu_rights = getChildMenuRights(menuArray, m.id);
+      return m;
+    });
+
     response.data.menus = menuArray;
     response.data.maxLevel = maxLevel;
     return response.data;

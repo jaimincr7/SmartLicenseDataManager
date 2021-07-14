@@ -31,11 +31,6 @@ export interface IMenuState {
     hasErrors: boolean;
     messages: string[];
   };
-  deleteMenuAccessRights: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
   roleLookup: {
     data: IRoleLookup[];
     loading: boolean;

@@ -8,7 +8,6 @@ import {
   saveMenu,
   getMenuRightsByRoleId,
   saveMenuAccessRights,
-  deleteMenuAccessRights,
   getRoleLookup,
 } from './menu.action';
 import { IMenuState } from './menu.model';
@@ -47,11 +46,6 @@ export const initialState: IMenuState = {
     hasErrors: false,
     messages: [],
   },
-  deleteMenuAccessRights: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
   roleLookup: {
     data: [],
     loading: false,
@@ -68,7 +62,6 @@ export const menuSlice = createSlice({
     clearMenuMessages: (state) => {
       state.save.messages = [];
       state.saveMenuAccessRights.messages = [];
-      state.deleteMenuAccessRights.messages = [];
     },
     clearMenuGetById: (state) => {
       state.getById.data = null;
@@ -169,28 +162,6 @@ export const menuSlice = createSlice({
       state.saveMenuAccessRights.loading = false;
       state.saveMenuAccessRights.hasErrors = true;
       state.saveMenuAccessRights.messages = action.payload.errors;
-    },
-
-    // Delete Menu Access Rights
-    [deleteMenuAccessRights.pending.type]: (state) => {
-      state.deleteMenuAccessRights.loading = true;
-      state.deleteMenuAccessRights.messages = [];
-    },
-    [deleteMenuAccessRights.fulfilled.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
-      state.deleteMenuAccessRights.loading = false;
-      state.deleteMenuAccessRights.hasErrors = false;
-      state.deleteMenuAccessRights.messages = action.payload.messages;
-    },
-    [deleteMenuAccessRights.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
-      state.deleteMenuAccessRights.loading = false;
-      state.deleteMenuAccessRights.hasErrors = true;
-      state.deleteMenuAccessRights.messages = action.payload.errors;
     },
 
     // Role lookup

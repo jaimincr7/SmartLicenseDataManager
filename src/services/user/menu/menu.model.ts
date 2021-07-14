@@ -26,6 +26,7 @@ export interface IMenu {
   is_display?: boolean;
   menu_rights?: IMenuRight[];
   level?: number;
+  child_menu_rights?: number[];
 }
 
 export interface IMenuRightsByRoleId {
