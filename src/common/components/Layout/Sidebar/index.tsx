@@ -163,9 +163,14 @@ function Sidebar() {
             title="Administration"
             className="no-icon"
           >
-            <Menu.Item key="/user/menu-rights">
-              <Link to="/user/menu-rights" title="Menu Rights">
-                Menu Rights
+            <Menu.Item key="/user/menu-rights/role">
+              <Link to="/user/menu-rights/role" title="Role - Menu Rights">
+                Role - Menu Rights
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/user/menu-rights/company">
+              <Link to="/user/menu-rights/company" title="Company - Menu Rights">
+                Company - Menu Rights
               </Link>
             </Menu.Item>
             <Menu.Item key="/user/tenant">

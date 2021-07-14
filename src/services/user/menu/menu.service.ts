@@ -5,7 +5,8 @@ import {
   IMenuRightsByRoleId,
   ISearchMenu,
   IAccessMenuRights,
-  IRoleLookup,
+  IMenuRightsByCompanyId,
+  IAccessCompanyMenuRights,
 } from './menu.model';
 
 class MenuService {
@@ -56,9 +57,18 @@ class MenuService {
     });
   }
 
-  public async getRoleLookup(): Promise<IApiResponse<IRoleLookup>> {
-    const url = `/role/lookup`;
+  public async getMenuRightsByCompanyId(
+    companyId: number
+  ): Promise<IApiResponse<IMenuRightsByCompanyId>> {
+    const url = `${this.ENDPOINT}/company-menu-rights/${companyId}`;
     return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async saveCompanyMenuAccessRights(data: IAccessCompanyMenuRights): Promise<any> {
+    const url = `/company-menu-access-right`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }

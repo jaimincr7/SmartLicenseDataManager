@@ -1,21 +1,24 @@
-import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
+import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import React, { useEffect } from 'react';
-import { IMenuRights } from './menuRights.model';
-import { clearMenuMessages, menuSelector } from '../../../store/user/menu/menu.reducer';
+import { IMenuRights } from '../menuRights.model';
+import { clearMenuMessages, menuSelector } from '../../../../store/user/menu/menu.reducer';
 import { Button, Checkbox, Form, Select, Switch, Table } from 'antd';
 import {
-  getMenuRightsByRoleId,
-  getRoleLookup,
-  saveMenuAccessRights,
-} from '../../../store/user/menu/menu.action';
-import { IMenu, IRoleLookup } from '../../../services/user/menu/menu.model';
+  getMenuRightsByCompanyId,
+  saveCompanyMenuAccessRights,
+} from '../../../../store/user/menu/menu.action';
+import { IMenu } from '../../../../services/user/menu/menu.model';
 import _ from 'lodash';
-import EditMenuModal from './EditMenuModal';
+import EditMenuModal from '../EditMenuModal';
 import { EditOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
+import { getAllCompanyLookup } from '../../../../store/common/common.action';
+import { commonSelector } from '../../../../store/common/common.reducer';
+import { ILookup } from '../../../../services/common/common.model';
 
-const MenuRights: React.FC<IMenuRights> = () => {
+const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
+  const commonReduxStoreData = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const [columns, setColumns] = React.useState<any>([]);
@@ -25,22 +28,22 @@ const MenuRights: React.FC<IMenuRights> = () => {
   const onFinish = (values: any) => {
     const accessRights = Object.keys(_.pickBy(values.menu_rights, _.identity));
     const accessRightsInputValues = {
-      role_id: values.role_id,
+      company_id: values.company_id,
       menu_access_right_ids: accessRights,
     };
-    dispatch(saveMenuAccessRights(accessRightsInputValues));
+    dispatch(saveCompanyMenuAccessRights(accessRightsInputValues));
   };
 
   useEffect(() => {
-    if (reduxStoreData.saveMenuAccessRights.messages.length > 0) {
-      if (reduxStoreData.saveMenuAccessRights.hasErrors) {
-        toast.error(reduxStoreData.saveMenuAccessRights.messages.join(' '));
+    if (reduxStoreData.saveCompanyMenuAccessRights.messages.length > 0) {
+      if (reduxStoreData.saveCompanyMenuAccessRights.hasErrors) {
+        toast.error(reduxStoreData.saveCompanyMenuAccessRights.messages.join(' '));
       } else {
-        toast.success(reduxStoreData.saveMenuAccessRights.messages.join(' '));
+        toast.success(reduxStoreData.saveCompanyMenuAccessRights.messages.join(' '));
       }
       dispatch(clearMenuMessages());
     }
-  }, [reduxStoreData.saveMenuAccessRights.messages]);
+  }, [reduxStoreData.saveCompanyMenuAccessRights.messages]);
 
   const editMenu = (menu: IMenu) => {
     setSelectedMenu(menu);
@@ -49,7 +52,7 @@ const MenuRights: React.FC<IMenuRights> = () => {
 
   const getMenuDropdown = (selectedMenuId: number, menuId = 0) => {
     const dropdown = [];
-    reduxStoreData.getMenuRightsByRoleId.data?.menus.map((m: IMenu) => {
+    reduxStoreData.getMenuRightsByCompanyId.data?.menus.map((m: IMenu) => {
       if (m.id !== selectedMenuId) {
         if (+m.parent_menu_id === menuId) {
           dropdown.push({
@@ -64,15 +67,14 @@ const MenuRights: React.FC<IMenuRights> = () => {
   };
 
   React.useEffect(() => {
-    dispatch(getRoleLookup());
-    dispatch(getMenuRightsByRoleId(1));
+    dispatch(getAllCompanyLookup());
     return () => {
       dispatch(clearMenuMessages());
     };
   }, []);
 
-  const handleRoleIdChange = (roleId: number) => {
-    dispatch(getMenuRightsByRoleId(roleId));
+  const handleCompanyIdChange = (companyId: number) => {
+    dispatch(getMenuRightsByCompanyId(companyId));
   };
 
   const handleAllChange = (checked, menu: IMenu) => {
@@ -89,7 +91,7 @@ const MenuRights: React.FC<IMenuRights> = () => {
 
   const checkAllRights = () => {
     const checkbox: any = {};
-    reduxStoreData.getMenuRightsByRoleId.data?.menus.map((m: IMenu) => {
+    reduxStoreData.getMenuRightsByCompanyId.data?.menus.map((m: IMenu) => {
       const selectRight: any = {};
       m.child_menu_rights.map((mr) => {
         selectRight[mr] = form.getFieldValue(['menu_rights', mr]);
@@ -104,7 +106,7 @@ const MenuRights: React.FC<IMenuRights> = () => {
 
   React.useEffect(() => {
     const mainColumns = [];
-    const maxLevel = reduxStoreData.getMenuRightsByRoleId.data?.maxLevel;
+    const maxLevel = reduxStoreData.getMenuRightsByCompanyId.data?.maxLevel;
     for (let index = 1; index <= maxLevel; index++) {
       mainColumns.push({
         title: index == 1 ? 'Menu' : `Sub Menu ${index - 1}`,
@@ -134,7 +136,7 @@ const MenuRights: React.FC<IMenuRights> = () => {
       });
     }
 
-    const rights = reduxStoreData.getMenuRightsByRoleId.data?.access_rights;
+    const rights = reduxStoreData.getMenuRightsByCompanyId.data?.access_rights;
     rights?.map((right) => {
       mainColumns.push({
         title: right.description,
@@ -166,32 +168,36 @@ const MenuRights: React.FC<IMenuRights> = () => {
       });
     });
     setColumns(mainColumns);
-    const roleId = form.getFieldValue('role_id');
+    const companyId = form.getFieldValue('company_id');
     form.resetFields();
-    form.setFieldsValue({ role_id: roleId });
+    form.setFieldsValue({ company_id: companyId });
     setTimeout(() => {
       checkAllRights();
     });
-  }, [reduxStoreData.getMenuRightsByRoleId.data]);
+  }, [reduxStoreData.getMenuRightsByCompanyId.data]);
 
   return (
     <div className="menuRights">
       <div className="title-block">
-        <h4 className="p-0">Menu Rights</h4>
+        <h4 className="p-0">Company Base Menu Rights</h4>
       </div>
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>
           <div className="title-block">
             <Form.Item
-              name="role_id"
+              name="company_id"
               className="m-0"
-              label="Role"
+              label="Company"
               rules={[{ required: true }]}
-              initialValue={1}
             >
-              <Select onChange={handleRoleIdChange} loading={false} style={{ width: '200px' }}>
-                {reduxStoreData.roleLookup.data.map((option: IRoleLookup) => (
-                  <Select.Option key={option.c_RoleId} value={option.c_RoleId}>
+              <Select
+                onChange={handleCompanyIdChange}
+                loading={commonReduxStoreData.allCompanyLookup.loading}
+                style={{ width: '200px' }}
+                placeholder="Please Select"
+              >
+                {commonReduxStoreData.allCompanyLookup.data.map((option: ILookup) => (
+                  <Select.Option key={option.id} value={option.id}>
                     {option.name}
                   </Select.Option>
                 ))}
@@ -203,7 +209,7 @@ const MenuRights: React.FC<IMenuRights> = () => {
                 onClick={() => {
                   form.submit();
                 }}
-                loading={reduxStoreData.saveMenuAccessRights.loading}
+                loading={reduxStoreData.saveCompanyMenuAccessRights.loading}
               >
                 Save
               </Button>
@@ -212,9 +218,9 @@ const MenuRights: React.FC<IMenuRights> = () => {
           <Table
             scroll={{ x: true }}
             rowKey={(record) => record.id}
-            dataSource={reduxStoreData.getMenuRightsByRoleId.data?.menus}
+            dataSource={reduxStoreData.getMenuRightsByCompanyId.data?.menus}
             columns={columns}
-            loading={reduxStoreData.getMenuRightsByRoleId.loading}
+            loading={reduxStoreData.getMenuRightsByCompanyId.loading}
             className="custom-table"
             pagination={false}
           />
@@ -228,11 +234,11 @@ const MenuRights: React.FC<IMenuRights> = () => {
           }}
           selectedMenu={selectedMenu}
           parentMenu={getMenuDropdown(selectedMenu.id)}
-          refreshDataTable={() => handleRoleIdChange(form.getFieldValue('role_id'))}
+          refreshDataTable={() => handleCompanyIdChange(form.getFieldValue('company_id'))}
         />
       )}
     </div>
   );
 };
 
-export default MenuRights;
+export default CompanyBaseMenuRights;

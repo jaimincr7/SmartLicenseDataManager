@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
-import { IMenu, IMenuRightsByRoleId, IRoleLookup } from '../../../services/user/menu/menu.model';
+import {
+  IMenu,
+  IMenuRightsByCompanyId,
+  IMenuRightsByRoleId,
+} from '../../../services/user/menu/menu.model';
+import { IRoleLookup } from '../../../services/user/user.model';
 import { RootState } from '../../app.model';
 import {
   searchMenu,
@@ -9,6 +14,8 @@ import {
   getMenuRightsByRoleId,
   saveMenuAccessRights,
   getRoleLookup,
+  saveCompanyMenuAccessRights,
+  getMenuRightsByCompanyId,
 } from './menu.action';
 import { IMenuState } from './menu.model';
 
@@ -42,6 +49,16 @@ export const initialState: IMenuState = {
     data: null,
   },
   saveMenuAccessRights: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  getMenuRightsByCompanyId: {
+    loading: false,
+    hasErrors: false,
+    data: null,
+  },
+  saveCompanyMenuAccessRights: {
     loading: false,
     hasErrors: false,
     messages: [],
@@ -162,6 +179,45 @@ export const menuSlice = createSlice({
       state.saveMenuAccessRights.loading = false;
       state.saveMenuAccessRights.hasErrors = true;
       state.saveMenuAccessRights.messages = action.payload.errors;
+    },
+
+    // Get Menu Rights By RoleId
+    [getMenuRightsByCompanyId.pending.type]: (state) => {
+      state.getMenuRightsByCompanyId.loading = true;
+    },
+    [getMenuRightsByCompanyId.fulfilled.type]: (
+      state,
+      action: PayloadAction<IMenuRightsByCompanyId>
+    ) => {
+      state.getMenuRightsByCompanyId.data = action.payload;
+      state.getMenuRightsByCompanyId.loading = false;
+      state.getMenuRightsByCompanyId.hasErrors = false;
+    },
+    [getMenuRightsByCompanyId.rejected.type]: (state) => {
+      state.getMenuRightsByCompanyId.loading = false;
+      state.getMenuRightsByCompanyId.hasErrors = true;
+    },
+
+    // Save Company Menu Access Rights
+    [saveCompanyMenuAccessRights.pending.type]: (state) => {
+      state.saveCompanyMenuAccessRights.loading = true;
+      state.saveCompanyMenuAccessRights.messages = [];
+    },
+    [saveCompanyMenuAccessRights.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveCompanyMenuAccessRights.loading = false;
+      state.saveCompanyMenuAccessRights.hasErrors = false;
+      state.saveCompanyMenuAccessRights.messages = action.payload.messages;
+    },
+    [saveCompanyMenuAccessRights.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveCompanyMenuAccessRights.loading = false;
+      state.saveCompanyMenuAccessRights.hasErrors = true;
+      state.saveCompanyMenuAccessRights.messages = action.payload.errors;
     },
 
     // Role lookup

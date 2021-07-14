@@ -1,6 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ISearchMenu, IMenu, IAccessMenuRights } from '../../../services/user/menu/menu.model';
+import {
+  ISearchMenu,
+  IMenu,
+  IAccessMenuRights,
+  IAccessCompanyMenuRights,
+} from '../../../services/user/menu/menu.model';
 import menuService from '../../../services/user/menu/menu.service';
+import userService from '../../../services/user/user.service';
 
 // Asynchronous thunk action
 
@@ -35,8 +41,18 @@ export const saveMenuAccessRights = createAsyncThunk(
   }
 );
 
+export const saveCompanyMenuAccessRights = createAsyncThunk(
+  'saveCompanyMenuAccessRights',
+  async (data: IAccessCompanyMenuRights) => {
+    const response = await menuService.saveCompanyMenuAccessRights(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
+
 export const getRoleLookup = createAsyncThunk('getRoleLookup', async () => {
-  const response = await menuService.getRoleLookup().then((res) => {
+  const response = await userService.getRoleLookup().then((res) => {
     return res.body;
   });
   return response.data;
@@ -68,42 +84,56 @@ const getChildMenuRights = (menus: IMenu[], menuId: number) => {
   return result;
 };
 
+const optimizeMenuRights = (response) => {
+  // set parent child order
+  let menuArray = [];
+  menuArray = getChildMenus(response.data.menus, 0, menuArray);
+
+  // set level of the menu
+  let maxLevel = 1;
+  menuArray.map((m) => {
+    if (+m.parent_menu_id === 0) {
+      m.level = 1;
+    } else {
+      menuArray.map((sm) => {
+        if (+sm.id === +m.parent_menu_id) {
+          m.level = sm.level + 1;
+          if (m.level > maxLevel) {
+            maxLevel = m.level;
+          }
+        }
+      });
+    }
+    return m;
+  });
+
+  // set child menu rights array to parent
+  menuArray = menuArray.map((m: IMenu) => {
+    m.child_menu_rights = getChildMenuRights(menuArray, m.id);
+    return m;
+  });
+
+  response.data.menus = menuArray;
+  response.data.maxLevel = maxLevel;
+  return response.data;
+};
+
 export const getMenuRightsByRoleId = createAsyncThunk(
   'getMenuRightsByRoleId',
   async (roleId: number) => {
     const response = await menuService.getMenuRightsByRoleId(roleId).then((res) => {
       return res.body;
     });
-    // set parent child order
-    let menuArray = [];
-    menuArray = getChildMenus(response.data.menus, 0, menuArray);
+    return optimizeMenuRights(response);
+  }
+);
 
-    // set level of the menu
-    let maxLevel = 1;
-    menuArray.map((m) => {
-      if (+m.parent_menu_id === 0) {
-        m.level = 1;
-      } else {
-        menuArray.map((sm) => {
-          if (+sm.id === +m.parent_menu_id) {
-            m.level = sm.level + 1;
-            if (m.level > maxLevel) {
-              maxLevel = m.level;
-            }
-          }
-        });
-      }
-      return m;
+export const getMenuRightsByCompanyId = createAsyncThunk(
+  'getMenuRightsByCompanyId',
+  async (companyId: number) => {
+    const response = await menuService.getMenuRightsByCompanyId(companyId).then((res) => {
+      return res.body;
     });
-
-    // set child menu rights array to parent
-    menuArray = menuArray.map((m: IMenu) => {
-      m.child_menu_rights = getChildMenuRights(menuArray, m.id);
-      return m;
-    });
-
-    response.data.menus = menuArray;
-    response.data.maxLevel = maxLevel;
-    return response.data;
+    return optimizeMenuRights(response);
   }
 );

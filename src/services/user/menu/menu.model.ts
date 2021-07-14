@@ -35,12 +35,18 @@ export interface IMenuRightsByRoleId {
   maxLevel?: number;
 }
 
+export interface IMenuRightsByCompanyId {
+  menus?: IMenu[];
+  access_rights?: IAccessRight[];
+  maxLevel?: number;
+}
+
 export interface IAccessMenuRights {
   role_id: number;
   menu_access_right_ids: string[];
 }
 
-export interface IRoleLookup {
-  c_RoleId: number;
-  name: string;
+export interface IAccessCompanyMenuRights {
+  company_id: number;
+  menu_access_right_ids: string[];
 }

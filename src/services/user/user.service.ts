@@ -1,4 +1,6 @@
+import { IApiResponse } from '../../common/models/common';
 import request from '../../utils/request';
+import { IRoleLookup } from './user.model';
 
 class UserService {
   ENDPOINT = '/user';
@@ -16,6 +18,13 @@ class UserService {
       });
     }
     return this.userEncData;
+  }
+
+  public async getRoleLookup(): Promise<IApiResponse<IRoleLookup>> {
+    const url = `/role/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
   }
 }
 export default new UserService();

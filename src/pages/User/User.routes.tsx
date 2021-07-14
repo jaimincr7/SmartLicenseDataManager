@@ -2,10 +2,11 @@ import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import BU from './BU';
 import Company from './Company';
-import MenuRights from './MenuRights';
+import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
+import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
 import Tenant from './Tenant';
 
-const WindowsServerRoutes: React.FC = () => {
+const UserRoutes: React.FC = () => {
   const match = useRouteMatch();
 
   return (
@@ -23,14 +24,15 @@ const WindowsServerRoutes: React.FC = () => {
         <Route exact path={`${match.path}/company`} component={Company} />
         <Route exact path={`${match.path}/company/:id`} component={Company} />
 
-        {/* Exclusions */}
-        <Route exact path={`${match.path}/menu-rights`} component={MenuRights} />
+        {/* Menu Rights */}
+        <Route exact path={`${match.path}/menu-rights/role`} component={RoleBaseMenuRights} />
+        <Route exact path={`${match.path}/menu-rights/company`} component={CompanyBaseMenuRights} />
 
         {/* keep least always */}
-        <Route exact path={`${match.path}/menu-rights`} component={MenuRights} />
+        <Route path="*" component={RoleBaseMenuRights} />
       </Switch>
     </div>
   );
 };
 
-export default WindowsServerRoutes;
+export default UserRoutes;

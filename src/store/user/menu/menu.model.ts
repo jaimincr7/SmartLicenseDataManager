@@ -1,5 +1,10 @@
 import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
-import { IMenu, IMenuRightsByRoleId, IRoleLookup } from '../../../services/user/menu/menu.model';
+import {
+  IMenu,
+  IMenuRightsByCompanyId,
+  IMenuRightsByRoleId,
+} from '../../../services/user/menu/menu.model';
+import { IRoleLookup } from '../../../services/user/user.model';
 
 export interface IMenuState {
   search: {
@@ -27,6 +32,16 @@ export interface IMenuState {
     data: IMenuRightsByRoleId;
   };
   saveMenuAccessRights: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
+  getMenuRightsByCompanyId: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: IMenuRightsByCompanyId;
+  };
+  saveCompanyMenuAccessRights: {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
