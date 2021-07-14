@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Menu } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useLocation } from 'react-router-dom';
+import { userSelector } from '../../../../store/user/user.reducer';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { getMenuRights } from '../../../../store/user/user.action';
 const { SubMenu } = Menu;
 
 function Sidebar() {
   const location = useLocation();
   const defaultSubmenu: string = location.pathname.split('/')[1];
+  const userDetails = useAppSelector(userSelector);
+  const dispatch = useAppDispatch();
 
   window.addEventListener('click', function (e) {
     if (
@@ -23,6 +28,10 @@ function Sidebar() {
       }
     }
   });
+
+  useEffect(() => {
+    dispatch(getMenuRights());
+  }, []);
 
   return (
     <aside className="main-navigation">
@@ -41,154 +50,26 @@ function Sidebar() {
               Dashboard
             </a>
           </Menu.Item>
-          <SubMenu
-            key="ad"
-            icon={
-              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-active-directory.svg`} alt="" />
-            }
-            title="AD"
-            className="no-icon"
-          >
-            <Menu.Item key="/ad/ad-devices">
-              <Link to="/ad/ad-devices" title="AD Devices">
-                AD Devices
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/ad/ad-devices-exclusions">
-              <Link to="/ad/ad-devices-exclusions" title="AD-Devices Exclusions">
-                Exclusions
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/ad/ad-users">
-              <Link to="/ad/ad-users" title="AD Users">
-                AD Users
-              </Link>
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="sql-server"
-            icon={
-              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-server-outline.svg`} alt="" />
-            }
-            title="SQL Server"
-            className="no-icon"
-          >
-            <Menu.Item key="/sql-server/inventory">
-              <Link to="/sql-server/inventory" title="Inventory">
-                Inventory
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/sql-server/entitlements">
-              <Link to="/sql-server/entitlements" title="Entitlements">
-                Entitlements
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/sql-server/overrides">
-              <Link to="/sql-server/overrides" title="Overrides">
-                Overrides
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/sql-server/pricing">
-              <Link to="/sql-server/pricing" title="Pricing">
-                Pricing
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/sql-server/license">
-              <Link to="/sql-server/license" title="License">
-                License
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/sql-server/exclusions">
-              <Link to="/sql-server/exclusions" title="Exclusions">
-                Exclusions
-              </Link>
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="windows-server"
-            icon={
-              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-windows-server.svg`} alt="" />
-            }
-            title="Windows Server"
-            className="no-icon"
-          >
-            <Menu.Item key="/windows-server/inventory">
-              <Link to="/windows-server/inventory" title="Inventory">
-                Inventory
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/windows-server/entitlements">
-              <Link to="/windows-server/entitlements" title="Entitlements">
-                Entitlements
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/windows-server/overrides">
-              <Link to="/windows-server/overrides" title="Overrides">
-                Overrides
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/windows-server/pricing">
-              <Link to="/windows-server/pricing" title="Pricing">
-                Pricing
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/windows-server/license">
-              <Link to="/windows-server/license" title="License">
-                License
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/windows-server/exclusions">
-              <Link to="/windows-server/exclusions" title="Exclusions">
-                Exclusions
-              </Link>
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="data-input"
-            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-data-input.svg`} alt="" />}
-            title="Data Input"
-            className="no-icon"
-          >
-            <Menu.Item key="/data-input/bulk-import">
-              <Link to="/data-input/bulk-import" title="Bulk Import">
-                Bulk Import
-              </Link>
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="user"
-            icon={
-              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-administrator.svg`} alt="" />
-            }
-            title="Administration"
-            className="no-icon"
-          >
-            <Menu.Item key="/user/menu-rights/role">
-              <Link to="/user/menu-rights/role" title="Role - Menu Rights">
-                Role - Menu Rights
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/user/menu-rights/company">
-              <Link to="/user/menu-rights/company" title="Company - Menu Rights">
-                Company - Menu Rights
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/user/tenant">
-              <Link to="/user/tenant" title="Tenant">
-                Tenant
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/user/company">
-              <Link to="/user/company" title="Company">
-                Company
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/user/bu">
-              <Link to="/user/bu" title="BU">
-                BU
-              </Link>
-            </Menu.Item>
-          </SubMenu>
+
+          {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any) => (
+            menuDetail.childMenus?.length > 0 &&
+            <SubMenu
+              key={menuDetail?.name}
+              icon={
+                <img src={`${process.env.PUBLIC_URL}/assets/images/${menuDetail?.icon}`} alt="" />
+              }
+              title={menuDetail?.description}
+              className="no-icon"
+            >
+              {menuDetail.childMenus?.map((childMenu) => (
+                <Menu.Item key={`${childMenu.url}`}>
+                  <Link to={`${childMenu.url}`} title={childMenu?.description}>
+                    {childMenu?.description}
+                  </Link>
+                </Menu.Item>
+              ))}
+            </SubMenu>
+          ))}
         </Menu>
       </Scrollbars>
     </aside>

@@ -50,3 +50,7 @@ export interface IAccessCompanyMenuRights {
   company_id: number;
   menu_access_right_ids: string[];
 }
+
+export interface ISideBarRights extends IMenuRightsByRoleId {
+  sideBarMenus?: any;
+}

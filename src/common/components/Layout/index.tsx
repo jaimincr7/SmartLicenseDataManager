@@ -45,7 +45,7 @@ const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...r
   return (
     <Route
       {...rest}
-      render={(props) => <Layout>{accessToken && <Component {...props} />}</Layout>}
+      render={(props) => <>{accessToken && <Layout> <Component {...props} /> </Layout>}</>}
     />
   );
 };

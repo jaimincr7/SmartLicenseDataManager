@@ -72,5 +72,12 @@ class MenuService {
       return res.data;
     });
   }
+
+  public async getSideBarMenuRights(): Promise<IApiResponse<IMenuRightsByRoleId>> {
+    const url = `${this.ENDPOINT}/sidebar`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
 }
 export default new MenuService();
