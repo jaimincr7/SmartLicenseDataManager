@@ -8,9 +8,9 @@ class TenantService {
   public async searchTenant(
     searchParams?: ISearchTenant
   ): Promise<IApiResponse<ISearchResponse<ITenant>>> {
-    const { is_lookup, ...restData } = searchParams;
+    delete searchParams.is_lookup;
     const url = `${this.ENDPOINT}/search`;
-    return request({ url, method: 'POST', data: restData }).then((res) => {
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
   }

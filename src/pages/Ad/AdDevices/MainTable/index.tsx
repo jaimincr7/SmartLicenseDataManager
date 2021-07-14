@@ -193,7 +193,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Object Guid',
+        title: 'Object GUId',
         sorter: true,
         children: [
           {

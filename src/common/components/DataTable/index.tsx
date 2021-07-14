@@ -113,9 +113,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       const globalSearch: IInlineSearch = {};
       for (const key in globalFilters.search) {
         const element = globalFilters.search[key];
-        if (element) {
-          globalSearch[key] = [element];
-        }
+        globalSearch[key] = element ? [element] : null;
+        // if (element) {
+        //   globalSearch[key] = [element];
+        // }
       }
       tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
       setPagination({ ...pagination, current: 1 });

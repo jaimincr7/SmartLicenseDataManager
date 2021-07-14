@@ -395,10 +395,10 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Object Guid</label>
+                  <label className="label">Object GUId</label>
                   <Form.Item
                     name="object_guid"
-                    label="Object Guid"
+                    label="Object GUId"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -499,7 +499,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber min={0} className="form-control w-100" />
+                    <InputNumber min={1} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

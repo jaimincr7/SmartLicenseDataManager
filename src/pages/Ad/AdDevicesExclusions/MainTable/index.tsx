@@ -168,7 +168,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'decom',
+        title: 'Decom',
         sorter: true,
         children: [
           {
