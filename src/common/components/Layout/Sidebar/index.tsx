@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { userSelector } from '../../../../store/user/user.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { getMenuRights } from '../../../../store/user/user.action';
+import { IMenu } from '../../../../services/user/menu/menu.model';
 const { SubMenu } = Menu;
 
 function Sidebar() {
@@ -33,6 +34,29 @@ function Sidebar() {
     dispatch(getMenuRights());
   }, []);
 
+  const renderMenu = (childMenu: any) => {
+    if (childMenu?.childMenus?.length > 0) {
+      return <SubMenu
+        key={childMenu?.name}
+        icon={
+          childMenu?.icon && <img src={`${process.env.PUBLIC_URL}/assets/images/${childMenu?.icon}`} alt="" />
+        }
+        title={childMenu?.description}
+      >
+        {childMenu.childMenus?.map((menu) => (
+          renderMenu(menu)
+        ))}
+      </SubMenu>
+    } else {
+      return <Menu.Item key={`${childMenu.url}`}>
+        <Link to={`${childMenu.url}`} title={childMenu?.description}>
+          {childMenu?.description}
+        </Link>
+      </Menu.Item>
+    }
+
+  }
+
   return (
     <aside className="main-navigation">
       <Scrollbars renderThumbVertical={(props) => <div {...props} className="track-vartical" />}>
@@ -52,23 +76,7 @@ function Sidebar() {
           </Menu.Item>
 
           {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any) => (
-            menuDetail.childMenus?.length > 0 &&
-            <SubMenu
-              key={menuDetail?.name}
-              icon={
-                <img src={`${process.env.PUBLIC_URL}/assets/images/${menuDetail?.icon}`} alt="" />
-              }
-              title={menuDetail?.description}
-              className="no-icon"
-            >
-              {menuDetail.childMenus?.map((childMenu) => (
-                <Menu.Item key={`${childMenu.url}`}>
-                  <Link to={`${childMenu.url}`} title={childMenu?.description}>
-                    {childMenu?.description}
-                  </Link>
-                </Menu.Item>
-              ))}
-            </SubMenu>
+            renderMenu(menuDetail)
           ))}
         </Menu>
       </Scrollbars>
