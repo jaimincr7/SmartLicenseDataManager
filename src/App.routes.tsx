@@ -15,6 +15,7 @@ import DataInputRoutes from './pages/DataInput/DataInput.routes';
 import WindowsServerRoutes from './pages/WindowsServer/WindowsServer.routes';
 import AdRoutes from './pages/Ad/Ad.routes';
 import UserRoutes from './pages/User/User.routes';
+import ReportRoutes from './pages/Report/Report.routes';
 
 function AppRoutes() {
   return (
@@ -38,6 +39,7 @@ function AppRoutes() {
           <LayoutRoute path="/data-input" layout={MainLayout} component={DataInputRoutes} />
           <LayoutRoute path="/windows-server" layout={MainLayout} component={WindowsServerRoutes} />
           <LayoutRoute path="/user" layout={MainLayout} component={UserRoutes} />
+          <LayoutRoute path="/report" layout={MainLayout} component={ReportRoutes} />
 
           {/* Dummy routes for designers */}
           <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />
