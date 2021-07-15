@@ -36,26 +36,29 @@ function Sidebar() {
 
   const renderMenu = (childMenu: any) => {
     if (childMenu?.childMenus?.length > 0) {
-      return <SubMenu
-        key={childMenu?.name}
-        icon={
-          childMenu?.icon && <img src={`${process.env.PUBLIC_URL}/assets/images/${childMenu?.icon}`} alt="" />
-        }
-        title={childMenu?.description}
-      >
-        {childMenu.childMenus?.map((menu) => (
-          renderMenu(menu)
-        ))}
-      </SubMenu>
+      return (
+        <SubMenu
+          key={childMenu?.name}
+          icon={
+            childMenu?.icon && (
+              <img src={`${process.env.PUBLIC_URL}/assets/images/${childMenu?.icon}`} alt="" />
+            )
+          }
+          title={childMenu?.description}
+        >
+          {childMenu.childMenus?.map((menu) => renderMenu(menu))}
+        </SubMenu>
+      );
     } else {
-      return <Menu.Item key={`${childMenu.url}`}>
-        <Link to={`${childMenu.url}`} title={childMenu?.description}>
-          {childMenu?.description}
-        </Link>
-      </Menu.Item>
+      return (
+        <Menu.Item key={`${childMenu.url}`}>
+          <Link to={`${childMenu.url}`} title={childMenu?.description}>
+            {childMenu?.description}
+          </Link>
+        </Menu.Item>
+      );
     }
-
-  }
+  };
 
   return (
     <aside className="main-navigation">
@@ -75,9 +78,7 @@ function Sidebar() {
             </a>
           </Menu.Item>
 
-          {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any) => (
-            renderMenu(menuDetail)
-          ))}
+          {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any) => renderMenu(menuDetail))}
         </Menu>
       </Scrollbars>
     </aside>

@@ -13,6 +13,7 @@ import { Row, Col, Button } from 'antd';
 import ProcessDataModal from './ProcessDataModal';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import MainTable from './MainTable';
+import { Can } from '../../../common/ability';
 
 const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
@@ -56,53 +57,59 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() => setProcessModalVisible(true)}
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Process Data
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() =>
-                  history.push(`/data-input/bulk-import/${sqlServerInventory.search.tableName}`)
-                }
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Update from Excel
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() => setDeleteModalVisible(true)}
-                icon={
-                  <em className="anticon">
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-                  </em>
-                }
-              >
-                Delete Dataset
-              </Button>
-            </Col>
+            <Can I={'process_data'} a={'sql-server-inventory'}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setProcessModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Process Data
+                </Button>
+              </Col>
+            </Can>
+            <Can I={'import_to_excel'} a={'sql-server-inventory'}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() =>
+                    history.push(`/data-input/bulk-import/${sqlServerInventory.search.tableName}`)
+                  }
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
+            <Can I={'delete_data'} a={'sql-server-inventory'}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
