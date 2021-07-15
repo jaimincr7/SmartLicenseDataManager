@@ -216,7 +216,7 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
             </div>
           </div>
           <Table
-            scroll={reduxStoreData.getMenuRightsByRoleId.data ? { x: 1500, y: 350 } : { x: true }}
+            scroll={{ x: true }}
             rowKey={(record) => record.id}
             dataSource={reduxStoreData.getMenuRightsByRoleId.data?.menus}
             columns={columns}
