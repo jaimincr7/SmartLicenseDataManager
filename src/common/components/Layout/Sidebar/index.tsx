@@ -49,7 +49,7 @@ function Sidebar() {
           {childMenu.childMenus?.map((menu) => renderMenu(menu))}
         </SubMenu>
       );
-    } else {
+    } else if(childMenu.parent_menu_id){
       return (
         <Menu.Item key={`${childMenu.url}`}>
           <Link to={`${childMenu.url}`} title={childMenu?.description}>
