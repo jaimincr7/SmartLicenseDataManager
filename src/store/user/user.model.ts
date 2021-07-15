@@ -11,6 +11,6 @@ export interface IUserState {
     loading: boolean;
     hasErrors: boolean;
     data: IMenuRightsByRoleId;
-    sideBarData:any;
+    sideBarData: any;
   };
 }

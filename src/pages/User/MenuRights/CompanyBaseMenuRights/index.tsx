@@ -2,6 +2,7 @@ import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import React, { useEffect } from 'react';
 import { IMenuRights } from '../menuRights.model';
 import {
+  clearGetMenuRightsByCompanyId,
   clearMenuAccessRights,
   clearMenuMessages,
   menuSelector,
@@ -72,8 +73,10 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
 
   React.useEffect(() => {
     dispatch(getAllCompanyLookup());
+    form.setFieldsValue({ company_id: null });
     return () => {
       dispatch(clearMenuAccessRights());
+      dispatch(clearGetMenuRightsByCompanyId());
     };
   }, []);
 
@@ -220,7 +223,9 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
             </div>
           </div>
           <Table
-            scroll={{ x: true }}
+            scroll={
+              reduxStoreData.getMenuRightsByCompanyId.data ? { x: 1500, y: 350 } : { x: true }
+            }
             rowKey={(record) => record.id}
             dataSource={reduxStoreData.getMenuRightsByCompanyId.data?.menus}
             columns={columns}

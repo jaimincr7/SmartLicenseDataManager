@@ -117,6 +117,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: 'Date Added',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDate('date_added'),
+            dataIndex: 'date_added',
+            key: 'date_added',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+          },
+        ],
+      },
+      {
         title: 'Enabled',
         sorter: true,
         children: [
@@ -362,19 +375,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDropdown('password_not_required', adUsers.search.lookups?.booleanLookup),
             dataIndex: 'password_not_required',
             key: 'password_not_required',
-            ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
-          },
-        ],
-      },
-      {
-        title: 'Inventoried',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDropdown('inventoried', adUsers.search.lookups?.booleanLookup),
-            dataIndex: 'inventoried',
-            key: 'inventoried',
             ellipsis: true,
             render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
           },

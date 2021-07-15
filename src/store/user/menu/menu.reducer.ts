@@ -88,6 +88,12 @@ export const menuSlice = createSlice({
       state.saveMenuAccessRights = initialState.saveCompanyMenuAccessRights;
       state.saveCompanyMenuAccessRights = initialState.saveCompanyMenuAccessRights;
     },
+    clearGetMenuRightsByRoleId: (state) => {
+      state.getMenuRightsByRoleId.data = null;
+    },
+    clearGetMenuRightsByCompanyId: (state) => {
+      state.getMenuRightsByCompanyId.data = null;
+    },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
     },
@@ -246,6 +252,8 @@ export const {
   clearMenuGetById,
   setTableColumnSelection,
   clearMenuAccessRights,
+  clearGetMenuRightsByRoleId,
+  clearGetMenuRightsByCompanyId,
 } = menuSlice.actions;
 
 // The reducer

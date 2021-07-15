@@ -2,6 +2,7 @@ import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import React, { useEffect } from 'react';
 import { IMenuRights } from '../menuRights.model';
 import {
+  clearGetMenuRightsByRoleId,
   clearMenuAccessRights,
   clearMenuMessages,
   menuSelector,
@@ -70,8 +71,10 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
 
   React.useEffect(() => {
     dispatch(getRoleLookup());
+    form.setFieldsValue({ role_id: null });
     return () => {
       dispatch(clearMenuAccessRights());
+      dispatch(clearGetMenuRightsByRoleId());
     };
   }, []);
 
@@ -213,7 +216,7 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
             </div>
           </div>
           <Table
-            scroll={{ x: true }}
+            scroll={reduxStoreData.getMenuRightsByRoleId.data ? { x: 1500, y: 350 } : { x: true }}
             rowKey={(record) => record.id}
             dataSource={reduxStoreData.getMenuRightsByRoleId.data?.menus}
             columns={columns}

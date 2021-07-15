@@ -1,4 +1,4 @@
-import { Form, Input, Select, Spin, Button } from 'antd';
+import { Form, Input, Select, Button } from 'antd';
 import { useState } from 'react';
 import { IDropDownOption } from '../../../models/common';
 import { DatePicker } from 'antd';
@@ -33,14 +33,13 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input">
       <Select
-        suffixIcon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />}
         showArrow={true}
         mode="multiple"
         dropdownClassName="filter-dropdown-pop"
         placeholder="Select and search"
         maxTagCount="responsive"
         allowClear
-        notFoundContent={dropdownOptions.length === 0 ? <Spin size="small" /> : null}
+        loading={dropdownOptions.length === 0}
       >
         {dropdownOptions.map((option: IDropDownOption) => (
           <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
