@@ -14,6 +14,7 @@ import ProcessDataModal from './ProcessDataModal';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
 
 const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
@@ -57,7 +58,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={'process_data'} a={'sql-server-inventory'}>
+            <Can I={Action.ProcessData} a={Page.SqlServerInventory}>
               <Col>
                 <Button
                   className="btn-icon"
@@ -75,7 +76,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
                 </Button>
               </Col>
             </Can>
-            <Can I={'import_to_excel'} a={'sql-server-inventory'}>
+            <Can I={Action.ImportToExcel} a={Page.SqlServerInventory}>
               <Col>
                 <Button
                   className="btn-icon"
@@ -95,7 +96,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
                 </Button>
               </Col>
             </Can>
-            <Can I={'delete_data'} a={'sql-server-inventory'}>
+            <Can I={Action.DeleteData} a={Page.SqlServerInventory}>
               <Col>
                 <Button
                   className="btn-icon"
