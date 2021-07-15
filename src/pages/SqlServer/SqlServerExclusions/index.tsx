@@ -11,6 +11,8 @@ import {
 } from '../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.reducer';
 import AddSqlServerExclusionsModal from './AddSqlServerExclusionModal';
 import MainTable from './MainTable';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
 
 const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   const sqlServerExclusions = useAppSelector(sqlServerExclusionsSelector);
@@ -52,24 +54,26 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() =>
-                  history.push(`/data-input/bulk-import/${sqlServerExclusions.search.tableName}`)
-                }
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Update from Excel
-              </Button>
-            </Col>
+            <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() =>
+                    history.push(`/data-input/bulk-import/${sqlServerExclusions.search.tableName}`)
+                  }
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable

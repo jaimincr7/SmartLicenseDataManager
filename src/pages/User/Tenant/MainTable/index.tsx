@@ -13,6 +13,8 @@ import {
 } from '../../../../store/master/tenant/tenant.reducer';
 import tenantService from '../../../../services/master/tenant/tenant.service';
 import { deleteTenant, searchTenant } from '../../../../store/master/tenant/tenant.action';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
@@ -57,20 +59,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <a
-        className="action-btn"
-        onClick={() => {
-          setSelectedId(data.id);
-          history.push(`/user/tenant/${data.id}`);
-        }}
-      >
-        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-      </a>
-      <Popconfirm title="Sure to delete?" onConfirm={() => removeTenant(data.id)}>
-        <a href="#" title="" className="action-btn">
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+      <Can I={Action.Update} a={Page.Tenant}>
+        <a
+          className="action-btn"
+          onClick={() => {
+            setSelectedId(data.id);
+            history.push(`/user/tenant/${data.id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
-      </Popconfirm>
+      </Can>
+      <Can I={Action.Delete} a={Page.Tenant}>
+        <Popconfirm title="Sure to delete?" onConfirm={() => removeTenant(data.id)}>
+          <a href="#" title="" className="action-btn">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+          </a>
+        </Popconfirm>
+      </Can>
     </div>
   );
 
@@ -78,7 +84,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={true}
+        showAddButton={ability.can(Action.Add, Page.Tenant)}
         globalSearchExist={false}
         setSelectedId={setSelectedId}
         tableAction={tableAction}

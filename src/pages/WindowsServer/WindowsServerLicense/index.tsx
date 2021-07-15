@@ -9,6 +9,8 @@ import { clearWindowsServerLicense } from '../../../store/windowsServer/windowsS
 import AddWindowsServerLicenseModal from './AddWindowsServerLicenseModal';
 import ReRunAllScenariosModal from './ReRunAllScenariosModal';
 import MainTable from './MainTable';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
 
 const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -50,41 +52,45 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Col>
-              <Button
-                onClick={() => {
-                  setId(0);
-                  setAddModalVisible(true);
-                }}
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-run-license.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Run License Scenario
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                onClick={() => {
-                  setRunAllScenariosModalVisible(true);
-                }}
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-re-run-license.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Re-Run All License Scenarios
-              </Button>
-            </Col>
+            <Can I={Action.Add} a={Page.WindowsServerLicense}>
+              <Col>
+                <Button
+                  onClick={() => {
+                    setId(0);
+                    setAddModalVisible(true);
+                  }}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-run-license.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Run License Scenario
+                </Button>
+              </Col>
+            </Can>
+            <Can I={Action.RunAllLicenseScenario} a={Page.WindowsServerLicense}>
+              <Col>
+                <Button
+                  onClick={() => {
+                    setRunAllScenariosModalVisible(true);
+                  }}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-re-run-license.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Re-Run All License Scenarios
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable

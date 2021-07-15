@@ -1,13 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { ICompanyProps } from './company.model';
 import React from 'react';
 import AddCompanyModal from './AddCompanyModal';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
-import { clearCompany } from '../../../store/master/company/company.reducer';
+import { clearCompany, companySelector } from '../../../store/master/company/company.reducer';
+import { Row, Col, Button } from 'antd';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
 
 const Company: React.FC<ICompanyProps> = (props) => {
+  const company = useAppSelector(companySelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -41,6 +45,30 @@ const Company: React.FC<ICompanyProps> = (props) => {
         <h4 className="p-0">Company</h4>
       </div>
       <div className="main-card">
+        <div className="input-btns-title">
+          <Row gutter={[10, 4]}>
+            <Can I={Action.ImportToExcel} a={Page.Company}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() =>
+                    history.push(`/data-input/bulk-import/${company.search.tableName}`)
+                  }
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
+          </Row>
+        </div>
         <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {

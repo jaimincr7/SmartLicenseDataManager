@@ -8,6 +8,8 @@ import { adUsersSelector, clearAdUsers } from '../../../store/ad/adUsers/adUsers
 import { IAdUsersProps } from './adUers.model';
 import AddAdUserModal from './AddAdUsersModal';
 import MainTable from './MainTable';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
 
 const AdUsers: React.FC<IAdUsersProps> = (props) => {
   const adUsers = useAppSelector(adUsersSelector);
@@ -49,22 +51,26 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() => history.push(`/data-input/bulk-import/${adUsers.search.tableName}`)}
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Update from Excel
-              </Button>
-            </Col>
+            <Can I={Action.ImportToExcel} a={Page.ADUsers}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() =>
+                    history.push(`/data-input/bulk-import/${adUsers.search.tableName}`)
+                  }
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable

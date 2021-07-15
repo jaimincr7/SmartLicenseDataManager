@@ -5,7 +5,7 @@ import config from './config';
 
 const request = axios.create({
   baseURL: config.baseApi, // url = base url + request url
-  timeout: 30000,
+  timeout: 2 * 60 * 1000,
   headers: {
     Accept: 'application/json',
   },

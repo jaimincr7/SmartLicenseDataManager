@@ -1,13 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { IBUProps } from './bu.model';
 import React from 'react';
 import AddBUModal from './AddBUModal';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
-import { clearBU } from '../../../store/master/bu/bu.reducer';
+import { buSelector, clearBU } from '../../../store/master/bu/bu.reducer';
+import { Button, Col, Row } from 'antd';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
 
 const BU: React.FC<IBUProps> = (props) => {
+  const bu = useAppSelector(buSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -41,6 +45,28 @@ const BU: React.FC<IBUProps> = (props) => {
         <h4 className="p-0">BU</h4>
       </div>
       <div className="main-card">
+        <div className="input-btns-title">
+          <Row gutter={[10, 4]}>
+            <Can I={Action.ImportToExcel} a={Page.Bu}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => history.push(`/data-input/bulk-import/${bu.search.tableName}`)}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
+          </Row>
+        </div>
         <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {

@@ -23,6 +23,8 @@ import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import { setTableColumnSelection } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
@@ -205,31 +207,37 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <a
-        title=""
-        className="action-btn"
-        onClick={() => {
-          setSelectedId(data.id);
-          history.push(`/sql-server/license/edit/${data.id}`);
-        }}
-      >
-        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
-      </a>
-      <a
-        hidden
-        className="action-btn"
-        onClick={() => {
-          setSelectedId(data.id);
-          history.push(`/sql-server/license/${data.id}`);
-        }}
-      >
-        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-      </a>
-      <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerLicense(data.id)}>
-        <a href="#" title="" className="action-btn">
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+      <Can I={Action.View} a={Page.SqlServerLicenseDetail}>
+        <a
+          title=""
+          className="action-btn"
+          onClick={() => {
+            setSelectedId(data.id);
+            history.push(`/sql-server/license/edit/${data.id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
         </a>
-      </Popconfirm>
+      </Can>
+      <Can I={Action.Update} a={Page.SqlServerLicense}>
+        <a
+          hidden
+          className="action-btn"
+          onClick={() => {
+            setSelectedId(data.id);
+            history.push(`/sql-server/license/${data.id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
+        </a>
+      </Can>
+      <Can I={Action.Delete} a={Page.SqlServerLicense}>
+        <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerLicense(data.id)}>
+          <a href="#" title="" className="action-btn">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+          </a>
+        </Popconfirm>
+      </Can>
     </div>
   );
 
@@ -237,7 +245,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={false}
+        showAddButton={ability.can(Action.Add, Page.SqlServerLicense)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
