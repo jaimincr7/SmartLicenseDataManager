@@ -1,7 +1,11 @@
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import React, { useEffect } from 'react';
 import { IMenuRights } from '../menuRights.model';
-import { clearMenuMessages, menuSelector } from '../../../../store/user/menu/menu.reducer';
+import {
+  clearMenuAccessRights,
+  clearMenuMessages,
+  menuSelector,
+} from '../../../../store/user/menu/menu.reducer';
 import { Button, Checkbox, Form, Select, Switch, Table } from 'antd';
 import {
   getMenuRightsByCompanyId,
@@ -69,7 +73,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   React.useEffect(() => {
     dispatch(getAllCompanyLookup());
     return () => {
-      dispatch(clearMenuMessages());
+      dispatch(clearMenuAccessRights());
     };
   }, []);
 
