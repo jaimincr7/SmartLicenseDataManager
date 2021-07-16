@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import SqlServerInventory from './SqlServerInventory';
 import SqlServerEntitlements from './SqlServerEntitlements';
 import SqlServerExclusions from './SqlServerExclusions';
@@ -37,9 +37,12 @@ const SqlServerRoutes: React.FC = () => {
 
         {/* Sql Server */}
         <Route exact path={`${match.path}/inventory/:id`} component={SqlServerInventory} />
+        <Route exact path={`${match.path}/inventory`} component={SqlServerInventory} />
 
         {/* keep least always */}
-        <Route exact path={`${match.path}/inventory`} component={SqlServerInventory} />
+        <Route path={`${match.path}/*`}>
+          <Redirect to={`${match.path}/inventory`} />
+        </Route>
       </Switch>
     </div>
   );

@@ -20,6 +20,8 @@ import { toast } from 'react-toastify';
 import { getAllCompanyLookup } from '../../../../store/common/common.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { ILookup } from '../../../../services/common/common.model';
+import { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 
 const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -128,14 +130,16 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
                     {data.description}
                   </Checkbox>
                 </Form.Item>{' '}
-                <a
-                  title="Edit"
-                  onClick={() => {
-                    editMenu(data);
-                  }}
-                >
-                  <EditOutlined />
-                </a>
+                <Can I={Action.Update} a={Page.Menu}>
+                  <a
+                    title="Edit"
+                    onClick={() => {
+                      editMenu(data);
+                    }}
+                  >
+                    <EditOutlined />
+                  </a>
+                </Can>
               </>
             )}
           </>
@@ -211,15 +215,17 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
               </Select>
             </Form.Item>
             <div className="btns-block">
-              <Button
-                type="primary"
-                onClick={() => {
-                  form.submit();
-                }}
-                loading={reduxStoreData.saveCompanyMenuAccessRights.loading}
-              >
-                Save
-              </Button>
+              <Can I={Action.Update} a={Page.CompanyMenuRights}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.submit();
+                  }}
+                  loading={reduxStoreData.saveCompanyMenuAccessRights.loading}
+                >
+                  Save
+                </Button>
+              </Can>
             </div>
           </div>
           <Table

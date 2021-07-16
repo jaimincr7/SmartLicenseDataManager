@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import WindowsServerEntitlements from './WindowsServerEntitlements';
 import WindowsServerExclusions from './WindowsServerExclusions';
 import WindowsServerInventory from './WindowsServerInventory';
@@ -41,9 +41,12 @@ const WindowsServerRoutes: React.FC = () => {
 
         {/* Inventory */}
         <Route exact path={`${match.path}/inventory/:id`} component={WindowsServerInventory} />
+        <Route exact path={`${match.path}/inventory`} component={WindowsServerInventory} />
 
         {/* keep least always */}
-        <Route exact path={`${match.path}/inventory`} component={WindowsServerInventory} />
+        <Route path={`${match.path}/*`}>
+          <Redirect to={`${match.path}/inventory`} />
+        </Route>
       </Switch>
     </div>
   );

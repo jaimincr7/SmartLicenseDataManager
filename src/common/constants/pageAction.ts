@@ -23,6 +23,13 @@ export enum Page {
   Tenant = 'tenant',
   Company = 'company',
   Bu = 'bu',
+  RoleMenuRights = 'role-menu-access-right',
+  CompanyMenuRights = 'company-menu-access-right',
+
+  // Global search dropdown
+  TenantDropdown = 'tenant-drop-down',
+  CompanyDropdown = 'company-drop-down',
+  BUDropdown = 'bu-drop-down',
 }
 
 export enum Action {

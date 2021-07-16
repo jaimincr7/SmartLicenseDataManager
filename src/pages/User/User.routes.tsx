@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import BU from './BU';
 import Company from './Company';
 import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
@@ -29,7 +29,9 @@ const UserRoutes: React.FC = () => {
         <Route exact path={`${match.path}/menu-rights/company`} component={CompanyBaseMenuRights} />
 
         {/* keep least always */}
-        <Route path="*" component={RoleBaseMenuRights} />
+        <Route path={`${match.path}/*`}>
+          <Redirect to={`${match.path}/menu-rights/role`} />
+        </Route>
       </Switch>
     </div>
   );
