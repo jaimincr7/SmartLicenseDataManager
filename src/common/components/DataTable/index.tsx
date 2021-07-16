@@ -51,6 +51,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   });
 
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
+  const [indeterminate, setIndeterminate] = React.useState(false);
+  const [checkAll, setCheckAll] = React.useState(false);
 
   tableFilter.order_by = defaultOrderBy ? defaultOrderBy : tableFilter.order_by;
 
@@ -239,6 +241,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   ];
 
   // Start: Hide-show columns
+  React.useEffect(() => {
+    handleIndeterminate();
+  }, [reduxStoreData.tableColumnSelection.columns]);
+
   const hideShowColumn = (e, title) => {
     if (e.target.checked) {
       dispatch(
@@ -249,21 +255,37 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         setTableColumnSelection({ ...reduxStoreData.tableColumnSelection.columns, [title]: false })
       );
     }
+    handleIndeterminate();
+  };
+
+  const handleIndeterminate = () => {
+    const selectedColumns = columns
+      .filter((col) => reduxStoreData.tableColumnSelection.columns[col.title] !== false)
+      .map((x) => x.title);
+    setIndeterminate(!!selectedColumns.length && selectedColumns.length < columns.length);
+    setCheckAll(selectedColumns.length === columns.length);
   };
 
   const saveTableColumns = () => {
     const isAllDeselected = Object.values(reduxStoreData.tableColumnSelection.columns).every(
       (col) => col === false
     );
-    if (isAllDeselected) {
+    if (isAllDeselected && reduxStoreData.tableColumnSelection.id !== null) {
       toast.info('Please select some columns.');
       return false;
     }
-    dispatch(saveTableColumnSelection(reduxStoreData.tableColumnSelection));
+    dispatch(saveTableColumnSelection(reduxStoreData.tableColumnSelection)).then(() => {
+      if (!reduxStoreData.tableColumnSelection.id) {
+        pageLoaded = false;
+        fetchTableData();
+      }
+    });
   };
 
   const handleSelectAllChange = (e) => {
     let selectedColumns: { [key: string]: boolean } = {};
+    setIndeterminate(false);
+    setCheckAll(e.target.checked);
     columns.forEach((col) => {
       selectedColumns = { ...selectedColumns, [col.title]: e.target.checked };
     });
@@ -276,18 +298,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <li className="line-bottom">
           <Checkbox
             className="strong"
-            checked={Object.values(reduxStoreData.tableColumnSelection.columns).every(
-              (el) => el === true
-            )}
+            checked={checkAll}
             onClick={handleSelectAllChange}
-            indeterminate={
-              !Object.values(reduxStoreData.tableColumnSelection.columns).every(
-                (el) => el === true
-              ) &&
-              !Object.values(reduxStoreData.tableColumnSelection.columns).every(
-                (el) => el === false
-              )
-            }
+            indeterminate={indeterminate}
           >
             Select All
           </Checkbox>
