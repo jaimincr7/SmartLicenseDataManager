@@ -25,6 +25,7 @@ export enum Page {
   Bu = 'bu',
   RoleMenuRights = 'role-menu-access-right',
   CompanyMenuRights = 'company-menu-access-right',
+  GlobalTableColumnSelection = 'global-table-column-selection',
 
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',

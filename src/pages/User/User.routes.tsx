@@ -4,6 +4,7 @@ import BU from './BU';
 import Company from './Company';
 import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
+import TableColumnSelection from './TableColumnsSelection';
 import Tenant from './Tenant';
 
 const UserRoutes: React.FC = () => {
@@ -27,6 +28,11 @@ const UserRoutes: React.FC = () => {
         {/* Menu Rights */}
         <Route exact path={`${match.path}/menu-rights/role`} component={RoleBaseMenuRights} />
         <Route exact path={`${match.path}/menu-rights/company`} component={CompanyBaseMenuRights} />
+        <Route
+          exact
+          path={`${match.path}/table-column-selection`}
+          component={TableColumnSelection}
+        />
 
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
