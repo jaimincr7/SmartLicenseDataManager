@@ -26,6 +26,7 @@ import companyReducer from './master/company/company.reducer';
 import buReducer from './master/bu/bu.reducer';
 import globalSearchReducer from './globalSearch/globalSearch.reducer';
 import globalTableColumnSelectionReducer from './user/globalTableColumnSelection/globalTableColumnSelection.reducer';
+import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -55,4 +56,5 @@ export const rootReducer = combineReducers({
   bu: buReducer,
   globalSearch: globalSearchReducer,
   globalTableColumnSelection: globalTableColumnSelectionReducer,
+  tabVCluster: tabVClusterReducer,
 });

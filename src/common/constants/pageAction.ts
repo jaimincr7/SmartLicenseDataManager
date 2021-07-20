@@ -27,6 +27,8 @@ export enum Page {
   CompanyMenuRights = 'company-menu-access-right',
   GlobalTableColumnSelection = 'global-table-column-selection',
 
+  TabVCluster = 'tab-v-cluster',
+
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',
