@@ -13,6 +13,7 @@ import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import tabVClusterService from '../../../../services/rvTools/tabVCluster/tabVCluster.service';
 import {
+  FilterByDate,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -22,6 +23,8 @@ import DataTable from '../../../../common/components/DataTable';
 import { setTableColumnSelection } from '../../../../store/rvTools/tabVCluster/tabVCluster.reducer';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import moment from 'moment';
+import { Common } from '../../../../common/constants/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
@@ -95,6 +98,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: 'Date Added',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDate('date_added'),
+            dataIndex: 'date_added',
+            key: 'date_added',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+          },
+        ],
+      },
+      {
         title: 'Overall Status',
         sorter: true,
         children: [
@@ -155,7 +171,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: '',
+        title: 'CPU Cores',
         sorter: true,
         children: [
           {

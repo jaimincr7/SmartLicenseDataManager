@@ -17,7 +17,6 @@ import {
   getTableColumns,
   saveGlobalTableColumnSelection,
 } from '../../../store/user/globalTableColumnSelection/globalTableColumnSelection.action';
-import _ from 'lodash';
 
 const { Option } = Select;
 
@@ -34,7 +33,7 @@ const TableColumnSelection: React.FC = () => {
   const [checkAll, setCheckAll] = React.useState(false);
   const [defaultTableColumns, setDefaultTableColumns] = React.useState([]);
 
-  const onFinish = (values: any) => {
+  const onFinish = () => {
     const isAllDeselected = Object.values(columnSelection.getGlobalTableColumns.data.columns).every(
       (col) => col === false
     );
@@ -42,7 +41,6 @@ const TableColumnSelection: React.FC = () => {
       toast.info('Please select some columns.');
       return false;
     }
-    console.log(columnSelection.getGlobalTableColumns.data);
     dispatch(saveGlobalTableColumnSelection(columnSelection.getGlobalTableColumns.data)).then(
       (res) => {
         dispatch(setGlobalTableColumns(res.payload.data));

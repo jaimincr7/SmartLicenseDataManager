@@ -28,6 +28,7 @@ export enum Page {
   GlobalTableColumnSelection = 'global-table-column-selection',
 
   TabVCluster = 'tab-v-cluster',
+  TabVHost = 'tab-v-host',
 
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',
