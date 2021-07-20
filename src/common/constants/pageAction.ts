@@ -29,6 +29,7 @@ export enum Page {
 
   TabVCluster = 'tab-v-cluster',
   TabVHost = 'tab-v-host',
+  TabVInfo = 'tab-v-info',
 
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',

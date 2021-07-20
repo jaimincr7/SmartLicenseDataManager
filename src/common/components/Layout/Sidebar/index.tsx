@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { userSelector } from '../../../../store/user/user.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { getMenuRights } from '../../../../store/user/user.action';
-import { IMenu } from '../../../../services/user/menu/menu.model';
+
 const { SubMenu } = Menu;
 
 function Sidebar() {
@@ -49,7 +49,7 @@ function Sidebar() {
           {childMenu.childMenus?.map((menu) => renderMenu(menu))}
         </SubMenu>
       );
-    } else if(childMenu.parent_menu_id){
+    } else if (childMenu.parent_menu_id) {
       return (
         <Menu.Item key={`${childMenu.url}`}>
           <Link to={`${childMenu.url}`} title={childMenu?.description}>
@@ -73,7 +73,7 @@ function Sidebar() {
             key="/"
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard.svg`} alt="" />}
           >
-            <Link to='/' title='Dashboard'>
+            <Link to="/" title="Dashboard">
               Dashboard
             </Link>
           </Menu.Item>
@@ -83,10 +83,8 @@ function Sidebar() {
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-reporting.svg`} alt="" />}
             title="Reports"
           >
-            <Menu.Item
-              key="/report/coverage"              
-            >
-              <Link to='/report/coverage' title='Coverage'>
+            <Menu.Item key="/report/coverage">
+              <Link to="/report/coverage" title="Coverage">
                 Coverage
               </Link>
             </Menu.Item>

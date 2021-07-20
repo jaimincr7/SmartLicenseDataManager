@@ -28,6 +28,7 @@ import globalSearchReducer from './globalSearch/globalSearch.reducer';
 import globalTableColumnSelectionReducer from './user/globalTableColumnSelection/globalTableColumnSelection.reducer';
 import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
 import tabVHostReducer from './rvTools/tabVHost/tabVHost.reducer';
+import tabVInfoReducer from './rvTools/tabVInfo/tabVInfo.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -59,4 +60,5 @@ export const rootReducer = combineReducers({
   globalTableColumnSelection: globalTableColumnSelectionReducer,
   tabVCluster: tabVClusterReducer,
   tabVHost: tabVHostReducer,
+  tabVInfo: tabVInfoReducer,
 });

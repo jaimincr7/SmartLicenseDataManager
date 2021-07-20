@@ -23,7 +23,7 @@ import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import { setTableColumnSelection } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
-import ability, { Can } from '../../../../common/ability';
+import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
