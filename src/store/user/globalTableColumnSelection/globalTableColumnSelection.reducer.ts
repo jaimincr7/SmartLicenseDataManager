@@ -61,6 +61,13 @@ export const globalTableColumnSelectionSlice = createSlice({
         state.getGlobalTableColumns.data.table_name = table_name;
       }
     },
+    clearGetGlobalTableColumns: (state) => {
+      state.getGlobalTableColumns.data = {
+        id: null,
+        table_name: null,
+        columns: {},
+      };
+    },
   },
   extraReducers: {
     // Get Table Columns
@@ -150,6 +157,7 @@ export const {
   setGlobalTableColumnSelection,
   clearGetTableColumns,
   setGlobalTableColumns,
+  clearGetGlobalTableColumns,
 } = globalTableColumnSelectionSlice.actions;
 
 // The reducer

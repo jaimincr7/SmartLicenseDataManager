@@ -4,6 +4,7 @@ import { Button, Checkbox, Col, Form, Popover, Row, Select } from 'antd';
 import { toast } from 'react-toastify';
 import { getDatabaseTables } from '../../../store/bulkImport/bulkImport.action';
 import {
+  clearGetGlobalTableColumns,
   clearGetTableColumns,
   clearGlobalTableColumnSelectionMessages,
   globalTableColumnSelectionSelector,
@@ -50,15 +51,18 @@ const TableColumnSelection: React.FC = () => {
 
   const handleTableChange = (table: string) => {
     if (table) {
-      dispatch(getGlobalTableColumns(table)).then((res) => {
+      dispatch(getTableColumns(table)).then(async (res) => {
         if (res.payload) {
-          setDefaultTableColumns(Object.keys(JSON.parse(res.payload.columns as any)));
-          dispatch(setGlobalTableColumns(res.payload));
+          const columnsArr = res.payload.map((col) => col.name);
+          await setDefaultTableColumns([...columnsArr, 'Action']);
+        }
+      })
+      dispatch(getGlobalTableColumns(table)).then(async (res) => {
+        if (res.payload) {
+          await dispatch(setGlobalTableColumns(res.payload));
         } else {
-          dispatch(getTableColumns(table)).then((res) => {
-            const columnsArr = res.payload.map((col) => col.name);
-            setDefaultTableColumns([...columnsArr, 'Action']);
-          });
+          dispatch(clearGetGlobalTableColumns());
+          await setTableColumns();
         }
       });
     } else {
@@ -71,12 +75,28 @@ const TableColumnSelection: React.FC = () => {
     form.resetFields(['table_name']);
   };
 
+  const setTableColumns = async () => {
+    if (defaultTableColumns.length > 0 && !columnSelection.getGlobalTableColumns.data.id) {
+      let selectedColumn: { [key: string]: boolean } = {};
+      defaultTableColumns.forEach((col) => {
+        selectedColumn = { ...selectedColumn, [col]: true };
+      });
+      const globalTableColumns = {
+        id: null,
+        table_name: form.getFieldValue('table_name'),
+        columns: JSON.stringify(selectedColumn),
+      };
+      await dispatch(setGlobalTableColumns(globalTableColumns));
+    }
+  }
+
   useEffect(() => {
     if (columnSelection.saveGlobalTableColumnSelection.messages.length > 0) {
       if (columnSelection.saveGlobalTableColumnSelection.hasErrors) {
         toast.error(columnSelection.saveGlobalTableColumnSelection.messages.join(' '));
       } else {
         toast.success(columnSelection.saveGlobalTableColumnSelection.messages.join(' '));
+        resetPage();
       }
       dispatch(clearGlobalTableColumnSelectionMessages());
     }
@@ -90,18 +110,7 @@ const TableColumnSelection: React.FC = () => {
   }, [dispatch]);
 
   React.useEffect(() => {
-    if (defaultTableColumns.length > 0 && columnSelection.getTableColumns.data) {
-      let selectedColumn: { [key: string]: boolean } = {};
-      defaultTableColumns.forEach((col) => {
-        selectedColumn = { ...selectedColumn, [col]: true };
-      });
-      const globalTableColumns = {
-        id: null,
-        table_name: form.getFieldValue('table_name'),
-        columns: JSON.stringify(selectedColumn),
-      };
-      dispatch(setGlobalTableColumns(globalTableColumns));
-    }
+    setTableColumns();
   }, [defaultTableColumns]);
 
   React.useEffect(() => {
@@ -127,14 +136,14 @@ const TableColumnSelection: React.FC = () => {
     handleIndeterminate();
   };
 
-  const handleIndeterminate = () => {
+  const handleIndeterminate = async () => {
     const selectedColumns = defaultTableColumns
       .filter((col) => columnSelection.getGlobalTableColumns.data.columns[col] !== false)
       .map((x) => x);
-    setIndeterminate(
+    await setIndeterminate(
       !!selectedColumns.length && selectedColumns.length < defaultTableColumns.length
     );
-    setCheckAll(selectedColumns.length === defaultTableColumns.length);
+    await setCheckAll(selectedColumns.length === defaultTableColumns.length);
   };
 
   const handleSelectAllChange = (e) => {
