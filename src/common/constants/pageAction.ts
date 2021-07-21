@@ -23,6 +23,7 @@ export enum Page {
   Tenant = 'tenant',
   Company = 'company',
   Bu = 'bu',
+  Currency = 'currency',
   RoleMenuRights = 'role-menu-access-right',
   CompanyMenuRights = 'company-menu-access-right',
   GlobalTableColumnSelection = 'global-table-column-selection',

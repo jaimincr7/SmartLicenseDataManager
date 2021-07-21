@@ -406,7 +406,7 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">VM UUID</label>
-                  <Form.Item name="vm_uuid" className="m-0" label="VM UUID" rules={[{ max: 510 }]}>
+                  <Form.Item name="vm_uuid" className="m-0" label="VM UUID" rules={[{ max: 72 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>

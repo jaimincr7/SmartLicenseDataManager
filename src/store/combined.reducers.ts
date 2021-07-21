@@ -29,35 +29,51 @@ import globalTableColumnSelectionReducer from './user/globalTableColumnSelection
 import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
 import tabVHostReducer from './rvTools/tabVHost/tabVHost.reducer';
 import tabVInfoReducer from './rvTools/tabVInfo/tabVInfo.reducer';
+import currencyReducer from './master/currency/currency.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
-  sqlServerInventory: sqlServerInventoryReducer,
   common: commonReducer,
+  user: userReducer,
+  globalSearch: globalSearchReducer,
+  globalTableColumnSelection: globalTableColumnSelectionReducer,
+
+  // Sql Server
+  sqlServerInventory: sqlServerInventoryReducer,
   sqlServerEntitlements: sqlServerEntitlementsReducer,
-  adDevices: adDevicesReducer,
-  adDevicesExclusions: adDevicesExclusionsReducer,
-  adUsers: adUsersReducer,
   sqlServerOverrides: sqlServerOverridesReducer,
   sqlServerPricing: sqlServerPricingReducer,
-  bulkImport: bulkImportReducer,
   sqlServerLicense: sqlServerLicenseReducer,
+  sqlServerLicenseDetail: sqlServerLicenseDetailReducer,
+  sqlServerExclusions: sqlServerExclusionsReducer,
+
+  // Windows Server
   windowsServerInventory: windowsServerInventoryReducer,
-  user: userReducer,
   windowsServerEntitlements: windowsServerEntitlementsReducer,
   windowsServerOverrides: windowsServerOverridesReducer,
-  sqlServerLicenseDetail: sqlServerLicenseDetailReducer,
   windowsServerPricing: windowsServerPricingReducer,
-  sqlServerExclusions: sqlServerExclusionsReducer,
   windowsServerExclusions: windowsServerExclusionsReducer,
   windowsServerLicense: windowsServerLicenseReducer,
   windowsServerLicenseDetail: windowsServerLicenseDetailReducer,
+
+  // AD
+  adDevices: adDevicesReducer,
+  adDevicesExclusions: adDevicesExclusionsReducer,
+  adUsers: adUsersReducer,
+
+  // Data Input
+  bulkImport: bulkImportReducer,
+
+  // Menu-rights
   menu: menuReducer,
+
+  // Master tables
   tenant: tenantReducer,
   company: companyReducer,
   bu: buReducer,
-  globalSearch: globalSearchReducer,
-  globalTableColumnSelection: globalTableColumnSelectionReducer,
+  currency: currencyReducer,
+
+  // RV Tools
   tabVCluster: tabVClusterReducer,
   tabVHost: tabVHostReducer,
   tabVInfo: tabVInfoReducer,

@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import BU from './BU';
 import Company from './Company';
+import Currency from './Currency';
 import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
 import TableColumnSelection from './TableColumnsSelection';
@@ -24,6 +25,10 @@ const UserRoutes: React.FC = () => {
         {/* Company */}
         <Route exact path={`${match.path}/company`} component={Company} />
         <Route exact path={`${match.path}/company/:id`} component={Company} />
+
+        {/* Currency */}
+        <Route exact path={`${match.path}/currency`} component={Currency} />
+        <Route exact path={`${match.path}/currency/:id`} component={Currency} />
 
         {/* Menu Rights */}
         <Route exact path={`${match.path}/menu-rights/role`} component={RoleBaseMenuRights} />

@@ -263,7 +263,6 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Name</label>
