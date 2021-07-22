@@ -30,6 +30,7 @@ import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
 import tabVHostReducer from './rvTools/tabVHost/tabVHost.reducer';
 import tabVInfoReducer from './rvTools/tabVInfo/tabVInfo.reducer';
 import currencyReducer from './master/currency/currency.reducer';
+import azureDailyUsageReducer from './azure/azureDailyUsage/azureDailyUsage.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -77,4 +78,7 @@ export const rootReducer = combineReducers({
   tabVCluster: tabVClusterReducer,
   tabVHost: tabVHostReducer,
   tabVInfo: tabVInfoReducer,
+
+  // Azure
+  azureDailyUsage: azureDailyUsageReducer,
 });

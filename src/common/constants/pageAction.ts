@@ -32,6 +32,8 @@ export enum Page {
   TabVHost = 'tab-v-host',
   TabVInfo = 'tab-v-info',
 
+  AzureDailyUsage = 'azure-daily-usage',
+
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',
