@@ -19,8 +19,3 @@ export const exportExcel = (fileName: string, url: string) => {
   link.remove();
 };
 
-
-export enum powerBIFilterSchema {
-  Basic = "http://powerbi.com/product/schema#basic",
-  Advance = "http://powerbi.com/product/schema#Advance"
-}

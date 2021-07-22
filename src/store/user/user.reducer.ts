@@ -41,7 +41,7 @@ export const userSlice = createSlice({
       const setChildMenus = (menu: IMenu, isIterativeCall = false) => {
         const childMenus = menuArray?.filter((x) => x.parent_menu_id === menu.id && x.is_display);
         menuArray
-          ?.filter((x) => x.parent_menu_id === menu.id)
+          ?.filter((x) => x.parent_menu_id === menu.id && x.is_display)
           ?.forEach((childMenu: IMenu) => {
             const index = childMenus.findIndex((x) => x.id === childMenu.id);
             const grandChildMenus = menuArray?.filter(
