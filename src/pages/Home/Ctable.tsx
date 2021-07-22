@@ -132,20 +132,20 @@ export default class Ctable extends React.Component {
 
   // pagination--------------
   componentDidMount() {
-    const { pagination } = this.state;
-    this.fetch({ pagination });
+    // const { pagination } = this.state;
+    this.fetch();
   }
 
-  handleTableChange = (pagination, filters, sorter) => {
-    this.fetch({
-      sortField: sorter.field,
-      sortOrder: sorter.order,
-      pagination,
-      ...filters,
-    });
-  };
+  // handleTableChange = (pagination, filters, sorter) => {
+  //   this.fetch({
+  //     sortField: sorter.field,
+  //     sortOrder: sorter.order,
+  //     pagination,
+  //     ...filters,
+  //   });
+  // };
 
-  fetch = (params = {}) => {
+  fetch = () => {
     this.setState({ loading: true });
     this.setState({
       pagination: {

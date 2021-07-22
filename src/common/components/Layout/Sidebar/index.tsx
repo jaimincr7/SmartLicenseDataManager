@@ -5,7 +5,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { userSelector } from '../../../../store/user/user.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { getMenuRights } from '../../../../store/user/user.action';
-import { IMenu } from '../../../../services/user/menu/menu.model';
 const { SubMenu } = Menu;
 
 function Sidebar() {
