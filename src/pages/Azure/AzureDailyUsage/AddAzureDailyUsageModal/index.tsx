@@ -53,7 +53,7 @@ const validateMessages = {
 };
 
 const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
-  const inventory = useAppSelector(azureDailyUsageSelector);
+  const azureDailyUsage = useAppSelector(azureDailyUsageSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
@@ -302,24 +302,24 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
   };
 
   useEffect(() => {
-    if (inventory.save.messages.length > 0) {
-      if (inventory.save.hasErrors) {
-        toast.error(inventory.save.messages.join(' '));
+    if (azureDailyUsage.save.messages.length > 0) {
+      if (azureDailyUsage.save.hasErrors) {
+        toast.error(azureDailyUsage.save.messages.join(' '));
       } else {
-        toast.success(inventory.save.messages.join(' '));
+        toast.success(azureDailyUsage.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
       dispatch(clearAzureDailyUsageMessages());
     }
-  }, [inventory.save.messages]);
+  }, [azureDailyUsage.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && inventory.getById.data) {
-      const data = inventory.getById.data;
+    if (+id > 0 && azureDailyUsage.getById.data) {
+      const data = azureDailyUsage.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [inventory.getById.data]);
+  }, [azureDailyUsage.getById.data]);
 
   useEffect(() => {
     dispatch(getTenantLookup());
@@ -343,9 +343,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         onCancel={handleModalClose}
         footer={false}
       >
-        {inventory.getById.loading ? (
+        {azureDailyUsage.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={inventory.getById.loading} />
+            <Spin spinning={azureDailyUsage.getById.loading} />
           </div>
         ) : (
           <Form
@@ -1324,8 +1324,8 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                       className="form-control w-100"
                       min={0}
                       max={100}
-                    // formatter={(value) => `${value}%`}
-                    // parser={value => value.replace('%', '')}
+                      // formatter={(value) => `${value}%`}
+                      // parser={value => value.replace('%', '')}
                     />
                   </Form.Item>
                 </div>
@@ -1343,8 +1343,8 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                       className="form-control w-100"
                       min={0}
                       max={100}
-                    // formatter={(value) => `${value}%`}
-                    // parser={value => value.replace('%', '')}
+                      // formatter={(value) => `${value}%`}
+                      // parser={value => value.replace('%', '')}
                     />
                   </Form.Item>
                 </div>
@@ -1444,7 +1444,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={inventory.save.loading}
+                loading={azureDailyUsage.save.loading}
               >
                 {submitButtonText}
               </Button>

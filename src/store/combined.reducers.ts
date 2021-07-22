@@ -31,6 +31,7 @@ import tabVHostReducer from './rvTools/tabVHost/tabVHost.reducer';
 import tabVInfoReducer from './rvTools/tabVInfo/tabVInfo.reducer';
 import currencyReducer from './master/currency/currency.reducer';
 import azureDailyUsageReducer from './azure/azureDailyUsage/azureDailyUsage.reducer';
+import azureRateCardReducer from './azure/azureRateCard/azureRateCard.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -81,4 +82,5 @@ export const rootReducer = combineReducers({
 
   // Azure
   azureDailyUsage: azureDailyUsageReducer,
+  azureRateCard: azureRateCardReducer,
 });
