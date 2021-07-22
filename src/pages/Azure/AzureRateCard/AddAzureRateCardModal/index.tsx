@@ -22,9 +22,6 @@ const validateMessages = {
   string: {
     max: Messages.MAXLENGTH,
   },
-  pattern: {
-    mismatch: Messages.INVALID,
-  },
 };
 
 const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {

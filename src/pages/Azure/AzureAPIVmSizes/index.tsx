@@ -4,17 +4,17 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import {
-  clearAzureRateCard,
-  azureRateCardSelector,
-} from '../../../store/azure/azureRateCard/azureRateCard.reducer';
-import { IAzureRateCardProps } from './azureRateCard.model';
-import AddAzureRateCardModal from './AddAzureRateCardModal';
+  clearAzureAPIVmSizes,
+  azureAPIVmSizesSelector,
+} from '../../../store/azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
+import { IAzureAPIVmSizesProps } from './azureAPIVmSizes.model';
+import AddAzureAPIVmSizesModal from './AddAzureAPIVmSizesModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 
-const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
-  const azureRateCard = useAppSelector(azureRateCardSelector);
+const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
+  const azureAPIVmSizes = useAppSelector(azureAPIVmSizesSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -33,7 +33,7 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearAzureRateCard());
+      dispatch(clearAzureAPIVmSizes());
     };
   }, []);
 
@@ -44,17 +44,17 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
   return (
     <div className="azure">
       <div className="title-block">
-        <h4 className="p-0">Azure Rate Card</h4>
+        <h4 className="p-0">Azure API - VM Sizes</h4>
       </div>
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.AzureRateCard}>
+            <Can I={Action.ImportToExcel} a={Page.AzureAPIVmSizes}>
               <Col>
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${azureRateCard.search.tableName}`)
+                    history.push(`/data-input/bulk-import/${azureAPIVmSizes.search.tableName}`)
                   }
                   icon={
                     <em className="anticon">
@@ -80,11 +80,11 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddAzureRateCardModal
+        <AddAzureAPIVmSizesModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/azure/azure-rate-card');
+            history.push('/azure/azure-api-vm-sizes');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -94,4 +94,4 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
   );
 };
 
-export default AzureRateCard;
+export default AzureAPIVmSizes;

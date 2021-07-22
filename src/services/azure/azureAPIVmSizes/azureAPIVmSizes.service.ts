@@ -1,13 +1,13 @@
-import { ISearchAzureRateCard, IAzureRateCard } from './azureRateCard.model';
+import { ISearchAzureAPIVmSizes, IAzureAPIVmSizes } from './azureAPIVmSizes.model';
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
 
-class AzureRateCardService {
-  ENDPOINT = '/azure-rate-card';
+class AzureAPIVmSizesService {
+  ENDPOINT = '/azure-api-vm-sizes';
 
-  public async searchAzureRateCard(
-    searchParams?: ISearchAzureRateCard
-  ): Promise<IApiResponse<ISearchResponse<IAzureRateCard>>> {
+  public async searchAzureAPIVmSizes(
+    searchParams?: ISearchAzureAPIVmSizes
+  ): Promise<IApiResponse<ISearchResponse<IAzureAPIVmSizes>>> {
     delete searchParams.is_lookup;
     const url = `${this.ENDPOINT}/search`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
@@ -15,14 +15,14 @@ class AzureRateCardService {
     });
   }
 
-  public async getAzureRateCardById(id: number): Promise<any> {
+  public async getAzureAPIVmSizesById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }
 
-  public async saveAzureRateCard(data: IAzureRateCard): Promise<any> {
+  public async saveAzureAPIVmSizes(data: IAzureAPIVmSizes): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {
       const url = `${this.ENDPOINT}/${id}`;
@@ -37,14 +37,14 @@ class AzureRateCardService {
     }
   }
 
-  public async deleteAzureRateCard(id: number): Promise<any> {
+  public async deleteAzureAPIVmSizes(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
       return res.data;
     });
   }
 
-  public async exportExcelFile(searchParams?: ISearchAzureRateCard): Promise<any> {
+  public async exportExcelFile(searchParams?: ISearchAzureAPIVmSizes): Promise<any> {
     const url = `${this.ENDPOINT}/search`;
     return request({
       url,
@@ -56,4 +56,4 @@ class AzureRateCardService {
     });
   }
 }
-export default new AzureRateCardService();
+export default new AzureAPIVmSizesService();

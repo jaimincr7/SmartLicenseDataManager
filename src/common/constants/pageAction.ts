@@ -34,6 +34,7 @@ export enum Page {
 
   AzureDailyUsage = 'azure-daily-usage',
   AzureRateCard = 'azure-rate-card',
+  AzureAPIVmSizes = 'azure-api-vm-sizes',
 
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',

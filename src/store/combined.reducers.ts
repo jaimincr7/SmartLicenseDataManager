@@ -32,6 +32,7 @@ import tabVInfoReducer from './rvTools/tabVInfo/tabVInfo.reducer';
 import currencyReducer from './master/currency/currency.reducer';
 import azureDailyUsageReducer from './azure/azureDailyUsage/azureDailyUsage.reducer';
 import azureRateCardReducer from './azure/azureRateCard/azureRateCard.reducer';
+import azureAPIVmSizesReducer from './azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -83,4 +84,5 @@ export const rootReducer = combineReducers({
   // Azure
   azureDailyUsage: azureDailyUsageReducer,
   azureRateCard: azureRateCardReducer,
+  azureAPIVmSizes: azureAPIVmSizesReducer,
 });
