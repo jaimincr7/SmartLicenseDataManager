@@ -1,6 +1,6 @@
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
-import { IBulkInsertDataset, IDeleteDataset, ILookup } from './common.model';
+import { IBulkInsertDataset, IDeleteDataset, ILookup, ITableColumn } from './common.model';
 
 class CommonService {
   public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
@@ -84,7 +84,14 @@ class CommonService {
   public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
     const url = `/app/table-column/${tableName}`;
     return request({ url, method: 'GET' }).then((res) => {
-      return res.data;
+      if (res.data?.body.data?.identity_column) {
+        const response = res.data?.body.data?.column_data.filter(
+          (x) => x.name !== res.data?.body.data?.identity_column
+        );
+        return response;
+      } else {
+        return res.data?.body.data?.column_data;
+      }
     });
   }
 

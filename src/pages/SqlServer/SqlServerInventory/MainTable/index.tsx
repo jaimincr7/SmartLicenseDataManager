@@ -451,30 +451,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-      {
-        title: 'Exclusion Id',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('exclusion_id', form),
-            dataIndex: 'exclusion_id',
-            key: 'exclusion_id',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: 'Exclusion',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('exclusion', form),
-            dataIndex: 'exclusion',
-            key: 'exclusion',
-            ellipsis: true,
-          },
-        ],
-      },
     ];
   };
 

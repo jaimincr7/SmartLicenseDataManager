@@ -11,12 +11,7 @@ const { RangePicker } = DatePicker;
 export const FilterByDate = (dataIndex: string) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input lg">
-      <RangePicker
-        defaultPickerValue={[
-          moment().utc(),
-          moment().utc(),
-        ]}
-      />
+      <RangePicker defaultPickerValue={[moment().utc(), moment().utc()]} />
     </Form.Item>
   </>
 );

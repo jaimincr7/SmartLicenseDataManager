@@ -33,6 +33,7 @@ import currencyReducer from './master/currency/currency.reducer';
 import azureDailyUsageReducer from './azure/azureDailyUsage/azureDailyUsage.reducer';
 import azureRateCardReducer from './azure/azureRateCard/azureRateCard.reducer';
 import azureAPIVmSizesReducer from './azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
+import o365ActivationsUserDetailReducer from './o365/o365ActivationsUserDetail/o365ActivationsUserDetail.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -85,4 +86,7 @@ export const rootReducer = combineReducers({
   azureDailyUsage: azureDailyUsageReducer,
   azureRateCard: azureRateCardReducer,
   azureAPIVmSizes: azureAPIVmSizesReducer,
+
+  // O365
+  o365ActivationsUserDetail: o365ActivationsUserDetailReducer,
 });

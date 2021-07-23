@@ -49,7 +49,7 @@ const TableColumnSelection: React.FC = () => {
 
   const handleTableChange = (table: string) => {
     if (table) {
-      dispatch(getTableColumns(table)).then(async (res) => {
+      dispatch(getTableColumns(table)).then(async (res: any) => {
         if (res.payload) {
           const columnsArr = res.payload.map((col) => col.name);
           await setDefaultTableColumns([...columnsArr, 'Action']);

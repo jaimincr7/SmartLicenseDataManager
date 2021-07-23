@@ -24,9 +24,9 @@ export const getGlobalTableColumns = createAsyncThunk(
 
 export const getTableColumns = createAsyncThunk('getTableColumns', async (tableName: string) => {
   const response = await commonService.getTableColumns(tableName).then((res) => {
-    return res.body;
+    return res;
   });
-  return response.data;
+  return response;
 });
 
 export const saveGlobalTableColumnSelection = createAsyncThunk(

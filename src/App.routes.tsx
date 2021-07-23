@@ -18,6 +18,7 @@ import UserRoutes from './pages/User/User.routes';
 import ReportRoutes from './pages/Report/Report.routes';
 import RVToolsRoutes from './pages/RVTools/RVTools.routes';
 import AzureRoutes from './pages/Azure/Azure.routes';
+import O365Routes from './pages/O365/O365.routes';
 
 function AppRoutes() {
   return (
@@ -44,6 +45,7 @@ function AppRoutes() {
           <LayoutRoute path="/report" layout={MainLayout} component={ReportRoutes} />
           <LayoutRoute path="/rv-tools" layout={MainLayout} component={RVToolsRoutes} />
           <LayoutRoute path="/azure" layout={MainLayout} component={AzureRoutes} />
+          <LayoutRoute path="/o365" layout={MainLayout} component={O365Routes} />
 
           {/* Dummy routes for designers */}
           <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />

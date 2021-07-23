@@ -109,15 +109,14 @@ const BulkImport: React.FC = () => {
       formUpload.setFieldsValue({ sheet_name: currentSheetName });
     }
     if (bulkImports.getTableColumns.data && bulkImports.getExcelColumns.data?.excel_sheet_columns) {
-      const filterExcelColumns = bulkImports.getExcelColumns.data.excel_sheet_columns
-        .find((e) => e.sheet === currentSheetName)
-        .columns.filter((x) => x !== 'Id');
-      const filterTableColumns = bulkImports.getTableColumns.data.filter((x) => x.name !== 'Id');
+      const filterExcelColumns = bulkImports.getExcelColumns.data.excel_sheet_columns.find(
+        (e) => e.sheet === currentSheetName
+      ).columns;
       setExcelColumns(filterExcelColumns);
-      setTableColumns(filterTableColumns);
+      setTableColumns(bulkImports.getTableColumns.data);
 
       const initialValuesData: any = {};
-      filterTableColumns.map(function (ele) {
+      bulkImports.getTableColumns.data.map(function (ele) {
         initialValuesData[ele.name] = filterExcelColumns.includes(ele.name) ? ele.name : '';
       });
       form.setFieldsValue(initialValuesData);

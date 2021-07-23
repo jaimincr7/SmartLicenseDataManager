@@ -577,32 +577,6 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Exclusion Id</label>
-                  <Form.Item
-                    name="exclusion_id"
-                    label="Exclusion Id"
-                    className="m-0"
-                    rules={[{ type: 'integer' }]}
-                  >
-                    <InputNumber min={0} className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Exclusion</label>
-                  <Form.Item
-                    name="exclusion"
-                    label="Exclusion"
-                    className="m-0"
-                    rules={[{ max: 510 }]}
-                  >
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item name="ha_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
