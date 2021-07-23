@@ -1,6 +1,7 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import {
+  setTableColumnSelection,
   clearSqlServerEntitlementsMessages,
   sqlServerEntitlementsSelector,
 } from '../../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.reducer';
@@ -22,7 +23,6 @@ import {
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
-import { setTableColumnSelection } from '../../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.reducer';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import ability, { Can } from '../../../../common/ability';
 

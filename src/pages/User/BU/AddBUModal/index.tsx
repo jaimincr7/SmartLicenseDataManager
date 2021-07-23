@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IBU } from '../../../../services/master/bu/bu.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -17,19 +17,6 @@ import {
 import { IAddBUProps } from './addBU.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  types: {
-    email: Messages.INVALID,
-  },
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-  pattern: {
-    mismatch: Messages.INVALID,
-  },
-};
 
 const AddBUModal: React.FC<IAddBUProps> = (props) => {
   const bu = useAppSelector(buSelector);

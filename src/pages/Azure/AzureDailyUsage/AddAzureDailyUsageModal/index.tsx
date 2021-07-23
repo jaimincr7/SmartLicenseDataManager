@@ -14,7 +14,6 @@ import {
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
 import { IAzureDailyUsage } from '../../../../services/azure/azureDailyUsage/azureDailyUsage.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -39,18 +38,9 @@ import {
 } from '../../../../store/azure/azureDailyUsage/azureDailyUsage.reducer';
 import { IAddAzureDailyUsageProps } from './addAzureDailyUsage.model';
 import moment from 'moment';
+import { validateMessages } from '../../../../common/constants/common';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-  pattern: {
-    mismatch: Messages.INVALID,
-  },
-};
 
 const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
   const azureDailyUsage = useAppSelector(azureDailyUsageSelector);
@@ -202,7 +192,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-
         account_owner_id: data.account_owner_id,
         account_name: data.account_name,
         service_administrator_id: data.service_administrator_id,
@@ -211,7 +200,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         subscription_name: data.subscription_name,
         date: _.isNull(data.date) ? null : moment(data.date),
         month: data.month,
-
         day: data.day,
         year: data.year,
         product: data.product,
@@ -222,7 +210,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         meter_name: data.meter_name,
         consumed_quantity: data.consumed_quantity,
         resource_rate: data.resource_rate,
-
         extended_cost: data.extended_cost,
         resource_location: data.resource_location,
         consumed_service: data.consumed_service,
@@ -233,7 +220,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         tags: data.tags,
         store_service_identifier: data.store_service_identifier,
         department_name: data.department_name,
-
         cost_center: data.cost_center,
         unit_of_measure: data.unit_of_measure,
         resource_group: data.resource_group,
@@ -246,7 +232,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         billing_period_start_date: _.isNull(data.billing_period_start_date)
           ? null
           : moment(data.billing_period_start_date),
-
         billing_period_end_date: _.isNull(data.billing_period_end_date)
           ? null
           : moment(data.billing_period_end_date),
@@ -259,7 +244,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         resource_name: data.resource_name,
         invoice_section_id: data.invoice_section_id,
         invoice_section: data.invoice_section,
-
         reservation_id: data.reservation_id,
         reservation_name: data.reservation_name,
         product_order_id: data.product_order_id,
@@ -270,7 +254,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         charge_type: data.charge_type,
         frequency: data.frequency,
         publisher_type: data.publisher_type,
-
         pay_g_price: data.pay_g_price,
         pricing_model: data.pricing_model,
         idle: data.idle,
@@ -281,7 +264,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         vm_resource_name: data.vm_resource_name,
         ri_applied: data.ri_applied,
         ri_suggested: data.ri_suggested,
-
         ri_est_savings: data.ri_est_savings,
         ahb_applied: data.ahb_applied,
         ahb_suggested: data.ahb_suggested,
@@ -292,7 +274,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         resource_rate_list: data.resource_rate_list,
         discount: data.discount,
         rate_card_unit: data.rate_card_unit,
-
         usage: data.usage,
         growth: data.growth,
         month_name: data.month_name,
@@ -514,12 +495,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Day</label>
-                  <Form.Item
-                    name="day"
-                    label="Day"
-                    className="m-0"
-                    rules={[{ type: 'number', min: 1, max: 31 }]}
-                  >
+                  <Form.Item name="day" label="Day" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber min={1} max={31} className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -531,7 +507,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="month"
                     label="Month"
                     className="m-0"
-                    rules={[{ type: 'number', min: 1, max: 12 }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber min={1} max={12} className="form-control w-100" />
                   </Form.Item>
@@ -544,7 +520,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="month_name"
                     label="Month Name"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 40 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -553,27 +529,11 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Year</label>
-                  <Form.Item name="year" label="Year" className="m-0" rules={[{ type: 'number' }]}>
+                  <Form.Item name="year" label="Year" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
-              {/* <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Month</label>
-                  <Form.Item name="month" label="Month" className="m-0">
-                    <DatePicker picker="month" className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Year</label>
-                  <Form.Item name="year" label="Year" className="m-0">
-                    <DatePicker picker="year" className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col> */}
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Product</label>
@@ -663,12 +623,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="resource_rate"
                     label="Resource Rate"
                     className="m-0"
-                    //   rules={[{ type: 'number' }]}
-                    // >
-                    rules={[{ pattern: /^\d+(\.\d+)?$/ }]}
+                    rules={[{ type: 'number' }]}
                   >
-                    <Input className="form-control" />
-                    {/* <InputNumber className="form-control w-100" /> */}
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -679,12 +636,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="extended_cost"
                     label="Extended Cost"
                     className="m-0"
-                    //   rules={[{ type: 'number' }]}
-                    // >
-                    rules={[{ pattern: /^\d+(\.\d+)?$/ }]}
+                    rules={[{ type: 'number' }]}
                   >
-                    <Input className="form-control" />
-                    {/* <InputNumber className="form-control w-100" /> */}
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -717,12 +671,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">InstanceId</label>
-                  <Form.Item
-                    name="instance_id"
-                    label="InstanceId"
-                    className="m-0"
-                    rules={[{ max: 510 }]}
-                  >
+                  <Form.Item name="instance_id" label="InstanceId" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -756,12 +705,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Additional Info</label>
-                  <Form.Item
-                    name="additional_info"
-                    label="Additional Info"
-                    className="m-0"
-                    rules={[{ max: 510 }]}
-                  >
+                  <Form.Item name="additional_info" label="Additional Info" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -769,7 +713,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Tags</label>
-                  <Form.Item name="tags" label="Tags" className="m-0" rules={[{ max: 510 }]}>
+                  <Form.Item name="tags" label="Tags" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -846,7 +790,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="billing_currency"
                     label="Billing Currency"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 20 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -855,7 +799,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">OfferId</label>
-                  <Form.Item name="offer_id" label="OfferId" className="m-0" rules={[{ max: 510 }]}>
+                  <Form.Item name="offer_id" label="OfferId" className="m-0" rules={[{ max: 100 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -867,7 +811,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="billing_account_id"
                     label="Billing AccountId"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 40 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -886,8 +830,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-
-              {/*  start-end date */}
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Billing Period Start Date</label>
@@ -912,7 +854,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Billing ProfileId</label>
@@ -946,7 +887,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="part_number"
                     label="Part number"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 40 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -985,7 +926,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="availability_zone"
                     label="Availability Zone"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1011,7 +952,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="invoice_section_id"
                     label="Invoice SectionId"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 40 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1024,7 +965,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="invoice_section"
                     label="Invoice Section"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1037,7 +978,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="reservation_id"
                     label="Reservation Id"
                     className="m-0"
-                    rules={[{ max: 100 }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1076,7 +1017,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="product_order_name"
                     label="Product Order Name"
                     className="m-0"
-                    rules={[{ max: 100 }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1097,7 +1038,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="publisher_name"
                     label="Publisher Name"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1123,7 +1064,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="charge_type"
                     label="Charge Type"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1149,7 +1090,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="publisher_type"
                     label="Publisher Type"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1175,7 +1116,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="pricing_model"
                     label="Pricing Model"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1210,12 +1151,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">VM - Instance ID</label>
-                  <Form.Item
-                    name="vm_instance_id"
-                    label="VM - Instance ID"
-                    className="m-0"
-                    rules={[{ max: 510 }]}
-                  >
+                  <Form.Item name="vm_instance_id" label="VM - Instance ID" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -1305,7 +1241,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="rate_card_unit"
                     label="Rate Card Unit"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -1320,13 +1256,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber
-                      className="form-control w-100"
-                      min={0}
-                      max={100}
-                      // formatter={(value) => `${value}%`}
-                      // parser={value => value.replace('%', '')}
-                    />
+                    <InputNumber className="form-control w-100" min={0} max={100} />
                   </Form.Item>
                 </div>
               </Col>
@@ -1339,13 +1269,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber
-                      className="form-control w-100"
-                      min={0}
-                      max={100}
-                      // formatter={(value) => `${value}%`}
-                      // parser={value => value.replace('%', '')}
-                    />
+                    <InputNumber className="form-control w-100" min={0} max={100} />
                   </Form.Item>
                 </div>
               </Col>

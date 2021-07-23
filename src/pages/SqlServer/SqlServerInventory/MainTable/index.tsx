@@ -1,6 +1,7 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import {
+  setTableColumnSelection,
   clearSqlServerInventoryMessages,
   sqlServerInventorySelector,
 } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
@@ -22,7 +23,6 @@ import {
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
-import { setTableColumnSelection } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
@@ -447,6 +447,30 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('sql_cluster_node_type', form),
             dataIndex: 'sql_cluster_node_type',
             key: 'sql_cluster_node_type',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: 'Exclusion Id',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('exclusion_id', form),
+            dataIndex: 'exclusion_id',
+            key: 'exclusion_id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: 'Exclusion',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('exclusion', form),
+            dataIndex: 'exclusion',
+            key: 'exclusion',
             ellipsis: true,
           },
         ],

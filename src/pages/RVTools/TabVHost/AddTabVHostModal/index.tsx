@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITabVHost } from '../../../../services/rvTools/tabVHost/tabVHost.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -25,16 +25,6 @@ import {
 import { IAddTabVHostProps } from './addTabVHost.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  types: {
-    number: Messages.NUMBER,
-  },
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
   const tabVHost = useAppSelector(tabVHostSelector);
@@ -261,7 +251,7 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">CPU</label>
-                  <Form.Item name="cpu" label="CPU" className="m-0" rules={[{ type: 'number' }]}>
+                  <Form.Item name="cpu" label="CPU" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -273,7 +263,7 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
                     name="cores_per_cpu"
                     label="Cores per CPU"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -286,7 +276,7 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
                     name="cores"
                     label="Cores"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>

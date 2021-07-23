@@ -11,7 +11,7 @@ import {
   setGlobalTableColumns,
   setGlobalTableColumnSelection,
 } from '../../../store/user/globalTableColumnSelection/globalTableColumnSelection.reducer';
-import { Messages } from '../../../common/constants/messages';
+import { validateMessages } from '../../../common/constants/common';
 import { IDatabaseTable } from '../../../services/common/common.model';
 import {
   getGlobalTableColumns,
@@ -20,10 +20,6 @@ import {
 } from '../../../store/user/globalTableColumnSelection/globalTableColumnSelection.action';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-};
 
 const TableColumnSelection: React.FC = () => {
   const columnSelection = useAppSelector(globalTableColumnSelectionSelector);

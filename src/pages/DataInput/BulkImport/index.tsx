@@ -1,5 +1,4 @@
 import { Button, Col, Form, Row, Select, Spin, Upload } from 'antd';
-import { Messages } from '../../../common/constants/messages';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
@@ -21,12 +20,9 @@ import {
   IDatabaseTable,
   IExcelSheetColumn,
 } from '../../../services/common/common.model';
+import { validateMessages } from '../../../common/constants/common';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-};
 
 const BulkImport: React.FC = () => {
   const bulkImports = useAppSelector(bulkImportSelector);

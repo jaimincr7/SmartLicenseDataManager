@@ -14,14 +14,10 @@ import {
   clearDeleteDatasetMessages,
   commonSelector,
 } from '../../../store/common/common.reducer';
-import { Messages } from '../../constants/messages';
+import { validateMessages } from '../../constants/common';
 import { IDeleteDatasetModalProps } from './deleteDatasetModal.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-};
 
 const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
   const common = useAppSelector(commonSelector);

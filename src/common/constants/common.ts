@@ -1,4 +1,5 @@
 import { IDropDownOption } from './../models/common';
+import { Messages } from './messages';
 
 export const Common = {
   DATEFORMAT: 'yyyy-MM-DD',
@@ -19,3 +20,17 @@ export const exportExcel = (fileName: string, url: string) => {
   link.remove();
 };
 
+export const validateMessages = {
+  required: Messages.FIELD_REQUIRED,
+  string: {
+    max: Messages.MAXLENGTH,
+  },
+  types: {
+    integer: Messages.INTEGER,
+    number: Messages.NUMBER,
+    email: Messages.INVALID,
+  },
+  pattern: {
+    mismatch: Messages.INVALID,
+  },
+};

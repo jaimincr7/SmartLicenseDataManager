@@ -1,6 +1,5 @@
 import { Button, Col, Form, Modal, Row, Select, DatePicker } from 'antd';
 import { useEffect } from 'react';
-import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getAllCompanyLookup, getBULookup } from '../../../../store/common/common.action';
@@ -13,12 +12,9 @@ import {
   clearAdDeviceMessages,
 } from '../../../../store/ad/adDevices/adDevices.reducer';
 import { processData } from '../../../../store/ad/adDevices/adDevices.action';
+import { validateMessages } from '../../../../common/constants/common';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-};
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const adDevices = useAppSelector(adDevicesSelector);

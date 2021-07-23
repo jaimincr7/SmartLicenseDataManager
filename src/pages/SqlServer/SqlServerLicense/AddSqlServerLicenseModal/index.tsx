@@ -3,7 +3,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerLicense } from '../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -30,13 +30,6 @@ import {
 import { IAddSqlServerLicenseProps } from './addSqlServerLicense.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) => {
   const sqlServerLicense = useAppSelector(sqlServerLicenseSelector);

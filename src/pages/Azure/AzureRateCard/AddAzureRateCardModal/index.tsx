@@ -2,7 +2,6 @@ import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Spin } f
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
 import { IAzureRateCard } from '../../../../services/azure/azureRateCard/azureRateCard.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -16,13 +15,7 @@ import {
 } from '../../../../store/azure/azureRateCard/azureRateCard.reducer';
 import { IAddAzureRateCardProps } from './addAzureRateCard.model';
 import moment from 'moment';
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
+import { validateMessages } from '../../../../common/constants/common';
 
 const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
   const azureRateCard = useAppSelector(azureRateCardSelector);

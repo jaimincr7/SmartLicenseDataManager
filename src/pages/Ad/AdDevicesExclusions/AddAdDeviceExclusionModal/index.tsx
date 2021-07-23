@@ -2,7 +2,6 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -26,21 +25,9 @@ import {
   saveAdDevicesExclusions,
 } from '../../../../store/ad/adDevicesExclusions/adDevicesExclusions.action';
 import { IAdDevicesExclusions } from '../../../../services/ad/adDevicesExclusions/adDevicesExclusions.model';
+import { validateMessages } from '../../../../common/constants/common';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-  types: {
-    number: Messages.NUMBER,
-  },
-  number: {
-    min: Messages.MIN,
-  },
-};
 
 const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (props) => {
   const adDevicesExclusions = useAppSelector(adDevicesExclusionsSelector);
@@ -283,11 +270,11 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                   <label className="label">Instance Count</label>
                   <Form.Item
                     name="instance_count"
-                    label="Instance Count"
+                    label="Instance count"
                     className="m-0"
-                    rules={[{ type: 'number', min: 0 }]}
+                    rules={[{ type: 'integer' }]}
                   >
-                    <InputNumber className="form-control w-100" />
+                    <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

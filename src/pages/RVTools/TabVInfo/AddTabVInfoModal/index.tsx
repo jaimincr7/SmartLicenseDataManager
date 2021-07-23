@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITabVInfo } from '../../../../services/rvTools/tabVInfo/tabVInfo.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -25,16 +25,6 @@ import {
 import { IAddTabVInfoProps } from './addTabVInfo.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  types: {
-    number: Messages.NUMBER,
-  },
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
   const tabVInfo = useAppSelector(tabVInfoSelector);
@@ -296,7 +286,7 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">CPUs</label>
-                  <Form.Item name="cpus" label="CPUs" className="m-0" rules={[{ type: 'number' }]}>
+                  <Form.Item name="cpus" label="CPUs" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>

@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITabVCluster } from '../../../../services/rvTools/tabVCluster/tabVCluster.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -28,16 +28,6 @@ import {
 import { IAddTabVClusterProps } from './addTabVCluster.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  types: {
-    number: Messages.NUMBER,
-  },
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
   const tabVCluster = useAppSelector(tabVClusterSelector);
@@ -291,7 +281,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                     name="num_hosts"
                     label="Hosts"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -304,7 +294,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                     name="num_effective_hosts"
                     label="Effective Hosts"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -317,7 +307,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                     name="total_cpu"
                     label="Total CPU"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -330,7 +320,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                     name="num_cpu_cores"
                     label="CPU Cores"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -343,7 +333,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                     name="num_v_motions"
                     label="V Motions"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -369,7 +359,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                     name="failover_level"
                     label="Fail Over Level"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -382,7 +372,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                     name="drs_default_vm_behavior_value"
                     label="drs_default_vm_behavior_value"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -438,7 +428,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">VMs</label>
-                  <Form.Item name="vms" label="VMs" className="m-0" rules={[{ type: 'number' }]}>
+                  <Form.Item name="vms" label="VMs" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>

@@ -1,6 +1,5 @@
 import { Button, Col, Form, Modal, Row, Select, Switch, DatePicker } from 'antd';
 import { useEffect } from 'react';
-import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getAllCompanyLookup, getBULookup } from '../../../../store/common/common.action';
@@ -13,12 +12,9 @@ import {
 } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+import { validateMessages } from '../../../../common/constants/common';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-};
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const sqlServerInventory = useAppSelector(sqlServerInventorySelector);

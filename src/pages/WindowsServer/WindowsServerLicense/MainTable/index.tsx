@@ -1,6 +1,7 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import {
+  setTableColumnSelection,
   clearWindowsServerLicenseMessages,
   windowsServerLicenseSelector,
 } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
@@ -22,7 +23,6 @@ import {
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
-import { setTableColumnSelection } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 

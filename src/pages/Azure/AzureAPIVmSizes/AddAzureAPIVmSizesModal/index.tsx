@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { IAzureAPIVmSizes } from '../../../../services/azure/azureAPIVmSizes/azureAPIVmSizes.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -14,13 +14,6 @@ import {
   azureAPIVmSizesSelector,
 } from '../../../../store/azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
 import { IAddAzureAPIVmSizesProps } from './addAzureAPIVmSizes.model';
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
   const azureAPIVmSizes = useAppSelector(azureAPIVmSizesSelector);

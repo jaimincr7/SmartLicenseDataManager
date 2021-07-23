@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ICurrency } from '../../../../services/master/currency/currency.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCurrencyById, saveCurrency } from '../../../../store/master/currency/currency.action';
@@ -11,13 +11,6 @@ import {
   currencySelector,
 } from '../../../../store/master/currency/currency.reducer';
 import { IAddCurrencyProps } from './addCurrency.model';
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
   const currency = useAppSelector(currencySelector);
@@ -130,7 +123,7 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
                     name="exchange_rate"
                     label="Exchange Rate"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>

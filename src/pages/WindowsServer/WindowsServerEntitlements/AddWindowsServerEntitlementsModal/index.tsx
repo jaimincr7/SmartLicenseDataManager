@@ -2,7 +2,7 @@ import { Button, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerEntitlements } from '../../../../services/windowsServer/windowsServerEntitlements/windowsServerEntitlements.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -29,13 +29,6 @@ import {
 import { IAddWindowsServerEntitlementsProps } from './addWindowsServerEntitlements.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsProps> = (props) => {
   const entitlements = useAppSelector(windowsServerEntitlementsSelector);
@@ -239,7 +232,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
                     name="qty_01"
                     label="Qty1"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -252,7 +245,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
                     name="qty_02"
                     label="Qty2"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -265,7 +258,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
                     name="qty_03"
                     label="Qty3"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>

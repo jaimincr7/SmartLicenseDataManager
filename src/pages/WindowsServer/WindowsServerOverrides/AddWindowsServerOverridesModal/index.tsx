@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerOverrides } from '../../../../services/windowsServer/windowsServerOverrides/windowsServerOverrides.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -28,13 +28,6 @@ import {
 import { IAddWindowsServerOverridesProps } from './addWindowsServerOverrides.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddWindowsServerOverridesModal: React.FC<IAddWindowsServerOverridesProps> = (props) => {
   const overrides = useAppSelector(windowsServerOverridesSelector);
