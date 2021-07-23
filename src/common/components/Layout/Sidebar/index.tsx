@@ -34,11 +34,11 @@ function Sidebar() {
     dispatch(getMenuRights());
   }, []);
 
-  const renderMenu = (childMenu: any) => {
+  const renderMenu = (childMenu: any, key = '-') => {
     if (childMenu?.childMenus?.length > 0) {
       return (
         <SubMenu
-          key={childMenu?.name}
+          key={childMenu?.name + key}
           icon={
             childMenu?.icon && (
               <img src={`${process.env.PUBLIC_URL}/assets/images/${childMenu?.icon}`} alt="" />
@@ -46,12 +46,12 @@ function Sidebar() {
           }
           title={childMenu?.description}
         >
-          {childMenu.childMenus?.map((menu) => renderMenu(menu))}
+          {childMenu.childMenus?.map((menu, index:number) => renderMenu(menu, `${key}-${index}`))}
         </SubMenu>
       );
     } else if (childMenu.parent_menu_id) {
       return (
-        <Menu.Item key={`${childMenu.url}`}>
+        <Menu.Item key={`${childMenu.url?childMenu.url:key}`}>
           <Link to={`${childMenu.url}`} title={childMenu?.description}>
             {childMenu?.description}
           </Link>
@@ -77,7 +77,7 @@ function Sidebar() {
               Dashboard
             </Link>
           </Menu.Item>
-          {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any) => renderMenu(menuDetail))}
+          {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any, index:number) => renderMenu(menuDetail, `-${index}`))}
           <SubMenu
             key="report"
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-reporting.svg`} alt="" />}

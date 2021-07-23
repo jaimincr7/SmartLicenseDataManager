@@ -52,6 +52,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Tenant Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('tenant_id', azureDailyUsage.search.lookups?.tenants),
@@ -64,6 +65,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Company Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('company_id', azureDailyUsage.search.lookups?.companies),
@@ -76,6 +78,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Bu Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('bu_id', azureDailyUsage.search.lookups?.bus),
@@ -88,6 +91,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Date Added',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDate('date_added'),
@@ -101,6 +105,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Account Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('account_name', form),
@@ -113,6 +118,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Account Owner Id',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('account_owner_id', form),
@@ -125,6 +131,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Additional Info',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('additional_info', form),
@@ -137,6 +144,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'AHB - Applied',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('ahb_applied', azureDailyUsage.search.lookups?.booleanLookup),
@@ -150,6 +158,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'AHB - Est Savings',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('ahb_est_savings', form),
@@ -162,6 +171,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'AHB - Suggested',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('ahb_suggested', azureDailyUsage.search.lookups?.booleanLookup),
@@ -175,6 +185,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'RI - Applied',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('ri_applied', azureDailyUsage.search.lookups?.booleanLookup),
@@ -188,6 +199,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'RI - Est Savings',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('ri_est_savings', form),
@@ -200,6 +212,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'RI - Suggested',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('ri_suggested', azureDailyUsage.search.lookups?.booleanLookup),
@@ -213,6 +226,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Availability Zone',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('availability_zone', form),
@@ -225,6 +239,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Billing Account Id',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('billing_account_id', form),
@@ -237,6 +252,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Billing Account Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('billing_account_name', form),
@@ -249,6 +265,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Billing Currency',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('billing_currency', form),
@@ -261,6 +278,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Billing Period StartDate',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDate('billing_period_start_date'),
@@ -274,6 +292,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Billing Period EndDate',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDate('billing_period_end_date'),
@@ -287,6 +306,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Billing Profile Id',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('billing_profile_id', form),
@@ -299,6 +319,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Billing Profile Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('billing_profile_name', form),
@@ -311,6 +332,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Charge Type',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('charge_type', form),
@@ -323,6 +345,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Charges Billed Separately',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
@@ -339,6 +362,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Consumed Quantity',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('consumed_quantity', form),
@@ -351,6 +375,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Consumed Service',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('consumed_service', form),
@@ -363,6 +388,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Cost Center',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('cost_center', form),
@@ -375,6 +401,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Date',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDate('date'),
@@ -388,6 +415,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Day',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('day', form),
@@ -400,6 +428,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Month',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('month', form),
@@ -412,6 +441,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Month Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('month_name', form),
@@ -424,6 +454,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Year',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('year', form),
@@ -436,6 +467,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Department Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('department_name', form),
@@ -448,6 +480,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'DevTest - Applied',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
@@ -464,6 +497,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'DevTest - Est Savings',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('dev_test_est_savings', form),
@@ -476,6 +510,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'DevTest - Suggested',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
@@ -492,6 +527,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Service Administrator Id',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('service_administrator_id', form),
@@ -504,6 +540,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'SubscriptionId',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('subscription_id', form),
@@ -516,6 +553,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Subscription_GUId',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('subscription_guid', form),
@@ -528,6 +566,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Subscription Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('subscription_name', form),
@@ -540,6 +579,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Product',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('product', form),
@@ -552,6 +592,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'MeterId',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('meter_id', form),
@@ -564,6 +605,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Meter Category',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('meter_category', form),
@@ -576,6 +618,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Meter Sub-Category',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('meter_sub_category', form),
@@ -588,6 +631,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Meter Region',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('meter_region', form),
@@ -600,6 +644,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Meter Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('meter_name', form),
@@ -612,6 +657,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Resource Rate',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('resource_rate', form),
@@ -624,6 +670,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Extended Cost',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('extended_cost', form),
@@ -636,6 +683,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Resource Location',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('resource_location', form),
@@ -648,6 +696,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'InstanceId',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('instance_id', form),
@@ -660,6 +709,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Service Info1',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('service_info1', form),
@@ -672,6 +722,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Service Info2',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('service_info2', form),
@@ -684,6 +735,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Tags',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('tags', form),
@@ -696,6 +748,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Store Service Identifier',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('store_service_identifier', form),
@@ -708,6 +761,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Unit Of Measure',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('unit_of_measure', form),
@@ -720,6 +774,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Resource Group',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('resource_group', form),
@@ -732,6 +787,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'OfferId',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('offer_id', form),
@@ -744,6 +800,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Is Azure Credit Eligible',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
@@ -760,6 +817,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Part Number',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('part_number', form),
@@ -772,6 +830,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Service Family',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('service_family', form),
@@ -784,6 +843,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Unit Price',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('unit_price', form),
@@ -796,6 +856,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Resource Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('resource_name', form),
@@ -808,6 +869,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Invoice SectionId',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('invoice_section_id', form),
@@ -820,6 +882,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Invoice Section',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('invoice_section', form),
@@ -832,6 +895,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'ReservationId',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('reservation_id', form),
@@ -844,6 +908,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Reservation Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('reservation_name', form),
@@ -856,6 +921,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Product OrderId',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('product_order_id', form),
@@ -868,6 +934,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Product Order Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('product_order_name', form),
@@ -880,6 +947,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Term',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('term', form),
@@ -892,6 +960,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Publisher Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('publisher_name', form),
@@ -904,6 +973,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Plan Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('plan_name', form),
@@ -916,6 +986,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Frequency',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('frequency', form),
@@ -928,6 +999,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Publisher Type',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('publisher_type', form),
@@ -940,6 +1012,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'PayGPrice',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('pay_g_price', form),
@@ -952,6 +1025,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Pricing Model',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('pricing_model', form),
@@ -964,6 +1038,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Idle',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('idle', azureDailyUsage.search.lookups?.booleanLookup),
@@ -977,6 +1052,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Idle - EST Savings',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('idle_est_savings', form),
@@ -989,6 +1065,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Placement',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterByDropdown('placement', azureDailyUsage.search.lookups?.booleanLookup),
@@ -1002,6 +1079,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Placement - EST Savings',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('placement_est_savings', form),
@@ -1014,6 +1092,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'VM - Instance Id',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('vm_instance_id', form),
@@ -1026,6 +1105,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'VM - Resource Name',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('vm_resource_name', form),
@@ -1038,6 +1118,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'ResourceRate - List',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('resource_rate_list', form),
@@ -1050,6 +1131,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Discount',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('discount', form),
@@ -1062,6 +1144,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Rate Card Unit',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('rate_card_unit', form),
@@ -1074,6 +1157,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Usage %',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('usage', form),
@@ -1086,6 +1170,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: 'Growth %',
         sorter: true,
+        ellipsis: true,
         children: [
           {
             title: FilterBySwap('growth', form),
