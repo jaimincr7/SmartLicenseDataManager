@@ -18,6 +18,8 @@ import {
   getTableColumns,
   saveGlobalTableColumnSelection,
 } from '../../../store/user/globalTableColumnSelection/globalTableColumnSelection.action';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import { Page } from '../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -183,7 +185,7 @@ const TableColumnSelection: React.FC = () => {
     <>
       <div className="update-excel-page">
         <div className="title-block">
-          <h4 className="p-0">Table Column Selection</h4>
+        <BreadCrumbs pageName={Page.GlobalTableColumnSelection}></BreadCrumbs>
         </div>
         <div className="main-card">
           <Form

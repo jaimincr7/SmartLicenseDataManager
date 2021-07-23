@@ -13,6 +13,7 @@ import AddWindowsServerEntitlementsModal from './AddWindowsServerEntitlementsMod
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (props) => {
   const entitlements = useAppSelector(windowsServerEntitlementsSelector);
@@ -45,7 +46,7 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <h4 className="p-0">Windows Server Entitlements</h4>
+      <BreadCrumbs pageName={Page.WindowsServerEntitlement}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

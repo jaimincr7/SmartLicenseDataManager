@@ -13,6 +13,7 @@ import AddAzureDailyUsageModal from './AddAzureDailyUsageModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   const azureDailyUsage = useAppSelector(azureDailyUsageSelector);
@@ -45,7 +46,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   return (
     <div className="azure">
       <div className="title-block">
-        <h4 className="p-0">Azure Daily Usage</h4>
+      <BreadCrumbs pageName={Page.AzureDailyUsage}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

@@ -21,6 +21,8 @@ import {
   IExcelSheetColumn,
 } from '../../../services/common/common.model';
 import { validateMessages } from '../../../common/constants/common';
+import { Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const { Option } = Select;
 
@@ -176,7 +178,7 @@ const BulkImport: React.FC = () => {
     <>
       <div className="update-excel-page">
         <div className="title-block">
-          <h4 className="p-0">Update from Excel</h4>
+        <BreadCrumbs pageName={Page.BulkImport}></BreadCrumbs>
           <div className="btns-block">
             {table && (
               <Button

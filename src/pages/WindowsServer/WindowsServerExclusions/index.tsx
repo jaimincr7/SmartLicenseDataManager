@@ -13,6 +13,7 @@ import {
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props) => {
   const windowsServerExclusions = useAppSelector(windowsServerExclusionsSelector);
@@ -46,7 +47,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
   return (
     <div className="ad">
       <div className="title-block">
-        <h4 className="p-0">Windows Server Exclusions</h4>
+      <BreadCrumbs pageName={Page.WindowsServerExclusions}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

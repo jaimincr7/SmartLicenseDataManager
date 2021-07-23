@@ -13,6 +13,7 @@ import AddTabVClusterModal from './AddTabVClusterModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
   const tabVCluster = useAppSelector(tabVClusterSelector);
@@ -46,7 +47,7 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Tab-V-Cluster</h4>
+      <BreadCrumbs pageName={Page.TabVCluster}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

@@ -13,6 +13,7 @@ import AddWindowsServerInventoryModal from './AddWindowsServerInventoryModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) => {
   const inventory = useAppSelector(windowsServerInventorySelector);
@@ -45,7 +46,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <h4 className="p-0">Windows Server Inventory</h4>
+      <BreadCrumbs pageName={Page.WindowsServerInventory}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

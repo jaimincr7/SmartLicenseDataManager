@@ -9,6 +9,7 @@ import { buSelector, clearBU } from '../../../store/master/bu/bu.reducer';
 import { Button, Col, Row } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const BU: React.FC<IBUProps> = (props) => {
   const bu = useAppSelector(buSelector);
@@ -42,7 +43,7 @@ const BU: React.FC<IBUProps> = (props) => {
   return (
     <div className="bu">
       <div className="title-block">
-        <h4 className="p-0">BU</h4>
+      <BreadCrumbs pageName={Page.Bu}></BreadCrumbs>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

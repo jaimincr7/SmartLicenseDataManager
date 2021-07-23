@@ -15,6 +15,7 @@ import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
@@ -50,7 +51,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Sql Server Inventory</h4>
+      <BreadCrumbs pageName={Page.SqlServerInventory}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

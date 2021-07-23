@@ -36,6 +36,8 @@ export enum Page {
   AzureRateCard = 'azure-rate-card',
   AzureAPIVmSizes = 'azure-api-vm-sizes',
 
+  BulkImport='bulk-import',
+
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',

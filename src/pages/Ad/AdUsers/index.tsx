@@ -10,6 +10,7 @@ import AddAdUserModal from './AddAdUsersModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const AdUsers: React.FC<IAdUsersProps> = (props) => {
   const adUsers = useAppSelector(adUsersSelector);
@@ -43,7 +44,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <h4 className="p-0">Ad Users</h4>
+      <BreadCrumbs pageName={Page.ADUsers}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

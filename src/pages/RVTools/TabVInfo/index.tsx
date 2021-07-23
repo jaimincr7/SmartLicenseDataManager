@@ -10,6 +10,7 @@ import AddTabVInfoModal from './AddTabVInfoModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const TabVInfo: React.FC<ITabVInfoProps> = (props) => {
   const tabVInfo = useAppSelector(tabVInfoSelector);
@@ -43,7 +44,7 @@ const TabVInfo: React.FC<ITabVInfoProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Tab-V-Info</h4>
+      <BreadCrumbs pageName={Page.TabVInfo}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

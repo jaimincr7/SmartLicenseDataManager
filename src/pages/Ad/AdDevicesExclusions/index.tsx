@@ -13,6 +13,7 @@ import AddAdDevicesExclusionsModal from './AddAdDeviceExclusionModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   const adDevicesExclusions = useAppSelector(adDevicesExclusionsSelector);
@@ -46,7 +47,7 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <h4 className="p-0">Ad Devices Exclusions</h4>
+      <BreadCrumbs pageName={Page.ADExclusions}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

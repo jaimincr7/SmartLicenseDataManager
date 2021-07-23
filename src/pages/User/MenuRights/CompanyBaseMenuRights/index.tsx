@@ -22,6 +22,7 @@ import { commonSelector } from '../../../../store/common/common.reducer';
 import { ILookup } from '../../../../services/common/common.model';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 
 const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -190,7 +191,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   return (
     <div className="menuRights">
       <div className="title-block">
-        <h4 className="p-0">Company Base Menu Rights</h4>
+      <BreadCrumbs pageName={Page.CompanyMenuRights}></BreadCrumbs>
       </div>
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>

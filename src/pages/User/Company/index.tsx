@@ -9,6 +9,7 @@ import { clearCompany, companySelector } from '../../../store/master/company/com
 import { Row, Col, Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const Company: React.FC<ICompanyProps> = (props) => {
   const company = useAppSelector(companySelector);
@@ -42,7 +43,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
   return (
     <div className="company">
       <div className="title-block">
-        <h4 className="p-0">Company</h4>
+      <BreadCrumbs pageName={Page.Company}></BreadCrumbs>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

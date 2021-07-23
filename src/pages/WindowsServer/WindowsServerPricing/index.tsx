@@ -13,6 +13,7 @@ import {
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   const windowsServerPricing = useAppSelector(windowsServerPricingSelector);
@@ -46,7 +47,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <h4 className="p-0">Windows Server Pricing</h4>
+      <BreadCrumbs pageName={Page.WindowsServerPricing}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

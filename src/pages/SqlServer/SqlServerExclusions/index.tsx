@@ -13,6 +13,7 @@ import AddSqlServerExclusionsModal from './AddSqlServerExclusionModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   const sqlServerExclusions = useAppSelector(sqlServerExclusionsSelector);
@@ -46,7 +47,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <h4 className="p-0">Sql Server Exclusions</h4>
+      <BreadCrumbs pageName={Page.SqlServerExclusions}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

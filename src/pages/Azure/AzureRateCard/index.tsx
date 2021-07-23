@@ -12,6 +12,7 @@ import AddAzureRateCardModal from './AddAzureRateCardModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
   const azureRateCard = useAppSelector(azureRateCardSelector);
@@ -44,7 +45,7 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
   return (
     <div className="azure">
       <div className="title-block">
-        <h4 className="p-0">Azure Rate Card</h4>
+      <BreadCrumbs pageName={Page.AzureRateCard}></BreadCrumbs>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

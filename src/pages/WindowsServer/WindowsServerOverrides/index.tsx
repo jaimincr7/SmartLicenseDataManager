@@ -13,6 +13,7 @@ import {
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) => {
   const overrides = useAppSelector(windowsServerOverridesSelector);
@@ -45,7 +46,7 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <h4 className="p-0">Windows Server Overrides</h4>
+      <BreadCrumbs pageName={Page.WindowsServerOverrides}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

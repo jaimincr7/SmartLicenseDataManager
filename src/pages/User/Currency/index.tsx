@@ -9,6 +9,7 @@ import { clearCurrency, currencySelector } from '../../../store/master/currency/
 import { Row, Col, Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const Currency: React.FC<ICurrencyProps> = (props) => {
   const currency = useAppSelector(currencySelector);
@@ -42,7 +43,7 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
   return (
     <div className="currency">
       <div className="title-block">
-        <h4 className="p-0">Currency</h4>
+      <BreadCrumbs pageName={Page.Currency}></BreadCrumbs>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

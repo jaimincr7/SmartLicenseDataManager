@@ -12,6 +12,7 @@ import AddAzureAPIVmSizesModal from './AddAzureAPIVmSizesModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
   const azureAPIVmSizes = useAppSelector(azureAPIVmSizesSelector);
@@ -44,7 +45,7 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
   return (
     <div className="azure">
       <div className="title-block">
-        <h4 className="p-0">Azure API - VM Sizes</h4>
+      <BreadCrumbs pageName={Page.AzureAPIVmSizes}></BreadCrumbs>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

@@ -9,6 +9,7 @@ import { clearTenant, tenantSelector } from '../../../store/master/tenant/tenant
 import { Row, Col, Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const Tenant: React.FC<ITenantProps> = (props) => {
   const tenant = useAppSelector(tenantSelector);
@@ -42,7 +43,7 @@ const Tenant: React.FC<ITenantProps> = (props) => {
   return (
     <div className="tenant">
       <div className="title-block">
-        <h4 className="p-0">Tenant</h4>
+      <BreadCrumbs pageName={Page.Tenant}></BreadCrumbs>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

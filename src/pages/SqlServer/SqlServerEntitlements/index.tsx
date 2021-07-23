@@ -13,6 +13,7 @@ import { Button, Col, Row } from 'antd';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => {
   const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
@@ -45,7 +46,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Sql Server Entitlements</h4>
+      <BreadCrumbs pageName={Page.SqlServerEntitlement}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

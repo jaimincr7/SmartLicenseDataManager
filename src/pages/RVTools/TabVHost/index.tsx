@@ -10,6 +10,7 @@ import AddTabVHostModal from './AddTabVHostModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const TabVHost: React.FC<ITabVHostProps> = (props) => {
   const tabVHost = useAppSelector(tabVHostSelector);
@@ -43,7 +44,7 @@ const TabVHost: React.FC<ITabVHostProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Tab-V-Host</h4>
+      <BreadCrumbs pageName={Page.TabVHost}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

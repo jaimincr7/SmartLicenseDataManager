@@ -11,6 +11,7 @@ import ReRunAllScenariosModal from './ReRunAllScenariosModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -44,7 +45,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <h4 className="p-0">Windows Server License</h4>
+      <BreadCrumbs pageName={Page.WindowsServerLicense}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

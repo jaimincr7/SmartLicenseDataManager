@@ -13,6 +13,7 @@ import AddSqlServerOverridesModal from './AddSqlServerOverridesModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
   const sqlServerOverrides = useAppSelector(sqlServerOverridesSelector);
@@ -46,7 +47,7 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Sql Server Overrides</h4>
+      <BreadCrumbs pageName={Page.SqlServerOverrides}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>

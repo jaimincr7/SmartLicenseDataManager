@@ -13,6 +13,7 @@ import AddSqlServerPricingModal from './AddSqlServerPricingModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
   const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
@@ -46,7 +47,7 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Sql Server Pricing</h4>
+      <BreadCrumbs pageName={Page.SqlServerPricing}></BreadCrumbs>
         <div className="right-title">
           <GlobalSearch />
         </div>
