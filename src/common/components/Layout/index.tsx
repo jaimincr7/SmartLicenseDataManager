@@ -46,15 +46,15 @@ const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...r
   }, [account, instance]);
 
   React.useEffect(() => {
-    if(accessToken){
+    if (accessToken) {
       dispatch(getMenuRights());
     }
   }, [accessToken]);
 
   React.useEffect(() => {
-    if(accessToken && userDetails.getMenuRight.data){
+    if (accessToken && userDetails.getMenuRight.data) {
       setTimeout(() => {
-       setCanLoad(true);
+        setCanLoad(true);
       });
     }
   }, [userDetails.getMenuRight.data]);

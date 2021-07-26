@@ -10,7 +10,11 @@ export const InternalServerError: React.FC = () => {
         status="500"
         title="500"
         subTitle="Sorry, something went wrong."
-        extra={<Button type="primary" onClick={() => history.push(`/`)}>Back Home</Button>}
+        extra={
+          <Button type="primary" onClick={() => history.push(`/`)}>
+            Back Home
+          </Button>
+        }
       />
     </>
   );

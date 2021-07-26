@@ -10,8 +10,12 @@ const DataInputRoutes: React.FC = () => {
   return (
     <div className="bulkImport">
       <Switch>
-        {ability.can(Action.View, Page.BulkImport) && <Route exact path={`${match.path}/bulk-import`} component={BulkImport} />}
-        {ability.can(Action.View, Page.BulkImport) && <Route exact path={`${match.path}/bulk-import/:table`} component={BulkImport} />}
+        {ability.can(Action.View, Page.BulkImport) && (
+          <Route exact path={`${match.path}/bulk-import`} component={BulkImport} />
+        )}
+        {ability.can(Action.View, Page.BulkImport) && (
+          <Route exact path={`${match.path}/bulk-import/:table`} component={BulkImport} />
+        )}
 
         {/* keep least always */}
         <Route path={`${match.path}/*`}>

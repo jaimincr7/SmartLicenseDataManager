@@ -14,13 +14,16 @@ export const UnauthorizedPage: React.FC = () => {
   }
 
   return (
-    <div >
+    <div>
       <Result
         status="warning"
         title="Unauthorized to access"
         extra={
           <AuthenticatedTemplate>
-            <Button type="primary" onClick={() => handleLogout()}> Logout and continue</Button>
+            <Button type="primary" onClick={() => handleLogout()}>
+              {' '}
+              Logout and continue
+            </Button>
           </AuthenticatedTemplate>
         }
       />
