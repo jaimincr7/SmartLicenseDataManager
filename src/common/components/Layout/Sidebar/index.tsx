@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Menu } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useLocation } from 'react-router-dom';
 import { userSelector } from '../../../../store/user/user.reducer';
-import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { getMenuRights } from '../../../../store/user/user.action';
+import { useAppSelector } from '../../../../store/app.hooks';
 
 const { SubMenu } = Menu;
 
@@ -12,7 +11,6 @@ function Sidebar() {
   const location = useLocation();
   const defaultSubmenu: string = location.pathname.split('/')[1];
   const userDetails = useAppSelector(userSelector);
-  const dispatch = useAppDispatch();
 
   window.addEventListener('click', function (e) {
     if (
@@ -29,10 +27,6 @@ function Sidebar() {
       }
     }
   });
-
-  useEffect(() => {
-    dispatch(getMenuRights());
-  }, []);
 
   const renderMenu = (childMenu: any, key = '-') => {
     if (childMenu?.childMenus?.length > 0) {

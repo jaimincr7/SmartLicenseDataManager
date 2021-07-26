@@ -3,15 +3,18 @@ import { Route } from 'react-router-dom';
 import { useMsal, useAccount } from '@azure/msal-react';
 import { loginRequest, msalInstance } from '../../../utils/authConfig';
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
-import { useAppDispatch } from '../../../store/app.hooks';
-import { setActiveAccount } from '../../../store/user/user.reducer';
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
+import { setActiveAccount, userSelector } from '../../../store/user/user.reducer';
+import { getMenuRights } from '../../../store/user/user.action';
 
 const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...rest }) => {
   const { accounts, inProgress } = useMsal();
   const instance = msalInstance;
   const [accessToken, setAccessToken] = React.useState(null);
+  const [canLoad, setCanLoad] = React.useState(false);
   const account = useAccount(accounts[0] || {});
   const dispatch = useAppDispatch();
+  const userDetails = useAppSelector(userSelector);
 
   function RequestAccessToken() {
     const request = {
@@ -42,12 +45,26 @@ const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...r
     RequestAccessToken();
   }, [account, instance]);
 
+  React.useEffect(() => {
+    if(accessToken){
+      dispatch(getMenuRights());
+    }
+  }, [accessToken]);
+
+  React.useEffect(() => {
+    if(accessToken && userDetails.getMenuRight.data){
+      setTimeout(() => {
+       setCanLoad(true);
+      });
+    }
+  }, [userDetails.getMenuRight.data]);
+
   return (
     <Route
       {...rest}
       render={(props) => (
         <>
-          {accessToken && (
+          {canLoad && (
             <Layout>
               <Component {...props} />
             </Layout>

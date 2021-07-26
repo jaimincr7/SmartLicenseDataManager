@@ -19,6 +19,9 @@ import ReportRoutes from './pages/Report/Report.routes';
 import RVToolsRoutes from './pages/RVTools/RVTools.routes';
 import AzureRoutes from './pages/Azure/Azure.routes';
 import O365Routes from './pages/O365/O365.routes';
+import { UnauthorizedPage } from './pages/Unauthorized';
+import { InternalServerError } from './pages/InternalServerError';
+import { AccessDeniedPage } from './pages/AccessDenied';
 
 function AppRoutes() {
   return (
@@ -53,6 +56,9 @@ function AppRoutes() {
           <LayoutRoute path="/upload-excel" layout={MainLayout} component={UploadExcel} />
 
           {/* keep least always */}
+          <Route exact path="/401" component={UnauthorizedPage} />
+          <LayoutRoute path="/500" layout={MainLayout} component={InternalServerError} />
+          <LayoutRoute path="/403" layout={MainLayout} component={AccessDeniedPage} />
           <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />
         </Switch>
       </AuthenticatedTemplate>

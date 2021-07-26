@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
-import ability, { Can } from '../../common/ability';
+import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
 import WindowsServerEntitlements from './WindowsServerEntitlements';
 import WindowsServerExclusions from './WindowsServerExclusions';

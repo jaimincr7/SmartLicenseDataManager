@@ -45,12 +45,19 @@ request.interceptors.response.use(
     const e = Array.isArray(error.response.data.body.errors)
       ? error.response.data.body.errors.join(' ')
       : error.response.data.body.errors;
-    toast.error(e);
     switch (error.response.status) {
       // Authorization Failed Response can add other status codes here to manage error Logging
       case 401:
+        window.location.href = '/401';
+        break;
+      case 403:
+        window.location.href = '/403';
+        break;
+      case 500:
+        window.location.href = '/500';
         break;
       default:
+        toast.error(e);
         break;
     }
     return Promise.reject(error);

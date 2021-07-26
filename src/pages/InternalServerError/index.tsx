@@ -1,13 +1,17 @@
+import { Button, Result } from 'antd';
 import React from 'react';
-import { errorLogSelector } from '../../store/errorLog/errorLog.reducer';
-import { useAppSelector } from '../../store/app.hooks';
+import { useHistory } from 'react-router-dom';
 
 export const InternalServerError: React.FC = () => {
-  const errors = useAppSelector(errorLogSelector);
+  const history = useHistory();
   return (
     <>
-      <h1>Something Went Wrong!!!</h1>
-      <p>{JSON.stringify(errors)}</p>
+      <Result
+        status="500"
+        title="500"
+        subTitle="Sorry, something went wrong."
+        extra={<Button type="primary" onClick={() => history.push(`/`)}>Back Home</Button>}
+      />
     </>
   );
 };
