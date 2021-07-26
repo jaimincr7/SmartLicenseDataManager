@@ -57,8 +57,8 @@ function AppRoutes() {
 
           {/* keep least always */}
           <Route exact path="/401" component={UnauthorizedPage} />
-          <LayoutRoute path="/500" layout={MainLayout} component={InternalServerError} />
-          <LayoutRoute path="/403" layout={MainLayout} component={AccessDeniedPage} />
+          <Route exact path="/500" component={InternalServerError} />
+          <Route exact path="/403" component={AccessDeniedPage} />
           <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />
         </Switch>
       </AuthenticatedTemplate>
