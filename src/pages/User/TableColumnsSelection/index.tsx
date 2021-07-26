@@ -56,7 +56,7 @@ const TableColumnSelection: React.FC = () => {
         }
       });
       dispatch(getGlobalTableColumns(table)).then(async (res) => {
-        if (res.payload) {
+        if (res?.payload) {
           await dispatch(setGlobalTableColumns(res.payload));
         } else {
           dispatch(clearGetGlobalTableColumns());
@@ -109,6 +109,7 @@ const TableColumnSelection: React.FC = () => {
 
   React.useEffect(() => {
     setTableColumns();
+    handleIndeterminate();
   }, [defaultTableColumns]);
 
   React.useEffect(() => {
