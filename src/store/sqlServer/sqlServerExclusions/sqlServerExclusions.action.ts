@@ -1,4 +1,5 @@
 import {
+  IProcessData,
   ISearchSqlServerExclusions,
   ISqlServerExclusions,
 } from '../../../services/sqlServer/sqlServerExclusions/sqlServerExclusions.model';
@@ -48,3 +49,10 @@ export const deleteSqlServerExclusions = createAsyncThunk(
     return response;
   }
 );
+
+export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
+  const response = await sqlServerExclusionsService.processData(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});

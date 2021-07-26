@@ -26,4 +26,9 @@ export interface IWindowsServerExclusionsState {
     hasErrors: boolean;
     messages: string[];
   };
+  processData: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

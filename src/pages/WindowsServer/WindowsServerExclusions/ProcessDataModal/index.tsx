@@ -8,16 +8,16 @@ import { IProcessDataModalProps } from './processData.model';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import {
-  adDevicesSelector,
-  clearAdDeviceMessages,
-} from '../../../../store/ad/adDevices/adDevices.reducer';
-import { processData } from '../../../../store/ad/adDevices/adDevices.action';
+  windowsServerExclusionsSelector,
+  clearWindowsServerExclusionsMessages,
+} from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
+import { processData } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.action';
 import { validateMessages } from '../../../../common/constants/common';
 
 const { Option } = Select;
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
-  const adDevices = useAppSelector(adDevicesSelector);
+  const windowsServerExclusions = useAppSelector(windowsServerExclusionsSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
@@ -28,7 +28,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    date_added: moment(),
+    selected_date: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -41,16 +41,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   useEffect(() => {
-    if (adDevices.processData.messages.length > 0) {
-      if (adDevices.processData.hasErrors) {
-        toast.error(adDevices.processData.messages.join(' '));
+    if (windowsServerExclusions.processData.messages.length > 0) {
+      if (windowsServerExclusions.processData.hasErrors) {
+        toast.error(windowsServerExclusions.processData.messages.join(' '));
       } else {
-        toast.success(adDevices.processData.messages.join(' '));
+        toast.success(windowsServerExclusions.processData.messages.join(' '));
         handleModalClose();
       }
-      dispatch(clearAdDeviceMessages());
+      dispatch(clearWindowsServerExclusionsMessages());
     }
-  }, [adDevices.processData.messages]);
+  }, [windowsServerExclusions.processData.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -135,10 +135,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Date Added</label>
+                <label className="label">Selected Date</label>
                 <Form.Item
-                  name="date_added"
-                  label="Date Added"
+                  name="selected_date"
+                  label="Selected Date"
                   className="m-0"
                   rules={[{ required: true }]}
                 >
@@ -152,7 +152,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               key="submit"
               type="primary"
               htmlType="submit"
-              loading={adDevices.processData.loading}
+              loading={windowsServerExclusions.processData.loading}
             >
               Process
             </Button>

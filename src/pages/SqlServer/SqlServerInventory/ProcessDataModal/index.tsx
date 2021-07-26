@@ -101,7 +101,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
           <Row gutter={[30, 15]} className="form-label-hide">
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Company Name</label>
+                <label className="label">Company</label>
                 <Form.Item
                   name="company_id"
                   className="m-0"
@@ -109,7 +109,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   rules={[{ required: true }]}
                 >
                   <Select
-                    placeholder="Select Company Name"
+                    placeholder="Select Company"
                     loading={commonLookups.allCompanyLookup.loading}
                     onChange={handleCompanyChange}
                     allowClear
@@ -125,10 +125,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">BU Name</label>
+                <label className="label">BU</label>
                 <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                   <Select
-                    placeholder="Select BU Name"
+                    placeholder="Select BU"
                     loading={commonLookups.buLookup.loading}
                     onChange={handleBUChange}
                     allowClear

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
+  IProcessData,
   ISearchWindowsServerExclusions,
   IWindowsServerExclusions,
 } from '../../../services/windowsServer/windowsServerExclusions/windowsServerExclusions.model';
@@ -54,3 +55,10 @@ export const deleteWindowsServerExclusions = createAsyncThunk(
     return response;
   }
 );
+
+export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
+  const response = await windowsServerExclusionsService.processData(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
