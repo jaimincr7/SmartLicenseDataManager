@@ -177,7 +177,7 @@ const BulkImport: React.FC = () => {
     <>
       <div className="update-excel-page">
         <div className="title-block">
-        <BreadCrumbs pageName={Page.BulkImport}></BreadCrumbs>
+          <BreadCrumbs pageName={Page.BulkImport} />
           <div className="btns-block">
             {table && (
               <Button

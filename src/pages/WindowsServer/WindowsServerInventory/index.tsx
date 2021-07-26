@@ -46,7 +46,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
   return (
     <div className="windowsServer">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.WindowsServerInventory}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.WindowsServerInventory} />
         <div className="right-title">
           <GlobalSearch />
         </div>

@@ -1,7 +1,6 @@
-
 export interface IRenderReportProps {
-  reportName:string,
+  reportName: string;
   reportId: string;
-  setEmbeddedReport:any
+  setEmbeddedReport: any;
   groupId?: string;
 }

@@ -44,7 +44,7 @@ const TabVInfo: React.FC<ITabVInfoProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.TabVInfo}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.TabVInfo} />
         <div className="right-title">
           <GlobalSearch />
         </div>

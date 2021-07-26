@@ -46,7 +46,7 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
   return (
     <div className="windowsServer">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.WindowsServerOverrides}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.WindowsServerOverrides} />
         <div className="right-title">
           <GlobalSearch />
         </div>

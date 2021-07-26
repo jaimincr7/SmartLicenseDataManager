@@ -43,7 +43,7 @@ const BU: React.FC<IBUProps> = (props) => {
   return (
     <div className="bu">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.Bu}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.Bu} />
       </div>
       <div className="main-card">
         <div className="input-btns-title">

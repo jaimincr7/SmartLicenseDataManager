@@ -51,7 +51,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.SqlServerInventory}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.SqlServerInventory} />
         <div className="right-title">
           <GlobalSearch />
         </div>

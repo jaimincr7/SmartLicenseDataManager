@@ -47,7 +47,7 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.TabVCluster}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.TabVCluster} />
         <div className="right-title">
           <GlobalSearch />
         </div>

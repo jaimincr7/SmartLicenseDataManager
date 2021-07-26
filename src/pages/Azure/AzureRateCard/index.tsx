@@ -45,7 +45,7 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
   return (
     <div className="azure">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.AzureRateCard}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.AzureRateCard} />
       </div>
       <div className="main-card">
         <div className="input-btns-title">

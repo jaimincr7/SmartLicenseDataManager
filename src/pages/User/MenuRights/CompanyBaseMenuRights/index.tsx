@@ -191,7 +191,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   return (
     <div className="menuRights">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.CompanyMenuRights}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.CompanyMenuRights} />
       </div>
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>

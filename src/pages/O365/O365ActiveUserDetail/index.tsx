@@ -1,18 +1,22 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
-import { ITenantProps } from './tenant.model';
+import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
-import AddTenantModal from './AddTenantModal';
+import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import MainTable from './MainTable';
-import { clearTenant, tenantSelector } from '../../../store/master/tenant/tenant.reducer';
 import { Row, Col, Button } from 'antd';
+import { IO365ActiveUserDetailProps } from './o365ActiveUserDetail.model';
+import {
+  o365ActiveUserDetailSelector,
+  clearO365ActiveUserDetail,
+} from '../../../store/o365/o365ActiveUserDetail/o365ActiveUserDetail.reducer';
+import AddO365ActiveUserDetailModal from './AddO365ActiveUserDetailModal';
+import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
-const Tenant: React.FC<ITenantProps> = (props) => {
-  const tenant = useAppSelector(tenantSelector);
+const O365ActiveUserDetail: React.FC<IO365ActiveUserDetailProps> = (props) => {
+  const o365ActiveUserDetail = useAppSelector(o365ActiveUserDetailSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -32,7 +36,7 @@ const Tenant: React.FC<ITenantProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearTenant());
+      dispatch(clearO365ActiveUserDetail());
     };
   }, []);
 
@@ -41,18 +45,23 @@ const Tenant: React.FC<ITenantProps> = (props) => {
   };
 
   return (
-    <div className="tenant">
+    <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.Tenant} />
+        <BreadCrumbs pageName={Page.O365ActiveUserDetail} />
+        <div className="right-title">
+          <GlobalSearch />
+        </div>
       </div>
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.Tenant}>
+            <Can I={Action.ImportToExcel} a={Page.O365ActiveUserDetail}>
               <Col>
                 <Button
                   className="btn-icon"
-                  onClick={() => history.push(`/data-input/bulk-import/${tenant.search.tableName}`)}
+                  onClick={() =>
+                    history.push(`/data-input/bulk-import/${o365ActiveUserDetail.search.tableName}`)
+                  }
                   icon={
                     <em className="anticon">
                       <img
@@ -77,11 +86,11 @@ const Tenant: React.FC<ITenantProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddTenantModal
+        <AddO365ActiveUserDetailModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/user/tenant');
+            history.push('/o365/o365-active-user-detail');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -91,4 +100,4 @@ const Tenant: React.FC<ITenantProps> = (props) => {
   );
 };
 
-export default Tenant;
+export default O365ActiveUserDetail;

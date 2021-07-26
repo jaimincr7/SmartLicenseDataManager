@@ -45,7 +45,7 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
   return (
     <div className="azure">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.AzureAPIVmSizes}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.AzureAPIVmSizes} />
       </div>
       <div className="main-card">
         <div className="input-btns-title">

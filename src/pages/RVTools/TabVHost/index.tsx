@@ -44,7 +44,7 @@ const TabVHost: React.FC<ITabVHostProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.TabVHost}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.TabVHost} />
         <div className="right-title">
           <GlobalSearch />
         </div>

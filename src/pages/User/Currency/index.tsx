@@ -43,7 +43,7 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
   return (
     <div className="currency">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.Currency}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.Currency} />
       </div>
       <div className="main-card">
         <div className="input-btns-title">

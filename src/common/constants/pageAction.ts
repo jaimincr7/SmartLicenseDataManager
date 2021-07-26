@@ -37,7 +37,9 @@ export enum Page {
   AzureAPIVmSizes = 'azure-api-vm-sizes',
 
   BulkImport = 'bulk-import',
+
   O365ActivationsUserDetail = 'o365-activations-user-detail',
+  O365ActiveUserDetail = 'o365-active-user-detail',
 
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',

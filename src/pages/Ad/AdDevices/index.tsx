@@ -46,7 +46,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.ADDevices}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.ADDevices} />
         <div className="right-title">
           <GlobalSearch />
         </div>

@@ -47,7 +47,7 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.SqlServerOverrides}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.SqlServerOverrides} />
         <div className="right-title">
           <GlobalSearch />
         </div>

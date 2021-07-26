@@ -43,7 +43,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
   return (
     <div className="company">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.Company}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.Company} />
       </div>
       <div className="main-card">
         <div className="input-btns-title">

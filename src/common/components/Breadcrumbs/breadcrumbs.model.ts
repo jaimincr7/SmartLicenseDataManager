@@ -1,3 +1,3 @@
 export interface IBreadCrumbsProps {
-  pageName:string,
+  pageName: string;
 }

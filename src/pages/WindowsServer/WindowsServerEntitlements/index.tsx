@@ -46,7 +46,7 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
   return (
     <div className="windowsServer">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.WindowsServerEntitlement}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.WindowsServerEntitlement} />
         <div className="right-title">
           <GlobalSearch />
         </div>

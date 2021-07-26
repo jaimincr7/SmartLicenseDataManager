@@ -1,6 +1,6 @@
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
-import { IBulkInsertDataset, IDeleteDataset, ILookup, ITableColumn } from './common.model';
+import { IBulkInsertDataset, IDeleteDataset, ILookup } from './common.model';
 
 class CommonService {
   public async getTenantLookup(): Promise<IApiResponse<ILookup>> {

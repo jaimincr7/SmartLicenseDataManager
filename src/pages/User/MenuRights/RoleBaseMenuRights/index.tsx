@@ -189,7 +189,7 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
   return (
     <div className="menuRights">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.RoleMenuRights}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.RoleMenuRights} />
       </div>
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>

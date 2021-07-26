@@ -47,7 +47,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-      <BreadCrumbs pageName={Page.SqlServerExclusions}></BreadCrumbs>
+        <BreadCrumbs pageName={Page.SqlServerExclusions} />
         <div className="right-title">
           <GlobalSearch />
         </div>
