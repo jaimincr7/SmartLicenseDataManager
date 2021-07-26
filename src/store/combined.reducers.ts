@@ -35,6 +35,8 @@ import azureRateCardReducer from './azure/azureRateCard/azureRateCard.reducer';
 import azureAPIVmSizesReducer from './azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
 import o365ActivationsUserDetailReducer from './o365/o365ActivationsUserDetail/o365ActivationsUserDetail.reducer';
 import o365ActiveUserDetailReducer from './o365/o365ActiveUserDetail/o365ActiveUserDetail.reducer';
+import o365M365AppsUsageUserDetailReducer from './o365/o365M365AppsUsageUserDetail/o365M365AppsUsageUserDetail.reducer';
+import o365MailboxUsageReducer from './o365/o365MailboxUsage/o365MailboxUsage.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -91,4 +93,6 @@ export const rootReducer = combineReducers({
   // O365
   o365ActivationsUserDetail: o365ActivationsUserDetailReducer,
   o365ActiveUserDetail: o365ActiveUserDetailReducer,
+  o365M365AppsUsageUserDetail: o365M365AppsUsageUserDetailReducer,
+  o365MailboxUsage: o365MailboxUsageReducer,
 });

@@ -317,7 +317,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                     name="user_principal_name"
                     className="m-0"
                     label="User Principal Name"
-                    rules={[{ type: 'email', max: 510 }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

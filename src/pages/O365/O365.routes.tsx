@@ -4,6 +4,8 @@ import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
 import O365ActivationsUserDetail from './O365ActivationsUserDetail';
 import O365ActiveUserDetail from './O365ActiveUserDetail';
+import O365M365AppsUsageUserDetail from './O365M365AppsUsageUserDetail';
+import O365MailboxUsage from './O365MailboxUsage';
 
 const O365Routes: React.FC = () => {
   const match = useRouteMatch();
@@ -11,6 +13,30 @@ const O365Routes: React.FC = () => {
   return (
     <div className="o365">
       <Switch>
+        {/* Mailbox usage */}
+        {ability.can(Action.View, Page.O365MailboxUsage) && (
+          <Route exact path={`${match.path}/o365-mailbox-usage/:id`} component={O365MailboxUsage} />
+        )}
+        {ability.can(Action.View, Page.O365MailboxUsage) && (
+          <Route exact path={`${match.path}/o365-mailbox-usage`} component={O365MailboxUsage} />
+        )}
+
+        {/* M365 apps usage User Detail */}
+        {ability.can(Action.View, Page.O365M365AppsUsageUserDetail) && (
+          <Route
+            exact
+            path={`${match.path}/o365-m365-apps-usage-user-detail/:id`}
+            component={O365M365AppsUsageUserDetail}
+          />
+        )}
+        {ability.can(Action.View, Page.O365M365AppsUsageUserDetail) && (
+          <Route
+            exact
+            path={`${match.path}/o365-m365-apps-usage-user-detail`}
+            component={O365M365AppsUsageUserDetail}
+          />
+        )}
+
         {/* Active User Detail */}
         {ability.can(Action.View, Page.O365ActiveUserDetail) && (
           <Route

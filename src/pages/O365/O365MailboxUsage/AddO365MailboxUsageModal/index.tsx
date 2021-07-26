@@ -12,9 +12,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
+import { IO365MailboxUsage } from '../../../../services/o365/o365MailboxUsage/o365MailboxUsage.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
@@ -26,24 +29,21 @@ import {
   clearCompanyLookUp,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { IAddO365ActivationsUserDetailProps } from './addO365ActivationsUserDetail.model';
 import {
-  o365ActivationsUserDetailSelector,
-  clearO365ActivationsUserDetailGetById,
-  clearO365ActivationsUserDetailMessages,
-} from '../../../../store/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.reducer';
+  getO365MailboxUsageById,
+  saveO365MailboxUsage,
+} from '../../../../store/o365/o365MailboxUsage/o365MailboxUsage.action';
 import {
-  getO365ActivationsUserDetailById,
-  saveO365ActivationsUserDetail,
-} from '../../../../store/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.action';
-import { IO365ActivationsUserDetail } from '../../../../services/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.model';
-import { validateMessages } from '../../../../common/constants/common';
-import moment from 'moment';
+  clearO365MailboxUsageGetById,
+  clearO365MailboxUsageMessages,
+  o365MailboxUsageSelector,
+} from '../../../../store/o365/o365MailboxUsage/o365MailboxUsage.reducer';
+import { IAddO365MailboxUsageProps } from './addO365MailboxUsage.model';
 
 const { Option } = Select;
 
-const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailProps> = (props) => {
-  const o365ActivationsUserDetail = useAppSelector(o365ActivationsUserDetailSelector);
+const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) => {
+  const o365MailboxUsage = useAppSelector(o365MailboxUsageSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
@@ -51,7 +51,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Activations User Detail' : 'Edit Activations User Detail';
+    return isNew ? 'Add Mailbox Usage' : 'Edit Mailbox Usage';
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
@@ -59,29 +59,33 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
 
   const [form] = Form.useForm();
 
-  let initialValues: IO365ActivationsUserDetail = {
+  let initialValues: IO365MailboxUsage = {
+    tenant_id: null,
     company_id: null,
     bu_id: null,
     report_refresh_date: null,
     user_principal_name: '',
     display_name: '',
-    product_type: '',
-    last_activated_date: null,
-    window: null,
-    mac: null,
-    windows_10_mobile: null,
-    ios: null,
-    android: null,
-    activated_on_shared_computer: false,
-    tenant_id: null,
+    is_deleted: false,
+    deleted_date: '',
+    created_date: null,
+    last_activity_date: null,
+    item_count: null,
+    storage_used_byte: null,
+    issue_warning_quota_byte: null,
+    prohibit_send_quota_byte: null,
+    prohibit_send_receive_quota_byte: null,
+    deleted_item_count: null,
+    deleted_item_size_byte: null,
+    report_period: null,
   };
 
   const onFinish = (values: any) => {
-    const inputValues: IO365ActivationsUserDetail = {
+    const inputValues: IO365MailboxUsage = {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365ActivationsUserDetail(inputValues));
+    dispatch(saveO365MailboxUsage(inputValues));
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -108,12 +112,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
     form.setFieldsValue({ bu_id: buId });
   };
 
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current > moment().endOf('day');
-  };
-
-  const fillValuesOnEdit = async (data: IO365ActivationsUserDetail) => {
+  const fillValuesOnEdit = async (data) => {
     if (data.tenant_id) {
       await dispatch(getCompanyLookup(data.tenant_id));
     }
@@ -130,48 +129,52 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
           : moment(data.report_refresh_date),
         user_principal_name: data.user_principal_name,
         display_name: data.display_name,
-        product_type: data.product_type,
-        last_activated_date: _.isNull(data.last_activated_date)
+        is_deleted: data.is_deleted,
+        deleted_date: data.deleted_date,
+        created_date: _.isNull(data.created_date) ? null : moment(data.created_date),
+        last_activity_date: _.isNull(data.last_activity_date)
           ? null
-          : moment(data.last_activated_date),
-        window: data.window,
-        mac: data.mac,
-        windows_10_mobile: data.windows_10_mobile,
-        ios: data.ios,
-        android: data.android,
-        activated_on_shared_computer: data.activated_on_shared_computer,
+          : moment(data.last_activity_date),
+        item_count: data.item_count,
+        storage_used_byte: data.storage_used_byte,
+        issue_warning_quota_byte: data.issue_warning_quota_byte,
+        prohibit_send_quota_byte: data.prohibit_send_quota_byte,
+        prohibit_send_receive_quota_byte: data.prohibit_send_receive_quota_byte,
+        deleted_item_count: data.deleted_item_count,
+        deleted_item_size_byte: data.deleted_item_size_byte,
+        report_period: data.report_period,
       };
       form.setFieldsValue(initialValues);
     }
   };
 
   useEffect(() => {
-    if (o365ActivationsUserDetail.save.messages.length > 0) {
-      if (o365ActivationsUserDetail.save.hasErrors) {
-        toast.error(o365ActivationsUserDetail.save.messages.join(' '));
+    if (o365MailboxUsage.save.messages.length > 0) {
+      if (o365MailboxUsage.save.hasErrors) {
+        toast.error(o365MailboxUsage.save.messages.join(' '));
       } else {
-        toast.success(o365ActivationsUserDetail.save.messages.join(' '));
+        toast.success(o365MailboxUsage.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearO365ActivationsUserDetailMessages());
+      dispatch(clearO365MailboxUsageMessages());
     }
-  }, [o365ActivationsUserDetail.save.messages]);
+  }, [o365MailboxUsage.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && o365ActivationsUserDetail.getById.data) {
-      const data = o365ActivationsUserDetail.getById.data;
+    if (+id > 0 && o365MailboxUsage.getById.data) {
+      const data = o365MailboxUsage.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [o365ActivationsUserDetail.getById.data]);
+  }, [o365MailboxUsage.getById.data]);
 
   useEffect(() => {
     dispatch(getTenantLookup());
     if (+id > 0) {
-      dispatch(getO365ActivationsUserDetailById(+id));
+      dispatch(getO365MailboxUsageById(+id));
     }
     return () => {
-      dispatch(clearO365ActivationsUserDetailGetById());
+      dispatch(clearO365MailboxUsageGetById());
       dispatch(clearCompanyLookUp());
       dispatch(clearBULookUp());
     };
@@ -187,14 +190,14 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
         onCancel={handleModalClose}
         footer={false}
       >
-        {o365ActivationsUserDetail.getById.loading ? (
+        {o365MailboxUsage.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={o365ActivationsUserDetail.getById.loading} />
+            <Spin spinning={o365MailboxUsage.getById.loading} />
           </div>
         ) : (
           <Form
             form={form}
-            name="addO365ActivationsUserDetail"
+            name="addO365MailboxUsage"
             initialValues={initialValues}
             onFinish={onFinish}
             validateMessages={validateMessages}
@@ -211,8 +214,8 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
                   >
                     <Select
                       onChange={handleTenantChange}
-                      allowClear
                       loading={commonLookups.tenantLookup.loading}
+                      allowClear
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -226,12 +229,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Company</label>
-                  <Form.Item
-                    name="company_id"
-                    className="m-0"
-                    label="Company"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -249,11 +247,11 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
+                  <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
-                      allowClear
                       loading={commonLookups.buLookup.loading}
+                      allowClear
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -277,8 +275,8 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
                   <label className="label">User Principal Name</label>
                   <Form.Item
                     name="user_principal_name"
-                    className="m-0"
                     label="User Principal Name"
+                    className="m-0"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -300,11 +298,11 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Type</label>
+                  <label className="label">Deleted Date</label>
                   <Form.Item
-                    name="product_type"
+                    name="deleted_date"
+                    label="Deleted Date"
                     className="m-0"
-                    label="Product Type"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -313,77 +311,130 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Activated Date</label>
-                  <Form.Item name="last_activated_date" label="Last Activated Date" className="m-0">
-                    <DatePicker className="form-control w-100" disabledDate={disabledDate} />
+                  <label className="label">Created Date</label>
+                  <Form.Item name="created_date" label="Created Date" className="m-0">
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Window</label>
+                  <label className="label">Last Activity Date</label>
+                  <Form.Item name="last_activity_date" label="Last Activity Date" className="m-0">
+                    <DatePicker className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Item Count</label>
                   <Form.Item
-                    name="window"
-                    label="Window"
+                    name="item_count"
+                    label="Item Count"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber min={0} className="form-control w-100" />
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Mac</label>
-                  <Form.Item name="mac" label="Mac" className="m-0" rules={[{ type: 'number' }]}>
-                    <InputNumber min={0} className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Windows 10 Mobile</label>
+                  <label className="label">Storage Used (Byte)</label>
                   <Form.Item
-                    name="windows_10_mobile"
-                    label="Windows 10 Mobile"
+                    name="storage_used_byte"
+                    label="Storage Used (Byte)"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber min={0} className="form-control w-100" />
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">iOS</label>
-                  <Form.Item name="ios" label="iOS" className="m-0" rules={[{ type: 'number' }]}>
-                    <InputNumber min={0} className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Android</label>
+                  <label className="label">Issue Warning Quota (Byte)</label>
                   <Form.Item
-                    name="android"
-                    label="Android"
+                    name="issue_warning_quota_byte"
+                    label="Issue Warning Quota (Byte)"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber min={0} className="form-control w-100" />
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Prohibit Send Quota (Byte)</label>
+                  <Form.Item
+                    name="prohibit_send_quota_byte"
+                    label="Prohibit Send Quota (Byte)"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Prohibit Send/Receive Quota (Byte)</label>
+                  <Form.Item
+                    name="prohibit_send_receive_quota_byte"
+                    label="Prohibit Send/Receive Quota (Byte)"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Deleted Item Count</label>
+                  <Form.Item
+                    name="deleted_item_count"
+                    label="Deleted Item Count"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Deleted Item Size (Byte)</label>
+                  <Form.Item
+                    name="deleted_item_size_byte"
+                    label="Deleted Item Size (Byte)"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Report Period</label>
+                  <Form.Item
+                    name="report_period"
+                    label="Report Period"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item
-                    name="activated_on_shared_computer"
-                    className="m-0"
-                    valuePropName="checked"
-                  >
+                  <Form.Item name="is_deleted" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Activated on Shared Computer</label>
+                  <label className="label">Is Deleted</label>
                 </div>
               </Col>
             </Row>
@@ -392,7 +443,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365ActivationsUserDetail.save.loading}
+                loading={o365MailboxUsage.save.loading}
               >
                 {submitButtonText}
               </Button>
@@ -406,4 +457,4 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
     </>
   );
 };
-export default AddO365ActivationsUserDetailModal;
+export default AddO365MailboxUsageModal;
