@@ -2,7 +2,6 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -26,21 +25,9 @@ import {
   saveSqlServerExclusions,
 } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
 import { ISqlServerExclusions } from '../../../../services/sqlServer/sqlServerExclusions/sqlServerExclusions.model';
+import { validateMessages } from '../../../../common/constants/common';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-  types: {
-    number: Messages.NUMBER,
-  },
-  number: {
-    min: Messages.MIN,
-  },
-};
 
 const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (props) => {
   const sqlServerExclusions = useAppSelector(sqlServerExclusionsSelector);
@@ -279,9 +266,9 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
                     name="instance_count"
                     label="Instance Count"
                     className="m-0"
-                    rules={[{ type: 'number', min: 0 }]}
+                    rules={[{ type: 'integer' }]}
                   >
-                    <InputNumber className="form-control w-100" />
+                    <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

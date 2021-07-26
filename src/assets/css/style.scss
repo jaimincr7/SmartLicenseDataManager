@@ -7,10 +7,10 @@ Project Name : metrixData360;
 ------------------------------------------------------------
 */
 
-/* Reset 
+/* Reset
 --------------------------------------------------------------------------------------------------------*/
 
-/* 
+/*
 http://meyerweb.com/eric/tools/css/reset/
 v2.0 | 20110126
 License: none (public domain)
@@ -145,7 +145,7 @@ table {
   border-spacing: 0;
 }
 
-/* General 
+/* General
 --------------------------------------------------------------------------------------------------------*/
 * {
   outline: none !important;
@@ -341,9 +341,14 @@ label {
   display: flex;
   align-items: center;
   .label {
-    min-width: 120px;
-    margin: 0 8px 0 0;
+    min-width: 122px;
+    max-width: 122px;
+    padding: 0 8px 0 0;
+    margin: 0;
     word-break: break-all;
+  }
+  .ant-row {
+    width: calc(100% - 122px);
   }
 }
 .form-inline-pt {
@@ -1202,4 +1207,8 @@ textarea.ant-input {
     padding: 0 4px;
     max-width: 200px;
   }
+}
+.report-style-class {
+  height: 69vh;
+  width: 100%;
 }

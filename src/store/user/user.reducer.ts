@@ -26,10 +26,9 @@ export const userSlice = createSlice({
     },
     clearMenuRights: (state) => {
       state.getMenuRight = initialState.getMenuRight;
-    }
+    },
   },
   extraReducers: {
-
     // Get Menu Rights
     [getMenuRights.pending.type]: (state) => {
       state.getMenuRight.loading = true;
@@ -41,43 +40,54 @@ export const userSlice = createSlice({
 
       const setChildMenus = (menu: IMenu, isIterativeCall = false) => {
         const childMenus = menuArray?.filter((x) => x.parent_menu_id === menu.id && x.is_display);
-        menuArray?.filter((x) => x.parent_menu_id === menu.id)?.forEach((childMenu: IMenu) => {
-          const index = childMenus.findIndex(x => x.id === childMenu.id)
-          const grandChildMenus = menuArray?.filter((x) => x.parent_menu_id === childMenu.id);
-          if (grandChildMenus.length > 0) {
-            (childMenus[index])["childMenus"] = grandChildMenus;
-            grandChildMenus?.forEach(gChildMenu => {
-              const greatGrandChild = menuArray?.filter((x) => x.parent_menu_id === gChildMenu.id);
-              if (greatGrandChild?.length > 0) {
-                setChildMenus(gChildMenu, true)
-              }
-            });
-          }
-          if (!childMenu?.menu_rights?.some(x => x.is_rights && x.access_rights?.name === "view" && x.access_rights?.status)) {
-            childMenus?.splice(index, 1)
-          }
-        });
-        menu["childMenus"] = childMenus;
+        menuArray
+          ?.filter((x) => x.parent_menu_id === menu.id && x.is_display)
+          ?.forEach((childMenu: IMenu) => {
+            const index = childMenus.findIndex((x) => x.id === childMenu.id);
+            const grandChildMenus = menuArray?.filter(
+              (x) => x.parent_menu_id === childMenu.id && x.is_display
+            );
+            if (grandChildMenus.length > 0) {
+              childMenus[index]['childMenus'] = grandChildMenus;
+              grandChildMenus?.forEach((gChildMenu) => {
+                const greatGrandChild = menuArray?.filter(
+                  (x) => x.parent_menu_id === gChildMenu.id && x.is_display
+                );
+                if (greatGrandChild?.length > 0) {
+                  setChildMenus(gChildMenu, true);
+                }
+              });
+            }
+            if (
+              !childMenu?.menu_rights?.some(
+                (x) => x.is_rights && x.access_rights?.name === 'view' && x.access_rights?.status
+              )
+            ) {
+              childMenus?.splice(index, 1);
+            }
+          });
+        menu['childMenus'] = childMenus;
         if (!isIterativeCall) {
-          sideBarMenuDetail.push(menu)
+          sideBarMenuDetail.push(menu);
         }
-      }
+      };
 
       const menuArray = action.payload.menus;
-      const parentMenuDetails: IMenu[] = menuArray?.filter((x) => (!(x.parent_menu_id > 0) && x.is_display));
+      const parentMenuDetails: IMenu[] = menuArray?.filter(
+        (x) => !(x.parent_menu_id > 0) && x.is_display
+      );
       const sideBarMenuDetail: any = [];
 
-      parentMenuDetails?.forEach(menu => {
+      parentMenuDetails?.forEach((menu) => {
         setChildMenus(menu);
       });
       state.getMenuRight.sideBarData = sideBarMenuDetail;
-
     },
     [getMenuRights.rejected.type]: (state) => {
       state.getMenuRight.loading = false;
       state.getMenuRight.hasErrors = true;
     },
-  }
+  },
 });
 
 // A selector

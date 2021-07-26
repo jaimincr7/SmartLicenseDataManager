@@ -2,7 +2,7 @@ import { Button, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerEntitlements } from '../../../../services/sqlServer/sqlServerEntitlements/sqlServerEntitlements.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -29,16 +29,6 @@ import {
 import { IAddSqlServerEntitlementsProps } from './addSqlServerEntitlements.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  types: {
-    number: Messages.NUMBER,
-  },
-  number: {
-    min: Messages.MIN,
-  },
-};
 
 const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = (props) => {
   const sqlServersEntitlements = useAppSelector(sqlServerEntitlementsSelector);
@@ -239,7 +229,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                     name="qty_01"
                     label="Qty1"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -252,7 +242,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                     name="qty_02"
                     label="Qty2"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -265,7 +255,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                     name="qty_03"
                     label="Qty3"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>

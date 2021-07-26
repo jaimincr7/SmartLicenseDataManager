@@ -11,6 +11,10 @@ import {
   windowsServerExclusionsSelector,
 } from '../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
 import MainTable from './MainTable';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import ProcessDataModal from './ProcessDataModal';
 
 const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props) => {
   const windowsServerExclusions = useAppSelector(windowsServerExclusionsSelector);
@@ -21,6 +25,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -44,7 +49,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
   return (
     <div className="ad">
       <div className="title-block">
-        <h4 className="p-0">Windows Server Exclusions</h4>
+        <BreadCrumbs pageName={Page.WindowsServerExclusions} />
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -52,26 +57,46 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() =>
-                  history.push(
-                    `/data-input/bulk-import/${windowsServerExclusions.search.tableName}`
-                  )
-                }
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Update from Excel
-              </Button>
-            </Col>
+            <Can I={Action.ProcessData} a={Page.WindowsServerExclusions}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setProcessModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Process Data
+                </Button>
+              </Col>
+            </Can>
+            <Can I={Action.ImportToExcel} a={Page.WindowsServerExclusions}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() =>
+                    history.push(
+                      `/data-input/bulk-import/${windowsServerExclusions.search.tableName}`
+                    )
+                  }
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -91,6 +116,12 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
         />
       )}
     </div>

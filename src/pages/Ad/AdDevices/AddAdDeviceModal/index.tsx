@@ -15,7 +15,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { IAdDevices } from '../../../../services/ad/adDevices/adDevices.model';
 import { ILookup } from '../../../../services/common/common.model';
 import { getAdDeviceById, saveAdDevice } from '../../../../store/ad/adDevices/adDevices.action';
@@ -38,13 +38,6 @@ import {
 import { IAddAdDeviceProps } from './addAdDevice.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
   const adDevices = useAppSelector(adDevicesSelector);
@@ -497,7 +490,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     name="exclusion_id"
                     label="Exclusion Id"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber min={1} className="form-control w-100" />
                   </Form.Item>

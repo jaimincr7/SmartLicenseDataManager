@@ -25,32 +25,70 @@ import tenantReducer from './master/tenant/tenant.reducer';
 import companyReducer from './master/company/company.reducer';
 import buReducer from './master/bu/bu.reducer';
 import globalSearchReducer from './globalSearch/globalSearch.reducer';
+import globalTableColumnSelectionReducer from './user/globalTableColumnSelection/globalTableColumnSelection.reducer';
+import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
+import tabVHostReducer from './rvTools/tabVHost/tabVHost.reducer';
+import tabVInfoReducer from './rvTools/tabVInfo/tabVInfo.reducer';
+import currencyReducer from './master/currency/currency.reducer';
+import azureDailyUsageReducer from './azure/azureDailyUsage/azureDailyUsage.reducer';
+import azureRateCardReducer from './azure/azureRateCard/azureRateCard.reducer';
+import azureAPIVmSizesReducer from './azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
+import o365ActivationsUserDetailReducer from './o365/o365ActivationsUserDetail/o365ActivationsUserDetail.reducer';
+import o365ActiveUserDetailReducer from './o365/o365ActiveUserDetail/o365ActiveUserDetail.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
-  sqlServerInventory: sqlServerInventoryReducer,
   common: commonReducer,
+  user: userReducer,
+  globalSearch: globalSearchReducer,
+  globalTableColumnSelection: globalTableColumnSelectionReducer,
+
+  // Sql Server
+  sqlServerInventory: sqlServerInventoryReducer,
   sqlServerEntitlements: sqlServerEntitlementsReducer,
-  adDevices: adDevicesReducer,
-  adDevicesExclusions: adDevicesExclusionsReducer,
-  adUsers: adUsersReducer,
   sqlServerOverrides: sqlServerOverridesReducer,
   sqlServerPricing: sqlServerPricingReducer,
-  bulkImport: bulkImportReducer,
   sqlServerLicense: sqlServerLicenseReducer,
+  sqlServerLicenseDetail: sqlServerLicenseDetailReducer,
+  sqlServerExclusions: sqlServerExclusionsReducer,
+
+  // Windows Server
   windowsServerInventory: windowsServerInventoryReducer,
-  user: userReducer,
   windowsServerEntitlements: windowsServerEntitlementsReducer,
   windowsServerOverrides: windowsServerOverridesReducer,
-  sqlServerLicenseDetail: sqlServerLicenseDetailReducer,
   windowsServerPricing: windowsServerPricingReducer,
-  sqlServerExclusions: sqlServerExclusionsReducer,
   windowsServerExclusions: windowsServerExclusionsReducer,
   windowsServerLicense: windowsServerLicenseReducer,
   windowsServerLicenseDetail: windowsServerLicenseDetailReducer,
+
+  // AD
+  adDevices: adDevicesReducer,
+  adDevicesExclusions: adDevicesExclusionsReducer,
+  adUsers: adUsersReducer,
+
+  // Data Input
+  bulkImport: bulkImportReducer,
+
+  // Menu-rights
   menu: menuReducer,
+
+  // Master tables
   tenant: tenantReducer,
   company: companyReducer,
   bu: buReducer,
-  globalSearch: globalSearchReducer,
+  currency: currencyReducer,
+
+  // RV Tools
+  tabVCluster: tabVClusterReducer,
+  tabVHost: tabVHostReducer,
+  tabVInfo: tabVInfoReducer,
+
+  // Azure
+  azureDailyUsage: azureDailyUsageReducer,
+  azureRateCard: azureRateCardReducer,
+  azureAPIVmSizes: azureAPIVmSizesReducer,
+
+  // O365
+  o365ActivationsUserDetail: o365ActivationsUserDetailReducer,
+  o365ActiveUserDetail: o365ActiveUserDetailReducer,
 });

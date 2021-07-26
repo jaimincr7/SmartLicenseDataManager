@@ -20,6 +20,9 @@ import { toast } from 'react-toastify';
 import { getAllCompanyLookup } from '../../../../store/common/common.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { ILookup } from '../../../../services/common/common.model';
+import { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 
 const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -128,14 +131,16 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
                     {data.description}
                   </Checkbox>
                 </Form.Item>{' '}
-                <a
-                  title="Edit"
-                  onClick={() => {
-                    editMenu(data);
-                  }}
-                >
-                  <EditOutlined />
-                </a>
+                <Can I={Action.Update} a={Page.Menu}>
+                  <a
+                    title="Edit"
+                    onClick={() => {
+                      editMenu(data);
+                    }}
+                  >
+                    <EditOutlined />
+                  </a>
+                </Can>
               </>
             )}
           </>
@@ -186,7 +191,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   return (
     <div className="menuRights">
       <div className="title-block">
-        <h4 className="p-0">Company Base Menu Rights</h4>
+        <BreadCrumbs pageName={Page.CompanyMenuRights} />
       </div>
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>
@@ -211,15 +216,17 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
               </Select>
             </Form.Item>
             <div className="btns-block">
-              <Button
-                type="primary"
-                onClick={() => {
-                  form.submit();
-                }}
-                loading={reduxStoreData.saveCompanyMenuAccessRights.loading}
-              >
-                Save
-              </Button>
+              <Can I={Action.Update} a={Page.CompanyMenuRights}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.submit();
+                  }}
+                  loading={reduxStoreData.saveCompanyMenuAccessRights.loading}
+                >
+                  Save
+                </Button>
+              </Can>
             </div>
           </div>
           <Table

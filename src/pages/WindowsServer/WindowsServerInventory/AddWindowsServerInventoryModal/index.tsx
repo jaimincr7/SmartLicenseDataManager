@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerInventory } from '../../../../services/windowsServer/windowsServerInventory/windowsServerInventory.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -28,13 +28,6 @@ import {
 import { IAddWindowsServerInventoryProps } from './addWindowsServerInventory.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> = (props) => {
   const inventory = useAppSelector(windowsServerInventorySelector);
@@ -295,7 +288,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                     name="procs"
                     label="Procs"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -308,7 +301,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                     name="cores"
                     label="Cores"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -372,7 +365,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">vCPU</label>
-                  <Form.Item name="vCPU" label="vCPU" className="m-0" rules={[{ type: 'number' }]}>
+                  <Form.Item name="vCPU" label="vCPU" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>

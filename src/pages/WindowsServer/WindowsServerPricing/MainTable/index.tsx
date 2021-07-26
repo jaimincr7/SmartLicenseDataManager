@@ -1,6 +1,7 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import {
+  setTableColumnSelection,
   clearWindowsServerPricingMessages,
   windowsServerPricingSelector,
 } from '../../../../store/windowsServer/windowsServerPricing/windowsServerPricing.reducer';
@@ -22,7 +23,8 @@ import {
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
-import { setTableColumnSelection } from '../../../../store/windowsServer/windowsServerPricing/windowsServerPricing.reducer';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
@@ -158,20 +160,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <a
-        className="action-btn"
-        onClick={() => {
-          setSelectedId(data.id);
-          history.push(`/windows-server/pricing/${data.id}`);
-        }}
-      >
-        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-      </a>
-      <Popconfirm title="Sure to delete?" onConfirm={() => removeWindowsServerPricing(data.id)}>
-        <a href="#" title="" className="action-btn">
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+      <Can I={Action.Update} a={Page.WindowsServerPricing}>
+        <a
+          className="action-btn"
+          onClick={() => {
+            setSelectedId(data.id);
+            history.push(`/windows-server/pricing/${data.id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
-      </Popconfirm>
+      </Can>
+      <Can I={Action.Delete} a={Page.WindowsServerPricing}>
+        <Popconfirm title="Sure to delete?" onConfirm={() => removeWindowsServerPricing(data.id)}>
+          <a href="#" title="" className="action-btn">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+          </a>
+        </Popconfirm>
+      </Can>
     </div>
   );
 
@@ -179,7 +185,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={true}
+        showAddButton={ability.can(Action.Add, Page.WindowsServerPricing)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}

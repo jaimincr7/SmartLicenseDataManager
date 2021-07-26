@@ -1,6 +1,10 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import { ISearchSqlServerExclusions, ISqlServerExclusions } from './sqlServerExclusions.model';
+import {
+  IProcessData,
+  ISearchSqlServerExclusions,
+  ISqlServerExclusions,
+} from './sqlServerExclusions.model';
 
 class SqlServerExclusionsService {
   ENDPOINT = '/sql-server-exclusions';
@@ -52,6 +56,17 @@ class SqlServerExclusionsService {
       responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
+    });
+  }
+
+  public async processData(data: IProcessData): Promise<any> {
+    const inputValues = {
+      ...data,
+      debug: false,
+    };
+    const url = `${this.ENDPOINT}/process-data`;
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
+      return res.data;
     });
   }
 }

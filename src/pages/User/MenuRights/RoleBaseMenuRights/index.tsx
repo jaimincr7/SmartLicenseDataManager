@@ -19,6 +19,9 @@ import EditMenuModal from '../EditMenuModal';
 import { EditOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { IRoleLookup } from '../../../../services/user/user.model';
+import { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 
 const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -126,14 +129,16 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
                     {data.description}
                   </Checkbox>
                 </Form.Item>{' '}
-                <a
-                  title="Edit"
-                  onClick={() => {
-                    editMenu(data);
-                  }}
-                >
-                  <EditOutlined />
-                </a>
+                <Can I={Action.Update} a={Page.Menu}>
+                  <a
+                    title="Edit"
+                    onClick={() => {
+                      editMenu(data);
+                    }}
+                  >
+                    <EditOutlined />
+                  </a>
+                </Can>
               </>
             )}
           </>
@@ -184,7 +189,7 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
   return (
     <div className="menuRights">
       <div className="title-block">
-        <h4 className="p-0">Role Base Menu Rights</h4>
+        <BreadCrumbs pageName={Page.RoleMenuRights} />
       </div>
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>
@@ -204,15 +209,17 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
               </Select>
             </Form.Item>
             <div className="btns-block">
-              <Button
-                type="primary"
-                onClick={() => {
-                  form.submit();
-                }}
-                loading={reduxStoreData.saveMenuAccessRights.loading}
-              >
-                Save
-              </Button>
+              <Can I={Action.Update} a={Page.RoleMenuRights}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.submit();
+                  }}
+                  loading={reduxStoreData.saveMenuAccessRights.loading}
+                >
+                  Save
+                </Button>
+              </Can>
             </div>
           </div>
           <Table

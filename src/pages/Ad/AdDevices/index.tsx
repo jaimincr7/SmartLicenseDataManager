@@ -9,6 +9,9 @@ import AddAdDeviceModal from './AddAdDeviceModal';
 import ProcessDataModal from './ProcessDataModal';
 import { adDevicesSelector, clearAdDevices } from '../../../store/ad/adDevices/adDevices.reducer';
 import MainTable from './MainTable';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   const adDevices = useAppSelector(adDevicesSelector);
@@ -43,7 +46,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <h4 className="p-0">Ad Devices</h4>
+        <BreadCrumbs pageName={Page.ADDevices} />
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -51,40 +54,44 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() => setProcessModalVisible(true)}
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Process Data
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() =>
-                  history.push(`/data-input/bulk-import/${adDevices.search.tableName}`)
-                }
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Update from Excel
-              </Button>
-            </Col>
+            <Can I={Action.ProcessData} a={Page.ADDevices}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setProcessModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Process Data
+                </Button>
+              </Col>
+            </Can>
+            <Can I={Action.ImportToExcel} a={Page.ADDevices}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() =>
+                    history.push(`/data-input/bulk-import/${adDevices.search.tableName}`)
+                  }
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable

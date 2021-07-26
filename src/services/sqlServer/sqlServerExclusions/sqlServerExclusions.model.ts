@@ -18,3 +18,9 @@ export interface ISqlServerExclusions {
 export interface ISearchSqlServerExclusions extends ISearch {
   is_lookup?: boolean;
 }
+
+export interface IProcessData {
+  company_id?: number;
+  bu_id?: number;
+  selected_date?: Date;
+}

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
+import ability from '../../common/ability';
+import { Action, Page } from '../../common/constants/pageAction';
 import AdDevices from './AdDevices';
 import AdDevicesExclusions from './AdDevicesExclusions';
 import AdUsers from './AdUsers';
@@ -10,20 +12,42 @@ const AdRoutes: React.FC = () => {
   return (
     <div className="ad">
       <Switch>
-        <Route exact path={`${match.path}/ad-users/:id`} component={AdUsers} />
-        <Route exact path={`${match.path}/ad-users`} component={AdUsers} />
+        {/* Ad Users */}
+        {ability.can(Action.View, Page.ADUsers) && (
+          <Route exact path={`${match.path}/ad-users/:id`} component={AdUsers} />
+        )}
+        {ability.can(Action.View, Page.ADUsers) && (
+          <Route exact path={`${match.path}/ad-users`} component={AdUsers} />
+        )}
 
-        <Route
-          exact
-          path={`${match.path}/ad-devices-exclusions/:id`}
-          component={AdDevicesExclusions}
-        />
-        <Route exact path={`${match.path}/ad-devices-exclusions`} component={AdDevicesExclusions} />
+        {/* Device Exclusions */}
+        {ability.can(Action.View, Page.ADExclusions) && (
+          <Route
+            exact
+            path={`${match.path}/ad-devices-exclusions/:id`}
+            component={AdDevicesExclusions}
+          />
+        )}
+        {ability.can(Action.View, Page.ADExclusions) && (
+          <Route
+            exact
+            path={`${match.path}/ad-devices-exclusions`}
+            component={AdDevicesExclusions}
+          />
+        )}
 
-        <Route exact path={`${match.path}/ad-devices/:id`} component={AdDevices} />
+        {/* Ad Devices */}
+        {ability.can(Action.View, Page.ADDevices) && (
+          <Route exact path={`${match.path}/ad-devices/:id`} component={AdDevices} />
+        )}
+        {ability.can(Action.View, Page.ADDevices) && (
+          <Route exact path={`${match.path}/ad-devices`} component={AdDevices} />
+        )}
 
         {/* keep least always */}
-        <Route exact path={`${match.path}/ad-devices`} component={AdDevices} />
+        <Route path={`${match.path}/*`}>
+          <Redirect to={`/404`} />
+        </Route>
       </Switch>
     </div>
   );

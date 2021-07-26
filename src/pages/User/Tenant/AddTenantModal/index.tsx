@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ITenant } from '../../../../services/master/tenant/tenant.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getTenantById, saveTenant } from '../../../../store/master/tenant/tenant.action';
@@ -11,13 +11,6 @@ import {
   tenantSelector,
 } from '../../../../store/master/tenant/tenant.reducer';
 import { IAddTenantProps } from './addTenant.model';
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
   const tenant = useAppSelector(tenantSelector);

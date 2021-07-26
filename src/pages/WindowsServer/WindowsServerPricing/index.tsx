@@ -11,6 +11,9 @@ import {
   clearWindowsServerPricing,
 } from '../../../store/windowsServer/windowsServerPricing/windowsServerPricing.reducer';
 import MainTable from './MainTable';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   const windowsServerPricing = useAppSelector(windowsServerPricingSelector);
@@ -44,7 +47,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <h4 className="p-0">Windows Server Pricing</h4>
+        <BreadCrumbs pageName={Page.WindowsServerPricing} />
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -52,24 +55,26 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() =>
-                  history.push(`/data-input/bulk-import/${windowsServerPricing.search.tableName}`)
-                }
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Update from Excel
-              </Button>
-            </Col>
+            <Can I={Action.ImportToExcel} a={Page.WindowsServerPricing}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() =>
+                    history.push(`/data-input/bulk-import/${windowsServerPricing.search.tableName}`)
+                  }
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable

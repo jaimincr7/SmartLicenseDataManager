@@ -1,6 +1,7 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import {
+  setTableColumnSelection,
   clearSqlServerEntitlementsMessages,
   sqlServerEntitlementsSelector,
 } from '../../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.reducer';
@@ -22,7 +23,8 @@ import {
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
-import { setTableColumnSelection } from '../../../../store/sqlServer/sqlServerEntitlements/sqlServerEntitlements.reducer';
+import { Action, Page } from '../../../../common/constants/pageAction';
+import ability, { Can } from '../../../../common/ability';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
@@ -155,20 +157,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <a
-        className="action-btn"
-        onClick={() => {
-          setSelectedId(data.id);
-          history.push(`/sql-server/entitlements/${data.id}`);
-        }}
-      >
-        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-      </a>
-      <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerEntitlements(data.id)}>
-        <a href="#" title="" className="action-btn">
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+      <Can I={Action.Update} a={Page.SqlServerEntitlement}>
+        <a
+          className="action-btn"
+          onClick={() => {
+            setSelectedId(data.id);
+            history.push(`/sql-server/entitlements/${data.id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
-      </Popconfirm>
+      </Can>
+      <Can I={Action.Delete} a={Page.SqlServerEntitlement}>
+        <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerEntitlements(data.id)}>
+          <a href="#" title="" className="action-btn">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+          </a>
+        </Popconfirm>
+      </Can>
     </div>
   );
 
@@ -176,7 +182,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={true}
+        showAddButton={ability.can(Action.Add, Page.SqlServerEntitlement)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}

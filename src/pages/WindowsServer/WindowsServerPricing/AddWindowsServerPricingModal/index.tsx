@@ -2,7 +2,7 @@ import { Button, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerPricing } from '../../../../services/windowsServer/windowsServerPricing/windowsServerPricing.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -31,10 +31,6 @@ import {
 import { IAddWindowsServerPricingProps } from './addWindowsServerPricing.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-};
 
 const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (props) => {
   const windowsServerPricing = useAppSelector(windowsServerPricingSelector);
@@ -282,9 +278,9 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
                     name="price"
                     label="Price"
                     className="m-0"
-                    rules={[{ type: 'number', min: 0 }]}
+                    rules={[{ type: 'number' }]}
                   >
-                    <InputNumber className="form-control w-100" />
+                    <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

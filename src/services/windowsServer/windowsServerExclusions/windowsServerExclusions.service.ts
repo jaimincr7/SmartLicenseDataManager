@@ -1,6 +1,7 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
 import {
+  IProcessData,
   ISearchWindowsServerExclusions,
   IWindowsServerExclusions,
 } from './windowsServerExclusions.model';
@@ -55,6 +56,17 @@ class WindowsServerExclusionsService {
       responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
+    });
+  }
+
+  public async processData(data: IProcessData): Promise<any> {
+    const inputValues = {
+      ...data,
+      debug: false,
+    };
+    const url = `${this.ENDPOINT}/process-data`;
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
+      return res.data;
     });
   }
 }

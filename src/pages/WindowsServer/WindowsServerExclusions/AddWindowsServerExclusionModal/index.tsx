@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -28,19 +28,6 @@ import {
 } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-  types: {
-    number: Messages.NUMBER,
-  },
-  number: {
-    min: Messages.MIN,
-  },
-};
 
 const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps> = (props) => {
   const windowsServerExclusions = useAppSelector(windowsServerExclusionsSelector);
@@ -279,9 +266,9 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
                     name="instance_count"
                     label="Instance Count"
                     className="m-0"
-                    rules={[{ type: 'number', min: 0 }]}
+                    rules={[{ type: 'integer' }]}
                   >
-                    <InputNumber className="form-control w-100" />
+                    <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

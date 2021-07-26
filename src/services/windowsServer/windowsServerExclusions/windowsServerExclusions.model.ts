@@ -18,3 +18,9 @@ export interface IWindowsServerExclusions {
 export interface ISearchWindowsServerExclusions extends ISearch {
   is_lookup?: boolean;
 }
+
+export interface IProcessData {
+  company_id?: number;
+  bu_id?: number;
+  selected_date?: Date;
+}

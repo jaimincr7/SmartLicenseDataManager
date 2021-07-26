@@ -15,6 +15,13 @@ import DataInputRoutes from './pages/DataInput/DataInput.routes';
 import WindowsServerRoutes from './pages/WindowsServer/WindowsServer.routes';
 import AdRoutes from './pages/Ad/Ad.routes';
 import UserRoutes from './pages/User/User.routes';
+import ReportRoutes from './pages/Report/Report.routes';
+import RVToolsRoutes from './pages/RVTools/RVTools.routes';
+import AzureRoutes from './pages/Azure/Azure.routes';
+import O365Routes from './pages/O365/O365.routes';
+import { UnauthorizedPage } from './pages/Unauthorized';
+import { InternalServerError } from './pages/InternalServerError';
+import { AccessDeniedPage } from './pages/AccessDenied';
 
 function AppRoutes() {
   return (
@@ -38,6 +45,10 @@ function AppRoutes() {
           <LayoutRoute path="/data-input" layout={MainLayout} component={DataInputRoutes} />
           <LayoutRoute path="/windows-server" layout={MainLayout} component={WindowsServerRoutes} />
           <LayoutRoute path="/user" layout={MainLayout} component={UserRoutes} />
+          <LayoutRoute path="/report" layout={MainLayout} component={ReportRoutes} />
+          <LayoutRoute path="/rv-tools" layout={MainLayout} component={RVToolsRoutes} />
+          <LayoutRoute path="/azure" layout={MainLayout} component={AzureRoutes} />
+          <LayoutRoute path="/o365" layout={MainLayout} component={O365Routes} />
 
           {/* Dummy routes for designers */}
           <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />
@@ -45,6 +56,9 @@ function AppRoutes() {
           <LayoutRoute path="/upload-excel" layout={MainLayout} component={UploadExcel} />
 
           {/* keep least always */}
+          <Route exact path="/401" component={UnauthorizedPage} />
+          <LayoutRoute path="/500" layout={MainLayout} component={InternalServerError} />
+          <LayoutRoute path="/403" layout={MainLayout} component={AccessDeniedPage} />
           <LayoutRoute exact path="*" layout={MainLayout} component={PageNotFound} />
         </Switch>
       </AuthenticatedTemplate>

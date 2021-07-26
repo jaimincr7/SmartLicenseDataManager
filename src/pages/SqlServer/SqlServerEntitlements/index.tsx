@@ -11,6 +11,9 @@ import { useHistory } from 'react-router-dom';
 import { ISqlServerEntitlementsProps } from './sqlServerEntitlements.model';
 import { Button, Col, Row } from 'antd';
 import MainTable from './MainTable';
+import { Can } from '../../../common/ability';
+import { Action, Page } from '../../../common/constants/pageAction';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => {
   const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
@@ -43,7 +46,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Sql Server Entitlements</h4>
+        <BreadCrumbs pageName={Page.SqlServerEntitlement} />
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -51,24 +54,28 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Col>
-              <Button
-                className="btn-icon"
-                onClick={() =>
-                  history.push(`/data-input/bulk-import/${sqlServerEntitlements.search.tableName}`)
-                }
-                icon={
-                  <em className="anticon">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                      alt=""
-                    />
-                  </em>
-                }
-              >
-                Update from Excel
-              </Button>
-            </Col>
+            <Can I={Action.ImportToExcel} a={Page.SqlServerEntitlement}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() =>
+                    history.push(
+                      `/data-input/bulk-import/${sqlServerEntitlements.search.tableName}`
+                    )
+                  }
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Update from Excel
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable

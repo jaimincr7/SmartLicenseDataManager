@@ -3,7 +3,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerLicense } from '../../../../services/windowsServer/windowsServerLicense/windowsServerLicense.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -29,13 +29,6 @@ import {
 import { IAddWindowsServerLicenseProps } from './addWindowsServerLicense.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-};
 
 const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (props) => {
   const windowsServerLicense = useAppSelector(windowsServerLicenseSelector);

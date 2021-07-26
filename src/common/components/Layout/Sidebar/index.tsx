@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Menu } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useLocation } from 'react-router-dom';
 import { userSelector } from '../../../../store/user/user.reducer';
-import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { getMenuRights } from '../../../../store/user/user.action';
+import { useAppSelector } from '../../../../store/app.hooks';
+
 const { SubMenu } = Menu;
 
 function Sidebar() {
   const location = useLocation();
   const defaultSubmenu: string = location.pathname.split('/')[1];
   const userDetails = useAppSelector(userSelector);
-  const dispatch = useAppDispatch();
 
   window.addEventListener('click', function (e) {
     if (
@@ -29,15 +28,11 @@ function Sidebar() {
     }
   });
 
-  useEffect(() => {
-    dispatch(getMenuRights());
-  }, []);
-
-  const renderMenu = (childMenu: any) => {
+  const renderMenu = (childMenu: any, key = '-') => {
     if (childMenu?.childMenus?.length > 0) {
       return (
         <SubMenu
-          key={childMenu?.name}
+          key={childMenu?.name + key}
           icon={
             childMenu?.icon && (
               <img src={`${process.env.PUBLIC_URL}/assets/images/${childMenu?.icon}`} alt="" />
@@ -45,12 +40,12 @@ function Sidebar() {
           }
           title={childMenu?.description}
         >
-          {childMenu.childMenus?.map((menu) => renderMenu(menu))}
+          {childMenu.childMenus?.map((menu, index: number) => renderMenu(menu, `${key}-${index}`))}
         </SubMenu>
       );
-    } else {
+    } else if (childMenu.parent_menu_id) {
       return (
-        <Menu.Item key={`${childMenu.url}`}>
+        <Menu.Item key={`${childMenu.url ? childMenu.url : key}`}>
           <Link to={`${childMenu.url}`} title={childMenu?.description}>
             {childMenu?.description}
           </Link>
@@ -72,12 +67,24 @@ function Sidebar() {
             key="/"
             icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard.svg`} alt="" />}
           >
-            <a href="/" title="Dashboard">
+            <Link to="/" title="Dashboard">
               Dashboard
-            </a>
+            </Link>
           </Menu.Item>
-
-          {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any) => renderMenu(menuDetail))}
+          {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any, index: number) =>
+            renderMenu(menuDetail, `-${index}`)
+          )}
+          <SubMenu
+            key="report"
+            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-reporting.svg`} alt="" />}
+            title="Reports"
+          >
+            <Menu.Item key="/report/coverage">
+              <Link to="/report/coverage" title="Coverage">
+                Coverage
+              </Link>
+            </Menu.Item>
+          </SubMenu>
         </Menu>
       </Scrollbars>
     </aside>

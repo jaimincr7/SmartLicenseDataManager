@@ -3,7 +3,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICompany } from '../../../../services/master/company/company.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -22,19 +22,6 @@ import {
 import { IAddCompanyProps } from './addCompany.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-  types: {
-    email: Messages.INVALID,
-  },
-  string: {
-    max: Messages.MAXLENGTH,
-  },
-  pattern: {
-    mismatch: Messages.INVALID,
-  },
-};
 
 const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
   const company = useAppSelector(companySelector);

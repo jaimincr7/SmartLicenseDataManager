@@ -15,7 +15,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { Messages } from '../../../../common/constants/messages';
+import { validateMessages } from '../../../../common/constants/common';
 import { IAdUser } from '../../../../services/ad/adUsers/adUsers.model';
 import { ILookup } from '../../../../services/common/common.model';
 import { getAdUserById, saveAdUser } from '../../../../store/ad/adUsers/adUsers.action';
@@ -38,10 +38,6 @@ import {
 import { IAddAdUsersProps } from './addAdUsers.model';
 
 const { Option } = Select;
-
-const validateMessages = {
-  required: Messages.FIELD_REQUIRED,
-};
 
 const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
   const adUsers = useAppSelector(adUsersSelector);
@@ -485,6 +481,19 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
+                  <label className="label">Exclusion Id</label>
+                  <Form.Item
+                    name="exclusion_id"
+                    label="Exclusion Id"
+                    className="m-0"
+                    rules={[{ type: 'integer' }]}
+                  >
+                    <InputNumber min={0} className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
                   <label className="label">Exclusion</label>
                   <Form.Item
                     name="exclusion"
@@ -493,19 +502,6 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Exclusion Id</label>
-                  <Form.Item
-                    name="exclusion_id"
-                    label="Exclusion Id"
-                    className="m-0"
-                    rules={[{ type: 'number' }]}
-                  >
-                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
