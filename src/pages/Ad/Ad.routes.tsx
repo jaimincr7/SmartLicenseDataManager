@@ -1,5 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
+import ability from '../../common/ability';
+import { Action, Page } from '../../common/constants/pageAction';
 import AdDevices from './AdDevices';
 import AdDevicesExclusions from './AdDevicesExclusions';
 import AdUsers from './AdUsers';
@@ -11,24 +13,24 @@ const AdRoutes: React.FC = () => {
     <div className="ad">
       <Switch>
         {/* Ad Users */}
-        <Route exact path={`${match.path}/ad-users/:id`} component={AdUsers} />
-        <Route exact path={`${match.path}/ad-users`} component={AdUsers} />
+        {ability.can(Action.View, Page.ADUsers) && <Route exact path={`${match.path}/ad-users/:id`} component={AdUsers} />}
+        {ability.can(Action.View, Page.ADUsers) && <Route exact path={`${match.path}/ad-users`} component={AdUsers} />}
 
         {/* Device Exclusions */}
-        <Route
+        {ability.can(Action.View, Page.ADExclusions) && <Route
           exact
           path={`${match.path}/ad-devices-exclusions/:id`}
           component={AdDevicesExclusions}
-        />
-        <Route exact path={`${match.path}/ad-devices-exclusions`} component={AdDevicesExclusions} />
+        />}
+        {ability.can(Action.View, Page.ADExclusions) && <Route exact path={`${match.path}/ad-devices-exclusions`} component={AdDevicesExclusions} />}
 
         {/* Ad Devices */}
-        <Route exact path={`${match.path}/ad-devices/:id`} component={AdDevices} />
-        <Route exact path={`${match.path}/ad-devices`} component={AdDevices} />
+        {ability.can(Action.View, Page.ADDevices) && <Route exact path={`${match.path}/ad-devices/:id`} component={AdDevices} />}
+        {ability.can(Action.View, Page.ADDevices) && <Route exact path={`${match.path}/ad-devices`} component={AdDevices} />}
 
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
-          <Redirect to={`${match.path}/ad-devices`} />
+          <Redirect to={`/404`} />
         </Route>
       </Switch>
     </div>

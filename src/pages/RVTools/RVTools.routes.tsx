@@ -1,5 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
+import ability from '../../common/ability';
+import { Action, Page } from '../../common/constants/pageAction';
 import TabVCluster from './TabVCluster';
 import TabVHost from './TabVHost';
 import TabVInfo from './TabVInfo';
@@ -11,20 +13,20 @@ const RVToolsRoutes: React.FC = () => {
     <div className="sqlServer">
       <Switch>
         {/* Tab-V-Cluster */}
-        <Route exact path={`${match.path}/tab-v-cluster/:id`} component={TabVCluster} />
-        <Route exact path={`${match.path}/tab-v-cluster`} component={TabVCluster} />
+        {ability.can(Action.View, Page.TabVCluster) && <Route exact path={`${match.path}/tab-v-cluster/:id`} component={TabVCluster} />}
+        {ability.can(Action.View, Page.TabVCluster) && <Route exact path={`${match.path}/tab-v-cluster`} component={TabVCluster} />}
 
         {/* Tab-V-Host */}
-        <Route exact path={`${match.path}/tab-v-host/:id`} component={TabVHost} />
-        <Route exact path={`${match.path}/tab-v-host`} component={TabVHost} />
+        {ability.can(Action.View, Page.TabVHost) && <Route exact path={`${match.path}/tab-v-host/:id`} component={TabVHost} />}
+        {ability.can(Action.View, Page.TabVHost) && <Route exact path={`${match.path}/tab-v-host`} component={TabVHost} />}
 
         {/* Tab-V-Info */}
-        <Route exact path={`${match.path}/tab-v-info/:id`} component={TabVInfo} />
-        <Route exact path={`${match.path}/tab-v-info`} component={TabVInfo} />
+        {ability.can(Action.View, Page.TabVInfo) && <Route exact path={`${match.path}/tab-v-info/:id`} component={TabVInfo} />}
+        {ability.can(Action.View, Page.TabVInfo) && <Route exact path={`${match.path}/tab-v-info`} component={TabVInfo} />}
 
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
-          <Redirect to={`${match.path}/tab-v-cluster`} />
+          <Redirect to={`/404`} />
         </Route>
       </Switch>
     </div>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
+import ability from '../../common/ability';
+import { Action, Page } from '../../common/constants/pageAction';
 import BU from './BU';
 import Company from './Company';
 import Currency from './Currency';
@@ -15,33 +17,34 @@ const UserRoutes: React.FC = () => {
     <div className="windowsServer">
       <Switch>
         {/* BU */}
-        <Route exact path={`${match.path}/bu`} component={BU} />
-        <Route exact path={`${match.path}/bu/:id`} component={BU} />
+        {ability.can(Action.View, Page.Bu) && <Route exact path={`${match.path}/bu`} component={BU} />}
+        {ability.can(Action.View, Page.Bu) && <Route exact path={`${match.path}/bu/:id`} component={BU} />}
 
         {/* Tenant */}
-        <Route exact path={`${match.path}/tenant`} component={Tenant} />
-        <Route exact path={`${match.path}/tenant/:id`} component={Tenant} />
+        {ability.can(Action.View, Page.Tenant) && <Route exact path={`${match.path}/tenant`} component={Tenant} />}
+        {ability.can(Action.View, Page.Tenant) && <Route exact path={`${match.path}/tenant/:id`} component={Tenant} />}
 
         {/* Company */}
-        <Route exact path={`${match.path}/company`} component={Company} />
-        <Route exact path={`${match.path}/company/:id`} component={Company} />
+        {ability.can(Action.View, Page.Company) && <Route exact path={`${match.path}/company`} component={Company} />}
+        {ability.can(Action.View, Page.Company) && <Route exact path={`${match.path}/company/:id`} component={Company} />}
 
         {/* Currency */}
-        <Route exact path={`${match.path}/currency`} component={Currency} />
-        <Route exact path={`${match.path}/currency/:id`} component={Currency} />
+        {ability.can(Action.View, Page.Currency) && <Route exact path={`${match.path}/currency`} component={Currency} />}
+        {ability.can(Action.View, Page.Currency) && <Route exact path={`${match.path}/currency/:id`} component={Currency} />}
 
         {/* Menu Rights */}
-        <Route exact path={`${match.path}/menu-rights/role`} component={RoleBaseMenuRights} />
-        <Route exact path={`${match.path}/menu-rights/company`} component={CompanyBaseMenuRights} />
-        <Route
+        {ability.can(Action.View, Page.RoleMenuRights) && <Route exact path={`${match.path}/menu-rights/role`} component={RoleBaseMenuRights} />}
+        {ability.can(Action.View, Page.CompanyMenuRights) && <Route exact path={`${match.path}/menu-rights/company`} component={CompanyBaseMenuRights} />}
+        {ability.can(Action.View, Page.GlobalTableColumnSelection) && <Route
           exact
           path={`${match.path}/table-column-selection`}
           component={TableColumnSelection}
         />
+        }
 
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
-          <Redirect to={`${match.path}/menu-rights/role`} />
+          <Redirect to={`/404`} />
         </Route>
       </Switch>
     </div>
