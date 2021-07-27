@@ -13,6 +13,7 @@ import {
   getWindowsServerLicenseLookup,
   saveTableColumnSelection,
   getAllCompanyLookup,
+  getO365ProductsLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -46,6 +47,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   windowsServerLicenseLookup: {
+    data: [],
+    loading: false,
+  },
+  o365ProductsLookup: {
     data: [],
     loading: false,
   },
@@ -155,6 +160,15 @@ export const commonSlice = createSlice({
     [getWindowsServerLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.windowsServerLicenseLookup.data = action.payload;
       state.windowsServerLicenseLookup.loading = false;
+    },
+
+    // O365 Products lookup
+    [getO365ProductsLookup.pending.type]: (state) => {
+      state.o365ProductsLookup.loading = true;
+    },
+    [getO365ProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.o365ProductsLookup.data = action.payload;
+      state.o365ProductsLookup.loading = false;
     },
 
     // Delete Dataset

@@ -1,27 +1,27 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import { IO365MailboxUsage, ISearchO365MailboxUsage } from './o365MailboxUsage.model';
+import { IO365ProductList, ISearchO365ProductList } from './o365ProductList.model';
 
-class O365MailboxUsageService {
-  ENDPOINT = '/o365-mailbox-usage';
+class O365ProductListService {
+  ENDPOINT = '/o365-product-list';
 
-  public async searchO365MailboxUsage(
-    searchParams?: ISearchO365MailboxUsage
-  ): Promise<IApiResponse<ISearchResponse<IO365MailboxUsage>>> {
+  public async searchO365ProductList(
+    searchParams?: ISearchO365ProductList
+  ): Promise<IApiResponse<ISearchResponse<IO365ProductList>>> {
     const url = `${this.ENDPOINT}/search`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
   }
 
-  public async getO365MailboxUsageById(id: number): Promise<any> {
+  public async getO365ProductListById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }
 
-  public async saveO365MailboxUsage(data: IO365MailboxUsage): Promise<any> {
+  public async saveO365ProductList(data: IO365ProductList): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {
       const url = `${this.ENDPOINT}/${id}`;
@@ -36,14 +36,14 @@ class O365MailboxUsageService {
     }
   }
 
-  public async deleteO365MailboxUsage(id: number): Promise<any> {
+  public async deleteO365ProductList(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
       return res.data;
     });
   }
 
-  public async exportExcelFile(searchParams?: ISearchO365MailboxUsage): Promise<any> {
+  public async exportExcelFile(searchParams?: ISearchO365ProductList): Promise<any> {
     const url = `${this.ENDPOINT}/search`;
     return request({
       url,
@@ -56,4 +56,4 @@ class O365MailboxUsageService {
   }
 }
 
-export default new O365MailboxUsageService();
+export default new O365ProductListService();

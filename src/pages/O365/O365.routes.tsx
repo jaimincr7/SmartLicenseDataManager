@@ -7,6 +7,7 @@ import O365ActiveUserDetail from './O365ActiveUserDetail';
 import O365M365AppsUsageUserDetail from './O365M365AppsUsageUserDetail';
 import O365MailboxUsage from './O365MailboxUsage';
 import O365OneDriveUsage from './O365OneDriveUsage';
+import O365ProductList from './O365ProductList';
 import O365Reservations from './O365Reservations';
 
 const O365Routes: React.FC = () => {
@@ -21,6 +22,14 @@ const O365Routes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.O365Reservations) && (
           <Route exact path={`${match.path}/o365-reservations`} component={O365Reservations} />
+        )}
+
+        {/* Product List */}
+        {ability.can(Action.View, Page.O365ProductList) && (
+          <Route exact path={`${match.path}/o365-product-list/:id`} component={O365ProductList} />
+        )}
+        {ability.can(Action.View, Page.O365ProductList) && (
+          <Route exact path={`${match.path}/o365-product-list`} component={O365ProductList} />
         )}
 
         {/* OneDrive usage */}

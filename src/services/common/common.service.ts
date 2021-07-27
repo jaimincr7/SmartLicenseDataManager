@@ -59,6 +59,13 @@ class CommonService {
     });
   }
 
+  public async getO365ProductsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-o365-products/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getColumnLookup(tableName: string, columnName: string): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
     const data = {

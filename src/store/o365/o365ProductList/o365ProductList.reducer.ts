@@ -3,15 +3,15 @@ import { IApiResponseBody, ISearchResponse } from '../../../common/models/common
 import { RootState } from '../../app.model';
 import { booleanLookup } from '../../../common/constants/common';
 import {
-  deleteO365MailboxUsage,
-  getO365MailboxUsageById,
-  saveO365MailboxUsage,
-  searchO365MailboxUsage,
-} from './o365MailboxUsage.action';
-import { IO365MailboxUsageState } from './o365MailboxUsage.model';
-import { IO365MailboxUsage } from '../../../services/o365/o365MailboxUsage/o365MailboxUsage.model';
+  deleteO365ProductList,
+  getO365ProductListById,
+  saveO365ProductList,
+  searchO365ProductList,
+} from './o365ProductList.action';
+import { IO365ProductListState } from './o365ProductList.model';
+import { IO365ProductList } from '../../../services/o365/o365ProductList/o365ProductList.model';
 
-export const initialState: IO365MailboxUsageState = {
+export const initialState: IO365ProductListState = {
   search: {
     loading: false,
     hasErrors: false,
@@ -42,18 +42,18 @@ export const initialState: IO365MailboxUsageState = {
   },
 };
 
-export const o365MailboxUsageSlice = createSlice({
-  name: 'o365MailboxUsage',
+export const o365ProductListSlice = createSlice({
+  name: 'o365ProductList',
   initialState,
   reducers: {
-    clearO365MailboxUsage: () => {
+    clearO365ProductList: () => {
       return initialState;
     },
-    clearO365MailboxUsageMessages: (state) => {
+    clearO365ProductListMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
     },
-    clearO365MailboxUsageGetById: (state) => {
+    clearO365ProductListGetById: (state) => {
       state.getById.data = null;
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
@@ -62,12 +62,12 @@ export const o365MailboxUsageSlice = createSlice({
   },
   extraReducers: {
     // Search
-    [searchO365MailboxUsage.pending.type]: (state) => {
+    [searchO365ProductList.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchO365MailboxUsage.fulfilled.type]: (
+    [searchO365ProductList.fulfilled.type]: (
       state,
-      action: PayloadAction<ISearchResponse<IO365MailboxUsage>>
+      action: PayloadAction<ISearchResponse<IO365ProductList>>
     ) => {
       const { search_result, ...rest } = action.payload;
       state.search.data = search_result.records;
@@ -86,31 +86,31 @@ export const o365MailboxUsageSlice = createSlice({
       }
       state.tableColumnSelection.table_name = search_result.table_name;
     },
-    [searchO365MailboxUsage.rejected.type]: (state) => {
+    [searchO365ProductList.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
 
     // Get by id
-    [getO365MailboxUsageById.pending.type]: (state) => {
+    [getO365ProductListById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getO365MailboxUsageById.fulfilled.type]: (state, action: PayloadAction<IO365MailboxUsage>) => {
+    [getO365ProductListById.fulfilled.type]: (state, action: PayloadAction<IO365ProductList>) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
     },
-    [getO365MailboxUsageById.rejected.type]: (state) => {
+    [getO365ProductListById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
     },
 
     // Save
-    [saveO365MailboxUsage.pending.type]: (state) => {
+    [saveO365ProductList.pending.type]: (state) => {
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveO365MailboxUsage.fulfilled.type]: (
+    [saveO365ProductList.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -118,7 +118,7 @@ export const o365MailboxUsageSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveO365MailboxUsage.rejected.type]: (
+    [saveO365ProductList.rejected.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -128,11 +128,11 @@ export const o365MailboxUsageSlice = createSlice({
     },
 
     // Delete
-    [deleteO365MailboxUsage.pending.type]: (state) => {
+    [deleteO365ProductList.pending.type]: (state) => {
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteO365MailboxUsage.fulfilled.type]: (
+    [deleteO365ProductList.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -140,7 +140,7 @@ export const o365MailboxUsageSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteO365MailboxUsage.rejected.type]: (
+    [deleteO365ProductList.rejected.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -152,15 +152,15 @@ export const o365MailboxUsageSlice = createSlice({
 });
 
 // A selector
-export const o365MailboxUsageSelector = (state: RootState) => state.o365MailboxUsage;
+export const o365ProductListSelector = (state: RootState) => state.o365ProductList;
 
 // Actions
 export const {
-  clearO365MailboxUsage,
-  clearO365MailboxUsageMessages,
-  clearO365MailboxUsageGetById,
+  clearO365ProductList,
+  clearO365ProductListMessages,
+  clearO365ProductListGetById,
   setTableColumnSelection,
-} = o365MailboxUsageSlice.actions;
+} = o365ProductListSlice.actions;
 
 // The reducer
-export default o365MailboxUsageSlice.reducer;
+export default o365ProductListSlice.reducer;
