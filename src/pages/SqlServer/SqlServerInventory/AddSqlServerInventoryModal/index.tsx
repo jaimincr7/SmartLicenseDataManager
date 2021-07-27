@@ -2,7 +2,9 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerInventory } from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -38,7 +40,11 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Sql Server Inventory' : 'Edit Sql Server Inventory';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.SqlServerInventory} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

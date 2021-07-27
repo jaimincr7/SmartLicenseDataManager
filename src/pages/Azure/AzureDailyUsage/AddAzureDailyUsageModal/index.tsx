@@ -39,6 +39,8 @@ import {
 import { IAddAzureDailyUsageProps } from './addAzureDailyUsage.model';
 import moment from 'moment';
 import { validateMessages } from '../../../../common/constants/common';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -51,7 +53,11 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Azure Daily Usage' : 'Edit Azure Daily Usage';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.AzureDailyUsage} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

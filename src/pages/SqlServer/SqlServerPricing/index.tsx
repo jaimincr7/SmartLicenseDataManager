@@ -47,7 +47,9 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.SqlServerPricing} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.SqlServerPricing} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

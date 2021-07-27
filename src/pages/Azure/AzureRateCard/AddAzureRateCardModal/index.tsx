@@ -16,6 +16,8 @@ import {
 import { IAddAzureRateCardProps } from './addAzureRateCard.model';
 import moment from 'moment';
 import { validateMessages } from '../../../../common/constants/common';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
   const azureRateCard = useAppSelector(azureRateCardSelector);
@@ -25,7 +27,11 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Azure Rate Card' : 'Edit Azure Rate Card';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.AzureRateCard} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

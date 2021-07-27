@@ -47,7 +47,9 @@ const O365ActiveUserDetail: React.FC<IO365ActiveUserDetailProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.O365ActiveUserDetail} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.O365ActiveUserDetail} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

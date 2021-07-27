@@ -5,27 +5,28 @@ import { userSelector } from '../../../store/user/user.reducer';
 import { IBreadCrumbsProps } from './breadcrumbs.model';
 
 const BreadCrumbs: React.FC<IBreadCrumbsProps> = (props) => {
+  const { pageName, level } = props;
   const userDetails = useAppSelector(userSelector);
   const [pageTitle, setPageTitle] = useState<string>('');
 
   useEffect(() => {
     const menus = userDetails.getMenuRight?.data?.menus;
     if (menus?.length > 0) {
-      const currentMenu = menus.find((x) => x.name === props.pageName);
-      checkParentMenu(currentMenu, menus, currentMenu.description);
+      const currentMenu = menus.find((x) => x.name === pageName);
+      checkParentMenu(currentMenu, menus, currentMenu.description, 1);
     }
   }, [userDetails.getMenuRight?.data?.menus]);
 
-  const checkParentMenu = (menu: IMenu, menus: IMenu[], updatedTitle: string) => {
-    if (menu.parent_menu_id > 0) {
+  const checkParentMenu = (menu: IMenu, menus: IMenu[], updatedTitle: string, count: number) => {
+    if (menu.parent_menu_id > 0 && (level === undefined || level > count)) {
       const parentMenu = menus.find((x) => x.id === menu.parent_menu_id);
       updatedTitle = `${parentMenu.description} > ${updatedTitle}`;
-      checkParentMenu(parentMenu, menus, updatedTitle);
+      checkParentMenu(parentMenu, menus, updatedTitle, count + 1);
     } else {
       setPageTitle(updatedTitle);
     }
   };
-  return <h4 className="p-0">{pageTitle}</h4>;
+  return <>{pageTitle}</>;
 };
 
 export default BreadCrumbs;

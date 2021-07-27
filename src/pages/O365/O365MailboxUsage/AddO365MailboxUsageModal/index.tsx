@@ -15,7 +15,9 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IO365MailboxUsage } from '../../../../services/o365/o365MailboxUsage/o365MailboxUsage.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -51,7 +53,11 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Mailbox Usage' : 'Edit Mailbox Usage';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.O365MailboxUsage} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

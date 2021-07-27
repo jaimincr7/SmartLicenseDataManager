@@ -39,6 +39,8 @@ import {
 import { IO365M365AppsUsageUserDetail } from '../../../../services/o365/o365M365AppsUsageUserDetail/o365M365AppsUsageUserDetail.model';
 import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -53,7 +55,12 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add M365 Apps Usage User Detail' : 'Edit M365 Apps Usage User Detail';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '}
+        <BreadCrumbs pageName={Page.O365M365AppsUsageUserDetail} level={1} />{' '}
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

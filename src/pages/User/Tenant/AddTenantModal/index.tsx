@@ -1,7 +1,9 @@
 import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ITenant } from '../../../../services/master/tenant/tenant.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getTenantById, saveTenant } from '../../../../store/master/tenant/tenant.action';
@@ -20,7 +22,11 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Tenant' : 'Edit Tenant';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Tenant} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

@@ -186,7 +186,9 @@ const TableColumnSelection: React.FC = () => {
     <>
       <div className="update-excel-page">
         <div className="title-block">
-          <BreadCrumbs pageName={Page.GlobalTableColumnSelection} />
+          <h4 className="p-0">
+            <BreadCrumbs pageName={Page.GlobalTableColumnSelection} />
+          </h4>
         </div>
         <div className="main-card">
           <Form

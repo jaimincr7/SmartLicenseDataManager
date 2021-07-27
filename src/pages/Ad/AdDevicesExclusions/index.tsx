@@ -47,7 +47,9 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.ADExclusions} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.ADExclusions} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

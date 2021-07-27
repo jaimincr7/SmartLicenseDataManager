@@ -47,7 +47,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.O365OneDriveUsage} />
+       <h4 className="p-0"> <BreadCrumbs pageName={Page.O365OneDriveUsage} /></h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

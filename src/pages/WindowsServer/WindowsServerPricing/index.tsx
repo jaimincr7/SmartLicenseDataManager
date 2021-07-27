@@ -47,7 +47,9 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.WindowsServerPricing} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.WindowsServerPricing} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

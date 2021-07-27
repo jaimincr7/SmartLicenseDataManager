@@ -2,7 +2,9 @@ import { Button, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerPricing } from '../../../../services/windowsServer/windowsServerPricing/windowsServerPricing.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -41,7 +43,11 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Windows Server Pricing' : 'Edit Windows Server Pricing';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.WindowsServerPricing} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

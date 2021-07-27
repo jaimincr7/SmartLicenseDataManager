@@ -43,7 +43,9 @@ const BU: React.FC<IBUProps> = (props) => {
   return (
     <div className="bu">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.Bu} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.Bu} />
+        </h4>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

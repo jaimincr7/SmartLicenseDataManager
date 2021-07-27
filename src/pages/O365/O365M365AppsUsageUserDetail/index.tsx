@@ -47,7 +47,9 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.O365M365AppsUsageUserDetail} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.O365M365AppsUsageUserDetail} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

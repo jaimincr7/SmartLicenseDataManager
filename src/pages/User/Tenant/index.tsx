@@ -43,7 +43,9 @@ const Tenant: React.FC<ITenantProps> = (props) => {
   return (
     <div className="tenant">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.Tenant} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.Tenant} />
+        </h4>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

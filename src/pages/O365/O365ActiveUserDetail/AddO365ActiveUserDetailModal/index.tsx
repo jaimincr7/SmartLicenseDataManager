@@ -27,6 +27,8 @@ import {
 import { IO365ActiveUserDetail } from '../../../../services/o365/o365ActiveUserDetail/o365ActiveUserDetail.model';
 import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -39,7 +41,11 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Active User Detail' : 'Edit Active User Detail';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.O365ActiveUserDetail} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

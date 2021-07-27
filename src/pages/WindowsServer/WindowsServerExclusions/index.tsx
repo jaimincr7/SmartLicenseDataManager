@@ -49,7 +49,9 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.WindowsServerExclusions} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.WindowsServerExclusions} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

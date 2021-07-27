@@ -26,6 +26,8 @@ import {
 } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
 import { ISqlServerExclusions } from '../../../../services/sqlServer/sqlServerExclusions/sqlServerExclusions.model';
 import { validateMessages } from '../../../../common/constants/common';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -38,7 +40,11 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Sql Server Exclusion' : 'Edit Sql Server Exclusion';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.SqlServerExclusions} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

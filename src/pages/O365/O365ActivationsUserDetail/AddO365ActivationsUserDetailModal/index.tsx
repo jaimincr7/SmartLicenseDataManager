@@ -39,6 +39,8 @@ import {
 import { IO365ActivationsUserDetail } from '../../../../services/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.model';
 import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -51,7 +53,12 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Activations User Detail' : 'Edit Activations User Detail';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '}
+        <BreadCrumbs pageName={Page.O365ActivationsUserDetail} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
