@@ -6,6 +6,8 @@ import O365ActivationsUserDetail from './O365ActivationsUserDetail';
 import O365ActiveUserDetail from './O365ActiveUserDetail';
 import O365M365AppsUsageUserDetail from './O365M365AppsUsageUserDetail';
 import O365MailboxUsage from './O365MailboxUsage';
+import O365OneDriveUsage from './O365OneDriveUsage';
+import O365Reservations from './O365Reservations';
 
 const O365Routes: React.FC = () => {
   const match = useRouteMatch();
@@ -13,6 +15,26 @@ const O365Routes: React.FC = () => {
   return (
     <div className="o365">
       <Switch>
+        {/* OneDrive usage */}
+        {ability.can(Action.View, Page.O365Reservations) && (
+          <Route exact path={`${match.path}/o365-reservations/:id`} component={O365Reservations} />
+        )}
+        {ability.can(Action.View, Page.O365Reservations) && (
+          <Route exact path={`${match.path}/o365-reservations`} component={O365Reservations} />
+        )}
+
+        {/* OneDrive usage */}
+        {ability.can(Action.View, Page.O365OneDriveUsage) && (
+          <Route
+            exact
+            path={`${match.path}/o365-one-drive-usage/:id`}
+            component={O365OneDriveUsage}
+          />
+        )}
+        {ability.can(Action.View, Page.O365OneDriveUsage) && (
+          <Route exact path={`${match.path}/o365-one-drive-usage`} component={O365OneDriveUsage} />
+        )}
+
         {/* Mailbox usage */}
         {ability.can(Action.View, Page.O365MailboxUsage) && (
           <Route exact path={`${match.path}/o365-mailbox-usage/:id`} component={O365MailboxUsage} />

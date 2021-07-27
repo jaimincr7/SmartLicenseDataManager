@@ -7,7 +7,13 @@ import moment from 'moment';
 import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
 import _ from 'lodash';
 import { Filter } from './DataTableFilters';
-import { fixedColumn, IInlineSearch, ISearch, ITableColumnSelection, orderByType } from '../../../common/models/common';
+import {
+  fixedColumn,
+  IInlineSearch,
+  ISearch,
+  ITableColumnSelection,
+  orderByType,
+} from '../../../common/models/common';
 import { commonSelector } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
@@ -267,13 +273,15 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const saveTableColumns = () => {
-    let tableColumnSelectionObj:ITableColumnSelection=reduxStoreData.tableColumnSelection;
-    if(Object.keys(tableColumnSelectionObj.columns)?.length === 0){
-      columns?.forEach(column => {
-       tableColumnSelectionObj={...tableColumnSelectionObj,columns:{...tableColumnSelectionObj.columns,[column.title]:true}};
+    let tableColumnSelectionObj: ITableColumnSelection = reduxStoreData.tableColumnSelection;
+    if (Object.keys(tableColumnSelectionObj.columns)?.length === 0) {
+      columns?.forEach((column) => {
+        tableColumnSelectionObj = {
+          ...tableColumnSelectionObj,
+          columns: { ...tableColumnSelectionObj.columns, [column.title]: true },
+        };
       });
-    }
-    else{
+    } else {
       const isAllDeselected = Object.values(tableColumnSelectionObj.columns).every(
         (col) => col === false
       );

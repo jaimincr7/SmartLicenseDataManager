@@ -44,6 +44,7 @@ export enum Page {
   O365MailboxUsage = 'o365-mailbox-usage',
   O365OneDriveUsage = 'o365-one-drive-usage',
   O365ProductList = 'o365-product-list',
+  O365Reservations = 'o365-reservations',
 
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',

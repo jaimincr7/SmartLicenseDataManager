@@ -12,12 +12,9 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
-import { IO365MailboxUsage } from '../../../../services/o365/o365MailboxUsage/o365MailboxUsage.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
@@ -29,21 +26,24 @@ import {
   clearCompanyLookUp,
   commonSelector,
 } from '../../../../store/common/common.reducer';
+import { IAddO365OneDriveUsageProps } from './addO365OneDriveUsage.model';
 import {
-  getO365MailboxUsageById,
-  saveO365MailboxUsage,
-} from '../../../../store/o365/o365MailboxUsage/o365MailboxUsage.action';
+  o365OneDriveUsageSelector,
+  clearO365OneDriveUsageGetById,
+  clearO365OneDriveUsageMessages,
+} from '../../../../store/o365/o365OneDriveUsage/o365OneDriveUsage.reducer';
 import {
-  clearO365MailboxUsageGetById,
-  clearO365MailboxUsageMessages,
-  o365MailboxUsageSelector,
-} from '../../../../store/o365/o365MailboxUsage/o365MailboxUsage.reducer';
-import { IAddO365MailboxUsageProps } from './addO365MailboxUsage.model';
+  getO365OneDriveUsageById,
+  saveO365OneDriveUsage,
+} from '../../../../store/o365/o365OneDriveUsage/o365OneDriveUsage.action';
+import { IO365OneDriveUsage } from '../../../../services/o365/o365OneDriveUsage/o365OneDriveUsage.model';
+import { validateMessages } from '../../../../common/constants/common';
+import moment from 'moment';
 
 const { Option } = Select;
 
-const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) => {
-  const o365MailboxUsage = useAppSelector(o365MailboxUsageSelector);
+const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) => {
+  const o365OneDriveUsage = useAppSelector(o365OneDriveUsageSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
@@ -51,7 +51,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Mailbox Usage' : 'Edit Mailbox Usage';
+    return isNew ? 'Add OneDrive Usage' : 'Edit OneDrive Usage';
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
@@ -59,33 +59,29 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
 
   const [form] = Form.useForm();
 
-  let initialValues: IO365MailboxUsage = {
-    tenant_id: null,
+  let initialValues: IO365OneDriveUsage = {
     company_id: null,
     bu_id: null,
     report_refresh_date: null,
-    user_principal_name: '',
-    display_name: '',
+    site_url: '',
+    owner_display_name: '',
     is_deleted: false,
-    deleted_date: '',
-    created_date: null,
     last_activity_date: null,
-    item_count: null,
+    file_count: null,
+    active_file_count: null,
     storage_used_byte: null,
-    issue_warning_quota_byte: null,
-    prohibit_send_quota_byte: null,
-    prohibit_send_receive_quota_byte: null,
-    deleted_item_count: null,
-    deleted_item_size_byte: null,
+    storage_allocated_byte: null,
+    owner_principal_name: '',
     report_period: null,
+    tenant_id: null,
   };
 
   const onFinish = (values: any) => {
-    const inputValues: IO365MailboxUsage = {
+    const inputValues: IO365OneDriveUsage = {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365MailboxUsage(inputValues));
+    dispatch(saveO365OneDriveUsage(inputValues));
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -117,7 +113,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
     return current && current > moment().endOf('day');
   };
 
-  const fillValuesOnEdit = async (data: IO365MailboxUsage) => {
+  const fillValuesOnEdit = async (data: IO365OneDriveUsage) => {
     if (data.tenant_id) {
       await dispatch(getCompanyLookup(data.tenant_id));
     }
@@ -132,21 +128,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
         report_refresh_date: _.isNull(data.report_refresh_date)
           ? null
           : moment(data.report_refresh_date),
-        user_principal_name: data.user_principal_name,
-        display_name: data.display_name,
-        is_deleted: data.is_deleted,
-        deleted_date: data.deleted_date,
-        created_date: _.isNull(data.created_date) ? null : moment(data.created_date),
+        owner_principal_name: data.owner_principal_name,
+        owner_display_name: data.owner_display_name,
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
           : moment(data.last_activity_date),
-        item_count: data.item_count,
+        site_url: data.site_url,
+        is_deleted: data.is_deleted,
+        file_count: data.file_count,
+        active_file_count: data.active_file_count,
         storage_used_byte: data.storage_used_byte,
-        issue_warning_quota_byte: data.issue_warning_quota_byte,
-        prohibit_send_quota_byte: data.prohibit_send_quota_byte,
-        prohibit_send_receive_quota_byte: data.prohibit_send_receive_quota_byte,
-        deleted_item_count: data.deleted_item_count,
-        deleted_item_size_byte: data.deleted_item_size_byte,
+        storage_allocated_byte: data.storage_allocated_byte,
         report_period: data.report_period,
       };
       form.setFieldsValue(initialValues);
@@ -154,32 +146,32 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
   };
 
   useEffect(() => {
-    if (o365MailboxUsage.save.messages.length > 0) {
-      if (o365MailboxUsage.save.hasErrors) {
-        toast.error(o365MailboxUsage.save.messages.join(' '));
+    if (o365OneDriveUsage.save.messages.length > 0) {
+      if (o365OneDriveUsage.save.hasErrors) {
+        toast.error(o365OneDriveUsage.save.messages.join(' '));
       } else {
-        toast.success(o365MailboxUsage.save.messages.join(' '));
+        toast.success(o365OneDriveUsage.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearO365MailboxUsageMessages());
+      dispatch(clearO365OneDriveUsageMessages());
     }
-  }, [o365MailboxUsage.save.messages]);
+  }, [o365OneDriveUsage.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && o365MailboxUsage.getById.data) {
-      const data = o365MailboxUsage.getById.data;
+    if (+id > 0 && o365OneDriveUsage.getById.data) {
+      const data = o365OneDriveUsage.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [o365MailboxUsage.getById.data]);
+  }, [o365OneDriveUsage.getById.data]);
 
   useEffect(() => {
     dispatch(getTenantLookup());
     if (+id > 0) {
-      dispatch(getO365MailboxUsageById(+id));
+      dispatch(getO365OneDriveUsageById(+id));
     }
     return () => {
-      dispatch(clearO365MailboxUsageGetById());
+      dispatch(clearO365OneDriveUsageGetById());
       dispatch(clearCompanyLookUp());
       dispatch(clearBULookUp());
     };
@@ -195,14 +187,14 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
         onCancel={handleModalClose}
         footer={false}
       >
-        {o365MailboxUsage.getById.loading ? (
+        {o365OneDriveUsage.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={o365MailboxUsage.getById.loading} />
+            <Spin spinning={o365OneDriveUsage.getById.loading} />
           </div>
         ) : (
           <Form
             form={form}
-            name="addO365MailboxUsage"
+            name="addO365OneDriveUsage"
             initialValues={initialValues}
             onFinish={onFinish}
             validateMessages={validateMessages}
@@ -219,8 +211,8 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                   >
                     <Select
                       onChange={handleTenantChange}
-                      loading={commonLookups.tenantLookup.loading}
                       allowClear
+                      loading={commonLookups.tenantLookup.loading}
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -260,8 +252,8 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                   <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                     <Select
                       onChange={handleBUChange}
-                      loading={commonLookups.buLookup.loading}
                       allowClear
+                      loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
@@ -282,11 +274,11 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">User Principal Name</label>
+                  <label className="label">Owner Principal Name</label>
                   <Form.Item
-                    name="user_principal_name"
-                    label="User Principal Name"
+                    name="owner_principal_name"
                     className="m-0"
+                    label="Owner Principal Name"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -295,11 +287,11 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Display Name</label>
+                  <label className="label">Owner Display Name</label>
                   <Form.Item
-                    name="display_name"
+                    name="owner_display_name"
                     className="m-0"
-                    label="Display Name"
+                    label="Owner Display Name"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -308,22 +300,14 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Deleted Date</label>
+                  <label className="label">Site URL</label>
                   <Form.Item
-                    name="deleted_date"
-                    label="Deleted Date"
+                    name="site_url"
                     className="m-0"
+                    label="Site URL"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Created Date</label>
-                  <Form.Item name="created_date" label="Created Date" className="m-0">
-                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -335,16 +319,30 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                   </Form.Item>
                 </div>
               </Col>
+
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Item Count</label>
+                  <label className="label">File Count</label>
                   <Form.Item
-                    name="item_count"
-                    label="Item Count"
+                    name="file_count"
+                    label="File Count"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber className="form-control w-100" />
+                    <InputNumber min={0} className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Active File Count</label>
+                  <Form.Item
+                    name="active_file_count"
+                    label="Active File Count"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -357,72 +355,20 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber className="form-control w-100" />
+                    <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Issue Warning Quota (Byte)</label>
+                  <label className="label">Storage Allocated (Byte)</label>
                   <Form.Item
-                    name="issue_warning_quota_byte"
-                    label="Issue Warning Quota (Byte)"
+                    name="storage_allocated_byte"
+                    label="Storage Allocated (Byte)"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Prohibit Send Quota (Byte)</label>
-                  <Form.Item
-                    name="prohibit_send_quota_byte"
-                    label="Prohibit Send Quota (Byte)"
-                    className="m-0"
-                    rules={[{ type: 'number' }]}
-                  >
-                    <InputNumber className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Prohibit Send/Receive Quota (Byte)</label>
-                  <Form.Item
-                    name="prohibit_send_receive_quota_byte"
-                    label="Prohibit Send/Receive Quota (Byte)"
-                    className="m-0"
-                    rules={[{ type: 'number' }]}
-                  >
-                    <InputNumber className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Deleted Item Count</label>
-                  <Form.Item
-                    name="deleted_item_count"
-                    label="Deleted Item Count"
-                    className="m-0"
-                    rules={[{ type: 'number' }]}
-                  >
-                    <InputNumber className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Deleted Item Size (Byte)</label>
-                  <Form.Item
-                    name="deleted_item_size_byte"
-                    label="Deleted Item Size (Byte)"
-                    className="m-0"
-                    rules={[{ type: 'number' }]}
-                  >
-                    <InputNumber className="form-control w-100" />
+                    <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -435,7 +381,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber className="form-control w-100" />
+                    <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -453,7 +399,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365MailboxUsage.save.loading}
+                loading={o365OneDriveUsage.save.loading}
               >
                 {submitButtonText}
               </Button>
@@ -467,4 +413,4 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
     </>
   );
 };
-export default AddO365MailboxUsageModal;
+export default AddO365OneDriveUsageModal;

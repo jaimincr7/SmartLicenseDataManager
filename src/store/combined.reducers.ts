@@ -37,6 +37,8 @@ import o365ActivationsUserDetailReducer from './o365/o365ActivationsUserDetail/o
 import o365ActiveUserDetailReducer from './o365/o365ActiveUserDetail/o365ActiveUserDetail.reducer';
 import o365M365AppsUsageUserDetailReducer from './o365/o365M365AppsUsageUserDetail/o365M365AppsUsageUserDetail.reducer';
 import o365MailboxUsageReducer from './o365/o365MailboxUsage/o365MailboxUsage.reducer';
+import o365OneDriveUsageReducer from './o365/o365OneDriveUsage/o365OneDriveUsage.reducer';
+import o365ReservationsReducer from './o365/o365Reservations/o365Reservations.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -95,4 +97,6 @@ export const rootReducer = combineReducers({
   o365ActiveUserDetail: o365ActiveUserDetailReducer,
   o365M365AppsUsageUserDetail: o365M365AppsUsageUserDetailReducer,
   o365MailboxUsage: o365MailboxUsageReducer,
+  o365OneDriveUsage: o365OneDriveUsageReducer,
+  o365Reservations: o365ReservationsReducer,
 });
