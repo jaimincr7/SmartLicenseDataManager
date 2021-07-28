@@ -7,7 +7,13 @@ import moment from 'moment';
 import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
 import _ from 'lodash';
 import { Filter } from './DataTableFilters';
-import { fixedColumn, IInlineSearch, ISearch, ITableColumnSelection, orderByType } from '../../../common/models/common';
+import {
+  fixedColumn,
+  IInlineSearch,
+  ISearch,
+  ITableColumnSelection,
+  orderByType,
+} from '../../../common/models/common';
 import { commonSelector } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
@@ -241,7 +247,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
   ];
 
-  // Start: Hide-show columns
   React.useEffect(() => {
     const visibleColumns = columns.filter((col) => {
       return col.column in reduxStoreData.tableColumnSelection.columns
@@ -249,9 +254,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         : true;
     });
     setTableColumns(visibleColumns);
+  }, [reduxStoreData.tableColumnSelection.table_name]);
+
+  React.useEffect(() => {
     handleIndeterminate();
   }, [reduxStoreData.tableColumnSelection.columns]);
 
+  // Start: Hide-show columns
   const hideShowColumn = (e, title) => {
     if (e.target.checked) {
       dispatch(
@@ -274,13 +283,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const saveTableColumns = () => {
-    let tableColumnSelectionObj:ITableColumnSelection=reduxStoreData.tableColumnSelection;
-    if(Object.keys(tableColumnSelectionObj.columns)?.length === 0){
-      columns?.forEach(column => {
-       tableColumnSelectionObj={...tableColumnSelectionObj,columns:{...tableColumnSelectionObj.columns,[column.title]:true}};
+    let tableColumnSelectionObj: ITableColumnSelection = reduxStoreData.tableColumnSelection;
+    if (Object.keys(tableColumnSelectionObj.columns)?.length === 0) {
+      columns?.forEach((col) => {
+        tableColumnSelectionObj = {
+          ...tableColumnSelectionObj,
+          columns: {
+            ...tableColumnSelectionObj.columns,
+            [col.column ? col.column : col.title]: true,
+          },
+        };
       });
-    }
-    else{
+    } else {
       const isAllDeselected = Object.values(tableColumnSelectionObj.columns).every(
         (col) => col === false
       );
@@ -320,7 +334,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                 ? reduxStoreData.tableColumnSelection.columns[col.column]
                 : true
             }
-            onClick={(e) => hideShowColumn(e, col.title)}
+            onClick={(e) => hideShowColumn(e, col.column)}
           >
             {col.title}
           </Checkbox>
