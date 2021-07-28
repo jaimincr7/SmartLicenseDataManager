@@ -100,14 +100,14 @@ export const Filter = ({ onSearch }) => {
     onSearch(values.keyword);
   };
 
-  const handleChange = (e)=>{
-    if(keywordSearchTimer){
+  const handleChange = (e) => {
+    if (keywordSearchTimer) {
       clearTimeout(keywordSearchTimer);
     }
     keywordSearchTimer = setTimeout(() => {
-      onFinish({keyword: e.target.value})
-    },1000);
-  }
+      onFinish({ keyword: e.target.value });
+    }, 1000);
+  };
 
   const [formKeyword] = Form.useForm();
 

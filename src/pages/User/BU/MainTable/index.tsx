@@ -44,7 +44,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -57,7 +58,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -70,7 +72,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'BU Name',
+        title: <span className="dragHandler">BU Name</span>,
+        column: 'Name',
         sorter: true,
         children: [
           {
@@ -82,7 +85,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Active',
+        title: <span className="dragHandler">Active</span>,
+        column: 'Active',
         sorter: true,
         ellipsis: true,
         children: [

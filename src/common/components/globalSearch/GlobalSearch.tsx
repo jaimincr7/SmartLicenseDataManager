@@ -79,6 +79,14 @@ const GlobalSearch: React.FC = () => {
             onChange={handleTenantChange}
             loading={globalLookups.globalTenantLookup.loading}
             allowClear
+            showSearch
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+            }
           >
             {globalLookups.globalTenantLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
@@ -93,6 +101,14 @@ const GlobalSearch: React.FC = () => {
             onChange={handleCompanyChange}
             loading={globalLookups.globalCompanyLookup.loading}
             allowClear
+            showSearch
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+            }
           >
             {globalLookups.globalCompanyLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
@@ -107,6 +123,14 @@ const GlobalSearch: React.FC = () => {
             onChange={handleBUChange}
             loading={globalLookups.globalBULookup.loading}
             allowClear
+            showSearch
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+            }
           >
             {globalLookups.globalBULookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
