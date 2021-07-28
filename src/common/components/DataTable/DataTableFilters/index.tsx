@@ -94,10 +94,20 @@ export const FilterWithSwapOption = (
   );
 };
 
+let keywordSearchTimer = null;
 export const Filter = ({ onSearch }) => {
   const onFinish = (values: { keyword: string }) => {
     onSearch(values.keyword);
   };
+
+  const handleChange = (e)=>{
+    if(keywordSearchTimer){
+      clearTimeout(keywordSearchTimer);
+    }
+    keywordSearchTimer = setTimeout(() => {
+      onFinish({keyword: e.target.value})
+    },1000);
+  }
 
   const [formKeyword] = Form.useForm();
 
@@ -106,10 +116,11 @@ export const Filter = ({ onSearch }) => {
       <Form form={formKeyword} name="horizontal_login" layout="inline" onFinish={onFinish}>
         <Form.Item name="keyword">
           <Input
+            onChange={handleChange}
             placeholder="Search by keyword"
             className="form-control sm-input"
             prefix={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-search.svg`} alt="" />}
-            // allowClear={true}
+            allowClear={true}
           />
         </Form.Item>
       </Form>
