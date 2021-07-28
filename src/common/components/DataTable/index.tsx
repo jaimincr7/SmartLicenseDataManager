@@ -7,7 +7,7 @@ import moment from 'moment';
 import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
 import _ from 'lodash';
 import { Filter } from './DataTableFilters';
-import { fixedColumn, IInlineSearch, ISearch, orderByType } from '../../../common/models/common';
+import { fixedColumn, IInlineSearch, ISearch, ITableColumnSelection, orderByType } from '../../../common/models/common';
 import { commonSelector } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
@@ -274,15 +274,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const saveTableColumns = () => {
-    const isAllDeselected = Object.values(reduxStoreData.tableColumnSelection.columns).every(
-      (col) => col === false
-    );
-    if (isAllDeselected && reduxStoreData.tableColumnSelection.id !== null) {
-      toast.info('Please select some columns.');
-      return false;
+    let tableColumnSelectionObj:ITableColumnSelection=reduxStoreData.tableColumnSelection;
+    if(Object.keys(tableColumnSelectionObj.columns)?.length === 0){
+      columns?.forEach(column => {
+       tableColumnSelectionObj={...tableColumnSelectionObj,columns:{...tableColumnSelectionObj.columns,[column.title]:true}};
+      });
     }
-    dispatch(saveTableColumnSelection(reduxStoreData.tableColumnSelection)).then(() => {
-      if (!reduxStoreData.tableColumnSelection.id) {
+    else{
+      const isAllDeselected = Object.values(tableColumnSelectionObj.columns).every(
+        (col) => col === false
+      );
+      if (isAllDeselected && tableColumnSelectionObj.id !== null) {
+        toast.info('Please select some columns.');
+        return false;
+      }
+    }
+
+    dispatch(saveTableColumnSelection(tableColumnSelectionObj)).then(() => {
+      if (!tableColumnSelectionObj.id) {
         pageLoaded = false;
         fetchTableData();
       }
