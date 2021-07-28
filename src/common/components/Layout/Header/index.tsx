@@ -76,6 +76,9 @@ function Header() {
         <div className="profile-wrapper">
           <Dropdown overlay={profileMenu()} trigger={['click']} overlayClassName="profile-dropdown">
             <a href="#" title="" className="profile-block" onClick={(e) => e.preventDefault()}>
+              <em className="dp">
+                {/* <img src={`${process.env.PUBLIC_URL}/assets/images/dp.jpg`} alt="" /> */}
+              </em>
               <span className="username">{userDetails.activeAccount?.name}</span>
             </a>
           </Dropdown>
