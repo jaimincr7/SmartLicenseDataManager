@@ -1,22 +1,23 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
+import {
+  clearCiscoSiteMatrix,
+  ciscoSiteMatrixSelector,
+} from '../../../store/hwCisco/ciscoSiteMatrix/ciscoSiteMatrix.reducer';
+import { ICiscoSiteMatrixProps } from './ciscoSiteMatrix.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
+import AddCiscoSiteMatrixModal from './AddCiscoSiteMatrixModal';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
-import { IO365OneDriveUsageProps } from './o365OneDriveUsage.model';
-import {
-  o365OneDriveUsageSelector,
-  clearO365OneDriveUsage,
-} from '../../../store/o365/o365OneDriveUsage/o365OneDriveUsage.reducer';
-import AddO365OneDriveUsageModal from './AddO365OneDriveUsageModal';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
-const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
-  const o365OneDriveUsage = useAppSelector(o365OneDriveUsageSelector);
+const CiscoSiteMatrix: React.FC<ICiscoSiteMatrixProps> = (props) => {
+  const ciscoSiteMatrix = useAppSelector(ciscoSiteMatrixSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -24,6 +25,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -36,7 +38,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearO365OneDriveUsage());
+      dispatch(clearCiscoSiteMatrix());
     };
   }, []);
 
@@ -45,10 +47,10 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   };
 
   return (
-    <div className="ad">
+    <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">
-          <BreadCrumbs pageName={Page.O365OneDriveUsage} />
+          <BreadCrumbs pageName={Page.HwCiscoSiteMatrix} />
         </h4>
         <div className="right-title">
           <GlobalSearch />
@@ -57,12 +59,12 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.O365OneDriveUsage}>
+            <Can I={Action.ImportToExcel} a={Page.HwCiscoSiteMatrix}>
               <Col>
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${o365OneDriveUsage.search.tableName}`)
+                    history.push(`/data-input/bulk-import/${ciscoSiteMatrix.search.tableName}`)
                   }
                   icon={
                     <em className="anticon">
@@ -77,6 +79,21 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.HwCiscoSiteMatrix}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -88,13 +105,21 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddO365OneDriveUsageModal
+        <AddCiscoSiteMatrixModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/o365/o365-one-drive-usage');
+            history.push('/hw-cisco/cisco-site-matrix');
           }}
           id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={ciscoSiteMatrix.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
@@ -102,4 +127,4 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   );
 };
 
-export default O365OneDriveUsage;
+export default CiscoSiteMatrix;

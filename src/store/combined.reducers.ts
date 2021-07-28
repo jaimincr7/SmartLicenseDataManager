@@ -40,6 +40,7 @@ import o365MailboxUsageReducer from './o365/o365MailboxUsage/o365MailboxUsage.re
 import o365OneDriveUsageReducer from './o365/o365OneDriveUsage/o365OneDriveUsage.reducer';
 import o365ReservationsReducer from './o365/o365Reservations/o365Reservations.reducer';
 import o365ProductListReducer from './o365/o365ProductList/o365ProductList.reducer';
+import ciscoSiteMatrixReducer from './hwCisco/ciscoSiteMatrix/ciscoSiteMatrix.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -101,4 +102,7 @@ export const rootReducer = combineReducers({
   o365OneDriveUsage: o365OneDriveUsageReducer,
   o365ProductList: o365ProductListReducer,
   o365Reservations: o365ReservationsReducer,
+
+  //HW-Cisco
+  ciscoSiteMatrix: ciscoSiteMatrixReducer,
 });

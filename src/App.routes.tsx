@@ -22,6 +22,7 @@ import O365Routes from './pages/O365/O365.routes';
 import { UnauthorizedPage } from './pages/Unauthorized';
 import { InternalServerError } from './pages/InternalServerError';
 import { AccessDeniedPage } from './pages/AccessDenied';
+import HwCiscoRoutes from './pages/HW Cisco/HwCisco.routes';
 
 function AppRoutes() {
   return (
@@ -49,6 +50,7 @@ function AppRoutes() {
           <LayoutRoute path="/rv-tools" layout={MainLayout} component={RVToolsRoutes} />
           <LayoutRoute path="/azure" layout={MainLayout} component={AzureRoutes} />
           <LayoutRoute path="/o365" layout={MainLayout} component={O365Routes} />
+          <LayoutRoute path="/hw-cisco" layout={MainLayout} component={HwCiscoRoutes} />
 
           {/* Dummy routes for designers */}
           <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />

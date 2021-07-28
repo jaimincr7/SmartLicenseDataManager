@@ -46,6 +46,8 @@ export enum Page {
   O365ProductList = 'o365-product-list',
   O365Reservations = 'o365-reservations',
 
+  HwCiscoSiteMatrix = 'hw-cisco-cisco-site-matrix',
+
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',
