@@ -209,7 +209,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const columns = [
     ...(getTableColumns(form) || []),
     {
-      title: 'Action',
+      title: 'Actions',
       children: [
         {
           title: (
@@ -237,7 +237,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               </Button>
             </div>
           ),
-          key: 'Action',
+          key: 'Actions',
           width: '80px',
           fixed: 'right' as fixedColumn,
           render: tableAction ? tableAction : () => <></>,
@@ -322,8 +322,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             Select All
           </Checkbox>
         </li>
-        {columns.map((col) => (
-          <li key={col.title}>
+        {columns.map((col, index) => (
+          <li key={col.title + index}>
             <Checkbox
               checked={reduxStoreData.tableColumnSelection.columns[col.title] !== false}
               onClick={(e) => hideShowColumn(e, col.title)}

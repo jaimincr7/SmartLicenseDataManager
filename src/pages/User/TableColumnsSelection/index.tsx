@@ -52,7 +52,7 @@ const TableColumnSelection: React.FC = () => {
       dispatch(getTableColumns(table)).then(async (res: any) => {
         if (res.payload) {
           const columnsArr = res.payload.map((col) => col.name);
-          await setDefaultTableColumns([...columnsArr, 'Action']);
+          await setDefaultTableColumns([...columnsArr, 'Actions']);
         }
       });
       dispatch(getGlobalTableColumns(table)).then(async (res) => {

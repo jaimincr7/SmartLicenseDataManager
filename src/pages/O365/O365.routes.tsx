@@ -9,6 +9,7 @@ import O365MailboxUsage from './O365MailboxUsage';
 import O365OneDriveUsage from './O365OneDriveUsage';
 import O365ProductList from './O365ProductList';
 import O365Reservations from './O365Reservations';
+import O365Users from './O365Users';
 
 const O365Routes: React.FC = () => {
   const match = useRouteMatch();
@@ -16,6 +17,14 @@ const O365Routes: React.FC = () => {
   return (
     <div className="o365">
       <Switch>
+        {/* Users */}
+        {ability.can(Action.View, Page.O365Users) && (
+          <Route exact path={`${match.path}/o365-users/:id`} component={O365Users} />
+        )}
+        {ability.can(Action.View, Page.O365Users) && (
+          <Route exact path={`${match.path}/o365-users`} component={O365Users} />
+        )}
+
         {/* OneDrive usage */}
         {ability.can(Action.View, Page.O365Reservations) && (
           <Route exact path={`${match.path}/o365-reservations/:id`} component={O365Reservations} />

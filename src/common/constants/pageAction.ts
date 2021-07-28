@@ -45,6 +45,7 @@ export enum Page {
   O365OneDriveUsage = 'o365-one-drive-usage',
   O365ProductList = 'o365-product-list',
   O365Reservations = 'o365-reservations',
+  O365Users = 'o365-users',
 
   HwCiscoSiteMatrix = 'hw-cisco-cisco-site-matrix',
 
