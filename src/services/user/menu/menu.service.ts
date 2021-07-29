@@ -7,6 +7,8 @@ import {
   IAccessMenuRights,
   IMenuRightsByCompanyId,
   IAccessCompanyMenuRights,
+  IMenuAccessRights,
+  IGetMenuAccessRights,
 } from './menu.model';
 
 class MenuService {
@@ -76,6 +78,20 @@ class MenuService {
   public async getSideBarMenuRights(): Promise<IApiResponse<IMenuRightsByRoleId>> {
     const url = `${this.ENDPOINT}/sidebar`;
     return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getMenuAccessRights(): Promise<IApiResponse<IGetMenuAccessRights>> {
+    const url = `${this.ENDPOINT}/menu-access-rights`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async saveAddRemoveMenuAccessRights(data: IMenuAccessRights): Promise<any> {
+    const url = `/menu-access-rights`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }

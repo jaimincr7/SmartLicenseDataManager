@@ -1,3 +1,4 @@
+import { IGetMenuAccessRights } from './../../../services/user/menu/menu.model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import {
@@ -16,6 +17,8 @@ import {
   getRoleLookup,
   saveCompanyMenuAccessRights,
   getMenuRightsByCompanyId,
+  getMenuAccessRights,
+  saveAddRemoveMenuAccessRights,
 } from './menu.action';
 import { IMenuState } from './menu.model';
 
@@ -67,6 +70,16 @@ export const initialState: IMenuState = {
     data: [],
     loading: false,
   },
+  getMenuAccessRights: {
+    loading: false,
+    hasErrors: false,
+    data: null,
+  },
+  saveAddRemoveMenuAccessRights: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const menuSlice = createSlice({
@@ -80,6 +93,7 @@ export const menuSlice = createSlice({
       state.save.messages = [];
       state.saveMenuAccessRights.messages = [];
       state.saveCompanyMenuAccessRights.messages = [];
+      state.saveAddRemoveMenuAccessRights.messages = [];
     },
     clearMenuGetById: (state) => {
       state.getById.data = null;
@@ -238,6 +252,42 @@ export const menuSlice = createSlice({
     [getRoleLookup.fulfilled.type]: (state, action: PayloadAction<IRoleLookup[]>) => {
       state.roleLookup.data = action.payload;
       state.roleLookup.loading = false;
+    },
+
+    // Get Menu Rights
+    [getMenuAccessRights.pending.type]: (state) => {
+      state.getMenuAccessRights.loading = true;
+    },
+    [getMenuAccessRights.fulfilled.type]: (state, action: PayloadAction<IGetMenuAccessRights>) => {
+      state.getMenuAccessRights.data = action.payload;
+      state.getMenuAccessRights.loading = false;
+      state.getMenuAccessRights.hasErrors = false;
+    },
+    [getMenuAccessRights.rejected.type]: (state) => {
+      state.getMenuAccessRights.loading = false;
+      state.getMenuAccessRights.hasErrors = true;
+    },
+
+    // Save Menu Access Rights
+    [saveAddRemoveMenuAccessRights.pending.type]: (state) => {
+      state.saveAddRemoveMenuAccessRights.loading = true;
+      state.saveAddRemoveMenuAccessRights.messages = [];
+    },
+    [saveAddRemoveMenuAccessRights.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveAddRemoveMenuAccessRights.loading = false;
+      state.saveAddRemoveMenuAccessRights.hasErrors = false;
+      state.saveAddRemoveMenuAccessRights.messages = action.payload.messages;
+    },
+    [saveAddRemoveMenuAccessRights.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveAddRemoveMenuAccessRights.loading = false;
+      state.saveAddRemoveMenuAccessRights.hasErrors = true;
+      state.saveAddRemoveMenuAccessRights.messages = action.payload.errors;
     },
   },
 });
