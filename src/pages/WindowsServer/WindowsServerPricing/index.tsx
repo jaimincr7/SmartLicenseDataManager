@@ -14,6 +14,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   const windowsServerPricing = useAppSelector(windowsServerPricingSelector);
@@ -24,7 +25,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
@@ -75,6 +76,21 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.WindowsServerPricing}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -93,6 +109,14 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
             history.push('/windows-server/pricing');
           }}
           id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={windowsServerPricing.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}

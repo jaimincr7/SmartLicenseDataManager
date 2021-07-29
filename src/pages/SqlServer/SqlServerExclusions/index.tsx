@@ -15,6 +15,7 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import ProcessDataModal from './ProcessDataModal';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   const sqlServerExclusions = useAppSelector(sqlServerExclusionsSelector);
@@ -26,6 +27,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -95,6 +97,21 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -120,6 +137,14 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={sqlServerExclusions.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
         />
       )}
     </div>

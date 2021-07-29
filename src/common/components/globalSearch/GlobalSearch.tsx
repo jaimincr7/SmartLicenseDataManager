@@ -20,8 +20,14 @@ const GlobalSearch: React.FC = () => {
 
   const [form] = Form.useForm();
 
+  const initialValues = {
+    tenant_id: 0,
+    company_id: 0,
+    bu_id: 0,
+  };
+
   const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
+    form.setFieldsValue({ tenant_id: tenantId, company_id: 0, bu_id: 0 });
     setGlobalSearchValues();
     if (tenantId) {
       dispatch(getGlobalCompanyLookup(tenantId));
@@ -33,7 +39,7 @@ const GlobalSearch: React.FC = () => {
   };
 
   const handleCompanyChange = (companyId: number) => {
-    form.setFieldsValue({ company_id: companyId, bu_id: null });
+    form.setFieldsValue({ company_id: companyId, bu_id: 0 });
     setGlobalSearchValues();
     if (companyId) {
       dispatch(getGlobalBULookup(companyId));
@@ -53,9 +59,9 @@ const GlobalSearch: React.FC = () => {
     const buId = form.getFieldValue('bu_id');
 
     const searchValues = {
-      tenant_id: tenantId ? tenantId : null,
-      company_id: companyId ? companyId : null,
-      bu_id: buId ? buId : null,
+      tenant_id: tenantId ? tenantId : 0,
+      company_id: companyId ? companyId : 0,
+      bu_id: buId ? buId : 0,
     };
     dispatch(setGlobalSearch(searchValues));
   };
@@ -67,19 +73,25 @@ const GlobalSearch: React.FC = () => {
 
   return (
     <>
-      <Form
-        form={form}
-        initialValues={globalLookups.search}
-        name="horizontal_filter"
-        layout="inline"
-      >
+      <Form form={form} initialValues={initialValues} name="horizontal_filter" layout="inline">
         <Form.Item name="tenant_id" className="mr-1">
           <Select
             placeholder="Filter by Tenant"
             onChange={handleTenantChange}
             loading={globalLookups.globalTenantLookup.loading}
             allowClear
+            showSearch
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+            }
           >
+            <Select.Option key={'All'} value={0}>
+              All
+            </Select.Option>
             {globalLookups.globalTenantLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
                 {option.name}
@@ -93,7 +105,18 @@ const GlobalSearch: React.FC = () => {
             onChange={handleCompanyChange}
             loading={globalLookups.globalCompanyLookup.loading}
             allowClear
+            showSearch
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+            }
           >
+            <Select.Option key={'All'} value={0}>
+              All
+            </Select.Option>
             {globalLookups.globalCompanyLookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
                 {option.name}
@@ -107,7 +130,18 @@ const GlobalSearch: React.FC = () => {
             onChange={handleBUChange}
             loading={globalLookups.globalBULookup.loading}
             allowClear
+            showSearch
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+            }
           >
+            <Select.Option key={'All'} value={0}>
+              All
+            </Select.Option>
             {globalLookups.globalBULookup.data.map((option: ILookup) => (
               <Select.Option key={option.id} value={option.id}>
                 {option.name}

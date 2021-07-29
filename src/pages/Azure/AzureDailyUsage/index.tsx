@@ -14,6 +14,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   const azureDailyUsage = useAppSelector(azureDailyUsageSelector);
@@ -24,6 +25,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
@@ -74,6 +76,21 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.AzureDailyUsage}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -92,6 +109,14 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
             history.push('/azure/azure-daily-usage');
           }}
           id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={azureDailyUsage.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
