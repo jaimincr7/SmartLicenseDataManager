@@ -35,9 +35,13 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
 
   const onFinish = (values: any) => {
     const accessRights = Object.keys(_.pickBy(values.menu_rights, _.identity));
+    const menu_orders = storeMenus?.map((menu: IMenu, index: number) => {
+      return { menu_id: menu.id, order: index + 1 };
+    });
     const accessRightsInputValues = {
       role_id: values.role_id,
       menu_access_right_ids: accessRights,
+      menu_orders,
     };
     dispatch(saveMenuAccessRights(accessRightsInputValues));
   };
