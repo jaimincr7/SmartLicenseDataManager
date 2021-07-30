@@ -55,6 +55,7 @@ export const bulkImportSlice = createSlice({
     },
     clearBulkImportMessages: (state) => {
       state.bulkInsert.messages = [];
+      state.saveTableForImport.messages = [];
     },
     clearGetTableColumns: (state) => {
       state.getTableColumns.data = null;
