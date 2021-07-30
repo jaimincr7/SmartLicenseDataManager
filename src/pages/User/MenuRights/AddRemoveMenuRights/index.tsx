@@ -184,6 +184,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>
           <div className="title-block">
+            <div></div>
             <div className="btns-block">
               <Can I={Action.Update} a={Page.MenuAccessRights}>
                 <Button
