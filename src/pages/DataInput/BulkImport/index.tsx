@@ -117,7 +117,10 @@ const BulkImport: React.FC = () => {
 
       const initialValuesData: any = {};
       bulkImports.getTableColumns.data.map(function (ele) {
-        initialValuesData[ele.name] = filterExcelColumns.includes(ele.name) ? ele.name : '';
+        initialValuesData[ele.name] =
+          filterExcelColumns.filter((x) => x.toLowerCase() === ele.name.toLowerCase()).length > 0
+            ? filterExcelColumns.filter((x) => x.toLowerCase() === ele.name.toLowerCase())[0]
+            : '';
       });
       form.setFieldsValue(initialValuesData);
     } else {
@@ -142,7 +145,7 @@ const BulkImport: React.FC = () => {
         toast.error(bulkImports.bulkInsert.messages.join(' '));
       } else {
         toast.success(bulkImports.bulkInsert.messages.join(' '));
-        resetPage();
+        history.goBack();
       }
       dispatch(clearBulkImportMessages());
     }

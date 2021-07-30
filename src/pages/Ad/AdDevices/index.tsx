@@ -12,6 +12,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   const adDevices = useAppSelector(adDevicesSelector);
@@ -23,6 +24,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -94,6 +96,21 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.ADDevices}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -119,6 +136,14 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={adDevices.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
         />
       )}
     </div>

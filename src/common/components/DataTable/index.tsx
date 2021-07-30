@@ -18,6 +18,7 @@ import { commonSelector } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
+import ReactDragListView from 'react-drag-listview';
 
 let pageLoaded = false;
 
@@ -59,7 +60,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
   const [indeterminate, setIndeterminate] = React.useState(false);
   const [checkAll, setCheckAll] = React.useState(false);
-
+  const [tableColumns, setTableColumns] = React.useState([]);
   tableFilter.order_by = defaultOrderBy ? defaultOrderBy : tableFilter.order_by;
 
   const getSearchData = (page, isExportToExcel: boolean) => {
@@ -246,11 +247,20 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
   ];
 
-  // Start: Hide-show columns
+  React.useEffect(() => {
+    const visibleColumns = columns.filter((col) => {
+      return col.column in reduxStoreData.tableColumnSelection.columns
+        ? reduxStoreData.tableColumnSelection.columns[col.column]
+        : true;
+    });
+    setTableColumns(visibleColumns);
+  }, [reduxStoreData.tableColumnSelection.table_name]);
+
   React.useEffect(() => {
     handleIndeterminate();
   }, [reduxStoreData.tableColumnSelection.columns]);
 
+  // Start: Hide-show columns
   const hideShowColumn = (e, title) => {
     if (e.target.checked) {
       dispatch(
@@ -266,7 +276,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const handleIndeterminate = () => {
     const selectedColumns = columns
-      .filter((col) => reduxStoreData.tableColumnSelection.columns[col.title] !== false)
+      .filter((col) => reduxStoreData.tableColumnSelection.columns[col.column] !== false)
       .map((x) => x.title);
     setIndeterminate(!!selectedColumns.length && selectedColumns.length < columns.length);
     setCheckAll(selectedColumns.length === columns.length);
@@ -275,10 +285,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const saveTableColumns = () => {
     let tableColumnSelectionObj: ITableColumnSelection = reduxStoreData.tableColumnSelection;
     if (Object.keys(tableColumnSelectionObj.columns)?.length === 0) {
-      columns?.forEach((column) => {
+      columns?.forEach((col) => {
         tableColumnSelectionObj = {
           ...tableColumnSelectionObj,
-          columns: { ...tableColumnSelectionObj.columns, [column.title]: true },
+          columns: {
+            ...tableColumnSelectionObj.columns,
+            [col.column ? col.column : col.title]: true,
+          },
         };
       });
     } else {
@@ -304,11 +317,30 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setIndeterminate(false);
     setCheckAll(e.target.checked);
     columns.forEach((col) => {
-      selectedColumns = { ...selectedColumns, [col.title]: e.target.checked };
+      selectedColumns = { ...selectedColumns, [col.column]: e.target.checked };
     });
     dispatch(setTableColumnSelection(selectedColumns));
   };
 
+  const renderColumnNames = () => {
+    const names = [...columns];
+    return names
+      ?.sort((a, b) => a.column?.localeCompare(b.column))
+      ?.map((col) => (
+        <li key={col.title}>
+          <Checkbox
+            checked={
+              col.column in reduxStoreData.tableColumnSelection.columns
+                ? reduxStoreData.tableColumnSelection.columns[col.column]
+                : true
+            }
+            onClick={(e) => hideShowColumn(e, col.column)}
+          >
+            {col.title}
+          </Checkbox>
+        </li>
+      ));
+  };
   const dropdownMenu = (
     <div className="checkbox-list-wrapper">
       <ul className="checkbox-list">
@@ -322,16 +354,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             Select All
           </Checkbox>
         </li>
-        {columns.map((col, index) => (
-          <li key={col.title + index}>
-            <Checkbox
-              checked={reduxStoreData.tableColumnSelection.columns[col.title] !== false}
-              onClick={(e) => hideShowColumn(e, col.title)}
-            >
-              {col.title}
-            </Checkbox>
-          </li>
-        ))}
+        {renderColumnNames()}
       </ul>
       <div className="bottom-fix">
         <Button
@@ -345,12 +368,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       </div>
     </div>
   );
-  const getColumns = () => {
-    return columns.filter((col) => {
-      return reduxStoreData.tableColumnSelection.columns[col.title] !== false;
-    });
-  };
+
   // End: Hide-show columns
+  const dragProps = {
+    onDragEnd(fromIndex, toIndex) {
+      const updatedColumns = [...tableColumns];
+      const item = updatedColumns.splice(fromIndex, 1)[0];
+      updatedColumns.splice(toIndex, 0, item);
+      setTableColumns(updatedColumns);
+    },
+    nodeSelector: 'th',
+    handleSelector: '.dragHandler',
+  };
 
   return (
     <>
@@ -367,6 +396,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           </Button>
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button
+              disabled={reduxStoreData.search.count === 0}
               icon={
                 <em className="anticon">
                   <img src={`${process.env.PUBLIC_URL}/assets/images/ic-lines.svg`} alt="" />
@@ -389,21 +419,23 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         </div>
       </div>
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
-        <Table
-          scroll={{ x: true }}
-          rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
-          dataSource={reduxStoreData.search.data}
-          columns={getColumns()}
-          loading={reduxStoreData.search.loading}
-          pagination={{
-            ...pagination,
-            total: reduxStoreData.search.count,
-            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-          }}
-          onChange={handleTableChange}
-          className="custom-table"
-          sortDirections={['ascend', 'descend']}
-        />
+        <ReactDragListView.DragColumn {...dragProps}>
+          <Table
+            scroll={{ x: true }}
+            rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
+            dataSource={reduxStoreData.search.data}
+            columns={tableColumns}
+            loading={reduxStoreData.search.loading || reduxStoreData.delete.loading}
+            pagination={{
+              ...pagination,
+              total: reduxStoreData.search.count,
+              showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+            }}
+            onChange={handleTableChange}
+            className="custom-table"
+            sortDirections={['ascend', 'descend']}
+          />
+        </ReactDragListView.DragColumn>
       </Form>
     </>
   );

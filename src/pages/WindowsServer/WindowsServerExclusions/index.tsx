@@ -15,6 +15,7 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import ProcessDataModal from './ProcessDataModal';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props) => {
   const windowsServerExclusions = useAppSelector(windowsServerExclusionsSelector);
@@ -26,6 +27,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -99,6 +101,21 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.WindowsServerExclusions}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -124,6 +141,14 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={windowsServerExclusions.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
         />
       )}
     </div>

@@ -14,6 +14,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   const adDevicesExclusions = useAppSelector(adDevicesExclusionsSelector);
@@ -24,6 +25,7 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -77,6 +79,21 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.ADExclusions}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -95,6 +112,14 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
             history.push('/ad/ad-devices-exclusions');
           }}
           id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={adDevicesExclusions.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}

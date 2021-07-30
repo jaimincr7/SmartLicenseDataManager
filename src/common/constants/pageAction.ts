@@ -27,6 +27,7 @@ export enum Page {
   RoleMenuRights = 'role-menu-access-right',
   CompanyMenuRights = 'company-menu-access-right',
   GlobalTableColumnSelection = 'global-table-column-selection',
+  MenuAccessRights = 'menu-access-rights',
 
   TabVCluster = 'tab-v-cluster',
   TabVHost = 'tab-v-host',

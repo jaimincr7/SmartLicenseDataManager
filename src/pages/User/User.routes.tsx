@@ -5,6 +5,7 @@ import { Action, Page } from '../../common/constants/pageAction';
 import BU from './BU';
 import Company from './Company';
 import Currency from './Currency';
+import MenuAccessRights from './MenuRights/AddRemoveMenuRights';
 import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
 import TableColumnSelection from './TableColumnsSelection';
@@ -65,6 +66,9 @@ const UserRoutes: React.FC = () => {
             path={`${match.path}/table-column-selection`}
             component={TableColumnSelection}
           />
+        )}
+        {ability.can(Action.View, Page.MenuAccessRights) && (
+          <Route exact path={`${match.path}/menu-access-rights`} component={MenuAccessRights} />
         )}
 
         {/* keep least always */}

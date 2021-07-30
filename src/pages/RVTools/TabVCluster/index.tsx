@@ -14,6 +14,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
   const tabVCluster = useAppSelector(tabVClusterSelector);
@@ -24,7 +25,7 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
@@ -77,6 +78,21 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.TabVCluster}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -95,6 +111,14 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
             history.push('/rv-tools/tab-v-cluster');
           }}
           id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={tabVCluster.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}

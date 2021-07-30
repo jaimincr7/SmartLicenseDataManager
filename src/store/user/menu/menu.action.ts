@@ -1,3 +1,4 @@
+import { IMenuAccessRights, IAccessMenu } from './../../../services/user/menu/menu.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   ISearchMenu,
@@ -51,6 +52,16 @@ export const saveCompanyMenuAccessRights = createAsyncThunk(
   }
 );
 
+export const saveAddRemoveMenuAccessRights = createAsyncThunk(
+  'saveAddRemoveMenuAccessRights',
+  async (data: IMenuAccessRights) => {
+    const response = await menuService.saveAddRemoveMenuAccessRights(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
+
 export const getRoleLookup = createAsyncThunk('getRoleLookup', async () => {
   const response = await userService.getRoleLookup().then((res) => {
     return res.body;
@@ -79,6 +90,31 @@ const getChildMenuRights = (menus: IMenu[], menuId: number) => {
       result = [...result, ...right];
     } else if (+m.parent_menu_id === menuId) {
       result = [...result, ...getChildMenuRights(menus, m.id)];
+    }
+  });
+  return result;
+};
+
+const getChildAccessMenus = (menus: IAccessMenu[], menuId: number, result: IAccessMenu[]) => {
+  menus.map((c: IAccessMenu) => {
+    if (menuId === +c.parent_menu_id) {
+      result.push(c);
+      result = getChildMenus(menus, c.id, result);
+    }
+  });
+  return result;
+};
+
+const getChildMenuAccessRights = (menus: IAccessMenu[], menuId: number) => {
+  let result: number[] = [];
+  menus.map((m: IAccessMenu) => {
+    if (m.id === menuId) {
+      const right = m.menu_access_rights.map((mr) => {
+        return mr.id;
+      });
+      result = [...result, ...right];
+    } else if (+m.parent_menu_id === menuId) {
+      result = [...result, ...getChildMenuAccessRights(menus, m.id)];
     }
   });
   return result;
@@ -118,6 +154,41 @@ const optimizeMenuRights = (response) => {
   return response.data;
 };
 
+const optimizeMenuAccessRights = (response) => {
+  // set parent child order
+  let menuArray = [];
+  menuArray = getChildAccessMenus(response.data.menus, 0, menuArray);
+
+  // set level of the menu
+  let maxLevel = 1;
+  menuArray.map((m) => {
+    if (+m.parent_menu_id === 0) {
+      m.level = 1;
+    } else {
+      menuArray.map((sm) => {
+        if (+sm.id === +m.parent_menu_id) {
+          m.level = sm.level + 1;
+          if (m.level > maxLevel) {
+            maxLevel = m.level;
+          }
+        }
+      });
+    }
+    return m;
+  });
+
+  // set child menu rights array to parent
+  menuArray = menuArray.map((m: IAccessMenu) => {
+    m.child_menu_rights = getChildMenuAccessRights(menuArray, m.id);
+    return m;
+  });
+
+  response.data.menus = menuArray;
+  response.data.maxLevel = maxLevel;
+
+  return response.data;
+};
+
 export const getMenuRightsByRoleId = createAsyncThunk(
   'getMenuRightsByRoleId',
   async (roleId: number) => {
@@ -137,3 +208,10 @@ export const getMenuRightsByCompanyId = createAsyncThunk(
     return optimizeMenuRights(response);
   }
 );
+
+export const getMenuAccessRights = createAsyncThunk('getMenuAccessRights', async () => {
+  const response = await menuService.getMenuAccessRights().then((res) => {
+    return res.body;
+  });
+  return optimizeMenuAccessRights(response);
+});

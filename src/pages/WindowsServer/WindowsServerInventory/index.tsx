@@ -14,6 +14,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) => {
   const inventory = useAppSelector(windowsServerInventorySelector);
@@ -24,6 +25,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
@@ -76,6 +78,21 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.WindowsServerInventory}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -94,6 +111,14 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
             history.push('/windows-server/inventory');
           }}
           id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={inventory.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
