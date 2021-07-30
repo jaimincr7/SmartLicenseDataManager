@@ -1,20 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody } from '../../common/models/common';
+import { IDataTableForImport } from '../../services/bulkImport/bulkImport.model';
 import { IDatabaseTable, IGetExcelColumns, ITableColumn } from '../../services/common/common.model';
 import { RootState } from '../app.model';
 import {
-  getDatabaseTables,
+  getTablesForImport,
   getTableColumns,
   getExcelColumns,
   bulkInsert,
+  getTables,
+  saveTableForImport,
 } from './bulkImport.action';
 import { IBulkImportState } from './bulkImport.model';
 
 export const initialState: IBulkImportState = {
-  getDatabaseTables: {
+  getTablesForImport: {
     loading: false,
     hasErrors: false,
     data: [],
+  },
+  getTables: {
+    loading: false,
+    hasErrors: false,
+    data: [],
+  },
+  saveTableForImport: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
   },
   getTableColumns: {
     loading: false,
@@ -49,20 +62,59 @@ export const bulkImportSlice = createSlice({
     clearExcelColumns: (state) => {
       state.getExcelColumns.data = null;
     },
+    setTableForImport: (state, action: PayloadAction<IDataTableForImport[]>) => {
+      state.getTablesForImport.data = action.payload;
+    },
   },
   extraReducers: {
     // Get Table Columns
-    [getDatabaseTables.pending.type]: (state) => {
-      state.getDatabaseTables.loading = true;
+    [getTablesForImport.pending.type]: (state) => {
+      state.getTablesForImport.loading = true;
     },
-    [getDatabaseTables.fulfilled.type]: (state, action: PayloadAction<IDatabaseTable[]>) => {
-      state.getDatabaseTables.data = action.payload;
-      state.getDatabaseTables.loading = false;
-      state.getDatabaseTables.hasErrors = false;
+    [getTablesForImport.fulfilled.type]: (state, action: PayloadAction<IDataTableForImport[]>) => {
+      state.getTablesForImport.data = action.payload;
+      state.getTablesForImport.loading = false;
+      state.getTablesForImport.hasErrors = false;
     },
-    [getDatabaseTables.rejected.type]: (state) => {
-      state.getDatabaseTables.loading = false;
-      state.getDatabaseTables.hasErrors = true;
+    [getTablesForImport.rejected.type]: (state) => {
+      state.getTablesForImport.loading = false;
+      state.getTablesForImport.hasErrors = true;
+    },
+
+    // Get Table Columns
+    [getTables.pending.type]: (state) => {
+      state.getTables.loading = true;
+    },
+    [getTables.fulfilled.type]: (state, action: PayloadAction<IDatabaseTable[]>) => {
+      state.getTables.data = action.payload;
+      state.getTables.loading = false;
+      state.getTables.hasErrors = false;
+    },
+    [getTables.rejected.type]: (state) => {
+      state.getTables.loading = false;
+      state.getTables.hasErrors = true;
+    },
+
+    // Save Table Column Selection
+    [saveTableForImport.pending.type]: (state) => {
+      state.saveTableForImport.loading = true;
+      state.saveTableForImport.messages = [];
+    },
+    [saveTableForImport.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveTableForImport.loading = false;
+      state.saveTableForImport.hasErrors = false;
+      state.saveTableForImport.messages = action.payload.messages;
+    },
+    [saveTableForImport.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveTableForImport.loading = false;
+      state.saveTableForImport.hasErrors = true;
+      state.saveTableForImport.messages = action.payload.errors;
     },
 
     // Get Table Columns
@@ -115,8 +167,13 @@ export const bulkImportSlice = createSlice({
 export const bulkImportSelector = (state: RootState) => state.bulkImport;
 
 // Actions
-export const { clearBulkImport, clearBulkImportMessages, clearExcelColumns, clearGetTableColumns } =
-  bulkImportSlice.actions;
+export const {
+  clearBulkImport,
+  clearBulkImportMessages,
+  clearExcelColumns,
+  clearGetTableColumns,
+  setTableForImport,
+} = bulkImportSlice.actions;
 
 // The reducer
 export default bulkImportSlice.reducer;

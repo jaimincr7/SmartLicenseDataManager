@@ -1,15 +1,34 @@
+import { IImportDataTable } from './../../services/bulkImport/bulkImport.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import bulkImportService from '../../services/bulkImport/bulkImport.service';
 import { IBulkInsertDataset } from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
 // Asynchronous thunk action
 
-export const getDatabaseTables = createAsyncThunk('getDatabaseTables', async () => {
-  const response = await commonService.getDatabaseTables().then((res) => {
+export const getTablesForImport = createAsyncThunk('getTablesForImport', async () => {
+  const response = await bulkImportService.getTablesForImport().then((res) => {
     return res.body;
   });
   return response.data;
 });
+
+export const getTables = createAsyncThunk('getTables', async () => {
+  const response = await bulkImportService.getTables().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const saveTableForImport = createAsyncThunk(
+  'saveTableForImport',
+  async (data: IImportDataTable) => {
+    const response = await bulkImportService.saveTableForImport(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
 
 export const getTableColumns = createAsyncThunk('getTableColumns', async (tableName: string) => {
   const response = await commonService.getTableColumns(tableName).then((res) => {

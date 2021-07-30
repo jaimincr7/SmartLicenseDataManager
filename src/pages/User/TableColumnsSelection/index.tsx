@@ -2,7 +2,6 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React, { useEffect } from 'react';
 import { Button, Checkbox, Col, Form, Popover, Row, Select } from 'antd';
 import { toast } from 'react-toastify';
-import { getDatabaseTables } from '../../../store/bulkImport/bulkImport.action';
 import {
   clearGetGlobalTableColumns,
   clearGetTableColumns,
@@ -14,6 +13,7 @@ import {
 import { validateMessages } from '../../../common/constants/common';
 import { IDatabaseTable } from '../../../services/common/common.model';
 import {
+  getDatabaseTables,
   getGlobalTableColumns,
   getTableColumns,
   saveGlobalTableColumnSelection,
