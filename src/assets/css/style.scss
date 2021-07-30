@@ -364,7 +364,7 @@ label {
 }
 
 .filter-input {
-  min-width: 160px;
+  min-width: 200px;
   width: 100%;
   &.lg {
     min-width: 208px;
@@ -975,7 +975,7 @@ textarea.ant-input {
     opacity: 0.6;
     margin: 0 !important;
     > .ant-menu-item-icon {
-      width: 20px;
+      max-width: 20px;
     }
     &:hover {
       opacity: 1;

@@ -50,4 +50,14 @@ export interface IMenuState {
     data: IRoleLookup[];
     loading: boolean;
   };
+  getMenuAccessRights: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: IMenuRightsByCompanyId;
+  };
+  saveAddRemoveMenuAccessRights: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

@@ -1,17 +1,20 @@
-import { Button, Col, Form, Row, Select, Spin, Upload } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin, Upload } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
   bulkInsert,
-  getDatabaseTables,
+  getTables,
   getExcelColumns,
   getTableColumns,
+  getTablesForImport,
+  saveTableForImport,
 } from '../../../store/bulkImport/bulkImport.action';
 import {
   clearExcelColumns,
   clearBulkImportMessages,
   bulkImportSelector,
   clearGetTableColumns,
+  setTableForImport,
 } from '../../../store/bulkImport/bulkImport.reducer';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -19,15 +22,29 @@ import {
   IBulkInsertDataset,
   IDatabaseTable,
   IExcelSheetColumn,
+  ILookup,
 } from '../../../services/common/common.model';
 import { validateMessages } from '../../../common/constants/common';
 import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import { SettingOutlined } from '@ant-design/icons';
+import {
+  clearBULookUp,
+  clearCompanyLookUp,
+  commonSelector,
+} from '../../../store/common/common.reducer';
+import {
+  getCompanyLookup,
+  getBULookup,
+  getTenantLookup,
+} from '../../../store/common/common.action';
+import moment from 'moment';
 
 const { Option } = Select;
 
 const BulkImport: React.FC = () => {
   const bulkImports = useAppSelector(bulkImportSelector);
+  const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -37,6 +54,9 @@ const BulkImport: React.FC = () => {
   const [defaultFile, setDefaultFile] = useState(null);
   const [excelColumns, setExcelColumns] = useState(null);
   const [tableColumns, setTableColumns] = useState(null);
+  const [removedColumns, setRemovedColumns] = useState(null);
+  const [indeterminate, setIndeterminate] = useState(false);
+  const [checkAll, setCheckAll] = useState(false);
 
   const { table } = useParams<{ table: string }>();
 
@@ -80,7 +100,7 @@ const BulkImport: React.FC = () => {
 
   const onFinish = (values: any) => {
     const sqlToExcelMapping = [];
-    Object.entries(values).forEach(([key, value]) => {
+    Object.entries(tableColumns).forEach(([key, value]) => {
       if (key && value) {
         sqlToExcelMapping.push({
           key: `${key}`,
@@ -98,6 +118,12 @@ const BulkImport: React.FC = () => {
       file_name: bulkImports.getExcelColumns.data.filename,
       table_name: uploadValue?.table_name,
       sheet_name: uploadValue?.sheet_name,
+      foreign_key_values: {
+        tenant_id: values.tenant_id,
+        bu_id: values.bu_id,
+        company_id: values.company_id,
+        date_added: values.date_added,
+      },
     };
     dispatch(bulkInsert(inputValues));
   };
@@ -109,14 +135,30 @@ const BulkImport: React.FC = () => {
       formUpload.setFieldsValue({ sheet_name: currentSheetName });
     }
     if (bulkImports.getTableColumns.data && bulkImports.getExcelColumns.data?.excel_sheet_columns) {
+      const columnsArray = ['TenantId', 'CompanyId', 'BU_Id', 'Date Added'];
       const filterExcelColumns = bulkImports.getExcelColumns.data.excel_sheet_columns.find(
         (e) => e.sheet === currentSheetName
       ).columns;
-      setExcelColumns(filterExcelColumns);
-      setTableColumns(bulkImports.getTableColumns.data);
+      const filterTableColumns = bulkImports.getTableColumns.data.filter(
+        (x) => !columnsArray.includes(x.name)
+      );
+      const removedColumns = bulkImports.getTableColumns.data.filter((x) =>
+        columnsArray.includes(x.name)
+      );
 
-      const initialValuesData: any = {};
-      bulkImports.getTableColumns.data.map(function (ele) {
+      setExcelColumns(filterExcelColumns);
+      setTableColumns(filterTableColumns);
+      setRemovedColumns(removedColumns);
+
+      removedColumns.some((x) => x.name === 'TenantId') && dispatch(getTenantLookup());
+
+      const initialValuesData: any = {
+        tenant_id: null,
+        bu_id: null,
+        company_id: null,
+        date_added: moment(),
+      };
+      filterTableColumns.map(function (ele) {
         initialValuesData[ele.name] =
           filterExcelColumns.filter((x) => x.toLowerCase() === ele.name.toLowerCase()).length > 0
             ? filterExcelColumns.filter((x) => x.toLowerCase() === ele.name.toLowerCase())[0]
@@ -128,6 +170,35 @@ const BulkImport: React.FC = () => {
       setExcelColumns(null);
       setTableColumns(null);
     }
+  };
+
+  const handleTenantChange = (tenantId: number) => {
+    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
+    if (tenantId) {
+      dispatch(getCompanyLookup(tenantId));
+      dispatch(clearBULookUp());
+    } else {
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
+    }
+  };
+
+  const handleCompanyChange = (companyId: number) => {
+    form.setFieldsValue({ company_id: companyId, bu_id: null });
+    if (companyId) {
+      dispatch(getBULookup(companyId));
+    } else {
+      dispatch(clearBULookUp());
+    }
+  };
+
+  const handleBUChange = (buId: number) => {
+    form.setFieldsValue({ bu_id: buId });
+  };
+
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current > moment().endOf('day');
   };
 
   const resetPage = () => {
@@ -156,8 +227,12 @@ const BulkImport: React.FC = () => {
   }, [bulkImports.getTableColumns.data, bulkImports.getExcelColumns.data?.excel_sheet_columns]);
 
   useEffect(() => {
-    if (!(bulkImports.getDatabaseTables.data && bulkImports.getDatabaseTables.data.length > 0)) {
-      dispatch(getDatabaseTables());
+    if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
+      dispatch(getTables());
+    }
+    if (!table) {
+      dispatch(getTablesForImport());
+      handleIndeterminate();
     }
     return () => {
       dispatch(clearExcelColumns());
@@ -166,7 +241,7 @@ const BulkImport: React.FC = () => {
 
   useEffect(() => {
     if (table) {
-      const currentTable = bulkImports.getDatabaseTables.data.filter(
+      const currentTable = bulkImports.getTables.data.filter(
         (t) => t.name.toLowerCase() === (table || '').toLowerCase()
       );
       if (currentTable.length > 0) {
@@ -174,7 +249,111 @@ const BulkImport: React.FC = () => {
         dispatch(getTableColumns(currentTable[0].name));
       }
     }
-  }, [bulkImports.getDatabaseTables.data]);
+  }, [bulkImports.getTables.data]);
+
+  // Start: Set tables for import
+  useEffect(() => {
+    if (bulkImports.saveTableForImport.messages.length > 0) {
+      if (bulkImports.saveTableForImport.hasErrors) {
+        toast.error(bulkImports.saveTableForImport.messages.join(' '));
+      } else {
+        toast.success(bulkImports.saveTableForImport.messages.join(' '));
+        dispatch(getTables());
+      }
+      dispatch(clearBulkImportMessages());
+    }
+  }, [bulkImports.saveTableForImport.messages]);
+
+  useEffect(() => {
+    handleIndeterminate();
+  }, [bulkImports.getTablesForImport.data]);
+
+  const handleCheckChange = (e, tableName) => {
+    dispatch(
+      setTableForImport(
+        bulkImports.getTablesForImport.data.map((table) =>
+          table.name === tableName ? { ...table, is_available: e.target.checked } : table
+        )
+      )
+    );
+    handleIndeterminate();
+  };
+
+  const handleIndeterminate = () => {
+    const selectedTables = bulkImports.getTablesForImport.data.filter(
+      (table) => table.is_available
+    );
+    setIndeterminate(
+      !!selectedTables.length && selectedTables.length < bulkImports.getTablesForImport.data.length
+    );
+    setCheckAll(selectedTables.length === bulkImports.getTablesForImport.data.length);
+  };
+
+  const handleSelectAllChange = (e) => {
+    setIndeterminate(false);
+    setCheckAll(e.target.checked);
+    dispatch(
+      setTableForImport(
+        bulkImports.getTablesForImport.data.map((item) => ({
+          name: item.name,
+          is_available: e.target.checked,
+        }))
+      )
+    );
+  };
+
+  const saveTables = () => {
+    const selectedTables = bulkImports.getTablesForImport.data
+      .filter((table) => table.is_available)
+      .map((table) => table.name);
+    if (selectedTables.length > 0) {
+      const inputValues = {
+        table_names: selectedTables,
+      };
+      dispatch(saveTableForImport(inputValues));
+    } else {
+      toast.info('Please select some tables.');
+      return false;
+    }
+  };
+
+  const dropdownMenu = (
+    <div className="checkbox-list-wrapper">
+      <ul className="checkbox-list">
+        <li className="line-bottom">
+          <Checkbox
+            className="strong"
+            checked={checkAll}
+            onClick={handleSelectAllChange}
+            indeterminate={indeterminate}
+          >
+            Select All
+          </Checkbox>
+        </li>
+        {bulkImports.getTablesForImport.data?.map((table) => (
+          <li key={table.name}>
+            <Checkbox
+              checked={table.is_available}
+              onClick={(e) => handleCheckChange(e, table.name)}
+            >
+              {table.name}
+            </Checkbox>
+          </li>
+        ))}
+      </ul>
+      <div className="bottom-fix">
+        <Button
+          type="primary"
+          className="w-100"
+          loading={bulkImports.saveTableForImport.loading}
+          onClick={saveTables}
+        >
+          Save
+        </Button>
+      </div>
+    </div>
+  );
+  // End: set tables for import
 
   return (
     <>
@@ -182,7 +361,7 @@ const BulkImport: React.FC = () => {
         <div className="title-block">
           <BreadCrumbs pageName={Page.BulkImport} />
           <div className="btns-block">
-            {table && (
+            {table ? (
               <Button
                 className="btn-icon"
                 type="primary"
@@ -195,6 +374,13 @@ const BulkImport: React.FC = () => {
               >
                 Back
               </Button>
+            ) : (
+              <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
+                <Button
+                  icon={<SettingOutlined />}
+                  loading={bulkImports.getTablesForImport.loading}
+                ></Button>
+              </Popover>
             )}
           </div>
         </div>
@@ -246,16 +432,16 @@ const BulkImport: React.FC = () => {
                     <Form.Item name={'table_name'} className="m-0">
                       <Select
                         showSearch
-                        // suffixIcon={!bulkImports.getDatabaseTables.loading &&
+                        // suffixIcon={!bulkImports.getTables.loading &&
                         //   (<img
                         //     src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
                         //     alt=""
                         //   />)
                         // }
                         onChange={handleTableChange}
-                        loading={bulkImports.getDatabaseTables.loading}
+                        loading={bulkImports.getTables.loading}
                       >
-                        {bulkImports.getDatabaseTables.data?.map(
+                        {bulkImports.getTables.data?.map(
                           (option: IDatabaseTable, index: number) => (
                             <Option key={index} value={option.name}>
                               {option.name}
@@ -297,7 +483,6 @@ const BulkImport: React.FC = () => {
               </Row>
             </Form>
           </div>
-
           {(bulkImports.getExcelColumns.loading || bulkImports.getTableColumns.loading) && (
             <div className="spin-loader">
               <Spin spinning={true} />
@@ -315,6 +500,135 @@ const BulkImport: React.FC = () => {
               tableColumns.length > 0 &&
               excelColumns && (
                 <>
+                  {removedColumns && removedColumns.length > 0 && (
+                    <Row gutter={[30, 0]} className="form-label-hide input-btns-title">
+                      {removedColumns.some((x) => x.name === 'TenantId') && (
+                        <Col xs={24} sm={12} md={8}>
+                          <div className="form-group m-0">
+                            <label className="label">Tenant</label>
+                            <Form.Item
+                              name="tenant_id"
+                              className="m-0"
+                              label="Tenant"
+                              rules={[
+                                {
+                                  required:
+                                    bulkImports.getTableColumns.data.find(
+                                      (x) => x.name === 'TenantId'
+                                    )?.is_nullable === 'NO'
+                                      ? true
+                                      : false,
+                                },
+                              ]}
+                            >
+                              <Select
+                                onChange={handleTenantChange}
+                                allowClear
+                                loading={commonLookups.tenantLookup.loading}
+                              >
+                                {commonLookups.tenantLookup.data.map((option: ILookup) => (
+                                  <Option key={option.id} value={option.id}>
+                                    {option.name}
+                                  </Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </div>
+                        </Col>
+                      )}
+                      {removedColumns.some((x) => x.name === 'CompanyId') && (
+                        <Col xs={24} sm={12} md={8}>
+                          <div className="form-group m-0">
+                            <label className="label">Company</label>
+                            <Form.Item
+                              name="company_id"
+                              className="m-0"
+                              label="Company"
+                              rules={[
+                                {
+                                  required:
+                                    bulkImports.getTableColumns.data.find(
+                                      (x) => x.name === 'CompanyId'
+                                    )?.is_nullable === 'NO'
+                                      ? true
+                                      : false,
+                                },
+                              ]}
+                            >
+                              <Select
+                                onChange={handleCompanyChange}
+                                allowClear
+                                loading={commonLookups.companyLookup.loading}
+                              >
+                                {commonLookups.companyLookup.data.map((option: ILookup) => (
+                                  <Option key={option.id} value={option.id}>
+                                    {option.name}
+                                  </Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </div>
+                        </Col>
+                      )}
+                      {removedColumns.some((x) => x.name === 'BU_Id') && (
+                        <Col xs={24} sm={12} md={8}>
+                          <div className="form-group m-0">
+                            <label className="label">BU</label>
+                            <Form.Item
+                              name="bu_id"
+                              className="m-0"
+                              label="BU"
+                              rules={[
+                                {
+                                  required:
+                                    bulkImports.getTableColumns.data.find((x) => x.name === 'BU_Id')
+                                      ?.is_nullable === 'NO'
+                                      ? true
+                                      : false,
+                                },
+                              ]}
+                            >
+                              <Select
+                                onChange={handleBUChange}
+                                allowClear
+                                loading={commonLookups.buLookup.loading}
+                              >
+                                {commonLookups.buLookup.data.map((option: ILookup) => (
+                                  <Option key={option.id} value={option.id}>
+                                    {option.name}
+                                  </Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </div>
+                        </Col>
+                      )}
+                      {removedColumns.some((x) => x.name === 'Date Added') && (
+                        <Col xs={24} sm={12} md={8}>
+                          <div className="form-group m-0">
+                            <label className="label">Date Added</label>
+                            <Form.Item
+                              name="date_added"
+                              label="Date Added"
+                              className="m-0"
+                              rules={[
+                                {
+                                  required:
+                                    bulkImports.getTableColumns.data.find(
+                                      (x) => x.name === 'Date Added'
+                                    )?.is_nullable === 'NO'
+                                      ? true
+                                      : false,
+                                },
+                              ]}
+                            >
+                              <DatePicker className="w-100" disabledDate={disabledDate} />
+                            </Form.Item>
+                          </div>
+                        </Col>
+                      )}
+                    </Row>
+                  )}
                   <Row gutter={[30, 0]} className="form-label-hide">
                     <Col xs={24} md={12} lg={12} xl={8}>
                       <div className="form-group form-inline">

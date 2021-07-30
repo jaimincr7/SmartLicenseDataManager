@@ -1,10 +1,21 @@
+import { IDataTableForImport } from '../../services/bulkImport/bulkImport.model';
 import { IDatabaseTable, IGetExcelColumns, ITableColumn } from '../../services/common/common.model';
 
 export interface IBulkImportState {
-  getDatabaseTables: {
+  getTablesForImport: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: IDataTableForImport[];
+  };
+  getTables: {
     loading: boolean;
     hasErrors: boolean;
     data: IDatabaseTable[];
+  };
+  saveTableForImport: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
   };
   getTableColumns: {
     loading: boolean;
