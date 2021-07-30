@@ -379,7 +379,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     nodeSelector: 'th',
     handleSelector: '.dragHandler',
-  }
+  };
 
   const getColumns = () => {
     return columns?.filter((col) => {

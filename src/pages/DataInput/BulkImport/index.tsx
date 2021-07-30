@@ -100,7 +100,7 @@ const BulkImport: React.FC = () => {
 
   const onFinish = (values: any) => {
     const sqlToExcelMapping = [];
-    Object.entries(values.includes(tableColumns)).forEach(([key, value]) => {
+    Object.entries(tableColumns).forEach(([key, value]) => {
       if (key && value) {
         sqlToExcelMapping.push({
           key: `${key}`,
@@ -118,6 +118,12 @@ const BulkImport: React.FC = () => {
       file_name: bulkImports.getExcelColumns.data.filename,
       table_name: uploadValue?.table_name,
       sheet_name: uploadValue?.sheet_name,
+      foreign_key_values: {
+        tenant_id: values.tenant_id,
+        bu_id: values.bu_id,
+        company_id: values.company_id,
+        date_added: values.date_added,
+      },
     };
     dispatch(bulkInsert(inputValues));
   };

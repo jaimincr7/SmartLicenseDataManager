@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 export interface ILookup {
   id: number;
   name: string;
@@ -13,6 +14,12 @@ export interface IBulkInsertDataset {
   table_name: string;
   file_name?: string;
   sheet_name?: string;
+  foreign_key_values: {
+    tenant_id: number;
+    company_id: number;
+    bu_id: number;
+    date_added: string | Moment;
+  };
 }
 
 export interface IDeleteDataset {
