@@ -379,6 +379,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     },
     nodeSelector: 'th',
     handleSelector: '.dragHandler',
+  }
+
+  const getColumns = () => {
+    return columns?.filter((col) => {
+      return col.column in reduxStoreData.tableColumnSelection.columns
+        ? reduxStoreData.tableColumnSelection.columns[col.column]
+        : true;
+    });
   };
 
   return (
@@ -424,7 +432,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             scroll={{ x: true }}
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}
-            columns={tableColumns}
+            columns={getColumns()}
             loading={reduxStoreData.search.loading || reduxStoreData.delete.loading}
             pagination={{
               ...pagination,
