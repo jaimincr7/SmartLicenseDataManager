@@ -22,7 +22,6 @@ import { IRoleLookup } from '../../../../services/user/user.model';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
-import ReactDragListView from 'react-drag-listview';
 
 const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -31,17 +30,12 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
   const [columns, setColumns] = React.useState<any>([]);
   const [editModalVisible, setEditModalVisible] = React.useState(false);
   const [selectedMenu, setSelectedMenu] = React.useState<IMenu>(null);
-  const [storeMenus, SetStoreMenus] = React.useState<IMenu[]>([]);
 
   const onFinish = (values: any) => {
     const accessRights = Object.keys(_.pickBy(values.menu_rights, _.identity));
-    const menu_orders = storeMenus?.map((menu: IMenu, index: number) => {
-      return { menu_id: menu.id, order: index + 1 };
-    });
     const accessRightsInputValues = {
       role_id: values.role_id,
       menu_access_right_ids: accessRights,
-      menu_orders,
     };
     dispatch(saveMenuAccessRights(accessRightsInputValues));
   };
@@ -61,10 +55,6 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
     setSelectedMenu(menu);
     setEditModalVisible(true);
   };
-
-  useEffect(() => {
-    SetStoreMenus(reduxStoreData.getMenuRightsByRoleId.data?.menus);
-  }, [reduxStoreData.getMenuRightsByRoleId.data?.menus]);
 
   const getMenuDropdown = (selectedMenuId: number, menuId = 0) => {
     const dropdown = [];
@@ -92,7 +82,6 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
   }, []);
 
   const handleRoleIdChange = (roleId: number) => {
-    dispatch(clearGetMenuRightsByRoleId());
     dispatch(getMenuRightsByRoleId(roleId));
   };
 
@@ -121,36 +110,6 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
       }
     });
     form.setFieldsValue({ selectAll: checkbox });
-  };
-
-  const manageChildMenus = (menus: IMenu[], item: IMenu): IMenu[] => {
-    const chidMenus = menus.filter((x) => x.parent_menu_id === item.id);
-    menus = menus.filter((x) => x.parent_menu_id !== item.id);
-    const newIndex = menus.findIndex((x) => x.id === item.id);
-    menus.splice(newIndex + 1, 0, ...chidMenus);
-    chidMenus?.forEach((childItem) => {
-      const item = menus.find((x) => x.parent_menu_id === childItem.id);
-      if (item) {
-        menus = manageChildMenus(menus, childItem);
-      }
-    });
-    return menus;
-  };
-  const dragProps = {
-    onDragEnd(fromIndex, toIndex) {
-      let updatedColumns = [...storeMenus];
-      const draggedItem = updatedColumns.splice(fromIndex - 1, 1)[0];
-      const item = storeMenus[toIndex - 1];
-      if (draggedItem.parent_menu_id !== item.parent_menu_id) {
-        return toast.error('Menu must be dragged inside same parent.');
-      }
-      updatedColumns.splice(toIndex - 1, 0, draggedItem);
-      updatedColumns = manageChildMenus(updatedColumns, draggedItem);
-      updatedColumns = manageChildMenus(updatedColumns, item);
-      SetStoreMenus(updatedColumns);
-    },
-    nodeSelector: 'tr',
-    handleSelector: '.ant-table-row',
   };
 
   React.useEffect(() => {
@@ -257,24 +216,21 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
                     form.submit();
                   }}
                   loading={reduxStoreData.saveMenuAccessRights.loading}
-                  disabled={reduxStoreData.getMenuRightsByRoleId.loading}
                 >
                   Save
                 </Button>
               </Can>
             </div>
           </div>
-          <ReactDragListView {...dragProps}>
-            <Table
-              scroll={{ x: true }}
-              rowKey={(record) => record.id}
-              dataSource={storeMenus}
-              columns={columns}
-              loading={reduxStoreData.getMenuRightsByRoleId.loading}
-              className="custom-table"
-              pagination={false}
-            />
-          </ReactDragListView>
+          <Table
+            scroll={{ x: true }}
+            rowKey={(record) => record.id}
+            dataSource={reduxStoreData.getMenuRightsByRoleId.data?.menus}
+            columns={columns}
+            loading={reduxStoreData.getMenuRightsByRoleId.loading}
+            className="custom-table"
+            pagination={false}
+          />
         </Form>
       </div>
       {editModalVisible && (
