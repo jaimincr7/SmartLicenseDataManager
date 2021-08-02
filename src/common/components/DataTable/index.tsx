@@ -60,6 +60,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
   const [indeterminate, setIndeterminate] = React.useState(false);
   const [checkAll, setCheckAll] = React.useState(false);
+  const [isDragged, setIsDragged] = React.useState(false);
   const [tableColumns, setTableColumns] = React.useState([]);
   tableFilter.order_by = defaultOrderBy ? defaultOrderBy : tableFilter.order_by;
 
@@ -207,7 +208,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   // Table columns
-  const columns = [
+  let columns = [
     ...(getTableColumns(form) || []),
     {
       title: 'Action',
@@ -217,9 +218,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -376,12 +376,20 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       const item = updatedColumns.splice(fromIndex, 1)[0];
       updatedColumns.splice(toIndex, 0, item);
       setTableColumns(updatedColumns);
+      setIsDragged(true);
+      setTimeout(() => {
+        setIsDragged(false);
+      });
     },
     nodeSelector: 'th',
     handleSelector: '.dragHandler',
   };
 
   const getColumns = () => {
+    if (tableColumns.length > 0) {
+      columns = tableColumns.map((i) => columns.find((j) => j.column === i.column));
+    }
+
     return columns?.filter((col) => {
       return col.column in reduxStoreData.tableColumnSelection.columns
         ? reduxStoreData.tableColumnSelection.columns[col.column]
@@ -432,7 +440,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             scroll={{ x: true }}
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}
-            columns={getColumns()}
+            columns={isDragged ? tableColumns : getColumns()}
             loading={reduxStoreData.search.loading || reduxStoreData.delete.loading}
             pagination={{
               ...pagination,
