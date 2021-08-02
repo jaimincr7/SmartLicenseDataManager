@@ -118,6 +118,7 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={overrides.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={overrides.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>
