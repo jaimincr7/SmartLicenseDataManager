@@ -64,6 +64,6 @@ export const setResponseError = (history) => {
       return Promise.reject(error);
     }
   );
-}
+};
 
 export default request;

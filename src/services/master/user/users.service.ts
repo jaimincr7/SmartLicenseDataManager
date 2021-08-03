@@ -29,9 +29,10 @@ class UserService {
   }
 
   public async saveUser(data: IUser): Promise<any> {
-    data.password_hash='mhold2B1lL/Xl10+KmyIBXF0/rV05dsqRAINQ/h0MMbxWG0pqHpdRe8T5rcMP4sVlgs9MCtA6Z/UaAP5R0PLwA',
-    data.password_salt='Mth5[',
-    data.insert_user_id=5
+    (data.password_hash =
+      'mhold2B1lL/Xl10+KmyIBXF0/rV05dsqRAINQ/h0MMbxWG0pqHpdRe8T5rcMP4sVlgs9MCtA6Z/UaAP5R0PLwA'),
+      (data.password_salt = 'Mth5['),
+      (data.insert_user_id = 5);
     const { id, ...restData } = data;
     if (id > 0) {
       const url = `${this.ENDPOINT}/${id}`;

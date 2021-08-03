@@ -1,5 +1,5 @@
 import { Table, Form, Button, Checkbox, Popover } from 'antd';
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { IDataTable } from './dataTable.model';
@@ -218,8 +218,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -248,12 +249,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   ];
 
   React.useEffect(() => {
-    const visibleColumns = columns.filter((col) => {
-      return col.column in reduxStoreData.tableColumnSelection.columns
-        ? reduxStoreData.tableColumnSelection.columns[col.column]
-        : true;
-    });
-    setTableColumns(visibleColumns);
+    setTableColumns(columns);
   }, [reduxStoreData.tableColumnSelection.table_name]);
 
   React.useEffect(() => {
@@ -262,14 +258,19 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Start: Hide-show columns
   const hideShowColumn = (e, title) => {
+    let tableColumnsObj: { [key: string]: boolean } = reduxStoreData.tableColumnSelection.columns;
+    if (Object.keys(tableColumnsObj)?.length === 0) {
+      columns?.forEach((col) => {
+        tableColumnsObj = {
+          ...tableColumnsObj,
+          [col.column ? col.column : col.title]: true,
+        };
+      });
+    }
     if (e.target.checked) {
-      dispatch(
-        setTableColumnSelection({ ...reduxStoreData.tableColumnSelection.columns, [title]: true })
-      );
+      dispatch(setTableColumnSelection({ ...tableColumnsObj, [title]: true }));
     } else {
-      dispatch(
-        setTableColumnSelection({ ...reduxStoreData.tableColumnSelection.columns, [title]: false })
-      );
+      dispatch(setTableColumnSelection({ ...tableColumnsObj, [title]: false }));
     }
     handleIndeterminate();
   };
@@ -284,6 +285,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const saveTableColumns = () => {
     let tableColumnSelectionObj: ITableColumnSelection = reduxStoreData.tableColumnSelection;
+    columns?.forEach((col, index) => {
+      tableColumnSelectionObj = {
+        ...tableColumnSelectionObj,
+        column_orders: {
+          ...tableColumnSelectionObj.column_orders,
+          [col.column ? col.column : col.title]: index,
+        },
+      };
+    });
+
     if (Object.keys(tableColumnSelectionObj.columns)?.length === 0) {
       columns?.forEach((col) => {
         tableColumnSelectionObj = {
@@ -385,11 +396,28 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     handleSelector: '.dragHandler',
   };
 
+  useEffect(() => {
+    if (reduxStoreData?.tableColumnSelection?.column_orders) {
+      const sortedOrder = Object.keys(reduxStoreData?.tableColumnSelection?.column_orders)?.sort(
+        function (a, b) {
+          return (
+            reduxStoreData?.tableColumnSelection?.column_orders[a] -
+            reduxStoreData?.tableColumnSelection?.column_orders[b]
+          );
+        }
+      );
+
+      const updatedColumns = sortedOrder?.map((a) =>
+        tableColumns.find((x) => (x.column ? x.column === a : x.title === a))
+      );
+      setTableColumns(updatedColumns);
+    }
+  }, [reduxStoreData?.tableColumnSelection?.column_orders]);
+
   const getColumns = () => {
     if (tableColumns.length > 0) {
       columns = tableColumns.map((i) => columns.find((j) => j.column === i.column));
     }
-
     return columns?.filter((col) => {
       return col.column in reduxStoreData.tableColumnSelection.columns
         ? reduxStoreData.tableColumnSelection.columns[col.column]
@@ -435,7 +463,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         </div>
       </div>
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
-        <ReactDragListView.DragColumn {...dragProps}>
+        <ReactDragListView {...dragProps}>
           <Table
             scroll={{ x: true }}
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
@@ -451,7 +479,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             className="custom-table"
             sortDirections={['ascend', 'descend']}
           />
-        </ReactDragListView.DragColumn>
+        </ReactDragListView>
       </Form>
     </>
   );

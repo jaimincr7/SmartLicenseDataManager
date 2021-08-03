@@ -27,6 +27,7 @@ export interface ITableColumnSelection {
   id?: number;
   table_name?: string;
   columns?: { [key: string]: boolean };
+  column_orders?: { [key: string]: boolean };
 }
 
 export interface ISearchResult<T> {

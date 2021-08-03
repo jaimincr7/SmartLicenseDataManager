@@ -40,7 +40,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Currency Name',
+        title: <span className="dragHandler">Currency Name</span>,
+        column: 'Currency',
         sorter: true,
         children: [
           {
@@ -52,7 +53,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Exchange Rate',
+        title: <span className="dragHandler">Exchange Rate</span>,
+        column: 'ExchangeRate',
         sorter: true,
         children: [
           {

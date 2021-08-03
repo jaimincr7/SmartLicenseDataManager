@@ -49,7 +49,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -62,7 +63,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Effective Date',
+        title: <span className="dragHandler">Effective Date</span>,
+        column: 'EffectiveDate',
         sorter: true,
         children: [
           {
@@ -75,7 +77,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'MeterId',
+        title: <span className="dragHandler">MeterId</span>,
+        column: 'MeterId',
         sorter: true,
         children: [
           {
@@ -87,7 +90,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Meter Name',
+        title: <span className="dragHandler">Meter Name</span>,
+        column: 'MeterName',
         sorter: true,
         children: [
           {
@@ -99,7 +103,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Meter Category',
+        title: <span className="dragHandler">Meter Category</span>,
+        column: 'MeterCategory',
         sorter: true,
         children: [
           {
@@ -111,7 +116,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Meter Sub-Category',
+        title: <span className="dragHandler">Meter Sub-Category</span>,
+        column: 'MeterSubCategory',
         sorter: true,
         children: [
           {
@@ -123,7 +129,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Meter Region',
+        title: <span className="dragHandler">Meter Region</span>,
+        column: 'MeterRegion',
         sorter: true,
         children: [
           {
@@ -135,7 +142,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Meter Rates',
+        title: <span className="dragHandler">Meter Rates</span>,
+        column: 'MeterRates',
         sorter: true,
         children: [
           {
@@ -147,7 +155,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Meter Status',
+        title: <span className="dragHandler">Meter Status</span>,
+        column: 'MeterStatus',
         sorter: true,
         children: [
           {
@@ -159,7 +168,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Meter Tags',
+        title: <span className="dragHandler">Meter Tags</span>,
+        column: 'MeterTags',
         sorter: true,
         children: [
           {
@@ -171,7 +181,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Included Quantity',
+        title: <span className="dragHandler">Included Quantity</span>,
+        column: 'IncludedQuantity',
         sorter: true,
         children: [
           {
@@ -183,7 +194,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Unit',
+        title: <span className="dragHandler">Unit</span>,
+        column: 'Unit',
         sorter: true,
         children: [
           {

@@ -92,8 +92,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
     };
     if (values.is_active) {
       inputValues.is_active = 1;
-    }
-    else {
+    } else {
       inputValues.is_active = 0;
     }
     dispatch(saveUser(inputValues));

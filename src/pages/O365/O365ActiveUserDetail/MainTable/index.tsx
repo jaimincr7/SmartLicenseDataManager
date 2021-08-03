@@ -50,7 +50,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
         sorter: true,
         children: [
           {
@@ -62,7 +63,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
         sorter: true,
         children: [
           {
@@ -74,7 +76,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Bu Name',
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'Bu_Id',
         sorter: true,
         children: [
           {
@@ -86,7 +89,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -99,7 +103,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'User Principal Name',
+        title: <span className="dragHandler">User Principal Name</span>,
+        column: 'User Principal Name',
         sorter: true,
         ellipsis: true,
         children: [
@@ -112,7 +117,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Display Name',
+        title: <span className="dragHandler">Display Name</span>,
+        column: 'Display Name',
         sorter: true,
         ellipsis: true,
         children: [
@@ -125,7 +131,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Report Refresh Date',
+        title: <span className="dragHandler">Report Refresh Date</span>,
+        column: 'Report Refresh Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -139,7 +146,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Deleted Date',
+        title: <span className="dragHandler">Deleted Date</span>,
+        column: 'Deleted Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -152,7 +160,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Exchange Last Activity Date',
+        title: <span className="dragHandler">Exchange Last Activity Date</span>,
+        column: 'Exchange Last Activity Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -166,7 +175,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'OneDrive Last Activity Date',
+        title: <span className="dragHandler">OneDrive Last Activity Date</span>,
+        column: 'OneDrive Last Activity Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -180,7 +190,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'SharePoint Last Activity Date',
+        title: <span className="dragHandler">SharePoint Last Activity Date</span>,
+        column: 'SharePoint Last Activity Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -194,7 +205,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Skype For Business Last Activity Date',
+        title: <span className="dragHandler">Skype For Business Last Activity Date</span>,
+        column: 'Skype For Business Last Activity Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -208,7 +220,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Yammer Last Activity Date',
+        title: <span className="dragHandler">Yammer Last Activity Date</span>,
+        column: 'Yammer Last Activity Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -222,7 +235,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Teams Last Activity Date',
+        title: <span className="dragHandler">Teams Last Activity Date</span>,
+        column: 'Teams Last Activity Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -236,7 +250,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Exchange License Assign Date',
+        title: <span className="dragHandler">Exchange License Assign Date</span>,
+        column: 'Exchange License Assign Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -250,7 +265,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'OneDrive License Assign Date',
+        title: <span className="dragHandler">OneDrive License Assign Date</span>,
+        column: 'OneDrive License Assign Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -264,7 +280,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'SharePoint License Assign Date',
+        title: <span className="dragHandler">SharePoint License Assign Date</span>,
+        column: 'SharePoint License Assign Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -278,7 +295,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Skype For Business License Assign Date',
+        title: <span className="dragHandler">Skype For Business License Assign Date</span>,
+        column: 'Skype For Business License Assign Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -292,7 +310,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Yammer License Assign Date',
+        title: <span className="dragHandler">Yammer License Assign Date</span>,
+        column: 'Yammer License Assign Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -306,7 +325,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Teams License Assign Date',
+        title: <span className="dragHandler">Teams License Assign Date</span>,
+        column: 'Teams License Assign Date',
         sorter: true,
         ellipsis: true,
         children: [
@@ -320,7 +340,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Assigned Products',
+        title: <span className="dragHandler">Assigned Products</span>,
+        column: 'Assigned Products',
         sorter: true,
         ellipsis: true,
         children: [
@@ -333,7 +354,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Deleted',
+        title: <span className="dragHandler">Is Deleted</span>,
+        column: 'Is Deleted',
         sorter: true,
         ellipsis: true,
         children: [
@@ -350,7 +372,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Has Exchange License',
+        title: <span className="dragHandler">Has Exchange License</span>,
+        column: 'Has Exchange License',
         sorter: true,
         ellipsis: true,
         children: [
@@ -367,7 +390,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Has OneDrive License',
+        title: <span className="dragHandler">Has OneDrive License</span>,
+        column: 'Has OneDrive License',
         sorter: true,
         ellipsis: true,
         children: [
@@ -384,7 +408,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Has SharePoint License',
+        title: <span className="dragHandler">Has SharePoint License</span>,
+        column: 'Has SharePoint License',
         sorter: true,
         ellipsis: true,
         children: [
@@ -401,7 +426,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Has Skype For Business License',
+        title: <span className="dragHandler">Has Skype For Business License</span>,
+        column: 'Has Skype For Business License',
         sorter: true,
         ellipsis: true,
         children: [
@@ -418,7 +444,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Has Yammer License',
+        title: <span className="dragHandler">Has Yammer License</span>,
+        column: 'Has Yammer License',
         sorter: true,
         ellipsis: true,
         children: [
@@ -435,7 +462,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Has Teams License',
+        title: <span className="dragHandler">Has Teams License</span>,
+        column: 'Has Teams License',
         sorter: true,
         ellipsis: true,
         children: [

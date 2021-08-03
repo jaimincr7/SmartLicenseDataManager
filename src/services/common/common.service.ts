@@ -120,7 +120,7 @@ class CommonService {
   public async saveTableColumnSelection(data: ITableColumnSelection): Promise<any> {
     const inputValues = {
       ...data,
-      columns: JSON.stringify(data.columns),
+      columns: JSON.stringify({ columns: data.columns, column_orders: data.column_orders }),
     };
     const url = `/table-column-selection`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {

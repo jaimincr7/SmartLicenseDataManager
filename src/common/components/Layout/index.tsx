@@ -69,7 +69,7 @@ const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...r
             <Layout>
               <Component {...props} />
             </Layout>
-          ):(
+          ) : (
             <Skeleton active />
           )}
         </>

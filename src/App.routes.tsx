@@ -25,11 +25,10 @@ import { AccessDeniedPage } from './pages/AccessDenied';
 import { setResponseError } from './utils/request';
 
 function AppRoutes() {
-
   const history = useHistory();
-  
+
   React.useEffect(() => {
-    setResponseError(history)
+    setResponseError(history);
   }, []);
 
   return (
