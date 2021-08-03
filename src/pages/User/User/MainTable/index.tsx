@@ -19,9 +19,9 @@ import {
   clearUserMessages,
   setTableColumnSelection,
   usersSelector,
-} from '../../../../store/master/user/user.reducer';
+} from '../../../../store/master/users/users.reducer';
 import usersService from '../../../../services/master/user/users.service';
-import { deleteUser, searchUser } from '../../../../store/master/user/user.action';
+import { deleteUser, searchUser } from '../../../../store/master/users/users.action';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;

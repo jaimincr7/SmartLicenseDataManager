@@ -31,12 +31,12 @@ import {
   clearCompanyLookUp,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { getUserById, saveUser } from '../../../../store/master/user/user.action';
+import { getUserById, saveUser } from '../../../../store/master/users/users.action';
 import {
   clearUserGetById,
   clearUserMessages,
   usersSelector,
-} from '../../../../store/master/user/user.reducer';
+} from '../../../../store/master/users/users.reducer';
 import { IAddUserProps } from './addUser.model';
 
 const { Option } = Select;
@@ -50,11 +50,12 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return (
-      <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.User} level={1} />
-      </>
-    );
+    return isNew ? 'Add User' : 'Edit User';
+    // return (
+    // <>
+    //   {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.User} level={1} />
+    // </>
+    // );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
@@ -89,12 +90,10 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    if(values.is_active)
-    {
+    if (values.is_active) {
       inputValues.is_active = 1;
     }
-    else
-    {
+    else {
       inputValues.is_active = 0;
     }
     dispatch(saveUser(inputValues));
@@ -334,7 +333,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-             <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item name="mobile_phone_verified" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />

@@ -8,7 +8,7 @@ import { Row, Col, Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import { clearUser, usersSelector } from '../../../store/master/user/user.reducer';
+import { clearUser, usersSelector } from '../../../store/master/users/users.reducer';
 import AddUserModal from './AddUserModal';
 
 const User: React.FC<IUserProps> = (props) => {

@@ -2,8 +2,8 @@ import { booleanLookup } from '../../../common/constants/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { RootState } from '../../app.model';
-import { deleteUser, getUserById, saveUser, searchUser } from './user.action';
-import { IUserState } from './user.model';
+import { deleteUser, getUserById, saveUser, searchUser } from './users.action';
+import { IUserState } from './users.model';
 import { IUser } from '../../../services/master/user/users.model';
 
 export const initialState: IUserState = {

@@ -35,6 +35,7 @@ import azureRateCardReducer from './azure/azureRateCard/azureRateCard.reducer';
 import azureAPIVmSizesReducer from './azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
 import o365ActivationsUserDetailReducer from './o365/o365ActivationsUserDetail/o365ActivationsUserDetail.reducer';
 import o365ActiveUserDetailReducer from './o365/o365ActiveUserDetail/o365ActiveUserDetail.reducer';
+import usersReducer from './master/users/users.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -91,5 +92,5 @@ export const rootReducer = combineReducers({
   // O365
   o365ActivationsUserDetail: o365ActivationsUserDetailReducer,
   o365ActiveUserDetail: o365ActiveUserDetailReducer,
-  users: userReducer,
+  users: usersReducer,
 });
