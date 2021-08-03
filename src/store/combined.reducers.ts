@@ -91,4 +91,5 @@ export const rootReducer = combineReducers({
   // O365
   o365ActivationsUserDetail: o365ActivationsUserDetailReducer,
   o365ActiveUserDetail: o365ActiveUserDetailReducer,
+  users: userReducer,
 });
