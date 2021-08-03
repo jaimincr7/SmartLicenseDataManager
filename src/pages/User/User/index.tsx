@@ -48,28 +48,6 @@ const User: React.FC<IUserProps> = (props) => {
         </h4>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
-          <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.User}>
-              <Col>
-                <Button
-                  className="btn-icon"
-                  onClick={() => history.push(`/data-input/bulk-import/${User.search.tableName}`)}
-                  icon={
-                    <em className="anticon">
-                      <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                        alt=""
-                      />
-                    </em>
-                  }
-                >
-                  Update from Excel
-                </Button>
-              </Col>
-            </Can>
-          </Row>
-        </div>
         <MainTable
           ref={dataTableRef}
           setSelectedId={(id) => {

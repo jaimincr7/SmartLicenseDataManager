@@ -300,27 +300,6 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Insert Date</label>
-                  <Form.Item
-                    name="insert_date"
-                    label="InsertDate"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
-                    <DatePicker className="w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Update Date</label>
-                  <Form.Item name="update_date" label="UpdateDate" className="m-0">
-                    <DatePicker className="w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
                   <label className="label">Mobile Phone Number</label>
                   <Form.Item
                     name="mobile_phone_number"
