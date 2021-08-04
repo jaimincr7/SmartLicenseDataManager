@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
-import RenderReport from '../Report/RenderReport';
+import RenderReport from './RenderReport';
 import Configuration from './Configuration';
 
 const PowerBiReportsRoutes: React.FC = () => {

@@ -13,9 +13,11 @@ const BreadCrumbs: React.FC<IBreadCrumbsProps> = (props) => {
     const menus = userDetails.getMenuRight?.data?.menus;
     if (menus?.length > 0) {
       const currentMenu = menus.find((x) => x.name === pageName);
-      checkParentMenu(currentMenu, menus, currentMenu.description, 1);
+      if(currentMenu){
+        checkParentMenu(currentMenu, menus, currentMenu.description, 1);
+      }
     }
-  }, [userDetails.getMenuRight?.data?.menus]);
+  }, [userDetails.getMenuRight?.data?.menus, pageName]);
 
   const checkParentMenu = (menu: IMenu, menus: IMenu[], updatedTitle: string, count: number) => {
     if (menu.parent_menu_id > 0 && (level === undefined || level > count)) {

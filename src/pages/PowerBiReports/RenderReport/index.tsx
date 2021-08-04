@@ -4,10 +4,12 @@ import { PowerBIEmbed } from 'powerbi-client-react';
 import { models, Report, Embed } from 'powerbi-client';
 import configurationService from '../../../services/powerBiReports/configuration/configuration.service';
 import { Spin } from 'antd';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const RenderReport: React.FC<IRenderReportProps> = (props) => {
   const { match } = props;
   const [embeddedReport, setEmbeddedReport] = useState<Report>(null);
+  const [reportName, setReportName] = useState<string>(null);
   const [reportConfig, setReportConfig] = useState({
     type: 'report',
     tokenType: models.TokenType.Embed,
@@ -18,6 +20,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
 
   useEffect(() => {
     const { name } = match.params;
+    setReportName(name);
     configurationService.getReportDetail(name).then((res) => {
       if (res && res.body?.data) {
         const reportDetail = res.body.data;
@@ -27,15 +30,17 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
           embedUrl: reportDetail.embedded_url,
           accessToken: reportDetail.access_token,
         });
+        embeddedReport?.refresh();
       }
     });
-    embeddedReport?.refresh();
   }, [match.params]);
 
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <h4 className="p-0">Report</h4>
+        <h4 className="p-0">
+          <BreadCrumbs pageName={reportName} />
+        </h4>
       </div>
       <div className="main-card">
         {reportConfig.id ? (
