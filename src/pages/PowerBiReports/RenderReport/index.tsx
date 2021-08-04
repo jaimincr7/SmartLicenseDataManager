@@ -21,6 +21,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
   useEffect(() => {
     const { name } = match.params;
     setReportName(name);
+    setReportConfig({...reportConfig, id: ''});
     configurationService.getReportDetail(name).then((res) => {
       if (res && res.body?.data) {
         const reportDetail = res.body.data;
