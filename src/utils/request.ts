@@ -42,6 +42,10 @@ export const setResponseError = (history) => {
       }
     },
     (error) => {
+      if (!error.response) {
+        toast.error('Please check your internet connection.');
+        history.push('/500');
+      }
       // Log somewhere
       const e = Array.isArray(error.response.data.body.errors)
         ? error.response.data.body.errors.join(' ')
