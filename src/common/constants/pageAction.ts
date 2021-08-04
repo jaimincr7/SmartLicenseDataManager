@@ -51,6 +51,8 @@ export enum Page {
 
   HwCiscoSiteMatrix = 'hw-cisco-cisco-site-matrix',
 
+  PowerBIConfig = 'power-bi-report-config',
+
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',

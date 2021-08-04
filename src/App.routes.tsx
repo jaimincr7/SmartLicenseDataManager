@@ -15,7 +15,6 @@ import DataInputRoutes from './pages/DataInput/DataInput.routes';
 import WindowsServerRoutes from './pages/WindowsServer/WindowsServer.routes';
 import AdRoutes from './pages/Ad/Ad.routes';
 import UserRoutes from './pages/User/User.routes';
-import ReportRoutes from './pages/Report/Report.routes';
 import RVToolsRoutes from './pages/RVTools/RVTools.routes';
 import AzureRoutes from './pages/Azure/Azure.routes';
 import O365Routes from './pages/O365/O365.routes';
@@ -24,6 +23,7 @@ import { InternalServerError } from './pages/InternalServerError';
 import { AccessDeniedPage } from './pages/AccessDenied';
 import HwCiscoRoutes from './pages/HW Cisco/HwCisco.routes';
 import { setResponseError } from './utils/request';
+import PowerBiReportsRoutes from './pages/PowerBiReports/PowerBiReports.routes';
 
 function AppRoutes() {
   const history = useHistory();
@@ -53,11 +53,15 @@ function AppRoutes() {
           <LayoutRoute path="/data-input" layout={MainLayout} component={DataInputRoutes} />
           <LayoutRoute path="/windows-server" layout={MainLayout} component={WindowsServerRoutes} />
           <LayoutRoute path="/user" layout={MainLayout} component={UserRoutes} />
-          <LayoutRoute path="/report" layout={MainLayout} component={ReportRoutes} />
           <LayoutRoute path="/rv-tools" layout={MainLayout} component={RVToolsRoutes} />
           <LayoutRoute path="/azure" layout={MainLayout} component={AzureRoutes} />
           <LayoutRoute path="/o365" layout={MainLayout} component={O365Routes} />
           <LayoutRoute path="/hw-cisco" layout={MainLayout} component={HwCiscoRoutes} />
+          <LayoutRoute
+            path="/power-bi-reports"
+            layout={MainLayout}
+            component={PowerBiReportsRoutes}
+          />
 
           {/* Dummy routes for designers */}
           <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />

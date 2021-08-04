@@ -1,8 +1,6 @@
-import { Report } from 'powerbi-client';
+import { match } from 'react-router-dom';
+import { IReportParams } from './../../../common/models/common';
 
 export interface IRenderReportProps {
-  reportName: string;
-  reportId: string;
-  setEmbeddedReport?: (report: Report) => void;
-  groupId?: string;
+  match?: match<IReportParams>;
 }

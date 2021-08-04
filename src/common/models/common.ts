@@ -55,3 +55,7 @@ export interface IInlineSearch {
 export interface IDetailParams {
   id: string;
 }
+
+export interface IReportParams {
+  name: string;
+}
