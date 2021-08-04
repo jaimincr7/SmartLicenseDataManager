@@ -9,7 +9,6 @@ export interface IUser {
   source: string;
   password_hash: string;
   password_salt: string;
-  last_directory_update?: string | Moment;
   user_image?: string;
   insert_date: string | Moment;
   insert_user_id: number;
@@ -19,7 +18,6 @@ export interface IUser {
   tenant_id: number;
   company_id?: number;
   mobile_phone_number?: string;
-  mobile_phone_verified: boolean;
   two_factor_auth?: number;
   //user_roles: UserRole[];
   date_added?: string | Moment;

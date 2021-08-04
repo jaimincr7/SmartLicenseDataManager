@@ -3,7 +3,9 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IUser } from '../../../../services/master/user/users.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -28,12 +30,11 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add User' : 'Edit User';
-    // return (
-    // <>
-    //   {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.User} level={1} />
-    // </>
-    // );
+    return (
+    <>
+      {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.User} level={1} />
+    </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
@@ -51,7 +52,6 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
     source: '',
     password_hash: '',
     password_salt: '',
-    last_directory_update: null,
     user_image: '',
     insert_date: null,
     insert_user_id: null,
@@ -59,7 +59,6 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
     update_user_id: null,
     is_active: null,
     mobile_phone_number: '',
-    mobile_phone_verified: false,
     two_factor_auth: null,
   };
 
@@ -91,16 +90,12 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
         source: data.source,
         password_hash: data.password_hash,
         password_salt: data.password_salt,
-        last_directory_update: _.isNull(data.last_directory_update)
-          ? null
-          : moment(data.last_directory_update),
         insert_date: _.isNull(data.insert_date) ? null : moment(data.insert_date),
         insert_user_id: data.insert_user_id,
         update_date: _.isNull(data.update_date) ? null : moment(data.update_date),
         update_user_id: data.update_user_id,
         is_active: data.is_active,
         mobile_phone_number: data.mobile_phone_number,
-        mobile_phone_verified: data.mobile_phone_verified,
         two_factor_auth: data.two_factor_auth,
       };
       form.setFieldsValue(initialValues);
@@ -266,18 +261,6 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Directory Update</label>
-                  <Form.Item
-                    name="last_directory_update"
-                    label="LastDirectoryUpdate"
-                    className="m-0"
-                  >
-                    <DatePicker className="w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
                   <label className="label">Mobile Phone Number</label>
                   <Form.Item
                     name="mobile_phone_number"
@@ -287,14 +270,6 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
                   >
                     <Input className="form-control" />
                   </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="mobile_phone_verified" className="m-0" valuePropName="checked">
-                    <Switch className="form-control" />
-                  </Form.Item>
-                  <label className="label">Mobile Phone Verified</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
