@@ -6,7 +6,6 @@ import {
   IMenuRightsByCompanyId,
   IMenuRightsByRoleId,
 } from '../../../services/user/menu/menu.model';
-import { IRoleLookup } from '../../../services/user/user.model';
 import { RootState } from '../../app.model';
 import {
   searchMenu,
@@ -21,6 +20,7 @@ import {
   saveAddRemoveMenuAccessRights,
 } from './menu.action';
 import { IMenuState } from './menu.model';
+import { ILookup } from '../../../services/common/common.model';
 
 export const initialState: IMenuState = {
   search: {
@@ -253,7 +253,7 @@ export const menuSlice = createSlice({
     [getRoleLookup.pending.type]: (state) => {
       state.roleLookup.loading = true;
     },
-    [getRoleLookup.fulfilled.type]: (state, action: PayloadAction<IRoleLookup[]>) => {
+    [getRoleLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.roleLookup.data = action.payload;
       state.roleLookup.loading = false;
     },
