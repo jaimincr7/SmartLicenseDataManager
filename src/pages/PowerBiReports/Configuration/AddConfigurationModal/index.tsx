@@ -153,7 +153,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                     label="Name"
                     className="m-0"
                     rules={[
-                      { pattern: new RegExp('^(?=.*[a-z])[a-z-]+$'), required: true, max: 200 },
+                      { pattern: new RegExp('^([a-z0-9]+-)*[a-z0-9]+$'), required: true, max: 200 },
                     ]}
                   >
                     <Input

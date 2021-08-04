@@ -383,6 +383,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   // End: Hide-show columns
   const dragProps = {
     onDragEnd(fromIndex, toIndex) {
+      const visibleColumns = columns?.filter((col) => {
+        return col.column in reduxStoreData.tableColumnSelection.columns
+          ? reduxStoreData.tableColumnSelection.columns[col.column]
+          : true;
+      });
+
+      fromIndex = tableColumns.findIndex(x => x.column === visibleColumns[fromIndex]?.column);
+      toIndex = tableColumns.findIndex(x => x.column === visibleColumns[toIndex]?.column);
       const updatedColumns = [...tableColumns];
       const item = updatedColumns.splice(fromIndex, 1)[0];
       updatedColumns.splice(toIndex, 0, item);
