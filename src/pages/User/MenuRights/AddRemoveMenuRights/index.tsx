@@ -39,7 +39,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
     });
     const accessRightsInputValues = {
       menu_access_right_ids: accessRights,
-      menu_orders
+      menu_orders,
     };
     dispatch(saveAddRemoveMenuAccessRights(accessRightsInputValues));
   };

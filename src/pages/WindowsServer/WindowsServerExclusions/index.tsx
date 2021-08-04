@@ -149,6 +149,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={windowsServerExclusions.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={windowsServerExclusions.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>

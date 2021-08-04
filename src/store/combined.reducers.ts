@@ -42,6 +42,7 @@ import o365ReservationsReducer from './o365/o365Reservations/o365Reservations.re
 import o365ProductListReducer from './o365/o365ProductList/o365ProductList.reducer';
 import ciscoSiteMatrixReducer from './hwCisco/ciscoSiteMatrix/ciscoSiteMatrix.reducer';
 import o365UsersReducer from './o365/o365Users/o365Users.reducer';
+import usersReducer from './master/users/users.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -107,4 +108,5 @@ export const rootReducer = combineReducers({
 
   //HW-Cisco
   ciscoSiteMatrix: ciscoSiteMatrixReducer,
+  users: usersReducer,
 });

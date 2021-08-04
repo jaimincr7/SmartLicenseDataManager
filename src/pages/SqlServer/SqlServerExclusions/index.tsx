@@ -147,6 +147,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={sqlServerExclusions.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={sqlServerExclusions.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>

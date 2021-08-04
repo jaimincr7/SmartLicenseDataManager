@@ -51,7 +51,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Sql Server Id',
+        title: <span className="dragHandler">Sql Server Id</span>,
+        column: 'SQLServerId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -64,7 +65,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         ellipsis: true,
         children: [
@@ -78,7 +80,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Source',
+        title: <span className="dragHandler">Source</span>,
+        column: 'Source',
         sorter: true,
         ellipsis: true,
         children: [
@@ -91,7 +94,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Data Center',
+        title: <span className="dragHandler">Data Center</span>,
+        column: 'Datacenter',
         sorter: true,
         ellipsis: true,
         children: [
@@ -104,7 +108,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Cluster',
+        title: <span className="dragHandler">Cluster</span>,
+        column: 'Cluster',
         sorter: true,
         ellipsis: true,
         children: [
@@ -117,7 +122,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'HA Enabled',
+        title: <span className="dragHandler">HA Enabled</span>,
+        column: 'HA enabled',
         sorter: true,
         ellipsis: true,
         children: [
@@ -134,7 +140,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Host',
+        title: <span className="dragHandler">Host</span>,
+        column: 'Host',
         sorter: true,
         ellipsis: true,
         children: [
@@ -147,7 +154,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Procs',
+        title: <span className="dragHandler">Procs</span>,
+        column: 'Procs',
         sorter: true,
         ellipsis: true,
         children: [
@@ -160,7 +168,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Cores',
+        title: <span className="dragHandler">Cores</span>,
+        column: 'Cores',
         sorter: true,
         ellipsis: true,
         children: [
@@ -173,7 +182,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Device Name',
+        title: <span className="dragHandler">Device Name</span>,
+        column: 'Device Name',
         sorter: true,
         ellipsis: true,
         children: [
@@ -186,7 +196,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Device Type',
+        title: <span className="dragHandler">Device Type</span>,
+        column: 'Device Type',
         sorter: true,
         ellipsis: true,
         children: [
@@ -199,28 +210,32 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Tenant Id',
+        title: <span className="dragHandler">Tenant Id</span>,
+        column: 'TenantId',
         sorter: true,
         dataIndex: 'tenant_id',
         key: 'tenant_id',
         ellipsis: true,
       },
       {
-        title: 'Company Id',
+        title: <span className="dragHandler">Company Id</span>,
+        column: 'CompanyId',
         sorter: true,
         dataIndex: 'company_id',
         key: 'company_id',
         ellipsis: true,
       },
       {
-        title: 'BU Id',
+        title: <span className="dragHandler">BU Id</span>,
+        column: 'BU_Id',
         sorter: true,
         dataIndex: 'bu_id',
         key: 'bu_id',
         ellipsis: true,
       },
       {
-        title: 'SQL Cluster',
+        title: <span className="dragHandler">SQL Cluster</span>,
+        column: 'SQL Cluster',
         sorter: true,
         ellipsis: true,
         children: [
@@ -233,7 +248,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Product Family',
+        title: <span className="dragHandler">Product Family</span>,
+        column: 'Product Family',
         sorter: true,
         ellipsis: true,
         children: [
@@ -246,7 +262,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Version',
+        title: <span className="dragHandler">Version</span>,
+        column: 'Version',
         sorter: true,
         ellipsis: true,
         children: [
@@ -259,7 +276,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Edition',
+        title: <span className="dragHandler">Edition</span>,
+        column: 'Edition',
         sorter: true,
         ellipsis: true,
         children: [
@@ -272,7 +290,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Device State',
+        title: <span className="dragHandler">Device State</span>,
+        column: 'Device State',
         sorter: true,
         ellipsis: true,
         children: [
@@ -285,7 +304,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Software State',
+        title: <span className="dragHandler">Software State</span>,
+        column: 'Software State',
         sorter: true,
         ellipsis: true,
         children: [
@@ -298,7 +318,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'OS Type',
+        title: <span className="dragHandler">OS Type</span>,
+        column: 'OS Type',
         sorter: true,
         ellipsis: true,
         children: [
@@ -311,7 +332,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Raw Software Title',
+        title: <span className="dragHandler">Raw Software Title</span>,
+        column: 'Raw Software Title',
         sorter: true,
         ellipsis: true,
         children: [
@@ -324,7 +346,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'FQDN',
+        title: <span className="dragHandler">FQDN</span>,
+        column: 'FQDN',
         sorter: true,
         ellipsis: true,
         children: [
@@ -337,7 +360,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Service',
+        title: <span className="dragHandler">Service</span>,
+        column: 'Service',
         sorter: true,
         ellipsis: true,
         children: [
@@ -350,7 +374,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Cost Code',
+        title: <span className="dragHandler">Cost Code</span>,
+        column: 'Cost Code',
         sorter: true,
         ellipsis: true,
         children: [
@@ -363,7 +388,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Line of Business',
+        title: <span className="dragHandler">Line of Business</span>,
+        column: 'Line of Business',
         sorter: true,
         ellipsis: true,
         children: [
@@ -376,7 +402,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Market',
+        title: <span className="dragHandler">Market</span>,
+        column: 'Market',
         sorter: true,
         ellipsis: true,
         children: [
@@ -389,7 +416,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Application',
+        title: <span className="dragHandler">Application</span>,
+        column: 'Application',
         sorter: true,
         ellipsis: true,
         children: [
@@ -402,7 +430,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Serial Number',
+        title: <span className="dragHandler">Serial Number</span>,
+        column: 'Serial Number',
         sorter: true,
         ellipsis: true,
         children: [
@@ -415,7 +444,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'SQL Cluster Node Type',
+        title: <span className="dragHandler">SQL Cluster Node Type</span>,
+        column: 'SQL Cluster Node Type',
         sorter: true,
         ellipsis: true,
         children: [
@@ -428,7 +458,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'vCPU',
+        title: <span className="dragHandler">vCPU</span>,
+        column: 'vCPU',
         sorter: true,
         ellipsis: true,
         children: [
@@ -441,7 +472,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Azure Hosted',
+        title: <span className="dragHandler">Azure Hosted</span>,
+        column: 'Azure Hosted',
         sorter: true,
         ellipsis: true,
         children: [
@@ -458,7 +490,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Name',
+        title: <span className="dragHandler">Name</span>,
+        column: 'Name',
         sorter: true,
         ellipsis: true,
         children: [
@@ -471,7 +504,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Agreement Type',
+        title: <span className="dragHandler">Agreement Type</span>,
+        column: 'Opt_AgreementType',
         sorter: true,
         ellipsis: true,
         children: [
@@ -484,7 +518,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Default to Enterprise on Hosts',
+        title: <span className="dragHandler">Default to Enterprise on Hosts</span>,
+        column: 'Opt_DefaultToEnterpriseOnHosts',
         sorter: true,
         ellipsis: true,
         children: [
@@ -501,7 +536,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Cluster Logic',
+        title: <span className="dragHandler">Cluster Logic</span>,
+        column: 'Opt_ClusterLogic',
         sorter: true,
         ellipsis: true,
         children: [
@@ -518,7 +554,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Entitlements',
+        title: <span className="dragHandler">Entitlements</span>,
+        column: 'Opt_Entitlements',
         sorter: true,
         ellipsis: true,
         children: [
@@ -535,7 +572,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Exclude Non-Prod',
+        title: <span className="dragHandler">Exclude Non-Prod</span>,
+        column: 'Opt_ExcludeNonProd',
         sorter: true,
         ellipsis: true,
         children: [
@@ -552,7 +590,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Notes',
+        title: <span className="dragHandler">Notes</span>,
+        column: 'Notes',
         sorter: true,
         ellipsis: true,
         children: [
@@ -565,7 +604,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Orphaned VM',
+        title: <span className="dragHandler">Orphaned VM</span>,
+        column: 'Orphaned VM',
         sorter: true,
         ellipsis: true,
         children: [
@@ -582,7 +622,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Licensable',
+        title: <span className="dragHandler">Licensable</span>,
+        column: 'Licensable',
         sorter: true,
         ellipsis: true,
         children: [
@@ -599,7 +640,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Service Id',
+        title: <span className="dragHandler">Service Id</span>,
+        column: 'ServiceId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -612,7 +654,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Version Id',
+        title: <span className="dragHandler">Version Id</span>,
+        column: 'VersionId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -625,7 +668,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Edition Id',
+        title: <span className="dragHandler">Edition Id</span>,
+        column: 'EditionId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -638,7 +682,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Host Max Version Id',
+        title: <span className="dragHandler">Host Max Version Id</span>,
+        column: 'HostMaxVersionId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -651,7 +696,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Host Max Edition Id',
+        title: <span className="dragHandler">Host Max Edition Id</span>,
+        column: 'HostMaxEditionId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -664,7 +710,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Cluster Max Version Id',
+        title: <span className="dragHandler">Cluster Max Version Id</span>,
+        column: 'ClusterMaxVersionId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -677,7 +724,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Cluster Max Edition Id',
+        title: <span className="dragHandler">Cluster Max Edition Id</span>,
+        column: 'ClusterMaxEditionid',
         sorter: true,
         ellipsis: true,
         children: [
@@ -690,7 +738,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Cluster Seq Num',
+        title: <span className="dragHandler">Cluster Seq Num</span>,
+        column: 'ClusterSeqNum',
         sorter: true,
         ellipsis: true,
         children: [
@@ -703,7 +752,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Host Seq Num',
+        title: <span className="dragHandler">Host Seq Num</span>,
+        column: 'HostSeqNum',
         sorter: true,
         ellipsis: true,
         children: [
@@ -716,7 +766,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Device Seq Num',
+        title: <span className="dragHandler">Device Seq Num</span>,
+        column: 'DeviceSeqNum',
         sorter: true,
         ellipsis: true,
         children: [
@@ -729,7 +780,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Effective Processors',
+        title: <span className="dragHandler">Effective Processors</span>,
+        column: 'Effective Processors',
         sorter: true,
         ellipsis: true,
         children: [
@@ -742,7 +794,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Effective Cores',
+        title: <span className="dragHandler">Effective Cores</span>,
+        column: 'Effective Cores',
         sorter: true,
         ellipsis: true,
         children: [
@@ -755,7 +808,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Effective vCPU',
+        title: <span className="dragHandler">Effective vCPU</span>,
+        column: 'Effective vCPU',
         sorter: true,
         ellipsis: true,
         children: [
@@ -768,7 +822,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Effective vCPU for Proc Licenses',
+        title: <span className="dragHandler">Effective vCPU for Proc Licenses</span>,
+        column: 'Effective vCPU for Proc Licenses',
         sorter: true,
         ellipsis: true,
         children: [
@@ -781,7 +836,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Core Density',
+        title: <span className="dragHandler">Core Density</span>,
+        column: 'Core Density',
         sorter: true,
         ellipsis: true,
         children: [
@@ -794,7 +850,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Excluded',
+        title: <span className="dragHandler">Excluded</span>,
+        column: 'Excluded',
         sorter: true,
         ellipsis: true,
         children: [
@@ -807,7 +864,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Licensable Cluster Seq Num',
+        title: <span className="dragHandler">Licensable Cluster Seq Num</span>,
+        column: 'Licensable - ClusterSeqNum',
         sorter: true,
         ellipsis: true,
         children: [
@@ -820,7 +878,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Licensable Host Seq Num',
+        title: <span className="dragHandler">Licensable Host Seq Num</span>,
+        column: 'Licensable - HostSeqNum',
         sorter: true,
         ellipsis: true,
         children: [
@@ -833,7 +892,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Licensable Device Seq Num',
+        title: <span className="dragHandler">Licensable Device Seq Num</span>,
+        column: 'Licensable - DeviceSeqNum',
         sorter: true,
         ellipsis: true,
         children: [
@@ -846,7 +906,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Licensed At',
+        title: <span className="dragHandler">Licensed At</span>,
+        column: 'Licensed At',
         sorter: true,
         ellipsis: true,
         children: [
@@ -859,7 +920,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'License Type',
+        title: <span className="dragHandler">License Type</span>,
+        column: 'License Type',
         sorter: true,
         ellipsis: true,
         children: [
@@ -872,7 +934,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'License Count',
+        title: <span className="dragHandler">License Count</span>,
+        column: 'License Count',
         sorter: true,
         ellipsis: true,
         children: [
@@ -885,7 +948,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'License Cost',
+        title: <span className="dragHandler">License Cost</span>,
+        column: 'License Cost',
         sorter: true,
         ellipsis: true,
         children: [
@@ -898,7 +962,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'S - License Type - Device',
+        title: <span className="dragHandler">S - License Type - Device</span>,
+        column: 'S - License Type - Device',
         sorter: true,
         ellipsis: true,
         children: [
@@ -911,7 +976,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'S - License Count - Device',
+        title: <span className="dragHandler">S - License Count - Device</span>,
+        column: 'S - License Count - Device',
         sorter: true,
         ellipsis: true,
         children: [
@@ -924,7 +990,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'S - License Cost - Device',
+        title: <span className="dragHandler">S - License Cost - Device</span>,
+        column: 'S - License Cost - Device',
         sorter: true,
         ellipsis: true,
         children: [
@@ -937,7 +1004,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'S - License Cost - Host - Device Licensed',
+        title: <span className="dragHandler">S - License Cost - Host - Device Licensed</span>,
+        column: 'S - License Cost - Host - Device Licensed',
         sorter: true,
         ellipsis: true,
         children: [
@@ -950,7 +1018,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'S - License Type - Host',
+        title: <span className="dragHandler">S - License Type - Host</span>,
+        column: 'S - License Type - Host',
         sorter: true,
         ellipsis: true,
         children: [
@@ -963,7 +1032,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'S - License Count - Host',
+        title: <span className="dragHandler">S - License Count - Host</span>,
+        column: 'S - License Count - Host',
         sorter: true,
         ellipsis: true,
         children: [
@@ -976,7 +1046,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'S - License Cost - Host',
+        title: <span className="dragHandler">S - License Cost - Host</span>,
+        column: 'S - License Cost - Host',
         sorter: true,
         ellipsis: true,
         children: [
@@ -989,7 +1060,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Comment',
+        title: <span className="dragHandler">Comment</span>,
+        column: 'Comment',
         sorter: true,
         ellipsis: true,
         children: [
@@ -1002,7 +1074,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'License Id',
+        title: <span className="dragHandler">License Id</span>,
+        column: 'License Id',
         sorter: true,
         ellipsis: true,
         children: [
@@ -1015,7 +1088,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'License Qty',
+        title: <span className="dragHandler">License Qty</span>,
+        column: 'License Qty',
         sorter: true,
         ellipsis: true,
         children: [
@@ -1028,7 +1102,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Assigned License Id',
+        title: <span className="dragHandler">Assigned License Id</span>,
+        column: 'Assigned License Id',
         sorter: true,
         ellipsis: true,
         children: [
@@ -1041,7 +1116,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Assigned License Qty',
+        title: <span className="dragHandler">Assigned License Qty</span>,
+        column: 'Assigned License Qty',
         sorter: true,
         ellipsis: true,
         children: [
@@ -1054,7 +1130,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'Requires Server Mobility',
+        title: <span className="dragHandler">Requires Server Mobility</span>,
+        column: 'Requires Server Mobility',
         sorter: true,
         ellipsis: true,
         children: [
@@ -1067,7 +1144,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: 'License Requires SA',
+        title: <span className="dragHandler">License Requires SA</span>,
+        column: 'License Requires SA',
         sorter: true,
         ellipsis: true,
         children: [

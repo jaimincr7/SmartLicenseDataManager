@@ -121,6 +121,7 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={adDevicesExclusions.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={adDevicesExclusions.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>

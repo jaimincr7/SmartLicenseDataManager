@@ -31,37 +31,43 @@ request.interceptors.request.use(
 );
 
 // Response interceptors Customize based on your need
-request.interceptors.response.use(
-  (response) => {
-    const { data } = response;
-    if (data?.code && data?.code !== 200) {
-      return Promise.reject(new Error(data.message || 'Error'));
-    } else {
-      return response;
+export const setResponseError = (history) => {
+  request.interceptors.response.use(
+    (response) => {
+      const { data } = response;
+      if (data?.code && data?.code !== 200) {
+        return Promise.reject(new Error(data.message || 'Error'));
+      } else {
+        return response;
+      }
+    },
+    (error) => {
+      if (!error.response) {
+        toast.error('Please check your internet connection.');
+        history.push('/500');
+      }
+      // Log somewhere
+      const e = Array.isArray(error.response.data.body.errors)
+        ? error.response.data.body.errors.join(' ')
+        : error.response.data.body.errors;
+      switch (error.response.status) {
+        // Authorization Failed Response can add other status codes here to manage error Logging
+        case 401:
+          history.push('/401');
+          break;
+        case 403:
+          history.push('/403');
+          break;
+        case 500:
+          history.push('/500');
+          break;
+        default:
+          toast.error(e);
+          break;
+      }
+      return Promise.reject(error);
     }
-  },
-  (error) => {
-    // Log somewhere
-    const e = Array.isArray(error.response.data.body.errors)
-      ? error.response.data.body.errors.join(' ')
-      : error.response.data.body.errors;
-    switch (error.response.status) {
-      // Authorization Failed Response can add other status codes here to manage error Logging
-      case 401:
-        window.location.href = '/401';
-        break;
-      case 403:
-        window.location.href = '/403';
-        break;
-      case 500:
-        window.location.href = '/500';
-        break;
-      default:
-        toast.error(e);
-        break;
-    }
-    return Promise.reject(error);
-  }
-);
+  );
+};
 
 export default request;

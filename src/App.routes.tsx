@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory, withRouter } from 'react-router-dom';
 import LayoutRoute from './common/components/Layout';
 import MainLayout from './common/components/Layout/MainLayout';
 import Home from './pages/Home';
@@ -23,8 +23,15 @@ import { UnauthorizedPage } from './pages/Unauthorized';
 import { InternalServerError } from './pages/InternalServerError';
 import { AccessDeniedPage } from './pages/AccessDenied';
 import HwCiscoRoutes from './pages/HW Cisco/HwCisco.routes';
+import { setResponseError } from './utils/request';
 
 function AppRoutes() {
+  const history = useHistory();
+
+  React.useEffect(() => {
+    setResponseError(history);
+  }, []);
+
   return (
     <React.Suspense fallback={<PageSpinner />}>
       <UnauthenticatedTemplate>

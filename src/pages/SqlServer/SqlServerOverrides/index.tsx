@@ -121,6 +121,7 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={sqlServerOverrides.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={sqlServerOverrides.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>

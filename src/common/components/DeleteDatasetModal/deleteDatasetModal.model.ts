@@ -3,4 +3,5 @@ export interface IDeleteDatasetModalProps {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   tableName: string;
+  isDateAvailable?: boolean;
 }

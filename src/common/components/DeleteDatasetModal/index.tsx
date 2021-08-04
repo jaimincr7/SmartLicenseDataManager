@@ -23,9 +23,11 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
   const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { showModal, handleModalClose, refreshDataTable, tableName } = props;
+  const { showModal, handleModalClose, refreshDataTable, tableName, isDateAvailable } = props;
 
   const [form] = Form.useForm();
+
+  const showDate = isDateAvailable === undefined ? true : isDateAvailable;
 
   const initialValues = {
     company_id: null,
@@ -144,19 +146,21 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                 </Form.Item>
               </div>
             </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Dataset Date</label>
-                <Form.Item
-                  name="date_added"
-                  label="Dataset Date"
-                  className="m-0"
-                  rules={[{ required: true }]}
-                >
-                  <DatePicker className="w-100" disabledDate={disabledDate} />
-                </Form.Item>
-              </div>
-            </Col>
+            {showDate && (
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Dataset Date</label>
+                  <Form.Item
+                    name="date_added"
+                    label="Dataset Date"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker className="w-100" disabledDate={disabledDate} />
+                  </Form.Item>
+                </div>
+              </Col>
+            )}
           </Row>
           <div className="btns-block modal-footer">
             <Button

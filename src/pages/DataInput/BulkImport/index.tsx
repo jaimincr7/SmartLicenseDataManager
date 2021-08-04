@@ -216,7 +216,7 @@ const BulkImport: React.FC = () => {
         toast.error(bulkImports.bulkInsert.messages.join(' '));
       } else {
         toast.success(bulkImports.bulkInsert.messages.join(' '));
-        if(table){
+        if (table) {
           history.goBack();
         }
       }
