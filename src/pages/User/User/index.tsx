@@ -1,16 +1,15 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
+import { useAppDispatch } from '../../../store/app.hooks';
 import { IUserProps } from './user.model';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
 import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import { clearUser, usersSelector } from '../../../store/master/users/users.reducer';
+import { clearUser } from '../../../store/master/users/users.reducer';
 import AddUserModal from './AddUserModal';
 
 const User: React.FC<IUserProps> = (props) => {
-  const User = useAppSelector(usersSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();

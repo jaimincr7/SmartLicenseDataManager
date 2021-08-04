@@ -2,7 +2,6 @@ import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
-import _ from 'lodash';
 import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
