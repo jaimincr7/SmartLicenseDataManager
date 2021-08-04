@@ -74,17 +74,6 @@ function Sidebar() {
           {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any, index: number) =>
             renderMenu(menuDetail, `-${index}`)
           )}
-          <SubMenu
-            key="report"
-            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-reporting.svg`} alt="" />}
-            title="Reports"
-          >
-            <Menu.Item key="/report/coverage">
-              <Link to="/report/coverage" title="Coverage">
-                Coverage
-              </Link>
-            </Menu.Item>
-          </SubMenu>
         </Menu>
       </Scrollbars>
     </aside>

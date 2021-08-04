@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import {
-  FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
@@ -73,19 +72,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Embedded Url</span>,
-        column: 'EmbeddedUrl',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('embedded_url', form),
-            dataIndex: 'embedded_url',
-            key: 'embedded_url',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
         title: <span className="dragHandler">PB Report Id</span>,
         column: 'PBReportId',
         sorter: true,
@@ -107,6 +93,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('work_space_id', form),
             dataIndex: 'work_space_id',
             key: 'work_space_id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Embedded Url</span>,
+        column: 'EmbeddedUrl',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('embedded_url', form),
+            dataIndex: 'embedded_url',
+            key: 'embedded_url',
             ellipsis: true,
           },
         ],

@@ -1,6 +1,5 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch, Tooltip } from 'antd';
-import _ from 'lodash';
-import { useEffect, useMemo } from 'react';
+import { Button, Col, Form, Input, Modal, Row, Spin, Tooltip } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
@@ -26,6 +25,8 @@ import configurationService from '../../../../services/powerBiReports/configurat
 const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
   const configuration = useAppSelector(configurationSelector);
   const dispatch = useAppDispatch();
+
+  const [getEmbeddedLoading, setGetEmbeddedLoading] = useState(false);
 
   const { id, showModal, handleModalClose, refreshDataTable } = props;
 
@@ -109,13 +110,15 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
         pb_report_id: form.getFieldValue('pb_report_id'),
         work_space_id: form.getFieldValue('work_space_id'),
       };
+      setGetEmbeddedLoading(true);
       configurationService.getReportEmbedUrl(reportDetail).then((res: any) => {
         if (res && res.body?.data) {
           form.setFieldsValue({ embedded_url: res.body?.data?.embed_url });
         }
+        setGetEmbeddedLoading(false)
       });
     } else {
-      toast.error('Please first add reportId and workspaceId.');
+      toast.error('Please enter Work Space Id and Report Id.');
     }
   };
 
@@ -204,7 +207,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-              <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={24} md={16}>
                 <div className="form-group m-0">
                   <label className="label">Embedded Url</label>
                   <Form.Item
@@ -216,6 +219,9 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                     <Input
                       className="form-control"
                       addonAfter={
+                        getEmbeddedLoading ?
+                        <Spin size="small" />
+                        :
                         <CloudDownloadOutlined
                           onClick={() => {
                             getEmbedUrl();
