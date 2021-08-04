@@ -50,7 +50,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
         sorter: true,
         children: [
           {
@@ -65,7 +66,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
         sorter: true,
         children: [
           {
@@ -80,7 +82,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Bu Name',
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'BU_Id',
         sorter: true,
         children: [
           {
@@ -92,7 +95,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -105,7 +109,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Report Refresh Date',
+        title: <span className="dragHandler">Report Refresh Date</span>,
+        column: 'Report Refresh Date',
         sorter: true,
         children: [
           {
@@ -118,7 +123,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'User Principal Name',
+        title: <span className="dragHandler">User Principal Name</span>,
+        column: 'User Principal Name',
         sorter: true,
         children: [
           {
@@ -130,7 +136,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Last Activation Date',
+        title: <span className="dragHandler">Last Activation Date</span>,
+        column: 'Last Activation Date',
         sorter: true,
         children: [
           {
@@ -143,7 +150,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Last Activity Date',
+        title: <span className="dragHandler">Last Activity Date</span>,
+        column: 'Last Activity Date',
         sorter: true,
         children: [
           {
@@ -156,7 +164,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Report Period',
+        title: <span className="dragHandler">Report Period</span>,
+        column: 'Report Period',
         sorter: true,
         children: [
           {
@@ -168,7 +177,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Windows',
+        title: <span className="dragHandler">Is Active on Windows</span>,
+        column: 'Is Active on Windows',
         sorter: true,
         children: [
           {
@@ -184,7 +194,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Mac',
+        title: <span className="dragHandler">Is Active on Mac</span>,
+        column: 'Is Active on Mac',
         sorter: true,
         children: [
           {
@@ -200,7 +211,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Mobile',
+        title: <span className="dragHandler">Is Active on Mobile</span>,
+        column: 'Is Active on Mobile',
         sorter: true,
         children: [
           {
@@ -216,7 +228,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Web',
+        title: <span className="dragHandler">Is Active on Web</span>,
+        column: 'Is Active on Web',
         sorter: true,
         children: [
           {
@@ -232,7 +245,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Outlook',
+        title: <span className="dragHandler">Is Active on Outlook</span>,
+        column: 'Is Active on Outlook',
         sorter: true,
         children: [
           {
@@ -248,7 +262,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Word',
+        title: <span className="dragHandler">Is Active on Word</span>,
+        column: 'Is Active on Word',
         sorter: true,
         children: [
           {
@@ -264,7 +279,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Excel',
+        title: <span className="dragHandler">Is Active on Excel</span>,
+        column: 'Is Active on Excel',
         sorter: true,
         children: [
           {
@@ -280,7 +296,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on PowerPoint',
+        title: <span className="dragHandler">Is Active on PowerPoint</span>,
+        column: 'Is Active on PowerPoint',
         sorter: true,
         children: [
           {
@@ -296,7 +313,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on OneNote',
+        title: <span className="dragHandler">Is Active on OneNote</span>,
+        column: 'Is Active on OneNote',
         sorter: true,
         children: [
           {
@@ -312,7 +330,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Teams',
+        title: <span className="dragHandler">Is Active on Teams</span>,
+        column: 'Is Active on Teams',
         sorter: true,
         children: [
           {
@@ -328,7 +347,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Outlook (Windows)',
+        title: <span className="dragHandler">Is Active on Outlook (Windows)</span>,
+        column: 'Is Active on Outlook (Windows)',
         sorter: true,
         children: [
           {
@@ -344,7 +364,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Word (Windows)',
+        title: <span className="dragHandler">Is Active on Word (Windows)</span>,
+        column: 'Is Active on Word (Windows)',
         sorter: true,
         children: [
           {
@@ -360,7 +381,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Excel (Windows)',
+        title: <span className="dragHandler">Is Active on Excel (Windows)</span>,
+        column: 'Is Active on Excel (Windows)',
         sorter: true,
         children: [
           {
@@ -376,7 +398,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on PowerPoint (Windows)',
+        title: <span className="dragHandler">Is Active on PowerPoint (Windows)</span>,
+        column: 'Is Active on PowerPoint (Windows)',
         sorter: true,
         children: [
           {
@@ -392,7 +415,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on OneNote (Windows)',
+        title: <span className="dragHandler">Is Active on OneNote (Windows)</span>,
+        column: 'Is Active on OneNote (Windows)',
         sorter: true,
         children: [
           {
@@ -408,7 +432,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Teams (Windows)',
+        title: <span className="dragHandler">Is Active on Teams (Windows)</span>,
+        column: 'Is Active on Teams (Windows)',
         sorter: true,
         children: [
           {
@@ -424,7 +449,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Outlook (Mac)',
+        title: <span className="dragHandler">Is Active on Outlook (Mac)</span>,
+        column: 'Is Active on Outlook (Mac)',
         sorter: true,
         children: [
           {
@@ -440,7 +466,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Word (Mac)',
+        title: <span className="dragHandler">Is Active on Word (Mac)</span>,
+        column: 'Is Active on Word (Mac)',
         sorter: true,
         children: [
           {
@@ -456,7 +483,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Excel (Mac)',
+        title: <span className="dragHandler">Is Active on Excel (Mac)</span>,
+        column: 'Is Active on Excel (Mac)',
         sorter: true,
         children: [
           {
@@ -472,7 +500,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on PowerPoint (Mac)',
+        title: <span className="dragHandler">Is Active on PowerPoint (Mac)</span>,
+        column: '',
         sorter: true,
         children: [
           {
@@ -488,7 +517,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on OneNote (Mac)',
+        title: <span className="dragHandler">Is Active on OneNote (Mac)</span>,
+        column: 'Is Active on OneNote (Mac)',
         sorter: true,
         children: [
           {
@@ -504,7 +534,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Teams (Mac)',
+        title: <span className="dragHandler">Is Active on Teams (Mac)</span>,
+        column: 'Is Active on Teams (Mac)',
         sorter: true,
         children: [
           {
@@ -520,7 +551,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Outlook (Mobile)',
+        title: <span className="dragHandler">Is Active on Outlook (Mobile)</span>,
+        column: 'Is Active on Outlook (Mobile)',
         sorter: true,
         children: [
           {
@@ -536,7 +568,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Word (Mobile)',
+        title: <span className="dragHandler">Is Active on Word (Mobile)</span>,
+        column: 'Is Active on Word (Mobile)',
         sorter: true,
         children: [
           {
@@ -552,7 +585,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Excel (Mobile)',
+        title: <span className="dragHandler">Is Active on Excel (Mobile)</span>,
+        column: 'Is Active on Excel (Mobile)',
         sorter: true,
         children: [
           {
@@ -568,7 +602,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on PowerPoint (Mobile)',
+        title: <span className="dragHandler">Is Active on PowerPoint (Mobile)</span>,
+        column: 'Is Active on PowerPoint (Mobile)',
         sorter: true,
         children: [
           {
@@ -584,7 +619,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on OneNote (Mobile)',
+        title: <span className="dragHandler">Is Active on OneNote (Mobile)</span>,
+        column: 'Is Active on OneNote (Mobile)',
         sorter: true,
         children: [
           {
@@ -600,7 +636,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Teams (Mobile)',
+        title: <span className="dragHandler">Is Active on Teams (Mobile)</span>,
+        column: 'Is Active on Teams (Mobile)',
         sorter: true,
         children: [
           {
@@ -616,7 +653,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Outlook (Web)',
+        title: <span className="dragHandler">Is Active on Outlook (Web)</span>,
+        column: 'Is Active on Outlook (Web)',
         sorter: true,
         children: [
           {
@@ -632,7 +670,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Word (Web)',
+        title: <span className="dragHandler">Is Active on Word (Web)</span>,
+        column: 'Is Active on Word (Web)',
         sorter: true,
         children: [
           {
@@ -648,7 +687,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Excel (Web)',
+        title: <span className="dragHandler">Is Active on Excel (Web)</span>,
+        column: 'Is Active on Excel (Web)',
         sorter: true,
         children: [
           {
@@ -664,7 +704,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on PowerPoint (Web)',
+        title: <span className="dragHandler">Is Active on PowerPoint (Web)</span>,
+        column: 'Is Active on PowerPoint (Web)',
         sorter: true,
         children: [
           {
@@ -680,7 +721,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on OneNote (Web)',
+        title: <span className="dragHandler">Is Active on OneNote (Web)</span>,
+        column: 'Is Active on OneNote (Web)',
         sorter: true,
         children: [
           {
@@ -696,7 +738,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Active on Teams (Web)',
+        title: <span className="dragHandler">Is Active on Teams (Web)</span>,
+        column: 'Is Active on Teams (Web)',
         sorter: true,
         children: [
           {

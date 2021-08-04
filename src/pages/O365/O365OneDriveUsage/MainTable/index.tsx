@@ -50,7 +50,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
         sorter: true,
         children: [
           {
@@ -62,7 +63,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler">Company Name</span>,
+        column: '',
         sorter: true,
         children: [
           {
@@ -74,7 +76,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Bu Name',
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'BU_Id',
         sorter: true,
         children: [
           {
@@ -86,7 +89,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -99,7 +103,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Report Refresh Date',
+        title: <span className="dragHandler">Report Refresh Date</span>,
+        column: 'Report Refresh Date',
         sorter: true,
         children: [
           {
@@ -112,7 +117,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Owner Principal Name',
+        title: <span className="dragHandler">Owner Principal Name</span>,
+        column: 'Owner Principal Name',
         sorter: true,
         children: [
           {
@@ -124,7 +130,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Owner Display Name',
+        title: <span className="dragHandler">Owner Display Name</span>,
+        column: 'Owner Display Name',
         sorter: true,
         children: [
           {
@@ -136,7 +143,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Last Activity Date',
+        title: <span className="dragHandler">Last Activity Date</span>,
+        column: 'Last Activity Date',
         sorter: true,
         children: [
           {
@@ -149,7 +157,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Site URL',
+        title: <span className="dragHandler">Site URL</span>,
+        column: 'Site URL',
         sorter: true,
         children: [
           {
@@ -161,7 +170,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'File Count',
+        title: <span className="dragHandler">File Count</span>,
+        column: 'File Count',
         sorter: true,
         children: [
           {
@@ -173,7 +183,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Active File Count',
+        title: <span className="dragHandler">Active File Count</span>,
+        column: 'Active File Count',
         sorter: true,
         children: [
           {
@@ -185,7 +196,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Storage Allocated (Byte)',
+        title: <span className="dragHandler">Storage Allocated (Byte)</span>,
+        column: 'Storage Allocated (Byte)',
         sorter: true,
         children: [
           {
@@ -197,7 +209,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Storage Used (Byte)',
+        title: <span className="dragHandler">Storage Used (Byte)</span>,
+        column: 'Storage Used (Byte)',
         sorter: true,
         children: [
           {
@@ -209,7 +222,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Report Period',
+        title: <span className="dragHandler">Report Period</span>,
+        column: 'Report Period',
         sorter: true,
         children: [
           {
@@ -221,7 +235,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Deleted',
+        title: <span className="dragHandler">Is Deleted</span>,
+        column: 'Is Deleted',
         sorter: true,
         children: [
           {

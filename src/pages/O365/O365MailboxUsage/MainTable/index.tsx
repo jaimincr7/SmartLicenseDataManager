@@ -50,7 +50,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler"> Tenant Name </span>,
+        column: 'TenantId',
         sorter: true,
         children: [
           {
@@ -62,7 +63,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler"> Company Name </span> ,
+        column: 'CompanyId',
         sorter: true,
         children: [
           {
@@ -74,7 +76,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Bu Name',
+        title: <span className="dragHandler"> Bu Name </span>,
+        column: 'BU_Id',
         sorter: true,
         children: [
           {
@@ -86,7 +89,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler"> Date Added </span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -99,7 +103,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'User Principal Name',
+        title: <span className="dragHandler"> User Principal Name </span>,
+        column: 'User Principal Name',
         sorter: true,
         children: [
           {
@@ -111,7 +116,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Display Name',
+        title: <span className="dragHandler"> Display Name </span>,
+        column: 'Display Name',
         sorter: true,
         children: [
           {
@@ -123,7 +129,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Report Refresh Date',
+        title: <span className="dragHandler"> Report Refresh Date </span>,
+        column: 'Report Refresh Date',
         sorter: true,
         children: [
           {
@@ -136,7 +143,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Created Date',
+        title: <span className="dragHandler"> Created Date </span>,
+        column: 'Created Date',
         sorter: true,
         children: [
           {
@@ -149,7 +157,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Deleted Date',
+        title: <span className="dragHandler">Deleted Date</span>,
+        column: 'Deleted Date',
         sorter: true,
         children: [
           {
@@ -161,7 +170,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Last Activity Date',
+        title: <span className="dragHandler">Last Activity Date</span>,
+        column: 'Last Activity Date',
         sorter: true,
         children: [
           {
@@ -174,7 +184,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Item Count',
+        title: <span className="dragHandler">Item Count</span>,
+        column: 'Item Count',
         sorter: true,
         children: [
           {
@@ -186,7 +197,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Storage Used (Byte)',
+        title: <span className="dragHandler">Storage Used (Byte)</span>,
+        column: 'Storage Used (Byte)',
         sorter: true,
         children: [
           {
@@ -198,7 +210,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Issue Warning Quota (Byte)',
+        title: <span className="dragHandler">Issue Warning Quota (Byte)</span>,
+        column: 'Issue Warning Quota (Byte)',
         sorter: true,
         children: [
           {
@@ -210,7 +223,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Prohibit Send Quota (Byte)',
+        title: <span className="dragHandler">Prohibit Send Quota (Byte)</span>,
+        column: 'Prohibit Send Quota (Byte)',
         sorter: true,
         children: [
           {
@@ -222,7 +236,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Prohibit Send/Recieve Quota (Byte)',
+        title: <span className="dragHandler">Prohibit Send/Recieve Quota (Byte)</span>,
+        column: 'Prohibit Send/Recieve Quota (Byte)',
         sorter: true,
         children: [
           {
@@ -234,7 +249,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Delted Item Count',
+        title: <span className="dragHandler">Delted Item Count</span> ,
+        column: 'Delted Item Count',
         sorter: true,
         children: [
           {
@@ -246,7 +262,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Delted Item Size (Byte)',
+        title: <span className="dragHandler">Delted Item Size (Byte)</span>,
+        column: 'Delted Item Size (Byte)',
         sorter: true,
         children: [
           {
@@ -258,7 +275,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Report Period',
+        title: <span className="dragHandler">Report Period</span>,
+        column: 'Report Period',
         sorter: true,
         children: [
           {
@@ -270,7 +288,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Deleted',
+        title: <span className="dragHandler">Is Deleted</span>,
+        column: 'Is Deleted',
         sorter: true,
         children: [
           {
