@@ -31,9 +31,9 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
     return (
-    <>
-      {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.User} level={1} />
-    </>
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.User} level={1} />
+      </>
     );
   }, [isNew]);
   const submitButtonText = useMemo(() => {

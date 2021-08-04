@@ -9,7 +9,6 @@ import BreadCrumbs from '../../../common/components/Breadcrumbs';
 const RenderReport: React.FC<IRenderReportProps> = (props) => {
   const { match } = props;
   const [embeddedReport, setEmbeddedReport] = useState<Report>(null);
-  const [reportName, setReportName] = useState<string>(null);
   const [reportConfig, setReportConfig] = useState({
     type: 'report',
     tokenType: models.TokenType.Embed,
@@ -18,10 +17,9 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     accessToken: '',
   });
 
+  const { name } = match.params;
   useEffect(() => {
-    const { name } = match.params;
-    setReportName(name);
-    setReportConfig({...reportConfig, id: ''});
+    setReportConfig({ ...reportConfig, id: '' });
     configurationService.getReportDetail(name).then((res) => {
       if (res && res.body?.data) {
         const reportDetail = res.body.data;
@@ -40,7 +38,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">
-          <BreadCrumbs pageName={reportName} />
+          <BreadCrumbs pageName={name} />
         </h4>
       </div>
       <div className="main-card">
