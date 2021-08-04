@@ -19,12 +19,12 @@ const UserRoutes: React.FC = () => {
     <div className="windowsServer">
       <Switch>
         {/* User */}
-        {ability.can(Action.View, Page.User) && (
+        {/* {ability.can(Action.View, Page.User) && (
           <Route exact path={`${match.path}/user`} component={User} />
         )}
         {ability.can(Action.View, Page.User) && (
           <Route exact path={`${match.path}/user/:id`} component={User} />
-        )}
+        )} */}
         {/* BU */}
         {ability.can(Action.View, Page.Bu) && (
           <Route exact path={`${match.path}/bu`} component={BU} />
