@@ -10,7 +10,6 @@ import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
 import TableColumnSelection from './TableColumnsSelection';
 import Tenant from './Tenant';
-import User from './User';
 
 const UserRoutes: React.FC = () => {
   const match = useRouteMatch();
