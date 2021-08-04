@@ -4,7 +4,7 @@ import { IUserProps } from './user.model';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
-import {  Page } from '../../../common/constants/pageAction';
+import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { clearUser, usersSelector } from '../../../store/master/users/users.reducer';
 import AddUserModal from './AddUserModal';

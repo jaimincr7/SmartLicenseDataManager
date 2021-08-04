@@ -10,3 +10,8 @@ export interface IConfiguration {
 }
 
 export interface ISearchConfiguration extends ISearch {}
+
+export interface IReportEmbedUrl {
+  pb_report_id: string;
+  work_space_id: string;
+}

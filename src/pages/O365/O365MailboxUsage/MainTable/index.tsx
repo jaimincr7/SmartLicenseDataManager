@@ -63,7 +63,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler"> Company Name </span> ,
+        title: <span className="dragHandler"> Company Name </span>,
         column: 'CompanyId',
         sorter: true,
         children: [
@@ -249,7 +249,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Delted Item Count</span> ,
+        title: <span className="dragHandler">Delted Item Count</span>,
         column: 'Delted Item Count',
         sorter: true,
         children: [

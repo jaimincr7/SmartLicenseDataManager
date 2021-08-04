@@ -1,15 +1,4 @@
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Switch,
-} from 'antd';
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -18,14 +7,8 @@ import { validateMessages } from '../../../../common/constants/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IUser } from '../../../../services/master/user/users.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import {
-  getCompanyLookup,
-  getTenantLookup,
-} from '../../../../store/common/common.action';
-import {
-  clearCompanyLookUp,
-  commonSelector,
-} from '../../../../store/common/common.reducer';
+import { getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
+import { clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
 import { getUserById, saveUser } from '../../../../store/master/users/users.action';
 import {
   clearUserGetById,

@@ -46,7 +46,9 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
               setEmbeddedReport(embedObject as Report);
             }}
           />
-        ) : <Spin />}
+        ) : (
+          <Spin />
+        )}
       </div>
     </div>
   );

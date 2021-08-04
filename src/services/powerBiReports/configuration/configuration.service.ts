@@ -1,6 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import { IConfiguration, ISearchConfiguration } from './configuration.model';
+import { IConfiguration, IReportEmbedUrl, ISearchConfiguration } from './configuration.model';
 
 class ConfigurationService {
   ENDPOINT = '/power-bi-report-config';
@@ -10,6 +10,15 @@ class ConfigurationService {
   ): Promise<IApiResponse<ISearchResponse<IConfiguration>>> {
     delete searchParams.is_lookup;
     const url = `${this.ENDPOINT}/search`;
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getReportEmbedUrl(
+    searchParams?: IReportEmbedUrl
+  ): Promise<IApiResponse<ISearchResponse<IConfiguration>>> {
+    const url = `${this.ENDPOINT}/embedded-url`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });

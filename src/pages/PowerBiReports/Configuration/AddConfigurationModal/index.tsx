@@ -5,7 +5,10 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { IConfiguration } from '../../../../services/powerBiReports/configuration/configuration.model';
+import {
+  IConfiguration,
+  IReportEmbedUrl,
+} from '../../../../services/powerBiReports/configuration/configuration.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getConfigurationById,
@@ -17,7 +20,8 @@ import {
   configurationSelector,
 } from '../../../../store/powerBiReports/configuration/configuration.reducer';
 import { IAddConfigurationProps } from './addConfiguration.model';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, CloudDownloadOutlined } from '@ant-design/icons';
+import configurationService from '../../../../services/powerBiReports/configuration/configuration.service';
 
 const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
   const configuration = useAppSelector(configurationSelector);
@@ -97,6 +101,24 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
     };
   }, [dispatch]);
 
+  const getEmbedUrl = () => {
+    const reportId = form.getFieldValue('pb_report_id');
+    const workspaceId = form.getFieldValue('work_space_id');
+    if (reportId && workspaceId) {
+      const reportDetail: IReportEmbedUrl = {
+        pb_report_id: form.getFieldValue('pb_report_id'),
+        work_space_id: form.getFieldValue('work_space_id'),
+      };
+      configurationService.getReportEmbedUrl(reportDetail).then((res: any) => {
+        if (res && res.body?.data) {
+          form.setFieldsValue({ embedded_url: res.body?.data?.embed_url });
+        }
+      });
+    } else {
+      toast.error('Please first add reportId and workspaceId.');
+    }
+  };
+
   return (
     <>
       <Modal
@@ -131,11 +153,15 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                       { pattern: new RegExp('^(?=.*[a-z])[a-z-]+$'), required: true, max: 200 },
                     ]}
                   >
-                    <Input disabled={!isNew} className="form-control" suffix={
-                      <Tooltip title="You can't change it once it saved.">
-                        <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                      </Tooltip>
-                    } />
+                    <Input
+                      disabled={!isNew}
+                      className="form-control"
+                      suffix={
+                        <Tooltip title="You can't change it once it saved.">
+                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                      }
+                    />
                   </Form.Item>
                 </div>
               </Col>
@@ -187,11 +213,20 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                     className="m-0"
                     rules={[{ required: true }]}
                   >
-                    <Input className="form-control" />
+                    <Input
+                      className="form-control"
+                      addonAfter={
+                        <CloudDownloadOutlined
+                          onClick={() => {
+                            getEmbedUrl();
+                          }}
+                        />
+                      }
+                    />
                   </Form.Item>
                 </div>
               </Col>
-             </Row>
+            </Row>
             <div className="btns-block modal-footer">
               <Button
                 key="submit"
