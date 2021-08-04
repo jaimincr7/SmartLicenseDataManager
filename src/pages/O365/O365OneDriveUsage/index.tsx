@@ -14,6 +14,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   const o365OneDriveUsage = useAppSelector(o365OneDriveUsageSelector);
@@ -24,6 +25,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
 
@@ -77,6 +79,21 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
                 </Button>
               </Col>
             </Can>
+            <Can I={Action.DeleteData} a={Page.O365OneDriveUsage}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setDeleteModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                    </em>
+                  }
+                >
+                  Delete Dataset
+                </Button>
+              </Col>
+            </Can>
           </Row>
         </div>
         <MainTable
@@ -95,6 +112,14 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
             history.push('/o365/o365-one-drive-usage');
           }}
           id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={o365OneDriveUsage.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
