@@ -49,7 +49,9 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.ADExclusions} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.ADExclusions} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -119,6 +121,7 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={adDevicesExclusions.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={adDevicesExclusions.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>

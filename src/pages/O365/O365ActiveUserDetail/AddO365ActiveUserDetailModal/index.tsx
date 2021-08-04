@@ -27,6 +27,8 @@ import {
 import { IO365ActiveUserDetail } from '../../../../services/o365/o365ActiveUserDetail/o365ActiveUserDetail.model';
 import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -39,7 +41,11 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Active User Detail' : 'Edit Active User Detail';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.O365ActiveUserDetail} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
@@ -264,12 +270,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Company</label>
-                  <Form.Item
-                    name="company_id"
-                    className="m-0"
-                    label="Company"
-                    rules={[{ required: true }]}
-                  >
+                  <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -287,7 +288,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
+                  <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
                       allowClear
@@ -317,7 +318,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                     name="user_principal_name"
                     className="m-0"
                     label="User Principal Name"
-                    rules={[{ type: 'email', max: 510 }]}
+                    rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

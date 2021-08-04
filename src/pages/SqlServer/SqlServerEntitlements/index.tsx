@@ -48,7 +48,9 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.SqlServerEntitlement} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.SqlServerEntitlement} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

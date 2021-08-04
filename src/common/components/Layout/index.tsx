@@ -6,6 +6,7 @@ import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { setActiveAccount, userSelector } from '../../../store/user/user.reducer';
 import { getMenuRights } from '../../../store/user/user.action';
+import { Skeleton } from 'antd';
 
 const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...rest }) => {
   const { accounts, inProgress } = useMsal();
@@ -64,10 +65,12 @@ const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...r
       {...rest}
       render={(props) => (
         <>
-          {canLoad && (
+          {canLoad ? (
             <Layout>
               <Component {...props} />
             </Layout>
+          ) : (
+            <Skeleton active />
           )}
         </>
       )}

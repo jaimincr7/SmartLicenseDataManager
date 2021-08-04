@@ -48,7 +48,9 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   return (
     <div className="azure">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.AzureDailyUsage} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.AzureDailyUsage} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

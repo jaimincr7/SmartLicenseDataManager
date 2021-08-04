@@ -46,7 +46,9 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.ADUsers} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.ADUsers} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

@@ -10,6 +10,7 @@ import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
 import TableColumnSelection from './TableColumnsSelection';
 import Tenant from './Tenant';
+import User from './User';
 
 const UserRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -17,6 +18,13 @@ const UserRoutes: React.FC = () => {
   return (
     <div className="windowsServer">
       <Switch>
+        {/* User */}
+        {/* {ability.can(Action.View, Page.User) && (
+          <Route exact path={`${match.path}/user`} component={User} />
+        )}
+        {ability.can(Action.View, Page.User) && (
+          <Route exact path={`${match.path}/user/:id`} component={User} />
+        )} */}
         {/* BU */}
         {ability.can(Action.View, Page.Bu) && (
           <Route exact path={`${match.path}/bu`} component={BU} />

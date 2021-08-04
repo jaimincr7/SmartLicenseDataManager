@@ -51,7 +51,9 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.SqlServerExclusions} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.SqlServerExclusions} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -145,6 +147,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={sqlServerExclusions.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={sqlServerExclusions.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>

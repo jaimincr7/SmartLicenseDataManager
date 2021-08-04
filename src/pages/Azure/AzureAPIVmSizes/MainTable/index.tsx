@@ -49,7 +49,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -62,7 +63,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Name',
+        title: <span className="dragHandler">Name</span>,
+        column: 'name',
         sorter: true,
         children: [
           {
@@ -74,7 +76,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Max Data Disk Count',
+        title: <span className="dragHandler">Max Data Disk Count</span>,
+        column: 'maxDataDiskCount',
         sorter: true,
         children: [
           {
@@ -86,7 +89,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Memory In GB',
+        title: <span className="dragHandler">Memory In GB</span>,
+        column: 'memoryInGB',
         sorter: true,
         children: [
           {
@@ -98,7 +102,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Number Of Cores',
+        title: <span className="dragHandler">Number Of Cores</span>,
+        column: 'numberOfCores',
         sorter: true,
         children: [
           {
@@ -110,7 +115,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'OS Disk Size In GB',
+        title: <span className="dragHandler">OS Disk Size In GB</span>,
+        column: 'osDiskSizeInGB',
         sorter: true,
         children: [
           {
@@ -122,7 +128,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Resource Disk Size In GB',
+        title: <span className="dragHandler">Resource Disk Size In GB</span>,
+        column: 'resourceDiskSizeInGB',
         sorter: true,
         children: [
           {

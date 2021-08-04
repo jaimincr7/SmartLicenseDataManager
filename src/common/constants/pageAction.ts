@@ -28,6 +28,7 @@ export enum Page {
   CompanyMenuRights = 'company-menu-access-right',
   GlobalTableColumnSelection = 'global-table-column-selection',
   MenuAccessRights = 'menu-access-rights',
+  User = 'user',
 
   TabVCluster = 'tab-v-cluster',
   TabVHost = 'tab-v-host',
@@ -41,6 +42,16 @@ export enum Page {
 
   O365ActivationsUserDetail = 'o365-activations-user-detail',
   O365ActiveUserDetail = 'o365-active-user-detail',
+  O365M365AppsUsageUserDetail = 'o365-m365-apps-usage-user-detail',
+  O365MailboxUsage = 'o365-mailbox-usage',
+  O365OneDriveUsage = 'o365-one-drive-usage',
+  O365ProductList = 'o365-product-list',
+  O365Reservations = 'o365-reservations',
+  O365Users = 'o365-users',
+
+  HwCiscoSiteMatrix = 'hw-cisco-cisco-site-matrix',
+
+  PowerBIConfig = 'power-bi-report-config',
 
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',

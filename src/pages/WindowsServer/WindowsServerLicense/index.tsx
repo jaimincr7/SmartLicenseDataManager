@@ -45,7 +45,9 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.WindowsServerLicense} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.WindowsServerLicense} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

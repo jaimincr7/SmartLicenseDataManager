@@ -45,7 +45,9 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
   return (
     <div className="sqlServer">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.SqlServerLicense} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.SqlServerLicense} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

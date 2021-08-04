@@ -39,7 +39,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
     });
     const accessRightsInputValues = {
       menu_access_right_ids: accessRights,
-      menu_orders
+      menu_orders,
     };
     dispatch(saveAddRemoveMenuAccessRights(accessRightsInputValues));
   };
@@ -220,7 +220,9 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
   return (
     <div className="menuRights">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.MenuAccessRights} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.MenuAccessRights} />
+        </h4>
       </div>
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>

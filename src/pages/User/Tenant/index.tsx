@@ -10,7 +10,6 @@ import { Row, Col, Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const Tenant: React.FC<ITenantProps> = (props) => {
   const tenant = useAppSelector(tenantSelector);
@@ -21,7 +20,6 @@ const Tenant: React.FC<ITenantProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
@@ -44,7 +42,9 @@ const Tenant: React.FC<ITenantProps> = (props) => {
   return (
     <div className="tenant">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.Tenant} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.Tenant} />
+        </h4>
       </div>
       <div className="main-card">
         <div className="input-btns-title">
@@ -67,21 +67,6 @@ const Tenant: React.FC<ITenantProps> = (props) => {
                 </Button>
               </Col>
             </Can>
-            <Can I={Action.DeleteData} a={Page.Tenant}>
-              <Col>
-                <Button
-                  className="btn-icon"
-                  onClick={() => setDeleteModalVisible(true)}
-                  icon={
-                    <em className="anticon">
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-                    </em>
-                  }
-                >
-                  Delete Dataset
-                </Button>
-              </Col>
-            </Can>
           </Row>
         </div>
         <MainTable
@@ -100,14 +85,6 @@ const Tenant: React.FC<ITenantProps> = (props) => {
             history.push('/user/tenant');
           }}
           id={id}
-          refreshDataTable={() => refreshDataTable()}
-        />
-      )}
-      {deleteModalVisible && (
-        <DeleteDatasetModal
-          showModal={deleteModalVisible}
-          handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={tenant.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}

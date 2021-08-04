@@ -10,7 +10,6 @@ import { Row, Col, Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const Currency: React.FC<ICurrencyProps> = (props) => {
   const currency = useAppSelector(currencySelector);
@@ -21,7 +20,6 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
 
   useEffect(() => {
@@ -44,7 +42,9 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
   return (
     <div className="currency">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.Currency} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.Currency} />
+        </h4>
       </div>
       <div className="main-card">
         <div className="input-btns-title">
@@ -69,21 +69,6 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
                 </Button>
               </Col>
             </Can>
-            <Can I={Action.DeleteData} a={Page.Currency}>
-              <Col>
-                <Button
-                  className="btn-icon"
-                  onClick={() => setDeleteModalVisible(true)}
-                  icon={
-                    <em className="anticon">
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-                    </em>
-                  }
-                >
-                  Delete Dataset
-                </Button>
-              </Col>
-            </Can>
           </Row>
         </div>
         <MainTable
@@ -102,14 +87,6 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
             history.push('/user/currency');
           }}
           id={id}
-          refreshDataTable={() => refreshDataTable()}
-        />
-      )}
-      {deleteModalVisible && (
-        <DeleteDatasetModal
-          showModal={deleteModalVisible}
-          handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={currency.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}

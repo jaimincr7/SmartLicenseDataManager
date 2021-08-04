@@ -64,6 +64,13 @@ export const getWindowsServerLicenseLookup = createAsyncThunk(
   }
 );
 
+export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', async () => {
+  const response = await commonService.getO365ProductsLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
   const response = await commonService.deleteDataset(data).then((res) => {
     return res.body;

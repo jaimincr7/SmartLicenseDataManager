@@ -2,7 +2,9 @@ import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IBU } from '../../../../services/master/bu/bu.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -27,7 +29,11 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add BU' : 'Edit BU';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Bu} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

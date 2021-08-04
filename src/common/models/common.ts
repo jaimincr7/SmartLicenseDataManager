@@ -27,6 +27,7 @@ export interface ITableColumnSelection {
   id?: number;
   table_name?: string;
   columns?: { [key: string]: boolean };
+  column_orders?: { [key: string]: boolean };
 }
 
 export interface ISearchResult<T> {
@@ -53,4 +54,8 @@ export interface IInlineSearch {
 
 export interface IDetailParams {
   id: string;
+}
+
+export interface IReportParams {
+  name: string;
 }

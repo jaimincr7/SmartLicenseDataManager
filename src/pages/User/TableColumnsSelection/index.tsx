@@ -52,7 +52,7 @@ const TableColumnSelection: React.FC = () => {
       dispatch(getTableColumns(table)).then(async (res: any) => {
         if (res.payload) {
           const columnsArr = res.payload.map((col) => col.name);
-          await setDefaultTableColumns([...columnsArr, 'Action']);
+          await setDefaultTableColumns([...columnsArr, 'Actions']);
         }
       });
       dispatch(getGlobalTableColumns(table)).then(async (res) => {
@@ -186,7 +186,9 @@ const TableColumnSelection: React.FC = () => {
     <>
       <div className="update-excel-page">
         <div className="title-block">
-          <BreadCrumbs pageName={Page.GlobalTableColumnSelection} />
+          <h4 className="p-0">
+            <BreadCrumbs pageName={Page.GlobalTableColumnSelection} />
+          </h4>
         </div>
         <div className="main-card">
           <Form

@@ -3,7 +3,9 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICompany } from '../../../../services/master/company/company.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -32,7 +34,11 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Company' : 'Edit Company';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Company} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

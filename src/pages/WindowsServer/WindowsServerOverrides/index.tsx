@@ -48,7 +48,9 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
   return (
     <div className="windowsServer">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.WindowsServerOverrides} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.WindowsServerOverrides} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -118,6 +120,7 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={overrides.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={overrides.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>

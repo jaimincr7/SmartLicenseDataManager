@@ -2,7 +2,9 @@ import { Button, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerEntitlements } from '../../../../services/windowsServer/windowsServerEntitlements/windowsServerEntitlements.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -39,7 +41,12 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Windows Server Entitlement' : 'Edit Windows Server Entitlement';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '}
+        <BreadCrumbs pageName={Page.WindowsServerEntitlement} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

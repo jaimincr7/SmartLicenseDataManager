@@ -59,6 +59,13 @@ class CommonService {
     });
   }
 
+  public async getO365ProductsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-o365-products/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getColumnLookup(tableName: string, columnName: string): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
     const data = {
@@ -120,7 +127,7 @@ class CommonService {
   public async saveTableColumnSelection(data: ITableColumnSelection): Promise<any> {
     const inputValues = {
       ...data,
-      columns: JSON.stringify(data.columns),
+      columns: JSON.stringify({ columns: data.columns, column_orders: data.column_orders }),
     };
     const url = `/table-column-selection`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {

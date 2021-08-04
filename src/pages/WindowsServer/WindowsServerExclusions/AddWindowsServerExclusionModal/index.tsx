@@ -26,6 +26,8 @@ import {
   clearWindowsServerExclusionsMessages,
   clearWindowsServerExclusionsGetById,
 } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
+import { Page } from '../../../../common/constants/pageAction';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 
 const { Option } = Select;
 
@@ -38,7 +40,11 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Windows Server Exclusion' : 'Edit Windows Server Exclusion';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.WindowsServerExclusions} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

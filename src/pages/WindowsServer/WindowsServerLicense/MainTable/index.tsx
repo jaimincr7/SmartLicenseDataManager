@@ -50,7 +50,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -63,7 +64,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
         sorter: true,
         ellipsis: true,
         children: [
@@ -76,7 +78,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Bu Name',
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'Bu_Id',
         sorter: true,
         ellipsis: true,
         children: [
@@ -89,7 +92,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         ellipsis: true,
         children: [
@@ -103,7 +107,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Agreement Type',
+        title: <span className="dragHandler">Agreement Type</span>,
+        column: 'Opt_AgreementType',
         sorter: true,
         ellipsis: true,
         children: [
@@ -119,7 +124,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Default to Data Center on Hosts',
+        title: <span className="dragHandler">Default to Data Center on Hosts</span>,
+        column: 'Opt_DefaultToDatacenterOnHosts',
         sorter: true,
         ellipsis: true,
         children: [
@@ -136,7 +142,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Entitlements',
+        title: <span className="dragHandler">Entitlements</span>,
+        column: 'Opt_Entitlements',
         sorter: true,
         ellipsis: true,
         children: [
@@ -153,7 +160,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Exclude Non-Prod',
+        title: <span className="dragHandler">Exclude Non-Prod</span>,
+        column: 'Opt_ExcludeNonProd',
         sorter: true,
         ellipsis: true,
         children: [
@@ -170,7 +178,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Notes',
+        title: <span className="dragHandler">Notes</span>,
+        column: 'Notes',
         sorter: true,
         ellipsis: true,
         children: [

@@ -1,7 +1,9 @@
 import { Button, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ICurrency } from '../../../../services/master/currency/currency.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCurrencyById, saveCurrency } from '../../../../store/master/currency/currency.action';
@@ -20,7 +22,11 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Currency' : 'Edit Currency';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Currency} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

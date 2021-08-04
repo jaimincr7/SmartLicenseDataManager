@@ -1,7 +1,9 @@
 import { Button, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { IAzureAPIVmSizes } from '../../../../services/azure/azureAPIVmSizes/azureAPIVmSizes.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -23,7 +25,11 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Azure API - VM Sizes' : 'Edit Azure API - VM Sizes';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.AzureAPIVmSizes} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

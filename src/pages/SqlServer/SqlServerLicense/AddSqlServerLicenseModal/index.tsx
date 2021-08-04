@@ -3,7 +3,9 @@ import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerLicense } from '../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -40,7 +42,11 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add License Scenario' : 'Edit License Scenario';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.SqlServerLicenseDetail} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

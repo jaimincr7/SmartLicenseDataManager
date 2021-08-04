@@ -1,7 +1,9 @@
 import { Button, Col, Form, Input, Modal, Row, Spin, Switch, TreeSelect } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
 import { IMenu } from '../../../../services/user/menu/menu.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { saveMenu } from '../../../../store/user/menu/menu.action';
@@ -16,7 +18,11 @@ const EditMenuModal: React.FC<IEditMenuModal> = (props) => {
 
   const isNew: boolean = selectedMenu?.id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Menu' : 'Edit Menu';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Menu} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

@@ -216,7 +216,7 @@ const BulkImport: React.FC = () => {
         toast.error(bulkImports.bulkInsert.messages.join(' '));
       } else {
         toast.success(bulkImports.bulkInsert.messages.join(' '));
-        if(table){
+        if (table) {
           history.goBack();
         }
       }
@@ -361,7 +361,9 @@ const BulkImport: React.FC = () => {
     <>
       <div className="update-excel-page">
         <div className="title-block">
-          <BreadCrumbs pageName={Page.BulkImport} />
+          <h4 className="p-0">
+            <BreadCrumbs pageName={Page.BulkImport} />
+          </h4>
           <div className="btns-block">
             {table ? (
               <Button

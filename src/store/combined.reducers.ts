@@ -35,6 +35,15 @@ import azureRateCardReducer from './azure/azureRateCard/azureRateCard.reducer';
 import azureAPIVmSizesReducer from './azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
 import o365ActivationsUserDetailReducer from './o365/o365ActivationsUserDetail/o365ActivationsUserDetail.reducer';
 import o365ActiveUserDetailReducer from './o365/o365ActiveUserDetail/o365ActiveUserDetail.reducer';
+import o365M365AppsUsageUserDetailReducer from './o365/o365M365AppsUsageUserDetail/o365M365AppsUsageUserDetail.reducer';
+import o365MailboxUsageReducer from './o365/o365MailboxUsage/o365MailboxUsage.reducer';
+import o365OneDriveUsageReducer from './o365/o365OneDriveUsage/o365OneDriveUsage.reducer';
+import o365ReservationsReducer from './o365/o365Reservations/o365Reservations.reducer';
+import o365ProductListReducer from './o365/o365ProductList/o365ProductList.reducer';
+import ciscoSiteMatrixReducer from './hwCisco/ciscoSiteMatrix/ciscoSiteMatrix.reducer';
+import o365UsersReducer from './o365/o365Users/o365Users.reducer';
+import usersReducer from './master/users/users.reducer';
+import configurationReducer from './powerBiReports/configuration/configuration.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -91,4 +100,17 @@ export const rootReducer = combineReducers({
   // O365
   o365ActivationsUserDetail: o365ActivationsUserDetailReducer,
   o365ActiveUserDetail: o365ActiveUserDetailReducer,
+  o365M365AppsUsageUserDetail: o365M365AppsUsageUserDetailReducer,
+  o365MailboxUsage: o365MailboxUsageReducer,
+  o365OneDriveUsage: o365OneDriveUsageReducer,
+  o365ProductList: o365ProductListReducer,
+  o365Reservations: o365ReservationsReducer,
+  o365Users: o365UsersReducer,
+
+  //HW-Cisco
+  ciscoSiteMatrix: ciscoSiteMatrixReducer,
+  users: usersReducer,
+
+  //Power-BI Report
+  configuration: configurationReducer,
 });

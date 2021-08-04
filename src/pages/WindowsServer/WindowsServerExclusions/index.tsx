@@ -51,7 +51,9 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.WindowsServerExclusions} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.WindowsServerExclusions} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>
@@ -147,6 +149,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={windowsServerExclusions.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          isDateAvailable={windowsServerExclusions.search.data.some((item) => item['date_added'])}
         />
       )}
     </div>
