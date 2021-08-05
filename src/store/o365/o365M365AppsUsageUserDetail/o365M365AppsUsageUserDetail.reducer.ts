@@ -125,13 +125,9 @@ export const o365M365AppsUsageUserDetailSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveO365M365AppsUsageUserDetail.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveO365M365AppsUsageUserDetail.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

@@ -119,10 +119,9 @@ export const tabVClusterSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveTabVCluster.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveTabVCluster.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

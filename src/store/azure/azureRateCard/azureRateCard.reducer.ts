@@ -115,13 +115,9 @@ export const azureRateCardSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveAzureRateCard.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveAzureRateCard.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

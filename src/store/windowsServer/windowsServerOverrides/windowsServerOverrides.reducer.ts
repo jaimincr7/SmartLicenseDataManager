@@ -125,13 +125,9 @@ export const windowsServerOverridesSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveWindowsServerOverrides.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveWindowsServerOverrides.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

@@ -111,10 +111,9 @@ export const tabVHostSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveTabVHost.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveTabVHost.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

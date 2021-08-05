@@ -111,10 +111,9 @@ export const usersSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveUser.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveUser.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

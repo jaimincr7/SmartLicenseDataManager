@@ -118,13 +118,9 @@ export const ciscoSiteMatrixSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCiscoSiteMatrix.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveCiscoSiteMatrix.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

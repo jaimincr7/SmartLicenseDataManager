@@ -125,13 +125,9 @@ export const o365OneDriveUsageSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveO365OneDriveUsage.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveO365OneDriveUsage.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
