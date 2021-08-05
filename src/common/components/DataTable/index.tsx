@@ -389,8 +389,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           : true;
       });
 
-      fromIndex = tableColumns.findIndex(x => x.column === visibleColumns[fromIndex]?.column);
-      toIndex = tableColumns.findIndex(x => x.column === visibleColumns[toIndex]?.column);
+      fromIndex = tableColumns.findIndex((x) => x.column === visibleColumns[fromIndex]?.column);
+      toIndex = tableColumns.findIndex((x) => x.column === visibleColumns[toIndex]?.column);
       const updatedColumns = [...tableColumns];
       const item = updatedColumns.splice(fromIndex, 1)[0];
       updatedColumns.splice(toIndex, 0, item);

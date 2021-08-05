@@ -68,7 +68,13 @@ export const currencySlice = createSlice({
       state.search.tableName = table_name;
       if (column_selection) {
         state.tableColumnSelection.id = column_selection.id;
-        state.tableColumnSelection.columns = JSON.parse(column_selection.columns as any);
+        const tableSelectionObj = JSON.parse(column_selection.columns as any);
+        if (tableSelectionObj.columns) {
+          state.tableColumnSelection.column_orders = tableSelectionObj.column_orders;
+          state.tableColumnSelection.columns = tableSelectionObj.columns;
+        } else {
+          state.tableColumnSelection.columns = tableSelectionObj;
+        }
       }
       state.tableColumnSelection.table_name = table_name;
     },

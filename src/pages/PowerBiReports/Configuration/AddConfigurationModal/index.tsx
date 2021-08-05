@@ -115,7 +115,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
         if (res && res.body?.data) {
           form.setFieldsValue({ embedded_url: res.body?.data?.embed_url });
         }
-        setGetEmbeddedLoading(false)
+        setGetEmbeddedLoading(false);
       });
     } else {
       toast.error('Please enter Work Space Id and Report Id.');
@@ -219,14 +219,15 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                     <Input
                       className="form-control"
                       addonAfter={
-                        getEmbeddedLoading ?
-                        <Spin size="small" />
-                        :
-                        <CloudDownloadOutlined
-                          onClick={() => {
-                            getEmbedUrl();
-                          }}
-                        />
+                        getEmbeddedLoading ? (
+                          <Spin size="small" />
+                        ) : (
+                          <CloudDownloadOutlined
+                            onClick={() => {
+                              getEmbedUrl();
+                            }}
+                          />
+                        )
                       }
                     />
                   </Form.Item>
