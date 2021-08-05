@@ -204,6 +204,16 @@ const AddCiscoSiteMatrixModal: React.FC<IAddCiscoSiteMatrixProps> = (props) => {
                     <Select
                       onChange={handleTenantChange}
                       allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
                       loading={commonLookups.tenantLookup.loading}
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
@@ -222,6 +232,16 @@ const AddCiscoSiteMatrixModal: React.FC<IAddCiscoSiteMatrixProps> = (props) => {
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
                       loading={commonLookups.companyLookup.loading}
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
@@ -240,6 +260,16 @@ const AddCiscoSiteMatrixModal: React.FC<IAddCiscoSiteMatrixProps> = (props) => {
                     <Select
                       onChange={handleBUChange}
                       allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
                       loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (

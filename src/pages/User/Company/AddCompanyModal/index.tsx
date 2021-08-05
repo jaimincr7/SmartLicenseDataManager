@@ -149,7 +149,20 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
                 <div className="form-group m-0">
                   <label className="label">Tenant</label>
                   <Form.Item name="tenant_id" className="m-0" label="Tenant">
-                    <Select allowClear loading={commonLookups.tenantLookup.loading}>
+                    <Select
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={commonLookups.tenantLookup.loading}
+                    >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
@@ -163,7 +176,20 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
                 <div className="form-group m-0">
                   <label className="label">Currency</label>
                   <Form.Item name="currency_id" className="m-0" label="Currency">
-                    <Select loading={commonLookups.currencyLookup.loading} allowClear>
+                    <Select
+                      loading={commonLookups.currencyLookup.loading}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
                       {commonLookups.currencyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}

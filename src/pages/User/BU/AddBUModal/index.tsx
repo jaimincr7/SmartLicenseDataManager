@@ -141,6 +141,16 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                     <Select
                       onChange={handleTenantChange}
                       allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
                       loading={commonLookups.tenantLookup.loading}
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
@@ -161,7 +171,20 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                     label="Company"
                     rules={[{ required: true }]}
                   >
-                    <Select allowClear loading={commonLookups.companyLookup.loading}>
+                    <Select
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={commonLookups.companyLookup.loading}
+                    >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
