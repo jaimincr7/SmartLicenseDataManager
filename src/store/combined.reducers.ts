@@ -44,6 +44,7 @@ import ciscoSiteMatrixReducer from './hwCisco/ciscoSiteMatrix/ciscoSiteMatrix.re
 import o365UsersReducer from './o365/o365Users/o365Users.reducer';
 import usersReducer from './master/users/users.reducer';
 import configurationReducer from './powerBiReports/configuration/configuration.reducer';
+import roleReducer from './master/role/role.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -86,6 +87,7 @@ export const rootReducer = combineReducers({
   company: companyReducer,
   bu: buReducer,
   currency: currencyReducer,
+  role: roleReducer,
 
   // RV Tools
   tabVCluster: tabVClusterReducer,

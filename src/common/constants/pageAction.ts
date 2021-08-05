@@ -29,6 +29,7 @@ export enum Page {
   GlobalTableColumnSelection = 'global-table-column-selection',
   MenuAccessRights = 'menu-access-rights',
   User = 'user',
+  Role = 'role',
 
   TabVCluster = 'tab-v-cluster',
   TabVHost = 'tab-v-host',
