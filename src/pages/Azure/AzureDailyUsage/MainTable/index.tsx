@@ -1168,20 +1168,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">VM - Instance Id</span>,
-        column: 'VM-InstanceId',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterBySwap('vm_instance_id', form),
-            dataIndex: 'vm_instance_id',
-            key: 'vm_instance_id',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
         title: <span className="dragHandler">VM - Resource Name</span>,
         column: 'VM-ResourceName',
         sorter: true,

@@ -1156,14 +1156,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">VM - Instance ID</label>
-                  <Form.Item name="vm_instance_id" label="VM - Instance ID" className="m-0">
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
                   <label className="label">VM - Resource Name</label>
                   <Form.Item
                     name="vm_resource_name"
