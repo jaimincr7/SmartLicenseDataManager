@@ -101,6 +101,21 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Roles</span>,
+        column: 'Roles',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown('role_ids', users.search.lookups?.roles),
+            dataIndex: 'role_ids',
+            key: 'role_ids',
+            ellipsis: true,
+            render: (roles: string[]) => (roles?.length > 0 ? roles.toString() : ''),
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Email</span>,
         column: 'Email',
         sorter: true,
@@ -157,15 +172,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Insert User Id</span>,
+        title: <span className="dragHandler">Insert User</span>,
         column: 'InsertUserId',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('insert_user_id', form),
+            title: FilterByDropdown('insert_user_id', users.search.lookups?.users),
             dataIndex: 'insert_user_id',
             key: 'insert_user_id',
             ellipsis: true,
+            render: (id: number) =>
+              id > 0 ? users.search.lookups?.users?.find((x) => x.id === id)?.name : '',
           },
         ],
       },
@@ -185,15 +202,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Update User Id</span>,
+        title: <span className="dragHandler">Update User</span>,
         column: 'UpdateUserId',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('update_user_id', form),
+            title: FilterByDropdown('update_user_id', users.search.lookups?.users),
             dataIndex: 'update_user_id',
             key: 'update_user_id',
             ellipsis: true,
+            render: (id: number) =>
+              id > 0 ? users.search.lookups?.users?.find((x) => x.id === id)?.name : '',
           },
         ],
       },

@@ -8,8 +8,10 @@ import Currency from './Currency';
 import MenuAccessRights from './MenuRights/AddRemoveMenuRights';
 import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
+import Role from './Role';
 import TableColumnSelection from './TableColumnsSelection';
 import Tenant from './Tenant';
+import User from './User';
 
 const UserRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -78,6 +80,21 @@ const UserRoutes: React.FC = () => {
           <Route exact path={`${match.path}/menu-access-rights`} component={MenuAccessRights} />
         )}
 
+        {/* User */}
+        {ability.can(Action.View, Page.User) && (
+          <Route exact path={`${match.path}/user`} component={User} />
+        )}
+        {ability.can(Action.View, Page.User) && (
+          <Route exact path={`${match.path}/user/:id`} component={User} />
+        )}
+
+        {/* Role */}
+        {ability.can(Action.View, Page.Role) && (
+          <Route exact path={`${match.path}/role`} component={Role} />
+        )}
+        {ability.can(Action.View, Page.Role) && (
+          <Route exact path={`${match.path}/role/:id`} component={Role} />
+        )}
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

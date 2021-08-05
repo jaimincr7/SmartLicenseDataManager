@@ -60,6 +60,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
     is_active: null,
     mobile_phone_number: '',
     two_factor_auth: null,
+    role_ids: [],
   };
 
   const onFinish = (values: IUser) => {
@@ -97,6 +98,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
         is_active: data.is_active,
         mobile_phone_number: data.mobile_phone_number,
         two_factor_auth: data.two_factor_auth,
+        role_ids: data.role_ids,
       };
       form.setFieldsValue(initialValues);
     }
@@ -230,6 +232,29 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
                     rules={[{ required: true, max: 200 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Role</label>
+                  <Form.Item
+                    name="role_ids"
+                    className="m-0"
+                    label="Role"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      mode="multiple"
+                      allowClear
+                      loading={users.search.lookups?.roles?.length === 0}
+                    >
+                      {users.search.lookups?.roles?.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>
