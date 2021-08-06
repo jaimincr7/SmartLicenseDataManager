@@ -12,7 +12,7 @@ import sqlServerLicenseReducer from './sqlServer/sqlServerLicense/sqlServerLicen
 import sqlServerLicenseDetailReducer from './sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.reducer';
 import sqlServerOverridesReducer from './sqlServer/sqlServerOverrides/sqlServerOverrides.reducer';
 import sqlServerPricingReducer from './sqlServer/sqlServerPricing/sqlServerPricing.reducer';
-import userReducer from './user/user.reducer';
+import userReducer from './administration/administration.reducer';
 import windowsServerEntitlementsReducer from './windowsServer/windowsServerEntitlements/windowsServerEntitlements.reducer';
 import windowsServerExclusionsReducer from './windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
 import windowsServerInventoryReducer from './windowsServer/windowsServerInventory/windowsServerInventory.reducer';
@@ -20,12 +20,12 @@ import windowsServerOverridesReducer from './windowsServer/windowsServerOverride
 import windowsServerPricingReducer from './windowsServer/windowsServerPricing/windowsServerPricing.reducer';
 import windowsServerLicenseReducer from './windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import windowsServerLicenseDetailReducer from './windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.reducer';
-import menuReducer from './user/menu/menu.reducer';
+import menuReducer from './administration/menu/menu.reducer';
 import tenantReducer from './master/tenant/tenant.reducer';
 import companyReducer from './master/company/company.reducer';
 import buReducer from './master/bu/bu.reducer';
 import globalSearchReducer from './globalSearch/globalSearch.reducer';
-import globalTableColumnSelectionReducer from './user/globalTableColumnSelection/globalTableColumnSelection.reducer';
+import globalTableColumnSelectionReducer from './administration/globalTableColumnSelection/globalTableColumnSelection.reducer';
 import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
 import tabVHostReducer from './rvTools/tabVHost/tabVHost.reducer';
 import tabVInfoReducer from './rvTools/tabVInfo/tabVInfo.reducer';

@@ -2,8 +2,8 @@ import { Ability, AbilityBuilder } from '@casl/ability';
 import { createContext, useEffect } from 'react';
 import { createContextualCan } from '@casl/react';
 import { useAppSelector } from '../../store/app.hooks';
-import { userSelector } from '../../store/user/user.reducer';
-import { IMenu, IMenuRight } from '../../services/user/menu/menu.model';
+import { userSelector } from '../../store/administration/administration.reducer';
+import { IMenu, IMenuRight } from '../../services/administration/menu/menu.model';
 
 const ability = new Ability();
 export default ability;

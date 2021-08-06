@@ -3,7 +3,7 @@ import { Menu, Dropdown } from 'antd';
 import { toast } from 'react-toastify';
 import { msalInstance } from '../../../../utils/authConfig';
 // import authService from '../../../../services/auth/auth.service';
-import { userSelector } from '../../../../store/user/user.reducer';
+import { userSelector } from '../../../../store/administration/administration.reducer';
 import { useAppSelector } from '../../../../store/app.hooks';
 
 function toggleMenu() {
