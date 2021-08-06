@@ -168,10 +168,9 @@ export const menuSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveMenu.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveMenu.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Get Menu Rights By RoleId

@@ -111,10 +111,9 @@ export const buSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveBU.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveBU.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

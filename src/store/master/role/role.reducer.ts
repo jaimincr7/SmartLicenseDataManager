@@ -111,10 +111,9 @@ export const roleSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveRole.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveRole.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete

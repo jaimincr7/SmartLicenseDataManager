@@ -115,10 +115,9 @@ export const o365UsersSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveO365Users.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveO365Users.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
