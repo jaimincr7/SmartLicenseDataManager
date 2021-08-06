@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IMenu } from '../../../services/user/menu/menu.model';
+import { IMenu } from '../../../services/administration/menu/menu.model';
 import { useAppSelector } from '../../../store/app.hooks';
-import { userSelector } from '../../../store/user/user.reducer';
+import { userSelector } from '../../../store/administration/administration.reducer';
 import { IBreadCrumbsProps } from './breadcrumbs.model';
 
 const BreadCrumbs: React.FC<IBreadCrumbsProps> = (props) => {

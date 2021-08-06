@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useLocation } from 'react-router-dom';
-import { userSelector } from '../../../../store/user/user.reducer';
+import { userSelector } from '../../../../store/administration/administration.reducer';
 import { useAppSelector } from '../../../../store/app.hooks';
 
 const { SubMenu } = Menu;

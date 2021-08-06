@@ -4,8 +4,11 @@ import { useMsal, useAccount } from '@azure/msal-react';
 import { loginRequest, msalInstance } from '../../../utils/authConfig';
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
-import { setActiveAccount, userSelector } from '../../../store/user/user.reducer';
-import { getMenuRights } from '../../../store/user/user.action';
+import {
+  setActiveAccount,
+  userSelector,
+} from '../../../store/administration/administration.reducer';
+import { getMenuRights } from '../../../store/administration/administration.action';
 import { Skeleton } from 'antd';
 
 const LayoutRoute: React.FC<any> = ({ component: Component, layout: Layout, ...rest }) => {
