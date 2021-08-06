@@ -14,8 +14,8 @@ function Sidebar() {
 
   window.addEventListener('click', function (e) {
     if (
-      document.querySelector('.main-navigation').contains(e.target as Node) ||
-      document.querySelector('.hamburger').contains(e.target as Node)
+      document.querySelector('.main-navigation')?.contains(e.target as Node) ||
+      document.querySelector('.hamburger')?.contains(e.target as Node)
     ) {
       //console.log("Clicked in Box");
     } else {

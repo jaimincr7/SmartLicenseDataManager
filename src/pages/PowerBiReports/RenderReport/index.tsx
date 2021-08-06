@@ -9,6 +9,8 @@ import BreadCrumbs from '../../../common/components/Breadcrumbs';
 const RenderReport: React.FC<IRenderReportProps> = (props) => {
   const { match } = props;
   const [embeddedReport, setEmbeddedReport] = useState<Report>(null);
+  const [height, setHeight] = useState<string>('500px');
+
   const [reportConfig, setReportConfig] = useState({
     type: 'report',
     tokenType: models.TokenType.Embed,
@@ -16,6 +18,14 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     embedUrl: '',
     accessToken: '',
   });
+
+  const updateHeight = () => {
+    const header = document.querySelector('.header')?.clientHeight;
+    const title = document.querySelector('.title-block')?.clientHeight;
+    const totalHeight = document.body.clientHeight;
+    const finalHeight = totalHeight - header - title - 75 - 5;
+    setHeight(`${finalHeight}px`);
+  }
 
   const { name } = match.params;
   useEffect(() => {
@@ -30,6 +40,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
           accessToken: reportDetail.access_token,
         });
         embeddedReport?.refresh();
+        updateHeight();
       }
     });
   }, [match.params]);
@@ -43,13 +54,15 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
       </div>
       <div className="main-card">
         {reportConfig.id ? (
-          <PowerBIEmbed
-            embedConfig={reportConfig}
-            cssClassName={'report-style-class'}
-            getEmbeddedComponent={async (embedObject: Embed) => {
-              setEmbeddedReport(embedObject as Report);
-            }}
-          />
+          <div style={{ height: height }}>
+            <PowerBIEmbed
+              embedConfig={reportConfig}
+              cssClassName={'report-style-class'}
+              getEmbeddedComponent={async (embedObject: Embed) => {
+                setEmbeddedReport(embedObject as Report);
+              }}
+            />
+          </div>
         ) : (
           <Spin />
         )}
