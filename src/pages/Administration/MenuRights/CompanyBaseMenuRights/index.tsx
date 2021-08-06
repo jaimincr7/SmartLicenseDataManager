@@ -23,6 +23,7 @@ import { ILookup } from '../../../../services/common/common.model';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { getPageHeight } from '../../../../common/helperFunction';
 
 const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -32,6 +33,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
   const [columns, setColumns] = React.useState<any>([]);
   const [editModalVisible, setEditModalVisible] = React.useState(false);
   const [selectedMenu, setSelectedMenu] = React.useState<IMenu>(null);
+  const [height, setHeight] = React.useState<number>(350);
 
   const onFinish = (values: any) => {
     const accessRights = Object.keys(_.pickBy(values.menu_rights, _.identity));
@@ -184,6 +186,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
     form.resetFields();
     form.setFieldsValue({ company_id: companyId });
     setTimeout(() => {
+      setHeight(getPageHeight());
       checkAllRights();
     });
   }, [reduxStoreData.getMenuRightsByCompanyId.data]);
@@ -232,7 +235,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
             </div>
           </div>
           <Table
-            scroll={{ x: true }}
+             scroll={{ x: true, y: height }}
             rowKey={(record) => record.id}
             dataSource={reduxStoreData.getMenuRightsByCompanyId.data?.menus}
             columns={columns}

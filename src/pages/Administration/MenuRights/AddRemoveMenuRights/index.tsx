@@ -20,6 +20,7 @@ import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import ReactDragListView from 'react-drag-listview';
+import { getPageHeight } from '../../../../common/helperFunction';
 
 const MenuAccessRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -30,17 +31,6 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
   const [selectedMenu, setSelectedMenu] = React.useState<IAccessMenu>(null);
   const [storeMenus, SetStoreMenus] = React.useState<IMenu[]>([]);
   const [height, setHeight] = React.useState<number>(350);
-
-
-
-  const updateHeight = () => {
-    const header = document.querySelector('.header')?.clientHeight;
-    const title = document.querySelector('.title-block')?.clientHeight;
-    const tableHeader = document.querySelector('thead').offsetHeight;
-    const totalHeight = document.body.clientHeight;
-    const finalHeight = totalHeight - header - (2 * title) - tableHeader - 50;
-    setHeight(finalHeight)
-  }
 
   const onFinish = (values: any) => {
     const accessRights = Object.keys(_.pickBy(values.menu_rights, _.identity)).map(function (key) {
@@ -190,7 +180,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
     setColumns(mainColumns);
     form.resetFields();
     setTimeout(() => {
-      updateHeight();
+      setHeight(getPageHeight());
       checkAllRights();
     });
   }, [reduxStoreData.getMenuAccessRights.data]);
