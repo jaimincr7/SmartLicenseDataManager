@@ -559,7 +559,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                     name="alternate_email_addresses"
                     className="m-0"
                     label="Alternate Email Addresses"
-                    rules={[{ type: 'email', max: 510 }]}
+                    rules={[{ type: 'email', max: 510, required: true }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

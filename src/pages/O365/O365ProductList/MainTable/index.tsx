@@ -50,7 +50,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
         sorter: true,
         children: [
           {
@@ -62,7 +63,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
         sorter: true,
         children: [
           {
@@ -74,7 +76,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Bu Name',
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'BU_Id',
         sorter: true,
         children: [
           {
@@ -86,7 +89,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -99,7 +103,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Product Title',
+        title: <span className="dragHandler">Product Title</span>,
+        column: 'Product Title',
         sorter: true,
         children: [
           {
@@ -111,7 +116,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Total Licenses',
+        title: <span className="dragHandler">Total Licenses</span>,
+        column: 'Total Licenses',
         sorter: true,
         children: [
           {
@@ -123,7 +129,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Expired Licenses',
+        title: <span className="dragHandler">Expired Licenses</span>,
+        column: 'Expired Licenses',
         sorter: true,
         children: [
           {
@@ -135,7 +142,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Assigned Licenses',
+        title: <span className="dragHandler">Assigned Licenses</span>,
+        column: 'Assigned Licenses',
         sorter: true,
         children: [
           {
@@ -147,7 +155,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Status Message',
+        title: <span className="dragHandler">Status Message</span>,
+        column: 'Status Message',
         sorter: true,
         children: [
           {
