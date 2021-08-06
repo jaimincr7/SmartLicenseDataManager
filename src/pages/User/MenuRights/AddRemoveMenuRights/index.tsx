@@ -29,6 +29,18 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
   const [editModalVisible, setEditModalVisible] = React.useState(false);
   const [selectedMenu, setSelectedMenu] = React.useState<IAccessMenu>(null);
   const [storeMenus, SetStoreMenus] = React.useState<IMenu[]>([]);
+  const [height, setHeight] = React.useState<number>(350);
+
+
+
+  const updateHeight = () => {
+    const header = document.querySelector('.header')?.clientHeight;
+    const title = document.querySelector('.title-block')?.clientHeight;
+    const tableHeader = document.querySelector('thead').offsetHeight;
+    const totalHeight = document.body.clientHeight;
+    const finalHeight = totalHeight - header - (2 * title) - tableHeader - 50;
+    setHeight(finalHeight)
+  }
 
   const onFinish = (values: any) => {
     const accessRights = Object.keys(_.pickBy(values.menu_rights, _.identity)).map(function (key) {
@@ -178,6 +190,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
     setColumns(mainColumns);
     form.resetFields();
     setTimeout(() => {
+      updateHeight();
       checkAllRights();
     });
   }, [reduxStoreData.getMenuAccessRights.data]);
@@ -244,7 +257,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
           </div>
           <ReactDragListView {...dragProps}>
             <Table
-              scroll={{ x: true }}
+              scroll={{ x: true, y: height }}
               rowKey={(record) => record.id}
               dataSource={storeMenus}
               columns={columns}
