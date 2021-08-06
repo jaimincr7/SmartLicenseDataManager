@@ -135,13 +135,9 @@ export const globalTableColumnSelectionSlice = createSlice({
       state.saveGlobalTableColumnSelection.hasErrors = false;
       state.saveGlobalTableColumnSelection.messages = action.payload.messages;
     },
-    [saveGlobalTableColumnSelection.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveGlobalTableColumnSelection.rejected.type]: (state) => {
       state.saveGlobalTableColumnSelection.loading = false;
       state.saveGlobalTableColumnSelection.hasErrors = true;
-      state.saveGlobalTableColumnSelection.messages = action.payload.errors;
     },
   },
 });

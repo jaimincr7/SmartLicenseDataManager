@@ -143,13 +143,9 @@ export const windowsServerInventorySlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteWindowsServerInventory.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [deleteWindowsServerInventory.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });

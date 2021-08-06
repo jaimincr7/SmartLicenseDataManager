@@ -137,13 +137,9 @@ export const tabVClusterSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteTabVCluster.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [deleteTabVCluster.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });

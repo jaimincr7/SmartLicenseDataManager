@@ -201,13 +201,9 @@ export const menuSlice = createSlice({
       state.saveMenuAccessRights.hasErrors = false;
       state.saveMenuAccessRights.messages = action.payload.messages;
     },
-    [saveMenuAccessRights.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveMenuAccessRights.rejected.type]: (state) => {
       state.saveMenuAccessRights.loading = false;
       state.saveMenuAccessRights.hasErrors = true;
-      state.saveMenuAccessRights.messages = action.payload.errors;
     },
 
     // Get Menu Rights By RoleId
@@ -241,13 +237,9 @@ export const menuSlice = createSlice({
       state.saveCompanyMenuAccessRights.hasErrors = false;
       state.saveCompanyMenuAccessRights.messages = action.payload.messages;
     },
-    [saveCompanyMenuAccessRights.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveCompanyMenuAccessRights.rejected.type]: (state) => {
       state.saveCompanyMenuAccessRights.loading = false;
       state.saveCompanyMenuAccessRights.hasErrors = true;
-      state.saveCompanyMenuAccessRights.messages = action.payload.errors;
     },
 
     // Role lookup
@@ -286,13 +278,9 @@ export const menuSlice = createSlice({
       state.saveAddRemoveMenuAccessRights.hasErrors = false;
       state.saveAddRemoveMenuAccessRights.messages = action.payload.messages;
     },
-    [saveAddRemoveMenuAccessRights.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveAddRemoveMenuAccessRights.rejected.type]: (state) => {
       state.saveAddRemoveMenuAccessRights.loading = false;
       state.saveAddRemoveMenuAccessRights.hasErrors = true;
-      state.saveAddRemoveMenuAccessRights.messages = action.payload.errors;
     },
   },
 });

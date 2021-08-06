@@ -109,13 +109,9 @@ export const bulkImportSlice = createSlice({
       state.saveTableForImport.hasErrors = false;
       state.saveTableForImport.messages = action.payload.messages;
     },
-    [saveTableForImport.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveTableForImport.rejected.type]: (state) => {
       state.saveTableForImport.loading = false;
       state.saveTableForImport.hasErrors = true;
-      state.saveTableForImport.messages = action.payload.errors;
     },
 
     // Get Table Columns
@@ -156,10 +152,9 @@ export const bulkImportSlice = createSlice({
       state.bulkInsert.hasErrors = false;
       state.bulkInsert.messages = action.payload.messages;
     },
-    [bulkInsert.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [bulkInsert.rejected.type]: (state) => {
       state.bulkInsert.loading = false;
       state.bulkInsert.hasErrors = true;
-      state.bulkInsert.messages = action.payload.errors;
     },
   },
 });

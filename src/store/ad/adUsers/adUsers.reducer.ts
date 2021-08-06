@@ -126,10 +126,9 @@ export const adUsersSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteAdUser.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteAdUser.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });

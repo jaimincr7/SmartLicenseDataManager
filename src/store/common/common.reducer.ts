@@ -181,10 +181,9 @@ export const commonSlice = createSlice({
       state.deleteDataset.hasErrors = false;
       state.deleteDataset.messages = action.payload.messages;
     },
-    [deleteDataset.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteDataset.rejected.type]: (state) => {
       state.deleteDataset.loading = false;
       state.deleteDataset.hasErrors = true;
-      state.deleteDataset.messages = action.payload.errors;
     },
 
     // Save Table Column Selection
@@ -200,13 +199,9 @@ export const commonSlice = createSlice({
       state.saveTableColumnSelection.hasErrors = false;
       state.saveTableColumnSelection.messages = action.payload.messages;
     },
-    [saveTableColumnSelection.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveTableColumnSelection.rejected.type]: (state) => {
       state.saveTableColumnSelection.loading = false;
       state.saveTableColumnSelection.hasErrors = true;
-      state.saveTableColumnSelection.messages = action.payload.errors;
     },
   },
 });

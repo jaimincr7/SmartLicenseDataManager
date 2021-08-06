@@ -122,10 +122,9 @@ export const currencySlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCurrency.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteCurrency.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });
