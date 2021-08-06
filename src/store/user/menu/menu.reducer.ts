@@ -179,6 +179,7 @@ export const menuSlice = createSlice({
       state.getMenuRightsByRoleId.loading = true;
     },
     [getMenuRightsByRoleId.fulfilled.type]: (state, action: PayloadAction<IMenuRightsByRoleId>) => {
+      action.payload.menus=action.payload.menus?.filter(x=>x.child_menu_rights?.length !==0)
       state.getMenuRightsByRoleId.data = action.payload;
       state.getMenuRightsByRoleId.loading = false;
       state.getMenuRightsByRoleId.hasErrors = false;
@@ -218,6 +219,7 @@ export const menuSlice = createSlice({
       state,
       action: PayloadAction<IMenuRightsByCompanyId>
     ) => {
+      action.payload.menus=action.payload.menus?.filter(x=>x.child_menu_rights?.length !==0)
       state.getMenuRightsByCompanyId.data = action.payload;
       state.getMenuRightsByCompanyId.loading = false;
       state.getMenuRightsByCompanyId.hasErrors = false;
