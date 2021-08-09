@@ -47,7 +47,9 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
   return (
     <div className="ad">
       <div className="title-block">
-        <BreadCrumbs pageName={Page.O365Reservations} />
+        <h4 className="p-0">
+          <BreadCrumbs pageName={Page.O365Reservations} />
+        </h4>
         <div className="right-title">
           <GlobalSearch />
         </div>

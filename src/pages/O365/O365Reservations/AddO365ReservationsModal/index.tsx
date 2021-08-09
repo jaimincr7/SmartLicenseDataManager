@@ -26,6 +26,8 @@ import {
 } from '../../../../store/o365/o365Reservations/o365Reservations.action';
 import { IO365Reservations } from '../../../../services/o365/o365Reservations/o365Reservations.model';
 import { validateMessages } from '../../../../common/constants/common';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -38,7 +40,11 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add Reservation' : 'Edit Reservation';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.O365Reservations} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';

@@ -80,9 +80,13 @@ export const o365ReservationsSlice = createSlice({
       state.search.tableName = search_result.table_name;
       if (search_result.column_selection) {
         state.tableColumnSelection.id = search_result.column_selection.id;
-        state.tableColumnSelection.columns = JSON.parse(
-          search_result.column_selection.columns as any
-        );
+        const tableSelectionObj = JSON.parse(search_result.column_selection.columns as any);
+        if (tableSelectionObj.columns) {
+          state.tableColumnSelection.column_orders = tableSelectionObj.column_orders;
+          state.tableColumnSelection.columns = tableSelectionObj.columns;
+        } else {
+          state.tableColumnSelection.columns = tableSelectionObj;
+        }
       }
       state.tableColumnSelection.table_name = search_result.table_name;
     },
