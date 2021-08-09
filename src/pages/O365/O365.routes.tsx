@@ -9,6 +9,7 @@ import O365MailboxUsage from './O365MailboxUsage';
 import O365OneDriveUsage from './O365OneDriveUsage';
 import O365ProductList from './O365ProductList';
 import O365Reservations from './O365Reservations';
+import O365Subscriptions from './O365Subscriptions';
 import O365Users from './O365Users';
 // import O365Reservations from './O365Reservations';
 // import O365Users from './O365Users';
@@ -111,6 +112,17 @@ const O365Routes: React.FC = () => {
           />
         )}
 
+        {/* Subscriptions */}
+        {ability.can(Action.View, Page.O365Subscriptions) && (
+          <Route
+            exact
+            path={`${match.path}/o365-subscriptions/:id`}
+            component={O365Subscriptions}
+          />
+        )}
+        {ability.can(Action.View, Page.O365Subscriptions) && (
+          <Route exact path={`${match.path}/o365-subscriptions`} component={O365Subscriptions} />
+        )}
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

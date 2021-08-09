@@ -45,6 +45,7 @@ import o365UsersReducer from './o365/o365Users/o365Users.reducer';
 import usersReducer from './master/users/users.reducer';
 import configurationReducer from './powerBiReports/configuration/configuration.reducer';
 import roleReducer from './master/role/role.reducer';
+import o365SubscriptionsReducer from './o365/o365Subscriptions/o365Subscriptions.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -108,6 +109,7 @@ export const rootReducer = combineReducers({
   o365ProductList: o365ProductListReducer,
   o365Reservations: o365ReservationsReducer,
   o365Users: o365UsersReducer,
+  o365Subscriptions: o365SubscriptionsReducer,
 
   //HW-Cisco
   ciscoSiteMatrix: ciscoSiteMatrixReducer,

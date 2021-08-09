@@ -25,7 +25,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     const totalHeight = document.body.clientHeight;
     const finalHeight = totalHeight - header - title - 75 - 5;
     setHeight(`${finalHeight}px`);
-  }
+  };
 
   const { name } = match.params;
   useEffect(() => {
