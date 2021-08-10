@@ -99,8 +99,10 @@ const BulkImport: React.FC = () => {
   };
 
   const onFinish = (values: any) => {
+    const { tenant_id, company_id, bu_id, date_added, ...rest } = values;
+
     const sqlToExcelMapping = [];
-    Object.entries(tableColumns).forEach(([key, value]) => {
+    Object.entries(rest).forEach(([key, value]) => {
       if (key && value) {
         sqlToExcelMapping.push({
           key: `${key}`,
@@ -119,10 +121,10 @@ const BulkImport: React.FC = () => {
       table_name: uploadValue?.table_name,
       sheet_name: uploadValue?.sheet_name,
       foreign_key_values: {
-        tenant_id: values.tenant_id,
-        bu_id: values.bu_id,
-        company_id: values.company_id,
-        date_added: values.date_added,
+        tenant_id: tenant_id,
+        bu_id: bu_id,
+        company_id: company_id,
+        date_added: date_added,
       },
     };
     dispatch(bulkInsert(inputValues));
@@ -160,8 +162,14 @@ const BulkImport: React.FC = () => {
       };
       filterTableColumns.map(function (ele) {
         initialValuesData[ele.name] =
-          filterExcelColumns.filter((x) => x.toLowerCase() === ele.name.toLowerCase()).length > 0
-            ? filterExcelColumns.filter((x) => x.toLowerCase() === ele.name.toLowerCase())[0]
+          filterExcelColumns.filter(
+            (x) =>
+              x.toLowerCase()?.replace(/\s/g, '') === ele.name.toLowerCase()?.replace(/\s/g, '')
+          ).length > 0
+            ? filterExcelColumns.filter(
+                (x) =>
+                  x.toLowerCase()?.replace(/\s/g, '') === ele.name.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);

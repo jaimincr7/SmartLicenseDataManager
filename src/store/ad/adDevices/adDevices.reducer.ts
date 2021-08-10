@@ -126,10 +126,9 @@ export const adDevicesSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveAdDevice.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveAdDevice.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -142,10 +141,9 @@ export const adDevicesSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteAdDevice.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteAdDevice.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
 
     // Process Data
@@ -158,10 +156,9 @@ export const adDevicesSlice = createSlice({
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;
     },
-    [processData.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processData.rejected.type]: (state) => {
       state.processData.loading = false;
       state.processData.hasErrors = true;
-      state.processData.messages = action.payload.errors;
     },
   },
 });

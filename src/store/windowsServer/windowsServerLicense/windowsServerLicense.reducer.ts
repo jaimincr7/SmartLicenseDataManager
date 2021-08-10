@@ -134,13 +134,9 @@ export const windowsServerLicenseSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveWindowsServerLicense.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveWindowsServerLicense.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -156,13 +152,9 @@ export const windowsServerLicenseSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteWindowsServerLicense.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [deleteWindowsServerLicense.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
 
     // Re-run all scenario
@@ -178,13 +170,9 @@ export const windowsServerLicenseSlice = createSlice({
       state.reRunAllScenarios.hasErrors = false;
       state.reRunAllScenarios.messages = action.payload.messages;
     },
-    [reRunAllScenarios.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [reRunAllScenarios.rejected.type]: (state) => {
       state.reRunAllScenarios.loading = false;
       state.reRunAllScenarios.hasErrors = true;
-      state.reRunAllScenarios.messages = action.payload.errors;
     },
   },
 });

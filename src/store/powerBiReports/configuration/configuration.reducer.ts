@@ -6,9 +6,15 @@ import {
   getConfigurationById,
   saveConfiguration,
   searchConfiguration,
+  getGroups,
+  getReportsByGroupId,
 } from './configuration.action';
 import { IConfigurationState } from './configuration.model';
-import { IConfiguration } from '../../../services/powerBiReports/configuration/configuration.model';
+import {
+  IConfiguration,
+  IPowerBIReport,
+  IWorkspace,
+} from '../../../services/powerBiReports/configuration/configuration.model';
 
 export const initialState: IConfigurationState = {
   search: {
@@ -38,6 +44,16 @@ export const initialState: IConfigurationState = {
     loading: false,
     hasErrors: false,
     messages: [],
+  },
+  getGroups: {
+    loading: false,
+    hasErrors: false,
+    data: [],
+  },
+  getReportsByGroupId: {
+    loading: false,
+    hasErrors: false,
+    data: [],
   },
 };
 
@@ -109,13 +125,9 @@ export const configurationSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveConfiguration.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveConfiguration.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -131,13 +143,37 @@ export const configurationSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteConfiguration.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [deleteConfiguration.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
+    },
+
+    // Get groups
+    [getGroups.pending.type]: (state) => {
+      state.getGroups.loading = true;
+    },
+    [getGroups.fulfilled.type]: (state, action: PayloadAction<IWorkspace[]>) => {
+      state.getGroups.data = action.payload;
+      state.getGroups.loading = false;
+      state.getGroups.hasErrors = false;
+    },
+    [getGroups.rejected.type]: (state) => {
+      state.getGroups.loading = false;
+      state.getGroups.hasErrors = true;
+    },
+
+    // Get reports by group id
+    [getReportsByGroupId.pending.type]: (state) => {
+      state.getReportsByGroupId.loading = true;
+    },
+    [getReportsByGroupId.fulfilled.type]: (state, action: PayloadAction<IPowerBIReport[]>) => {
+      state.getReportsByGroupId.data = action.payload;
+      state.getReportsByGroupId.loading = false;
+      state.getReportsByGroupId.hasErrors = false;
+    },
+    [getReportsByGroupId.rejected.type]: (state) => {
+      state.getReportsByGroupId.loading = false;
+      state.getReportsByGroupId.hasErrors = true;
     },
   },
 });

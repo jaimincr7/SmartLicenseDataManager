@@ -111,10 +111,9 @@ export const companySlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCompany.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCompany.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -127,10 +126,9 @@ export const companySlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCompany.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteCompany.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });

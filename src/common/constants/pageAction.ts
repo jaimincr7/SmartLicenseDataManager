@@ -29,6 +29,7 @@ export enum Page {
   GlobalTableColumnSelection = 'global-table-column-selection',
   MenuAccessRights = 'menu-access-rights',
   User = 'user',
+  Role = 'role',
 
   TabVCluster = 'tab-v-cluster',
   TabVHost = 'tab-v-host',
@@ -48,8 +49,11 @@ export enum Page {
   O365ProductList = 'o365-product-list',
   O365Reservations = 'o365-reservations',
   O365Users = 'o365-users',
+  O365Subscriptions = 'o365-subscriptions',
 
   HwCiscoSiteMatrix = 'hw-cisco-cisco-site-matrix',
+  HwCiscoHost = 'hw-cisco-host',
+  HwCiscoIB = 'hw-cisco-ib',
 
   PowerBIConfig = 'power-bi-report-config',
 

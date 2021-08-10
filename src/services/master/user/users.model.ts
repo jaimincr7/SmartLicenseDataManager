@@ -19,7 +19,7 @@ export interface IUser {
   company_id?: number;
   mobile_phone_number?: string;
   two_factor_auth?: number;
-  //user_roles: UserRole[];
+  role_ids?: string[] | number[];
   date_added?: string | Moment;
 }
 

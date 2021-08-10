@@ -1,5 +1,9 @@
 import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
-import { IConfiguration } from '../../../services/powerBiReports/configuration/configuration.model';
+import {
+  IConfiguration,
+  IWorkspace,
+  IPowerBIReport,
+} from '../../../services/powerBiReports/configuration/configuration.model';
 
 export interface IConfigurationState {
   search: {
@@ -25,5 +29,15 @@ export interface IConfigurationState {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
+  };
+  getGroups: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: IWorkspace[];
+  };
+  getReportsByGroupId: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: IPowerBIReport[];
   };
 }

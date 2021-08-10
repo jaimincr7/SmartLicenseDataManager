@@ -107,10 +107,9 @@ export const currencySlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCurrency.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCurrency.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -123,10 +122,9 @@ export const currencySlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCurrency.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteCurrency.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });

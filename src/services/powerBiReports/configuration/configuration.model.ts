@@ -15,3 +15,13 @@ export interface IReportEmbedUrl {
   pb_report_id: string;
   work_space_id: string;
 }
+
+export interface IWorkspace {
+  id: string;
+  name: string;
+}
+
+export interface IPowerBIReport extends IWorkspace {
+  embed_url: string;
+  report_type: string;
+}

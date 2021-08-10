@@ -131,13 +131,9 @@ export const sqlServerExclusionsSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveSqlServerExclusions.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveSqlServerExclusions.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -153,13 +149,9 @@ export const sqlServerExclusionsSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteSqlServerExclusions.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [deleteSqlServerExclusions.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
 
     // Process Data
@@ -172,10 +164,9 @@ export const sqlServerExclusionsSlice = createSlice({
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;
     },
-    [processData.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processData.rejected.type]: (state) => {
       state.processData.loading = false;
       state.processData.hasErrors = true;
-      state.processData.messages = action.payload.errors;
     },
   },
 });

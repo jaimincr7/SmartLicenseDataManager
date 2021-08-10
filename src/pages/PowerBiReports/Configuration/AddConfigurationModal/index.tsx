@@ -1,16 +1,18 @@
-import { Button, Col, Form, Input, Modal, Row, Spin, Tooltip } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
+import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import {
   IConfiguration,
-  IReportEmbedUrl,
+  IPowerBIReport,
+  IWorkspace,
 } from '../../../../services/powerBiReports/configuration/configuration.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getConfigurationById,
+  getReportsByGroupId,
   saveConfiguration,
 } from '../../../../store/powerBiReports/configuration/configuration.action';
 import {
@@ -19,14 +21,13 @@ import {
   configurationSelector,
 } from '../../../../store/powerBiReports/configuration/configuration.reducer';
 import { IAddConfigurationProps } from './addConfiguration.model';
-import { InfoCircleOutlined, CloudDownloadOutlined } from '@ant-design/icons';
-import configurationService from '../../../../services/powerBiReports/configuration/configuration.service';
+import { getGroups } from './../../../../store/powerBiReports/configuration/configuration.action';
+
+const { Option } = Select;
 
 const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
   const configuration = useAppSelector(configurationSelector);
   const dispatch = useAppDispatch();
-
-  const [getEmbeddedLoading, setGetEmbeddedLoading] = useState(false);
 
   const { id, showModal, handleModalClose, refreshDataTable } = props;
 
@@ -55,6 +56,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
   const onFinish = (values: any) => {
     const inputValues: IConfiguration = {
       ...values,
+      embedded_url: form.getFieldValue('embedded_url'),
       id: id ? +id : null,
     };
     dispatch(saveConfiguration(inputValues));
@@ -94,6 +96,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
   }, [configuration.getById.data]);
 
   useEffect(() => {
+    dispatch(getGroups());
     if (+id > 0) {
       dispatch(getConfigurationById(+id));
     }
@@ -102,24 +105,20 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
     };
   }, [dispatch]);
 
-  const getEmbedUrl = () => {
-    const reportId = form.getFieldValue('pb_report_id');
-    const workspaceId = form.getFieldValue('work_space_id');
-    if (reportId && workspaceId) {
-      const reportDetail: IReportEmbedUrl = {
-        pb_report_id: form.getFieldValue('pb_report_id'),
-        work_space_id: form.getFieldValue('work_space_id'),
-      };
-      setGetEmbeddedLoading(true);
-      configurationService.getReportEmbedUrl(reportDetail).then((res: any) => {
-        if (res && res.body?.data) {
-          form.setFieldsValue({ embedded_url: res.body?.data?.embed_url });
-        }
-        setGetEmbeddedLoading(false);
-      });
-    } else {
-      toast.error('Please enter Work Space Id and Report Id.');
+  const handleWorkspaceChange = (workspaceId: string) => {
+    form.setFieldsValue({ work_space_id: workspaceId, pb_report_id: null });
+    if (workspaceId) {
+      dispatch(getReportsByGroupId(workspaceId));
     }
+  };
+
+  const handleReportChange = (reportId: string) => {
+    const selectedReport = configuration.getReportsByGroupId.data?.find((x) => x.id === reportId);
+    form.setFieldsValue({
+      pb_report_id: reportId,
+      description: selectedReport?.name,
+      embedded_url: selectedReport?.embed_url,
+    });
   };
 
   return (
@@ -147,30 +146,63 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
-                  <Form.Item
-                    name="name"
-                    label="Name"
-                    className="m-0"
-                    rules={[
-                      { pattern: new RegExp('^([a-z0-9]+-)*[a-z0-9]+$'), required: true, max: 200 },
-                    ]}
-                  >
-                    <Input
-                      disabled={!isNew}
-                      className="form-control"
-                      suffix={
-                        <Tooltip title="You can't change it once it saved.">
-                          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                        </Tooltip>
+                  <label className="label">Workspace</label>
+                  <Form.Item name="work_space_id" className="m-0" label="Workspace">
+                    <Select
+                      onChange={handleWorkspaceChange}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }
-                    />
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={configuration.getGroups.loading}
+                    >
+                      {configuration.getGroups.data?.map((option: IWorkspace) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Description</label>
+                  <label className="label">Report</label>
+                  <Form.Item name="pb_report_id" className="m-0" label="Report">
+                    <Select
+                      onChange={handleReportChange}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={configuration.getReportsByGroupId.loading}
+                    >
+                      {configuration.getReportsByGroupId.data?.map((option: IPowerBIReport) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Name</label>
                   <Form.Item
                     name="description"
                     label="Description"
@@ -178,58 +210,6 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                     rules={[{ required: true, max: 500 }]}
                   >
                     <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Work Space Id</label>
-                  <Form.Item
-                    name="work_space_id"
-                    label="WorkSpaceId"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Report Id</label>
-                  <Form.Item
-                    name="pb_report_id"
-                    label="PBReportId"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={24} md={16}>
-                <div className="form-group m-0">
-                  <label className="label">Embedded Url</label>
-                  <Form.Item
-                    name="embedded_url"
-                    label="EmbeddedUrl"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
-                    <Input
-                      className="form-control"
-                      addonAfter={
-                        getEmbeddedLoading ? (
-                          <Spin size="small" />
-                        ) : (
-                          <CloudDownloadOutlined
-                            onClick={() => {
-                              getEmbedUrl();
-                            }}
-                          />
-                        )
-                      }
-                    />
                   </Form.Item>
                 </div>
               </Col>

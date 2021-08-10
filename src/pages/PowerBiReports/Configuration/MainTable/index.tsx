@@ -44,19 +44,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     return [
       {
         title: <span className="dragHandler">Name</span>,
-        column: 'name',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('name', form),
-            dataIndex: 'name',
-            key: 'name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Description</span>,
         column: 'Description',
         sorter: true,
         children: [
@@ -90,19 +77,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('work_space_id', form),
             dataIndex: 'work_space_id',
             key: 'work_space_id',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Embedded Url</span>,
-        column: 'EmbeddedUrl',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('embedded_url', form),
-            dataIndex: 'embedded_url',
-            key: 'embedded_url',
             ellipsis: true,
           },
         ],

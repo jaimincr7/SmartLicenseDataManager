@@ -80,9 +80,13 @@ export const ciscoSiteMatrixSlice = createSlice({
       state.search.tableName = search_result.table_name;
       if (search_result.column_selection) {
         state.tableColumnSelection.id = search_result.column_selection.id;
-        state.tableColumnSelection.columns = JSON.parse(
-          search_result.column_selection.columns as any
-        );
+        const tableSelectionObj = JSON.parse(search_result.column_selection.columns as any);
+        if (tableSelectionObj.columns) {
+          state.tableColumnSelection.column_orders = tableSelectionObj.column_orders;
+          state.tableColumnSelection.columns = tableSelectionObj.columns;
+        } else {
+          state.tableColumnSelection.columns = tableSelectionObj;
+        }
       }
       state.tableColumnSelection.table_name = search_result.table_name;
     },
@@ -118,13 +122,9 @@ export const ciscoSiteMatrixSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCiscoSiteMatrix.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveCiscoSiteMatrix.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -140,13 +140,9 @@ export const ciscoSiteMatrixSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCiscoSiteMatrix.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [deleteCiscoSiteMatrix.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });

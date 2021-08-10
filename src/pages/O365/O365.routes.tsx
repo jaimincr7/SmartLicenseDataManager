@@ -7,7 +7,10 @@ import O365ActiveUserDetail from './O365ActiveUserDetail';
 import O365M365AppsUsageUserDetail from './O365M365AppsUsageUserDetail';
 import O365MailboxUsage from './O365MailboxUsage';
 import O365OneDriveUsage from './O365OneDriveUsage';
-// import O365ProductList from './O365ProductList';
+import O365ProductList from './O365ProductList';
+import O365Reservations from './O365Reservations';
+import O365Subscriptions from './O365Subscriptions';
+import O365Users from './O365Users';
 // import O365Reservations from './O365Reservations';
 // import O365Users from './O365Users';
 
@@ -18,28 +21,28 @@ const O365Routes: React.FC = () => {
     <div className="o365">
       <Switch>
         {/* Users */}
-        {/* {ability.can(Action.View, Page.O365Users) && (
+        {ability.can(Action.View, Page.O365Users) && (
           <Route exact path={`${match.path}/o365-users/:id`} component={O365Users} />
         )}
         {ability.can(Action.View, Page.O365Users) && (
           <Route exact path={`${match.path}/o365-users`} component={O365Users} />
-        )} */}
+        )}
 
         {/* OneDrive usage */}
-        {/* {ability.can(Action.View, Page.O365Reservations) && (
+        {ability.can(Action.View, Page.O365Reservations) && (
           <Route exact path={`${match.path}/o365-reservations/:id`} component={O365Reservations} />
         )}
         {ability.can(Action.View, Page.O365Reservations) && (
           <Route exact path={`${match.path}/o365-reservations`} component={O365Reservations} />
-        )} */}
+        )}
 
         {/* Product List */}
-        {/* {ability.can(Action.View, Page.O365ProductList) && (
+        {ability.can(Action.View, Page.O365ProductList) && (
           <Route exact path={`${match.path}/o365-product-list/:id`} component={O365ProductList} />
         )}
         {ability.can(Action.View, Page.O365ProductList) && (
           <Route exact path={`${match.path}/o365-product-list`} component={O365ProductList} />
-        )} */}
+        )}
 
         {/* OneDrive usage */}
         {ability.can(Action.View, Page.O365OneDriveUsage) && (
@@ -109,6 +112,17 @@ const O365Routes: React.FC = () => {
           />
         )}
 
+        {/* Subscriptions */}
+        {ability.can(Action.View, Page.O365Subscriptions) && (
+          <Route
+            exact
+            path={`${match.path}/o365-subscriptions/:id`}
+            component={O365Subscriptions}
+          />
+        )}
+        {ability.can(Action.View, Page.O365Subscriptions) && (
+          <Route exact path={`${match.path}/o365-subscriptions`} component={O365Subscriptions} />
+        )}
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

@@ -188,6 +188,16 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
                     <Select
                       onChange={handleTenantChange}
                       allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
                       loading={commonLookups.tenantLookup.loading}
                     >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
@@ -206,6 +216,16 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
                       loading={commonLookups.companyLookup.loading}
                     >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
@@ -224,6 +244,16 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
                     <Select
                       onChange={handleBUChange}
                       allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
                       loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
@@ -239,7 +269,20 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
                 <div className="form-group m-0">
                   <label className="label">Product Name</label>
                   <Form.Item name="license_id" className="m-0" label="Product Name">
-                    <Select loading={commonLookups.windowsServerLicenseLookup.loading} allowClear>
+                    <Select
+                      loading={commonLookups.windowsServerLicenseLookup.loading}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
                       {commonLookups.windowsServerLicenseLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
@@ -253,7 +296,20 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
                 <div className="form-group m-0">
                   <label className="label">Agreement Type</label>
                   <Form.Item name="agreement_type_id" className="m-0" label="Agreement Type">
-                    <Select loading={commonLookups.agreementTypesLookup.loading} allowClear>
+                    <Select
+                      loading={commonLookups.agreementTypesLookup.loading}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
                       {commonLookups.agreementTypesLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
@@ -267,7 +323,20 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
                 <div className="form-group m-0">
                   <label className="label">Currency</label>
                   <Form.Item name="currency_id" className="m-0" label="Currency">
-                    <Select loading={commonLookups.currencyLookup.loading} allowClear>
+                    <Select
+                      loading={commonLookups.currencyLookup.loading}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
                       {commonLookups.currencyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}

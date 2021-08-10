@@ -24,6 +24,20 @@ class ConfigurationService {
     });
   }
 
+  public async getGroups(): Promise<any> {
+    const url = `${this.ENDPOINT}/groups`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getReportsByGroupId(groupId: string): Promise<any> {
+    const url = `${this.ENDPOINT}/reports-by-group/${groupId}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getConfigurationById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {

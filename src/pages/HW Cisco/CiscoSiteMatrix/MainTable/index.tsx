@@ -50,7 +50,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
         sorter: true,
         children: [
           {
@@ -62,7 +63,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
         sorter: true,
         children: [
           {
@@ -74,7 +76,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Bu Name',
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'Bu_Id',
         sorter: true,
         children: [
           {
@@ -86,7 +89,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -99,7 +103,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Source',
+        title: <span className="dragHandler">Source</span>,
+        column: 'Source',
         sorter: true,
         children: [
           {
@@ -111,7 +116,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Site Id',
+        title: <span className="dragHandler">Installed At Site Id</span>,
+        column: 'Installed-At SITE ID',
         sorter: true,
         children: [
           {
@@ -123,7 +129,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Historical Shipped Instance Count',
+        title: <span className="dragHandler">Historical Shipped Instance Count</span>,
+        column: 'Historical Shipped Instance Count',
         sorter: true,
         children: [
           {
@@ -135,7 +142,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Customer Name',
+        title: <span className="dragHandler">Installed At Customer Name</span>,
+        column: 'Installed At Customer Name',
         sorter: true,
         children: [
           {
@@ -147,7 +155,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Site Status',
+        title: <span className="dragHandler">Installed At Site Status</span>,
+        column: 'Installed-At Site Status',
         sorter: true,
         children: [
           {
@@ -159,7 +168,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Country',
+        title: <span className="dragHandler">Installed At Country</span>,
+        column: 'Installed-At COUNTRY',
         sorter: true,
         children: [
           {
@@ -171,7 +181,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At City',
+        title: <span className="dragHandler">Installed At City</span>,
+        column: 'Installed-At CITY',
         sorter: true,
         children: [
           {
@@ -183,7 +194,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Address Line',
+        title: <span className="dragHandler">Installed At Address Line</span>,
+        column: 'Installed-At ADDRESS LINE',
         sorter: true,
         children: [
           {
@@ -195,7 +207,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Postal Code',
+        title: <span className="dragHandler">Installed At Postal Code</span>,
+        column: 'Installed-At POSTAL CODE',
         sorter: true,
         children: [
           {
@@ -207,7 +220,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At State Province',
+        title: <span className="dragHandler">Installed At State Province</span>,
+        column: 'Installed-At STATE/Province',
         sorter: true,
         children: [
           {
@@ -219,7 +233,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Cr Party Id',
+        title: <span className="dragHandler">Installed At Cr Party Id</span>,
+        column: 'Installed At CR Party ID',
         sorter: true,
         children: [
           {
@@ -231,7 +246,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Cr Party Name',
+        title: <span className="dragHandler">Installed At Cr Party Name</span>,
+        column: 'Installed At CR Party Name',
         sorter: true,
         children: [
           {
@@ -243,7 +259,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Gu Id',
+        title: <span className="dragHandler">Installed At Gu Id</span>,
+        column: 'Installed At GU ID',
         sorter: true,
         children: [
           {
@@ -255,7 +272,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Installed At Gu Name',
+        title: <span className="dragHandler">Installed At Gu Name</span>,
+        column: 'Installed At GU Name',
         sorter: true,
         children: [
           {

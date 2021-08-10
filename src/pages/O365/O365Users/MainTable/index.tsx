@@ -50,7 +50,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: 'Tenant Name',
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
         sorter: true,
         children: [
           {
@@ -62,7 +63,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Company Name',
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
         sorter: true,
         children: [
           {
@@ -74,7 +76,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Bu Name',
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'BU_Id',
         sorter: true,
         children: [
           {
@@ -86,7 +89,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Date Added',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -99,7 +103,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'First Name',
+        title: <span className="dragHandler">First Name</span>,
+        column: 'FirstName',
         sorter: true,
         children: [
           {
@@ -111,7 +116,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Last Name',
+        title: <span className="dragHandler">Last Name</span>,
+        column: 'LastName',
         sorter: true,
         children: [
           {
@@ -123,7 +129,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Display Name',
+        title: <span className="dragHandler">Display Name</span>,
+        column: 'DisplayName',
         sorter: true,
         children: [
           {
@@ -135,7 +142,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Street Address',
+        title: <span className="dragHandler">Street Address</span>,
+        column: 'StreetAddress',
         sorter: true,
         children: [
           {
@@ -147,7 +155,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'City',
+        title: <span className="dragHandler">City</span>,
+        column: 'City',
         sorter: true,
         children: [
           {
@@ -159,7 +168,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'State',
+        title: <span className="dragHandler">State</span>,
+        column: 'State',
         sorter: true,
         children: [
           {
@@ -171,7 +181,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Country',
+        title: <span className="dragHandler">Country</span>,
+        column: 'Country',
         sorter: true,
         children: [
           {
@@ -183,7 +194,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Postal Code',
+        title: <span className="dragHandler">Postal Code</span>,
+        column: 'PostalCode',
         sorter: true,
         children: [
           {
@@ -195,7 +207,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Office',
+        title: <span className="dragHandler">Office</span>,
+        column: 'Office',
         sorter: true,
         children: [
           {
@@ -207,7 +220,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Department',
+        title: <span className="dragHandler">Department</span>,
+        column: 'Department',
         sorter: true,
         children: [
           {
@@ -219,7 +233,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Fax',
+        title: <span className="dragHandler">Fax</span>,
+        column: 'Fax',
         sorter: true,
         children: [
           {
@@ -231,7 +246,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Mobile Phone',
+        title: <span className="dragHandler">Mobile Phone</span>,
+        column: 'MobilePhone',
         sorter: true,
         children: [
           {
@@ -243,7 +259,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Phone Number',
+        title: <span className="dragHandler">Phone Number</span>,
+        column: 'PhoneNumber',
         sorter: true,
         children: [
           {
@@ -255,7 +272,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Alternate Email Addresses',
+        title: <span className="dragHandler">Alternate Email Addresses</span>,
+        column: 'AlternateEmailAddresses',
         sorter: true,
         children: [
           {
@@ -267,7 +285,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Proxy Addresses',
+        title: <span className="dragHandler">Proxy Addresses</span>,
+        column: 'ProxyAddresses',
         sorter: true,
         children: [
           {
@@ -279,7 +298,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Last Dir Sync Time',
+        title: <span className="dragHandler">Last Dir Sync Time</span>,
+        column: 'LastDirSyncTime',
         sorter: true,
         children: [
           {
@@ -291,7 +311,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Last Password Change Timestamp',
+        title: <span className="dragHandler">Last Password Change Timestamp</span>,
+        column: 'LastPasswordChangeTimestamp',
         sorter: true,
         children: [
           {
@@ -303,7 +324,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'License Assignment Details',
+        title: <span className="dragHandler">License Assignment Details</span>,
+        column: 'LicenseAssignmentDetails',
         sorter: true,
         children: [
           {
@@ -315,7 +337,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Licenses',
+        title: <span className="dragHandler">Licenses</span>,
+        column: 'Licenses',
         sorter: true,
         children: [
           {
@@ -327,7 +350,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Oath Token Metadata',
+        title: <span className="dragHandler">Oath Token Metadata</span>,
+        column: 'Oath TokenMetadata',
         sorter: true,
         children: [
           {
@@ -339,7 +363,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'ObjectId',
+        title: <span className="dragHandler">Object Id</span>,
+        column: 'ObjectId',
         sorter: true,
         children: [
           {
@@ -351,7 +376,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Password Never Expires',
+        title: <span className="dragHandler">Password Never Expires</span>,
+        column: 'PasswordNeverExpires',
         sorter: true,
         children: [
           {
@@ -362,9 +388,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-
       {
-        title: 'Preferred Data Location',
+        title: <span className="dragHandler">Preferred Data Location</span>,
+        column: 'PreferredDataLocation',
         sorter: true,
         children: [
           {
@@ -376,7 +402,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Preferred Language',
+        title: <span className="dragHandler">Preferred Language</span>,
+        column: 'PreferredLanguage',
         sorter: true,
         children: [
           {
@@ -387,9 +414,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-
       {
-        title: 'Release Track',
+        title: <span className="dragHandler">Release Track</span>,
+        column: 'ReleaseTrack',
         sorter: true,
         children: [
           {
@@ -401,7 +428,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Soft Deletion Timestamp',
+        title: <span className="dragHandler">Soft Deletion Timestamp</span>,
+        column: 'SoftDeletionTimestamp',
         sorter: true,
         children: [
           {
@@ -412,9 +440,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-
       {
-        title: 'Strong Password Required',
+        title: <span className="dragHandler">Strong Password Required</span>,
+        column: 'StrongPasswordRequired',
         sorter: true,
         children: [
           {
@@ -426,7 +454,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Title',
+        title: <span className="dragHandler">Title</span>,
+        column: 'Title',
         sorter: true,
         children: [
           {
@@ -438,7 +467,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Usage Location',
+        title: <span className="dragHandler">Usage Location</span>,
+        column: 'UsageLocation',
         sorter: true,
         children: [
           {
@@ -450,7 +480,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'User Principal Name',
+        title: <span className="dragHandler">User Principal Name</span>,
+        column: 'UserPrincipalName',
         sorter: true,
         children: [
           {
@@ -462,7 +493,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'When Created',
+        title: <span className="dragHandler">When Created</span>,
+        column: 'WhenCreated',
         sorter: true,
         children: [
           {
@@ -474,7 +506,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'NonHuman',
+        title: <span className="dragHandler">Non Human</span>,
+        column: 'NonHuman',
         sorter: true,
         children: [
           {
@@ -487,7 +520,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'In AD',
+        title: <span className="dragHandler">In AD</span>,
+        column: 'In AD',
         sorter: true,
         children: [
           {
@@ -500,7 +534,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Active in AD',
+        title: <span className="dragHandler">Active in AD</span>,
+        column: 'Active in AD',
         sorter: true,
         children: [
           {
@@ -513,7 +548,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'AD Exclusion',
+        title: <span className="dragHandler">AD Exclusion</span>,
+        column: 'AD Exclusion',
         sorter: true,
         children: [
           {
@@ -525,7 +561,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Licensed',
+        title: <span className="dragHandler">Licensed</span>,
+        column: 'Licensed',
         sorter: true,
         children: [
           {
@@ -538,7 +575,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Dir Sync Enabled',
+        title: <span className="dragHandler">Dir Sync Enabled</span>,
+        column: 'Dir Sync Enabled',
         sorter: true,
         children: [
           {
@@ -551,7 +589,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Assigned Licenses',
+        title: <span className="dragHandler">Assigned Licenses</span>,
+        column: 'assignedLicenses',
         sorter: true,
         children: [
           {
@@ -563,7 +602,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Secondary Account',
+        title: <span className="dragHandler">Secondary Account</span>,
+        column: 'SecondaryAccount',
         sorter: true,
         children: [
           {
@@ -576,7 +616,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Cost',
+        title: <span className="dragHandler">Cost</span>,
+        column: 'Cost',
         sorter: true,
         children: [
           {
@@ -588,7 +629,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Assigned',
+        title: <span className="dragHandler">M365 Apps Assigned</span>,
+        column: 'M365 Apps Assigned',
         sorter: true,
         children: [
           {
@@ -601,7 +643,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Project Assigned',
+        title: <span className="dragHandler">Project Assigned</span>,
+        column: 'Project Assigned',
         sorter: true,
         children: [
           {
@@ -614,7 +657,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Visio Assigned',
+        title: <span className="dragHandler">Visio Assigned</span>,
+        column: 'Visio Assigned',
         sorter: true,
         children: [
           {
@@ -627,7 +671,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Activations',
+        title: <span className="dragHandler">M365 Apps Activations</span>,
+        column: 'M365 Apps Activations',
         sorter: true,
         children: [
           {
@@ -639,7 +684,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Project Activations',
+        title: <span className="dragHandler">Project Activations</span>,
+        column: 'Project Activations',
         sorter: true,
         children: [
           {
@@ -651,7 +697,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Visio Activations',
+        title: <span className="dragHandler">Visio Activations</span>,
+        column: 'Visio Activations',
         sorter: true,
         children: [
           {
@@ -663,7 +710,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Not in Active Users List',
+        title: <span className="dragHandler">Not in Active Users List</span>,
+        column: 'Not in Active Users List',
         sorter: true,
         children: [
           {
@@ -679,7 +727,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Is Deleted',
+        title: <span className="dragHandler">Is Deleted</span>,
+        column: 'Is Deleted',
         sorter: true,
         children: [
           {
@@ -692,7 +741,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'No Network Access',
+        title: <span className="dragHandler">No Network Access</span>,
+        column: 'No Network Access',
         sorter: true,
         children: [
           {
@@ -705,7 +755,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'No Activity',
+        title: <span className="dragHandler">No Activity</span>,
+        column: 'No Activity',
         sorter: true,
         children: [
           {
@@ -718,7 +769,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'No Activity in 30 Days',
+        title: <span className="dragHandler">No Activity in 30 Days</span>,
+        column: 'No Activity in 30 Days',
         sorter: true,
         children: [
           {
@@ -734,7 +786,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Network Access',
+        title: <span className="dragHandler">Network Access</span>,
+        column: 'Network Access',
         sorter: true,
         children: [
           {
@@ -746,7 +799,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Exchange',
+        title: <span className="dragHandler">Exchange</span>,
+        column: 'Exchange',
         sorter: true,
         children: [
           {
@@ -758,7 +812,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'OneDrive',
+        title: <span className="dragHandler">One Drive</span>,
+        column: 'OneDrive',
         sorter: true,
         children: [
           {
@@ -770,7 +825,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'SharePoint',
+        title: <span className="dragHandler">Share Point</span>,
+        column: 'SharePoint',
         sorter: true,
         children: [
           {
@@ -782,7 +838,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Skype for Business',
+        title: <span className="dragHandler">Skype for Business</span>,
+        column: 'Skype for Business',
         sorter: true,
         children: [
           {
@@ -794,7 +851,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Teams',
+        title: <span className="dragHandler">Teams</span>,
+        column: 'Teams',
         sorter: true,
         children: [
           {
@@ -806,7 +864,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Yammer',
+        title: <span className="dragHandler">Yammer</span>,
+        column: 'Yammer',
         sorter: true,
         children: [
           {
@@ -818,7 +877,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps',
+        title: <span className="dragHandler">M365 Apps</span>,
+        column: 'M365 Apps',
         sorter: true,
         children: [
           {
@@ -830,7 +890,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Min Last Activity',
+        title: <span className="dragHandler">Min Last Activity</span>,
+        column: 'Min Last Activity',
         sorter: true,
         children: [
           {
@@ -842,7 +903,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'License Cost',
+        title: <span className="dragHandler">License Cost</span>,
+        column: 'License-Cost',
         sorter: true,
         children: [
           {
@@ -854,7 +916,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Assigned Plans',
+        title: <span className="dragHandler">Assigned Plans</span>,
+        column: 'assignedPlans',
         sorter: true,
         children: [
           {
@@ -866,7 +929,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'Block Credential',
+        title: <span className="dragHandler">Block Credential</span>,
+        column: 'BlockCredential',
         sorter: true,
         children: [
           {
@@ -879,7 +943,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Mac',
+        title: <span className="dragHandler">M365 Apps Mac</span>,
+        column: 'M365 Apps Mac',
         sorter: true,
         children: [
           {
@@ -892,7 +957,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Windows',
+        title: <span className="dragHandler">M365 Apps Windows</span>,
+        column: 'M365 Apps Windows',
         sorter: true,
         children: [
           {
@@ -905,7 +971,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Mobile',
+        title: <span className="dragHandler">M365 Apps Mobile</span>,
+        column: 'M365 Apps Mobile',
         sorter: true,
         children: [
           {
@@ -918,7 +985,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Web',
+        title: <span className="dragHandler">M365 Apps Web</span>,
+        column: 'M365 Apps Web',
         sorter: true,
         children: [
           {
@@ -931,7 +999,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Outlook',
+        title: <span className="dragHandler">M365 Apps Outlook</span>,
+        column: 'M365 Apps Outlook',
         sorter: true,
         children: [
           {
@@ -944,7 +1013,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Word',
+        title: <span className="dragHandler">M365 Apps Word</span>,
+        column: 'M365 Apps Word',
         sorter: true,
         children: [
           {
@@ -957,7 +1027,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Excel',
+        title: <span className="dragHandler">M365 Apps Excel</span>,
+        column: 'M365 Apps Excel',
         sorter: true,
         children: [
           {
@@ -970,7 +1041,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps PowerPoint',
+        title: <span className="dragHandler">M365 Apps PowerPoint</span>,
+        column: 'M365 Apps PowerPoint',
         sorter: true,
         children: [
           {
@@ -986,7 +1058,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps OneNote',
+        title: <span className="dragHandler">M365 Apps OneNote</span>,
+        column: 'M365 Apps OneNote',
         sorter: true,
         children: [
           {
@@ -999,7 +1072,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: 'M365 Apps Teams',
+        title: <span className="dragHandler">M365 Apps Teams</span>,
+        column: 'M365 Apps Teams',
         sorter: true,
         children: [
           {

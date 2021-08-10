@@ -101,10 +101,9 @@ export const tenantSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveTenant.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveTenant.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -117,10 +116,9 @@ export const tenantSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteTenant.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteTenant.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });
