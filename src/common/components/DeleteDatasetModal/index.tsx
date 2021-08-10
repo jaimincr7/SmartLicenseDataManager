@@ -112,6 +112,14 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     onChange={handleCompanyChange}
                     allowClear
                     loading={common.allCompanyLookup.loading}
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                    }
                   >
                     {common.allCompanyLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
@@ -136,6 +144,14 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     onChange={handleBUChange}
                     allowClear
                     loading={common.buLookup.loading}
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                    }
                   >
                     {common.buLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>

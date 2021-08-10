@@ -443,7 +443,6 @@ const BulkImport: React.FC = () => {
                     <label className="label">Table Name</label>
                     <Form.Item name={'table_name'} className="m-0">
                       <Select
-                        showSearch
                         // suffixIcon={!bulkImports.getTables.loading &&
                         //   (<img
                         //     src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
@@ -452,6 +451,14 @@ const BulkImport: React.FC = () => {
                         // }
                         onChange={handleTableChange}
                         loading={bulkImports.getTables.loading}
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option: any) =>
+                          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        filterSort={(optionA: any, optionB: any) =>
+                          optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                        }
                       >
                         {bulkImports.getTables.data?.map(
                           (option: IDatabaseTable, index: number) => (
@@ -471,6 +478,13 @@ const BulkImport: React.FC = () => {
                       <Form.Item name={'sheet_name'} className="m-0">
                         <Select
                           showSearch
+                          optionFilterProp="children"
+                          filterOption={(input, option: any) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                          }
+                          filterSort={(optionA: any, optionB: any) =>
+                            optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                          }
                           suffixIcon={
                             <img
                               src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
@@ -537,6 +551,14 @@ const BulkImport: React.FC = () => {
                                 onChange={handleTenantChange}
                                 allowClear
                                 loading={commonLookups.tenantLookup.loading}
+                                showSearch
+                                optionFilterProp="children"
+                                filterOption={(input, option: any) =>
+                                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                filterSort={(optionA: any, optionB: any) =>
+                                  optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                                }
                               >
                                 {commonLookups.tenantLookup.data.map((option: ILookup) => (
                                   <Option key={option.id} value={option.id}>
@@ -571,6 +593,14 @@ const BulkImport: React.FC = () => {
                                 onChange={handleCompanyChange}
                                 allowClear
                                 loading={commonLookups.companyLookup.loading}
+                                showSearch
+                                optionFilterProp="children"
+                                filterOption={(input, option: any) =>
+                                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                filterSort={(optionA: any, optionB: any) =>
+                                  optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                                }
                               >
                                 {commonLookups.companyLookup.data.map((option: ILookup) => (
                                   <Option key={option.id} value={option.id}>
@@ -604,6 +634,14 @@ const BulkImport: React.FC = () => {
                                 onChange={handleBUChange}
                                 allowClear
                                 loading={commonLookups.buLookup.loading}
+                                showSearch
+                                optionFilterProp="children"
+                                filterOption={(input, option: any) =>
+                                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                filterSort={(optionA: any, optionB: any) =>
+                                  optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                                }
                               >
                                 {commonLookups.buLookup.data.map((option: ILookup) => (
                                   <Option key={option.id} value={option.id}>
@@ -678,6 +716,13 @@ const BulkImport: React.FC = () => {
                                   src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
                                   alt=""
                                 />
+                              }
+                              optionFilterProp="children"
+                              filterOption={(input, option: any) =>
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                              }
+                              filterSort={(optionA: any, optionB: any) =>
+                                optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
                               }
                             >
                               {excelColumns.map((option: string, index: number) => (

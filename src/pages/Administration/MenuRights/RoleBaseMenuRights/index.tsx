@@ -205,6 +205,14 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
                 loading={reduxStoreData.roleLookup.loading}
                 style={{ width: '200px' }}
                 placeholder="Please Select"
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option: any) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                filterSort={(optionA: any, optionB: any) =>
+                  optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                }
               >
                 {reduxStoreData.roleLookup.data.map((option: ILookup) => (
                   <Select.Option key={option.id} value={option.id}>

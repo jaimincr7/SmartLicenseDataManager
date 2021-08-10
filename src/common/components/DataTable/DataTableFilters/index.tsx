@@ -35,6 +35,14 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
         maxTagCount="responsive"
         allowClear
         loading={dropdownOptions.length === 0}
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option: any) =>
+          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        filterSort={(optionA: any, optionB: any) =>
+          optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+        }
       >
         {dropdownOptions.map((option: IDropDownOption) => (
           <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
