@@ -51,7 +51,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     return [
       {
         title: <span className="dragHandler">Tenant Name</span>,
-        column:'TenantId',
+        column: 'TenantId',
         sorter: true,
         children: [
           {
@@ -64,7 +64,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Company Name</span>,
-        column:'CompanyId',
+        column: 'CompanyId',
         sorter: true,
         children: [
           {
@@ -77,7 +77,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Bu Name</span>,
-        column:'BuId',
+        column: 'BuId',
         sorter: true,
         children: [
           {
@@ -90,7 +90,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Date Added</span>,
-        column:'Date Added',
+        column: 'Date Added',
         sorter: true,
         children: [
           {
@@ -104,7 +104,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Source</span>,
-        column:'Source',
+        column: 'Source',
         sorter: true,
         children: [
           {
@@ -117,7 +117,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Child Relationship</span>,
-        column:'Child Relationship',
+        column: 'Child Relationship',
         sorter: true,
         children: [
           {
@@ -130,7 +130,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Product ID</span>,
-        column:'Product ID',
+        column: 'Product ID',
         sorter: true,
         children: [
           {
@@ -143,7 +143,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Serial Number</span>,
-        column:'Serial Number',
+        column: 'Serial Number',
         sorter: true,
         children: [
           {
@@ -156,7 +156,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Instance ID</span>,
-        column:'Instance ID',
+        column: 'Instance ID',
         sorter: true,
         children: [
           {
@@ -169,7 +169,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Parent SN</span>,
-        column:'Parent SN',
+        column: 'Parent SN',
         sorter: true,
         children: [
           {
@@ -182,7 +182,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Parent Instance ID</span>,
-        column:'Parent Instance ID',
+        column: 'Parent Instance ID',
         sorter: true,
         children: [
           {
@@ -195,7 +195,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Parent / Child Relationship</span>,
-        column:'Parent / Child Relationship',
+        column: 'Parent / Child Relationship',
         sorter: true,
         children: [
           {
@@ -208,7 +208,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">UID</span>,
-        column:'UID',
+        column: 'UID',
         sorter: true,
         children: [
           {
@@ -221,7 +221,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Parent Child Indicator</span>,
-        column:'Parent Child Indicator',
+        column: 'Parent Child Indicator',
         sorter: true,
         children: [
           {
@@ -234,7 +234,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Hosp Code</span>,
-        column:'Hosp Code',
+        column: 'Hosp Code',
         sorter: true,
         children: [
           {
@@ -247,7 +247,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Status</span>,
-        column:'Status',
+        column: 'Status',
         sorter: true,
         children: [
           {
@@ -260,7 +260,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">HostName</span>,
-        column:'HostName',
+        column: 'HostName',
         sorter: true,
         children: [
           {
@@ -273,7 +273,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">IP</span>,
-        column:'IP',
+        column: 'IP',
         sorter: true,
         children: [
           {
@@ -286,7 +286,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">SNMP</span>,
-        column:'SNMP',
+        column: 'SNMP',
         sorter: true,
         children: [
           {
@@ -299,7 +299,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Stack</span>,
-        column:'Stack',
+        column: 'Stack',
         sorter: true,
         children: [
           {
@@ -312,7 +312,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Previous HostName</span>,
-        column:'Previous HostName',
+        column: 'Previous HostName',
         sorter: true,
         children: [
           {
@@ -325,7 +325,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Network Device Type</span>,
-        column:'Network Device Type',
+        column: 'Network Device Type',
         sorter: true,
         children: [
           {

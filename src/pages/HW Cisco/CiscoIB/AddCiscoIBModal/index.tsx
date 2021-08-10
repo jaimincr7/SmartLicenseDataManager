@@ -1,5 +1,6 @@
 import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -202,7 +203,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
         ship_to_customer_name: data.ship_to_customer_name,
         best_available_ship_date: _.isNull(data.best_available_ship_date)
           ? null
-          : data.best_available_ship_date,
+          : moment(data.best_available_ship_date),
         shipped_within_5_years: data.shipped_within_5_years,
         gu_id: data.gu_id,
         gu_name: data.gu_name,
@@ -217,25 +218,24 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
         installed_site_postal_code: data.installed_site_postal_code,
         installed_site_country: data.installed_site_country,
         covered_line_status: data.covered_line_status,
-        coverage_status: data.covered_line_status,
+        coverage_status: data.coverage_status,
         contract_number: data.contract_number,
         contract_bill_to_name: data.contract_bill_to_name,
         contract_bill_to_country: data.contract_bill_to_country,
-        service_level: data.serviceable,
         service_level_description: data.service_level_description,
         service_level_category: data.service_level_category,
         product_coverage_line_number: data.product_coverage_line_number,
         covered_line_start_date: _.isNull(data.covered_line_start_date)
           ? null
-          : data.covered_line_start_date,
+          : moment(data.covered_line_start_date),
         covered_line_end_date: _.isNull(data.covered_line_end_date)
           ? null
-          : data.covered_line_end_date,
+          : moment(data.covered_line_end_date),
         expiration_range: data.expiration_range,
         termination_date: data.termination_date,
         last_date_of_support: _.isNull(data.last_date_of_support)
           ? null
-          : data.last_date_of_support,
+          : moment(data.last_date_of_support),
         l_do_s_category: data.l_do_s_category,
         warranty_type: data.warranty_type,
         warranty_end_date: data.warranty_end_date,
@@ -252,6 +252,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
         end_of_software_availability_date: data.end_of_software_availability_date,
         end_of_software_license_availability_date: data.end_of_software_license_availability_date,
         end_of_software_date: data.end_of_software_date,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -902,9 +903,9 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
                     name="installed_site_postal_code"
                     label="Installed Site Postal Code"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ type: 'number' }]}
                   >
-                    <Input className="form-control" />
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -1082,9 +1083,9 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
                     name="termination_date"
                     label="Termination Date"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ type: 'number' }]}
                   >
-                    <Input className="form-control" />
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -1150,12 +1151,12 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Termination Date</label>
+                  <label className="label">Hardware SO Number</label>
                   <Form.Item
                     name="hardware_so_number"
-                    label="Termination Date"
+                    label="Hardware SO Number"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -1194,9 +1195,9 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
                     name="end_of_sale_date"
                     label="End Of Sale Date"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ type: 'number' }]}
                   >
-                    <Input className="form-control" />
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
