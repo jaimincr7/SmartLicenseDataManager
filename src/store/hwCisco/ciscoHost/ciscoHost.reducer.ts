@@ -119,10 +119,9 @@ export const ciscoHostSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCiscoHost.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCiscoHost.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -135,10 +134,9 @@ export const ciscoHostSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCiscoHost.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteCiscoHost.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });

@@ -111,10 +111,9 @@ export const ciscoIBSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCiscoIB.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCiscoIB.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -127,10 +126,9 @@ export const ciscoIBSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCiscoIB.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteCiscoIB.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });

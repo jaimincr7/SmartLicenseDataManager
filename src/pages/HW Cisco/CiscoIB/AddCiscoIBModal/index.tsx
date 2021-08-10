@@ -425,7 +425,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">AssetID</label>
+                  <label className="label">Asset ID</label>
                   <Form.Item name="asset_id" className="m-0" label="AssetID" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -753,7 +753,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Best AvailableShipDate</label>
+                  <label className="label">Best Available Ship Date</label>
                   <Form.Item
                     name="best_available_ship_date"
                     label="Best AvailableShipDate"
@@ -1041,7 +1041,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Covered Line StartDate</label>
+                  <label className="label">Covered Line Start Date</label>
                   <Form.Item
                     name="covered_line_start_date"
                     label="Covered Line StartDate"
@@ -1053,7 +1053,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Covered End StartDate</label>
+                  <label className="label">Covered End Start Date</label>
                   <Form.Item
                     name="covered_line_end_date"
                     label="Covered End StartDate"
@@ -1091,7 +1091,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last DateofSupport</label>
+                  <label className="label">Last Date of Support</label>
                   <Form.Item name="last_date_of_support" label="Last DateofSupport" className="m-0">
                     <DatePicker className="w-100" />
                   </Form.Item>
@@ -1099,7 +1099,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">LDoS Category</label>
+                  <label className="label">LDOS Category</label>
                   <Form.Item
                     name="l_do_s_category"
                     label="LDoS Category"

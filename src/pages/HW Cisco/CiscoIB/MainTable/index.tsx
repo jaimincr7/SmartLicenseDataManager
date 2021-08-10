@@ -100,7 +100,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Best AvailableShipDate</span>,
+        title: <span className="dragHandler">Best Available Ship Date</span>,
         column: 'Best AvailableShipDate',
         sorter: true,
         children: [
@@ -114,7 +114,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Covered Line StartDate</span>,
+        title: <span className="dragHandler">Covered Line Start Date</span>,
         column: 'Covered Line StartDate',
         sorter: true,
         children: [
@@ -128,7 +128,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Covered Line EndDate</span>,
+        title: <span className="dragHandler">Covered Line End Date</span>,
         column: 'Covered Line EndDate',
         sorter: true,
         children: [
@@ -142,7 +142,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Last DateofSupport</span>,
+        title: <span className="dragHandler">Last Date of Support</span>,
         column: 'Last DateofSupport',
         sorter: true,
         children: [
@@ -182,7 +182,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">AssetID</span>,
+        title: <span className="dragHandler">Asset ID</span>,
         column: 'AssetID',
         sorter: true,
         children: [
@@ -845,7 +845,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">LDoS Category</span>,
+        title: <span className="dragHandler">LDOS Category</span>,
         column: 'LDoS Category',
         sorter: true,
         children: [
