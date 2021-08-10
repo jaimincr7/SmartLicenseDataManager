@@ -52,6 +52,8 @@ export enum Page {
   O365Subscriptions = 'o365-subscriptions',
 
   HwCiscoSiteMatrix = 'hw-cisco-cisco-site-matrix',
+  HwCiscoHost = 'hw-cisco-host',
+  HwCiscoIB = 'hw-cisco-ib',
 
   PowerBIConfig = 'power-bi-report-config',
 

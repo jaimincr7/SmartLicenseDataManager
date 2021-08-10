@@ -1,15 +1,11 @@
 import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
-import {
-  IConfiguration,
-  IWorkspace,
-  IPowerBIReport,
-} from '../../../services/powerBiReports/configuration/configuration.model';
+import { ICiscoHost } from '../../../services/hwCisco/ciscoHost/ciscoHost.model';
 
-export interface IConfigurationState {
+export interface ICiscoHostState {
   search: {
     loading: boolean;
     hasErrors: boolean;
-    data: IConfiguration[];
+    data: ICiscoHost[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
@@ -18,7 +14,7 @@ export interface IConfigurationState {
   getById: {
     loading: boolean;
     hasErrors: boolean;
-    data: IConfiguration;
+    data: ICiscoHost;
   };
   save: {
     loading: boolean;
@@ -29,15 +25,5 @@ export interface IConfigurationState {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
-  };
-  getGroups: {
-    loading: boolean;
-    hasErrors: boolean;
-    data: IWorkspace[];
-  };
-  getReportsByGroupId: {
-    loading: boolean;
-    hasErrors: boolean;
-    data: IPowerBIReport[];
   };
 }

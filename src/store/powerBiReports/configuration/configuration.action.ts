@@ -40,3 +40,17 @@ export const deleteConfiguration = createAsyncThunk('deleteConfiguration', async
   });
   return response;
 });
+
+export const getGroups = createAsyncThunk('getGroups', async () => {
+  const response = await configurationService.getGroups().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getReportsByGroupId = createAsyncThunk('getReportsByGroupId', async (id: string) => {
+  const response = await configurationService.getReportsByGroupId(id).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
