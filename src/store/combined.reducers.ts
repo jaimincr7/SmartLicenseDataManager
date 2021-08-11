@@ -48,6 +48,7 @@ import roleReducer from './master/role/role.reducer';
 import o365SubscriptionsReducer from './o365/o365Subscriptions/o365Subscriptions.reducer';
 import ciscoHostReducer from './hwCisco/ciscoHost/ciscoHost.reducer';
 import ciscoIBReducer from './hwCisco/ciscoIB/ciscoIB.reducer';
+import cmsCategoryReducer from './cms/cmsCategory/cmsCategory.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -117,6 +118,8 @@ export const rootReducer = combineReducers({
   ciscoSiteMatrix: ciscoSiteMatrixReducer,
   ciscoHost: ciscoHostReducer,
   ciscoIB: ciscoIBReducer,
+  //CMS
+  cmsCategory: cmsCategoryReducer,
   users: usersReducer,
 
   //Power-BI Report
