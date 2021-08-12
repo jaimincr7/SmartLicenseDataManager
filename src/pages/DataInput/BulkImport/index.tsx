@@ -457,7 +457,9 @@ const BulkImport: React.FC = () => {
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
                         filterSort={(optionA: any, optionB: any) =>
-                          optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                          optionA.children
+                            ?.toLowerCase()
+                            ?.localeCompare(optionB.children?.toLowerCase())
                         }
                       >
                         {bulkImports.getTables.data?.map(
@@ -483,7 +485,9 @@ const BulkImport: React.FC = () => {
                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                           }
                           filterSort={(optionA: any, optionB: any) =>
-                            optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                            optionA.children
+                              ?.toLowerCase()
+                              ?.localeCompare(optionB.children?.toLowerCase())
                           }
                           suffixIcon={
                             <img
@@ -557,7 +561,9 @@ const BulkImport: React.FC = () => {
                                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                                 filterSort={(optionA: any, optionB: any) =>
-                                  optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                                  optionA.children
+                                    ?.toLowerCase()
+                                    ?.localeCompare(optionB.children?.toLowerCase())
                                 }
                               >
                                 {commonLookups.tenantLookup.data.map((option: ILookup) => (
@@ -599,7 +605,9 @@ const BulkImport: React.FC = () => {
                                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                                 filterSort={(optionA: any, optionB: any) =>
-                                  optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                                  optionA.children
+                                    ?.toLowerCase()
+                                    ?.localeCompare(optionB.children?.toLowerCase())
                                 }
                               >
                                 {commonLookups.companyLookup.data.map((option: ILookup) => (
@@ -640,7 +648,9 @@ const BulkImport: React.FC = () => {
                                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                                 filterSort={(optionA: any, optionB: any) =>
-                                  optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                                  optionA.children
+                                    ?.toLowerCase()
+                                    ?.localeCompare(optionB.children?.toLowerCase())
                                 }
                               >
                                 {commonLookups.buLookup.data.map((option: ILookup) => (
@@ -722,7 +732,9 @@ const BulkImport: React.FC = () => {
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                               }
                               filterSort={(optionA: any, optionB: any) =>
-                                optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                                optionA.children
+                                  ?.toLowerCase()
+                                  ?.localeCompare(optionB.children?.toLowerCase())
                               }
                             >
                               {excelColumns.map((option: string, index: number) => (

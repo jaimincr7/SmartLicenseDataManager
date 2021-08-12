@@ -16,9 +16,9 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import ciscoPolicyService from '../../../../services/hwCisco/ciscoPolicy/ciscoPolicy.service';
 import {
-  FilterByDate,
   FilterByDropdown,
   FilterWithSwapOption,
+  FilterByDateSwap,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
@@ -94,7 +94,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', ciscoPolicy.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -108,7 +108,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('quote_begin_date'),
+            title: FilterByDateSwap('quote_begin_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'quote_begin_date',
             key: 'quote_begin_date',
             ellipsis: true,
@@ -122,7 +122,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('quote_end_date'),
+            title: FilterByDateSwap('quote_end_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'quote_end_date',
             key: 'quote_end_date',
             ellipsis: true,
@@ -136,7 +136,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('coverage_expiration'),
+            title: FilterByDateSwap('coverage_expiration', ciscoPolicy.search.tableName, form),
             dataIndex: 'coverage_expiration',
             key: 'coverage_expiration',
             ellipsis: true,
@@ -150,7 +150,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('start_date'),
+            title: FilterByDateSwap('start_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'start_date',
             key: 'start_date',
             ellipsis: true,
@@ -164,7 +164,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('end_date'),
+            title: FilterByDateSwap('end_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'end_date',
             key: 'end_date',
             ellipsis: true,
@@ -178,7 +178,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('second_start_date'),
+            title: FilterByDateSwap('second_start_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'second_start_date',
             key: 'second_start_date',
             ellipsis: true,
@@ -192,9 +192,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('second_start_date'),
-            dataIndex: 'second_start_date',
-            key: 'second_start_date',
+            title: FilterByDateSwap('second_end_date', ciscoPolicy.search.tableName, form),
+            dataIndex: 'second_end_date',
+            key: 'second_end_date',
             ellipsis: true,
             render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
           },
@@ -466,7 +466,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">CANCELLATION TRACKING</span>,
+        title: <span className="dragHandler">Cancellation Tracking</span>,
         column: 'CANCELLATION TRACKING',
         sorter: true,
         children: [
@@ -479,7 +479,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">CANCELED RECOVERED AMOUNT</span>,
+        title: <span className="dragHandler">Canceled Recovered Amount</span>,
         column: 'CANCELED RECOVERED AMOUNT',
         sorter: true,
         children: [
@@ -622,19 +622,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('coverage_declined_reason', form),
             dataIndex: 'coverage_declined_reason',
             key: 'coverage_declined_reason',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Coverage Expiration</span>,
-        column: 'Coverage Expiration',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('coverage_expiration', form),
-            dataIndex: 'coverage_expiration',
-            key: 'coverage_expiration',
             ellipsis: true,
           },
         ],
@@ -901,6 +888,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Service Renewal Date</span>,
+        column: 'Service Renewal Date',
         sorter: true,
         children: [
           {
