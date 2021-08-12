@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { IDataTable } from './dataTable.model';
 import moment from 'moment';
-import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
+import { allDateColumns, DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
 import _ from 'lodash';
 import { Filter } from './DataTableFilters';
 import {
@@ -81,13 +81,26 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
     setInlineSearch(inlineSearchFilter);
 
+    const inlineSearchFilterObj: { [key: string]: any } = { ...inlineSearchFilter };
+    allDateColumns.forEach((colName: string) => {
+      if (colName in inlineSearchFilterObj) {
+        const currentColValue = inlineSearchFilterObj[colName];
+        if (currentColValue?.length === 2 && typeof currentColValue[0] === 'object') {
+          inlineSearchFilterObj[colName] = {
+            start_date: currentColValue[0],
+            end_date: currentColValue[1],
+          };
+        }
+      }
+    });
+
     const searchData: ISearch = {
       is_lookup: !pageLoaded,
       is_column_selection: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
-      filter_keys: inlineSearchFilter,
+      filter_keys: inlineSearchFilterObj,
       is_export_to_excel: isExportToExcel,
       ...(extraSearchData || {}),
     };
@@ -337,8 +350,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const names = [...columns];
     return names
       ?.sort((a, b) => a.column?.localeCompare(b.column))
-      ?.map((col) => (
-        <li key={col.title}>
+      ?.map((col, i) => (
+        <li key={`li-${i}-${col.column}`}>
           <Checkbox
             checked={
               col.column in reduxStoreData.tableColumnSelection.columns

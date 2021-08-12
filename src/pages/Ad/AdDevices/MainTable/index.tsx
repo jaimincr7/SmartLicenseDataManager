@@ -13,7 +13,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import adDevicesService from '../../../../services/ad/adDevices/adDevices.service';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -117,7 +117,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', adDevices.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -171,7 +171,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('last_logon_date'),
+            title: FilterByDateSwap('last_logon_date', adDevices.search.tableName, form),
             dataIndex: 'last_logon_date',
             key: 'last_logon_date',
             ellipsis: true,
@@ -265,7 +265,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('password_last_set'),
+            title: FilterByDateSwap('password_last_set', adDevices.search.tableName, form),
             dataIndex: 'password_last_set',
             key: 'password_last_set',
             ellipsis: true,
@@ -336,7 +336,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('when_created'),
+            title: FilterByDateSwap('when_created', adDevices.search.tableName, form),
             dataIndex: 'when_created',
             key: 'when_created',
             ellipsis: true,
