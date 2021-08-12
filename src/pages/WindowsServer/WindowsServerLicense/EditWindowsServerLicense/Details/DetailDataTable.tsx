@@ -6,7 +6,7 @@ import DataTable from '../../../../../common/components/DataTable';
 import {
   FilterWithSwapOption,
   FilterByDropdown,
-  FilterByDate,
+  FilterByDateSwap,
 } from '../../../../../common/components/DataTable/DataTableFilters';
 import windowsServerLicenseDetailService from '../../../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.service';
 import { useAppSelector } from '../../../../../store/app.hooks';
@@ -71,7 +71,11 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap(
+              'date_added',
+              windowsServerLicenseDetail.search.tableName,
+              form
+            ),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
