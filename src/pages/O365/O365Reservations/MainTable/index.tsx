@@ -14,7 +14,7 @@ import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import o365ReservationsService from '../../../../services/o365/o365Reservations/o365Reservations.service';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -94,7 +94,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', o365Reservations.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
