@@ -48,6 +48,7 @@ import roleReducer from './master/role/role.reducer';
 import o365SubscriptionsReducer from './o365/o365Subscriptions/o365Subscriptions.reducer';
 import ciscoHostReducer from './hwCisco/ciscoHost/ciscoHost.reducer';
 import ciscoIBReducer from './hwCisco/ciscoIB/ciscoIB.reducer';
+import ciscoPolicyReducer from './hwCisco/ciscoPolicy/ciscoPolicy.reducer';
 import cmsCategoryReducer from './cms/cmsCategory/cmsCategory.reducer';
 
 export const rootReducer = combineReducers({
@@ -118,6 +119,7 @@ export const rootReducer = combineReducers({
   ciscoSiteMatrix: ciscoSiteMatrixReducer,
   ciscoHost: ciscoHostReducer,
   ciscoIB: ciscoIBReducer,
+  ciscoPolicy: ciscoPolicyReducer,
   //CMS
   cmsCategory: cmsCategoryReducer,
   users: usersReducer,
