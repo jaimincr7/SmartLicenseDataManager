@@ -64,10 +64,7 @@ export const cmsCategorySlice = createSlice({
     [searchCmsCategory.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchCmsCategory.fulfilled.type]: (
-      state,
-      action: PayloadAction<any>
-    ) => {
+    [searchCmsCategory.fulfilled.type]: (state, action: PayloadAction<any>) => {
       const { records, total_count, table_name, column_selection } = action.payload;
       state.search.data = records;
       state.search.count = total_count;

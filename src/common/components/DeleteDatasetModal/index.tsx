@@ -118,7 +118,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     filterSort={(optionA: any, optionB: any) =>
-                      optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
                     {common.allCompanyLookup.data.map((option: ILookup) => (
@@ -150,7 +152,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     filterSort={(optionA: any, optionB: any) =>
-                      optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
                     {common.buLookup.data.map((option: ILookup) => (
