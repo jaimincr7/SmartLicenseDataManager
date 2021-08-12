@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -94,7 +94,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('joined_date'),
+            title: FilterByDateSwap('joined_date', company.search.tableName, form),
             dataIndex: 'joined_date',
             key: 'joined_date',
             ellipsis: true,

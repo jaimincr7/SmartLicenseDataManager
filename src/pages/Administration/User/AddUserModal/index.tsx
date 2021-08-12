@@ -276,7 +276,9 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }
                       filterSort={(optionA: any, optionB: any) =>
-                        optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
                       }
                       loading={users.search.lookups?.roles?.length === 0}
                     >
