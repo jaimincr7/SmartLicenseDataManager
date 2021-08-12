@@ -49,7 +49,7 @@ export interface IDropDownOption {
 export type fixedColumn = 'right' | 'left';
 
 export interface IInlineSearch {
-  [key: string]: string | string[] | number[];
+  [key: string]: string | string[] | number[] | { [key: string]: any };
 }
 
 export interface IDetailParams {
