@@ -16,7 +16,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import sqlServerInventoryService from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.service';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -120,7 +120,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', sqlServerInventory.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
