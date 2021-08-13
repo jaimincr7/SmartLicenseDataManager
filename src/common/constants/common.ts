@@ -79,4 +79,11 @@ export const allDateColumns = [
   'created_date',
   'deleted_date',
   'last_activity_date',
+  'ship_date',
+  'date_data_added',
+  'last_update_date',
+  'warranty_end_date',
+  'l_do_sales',
+  'l_do_support',
+  'date_confirmed',
 ];

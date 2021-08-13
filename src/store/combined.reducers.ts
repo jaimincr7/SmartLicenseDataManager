@@ -50,6 +50,8 @@ import ciscoHostReducer from './hwCisco/ciscoHost/ciscoHost.reducer';
 import ciscoIBReducer from './hwCisco/ciscoIB/ciscoIB.reducer';
 import ciscoPolicyReducer from './hwCisco/ciscoPolicy/ciscoPolicy.reducer';
 import cmsCategoryReducer from './cms/cmsCategory/cmsCategory.reducer';
+import ciscoProductReducer from './hwCisco/ciscoProduct/ciscoProduct.reducer';
+import ciscoProductAttributesReducer from './hwCisco/ciscoProductAttributes/ciscoProductAttributes.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -120,6 +122,9 @@ export const rootReducer = combineReducers({
   ciscoHost: ciscoHostReducer,
   ciscoIB: ciscoIBReducer,
   ciscoPolicy: ciscoPolicyReducer,
+  ciscoProduct: ciscoProductReducer,
+  ciscoProductAttributes: ciscoProductAttributesReducer,
+
   //CMS
   cmsCategory: cmsCategoryReducer,
   users: usersReducer,
