@@ -444,7 +444,7 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product SubType</label>
+                  <label className="label">Product Sub Type</label>
                   <Form.Item
                     name="product_sub_type"
                     label="Product_SubType"
@@ -496,7 +496,7 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Architecture SubGroup</label>
+                  <label className="label">Architecture Sub Group</label>
                   <Form.Item
                     name="architecture_sub_group"
                     label="Architecture_SubGroup"

@@ -517,7 +517,7 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">HostID</label>
+                  <label className="label">Host ID</label>
                   <Form.Item name="host_id" className="m-0" label="HostID" rules={[{ max: 100 }]}>
                     <Input className="form-control" />
                   </Form.Item>

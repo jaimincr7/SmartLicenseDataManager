@@ -167,9 +167,9 @@ const BulkImport: React.FC = () => {
               x.toLowerCase()?.replace(/\s/g, '') === ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x) =>
-                  x.toLowerCase()?.replace(/\s/g, '') === ele.name.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x) =>
+                x.toLowerCase()?.replace(/\s/g, '') === ele.name.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -405,7 +405,7 @@ const BulkImport: React.FC = () => {
                   <Form.Item name={'upload_file'} className="m-0">
                     <div className="upload-file">
                       <Upload
-                        accept=".xls,.xlsx"
+                        accept=".xls,.xlsx,.csv"
                         customRequest={uploadFile}
                         onChange={handleOnChange}
                         defaultFileList={defaultFile}
