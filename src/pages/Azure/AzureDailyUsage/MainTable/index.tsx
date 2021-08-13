@@ -16,7 +16,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import azureDailyUsageService from '../../../../services/azure/azureDailyUsage/azureDailyUsage.service';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -49,6 +49,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const getTableColumns = (form) => {
     return [
+      {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
       {
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
@@ -98,7 +112,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', azureDailyUsage.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -299,7 +313,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('billing_period_start_date'),
+            title: FilterByDateSwap(
+              'billing_period_start_date',
+              azureDailyUsage.search.tableName,
+              form
+            ),
             dataIndex: 'billing_period_start_date',
             key: 'billing_period_start_date',
             ellipsis: true,
@@ -314,7 +332,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('billing_period_end_date'),
+            title: FilterByDateSwap(
+              'billing_period_end_date',
+              azureDailyUsage.search.tableName,
+              form
+            ),
             dataIndex: 'billing_period_end_date',
             key: 'billing_period_end_date',
             ellipsis: true,
@@ -431,7 +453,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('date'),
+            title: FilterByDateSwap('date', azureDailyUsage.search.tableName, form),
             dataIndex: 'date',
             key: 'date',
             ellipsis: true,

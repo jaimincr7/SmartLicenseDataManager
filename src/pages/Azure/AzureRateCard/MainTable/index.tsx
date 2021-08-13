@@ -16,7 +16,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import azureRateCardService from '../../../../services/azure/azureRateCard/azureRateCard.service';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
@@ -49,12 +49,26 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Date Added</span>,
         column: 'Date Added',
         sorter: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', azureRateCard.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -68,7 +82,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('effective_date'),
+            title: FilterByDateSwap('effective_date', azureRateCard.search.tableName, form),
             dataIndex: 'effective_date',
             key: 'effective_date',
             ellipsis: true,

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -50,6 +50,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
         sorter: true,
@@ -94,7 +108,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', o365ProductList.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,

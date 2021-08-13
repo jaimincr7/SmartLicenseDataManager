@@ -54,6 +54,8 @@ export enum Page {
   HwCiscoSiteMatrix = 'hw-cisco-cisco-site-matrix',
   HwCiscoHost = 'hw-cisco-host',
   HwCiscoIB = 'hw-cisco-ib',
+  HwCiscoPolicy = 'hw-cisco-policy',
+  CmsCategory = 'cms-category',
 
   PowerBIConfig = 'power-bi-report-config',
 

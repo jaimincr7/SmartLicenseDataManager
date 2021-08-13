@@ -14,7 +14,7 @@ import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import o365OneDriveUsageService from '../../../../services/o365/o365OneDriveUsage/o365OneDriveUsage.service';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -49,6 +49,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const getTableColumns = (form) => {
     return [
+      {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
       {
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
@@ -94,7 +108,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', o365OneDriveUsage.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -108,7 +122,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('report_refresh_date'),
+            title: FilterByDateSwap(
+              'report_refresh_date',
+              o365OneDriveUsage.search.tableName,
+              form
+            ),
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
@@ -148,7 +166,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('last_activity_date'),
+            title: FilterByDateSwap('last_activity_date', o365OneDriveUsage.search.tableName, form),
             dataIndex: 'last_activity_date',
             key: 'last_activity_date',
             ellipsis: true,

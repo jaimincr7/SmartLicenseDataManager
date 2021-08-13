@@ -5,6 +5,7 @@ import { Action, Page } from '../../common/constants/pageAction';
 import CiscoSiteMatrix from './CiscoSiteMatrix';
 import CiscoHost from './CiscoHost';
 import CiscoIB from './CiscoIB';
+import CiscoPolicy from './CiscoPolicy';
 
 const HwCiscoRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -34,6 +35,15 @@ const HwCiscoRoutes: React.FC = () => {
         {ability.can(Action.View, Page.HwCiscoIB) && (
           <Route exact path={`${match.path}/cisco-ib`} component={CiscoIB} />
         )}
+
+        {/* Policy */}
+        {ability.can(Action.View, Page.HwCiscoPolicy) && (
+          <Route exact path={`${match.path}/cisco-policy/:id`} component={CiscoPolicy} />
+        )}
+        {ability.can(Action.View, Page.HwCiscoPolicy) && (
+          <Route exact path={`${match.path}/cisco-policy`} component={CiscoPolicy} />
+        )}
+
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

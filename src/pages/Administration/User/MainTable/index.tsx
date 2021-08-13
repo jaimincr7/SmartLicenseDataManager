@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -46,6 +46,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const getTableColumns = (form) => {
     return [
+      {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
       {
         title: <span className="dragHandler">Tenant</span>,
         column: 'TenantId',
@@ -148,7 +162,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('last_directory_update'),
+            title: FilterByDateSwap('last_directory_update', users.search.tableName, form),
             dataIndex: 'last_directory_update',
             key: 'last_directory_update',
             ellipsis: true,
@@ -163,7 +177,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('insert_date'),
+            title: FilterByDateSwap('insert_date', users.search.tableName, form),
             dataIndex: 'insert_date',
             key: 'insert_date',
             ellipsis: true,
@@ -193,7 +207,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDate('update_date'),
+            title: FilterByDateSwap('update_date', users.search.tableName, form),
             dataIndex: 'update_date',
             key: 'update_date',
             ellipsis: true,

@@ -1,8 +1,9 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import _ from 'lodash';
 import {
-  FilterByDate,
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -22,6 +23,8 @@ import {
 } from '../../../../store/o365/o365Subscriptions/o365Subscriptions.reducer';
 import o365SubscriptionsService from '../../../../services/o365/o365Subscriptions/o365Subscriptions.service';
 import { IMainTable } from './mainTable.model';
+import { Common } from '../../../../common/constants/common';
+import moment from 'moment';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
@@ -46,6 +49,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const getTableColumns = (form) => {
     return [
+      {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
       {
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
@@ -91,10 +108,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDate('date_added'),
+            title: FilterByDateSwap('date_added', o365Subscriptions.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
           },
         ],
       },

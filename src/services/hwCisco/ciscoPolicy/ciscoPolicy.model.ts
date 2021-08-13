@@ -1,0 +1,78 @@
+import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
+
+export interface ICiscoPolicy {
+  id?: number;
+  tenant_id: number;
+  company_id?: number;
+  bu_id?: number;
+  source?: string;
+  uid: string;
+  product_id: string;
+  serial_number?: string;
+  instance_id?: string;
+  parent_child_indicator?: string;
+  minor_follow_parent?: boolean;
+  quote_group?: string;
+  quote_service_level?: string;
+  quote_begin_date?: string | Moment;
+  quote_end_date?: string | Moment;
+  quote_eos?: string;
+  service_level_compare?: string;
+  quote_price?: number;
+  quote_number?: string;
+  quote_issues?: string;
+  action?: string;
+  response?: string;
+  requested_service_level?: string;
+  duration_exception?: string;
+  redundant_system?: boolean;
+  quote_status?: string;
+  cancellation_tracking?: string;
+  canceled_recovered_amount?: string;
+  ineligible_reason?: string;
+  coverage_review?: string;
+  coverage_review_category?: string;
+  is_device_within_coverage_policy?: boolean;
+  coverage_policy_exclusion_reason?: string;
+  ldos?: boolean;
+  valid_through_l_do_s?: boolean;
+  eligible_for_quoting?: boolean;
+  coverage_required?: boolean;
+  coverage_declined_reason?: string;
+  coverage_expiration?: string | Moment;
+  product_quantity?: number;
+  service_indicator?: string;
+  service_level?: string;
+  service_level_desc?: string;
+  contract_status?: string;
+  contract_number?: string;
+  start_date?: string | Moment;
+  end_date?: string | Moment;
+  service_vendor?: string;
+  maintenance_price?: number;
+  maintenance_po?: string;
+  maintenance_so?: string;
+  service_program?: string;
+  second_service_level?: string;
+  second_service_level_desc?: string;
+  second_contract_status?: string;
+  second_contract_number?: string;
+  second_start_date?: string | Moment;
+  second_end_date?: string | Moment;
+  second_svc_vendor?: string;
+  second_maintenance_price?: number;
+  second_maintenance_po?: string;
+  second_maintenance_so?: string;
+  second_service_program?: string;
+  service_renewal_date?: number;
+  service_auto_renewal_term?: string;
+  service_billing_frequency?: string;
+  service_monthly_cost?: number;
+  sample?: string;
+  date_added?: string | Moment;
+}
+
+export interface ISearchCiscoPolicy extends ISearch {
+  is_lookup?: boolean;
+}

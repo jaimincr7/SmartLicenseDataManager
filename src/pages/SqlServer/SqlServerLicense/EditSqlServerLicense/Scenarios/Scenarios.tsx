@@ -94,7 +94,20 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
                 <div className="form-group m-0">
                   <label className="label">Company</label>
                   <Form.Item name="company_id" className="m-0" label="Company">
-                    <Select disabled suffixIcon={false}>
+                    <Select
+                      disabled
+                      suffixIcon={false}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
                       {commonLookups.companyLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
@@ -108,7 +121,20 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
                 <div className="form-group m-0">
                   <label className="label">BU</label>
                   <Form.Item name="bu_id" className="m-0" label="BU">
-                    <Select disabled suffixIcon={false}>
+                    <Select
+                      disabled
+                      suffixIcon={false}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
                       {commonLookups.buLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
@@ -130,7 +156,20 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
                 <div className="form-group m-0">
                   <label className="label">Agreement Type</label>
                   <Form.Item name="opt_agreement_type" className="m-0" label="Agreement Type">
-                    <Select disabled suffixIcon={false}>
+                    <Select
+                      disabled
+                      suffixIcon={false}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
                       {commonLookups.agreementTypesLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}

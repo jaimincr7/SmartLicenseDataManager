@@ -57,7 +57,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
     insert_user_id: null,
     update_date: null,
     update_user_id: null,
-    is_active: null,
+    is_active: 1,
     mobile_phone_number: '',
     two_factor_auth: null,
     role_ids: [],
@@ -268,8 +268,19 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
                     rules={[{ required: true }]}
                   >
                     <Select
+                      showArrow={true}
                       mode="multiple"
                       allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
                       loading={users.search.lookups?.roles?.length === 0}
                     >
                       {users.search.lookups?.roles?.map((option: ILookup) => (
