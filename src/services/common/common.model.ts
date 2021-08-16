@@ -20,6 +20,7 @@ export interface IBulkInsertDataset {
     bu_id: number;
     date_added: string | Moment;
   };
+  header_row: number;
 }
 
 export interface IDeleteDataset {

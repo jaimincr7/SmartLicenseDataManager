@@ -1,7 +1,7 @@
 import { Col, Form, InputNumber, Modal, Table } from 'antd';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
-import { IPreviewExcel } from './PreviewExcel.model'
+import { IPreviewExcel } from './PreviewExcel.model';
 
 const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const { headerRowCount, previewData, records, showModal, handleModalClose, maxCount } = props;
@@ -9,21 +9,21 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
-    showSizeChanger: true
+    showSizeChanger: true,
   });
 
   useEffect(() => {
     showModal && previewData(headerRowCount);
-  }, [showModal])
+  }, [showModal]);
 
   const [form] = Form.useForm();
   const initialValues = {
-    header_row: headerRowCount
-  }
+    header_row: headerRowCount,
+  };
 
   useEffect(() => {
     const mainColumns = [];
-    headerRowCount > 0 && form.setFieldsValue({ 'header_row': headerRowCount })
+    headerRowCount > 0 && form.setFieldsValue({ header_row: headerRowCount });
     if (records?.length > 0) {
       for (let index = 0; index <= maxCount; index++) {
         mainColumns.push({
@@ -32,13 +32,17 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           render: (_, data: any, i) => {
             return (
               <>
-                {index === 0 ? (headerRowCount === 0 ? 1 : i + (headerRowCount ?? 1)) : data[index - 1]}
+                {index === 0
+                  ? headerRowCount === 0
+                    ? 1
+                    : i + (headerRowCount ?? 1)
+                  : data[index - 1]}
               </>
-            )
+            );
           },
         });
       }
-      setColumns(mainColumns)
+      setColumns(mainColumns);
     }
   }, [records]);
 
@@ -49,7 +53,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   return (
     <Modal
       wrapClassName="custom-modal"
-      title={"Manage Excel"}
+      title={'Manage Excel'}
       centered
       visible={showModal}
       onCancel={handleModalClose}
@@ -59,12 +63,15 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         <Col xs={24} md={8}>
           <div className="form-group ">
             <label className="label">Header Row</label>
-            <Form.Item
-              name="header_row"
-              className="m-0"
-              rules={[{ type: 'integer' }]}
-            >
-              <InputNumber min={1} max={maxCount} className="form-control w-100" onChange={(value) => { previewData(value) }} />
+            <Form.Item name="header_row" className="m-0" rules={[{ type: 'integer' }]}>
+              <InputNumber
+                min={1}
+                max={maxCount}
+                className="form-control w-100"
+                onChange={(value) => {
+                  previewData(value);
+                }}
+              />
             </Form.Item>
           </div>
         </Col>
@@ -84,7 +91,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         />
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
-export default PreviewExcel
+export default PreviewExcel;

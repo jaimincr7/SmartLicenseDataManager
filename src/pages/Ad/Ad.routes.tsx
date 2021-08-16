@@ -5,6 +5,7 @@ import { Action, Page } from '../../common/constants/pageAction';
 import AdDevices from './AdDevices';
 import AdDevicesExclusions from './AdDevicesExclusions';
 import AdUsers from './AdUsers';
+import AdUsersExclusions from './AdUsersExclusions';
 
 const AdRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -44,6 +45,17 @@ const AdRoutes: React.FC = () => {
           <Route exact path={`${match.path}/ad-devices`} component={AdDevices} />
         )}
 
+        {/* Ad UsersExclusions */}
+        {ability.can(Action.View, Page.AdUsersExclusions) && (
+          <Route
+            exact
+            path={`${match.path}/ad-users-exclusions/:id`}
+            component={AdUsersExclusions}
+          />
+        )}
+        {ability.can(Action.View, Page.AdUsersExclusions) && (
+          <Route exact path={`${match.path}/ad-users-exclusions`} component={AdUsersExclusions} />
+        )}
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

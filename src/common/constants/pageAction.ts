@@ -18,6 +18,7 @@ export enum Page {
   ADDevices = 'ad-devices',
   ADExclusions = 'ad-devices-exclusions',
   ADUsers = 'ad-users',
+  AdUsersExclusions = 'ad-users-exclusions',
 
   Menu = 'menu',
   Tenant = 'tenant',

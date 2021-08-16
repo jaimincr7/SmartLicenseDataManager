@@ -132,10 +132,13 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
     const inputValues: ICiscoIB = {
       ...values,
       id: id ? +id : null,
-      best_available_ship_date: values.best_available_ship_date === "" ? null : values.best_available_ship_date,
-      covered_line_start_date: values.covered_line_start_date === "" ? null : values.covered_line_start_date,
-      covered_line_end_date: values.covered_line_end_date === "" ? null : values.covered_line_end_date,
-      last_date_of_support: values.last_date_of_support === "" ? null : values.last_date_of_support,
+      best_available_ship_date:
+        values.best_available_ship_date === '' ? null : values.best_available_ship_date,
+      covered_line_start_date:
+        values.covered_line_start_date === '' ? null : values.covered_line_start_date,
+      covered_line_end_date:
+        values.covered_line_end_date === '' ? null : values.covered_line_end_date,
+      last_date_of_support: values.last_date_of_support === '' ? null : values.last_date_of_support,
     };
     dispatch(saveCiscoIB(inputValues));
   };
