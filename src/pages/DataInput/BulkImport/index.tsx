@@ -133,6 +133,7 @@ const BulkImport: React.FC = () => {
     const uploadValue = formUpload.getFieldsValue();
     const inputValues: IBulkInsertDataset = {
       excel_to_sql_mapping: sqlToExcelMapping,
+      header_row: Number(formUpload.getFieldValue('header_row')) - 1 ?? 0,
       file_name: bulkImports.getExcelColumns.data.filename,
       table_name: uploadValue?.table_name,
       sheet_name: uploadValue?.sheet_name,
@@ -146,13 +147,15 @@ const BulkImport: React.FC = () => {
     dispatch(bulkInsert(inputValues));
   };
 
-
   const formUploadInitialValues = {
-    header_row: 1
-  }
+    header_row: 1,
+  };
 
   const setFormFields = async () => {
-    const skipRows = Number(formUpload.getFieldValue('header_row')) > 0 ? Number(formUpload.getFieldValue('header_row')) - 1 : 0;
+    const skipRows =
+      Number(formUpload.getFieldValue('header_row')) > 0
+        ? Number(formUpload.getFieldValue('header_row')) - 1
+        : 0;
     let currentSheetName = formUpload.getFieldValue('sheet_name');
     if (!currentSheetName && bulkImports.getExcelColumns.data?.excel_sheet_columns) {
       currentSheetName = bulkImports.getExcelColumns.data.excel_sheet_columns[0].sheet;
@@ -189,12 +192,14 @@ const BulkImport: React.FC = () => {
         initialValuesData[ele.name] =
           filterExcelColumns?.filter(
             (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s/g, '') === ele.name.toLowerCase()?.replace(/\s/g, '')
+              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+              ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') === ele.name.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -356,12 +361,16 @@ const BulkImport: React.FC = () => {
   };
 
   const previewData = (headerValue = 0) => {
-    const currentExcelData = [...bulkImports.getExcelColumns.data?.excel_sheet_columns?.find(x => x.sheet === formUpload?.getFieldValue('sheet_name'))?.columns];
+    const currentExcelData = [
+      ...bulkImports.getExcelColumns.data?.excel_sheet_columns?.find(
+        (x) => x.sheet === formUpload?.getFieldValue('sheet_name')
+      )?.columns,
+    ];
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
-    formUpload.setFieldsValue({ 'header_row': headerValue });
+    formUpload.setFieldsValue({ header_row: headerValue });
     setFormFields();
-  }
+  };
   const dropdownMenu = (
     <div className="checkbox-list-wrapper">
       <ul className="checkbox-list">
@@ -430,7 +439,6 @@ const BulkImport: React.FC = () => {
               </Popover>
             )}
           </div>
-
         </div>
         <div className="main-card">
           <div className="input-btns-title">
@@ -546,34 +554,39 @@ const BulkImport: React.FC = () => {
                     </div>
                   </Col>
                 )}
-                {bulkImports.getExcelColumns.data?.excel_sheet_columns && <Col xs={24} md={6}>
-                  <div className="form-group m-0">
-                    <label className="label">Header Row</label>
-                    <Form.Item
-                      name="header_row"
-                      className="m-0"
-                      rules={[{ type: 'integer' }]}
-                    >
-                      <InputNumber min={1} className="form-control w-100" onChange={setFormFields}
-                        max={maxHeaderRow} />
-                    </Form.Item>
-                  </div>
-                </Col>}
-                {bulkImports.getExcelColumns.data?.excel_sheet_columns && <Col xs={24} md={6}>
-                  <div className="form-group m-0">
-                    <label className="label"></label>
-                    <div className="bottom-fix">
-                      <Button
-                        type="primary"
-                        className="w-100"
-                        onClick={() => { setShowManageExcel(true) }}
-                      >
-                        Manage Excel
-                      </Button>
+                {bulkImports.getExcelColumns.data?.excel_sheet_columns && (
+                  <Col xs={24} md={6}>
+                    <div className="form-group m-0">
+                      <label className="label">Header Row</label>
+                      <Form.Item name="header_row" className="m-0" rules={[{ type: 'integer' }]}>
+                        <InputNumber
+                          min={1}
+                          className="form-control w-100"
+                          onChange={setFormFields}
+                          max={maxHeaderRow}
+                        />
+                      </Form.Item>
                     </div>
-                  </div>
-                </Col>
-                }
+                  </Col>
+                )}
+                {bulkImports.getExcelColumns.data?.excel_sheet_columns && (
+                  <Col xs={24} md={6}>
+                    <div className="form-group m-0">
+                      <label className="label"></label>
+                      <div className="bottom-fix">
+                        <Button
+                          type="primary"
+                          className="w-100"
+                          onClick={() => {
+                            setShowManageExcel(true);
+                          }}
+                        >
+                          Manage Excel
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                )}
               </Row>
             </Form>
           </div>
@@ -827,8 +840,19 @@ const BulkImport: React.FC = () => {
           </Form>
         </div>
       </div>
-      <PreviewExcel showModal={showManageExcel} maxCount={maxHeaderRow} handleModalClose={() => { setShowManageExcel(false); if (!formUpload.getFieldValue('header_row')) { formUpload.setFieldsValue({ 'header_row': 1 }) } }}
-        previewData={previewData} records={excelPreviewData} headerRowCount={formUpload.getFieldValue('header_row')}></PreviewExcel>
+      <PreviewExcel
+        showModal={showManageExcel}
+        maxCount={maxHeaderRow}
+        handleModalClose={() => {
+          setShowManageExcel(false);
+          if (!formUpload.getFieldValue('header_row')) {
+            formUpload.setFieldsValue({ header_row: 1 });
+          }
+        }}
+        previewData={previewData}
+        records={excelPreviewData}
+        headerRowCount={formUpload.getFieldValue('header_row')}
+      ></PreviewExcel>
     </>
   );
 };
