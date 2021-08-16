@@ -79,7 +79,7 @@ class CommonService {
 
   public async getExcelColumns(file: File): Promise<IApiResponse<any>> {
     const headers = { Accept: 'multipart/form-data' };
-    const url = `/app/excel-sheet-column`;
+    const url = `/app/read-excel-file`;
     const formData = new FormData();
     formData.append('file', file);
     return request({ url, method: 'POST', data: formData, headers: headers }).then((res) => {
