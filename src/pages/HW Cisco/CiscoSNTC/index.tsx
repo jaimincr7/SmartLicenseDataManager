@@ -64,7 +64,7 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${ciscoSNTC.search.tableName}`)
+                    history.push(`/data-input/bulk-import/${encodeURIComponent(ciscoSNTC.search.tableName)}`)
                   }
                   icon={
                     <em className="anticon">
