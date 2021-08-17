@@ -760,9 +760,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('product_list_price_$', form),
-            dataIndex: 'product_list_price_$',
-            key: 'product_list_price_$',
+            title: FilterBySwap('product_list_price', form),
+            dataIndex: 'product_list_price',
+            key: 'product_list_price',
             ellipsis: true,
           },
         ],
@@ -774,9 +774,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('default_service_list_price_$', form),
-            dataIndex: 'default_service_list_price_$',
-            key: 'default_service_list_price_$',
+            title: FilterBySwap('default_service_list_price', form),
+            dataIndex: 'default_service_list_price',
+            key: 'default_service_list_price',
             ellipsis: true,
           },
         ],
@@ -802,9 +802,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('existing_coverage_level_list_price_$', form),
-            dataIndex: 'existing_coverage_level_list_price_$',
-            key: 'existing_coverage_level_list_price_$',
+            title: FilterBySwap('existing_coverage_level_list_price', form),
+            dataIndex: 'existing_coverage_level_list_price',
+            key: 'existing_coverage_level_list_price',
             ellipsis: true,
           },
         ],

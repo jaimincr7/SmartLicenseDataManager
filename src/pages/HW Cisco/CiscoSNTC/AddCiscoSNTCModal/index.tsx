@@ -405,7 +405,7 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SNMP sysName</label>
+                  <label className="label">SNMP SYS Name</label>
                   <Form.Item
                     name="snmp_sys_name"
                     className="m-0"
@@ -728,7 +728,7 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SNMP sysLocation</label>
+                  <label className="label">SNMP SYS Location</label>
                   <Form.Item
                     name="snmp_sys_location"
                     className="m-0"

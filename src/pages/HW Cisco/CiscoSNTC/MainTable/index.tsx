@@ -215,7 +215,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">SNMP sysName</span>,
+        title: <span className="dragHandler">SNMP SYS Name</span>,
         column: 'SNMP sysName',
         sorter: true,
         ellipsis: true,
@@ -565,7 +565,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">SNMP sysLocation</span>,
+        title: <span className="dragHandler">SNMP SYS Location</span>,
         column: 'SNMP sysLocation',
         sorter: true,
         ellipsis: true,
