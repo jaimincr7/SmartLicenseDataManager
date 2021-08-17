@@ -95,7 +95,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

@@ -75,7 +75,7 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

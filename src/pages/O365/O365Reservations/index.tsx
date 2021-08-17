@@ -73,7 +73,7 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

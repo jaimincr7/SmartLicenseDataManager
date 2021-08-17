@@ -73,7 +73,7 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

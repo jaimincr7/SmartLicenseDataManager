@@ -75,7 +75,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

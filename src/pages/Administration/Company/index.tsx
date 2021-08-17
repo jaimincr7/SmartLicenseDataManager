@@ -65,7 +65,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

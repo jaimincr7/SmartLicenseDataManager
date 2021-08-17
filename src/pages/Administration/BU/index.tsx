@@ -63,7 +63,7 @@ const BU: React.FC<IBUProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

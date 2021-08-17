@@ -475,6 +475,10 @@ label {
     background-color: transparent;
   }
 }
+.ant-upload.ant-upload-drag.py-sm .ant-upload {
+  padding: 6px 0;
+}
+
 .update-excel-page .select-table {
   margin-bottom: 0;
   width: 300px;

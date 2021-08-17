@@ -52,6 +52,7 @@ import {
 } from '../../../store/common/common.action';
 import moment from 'moment';
 import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
+import { UploadOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -63,6 +64,7 @@ const BulkImport: React.FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
+  const { Dragger } = Upload;
   const [form] = Form.useForm();
   const [formUpload] = Form.useForm();
 
@@ -196,10 +198,10 @@ const BulkImport: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -445,14 +447,15 @@ const BulkImport: React.FC = () => {
             <Form form={formUpload} name="formUpload" initialValues={formUploadInitialValues}>
               <Row gutter={[30, 20]} className="align-item-start">
                 <Col xs={24} md={6}>
-                  <label className="label w-100">Upload Excel</label>
+                  <label className="label w-100"></label>
                   <Form.Item name={'upload_file'} className="m-0">
                     <div className="upload-file">
-                      <Upload
+                      <Dragger
                         accept=".xls,.xlsx,.csv"
                         customRequest={uploadFile}
                         onChange={handleOnChange}
                         defaultFileList={defaultFile}
+                        className="py-sm"
                         maxCount={1}
                         showUploadList={{
                           showRemoveIcon: true,
@@ -464,21 +467,9 @@ const BulkImport: React.FC = () => {
                           ),
                         }}
                       >
-                        <Button
-                          type="primary"
-                          className="btn-icon"
-                          icon={
-                            <em className="anticon">
-                              <img
-                                src={`${process.env.PUBLIC_URL}/assets/images/ic-upload.svg`}
-                                alt=""
-                              />
-                            </em>
-                          }
-                        >
-                          Choose File
-                        </Button>
-                      </Upload>
+                        <UploadOutlined />
+                        <span className="ant-upload-text"> Click or drag file </span>
+                      </Dragger>
                     </div>
                   </Form.Item>
                 </Col>

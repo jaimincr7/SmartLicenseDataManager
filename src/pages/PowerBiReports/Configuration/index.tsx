@@ -72,7 +72,7 @@ const Configuration: React.FC<IConfigurationProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

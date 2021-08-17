@@ -77,7 +77,7 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

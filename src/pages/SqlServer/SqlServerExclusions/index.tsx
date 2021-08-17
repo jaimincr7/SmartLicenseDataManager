@@ -95,7 +95,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

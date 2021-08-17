@@ -71,7 +71,7 @@ const CmsCategory: React.FC<ICmsCategoryProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

@@ -71,7 +71,7 @@ const TabVHost: React.FC<ITabVHostProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

@@ -68,7 +68,7 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

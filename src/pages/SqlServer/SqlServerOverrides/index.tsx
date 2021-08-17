@@ -75,7 +75,7 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

@@ -76,7 +76,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

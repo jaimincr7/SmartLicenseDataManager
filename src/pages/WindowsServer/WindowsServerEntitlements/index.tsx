@@ -74,7 +74,7 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

@@ -75,7 +75,7 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

@@ -74,7 +74,7 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

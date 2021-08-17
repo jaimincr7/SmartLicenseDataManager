@@ -74,7 +74,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

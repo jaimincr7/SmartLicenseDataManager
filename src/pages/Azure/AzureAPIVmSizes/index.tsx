@@ -68,7 +68,7 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

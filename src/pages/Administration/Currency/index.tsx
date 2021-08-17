@@ -65,7 +65,7 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

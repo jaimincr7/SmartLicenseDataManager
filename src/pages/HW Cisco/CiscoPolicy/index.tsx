@@ -75,7 +75,7 @@ const CiscoPolicy: React.FC<ICiscoPolicyProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

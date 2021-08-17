@@ -72,7 +72,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

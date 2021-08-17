@@ -75,7 +75,7 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

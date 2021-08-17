@@ -92,7 +92,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

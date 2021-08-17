@@ -75,7 +75,7 @@ const CiscoHost: React.FC<ICiscoHostProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

@@ -72,7 +72,7 @@ const CiscoIB: React.FC<ICiscoIBProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

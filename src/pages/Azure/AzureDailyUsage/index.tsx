@@ -74,7 +74,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

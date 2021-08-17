@@ -74,7 +74,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

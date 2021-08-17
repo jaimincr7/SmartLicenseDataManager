@@ -74,7 +74,7 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

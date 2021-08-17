@@ -73,7 +73,7 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

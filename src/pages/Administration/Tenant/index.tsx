@@ -63,7 +63,7 @@ const Tenant: React.FC<ITenantProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

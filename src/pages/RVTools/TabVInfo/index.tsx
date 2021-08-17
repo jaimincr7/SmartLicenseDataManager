@@ -71,7 +71,7 @@ const TabVInfo: React.FC<ITabVInfoProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

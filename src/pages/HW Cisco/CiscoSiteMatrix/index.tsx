@@ -75,7 +75,7 @@ const CiscoSiteMatrix: React.FC<ICiscoSiteMatrixProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

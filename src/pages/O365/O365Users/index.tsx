@@ -70,7 +70,7 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

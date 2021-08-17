@@ -75,7 +75,7 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>
