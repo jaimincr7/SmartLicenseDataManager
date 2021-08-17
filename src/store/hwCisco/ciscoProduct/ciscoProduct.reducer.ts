@@ -140,9 +140,7 @@ export const ciscoProductSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCiscoProduct.rejected.type]: (
-      state,
-    ) => {
+    [deleteCiscoProduct.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },

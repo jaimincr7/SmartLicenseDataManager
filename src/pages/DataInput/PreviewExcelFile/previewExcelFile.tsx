@@ -93,10 +93,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       </Form>
 
       <div className="btns-block modal-footer">
-        <Button
-          type="primary"
-          onClick={handleModalClose}
-        >
+        <Button type="primary" onClick={handleModalClose}>
           Ok
         </Button>
       </div>

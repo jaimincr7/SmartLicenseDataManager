@@ -7,4 +7,4 @@ export interface ICurrency {
   symbol?: string;
 }
 
-export interface ISearchCurrency extends ISearch { }
+export interface ISearchCurrency extends ISearch {}

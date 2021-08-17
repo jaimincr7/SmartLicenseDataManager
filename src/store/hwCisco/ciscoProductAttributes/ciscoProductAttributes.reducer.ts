@@ -125,9 +125,7 @@ export const ciscoProductAttributesSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCiscoProductAttributes.rejected.type]: (
-      state,
-    ) => {
+    [saveCiscoProductAttributes.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
     },
@@ -145,9 +143,7 @@ export const ciscoProductAttributesSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCiscoProductAttributes.rejected.type]: (
-      state,
-    ) => {
+    [deleteCiscoProductAttributes.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },

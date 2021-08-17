@@ -150,7 +150,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_confirmed', ciscoProductAttributes.search.tableName, form),
+            title: FilterByDateSwap(
+              'date_confirmed',
+              ciscoProductAttributes.search.tableName,
+              form
+            ),
             dataIndex: 'date_confirmed',
             key: 'date_confirmed',
             ellipsis: true,

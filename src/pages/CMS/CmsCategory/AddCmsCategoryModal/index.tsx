@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input,  Modal, Row, Spin } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -17,15 +17,9 @@ import {
   clearCmsCategoryMessages,
   cmsCategorySelector,
 } from '../../../../store/cms/cmsCategory/cmsCategory.reducer';
-import {
-  getTenantLookup,
-} from '../../../../store/common/common.action';
-import {
-  clearBULookUp,
-  clearCompanyLookUp,
-} from '../../../../store/common/common.reducer';
+import { getTenantLookup } from '../../../../store/common/common.action';
+import { clearBULookUp, clearCompanyLookUp } from '../../../../store/common/common.reducer';
 import { IAddCmsCategoryProps } from './addCmsCategory.model';
-
 
 const AddCmsCategoryModal: React.FC<IAddCmsCategoryProps> = (props) => {
   const cmsCategory = useAppSelector(cmsCategorySelector);

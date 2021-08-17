@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import { ICmsCategoryProps } from './cmsCategory.model';
 import React from 'react';
-import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';

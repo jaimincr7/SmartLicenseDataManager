@@ -56,10 +56,18 @@ const HwCiscoRoutes: React.FC = () => {
 
         {/* Product Attributes */}
         {ability.can(Action.View, Page.HwCiscoProductAttributes) && (
-          <Route exact path={`${match.path}/cisco-product-attributes/:id`} component={CiscoProductAttributes} />
+          <Route
+            exact
+            path={`${match.path}/cisco-product-attributes/:id`}
+            component={CiscoProductAttributes}
+          />
         )}
         {ability.can(Action.View, Page.HwCiscoProductAttributes) && (
-          <Route exact path={`${match.path}/cisco-product-attributes`} component={CiscoProductAttributes} />
+          <Route
+            exact
+            path={`${match.path}/cisco-product-attributes`}
+            component={CiscoProductAttributes}
+          />
         )}
 
         {/* keep least always */}
