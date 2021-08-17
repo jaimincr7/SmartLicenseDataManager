@@ -449,7 +449,7 @@ const BulkImport: React.FC = () => {
                   <Form.Item name={'upload_file'} className="m-0">
                     <div className="upload-file">
                       <Upload
-                        accept=".xls,.xlsx"
+                        accept=".xls,.xlsx,.csv"
                         customRequest={uploadFile}
                         onChange={handleOnChange}
                         defaultFileList={defaultFile}

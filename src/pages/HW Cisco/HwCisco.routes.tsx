@@ -6,6 +6,8 @@ import CiscoSiteMatrix from './CiscoSiteMatrix';
 import CiscoHost from './CiscoHost';
 import CiscoIB from './CiscoIB';
 import CiscoPolicy from './CiscoPolicy';
+import CiscoProduct from './CiscoProduct';
+import CiscoProductAttributes from './CiscoProductAttributes';
 
 const HwCiscoRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -42,6 +44,22 @@ const HwCiscoRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.HwCiscoPolicy) && (
           <Route exact path={`${match.path}/cisco-policy`} component={CiscoPolicy} />
+        )}
+
+        {/* Product */}
+        {ability.can(Action.View, Page.HwCiscoProduct) && (
+          <Route exact path={`${match.path}/cisco-product/:id`} component={CiscoProduct} />
+        )}
+        {ability.can(Action.View, Page.HwCiscoProduct) && (
+          <Route exact path={`${match.path}/cisco-product`} component={CiscoProduct} />
+        )}
+
+        {/* Product Attributes */}
+        {ability.can(Action.View, Page.HwCiscoProductAttributes) && (
+          <Route exact path={`${match.path}/cisco-product-attributes/:id`} component={CiscoProductAttributes} />
+        )}
+        {ability.can(Action.View, Page.HwCiscoProductAttributes) && (
+          <Route exact path={`${match.path}/cisco-product-attributes`} component={CiscoProductAttributes} />
         )}
 
         {/* keep least always */}
