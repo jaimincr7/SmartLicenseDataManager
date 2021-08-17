@@ -58,6 +58,8 @@ export enum Page {
   HwCiscoPolicy = 'hw-cisco-policy',
   HwCiscoProduct = 'hw-cisco-product',
   HwCiscoProductAttributes = 'hw-cisco-product-attributes',
+  HwCiscoReady = 'hw-cisco-ready',
+  HwCiscoSNTC = 'hw-cisco-sntc',
 
   CmsCategory = 'cms-category',
 
