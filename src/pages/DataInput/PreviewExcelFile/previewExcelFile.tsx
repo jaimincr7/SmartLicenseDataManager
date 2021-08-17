@@ -1,4 +1,4 @@
-import { Col, Form, InputNumber, Modal, Table } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
 import { IPreviewExcel } from './PreviewExcel.model';
@@ -29,6 +29,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         mainColumns.push({
           dataIndex: 'description' + index,
           key: 'description' + index,
+          ellipsis: true,
           render: (_, data: any, i) => {
             return (
               <>
@@ -90,6 +91,15 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           className="custom-table"
         />
       </Form>
+
+      <div className="btns-block modal-footer">
+        <Button
+          type="primary"
+          onClick={handleModalClose}
+        >
+          Ok
+        </Button>
+      </div>
     </Modal>
   );
 };
