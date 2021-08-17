@@ -60,7 +60,9 @@ const TabVInfo: React.FC<ITabVInfoProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${tabVInfo.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(tabVInfo.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">

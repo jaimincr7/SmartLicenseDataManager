@@ -63,7 +63,9 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${tabVCluster.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(tabVCluster.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">

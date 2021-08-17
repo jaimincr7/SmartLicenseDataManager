@@ -60,7 +60,9 @@ const CmsCategory: React.FC<ICmsCategoryProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${cmsCategory.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(cmsCategory.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">

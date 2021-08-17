@@ -57,7 +57,11 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${azureAPIVmSizes.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        azureAPIVmSizes.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">

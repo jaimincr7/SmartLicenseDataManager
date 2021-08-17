@@ -64,7 +64,11 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${o365OneDriveUsage.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        o365OneDriveUsage.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">

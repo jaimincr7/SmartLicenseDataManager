@@ -63,7 +63,9 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${inventory.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(inventory.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">

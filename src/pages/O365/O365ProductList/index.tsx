@@ -62,7 +62,11 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${o365ProductList.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        o365ProductList.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
