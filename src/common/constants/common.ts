@@ -86,4 +86,8 @@ export const allDateColumns = [
   'l_do_sales',
   'l_do_support',
   'date_confirmed',
+  'warranty_start',
+  'warranty_end',
+  'hw_l_do_s',
+  'collection_date',
 ];

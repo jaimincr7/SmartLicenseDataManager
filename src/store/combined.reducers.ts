@@ -53,6 +53,8 @@ import cmsCategoryReducer from './cms/cmsCategory/cmsCategory.reducer';
 import adUsersExclusionsReducer from './ad/adUsersExclusions/adUsersExclusions.reducer';
 import ciscoProductReducer from './hwCisco/ciscoProduct/ciscoProduct.reducer';
 import ciscoProductAttributesReducer from './hwCisco/ciscoProductAttributes/ciscoProductAttributes.reducer';
+import ciscoReadyReducer from './hwCisco/ciscoReady/ciscoReady.reducer';
+import ciscoSNTCReducer from './hwCisco/ciscoSNTC/ciscoSNTC.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -126,6 +128,8 @@ export const rootReducer = combineReducers({
   ciscoPolicy: ciscoPolicyReducer,
   ciscoProduct: ciscoProductReducer,
   ciscoProductAttributes: ciscoProductAttributesReducer,
+  ciscoReady: ciscoReadyReducer,
+  ciscoSNTC: ciscoSNTCReducer,
 
   //CMS
   cmsCategory: cmsCategoryReducer,
