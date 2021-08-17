@@ -75,7 +75,7 @@ const CiscoReady: React.FC<ICiscoReadyProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

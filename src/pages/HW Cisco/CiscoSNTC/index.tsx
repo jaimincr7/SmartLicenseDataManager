@@ -75,7 +75,7 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>
