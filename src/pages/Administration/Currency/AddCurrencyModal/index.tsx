@@ -37,6 +37,7 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
   let initialValues: ICurrency = {
     currency: '',
     exchange_rate: null,
+    symbol: ''
   };
 
   const onFinish = (values: any) => {
@@ -52,6 +53,7 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
       initialValues = {
         currency: data.currency,
         exchange_rate: data.exchange_rate,
+        symbol: data.symbol,
       };
       form.setFieldsValue(initialValues);
     }
@@ -132,6 +134,19 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
                     rules={[{ required: true, type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Symbol</label>
+                  <Form.Item
+                    name="symbol"
+                    label="Symbol"
+                    className="m-0"
+                    rules={[{ max: 10 }]}
+                  >
+                    <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>

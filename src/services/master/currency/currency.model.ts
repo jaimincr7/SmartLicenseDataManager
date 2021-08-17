@@ -4,6 +4,7 @@ export interface ICurrency {
   id?: number;
   currency?: string;
   exchange_rate?: number;
+  symbol?: string;
 }
 
-export interface ISearchCurrency extends ISearch {}
+export interface ISearchCurrency extends ISearch { }

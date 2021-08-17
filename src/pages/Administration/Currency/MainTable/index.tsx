@@ -79,6 +79,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      {
+        title: <span className="dragHandler">Symbol</span>,
+        column: 'Symbol',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('symbol', form),
+            dataIndex: 'symbol',
+            key: 'symbol',
+            ellipsis: true,
+          },
+        ],
+      },
     ];
   };
 
