@@ -24,6 +24,7 @@ import HwCiscoRoutes from './pages/HW Cisco/HwCisco.routes';
 import { setResponseError } from './utils/request';
 import PowerBiReportsRoutes from './pages/PowerBiReports/PowerBiReports.routes';
 import AdministrationRoutes from './pages/Administration/Administration.routes';
+import CMSRoutes from './pages/CMS/CMS.routes';
 
 function AppRoutes() {
   const history = useHistory();
@@ -66,6 +67,7 @@ function AppRoutes() {
             layout={MainLayout}
             component={PowerBiReportsRoutes}
           />
+          <LayoutRoute path="/cms" layout={MainLayout} component={CMSRoutes} />
 
           {/* Dummy routes for designers */}
           <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />

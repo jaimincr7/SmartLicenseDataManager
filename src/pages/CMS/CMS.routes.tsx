@@ -16,6 +16,17 @@ const HwCiscoRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmsCategory) && (
           <Route exact path={`${match.path}/cms-category`} component={CmsCategory} />
+        {/* Category Extended */}
+        {ability.can(Action.View, Page.CmsCategoryExtended) && (
+          <Route
+            exact
+            path={`${match.path}/cms-category-extended/:id`}
+            component={CategoryExtended}
+          />
+        )}
+        {ability.can(Action.View, Page.CmsCategoryExtended) && (
+          <Route exact path={`${match.path}/cms-category-extended`} component={CategoryExtended} />
+        )}
         )}
 
         {/* keep least always */}

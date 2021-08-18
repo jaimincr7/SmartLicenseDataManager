@@ -37,6 +37,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cmsCategoryLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   deleteDataset: {
     loading: boolean;
     hasErrors: boolean;

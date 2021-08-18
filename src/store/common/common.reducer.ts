@@ -14,6 +14,7 @@ import {
   saveTableColumnSelection,
   getAllCompanyLookup,
   getO365ProductsLookup,
+  getCmsCategoryLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -51,6 +52,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsCategoryLookup: {
     data: [],
     loading: false,
   },

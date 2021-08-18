@@ -56,6 +56,7 @@ import ciscoProductAttributesReducer from './hwCisco/ciscoProductAttributes/cisc
 import ciscoReadyReducer from './hwCisco/ciscoReady/ciscoReady.reducer';
 import ciscoSNTCReducer from './hwCisco/ciscoSNTC/ciscoSNTC.reducer';
 import ciscoSpectrumReducer from './hwCisco/ciscoSpectrum/ciscoSpectrum.reducer';
+import cmsCategoryExtendedReducer from './cms/categoryExtended/categoryExtended.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -135,6 +136,7 @@ export const rootReducer = combineReducers({
 
   //CMS
   cmsCategory: cmsCategoryReducer,
+  cmsCategoryExtended: cmsCategoryExtendedReducer,
   users: usersReducer,
 
   //Power-BI Report
