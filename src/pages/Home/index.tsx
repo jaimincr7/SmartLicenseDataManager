@@ -123,7 +123,7 @@ const Home: React.FC<IHomeProps> = () => {
                   </em>
                 }
               >
-                Update from Excel
+                Import
               </Button>
             </Col>
             <Col>

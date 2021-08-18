@@ -61,7 +61,9 @@ const CiscoIB: React.FC<ICiscoIBProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${ciscoIB.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(ciscoIB.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">

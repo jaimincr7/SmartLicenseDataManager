@@ -61,7 +61,9 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${adUsers.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(adUsers.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">

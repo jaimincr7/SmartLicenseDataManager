@@ -63,7 +63,9 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${overrides.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(overrides.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">

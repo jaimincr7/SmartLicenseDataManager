@@ -64,7 +64,11 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${adDevicesExclusions.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        adDevicesExclusions.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">

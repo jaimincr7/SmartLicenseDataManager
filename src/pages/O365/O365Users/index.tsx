@@ -59,7 +59,9 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${o365Users.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(o365Users.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">

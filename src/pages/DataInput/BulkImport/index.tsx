@@ -76,7 +76,8 @@ const BulkImport: React.FC = () => {
   const [checkAll, setCheckAll] = useState(false);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
-  const { table } = useParams<{ table: string }>();
+  let { table } = useParams<{ table: string }>();
+  table && (table = decodeURIComponent(table));
 
   const uploadFile = async (options) => {
     const { onSuccess, onError, file } = options;
@@ -110,10 +111,10 @@ const BulkImport: React.FC = () => {
       setDefaultFile(null);
       setExcelColumns(null);
       setTableColumns(null);
-      formUpload.setFieldsValue({ sheet_name: '' });
     } else if (file.status === 'done') {
       setDefaultFile(file);
     }
+    formUpload.setFieldsValue({ sheet_name: '' });
   };
 
   const onFinish = (values: any) => {
@@ -198,10 +199,10 @@ const BulkImport: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -411,6 +412,11 @@ const BulkImport: React.FC = () => {
   );
   // End: set tables for import
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearGetTableColumns());
+    };
+  }, []);
   return (
     <>
       <div className="update-excel-page">

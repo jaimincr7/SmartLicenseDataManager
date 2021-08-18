@@ -62,7 +62,11 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${o365Subscriptions.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        o365Subscriptions.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">

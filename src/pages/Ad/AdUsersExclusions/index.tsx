@@ -64,7 +64,11 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${adUsersExclusions.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        adUsersExclusions.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">

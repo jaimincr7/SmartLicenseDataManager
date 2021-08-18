@@ -84,7 +84,11 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${sqlServerExclusions.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        sqlServerExclusions.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
