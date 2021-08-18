@@ -112,10 +112,9 @@ export const cmsCategorySlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCmsCategory.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCmsCategory.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
-      state.save.messages = action.payload.errors;
     },
 
     // Delete
@@ -132,12 +131,10 @@ export const cmsCategorySlice = createSlice({
       state.delete.messages = action.payload.messages;
     },
     [deleteCmsCategory.rejected.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
+      state
     ) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
-      state.delete.messages = action.payload.errors;
     },
   },
 });
