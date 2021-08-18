@@ -196,10 +196,10 @@ const BulkImport: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);

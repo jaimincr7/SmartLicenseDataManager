@@ -176,6 +176,15 @@ export const commonSlice = createSlice({
       state.o365ProductsLookup.loading = false;
     },
 
+        // Category lookup
+        [getCmsCategoryLookup.pending.type]: (state) => {
+          state.cmsCategoryLookup.loading = true;
+        },
+        [getCmsCategoryLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+          state.cmsCategoryLookup.data = action.payload;
+          state.cmsCategoryLookup.loading = false;
+        },
+    
     // Delete Dataset
     [deleteDataset.pending.type]: (state) => {
       state.deleteDataset.loading = true;
