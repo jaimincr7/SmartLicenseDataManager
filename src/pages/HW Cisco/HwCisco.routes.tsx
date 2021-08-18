@@ -10,6 +10,7 @@ import CiscoProduct from './CiscoProduct';
 import CiscoProductAttributes from './CiscoProductAttributes';
 import CiscoReady from './CiscoReady';
 import CiscoSNTC from './CiscoSNTC';
+import CiscoSpectrum from './CiscoSpectrum';
 
 const HwCiscoRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -87,6 +88,14 @@ const HwCiscoRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.HwCiscoSNTC) && (
           <Route exact path={`${match.path}/cisco-sntc`} component={CiscoSNTC} />
+        )}
+
+        {/* Spectrum */}
+        {ability.can(Action.View, Page.HwCiscoSpectrum) && (
+          <Route exact path={`${match.path}/cisco-spectrum/:id`} component={CiscoSpectrum} />
+        )}
+        {ability.can(Action.View, Page.HwCiscoSpectrum) && (
+          <Route exact path={`${match.path}/cisco-spectrum`} component={CiscoSpectrum} />
         )}
 
         {/* keep least always */}

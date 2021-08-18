@@ -2,26 +2,29 @@ import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
-import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
+import {
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import {
-  clearCmsCategoryMessages,
-  cmsCategorySelector,
+  clearCmsCategoryExtendedMessages,
+  cmsCategoryExtendedSelector,
   setTableColumnSelection,
-} from '../../../../store/cms/cmsCategory/cmsCategory.reducer';
+} from '../../../../store/cms/categoryExtended/categoryExtended.reducer';
 import {
-  deleteCmsCategory,
-  searchCmsCategory,
-} from '../../../../store/cms/cmsCategory/cmsCategory.action';
-import cmsCategoryService from '../../../../services/cms/cmsCategory/cmsCategory.service';
+  deleteCmsCategoryExtended,
+  searchCmsCategoryExtended,
+} from '../../../../store/cms/categoryExtended/categoryExtended.action';
+import cmsCategoryExtendedService from '../../../../services/cms/categoryExtended/categoryExtended.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
-  const cmsCategory = useAppSelector(cmsCategorySelector);
+  const cmsCategoryExtended = useAppSelector(cmsCategoryExtendedSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -33,11 +36,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }));
 
   const exportExcelFile = (searchData: ISearch) => {
-    return cmsCategoryService.exportExcelFile(searchData);
+    return cmsCategoryExtendedService.exportExcelFile(searchData);
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, cmsCategory.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, cmsCategoryExtended.search.tableName, form);
   };
 
   const getTableColumns = (form) => {
@@ -52,6 +55,22 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('id', form),
             dataIndex: 'id',
             key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Category</span>,
+        column: 'Category ID',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'category_id',
+              cmsCategoryExtended.search.lookups?.cms_categories
+            ),
+            dataIndex: 'cms_category_name',
+            key: 'cms_category_name',
             ellipsis: true,
           },
         ],
@@ -72,24 +91,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     ];
   };
 
-  const removeCmsCategory = (id: number) => {
-    dispatch(deleteCmsCategory(id));
+  const removeCmsCategoryExtended = (id: number) => {
+    dispatch(deleteCmsCategoryExtended(id));
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Can I={Action.Update} a={Page.CmsCategory}>
+      <Can I={Action.Update} a={Page.CmsCategoryExtended}>
         <a
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/cms/cms-category/${data.id}`);
+            history.push(`/cms/cms-category-extended/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.Delete} a={Page.CmsCategory}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeCmsCategory(data.id)}>
+      <Can I={Action.Delete} a={Page.CmsCategoryExtended}>
+        <Popconfirm title="Sure to delete?" onConfirm={() => removeCmsCategoryExtended(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -102,14 +121,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={ability.can(Action.Add, Page.CmsCategory)}
+        showAddButton={ability.can(Action.Add, Page.CmsCategoryExtended)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
-        reduxSelector={cmsCategorySelector}
-        searchTableData={searchCmsCategory}
-        clearTableDataMessages={clearCmsCategoryMessages}
+        reduxSelector={cmsCategoryExtendedSelector}
+        searchTableData={searchCmsCategoryExtended}
+        clearTableDataMessages={clearCmsCategoryExtendedMessages}
         setTableColumnSelection={setTableColumnSelection}
       />
     </>

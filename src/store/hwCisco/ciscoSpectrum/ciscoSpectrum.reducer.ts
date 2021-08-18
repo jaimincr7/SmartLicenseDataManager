@@ -1,16 +1,17 @@
+import { booleanLookup } from '../../../common/constants/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IApiResponseBody } from '../../../common/models/common';
+import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
+import { ICiscoSpectrum } from '../../../services/hwCisco/ciscoSpectrum/ciscoSpectrum.model';
 import { RootState } from '../../app.model';
-import { ICmsCategoryState } from './cmsCategory.model';
-import { ICmsCategory } from '../../../services/cms/cmsCategory/cmsCategory.model';
 import {
-  deleteCmsCategory,
-  getCmsCategoryById,
-  saveCmsCategory,
-  searchCmsCategory,
-} from './cmsCategory.action';
+  deleteCiscoSpectrum,
+  getCiscoSpectrumById,
+  saveCiscoSpectrum,
+  searchCiscoSpectrum,
+} from './ciscoSpectrum.action';
+import { ICiscoSpectrumState } from './ciscoSpectrum.model';
 
-export const initialState: ICmsCategoryState = {
+export const initialState: ICiscoSpectrumState = {
   search: {
     loading: false,
     hasErrors: false,
@@ -41,18 +42,18 @@ export const initialState: ICmsCategoryState = {
   },
 };
 
-export const cmsCategorySlice = createSlice({
-  name: 'cmsCategory',
+export const ciscoSpectrumSlice = createSlice({
+  name: 'ciscoSpectrum',
   initialState,
   reducers: {
-    clearCmsCategory: () => {
+    clearCiscoSpectrum: () => {
       return initialState;
     },
-    clearCmsCategoryMessages: (state) => {
+    clearCiscoSpectrumMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
     },
-    clearCmsCategoryGetById: (state) => {
+    clearCiscoSpectrumGetById: (state) => {
       state.getById.data = null;
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
@@ -61,19 +62,25 @@ export const cmsCategorySlice = createSlice({
   },
   extraReducers: {
     // Search
-    [searchCmsCategory.pending.type]: (state) => {
+    [searchCiscoSpectrum.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchCmsCategory.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      const { records, total_count, table_name, column_selection } = action.payload;
-      state.search.data = records;
-      state.search.count = total_count;
+    [searchCiscoSpectrum.fulfilled.type]: (
+      state,
+      action: PayloadAction<ISearchResponse<ICiscoSpectrum>>
+    ) => {
+      const { search_result, ...rest } = action.payload;
+      state.search.data = search_result.records;
+      state.search.count = search_result.total_count;
+      if (JSON.stringify(rest) !== '{}') {
+        state.search.lookups = { ...rest, booleanLookup };
+      }
       state.search.loading = false;
       state.search.hasErrors = false;
-      state.search.tableName = table_name;
-      if (column_selection) {
-        state.tableColumnSelection.id = column_selection.id;
-        const tableSelectionObj = JSON.parse(column_selection.columns as any);
+      state.search.tableName = search_result.table_name;
+      if (search_result.column_selection) {
+        state.tableColumnSelection.id = search_result.column_selection.id;
+        const tableSelectionObj = JSON.parse(search_result.column_selection.columns as any);
         if (tableSelectionObj.columns) {
           state.tableColumnSelection.column_orders = tableSelectionObj.column_orders;
           state.tableColumnSelection.columns = tableSelectionObj.columns;
@@ -81,48 +88,53 @@ export const cmsCategorySlice = createSlice({
           state.tableColumnSelection.columns = tableSelectionObj;
         }
       }
-      state.tableColumnSelection.table_name = table_name;
+      state.tableColumnSelection.table_name = search_result.table_name;
     },
-    [searchCmsCategory.rejected.type]: (state) => {
+    [searchCiscoSpectrum.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
 
     // Get by id
-    [getCmsCategoryById.pending.type]: (state) => {
+    [getCiscoSpectrumById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getCmsCategoryById.fulfilled.type]: (state, action: PayloadAction<ICmsCategory>) => {
+    [getCiscoSpectrumById.fulfilled.type]: (state, action: PayloadAction<ICiscoSpectrum>) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
     },
-    [getCmsCategoryById.rejected.type]: (state) => {
+    [getCiscoSpectrumById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
     },
 
     // Save
-    [saveCmsCategory.pending.type]: (state) => {
+    [saveCiscoSpectrum.pending.type]: (state) => {
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveCmsCategory.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCiscoSpectrum.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCmsCategory.rejected.type]: (state) => {
+    [saveCiscoSpectrum.rejected.type]: (
+      state
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = true;
     },
 
     // Delete
-    [deleteCmsCategory.pending.type]: (state) => {
+    [deleteCiscoSpectrum.pending.type]: (state) => {
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteCmsCategory.fulfilled.type]: (
+    [deleteCiscoSpectrum.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -130,7 +142,7 @@ export const cmsCategorySlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCmsCategory.rejected.type]: (
+    [deleteCiscoSpectrum.rejected.type]: (
       state
     ) => {
       state.delete.loading = false;
@@ -140,15 +152,15 @@ export const cmsCategorySlice = createSlice({
 });
 
 // A selector
-export const cmsCategorySelector = (state: RootState) => state.cmsCategory;
+export const ciscoSpectrumSelector = (state: RootState) => state.ciscoSpectrum;
 
 // Actions
 export const {
-  clearCmsCategory,
-  clearCmsCategoryMessages,
-  clearCmsCategoryGetById,
+  clearCiscoSpectrum,
+  clearCiscoSpectrumMessages,
+  clearCiscoSpectrumGetById,
   setTableColumnSelection,
-} = cmsCategorySlice.actions;
+} = ciscoSpectrumSlice.actions;
 
 // The reducer
-export default cmsCategorySlice.reducer;
+export default ciscoSpectrumSlice.reducer;

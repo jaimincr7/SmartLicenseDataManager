@@ -71,6 +71,12 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
   return response.data;
 });
 
+export const getCmsCategoryLookup = createAsyncThunk('getCmsCategory', async () => {
+  const response = await commonService.getCmsCategoryLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
 export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
   const response = await commonService.deleteDataset(data).then((res) => {
     return res.body;

@@ -64,7 +64,7 @@ const CiscoReady: React.FC<ICiscoReadyProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${ciscoReady.search.tableName}`)
+                    history.push(`/data-input/bulk-import/${encodeURIComponent(ciscoReady.search.tableName)}`)
                   }
                   icon={
                     <em className="anticon">

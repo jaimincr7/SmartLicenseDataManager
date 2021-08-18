@@ -1,23 +1,22 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import {
-  clearCiscoSNTC,
-  ciscoSNTCSelector,
-} from '../../../store/hwCisco/ciscoSNTC/ciscoSNTC.reducer';
-import { ICiscoSNTCProps } from './ciscoSNTC.model';
+import { ICmsCategoryExtendedProps } from './CategoryExtended.model';
 import React from 'react';
-import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
-import AddCiscoSNTCModal from './AddCiscoSNTCModal';
+import MainTable from './MainTable/index';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
-import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import {
+  clearCmsCategoryExtended,
+  cmsCategoryExtendedSelector,
+} from '../../../store/cms/categoryExtended/categoryExtended.reducer';
+import AddCmsCategoryExtendedModal from './AddCategoryExtendedModal';
 
-const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
-  const ciscoSNTC = useAppSelector(ciscoSNTCSelector);
+const CmsCategoryExtended: React.FC<ICmsCategoryExtendedProps> = (props) => {
+  const cmsCategoryExtended = useAppSelector(cmsCategoryExtendedSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -38,7 +37,7 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearCiscoSNTC());
+      dispatch(clearCmsCategoryExtended());
     };
   }, []);
 
@@ -50,21 +49,18 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
     <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">
-          <BreadCrumbs pageName={Page.HwCiscoSNTC} />
+          <BreadCrumbs pageName={Page.CmsCategoryExtended} />
         </h4>
-        <div className="right-title">
-          <GlobalSearch />
-        </div>
       </div>
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.HwCiscoSNTC}>
+            <Can I={Action.ImportToExcel} a={Page.CmsCategoryExtended}>
               <Col>
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${encodeURIComponent(ciscoSNTC.search.tableName)}`)
+                    history.push(`/data-input/bulk-import/${cmsCategoryExtended.search.tableName}`)
                   }
                   icon={
                     <em className="anticon">
@@ -79,7 +75,7 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
                 </Button>
               </Col>
             </Can>
-            <Can I={Action.DeleteData} a={Page.HwCiscoSNTC}>
+            <Can I={Action.DeleteData} a={Page.CmsCategoryExtended}>
               <Col>
                 <Button
                   className="btn-icon"
@@ -105,11 +101,11 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddCiscoSNTCModal
+        <AddCmsCategoryExtendedModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/hw-cisco/cisco-sntc');
+            history.push('/cms/cms-category-extended');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -119,7 +115,7 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
         <DeleteDatasetModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={ciscoSNTC.search.tableName}
+          tableName={cmsCategoryExtended.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
@@ -127,4 +123,4 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
   );
 };
 
-export default CiscoSNTC;
+export default CmsCategoryExtended;

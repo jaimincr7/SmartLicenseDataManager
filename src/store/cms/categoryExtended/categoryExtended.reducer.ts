@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody } from '../../../common/models/common';
 import { RootState } from '../../app.model';
-import { ICmsCategoryState } from './cmsCategory.model';
-import { ICmsCategory } from '../../../services/cms/cmsCategory/cmsCategory.model';
+import { ICmsCategoryExtendedState } from './categoryExtended.model';
 import {
-  deleteCmsCategory,
-  getCmsCategoryById,
-  saveCmsCategory,
-  searchCmsCategory,
-} from './cmsCategory.action';
+  deleteCmsCategoryExtended,
+  getCmsCategoryExtendedById,
+  saveCmsCategoryExtended,
+  searchCmsCategoryExtended,
+} from './categoryExtended.action';
+import { ICmsCategoryExtended } from '../../../services/cms/categoryExtended/categoryExtended.model';
 
-export const initialState: ICmsCategoryState = {
+export const initialState: ICmsCategoryExtendedState = {
   search: {
     loading: false,
     hasErrors: false,
@@ -41,18 +41,18 @@ export const initialState: ICmsCategoryState = {
   },
 };
 
-export const cmsCategorySlice = createSlice({
-  name: 'cmsCategory',
+export const cmsCategoryExtendedSlice = createSlice({
+  name: 'cmsCategoryExtended',
   initialState,
   reducers: {
-    clearCmsCategory: () => {
+    clearCmsCategoryExtended: () => {
       return initialState;
     },
-    clearCmsCategoryMessages: (state) => {
+    clearCmsCategoryExtendedMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
     },
-    clearCmsCategoryGetById: (state) => {
+    clearCmsCategoryExtendedGetById: (state) => {
       state.getById.data = null;
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
@@ -61,19 +61,22 @@ export const cmsCategorySlice = createSlice({
   },
   extraReducers: {
     // Search
-    [searchCmsCategory.pending.type]: (state) => {
+    [searchCmsCategoryExtended.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchCmsCategory.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      const { records, total_count, table_name, column_selection } = action.payload;
-      state.search.data = records;
-      state.search.count = total_count;
+    [searchCmsCategoryExtended.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      const { search_result, ...rest } = action.payload;
+      state.search.data = search_result.records;
+      state.search.count = search_result.total_count;
+      if (JSON.stringify(rest) !== '{}') {
+        state.search.lookups = { ...rest };
+      }
       state.search.loading = false;
       state.search.hasErrors = false;
-      state.search.tableName = table_name;
-      if (column_selection) {
-        state.tableColumnSelection.id = column_selection.id;
-        const tableSelectionObj = JSON.parse(column_selection.columns as any);
+      state.search.tableName = search_result.table_name;
+      if (search_result.column_selection) {
+        state.tableColumnSelection.id = search_result.column_selection.id;
+        const tableSelectionObj = JSON.parse(search_result.column_selection.columns as any);
         if (tableSelectionObj.columns) {
           state.tableColumnSelection.column_orders = tableSelectionObj.column_orders;
           state.tableColumnSelection.columns = tableSelectionObj.columns;
@@ -81,48 +84,54 @@ export const cmsCategorySlice = createSlice({
           state.tableColumnSelection.columns = tableSelectionObj;
         }
       }
-      state.tableColumnSelection.table_name = table_name;
+      state.tableColumnSelection.table_name = search_result.table_name;
     },
-    [searchCmsCategory.rejected.type]: (state) => {
+    [searchCmsCategoryExtended.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
 
     // Get by id
-    [getCmsCategoryById.pending.type]: (state) => {
+    [getCmsCategoryExtendedById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getCmsCategoryById.fulfilled.type]: (state, action: PayloadAction<ICmsCategory>) => {
+    [getCmsCategoryExtendedById.fulfilled.type]: (
+      state,
+      action: PayloadAction<ICmsCategoryExtended>
+    ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
     },
-    [getCmsCategoryById.rejected.type]: (state) => {
+    [getCmsCategoryExtendedById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
     },
 
     // Save
-    [saveCmsCategory.pending.type]: (state) => {
+    [saveCmsCategoryExtended.pending.type]: (state) => {
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveCmsCategory.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCmsCategoryExtended.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCmsCategory.rejected.type]: (state) => {
+    [saveCmsCategoryExtended.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
     },
 
     // Delete
-    [deleteCmsCategory.pending.type]: (state) => {
+    [deleteCmsCategoryExtended.pending.type]: (state) => {
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteCmsCategory.fulfilled.type]: (
+    [deleteCmsCategoryExtended.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -130,9 +139,7 @@ export const cmsCategorySlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCmsCategory.rejected.type]: (
-      state
-    ) => {
+    [deleteCmsCategoryExtended.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },
@@ -140,15 +147,15 @@ export const cmsCategorySlice = createSlice({
 });
 
 // A selector
-export const cmsCategorySelector = (state: RootState) => state.cmsCategory;
+export const cmsCategoryExtendedSelector = (state: RootState) => state.cmsCategoryExtended;
 
 // Actions
 export const {
-  clearCmsCategory,
-  clearCmsCategoryMessages,
-  clearCmsCategoryGetById,
+  clearCmsCategoryExtended,
+  clearCmsCategoryExtendedMessages,
+  clearCmsCategoryExtendedGetById,
   setTableColumnSelection,
-} = cmsCategorySlice.actions;
+} = cmsCategoryExtendedSlice.actions;
 
 // The reducer
-export default cmsCategorySlice.reducer;
+export default cmsCategoryExtendedSlice.reducer;
