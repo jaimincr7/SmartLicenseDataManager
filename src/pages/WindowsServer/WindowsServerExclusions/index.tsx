@@ -97,7 +97,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

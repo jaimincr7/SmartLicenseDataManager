@@ -58,8 +58,12 @@ export enum Page {
   HwCiscoPolicy = 'hw-cisco-policy',
   HwCiscoProduct = 'hw-cisco-product',
   HwCiscoProductAttributes = 'hw-cisco-product-attributes',
+  HwCiscoReady = 'hw-cisco-ready',
+  HwCiscoSNTC = 'hw-cisco-sntc',
+  HwCiscoSpectrum = 'hw-cisco-spectrum',
 
   CmsCategory = 'cms-category',
+  CmsCategoryExtended = 'cms-category-extended',
 
   PowerBIConfig = 'power-bi-report-config',
 

@@ -66,6 +66,12 @@ class CommonService {
     });
   }
 
+  public async getCmsCategoryLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-category/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
   public async getColumnLookup(tableName: string, columnName: string): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
     const data = {

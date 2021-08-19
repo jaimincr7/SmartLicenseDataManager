@@ -54,7 +54,9 @@ const Company: React.FC<ICompanyProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${company.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(company.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -65,7 +67,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

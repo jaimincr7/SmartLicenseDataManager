@@ -1,0 +1,78 @@
+import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
+
+export interface ICiscoSNTC {
+  id?: number;
+  tenant_id: number;
+  company_id?: number;
+  bu_id?: number;
+  source?: string;
+  hostname?: string;
+  snmp_sys_name?: string;
+  ip_address?: string;
+  mac_address?: string;
+  serial_number?: string;
+  collected_sn?: string;
+  parent_sn?: string;
+  instance_no?: number;
+  p_c_s?: string;
+  parent_instance_id?: number;
+  product_id?: string;
+  product_name?: string;
+  product_description?: string;
+  product_family?: string;
+  product_subtype?: string;
+  product_type?: string;
+  equipment_type?: string;
+  coverage_start?: string;
+  coverage_end?: string;
+  contract_no?: string;
+  contract_status?: string;
+  service_level?: string;
+  service_level_description?: string;
+  service_program?: string;
+  bill_to_customer?: string;
+  warranty_type?: string;
+  warranty_start?: string | Moment;
+  warranty_end?: string | Moment;
+  snmp_sys_location?: string;
+  installed_at_site_id?: number;
+  installed_at_site?: string;
+  installed_at_address?: string;
+  installed_at_city?: string;
+  installed_at_state?: string;
+  installed_at_province?: string;
+  installed_at_postal_code?: number;
+  installed_at_country?: string;
+  ship_to_address?: string;
+  ship_date?: string | Moment;
+  sw_type?: string;
+  sw_version?: string;
+  feature_set?: string;
+  hw_revision?: number;
+  bootstrap_version?: string;
+  installed_memory?: string;
+  installed_flash?: string;
+  running_config?: string;
+  startup_config?: string;
+  hw_alerts?: number;
+  hw_l_do_s?: string | Moment;
+  sw_alerts?: string;
+  security_advisory_psirt?: string;
+  field_notices?: number;
+  customer?: string;
+  inventory?: string;
+  segment?: string;
+  collection_date?: string | Moment;
+  appliance_id?: string;
+  imported_by?: string;
+  imported_file?: string;
+  sn_recognized?: string;
+  device_diagnostics_supported?: string;
+  relationship?: string;
+  date_added?: string | Moment;
+}
+
+export interface ISearchCiscoSNTC extends ISearch {
+  is_lookup?: boolean;
+}

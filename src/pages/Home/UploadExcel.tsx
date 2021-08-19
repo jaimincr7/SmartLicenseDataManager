@@ -30,7 +30,7 @@ function UploadExcel() {
   return (
     <div className="update-excel-page">
       <div className="title-block">
-        <h4 className="p-0">Update from Excel</h4>
+        <h4 className="p-0">Import</h4>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

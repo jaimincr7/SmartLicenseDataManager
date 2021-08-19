@@ -64,7 +64,9 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${mailBoxUsage.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(mailBoxUsage.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -75,7 +77,7 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

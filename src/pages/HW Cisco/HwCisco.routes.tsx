@@ -8,6 +8,9 @@ import CiscoIB from './CiscoIB';
 import CiscoPolicy from './CiscoPolicy';
 import CiscoProduct from './CiscoProduct';
 import CiscoProductAttributes from './CiscoProductAttributes';
+import CiscoReady from './CiscoReady';
+import CiscoSNTC from './CiscoSNTC';
+import CiscoSpectrum from './CiscoSpectrum';
 
 const HwCiscoRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -30,6 +33,7 @@ const HwCiscoRoutes: React.FC = () => {
         {ability.can(Action.View, Page.HwCiscoHost) && (
           <Route exact path={`${match.path}/cisco-host`} component={CiscoHost} />
         )}
+        
         {/* IB */}
         {ability.can(Action.View, Page.HwCiscoIB) && (
           <Route exact path={`${match.path}/cisco-ib/:id`} component={CiscoIB} />
@@ -68,6 +72,30 @@ const HwCiscoRoutes: React.FC = () => {
             path={`${match.path}/cisco-product-attributes`}
             component={CiscoProductAttributes}
           />
+          )}
+
+        {/* Ready */}
+        {ability.can(Action.View, Page.HwCiscoReady) && (
+          <Route exact path={`${match.path}/cisco-ready/:id`} component={CiscoReady} />
+        )}
+        {ability.can(Action.View, Page.HwCiscoReady) && (
+          <Route exact path={`${match.path}/cisco-ready`} component={CiscoReady} />
+        )}
+
+        {/* SNTC */}
+        {ability.can(Action.View, Page.HwCiscoSNTC) && (
+          <Route exact path={`${match.path}/cisco-sntc/:id`} component={CiscoSNTC} />
+        )}
+        {ability.can(Action.View, Page.HwCiscoSNTC) && (
+          <Route exact path={`${match.path}/cisco-sntc`} component={CiscoSNTC} />
+        )}
+
+        {/* Spectrum */}
+        {ability.can(Action.View, Page.HwCiscoSpectrum) && (
+          <Route exact path={`${match.path}/cisco-spectrum/:id`} component={CiscoSpectrum} />
+        )}
+        {ability.can(Action.View, Page.HwCiscoSpectrum) && (
+          <Route exact path={`${match.path}/cisco-spectrum`} component={CiscoSpectrum} />
         )}
 
         {/* keep least always */}

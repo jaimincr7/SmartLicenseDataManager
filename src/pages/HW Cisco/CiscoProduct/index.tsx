@@ -64,7 +64,9 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${ciscoProduct.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(ciscoProduct.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -75,7 +77,7 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

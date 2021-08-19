@@ -1,0 +1,74 @@
+import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
+
+export interface ICiscoReady {
+  id?: number;
+  tenant_id: number;
+  company_id?: number;
+  bu_id?: number;
+  source?: string;
+  serial_number_pak_number?: string;
+  coverage?: string;
+  covered_line_status?: string;
+  business_entity?: string;
+  sub_business_entity?: string;
+  product_family?: string;
+  product_id?: string;
+  product_description?: string;
+  asset_type?: string;
+  product_type?: string;
+  item_quantity?: number;
+  covered_line_start_date?: string | Moment;
+  covered_line_end_date?: string | Moment;
+  covered_line_end_date_fy_fq?: string;
+  contract_type?: string;
+  service_brand_code?: string;
+  contract_number?: number;
+  subscription_reference_id?: string;
+  ship_date?: string | Moment;
+  end_of_product_sale_date?: string;
+  end_of_software_maintenance_date?: string;
+  last_date_of_support?: string;
+  ldos_fy_fq?: string;
+  end_of_life_product_bulletin?: string;
+  warranty_type?: string;
+  warranty_end_date?: string;
+  install_site_customer_registry_gu_name?: string;
+  install_site_customer_registry_party_name?: string;
+  install_site_customer_registry_party_id?: number;
+  install_site_name?: string;
+  install_site_id?: number;
+  install_site_address_1?: string;
+  install_site_city?: string;
+  install_site_state?: string;
+  install_site_country?: string;
+  install_site_postal_code?: number;
+  product_bill_to_id?: number;
+  product_bill_to_partner_name?: string;
+  product_partner_be_geo_id?: string;
+  pos_partner_be_geo_id?: number;
+  pos_partner_be_geo_name?: string;
+  service_bill_to_id?: number;
+  service_bill_to_partner_name?: string;
+  service_partner_be_geo_id?: string;
+  product_list_price_$?: number;
+  default_service_list_price_$?: number;
+  default_service_level?: string;
+  existing_coverage_level_list_price_$?: number;
+  instance_id?: string;
+  parent_instance_id?: number;
+  product_so?: string;
+  product_po?: string;
+  service_so?: string;
+  service_po?: string;
+  web_order_id?: string;
+  mapped_to_swss: string | boolean;
+  mapped_to_c1: string | boolean;
+  auto_renewal_flag?: string;
+  configuration?: number;
+  date_added?: string | Moment;
+}
+
+export interface ISearchCiscoReady extends ISearch {
+  is_lookup?: boolean;
+}

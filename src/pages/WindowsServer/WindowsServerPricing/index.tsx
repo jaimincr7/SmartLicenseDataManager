@@ -63,7 +63,11 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${windowsServerPricing.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        windowsServerPricing.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -74,7 +78,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

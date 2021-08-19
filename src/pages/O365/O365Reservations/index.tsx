@@ -62,7 +62,11 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${o365Reservations.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        o365Reservations.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -73,7 +77,7 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

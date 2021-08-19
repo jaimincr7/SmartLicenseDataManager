@@ -63,7 +63,9 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${entitlements.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(entitlements.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -74,7 +76,7 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

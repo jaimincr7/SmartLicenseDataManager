@@ -77,7 +77,7 @@ const CiscoProductAttributes: React.FC<ICiscoProductAttributesProps> = (props) =
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

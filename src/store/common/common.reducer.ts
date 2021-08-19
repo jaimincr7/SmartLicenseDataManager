@@ -14,6 +14,7 @@ import {
   saveTableColumnSelection,
   getAllCompanyLookup,
   getO365ProductsLookup,
+  getCmsCategoryLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -51,6 +52,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsCategoryLookup: {
     data: [],
     loading: false,
   },
@@ -171,6 +176,15 @@ export const commonSlice = createSlice({
       state.o365ProductsLookup.loading = false;
     },
 
+        // Category lookup
+        [getCmsCategoryLookup.pending.type]: (state) => {
+          state.cmsCategoryLookup.loading = true;
+        },
+        [getCmsCategoryLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+          state.cmsCategoryLookup.data = action.payload;
+          state.cmsCategoryLookup.loading = false;
+        },
+    
     // Delete Dataset
     [deleteDataset.pending.type]: (state) => {
       state.deleteDataset.loading = true;

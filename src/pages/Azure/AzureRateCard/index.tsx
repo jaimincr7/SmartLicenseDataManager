@@ -57,7 +57,11 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${azureRateCard.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        azureRateCard.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -68,7 +72,7 @@ const AzureRateCard: React.FC<IAzureRateCardProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

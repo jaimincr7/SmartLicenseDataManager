@@ -53,7 +53,11 @@ const BU: React.FC<IBUProps> = (props) => {
               <Col>
                 <Button
                   className="btn-icon"
-                  onClick={() => history.push(`/data-input/bulk-import/${bu.search.tableName}`)}
+                  onClick={() =>
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(bu.search.tableName)}`
+                    )
+                  }
                   icon={
                     <em className="anticon">
                       <img
@@ -63,7 +67,7 @@ const BU: React.FC<IBUProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

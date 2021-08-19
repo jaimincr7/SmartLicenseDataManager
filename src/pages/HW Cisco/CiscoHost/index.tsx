@@ -64,7 +64,9 @@ const CiscoHost: React.FC<ICiscoHostProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${ciscoHost.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(ciscoHost.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -75,7 +77,7 @@ const CiscoHost: React.FC<ICiscoHostProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

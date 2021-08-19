@@ -53,7 +53,11 @@ const Tenant: React.FC<ITenantProps> = (props) => {
               <Col>
                 <Button
                   className="btn-icon"
-                  onClick={() => history.push(`/data-input/bulk-import/${tenant.search.tableName}`)}
+                  onClick={() =>
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(tenant.search.tableName)}`
+                    )
+                  }
                   icon={
                     <em className="anticon">
                       <img
@@ -63,7 +67,7 @@ const Tenant: React.FC<ITenantProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

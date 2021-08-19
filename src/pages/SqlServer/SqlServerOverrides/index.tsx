@@ -64,7 +64,11 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${sqlServerOverrides.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        sqlServerOverrides.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -75,7 +79,7 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

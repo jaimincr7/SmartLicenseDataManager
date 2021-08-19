@@ -64,7 +64,11 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${sqlServerPricing.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        sqlServerPricing.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -75,7 +79,7 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

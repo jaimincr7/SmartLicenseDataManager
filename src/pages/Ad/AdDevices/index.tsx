@@ -81,7 +81,9 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${adDevices.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(adDevices.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -92,7 +94,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

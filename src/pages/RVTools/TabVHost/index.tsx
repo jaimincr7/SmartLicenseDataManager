@@ -60,7 +60,9 @@ const TabVHost: React.FC<ITabVHostProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${tabVHost.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(tabVHost.search.tableName)}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -71,7 +73,7 @@ const TabVHost: React.FC<ITabVHostProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

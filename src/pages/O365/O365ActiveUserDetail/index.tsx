@@ -63,7 +63,11 @@ const O365ActiveUserDetail: React.FC<IO365ActiveUserDetailProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${o365ActiveUserDetail.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        o365ActiveUserDetail.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -74,7 +78,7 @@ const O365ActiveUserDetail: React.FC<IO365ActiveUserDetailProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>

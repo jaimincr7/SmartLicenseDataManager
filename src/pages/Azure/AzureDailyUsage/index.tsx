@@ -63,7 +63,11 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${azureDailyUsage.search.tableName}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        azureDailyUsage.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
@@ -74,7 +78,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
                     </em>
                   }
                 >
-                  Update from Excel
+                  Import
                 </Button>
               </Col>
             </Can>
