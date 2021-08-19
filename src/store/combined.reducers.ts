@@ -56,6 +56,9 @@ import ciscoProductAttributesReducer from './hwCisco/ciscoProductAttributes/cisc
 import ciscoReadyReducer from './hwCisco/ciscoReady/ciscoReady.reducer';
 import ciscoSNTCReducer from './hwCisco/ciscoSNTC/ciscoSNTC.reducer';
 import ciscoSpectrumReducer from './hwCisco/ciscoSpectrum/ciscoSpectrum.reducer';
+import cmsContactReducer from './cms/contact/contact.reducer';
+import cmsContractAgreementReducer from './cms/contractAgreement/contractAgreement.reducer';
+import cmsContractAgreementAttachmentReducer from './cms/contractAgreementAttachment/contractAgreementAttachment.reducer';
 import cmsCategoryExtendedReducer from './cms/categoryExtended/categoryExtended.reducer';
 
 export const rootReducer = combineReducers({
@@ -137,6 +140,9 @@ export const rootReducer = combineReducers({
   //CMS
   cmsCategory: cmsCategoryReducer,
   cmsCategoryExtended: cmsCategoryExtendedReducer,
+  cmsContact: cmsContactReducer,
+  cmsContractAgreement: cmsContractAgreementReducer,
+  cmsContractAgreementAttachment: cmsContractAgreementAttachmentReducer,
   users: usersReducer,
 
   //Power-BI Report

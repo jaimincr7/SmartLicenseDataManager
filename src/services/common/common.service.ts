@@ -66,12 +66,76 @@ class CommonService {
     });
   }
 
+  public async getCmsPurchaseLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-purchase/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getCmsCategoryLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cms-category/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }
+
+  public async getCmsCategoryExtendedLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-category-extended/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmsContractAgreementLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-contract-agreement/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmsContactLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-contact/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmsVectorLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-vendor/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmsTriggerTypeLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-trigger-type/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmsPublisherLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-vendor/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmsContractLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-contract/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getUserLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/user/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getColumnLookup(tableName: string, columnName: string): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
     const data = {

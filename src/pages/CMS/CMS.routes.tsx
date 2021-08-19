@@ -4,6 +4,9 @@ import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
 import CategoryExtended from './CategoryExtended';
 import CmsCategory from './CmsCategory';
+import Contact from './Contact';
+import ContractAgreement from './ContractAgreement';
+import ContractAgreementAttachment from './ContractAgreementAttachment';
 
 const HwCiscoRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -31,7 +34,45 @@ const HwCiscoRoutes: React.FC = () => {
           <Route exact path={`${match.path}/cms-category-extended`} component={CategoryExtended} />
         )}
 
+        {/* Contact */}
+        {ability.can(Action.View, Page.CmsContact) && (
+          <Route exact path={`${match.path}/cms-contact/:id`} component={Contact} />
+        )}
+        {ability.can(Action.View, Page.CmsContact) && (
+          <Route exact path={`${match.path}/cms-contact`} component={Contact} />
+        )}
 
+        {/* ContractAgreement */}
+        {ability.can(Action.View, Page.CmsContractAgreement) && (
+          <Route
+            exact
+            path={`${match.path}/cms-contract-agreement/:id`}
+            component={ContractAgreement}
+          />
+        )}
+        {ability.can(Action.View, Page.CmsContractAgreement) && (
+          <Route
+            exact
+            path={`${match.path}/cms-contract-agreement`}
+            component={ContractAgreement}
+          />
+        )}
+
+        {/* ContractAgreementAttachment */}
+        {ability.can(Action.View, Page.CmsContractAgreementAttachment) && (
+          <Route
+            exact
+            path={`${match.path}/cms-contract-agreement-attachment/:id`}
+            component={ContractAgreementAttachment}
+          />
+        )}
+        {ability.can(Action.View, Page.CmsContractAgreementAttachment) && (
+          <Route
+            exact
+            path={`${match.path}/cms-contract-agreement-attachment`}
+            component={ContractAgreementAttachment}
+          />
+        )}
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

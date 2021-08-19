@@ -1,0 +1,508 @@
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import moment from 'moment';
+import _ from 'lodash';
+import { useEffect, useMemo } from 'react';
+import { toast } from 'react-toastify';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { validateMessages } from '../../../../common/constants/common';
+import { Page } from '../../../../common/constants/pageAction';
+import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
+import {
+  getBULookup,
+  getCmsContactLookup,
+  getCmsPublisherLookup,
+  getCmsTriggerTypeLookup,
+  getCmsVectorLookup,
+  getCompanyLookup,
+  getTenantLookup,
+} from '../../../../store/common/common.action';
+import {
+  clearBULookUp,
+  clearCompanyLookUp,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
+import {
+  clearCmsContractAgreementGetById,
+  clearCmsContractAgreementMessages,
+  cmsContractAgreementSelector,
+} from '../../../../store/cms/contractAgreement/contractAgreement.reducer';
+import { IAddCmsContractAgreementProps } from './addContractAgreement.model';
+import { ICmsContractAgreement } from '../../../../services/cms/contractAgreement/contractAgreement.model';
+import {
+  getCmsContractAgreementById,
+  saveCmsContractAgreement,
+} from '../../../../store/cms/contractAgreement/contractAgreement.action';
+import { ILookup } from '../../../../services/common/common.model';
+
+const { Option } = Select;
+
+const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (props) => {
+  const cmsContractAgreement = useAppSelector(cmsContractAgreementSelector);
+  const dispatch = useAppDispatch();
+  const commonLookups = useAppSelector(commonSelector);
+  const { id, showModal, handleModalClose, refreshDataTable } = props;
+
+  const isNew: boolean = id ? false : true;
+  const title = useMemo(() => {
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.CmsContractAgreement} level={1} />
+      </>
+    );
+  }, [isNew]);
+  const submitButtonText = useMemo(() => {
+    return isNew ? 'Save' : 'Update';
+  }, [isNew]);
+
+  const [form] = Form.useForm();
+
+  let initialValues: ICmsContractAgreement = {
+    tenant_id: null,
+    company_id: null,
+    bu_id: null,
+    start_date: null,
+    end_date: null,
+    transaction_date: null,
+    publisher_id: null,
+    vendor_id: null,
+    contract_number: '',
+    contract_name: '',
+    description: '',
+    trigger_type_id: null,
+    contractual_owner_contact_id: null,
+  };
+
+  const onFinish = (values: any) => {
+    const inputValues: ICmsContractAgreement = {
+      ...values,
+      id: id ? +id : null,
+    };
+    dispatch(saveCmsContractAgreement(inputValues));
+  };
+
+  const handleTenantChange = (tenantId: number) => {
+    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
+    if (tenantId) {
+      dispatch(getCompanyLookup(tenantId));
+      dispatch(clearBULookUp());
+    } else {
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
+    }
+  };
+
+  const handleCompanyChange = (companyId: number) => {
+    form.setFieldsValue({ company_id: companyId, bu_id: null });
+    if (companyId) {
+      dispatch(getBULookup(companyId));
+    } else {
+      dispatch(clearBULookUp());
+    }
+  };
+
+  const handleBUChange = (buId: number) => {
+    form.setFieldsValue({ bu_id: buId });
+  };
+
+  const fillValuesOnEdit = async (data: ICmsContractAgreement) => {
+    if (data.tenant_id) {
+      await dispatch(getCompanyLookup(data.tenant_id));
+    }
+    if (data.company_id) {
+      await dispatch(getBULookup(data.company_id));
+    }
+    if (data) {
+      initialValues = {
+        tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
+        company_id: _.isNull(data.company_id) ? null : data.company_id,
+        bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
+        start_date: _.isNull(data.start_date) ? null : moment(data.start_date),
+        end_date: _.isNull(data.end_date) ? null : moment(data.end_date),
+        transaction_date: _.isNull(data.transaction_date) ? null : moment(data.transaction_date),
+        publisher_id: _.isNull(data.publisher_id) ? null : data.publisher_id,
+        vendor_id: _.isNull(data.vendor_id) ? null : data.vendor_id,
+        contract_number: data.contract_number,
+        contract_name: data.contract_name,
+        description: data.description,
+        trigger_type_id: _.isNull(data.trigger_type_id) ? null : data.trigger_type_id,
+        contractual_owner_contact_id: _.isNull(data.contractual_owner_contact_id)
+          ? null
+          : data.contractual_owner_contact_id,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+      };
+      form.setFieldsValue(initialValues);
+    }
+  };
+
+  useEffect(() => {
+    if (cmsContractAgreement.save.messages.length > 0) {
+      if (cmsContractAgreement.save.hasErrors) {
+        toast.error(cmsContractAgreement.save.messages.join(' '));
+      } else {
+        toast.success(cmsContractAgreement.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearCmsContractAgreementMessages());
+    }
+  }, [cmsContractAgreement.save.messages]);
+
+  useEffect(() => {
+    if (+id > 0 && cmsContractAgreement.getById.data) {
+      const data = cmsContractAgreement.getById.data;
+      fillValuesOnEdit(data);
+    }
+  }, [cmsContractAgreement.getById.data]);
+
+  useEffect(() => {
+    dispatch(getTenantLookup());
+    dispatch(getCmsContactLookup());
+    dispatch(getCmsVectorLookup());
+    dispatch(getCmsTriggerTypeLookup());
+    dispatch(getCmsPublisherLookup());
+    if (+id > 0) {
+      dispatch(getCmsContractAgreementById(+id));
+    }
+    return () => {
+      dispatch(clearCmsContractAgreementGetById());
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getTenantLookup());
+    if (+id > 0) {
+      dispatch(getCmsContractAgreementById(+id));
+    }
+    return () => {
+      dispatch(clearCmsContractAgreementGetById());
+      dispatch(clearCompanyLookUp());
+      dispatch(clearBULookUp());
+    };
+  }, [dispatch]);
+
+  return (
+    <>
+      <Modal
+        wrapClassName="custom-modal"
+        title={title}
+        centered
+        visible={showModal}
+        onCancel={handleModalClose}
+        footer={false}
+      >
+        {cmsContractAgreement.getById.loading ? (
+          <div className="spin-loader">
+            <Spin spinning={cmsContractAgreement.getById.loading} />
+          </div>
+        ) : (
+          <Form
+            form={form}
+            name="cmsContractAgreement"
+            initialValues={initialValues}
+            onFinish={onFinish}
+            validateMessages={validateMessages}
+          >
+            <Row gutter={[30, 15]} className="form-label-hide">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Tenant</label>
+                  <Form.Item
+                    name="tenant_id"
+                    className="m-0"
+                    label="Tenant"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      onChange={handleTenantChange}
+                      allowClear
+                      loading={commonLookups.tenantLookup.loading}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.tenantLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Company</label>
+                  <Form.Item name="company_id" className="m-0" label="Company">
+                    <Select
+                      onChange={handleCompanyChange}
+                      allowClear
+                      loading={commonLookups.companyLookup.loading}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.companyLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">BU</label>
+                  <Form.Item name="bu_id" className="m-0" label="BU">
+                    <Select
+                      onChange={handleBUChange}
+                      allowClear
+                      loading={commonLookups.buLookup.loading}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.buLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Contractual Owner Contact ID</label>
+                  <Form.Item
+                    rules={[{ required: true }]}
+                    name="contractual_owner_contact_id"
+                    className="m-0"
+                    label="Contractual Owner Contact ID"
+                  >
+                    <Select
+                      allowClear
+                      showSearch
+                      loading={commonLookups.cmsContactLookup.loading}
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.cmsContactLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Trigger Type</label>
+                  <Form.Item
+                    name="trigger_type_id"
+                    className="m-0"
+                    label="Trigger Type ID"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      allowClear
+                      showSearch
+                      loading={commonLookups.cmsTriggerTypeLookup.loading}
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.cmsTriggerTypeLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Vendor</label>
+                  <Form.Item name="vendor_id" className="m-0" label="Vendor ID">
+                    <Select
+                      allowClear
+                      showSearch
+                      loading={commonLookups.cmsVectorLookup.loading}
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.cmsVectorLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Publisher</label>
+                  <Form.Item
+                    name="publisher_id"
+                    className="m-0"
+                    label="Publisher ID"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      allowClear
+                      showSearch
+                      loading={commonLookups.cmsPublisherLookup.loading}
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.cmsPublisherLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Start Date</label>
+                  <Form.Item
+                    name="start_date"
+                    label="Start Date"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">End Date</label>
+                  <Form.Item name="end_date" label="End Date" className="m-0">
+                    <DatePicker className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Transaction Date</label>
+                  <Form.Item
+                    name="transaction_date"
+                    label="Transaction Date"
+                    className="m-0"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Contract Number</label>
+                  <Form.Item
+                    name="contract_number"
+                    label="Contract Number"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Contract Name</label>
+                  <Form.Item
+                    name="contract_name"
+                    label="Contract Name"
+                    className="m-0"
+                    rules={[{ required: true, max: 510 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Description</label>
+                  <Form.Item name="description" label="Description" className="m-0">
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+            </Row>
+            <div className="btns-block modal-footer">
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={cmsContractAgreement.save.loading}
+              >
+                {submitButtonText}
+              </Button>
+              <Button key="back" onClick={handleModalClose}>
+                Cancel
+              </Button>
+            </div>
+          </Form>
+        )}
+      </Modal>
+    </>
+  );
+};
+export default AddCmsContractAgreementModal;

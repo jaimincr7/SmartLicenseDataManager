@@ -71,12 +71,79 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
   return response.data;
 });
 
+export const getCmsPurchaseLookup = createAsyncThunk('getCmsPurchase', async () => {
+  const response = await commonService.getCmsPurchaseLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getCmsCategoryLookup = createAsyncThunk('getCmsCategory', async () => {
   const response = await commonService.getCmsCategoryLookup().then((res) => {
     return res.body;
   });
   return response.data;
 });
+
+export const getCmsCategoryExtendedLookup = createAsyncThunk('getCmsCategoryExtended', async () => {
+  const response = await commonService.getCmsCategoryExtendedLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getCmsContractAgreementLookup = createAsyncThunk(
+  'getCmsContractAgreement',
+  async () => {
+    const response = await commonService.getCmsContractAgreementLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getCmsContactLookup = createAsyncThunk('getCmsContact', async () => {
+  const response = await commonService.getCmsContactLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getCmsVectorLookup = createAsyncThunk('getCmsVector', async () => {
+  const response = await commonService.getCmsVectorLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getCmsTriggerTypeLookup = createAsyncThunk('getCmsTriggerType', async () => {
+  const response = await commonService.getCmsTriggerTypeLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getCmsPublisherLookup = createAsyncThunk('getCmsPublisher', async () => {
+  const response = await commonService.getCmsPublisherLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getCmsContractLookup = createAsyncThunk('getCmsContract', async () => {
+  const response = await commonService.getCmsContractLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getUserLookup = createAsyncThunk('getUser', async () => {
+  const response = await commonService.getUserLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const deleteDataset = createAsyncThunk('deleteDataset', async (data: IDeleteDataset) => {
   const response = await commonService.deleteDataset(data).then((res) => {
     return res.body;

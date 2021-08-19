@@ -63,6 +63,9 @@ export enum Page {
   HwCiscoSpectrum = 'hw-cisco-spectrum',
 
   CmsCategory = 'cms-category',
+  CmsContact = 'cms-contact',
+  CmsContractAgreement = 'cms-contract-agreement',
+  CmsContractAgreementAttachment = 'cms-contract-agreement-attachment',
   CmsCategoryExtended = 'cms-category-extended',
 
   PowerBIConfig = 'power-bi-report-config',

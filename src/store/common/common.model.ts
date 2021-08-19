@@ -37,7 +37,43 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cmsPurchaseLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   cmsCategoryLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmsCategoryExtendedLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmsContractAgreementLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmsContractLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  UserLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmsContactLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmsVectorLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmsTriggerTypeLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmsPublisherLookup: {
     data: ILookup[];
     loading: boolean;
   };
