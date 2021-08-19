@@ -296,12 +296,12 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Contractual Owner Contact ID</label>
+                  <label className="label">Contractual Owner Contact</label>
                   <Form.Item
                     rules={[{ required: true }]}
                     name="contractual_owner_contact_id"
                     className="m-0"
-                    label="Contractual Owner Contact ID"
+                    label="Contractual Owner Contact"
                   >
                     <Select
                       allowClear
@@ -332,7 +332,7 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                   <Form.Item
                     name="trigger_type_id"
                     className="m-0"
-                    label="Trigger Type ID"
+                    label="Trigger Type"
                     rules={[{ required: true }]}
                   >
                     <Select
@@ -391,7 +391,7 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                   <Form.Item
                     name="publisher_id"
                     className="m-0"
-                    label="Publisher ID"
+                    label="Publisher"
                     rules={[{ required: true }]}
                   >
                     <Select
