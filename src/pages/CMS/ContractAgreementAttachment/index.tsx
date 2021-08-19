@@ -65,7 +65,7 @@ const CmsContractAgreementAttachment: React.FC<ICmsContractAgreementAttachmentPr
                   className="btn-icon"
                   onClick={() =>
                     history.push(
-                      `/data-input/bulk-import/${cmsContractAgreementAttachment.search.tableName}`
+                      `/data-input/bulk-import/${encodeURIComponent(cmsContractAgreementAttachment.search.tableName)}`
                     )
                   }
                   icon={
@@ -111,7 +111,7 @@ const CmsContractAgreementAttachment: React.FC<ICmsContractAgreementAttachmentPr
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/cms/cms-contract-agreement-attacchment');
+            history.push('/cms/cms-contract-agreement-attachment');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}

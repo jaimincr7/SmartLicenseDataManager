@@ -8,7 +8,7 @@ import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
-  getCmsContractLookup,
+  getCmsContractAgreementLookup,
   getTenantLookup,
   getUserLookup,
 } from '../../../../store/common/common.action';
@@ -109,20 +109,8 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
 
   useEffect(() => {
     dispatch(getTenantLookup());
-    dispatch(getCmsContractLookup());
+    dispatch(getCmsContractAgreementLookup());
     dispatch(getUserLookup());
-    if (+id > 0) {
-      dispatch(getCmsContractAgreementAttachmentById(+id));
-    }
-    return () => {
-      dispatch(clearCmsContractAgreementAttachmentGetById());
-      dispatch(clearCompanyLookUp());
-      dispatch(clearBULookUp());
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getTenantLookup());
     if (+id > 0) {
       dispatch(getCmsContractAgreementAttachmentById(+id));
     }
@@ -168,7 +156,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
                     <Select
                       allowClear
                       showSearch
-                      loading={commonLookups.cmsContractLookup.loading}
+                      loading={commonLookups.cmsContractAgreementLookup.loading}
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -179,7 +167,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
                     >
-                      {commonLookups.cmsContractLookup.data.map((option: ILookup) => (
+                      {commonLookups.cmsContractAgreementLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
                         </Option>
@@ -195,7 +183,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
                     rules={[{ required: true }]}
                     name="user_id"
                     className="m-0"
-                    label="User ID"
+                    label="User"
                   >
                     <Select
                       allowClear
@@ -225,7 +213,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
                   <label className="label">Original Name</label>
                   <Form.Item
                     name="original_name"
-                    label="OriginalName"
+                    label="Original Name"
                     className="m-0"
                     rules={[{ max: 510, required: true }]}
                   >
