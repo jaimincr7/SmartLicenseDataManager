@@ -65,7 +65,7 @@ const CmsContractAgreement: React.FC<ICmsContractAgreementProps> = (props) => {
                   className="btn-icon"
                   onClick={() => {
                     history.push(
-                      `/data-input/bulk-import/${cmsContractAgreement.search.tableName}`
+                      `/data-input/bulk-import/${encodeURIComponent(cmsContractAgreement.search.tableName)}`
                     );
                   }}
                   icon={

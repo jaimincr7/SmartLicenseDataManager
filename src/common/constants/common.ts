@@ -90,4 +90,5 @@ export const allDateColumns = [
   'warranty_end',
   'hw_l_do_s',
   'collection_date',
+  'transaction_date'
 ];
