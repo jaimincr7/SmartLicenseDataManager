@@ -41,6 +41,7 @@ export enum Page {
   AzureAPIVmSizes = 'azure-api-vm-sizes',
 
   BulkImport = 'bulk-import',
+  ConfigExcelFileMapping = 'config-excel-file-mapping',
 
   O365ActivationsUserDetail = 'o365-activations-user-detail',
   O365ActiveUserDetail = 'o365-active-user-detail',
@@ -85,4 +86,5 @@ export enum Action {
   ProcessData = 'process_data',
   DeleteData = 'delete_data',
   RunAllLicenseScenario = 'run_all_license_scenario',
+  Select = 'select',
 }

@@ -122,9 +122,7 @@ export const ciscoSpectrumSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCiscoSpectrum.rejected.type]: (
-      state
-    ) => {
+    [saveCiscoSpectrum.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
     },
@@ -142,9 +140,7 @@ export const ciscoSpectrumSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCiscoSpectrum.rejected.type]: (
-      state
-    ) => {
+    [deleteCiscoSpectrum.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },

@@ -9,6 +9,7 @@ import {
   Row,
   Select,
   Spin,
+  TreeSelect,
   Upload,
 } from 'antd';
 import { useEffect, useState } from 'react';
@@ -20,6 +21,8 @@ import {
   getTableColumns,
   getTablesForImport,
   saveTableForImport,
+  getExcelFileMapping,
+  saveExcelFileMapping,
 } from '../../../store/bulkImport/bulkImport.action';
 import {
   clearExcelColumns,
@@ -53,6 +56,8 @@ import {
 import moment from 'moment';
 import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
 import { UploadOutlined } from '@ant-design/icons';
+import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
+import MappingColumn from './../MappingColumn/MappingColumn';
 
 const { Option } = Select;
 
@@ -76,6 +81,7 @@ const BulkImport: React.FC = () => {
   const [checkAll, setCheckAll] = useState(false);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
+  const [showMappingModal, setShowMappingModal] = useState<boolean>(false);
   let { table } = useParams<{ table: string }>();
   table && (table = decodeURIComponent(table));
 
@@ -417,6 +423,138 @@ const BulkImport: React.FC = () => {
       dispatch(clearGetTableColumns());
     };
   }, []);
+
+  useEffect(() => {
+    if (bulkImports.saveExcelFileMapping.messages.length > 0) {
+      toast.success(bulkImports.saveExcelFileMapping.messages.join(' '));
+      dispatch(clearBulkImportMessages());
+    }
+  }, [bulkImports.saveExcelFileMapping.messages]);
+
+  const geChildDropdown = (excelMappings: any) => {
+    const chidDropdown = [];
+    excelMappings?.map((m: any) => {
+      chidDropdown.push({
+        title: m.sheet_name,
+        value: m.id,
+      });
+    });
+
+    return chidDropdown;
+  };
+
+  const getMenuDropdown = () => {
+    const dropdown = [];
+    const defaultMappingDetail = bulkImports.getExcelMappingColumns.data?.filter(
+      (x) => x.table_name === 'Tenant'
+    );
+    defaultMappingDetail?.map((m: any) => {
+      dropdown.push({
+        title: m.key_word,
+        disabled: true,
+        value: `${m.id}-parent`,
+        children: geChildDropdown(m.config_excel_column_mappings),
+      });
+    });
+    return dropdown;
+  };
+
+  const getExcelMappingColumns = () => {
+    if (formUpload?.getFieldValue('table_name') && defaultFile?.name) {
+      dispatch(
+        getExcelFileMapping({
+          table_name: formUpload.getFieldValue('table_name'),
+          key_word: defaultFile?.name?.split('.')[0],
+        })
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (bulkImports.getExcelMappingColumns.data?.length > 0) {
+      const defaultSelected = bulkImports.getExcelMappingColumns.data?.find(
+        (x) => x.is_select === true
+      );
+      if (defaultSelected && defaultSelected.config_excel_column_mappings?.length > 0) {
+        const selectedMappingOrder = defaultSelected.config_excel_column_mappings[0]?.id;
+        formUpload.setFieldsValue({ mapping_order: selectedMappingOrder });
+        onChange(selectedMappingOrder);
+      }
+    }
+  }, [bulkImports.getExcelMappingColumns.data]);
+
+  useEffect(() => {
+    getExcelMappingColumns();
+  }, [formUpload?.getFieldValue('table_name')]);
+
+  useEffect(() => {
+    getExcelMappingColumns();
+  }, [defaultFile]);
+
+  const onChange = (value) => {
+    if (value) {
+      const defaultMappingDetail = bulkImports.getExcelMappingColumns.data?.filter(
+        (x) => x.table_name === formUpload.getFieldValue('table_name')
+      );
+      let mappingDetail: any = {};
+      defaultMappingDetail?.forEach((element) => {
+        const mappingOrder = element?.config_excel_column_mappings?.find((y) => y.id === value);
+        if (mappingOrder) {
+          mappingDetail = JSON.parse(mappingOrder?.mapping);
+        }
+      });
+      tableColumns?.forEach((element) => {
+        const mapObj = mappingDetail?.find((x) => x.key === element.name);
+        if (mapObj && excelColumns?.includes(mapObj?.value)) {
+          form.setFieldsValue({ [element.name]: mapObj.value });
+        }
+      });
+    } else {
+      setFormFields();
+    }
+  };
+
+  const saveColumnMapping = (fileName: string, isPublic: boolean, id = 0) => {
+    const parentId = bulkImports.getExcelMappingColumns.data?.find((x) =>
+      x.config_excel_column_mappings?.find((y) => y.id === id)
+    )?.id;
+    const fieldValues = { ...form.getFieldsValue() };
+    delete fieldValues.tenant_id;
+    delete fieldValues.company_id;
+    delete fieldValues.bu_id;
+    delete fieldValues.date_added;
+    const sqlToExcelMapping = [];
+    Object.entries(fieldValues).forEach(([key, value]) => {
+      if (key && value) {
+        sqlToExcelMapping.push({
+          key: `${key}`,
+          value: `${value}`,
+        });
+      }
+    });
+
+    if (sqlToExcelMapping.length === 0) {
+      return false;
+    }
+    const uploadValue = formUpload.getFieldsValue();
+    const excelMappingObj: ISaveExcelMapping = {
+      id: parentId,
+      table_name: uploadValue?.table_name,
+      key_word: fileName ? fileName : bulkImports.getExcelColumns.data.filename,
+      is_public: isPublic,
+      config_excel_column_mappings: [
+        {
+          sheet_name: uploadValue?.sheet_name,
+          header_row: uploadValue?.header_row,
+          mapping: JSON.stringify(sqlToExcelMapping),
+        },
+      ],
+    };
+
+    dispatch(saveExcelFileMapping(excelMappingObj));
+    setShowMappingModal(false);
+  };
+
   return (
     <>
       <div className="update-excel-page">
@@ -566,6 +704,26 @@ const BulkImport: React.FC = () => {
                     </div>
                   </Col>
                 )}
+                {formUpload?.getFieldValue('table_name') &&
+                  defaultFile?.name &&
+                  bulkImports.getExcelColumns.data?.excel_sheet_columns && (
+                    <Col xs={24} md={6}>
+                      <div className="form-group m-0">
+                        <label className="label">Mapping Order</label>
+                        <Form.Item name="mapping_order" className="m-0">
+                          <TreeSelect
+                            style={{ width: '100%' }}
+                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                            treeData={getMenuDropdown()}
+                            placeholder="Default: Select"
+                            onChange={onChange}
+                            treeDefaultExpandAll
+                            allowClear
+                          />
+                        </Form.Item>
+                      </div>
+                    </Col>
+                  )}
                 {bulkImports.getExcelColumns.data?.excel_sheet_columns && (
                   <Col xs={24} md={6}>
                     <div className="form-group m-0">
@@ -830,6 +988,21 @@ const BulkImport: React.FC = () => {
                     >
                       Save
                     </Button>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        formUpload.getFieldValue('mapping_order')
+                          ? saveColumnMapping(
+                              defaultFile?.name?.split('.')[0],
+                              false,
+                              formUpload.getFieldValue('mapping_order')
+                            )
+                          : setShowMappingModal(true);
+                      }}
+                      loading={bulkImports.saveExcelFileMapping.loading}
+                    >
+                      Save Mapping
+                    </Button>
                     <Button onClick={() => resetPage()}>Cancel</Button>
                   </div>
                 </>
@@ -850,6 +1023,16 @@ const BulkImport: React.FC = () => {
         records={excelPreviewData}
         headerRowCount={formUpload.getFieldValue('header_row')}
       ></PreviewExcel>
+      <MappingColumn
+        handleModalClose={() => {
+          setShowMappingModal(false);
+        }}
+        showModal={showMappingModal}
+        fileName={defaultFile?.name?.split('.')[0]}
+        saveMapping={(fileName, isPublic) => {
+          saveColumnMapping(fileName, isPublic);
+        }}
+      ></MappingColumn>
     </>
   );
 };

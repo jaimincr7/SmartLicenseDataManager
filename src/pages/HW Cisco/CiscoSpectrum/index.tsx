@@ -64,7 +64,11 @@ const CiscoSpectrum: React.FC<ICiscoSpectrumProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() =>
-                    history.push(`/data-input/bulk-import/${encodeURIComponent(ciscoSpectrum.search.tableName)}`)
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        ciscoSpectrum.search.tableName
+                      )}`
+                    )
                   }
                   icon={
                     <em className="anticon">
