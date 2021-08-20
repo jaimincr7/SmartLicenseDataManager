@@ -7,8 +7,10 @@ import CmsCategory from './CmsCategory';
 import Contact from './Contact';
 import ContractAgreement from './ContractAgreement';
 import ContractAgreementAttachment from './ContractAgreementAttachment';
+import Purchase from './Purchase';
+import PurchaseLineItem from './PurchaseLineItem';
 
-const HwCiscoRoutes: React.FC = () => {
+const CMSRoutes: React.FC = () => {
   const match = useRouteMatch();
 
   return (
@@ -20,6 +22,25 @@ const HwCiscoRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmsCategory) && (
           <Route exact path={`${match.path}/cms-category`} component={CmsCategory} />
+        {/* Purchase */}
+        {ability.can(Action.View, Page.CmsPurchase) && (
+          <Route exact path={`${match.path}/cms-purchase/:id`} component={Purchase} />
+        )}
+        {ability.can(Action.View, Page.CmsPurchase) && (
+          <Route exact path={`${match.path}/cms-purchase`} component={Purchase} />
+        )}
+
+        {/* PurchaseLineItem */}
+        {ability.can(Action.View, Page.CmsPurchaseLineItem) && (
+          <Route
+            exact
+            path={`${match.path}/cms-purchase-line-item/:id`}
+            component={PurchaseLineItem}
+          />
+        )}
+        {ability.can(Action.View, Page.CmsPurchaseLineItem) && (
+          <Route exact path={`${match.path}/cms-purchase-line-item`} component={PurchaseLineItem} />
+        )}
         )}
 
         {/* Category Extended */}
@@ -82,4 +103,4 @@ const HwCiscoRoutes: React.FC = () => {
   );
 };
 
-export default HwCiscoRoutes;
+export default CMSRoutes;

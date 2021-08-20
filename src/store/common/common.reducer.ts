@@ -24,6 +24,7 @@ import {
   getCmsVectorLookup,
   getCmsPublisherLookup,
   getCmsTriggerTypeLookup,
+  getCmsExpenditureTypeLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -61,6 +62,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsExpenditureTypeLookup: {
     data: [],
     loading: false,
   },
@@ -219,6 +224,15 @@ export const commonSlice = createSlice({
     [getO365ProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.o365ProductsLookup.data = action.payload;
       state.o365ProductsLookup.loading = false;
+    },
+
+    // Expenditure Type lookup
+    [getCmsExpenditureTypeLookup.pending.type]: (state) => {
+      state.cmsExpenditureTypeLookup.loading = true;
+    },
+    [getCmsExpenditureTypeLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsExpenditureTypeLookup.data = action.payload;
+      state.cmsExpenditureTypeLookup.loading = false;
     },
 
     // Category lookup

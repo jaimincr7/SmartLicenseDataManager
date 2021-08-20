@@ -66,6 +66,8 @@ export enum Page {
   CmsContact = 'cms-contact',
   CmsContractAgreement = 'cms-contract-agreement',
   CmsContractAgreementAttachment = 'cms-contract-agreement-attachment',
+  CmsPurchase = 'cms-purchase',
+  CmsPurchaseLineItem = 'cms-purchase-line-item',
   CmsCategoryExtended = 'cms-category-extended',
 
   PowerBIConfig = 'power-bi-report-config',
