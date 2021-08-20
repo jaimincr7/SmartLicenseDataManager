@@ -74,15 +74,17 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
   const fillValuesOnEdit = async (data: ICmsPurchaseLineItem) => {
     if (data) {
       initialValues = {
-        purchase_id:  _.isNull(data.purchase_id) ? null :data.purchase_id,
+        purchase_id: _.isNull(data.purchase_id) ? null : data.purchase_id,
         part_number: data.part_number,
         product_name: data.product_name,
         quantity: data.quantity,
         unit_price: data.unit_price,
         extended_price: data.extended_price,
-        currency_id: _.isNull(data.currency_id) ? null :data.currency_id,
-        category_id: _.isNull(data.category_id) ? null :data.category_id,
-        category_extended_id: _.isNull(data.category_extended_id) ? null :data.category_extended_id,
+        currency_id: _.isNull(data.currency_id) ? null : data.currency_id,
+        category_id: _.isNull(data.category_id) ? null : data.category_id,
+        category_extended_id: _.isNull(data.category_extended_id)
+          ? null
+          : data.category_extended_id,
         start_date: _.isNull(data.start_date) ? null : moment(data.start_date),
         end_date: _.isNull(data.end_date) ? null : moment(data.end_date),
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
@@ -317,7 +319,7 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
                     name="quantity"
                     label="Quantity"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'number' , required: true }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -330,7 +332,7 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
                     name="unit_price"
                     label="Unit Price"
                     className="m-0"
-                    rules={[{ type: 'number' }]}
+                    rules={[{ type: 'number', required: true }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -343,7 +345,7 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
                     name="extended_price"
                     label="Extended Price"
                     className="m-0"
-                    rules={[{ required: true,type: 'number' }]}
+                    rules={[{ required: true, type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -352,23 +354,15 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Start Date</label>
-                  <Form.Item
-                    name="start_date"
-                    label="Start DATE"
-                    className="m-0"
-                  >
+                  <Form.Item name="start_date" label="Start Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">End DATE</label>
-                  <Form.Item
-                    name="end_date"
-                    label="End DATE"
-                    className="m-0"
-                  >
+                  <label className="label">End Date</label>
+                  <Form.Item name="end_date" label="End Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>

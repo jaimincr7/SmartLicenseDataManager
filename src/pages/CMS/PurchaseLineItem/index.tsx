@@ -10,7 +10,6 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import AddCmsPurchaseLineItemModal from './AddPurchaseLineItemModal';
-import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import {
   clearCmsPurchaseLineItem,
   cmsPurchaseLineItemSelector,
@@ -52,9 +51,6 @@ const CmsPurchaseLineItem: React.FC<ICmsPurchaseLineItemProps> = (props) => {
         <h4 className="p-0">
           <BreadCrumbs pageName={Page.CmsPurchaseLineItem} />
         </h4>
-        <div className="right-title">
-          <GlobalSearch />
-        </div>
       </div>
       <div className="main-card">
         <div className="input-btns-title">
@@ -64,7 +60,11 @@ const CmsPurchaseLineItem: React.FC<ICmsPurchaseLineItemProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() => {
-                    history.push(`/data-input/bulk-import/${encodeURIComponent(cmsPurchaseLineItem.search.tableName)}`);
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        cmsPurchaseLineItem.search.tableName
+                      )}`
+                    );
                   }}
                   icon={
                     <em className="anticon">

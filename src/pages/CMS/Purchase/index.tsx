@@ -64,7 +64,9 @@ const CmsPurchase: React.FC<ICmsPurchaseProps> = (props) => {
                 <Button
                   className="btn-icon"
                   onClick={() => {
-                    history.push(`/data-input/bulk-import/${encodeURIComponent(cmsPurchase.search.tableName)}`);
+                    history.push(
+                      `/data-input/bulk-import/${encodeURIComponent(cmsPurchase.search.tableName)}`
+                    );
                   }}
                   icon={
                     <em className="anticon">

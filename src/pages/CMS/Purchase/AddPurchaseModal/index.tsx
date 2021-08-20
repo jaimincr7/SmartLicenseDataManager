@@ -113,8 +113,10 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         vendor_id: _.isNull(data.vendor_id) ? null : data.vendor_id,
-        contract_agreement_id: _.isNull(data.contract_agreement_id) ? null : data.contract_agreement_id,
-        purchase_date:  _.isNull(data.purchase_date) ? null : moment(data.purchase_date),
+        contract_agreement_id: _.isNull(data.contract_agreement_id)
+          ? null
+          : data.contract_agreement_id,
+        purchase_date: _.isNull(data.purchase_date) ? null : moment(data.purchase_date),
         purchase_order_number: data.purchase_order_number,
         spend_type_id: _.isNull(data.spend_type_id) ? null : data.spend_type_id,
         purchase_contact_id: _.isNull(data.purchase_contact_id) ? null : data.purchase_contact_id,
@@ -219,7 +221,7 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Company</label>
-                  <Form.Item name="company_id" className="m-0" label="Company">
+                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: true }]}>
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -247,7 +249,7 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU">
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                     <Select
                       onChange={handleBUChange}
                       allowClear
@@ -339,7 +341,12 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Vendor</label>
-                  <Form.Item name="vendor_id" className="m-0" label="Vendor" rules={[{ required: true }]} >
+                  <Form.Item
+                    name="vendor_id"
+                    className="m-0"
+                    label="Vendor"
+                    rules={[{ required: true }]}
+                  >
                     <Select
                       allowClear
                       showSearch

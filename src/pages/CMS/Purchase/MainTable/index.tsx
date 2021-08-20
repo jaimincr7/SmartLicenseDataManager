@@ -137,7 +137,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('spend_type_id', cmsPurchase.search.lookups?.cms_expenditure_types),
+            title: FilterByDropdown(
+              'spend_type_id',
+              cmsPurchase.search.lookups?.cms_expenditure_types
+            ),
             dataIndex: 'cms_expenditure_type_name',
             key: 'cms_expenditure_type_name',
             ellipsis: true,
