@@ -22,6 +22,8 @@ const CMSRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmsCategory) && (
           <Route exact path={`${match.path}/cms-category`} component={CmsCategory} />
+        )}
+
         {/* Purchase */}
         {ability.can(Action.View, Page.CmsPurchase) && (
           <Route exact path={`${match.path}/cms-purchase/:id`} component={Purchase} />
@@ -40,7 +42,6 @@ const CMSRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmsPurchaseLineItem) && (
           <Route exact path={`${match.path}/cms-purchase-line-item`} component={PurchaseLineItem} />
-        )}
         )}
 
         {/* Category Extended */}
