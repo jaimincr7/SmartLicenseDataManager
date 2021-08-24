@@ -91,5 +91,5 @@ export const allDateColumns = [
   'hw_l_do_s',
   'collection_date',
   'transaction_date',
-  'purchase_date'
+  'purchase_date',
 ];

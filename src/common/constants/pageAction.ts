@@ -79,6 +79,8 @@ export enum Page {
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',
   BUDropdown = 'bu-drop-down',
+
+  SPSApi = 'sps-api',
 }
 
 export enum Action {
@@ -91,4 +93,5 @@ export enum Action {
   DeleteData = 'delete_data',
   RunAllLicenseScenario = 'run_all_license_scenario',
   Select = 'select',
+  Call = 'call',
 }

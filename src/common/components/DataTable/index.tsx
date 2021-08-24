@@ -43,6 +43,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     clearTableDataMessages,
     exportExcelFile,
     setTableColumnSelection,
+    hideExportButton,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -451,14 +452,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
-          <Button
-            onClick={downloadExcel}
-            icon={<FileExcelOutlined />}
-            loading={loading}
-            disabled={reduxStoreData.search.count === 0}
-          >
-            Export
-          </Button>
+          {!hideExportButton && (
+            <Button
+              onClick={downloadExcel}
+              icon={<FileExcelOutlined />}
+              loading={loading}
+              disabled={reduxStoreData.search.count === 0}
+            >
+              Export
+            </Button>
+          )}
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button
               disabled={reduxStoreData.search.count === 0}
@@ -490,7 +493,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
-            loading={reduxStoreData.search.loading || reduxStoreData.delete.loading}
+            loading={reduxStoreData.search.loading || reduxStoreData?.delete?.loading}
             pagination={{
               ...pagination,
               pageSizeOptions: ['10', '100', '500', '2500'],

@@ -125,9 +125,7 @@ export const cmsContractAgreementSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCmsContractAgreement.rejected.type]: (
-      state
-    ) => {
+    [saveCmsContractAgreement.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
     },
@@ -145,9 +143,7 @@ export const cmsContractAgreementSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCmsContractAgreement.rejected.type]: (
-      state
-    ) => {
+    [deleteCmsContractAgreement.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },
