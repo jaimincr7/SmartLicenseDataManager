@@ -67,6 +67,7 @@ export enum Page {
   CmsContractAgreement = 'cms-contract-agreement',
   CmsContractAgreementAttachment = 'cms-contract-agreement-attachment',
   CmsPurchase = 'cms-purchase',
+  CmsVendor = 'cms-vendor',
   CmsPurchaseLineItem = 'cms-purchase-line-item',
   CmsCategoryExtended = 'cms-category-extended',
 

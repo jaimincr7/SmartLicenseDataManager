@@ -9,6 +9,7 @@ import ContractAgreement from './ContractAgreement';
 import ContractAgreementAttachment from './ContractAgreementAttachment';
 import Purchase from './Purchase';
 import PurchaseLineItem from './PurchaseLineItem';
+import Vendor from './Vendor';
 
 const CMSRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -44,6 +45,14 @@ const CMSRoutes: React.FC = () => {
           <Route exact path={`${match.path}/cms-purchase-line-item`} component={PurchaseLineItem} />
         )}
 
+
+        {/* Vendor */}
+        {ability.can(Action.View, Page.CmsVendor) && (
+          <Route exact path={`${match.path}/cms-vendor/:id`} component={Vendor} />
+        )}
+        {ability.can(Action.View, Page.CmsVendor) && (
+          <Route exact path={`${match.path}/cms-vendor`} component={Vendor} />
+        )}
         {/* Category Extended */}
         {ability.can(Action.View, Page.CmsCategoryExtended) && (
           <Route

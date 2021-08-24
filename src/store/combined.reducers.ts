@@ -61,6 +61,7 @@ import cmsContractAgreementReducer from './cms/contractAgreement/contractAgreeme
 import cmsContractAgreementAttachmentReducer from './cms/contractAgreementAttachment/contractAgreementAttachment.reducer';
 import cmsPurchaseReducer from './cms/purchase/purchase.reducer';
 import cmsPurchaseLineItemReducer from './cms/purchaseLineItem/purchaseLineItem.reducer';
+import cmsVendorReducer from './cms/vendor/vendor.reducer';
 import cmsCategoryExtendedReducer from './cms/categoryExtended/categoryExtended.reducer';
 
 export const rootReducer = combineReducers({
@@ -147,6 +148,7 @@ export const rootReducer = combineReducers({
   cmsContractAgreementAttachment: cmsContractAgreementAttachmentReducer,
   cmsPurchase: cmsPurchaseReducer,
   cmsPurchaseLineItem: cmsPurchaseLineItemReducer,
+  cmsVendor: cmsVendorReducer,
   users: usersReducer,
 
   //Power-BI Report
