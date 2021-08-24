@@ -70,6 +70,7 @@ export enum Page {
   CmsVendor = 'cms-vendor',
   CmsPurchaseLineItem = 'cms-purchase-line-item',
   CmsCategoryExtended = 'cms-category-extended',
+  CmsTriggerType = 'cms-trigger-type',
 
   PowerBIConfig = 'power-bi-report-config',
 
