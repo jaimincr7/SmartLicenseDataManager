@@ -7,8 +7,12 @@ import CmsCategory from './CmsCategory';
 import Contact from './Contact';
 import ContractAgreement from './ContractAgreement';
 import ContractAgreementAttachment from './ContractAgreementAttachment';
+import Purchase from './Purchase';
+import PurchaseLineItem from './PurchaseLineItem';
+import TriggerType from './TriggerType';
+import Vendor from './Vendor';
 
-const HwCiscoRoutes: React.FC = () => {
+const CMSRoutes: React.FC = () => {
   const match = useRouteMatch();
 
   return (
@@ -22,6 +26,41 @@ const HwCiscoRoutes: React.FC = () => {
           <Route exact path={`${match.path}/cms-category`} component={CmsCategory} />
         )}
 
+        {/* Purchase */}
+        {ability.can(Action.View, Page.CmsPurchase) && (
+          <Route exact path={`${match.path}/cms-purchase/:id`} component={Purchase} />
+        )}
+        {ability.can(Action.View, Page.CmsPurchase) && (
+          <Route exact path={`${match.path}/cms-purchase`} component={Purchase} />
+        )}
+
+        {/* PurchaseLineItem */}
+        {ability.can(Action.View, Page.CmsPurchaseLineItem) && (
+          <Route
+            exact
+            path={`${match.path}/cms-purchase-line-item/:id`}
+            component={PurchaseLineItem}
+          />
+        )}
+        {ability.can(Action.View, Page.CmsPurchaseLineItem) && (
+          <Route exact path={`${match.path}/cms-purchase-line-item`} component={PurchaseLineItem} />
+        )}
+
+        {/* TriggerType */}
+        {ability.can(Action.View, Page.CmsTriggerType) && (
+          <Route exact path={`${match.path}/cms-trigger-type/:id`} component={TriggerType} />
+        )}
+        {ability.can(Action.View, Page.CmsTriggerType) && (
+          <Route exact path={`${match.path}/cms-trigger-type`} component={TriggerType} />
+        )}
+
+        {/* Vendor */}
+        {ability.can(Action.View, Page.CmsVendor) && (
+          <Route exact path={`${match.path}/cms-vendor/:id`} component={Vendor} />
+        )}
+        {ability.can(Action.View, Page.CmsVendor) && (
+          <Route exact path={`${match.path}/cms-vendor`} component={Vendor} />
+        )}
         {/* Category Extended */}
         {ability.can(Action.View, Page.CmsCategoryExtended) && (
           <Route
@@ -82,4 +121,4 @@ const HwCiscoRoutes: React.FC = () => {
   );
 };
 
-export default HwCiscoRoutes;
+export default CMSRoutes;

@@ -37,6 +37,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cmsExpenditureTypeLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   cmsPurchaseLookup: {
     data: ILookup[];
     loading: boolean;

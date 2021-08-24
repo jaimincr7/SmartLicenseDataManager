@@ -66,6 +66,13 @@ class CommonService {
     });
   }
 
+  public async getCmsExpenditureTypeLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cms-expenditure-type/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getCmsPurchaseLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cms-purchase/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -159,7 +166,9 @@ class CommonService {
 
   // Bulk import
   public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
-    const url = `/app/table-column/${tableName?.includes("/") ? encodeURIComponent(tableName) : tableName}`;
+    const url = `/app/table-column/${
+      tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
+    }`;
     return request({ url, method: 'GET' }).then((res) => {
       if (res.data?.body.data?.identity_column) {
         const response = res.data?.body.data?.column_data.filter(
