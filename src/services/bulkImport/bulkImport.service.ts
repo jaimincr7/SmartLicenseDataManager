@@ -1,6 +1,12 @@
 import { IApiResponse } from '../../common/models/common';
 import request from '../../utils/request';
-import { IDataTable, IDataTableForImport, IImportDataTable } from './bulkImport.model';
+import {
+  IDataTable,
+  IDataTableForImport,
+  IGetExcelMapping,
+  IImportDataTable,
+  ISaveExcelMapping,
+} from './bulkImport.model';
 
 class BulkImportService {
   ENDPOINT = '/config-import-data-tables';
@@ -21,6 +27,20 @@ class BulkImportService {
 
   public async saveTableForImport(data: IImportDataTable): Promise<any> {
     const url = `${this.ENDPOINT}`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getExcelFileMapping(data: IGetExcelMapping): Promise<any> {
+    const url = `/config-excel-file-mapping/mapping`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async saveExcelFileMapping(data: ISaveExcelMapping): Promise<any> {
+    const url = `/config-excel-file-mapping`;
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });

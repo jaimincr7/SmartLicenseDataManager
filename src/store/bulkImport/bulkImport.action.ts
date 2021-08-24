@@ -1,4 +1,8 @@
-import { IImportDataTable } from './../../services/bulkImport/bulkImport.model';
+import {
+  IGetExcelMapping,
+  IImportDataTable,
+  ISaveExcelMapping,
+} from './../../services/bulkImport/bulkImport.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import bulkImportService from '../../services/bulkImport/bulkImport.service';
 import { IBulkInsertDataset } from '../../services/common/common.model';
@@ -50,3 +54,23 @@ export const bulkInsert = createAsyncThunk('bulkInsert', async (data: IBulkInser
   });
   return response;
 });
+
+export const getExcelFileMapping = createAsyncThunk(
+  'getExcelFileMapping',
+  async (data: IGetExcelMapping) => {
+    const response = await bulkImportService.getExcelFileMapping(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
+
+export const saveExcelFileMapping = createAsyncThunk(
+  'saveExcelFileMapping',
+  async (data: ISaveExcelMapping) => {
+    const response = await bulkImportService.saveExcelFileMapping(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
