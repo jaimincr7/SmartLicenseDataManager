@@ -9,6 +9,7 @@ import ContractAgreement from './ContractAgreement';
 import ContractAgreementAttachment from './ContractAgreementAttachment';
 import Purchase from './Purchase';
 import PurchaseLineItem from './PurchaseLineItem';
+import TriggerType from './TriggerType';
 import Vendor from './Vendor';
 
 const CMSRoutes: React.FC = () => {
@@ -45,6 +46,13 @@ const CMSRoutes: React.FC = () => {
           <Route exact path={`${match.path}/cms-purchase-line-item`} component={PurchaseLineItem} />
         )}
 
+        {/* TriggerType */}
+        {ability.can(Action.View, Page.CmsTriggerType) && (
+          <Route exact path={`${match.path}/cms-trigger-type/:id`} component={TriggerType} />
+        )}
+        {ability.can(Action.View, Page.CmsTriggerType) && (
+          <Route exact path={`${match.path}/cms-trigger-type`} component={TriggerType} />
+        )}
 
         {/* Vendor */}
         {ability.can(Action.View, Page.CmsVendor) && (
