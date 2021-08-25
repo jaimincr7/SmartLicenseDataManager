@@ -73,6 +73,8 @@ export enum Page {
   CmsCategoryExtended = 'cms-category-extended',
   CmsTriggerType = 'cms-trigger-type',
 
+  CmdbOperatingSystem = 'cmdb-operating-system',
+  CmdbProcessor = 'cmdb-processor',
   PowerBIConfig = 'power-bi-report-config',
 
   // Global search dropdown

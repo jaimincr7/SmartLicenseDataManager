@@ -64,6 +64,8 @@ import cmsPurchaseLineItemReducer from './cms/purchaseLineItem/purchaseLineItem.
 import cmsTriggerTypeReducer from './cms/triggerType/triggerType.reducer';
 import cmsVendorReducer from './cms/vendor/vendor.reducer';
 import cmsCategoryExtendedReducer from './cms/categoryExtended/categoryExtended.reducer';
+import cmdbOperatingSystemReducer from './cmdb/operatingSystem/operatingSystem.reducer';
+import cmdbProcessorReducer from './cmdb/processor/processor.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -151,6 +153,10 @@ export const rootReducer = combineReducers({
   cmsPurchaseLineItem: cmsPurchaseLineItemReducer,
   cmsTriggerType: cmsTriggerTypeReducer,
   cmsVendor: cmsVendorReducer,
+
+  //CMDB
+  cmdbOperatingSystem: cmdbOperatingSystemReducer,
+  cmdbProcessor: cmdbProcessorReducer,
 
   users: usersReducer,
 
