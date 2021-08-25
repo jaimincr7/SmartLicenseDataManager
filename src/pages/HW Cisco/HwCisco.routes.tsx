@@ -33,7 +33,7 @@ const HwCiscoRoutes: React.FC = () => {
         {ability.can(Action.View, Page.HwCiscoHost) && (
           <Route exact path={`${match.path}/cisco-host`} component={CiscoHost} />
         )}
-        
+
         {/* IB */}
         {ability.can(Action.View, Page.HwCiscoIB) && (
           <Route exact path={`${match.path}/cisco-ib/:id`} component={CiscoIB} />
@@ -72,7 +72,7 @@ const HwCiscoRoutes: React.FC = () => {
             path={`${match.path}/cisco-product-attributes`}
             component={CiscoProductAttributes}
           />
-          )}
+        )}
 
         {/* Ready */}
         {ability.can(Action.View, Page.HwCiscoReady) && (
