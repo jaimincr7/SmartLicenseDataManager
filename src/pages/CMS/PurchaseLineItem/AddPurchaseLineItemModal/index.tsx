@@ -319,7 +319,7 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
                     name="quantity"
                     label="Quantity"
                     className="m-0"
-                    rules={[{ type: 'number' , required: true }]}
+                    rules={[{ type: 'number', required: true }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>

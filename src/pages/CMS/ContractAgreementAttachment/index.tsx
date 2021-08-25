@@ -65,7 +65,9 @@ const CmsContractAgreementAttachment: React.FC<ICmsContractAgreementAttachmentPr
                   className="btn-icon"
                   onClick={() =>
                     history.push(
-                      `/data-input/bulk-import/${encodeURIComponent(cmsContractAgreementAttachment.search.tableName)}`
+                      `/data-input/bulk-import/${encodeURIComponent(
+                        cmsContractAgreementAttachment.search.tableName
+                      )}`
                     )
                   }
                   icon={

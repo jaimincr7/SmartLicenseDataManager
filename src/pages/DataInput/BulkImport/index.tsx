@@ -497,15 +497,26 @@ const BulkImport: React.FC = () => {
         (x) => x.table_name === formUpload.getFieldValue('table_name')
       );
       let mappingDetail: any = {};
+      let skipRows;
       defaultMappingDetail?.forEach((element) => {
         const mappingOrder = element?.config_excel_column_mappings?.find((y) => y.id === value);
         if (mappingOrder) {
           mappingDetail = JSON.parse(mappingOrder?.mapping);
+          formUpload.setFieldsValue({ header_row: mappingOrder.header_row });
+          setFormFields();
         }
+        skipRows = Number(mappingOrder.header_row) - 1;
       });
+
+      let filterExcelColumns: any = bulkImports.getExcelColumns.data.excel_sheet_columns.find(
+        (e) => e.sheet === formUpload.getFieldValue('sheet_name')
+      ).columns;
+      if (filterExcelColumns?.length >= skipRows) {
+        filterExcelColumns = filterExcelColumns[skipRows];
+      }
       tableColumns?.forEach((element) => {
         const mapObj = mappingDetail?.find((x) => x.key === element.name);
-        if (mapObj && excelColumns?.includes(mapObj?.value)) {
+        if (mapObj && filterExcelColumns?.includes(mapObj?.value)) {
           form.setFieldsValue({ [element.name]: mapObj.value });
         }
       });
