@@ -137,9 +137,7 @@ export const cmsPurchaseSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCmsPurchase.rejected.type]: (
-      state
-    ) => {
+    [deleteCmsPurchase.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },

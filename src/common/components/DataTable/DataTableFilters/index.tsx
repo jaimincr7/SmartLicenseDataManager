@@ -108,7 +108,10 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
           option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >= 0
         }
         filterSort={(optionA: any, optionB: any) =>
-          optionA.children?.toString()?.toLowerCase()?.localeCompare(optionB.children?.toString()?.toLowerCase())
+          optionA.children
+            ?.toString()
+            ?.toLowerCase()
+            ?.localeCompare(optionB.children?.toString()?.toLowerCase())
         }
       >
         {dropdownOptions.map((option: IDropDownOption) => (
