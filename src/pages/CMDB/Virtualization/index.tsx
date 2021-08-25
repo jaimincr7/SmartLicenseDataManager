@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import { ICmdbVirtualizationProps } from './virtualization.model';
 import React from 'react';
-import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
@@ -52,9 +51,6 @@ const CmdbVirtualization: React.FC<ICmdbVirtualizationProps> = (props) => {
         <h4 className="p-0">
           <BreadCrumbs pageName={Page.CmdbVirtualization} />
         </h4>
-        <div className="right-title">
-          <GlobalSearch />
-        </div>
       </div>
       <div className="main-card">
         <div className="input-btns-title">
