@@ -508,7 +508,7 @@ const BulkImport: React.FC = () => {
         skipRows = Number(mappingOrder.header_row) - 1;
       });
 
-      let filterExcelColumns: any = bulkImports.getExcelColumns.data.excel_sheet_columns.find(
+      let filterExcelColumns: any = bulkImports.getExcelColumns.data?.excel_sheet_columns?.find(
         (e) => e.sheet === formUpload?.getFieldValue('sheet_name')
       ).columns;
       if (filterExcelColumns?.length >= skipRows) {
