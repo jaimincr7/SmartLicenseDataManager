@@ -130,9 +130,7 @@ export const cmsCategorySlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCmsCategory.rejected.type]: (
-      state
-    ) => {
+    [deleteCmsCategory.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },

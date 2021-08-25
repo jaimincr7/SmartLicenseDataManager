@@ -10,6 +10,8 @@ import {
   bulkInsert,
   getTables,
   saveTableForImport,
+  getExcelFileMapping,
+  saveExcelFileMapping,
 } from './bulkImport.action';
 import { IBulkImportState } from './bulkImport.model';
 
@@ -44,6 +46,16 @@ export const initialState: IBulkImportState = {
     hasErrors: false,
     messages: [],
   },
+  getExcelMappingColumns: {
+    loading: false,
+    messages: [],
+    data: [],
+  },
+  saveExcelFileMapping: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const bulkImportSlice = createSlice({
@@ -56,6 +68,7 @@ export const bulkImportSlice = createSlice({
     clearBulkImportMessages: (state) => {
       state.bulkInsert.messages = [];
       state.saveTableForImport.messages = [];
+      state.saveExcelFileMapping.messages = [];
     },
     clearGetTableColumns: (state) => {
       state.getTableColumns.data = null;
@@ -155,6 +168,42 @@ export const bulkImportSlice = createSlice({
     [bulkInsert.rejected.type]: (state) => {
       state.bulkInsert.loading = false;
       state.bulkInsert.hasErrors = true;
+    },
+
+    // Get Excel Columns Mapping
+    [getExcelFileMapping.pending.type]: (state) => {
+      state.getExcelMappingColumns.loading = true;
+      state.getExcelMappingColumns.messages = [];
+    },
+    [getExcelFileMapping.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.getExcelMappingColumns.loading = false;
+      state.getExcelMappingColumns.data = action.payload.data;
+      state.getExcelMappingColumns.messages = action.payload.messages;
+    },
+    [getExcelFileMapping.rejected.type]: (state) => {
+      state.getExcelMappingColumns.loading = false;
+      state.getExcelMappingColumns.data = true;
+    },
+
+    // Save Excel File Mapping
+    [saveExcelFileMapping.pending.type]: (state) => {
+      state.saveExcelFileMapping.loading = true;
+      state.saveExcelFileMapping.messages = [];
+    },
+    [saveExcelFileMapping.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.saveExcelFileMapping.loading = false;
+      state.saveExcelFileMapping.hasErrors = false;
+      state.saveExcelFileMapping.messages = action.payload.messages;
+    },
+    [saveExcelFileMapping.rejected.type]: (state) => {
+      state.saveExcelFileMapping.loading = false;
+      state.saveExcelFileMapping.hasErrors = true;
     },
   },
 });

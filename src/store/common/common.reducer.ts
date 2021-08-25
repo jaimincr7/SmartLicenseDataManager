@@ -15,6 +15,16 @@ import {
   getAllCompanyLookup,
   getO365ProductsLookup,
   getCmsCategoryLookup,
+  getCmsPurchaseLookup,
+  getCmsCategoryExtendedLookup,
+  getCmsContractAgreementLookup,
+  getCmsContractLookup,
+  getCmsContactLookup,
+  getUserLookup,
+  getCmsVectorLookup,
+  getCmsPublisherLookup,
+  getCmsTriggerTypeLookup,
+  getCmsExpenditureTypeLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -55,7 +65,47 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  cmsExpenditureTypeLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsPurchaseLookup: {
+    data: [],
+    loading: false,
+  },
   cmsCategoryLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsCategoryExtendedLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsContractAgreementLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsContactLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsVectorLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsTriggerTypeLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsPublisherLookup: {
+    data: [],
+    loading: false,
+  },
+  cmsContractLookup: {
+    data: [],
+    loading: false,
+  },
+  UserLookup: {
     data: [],
     loading: false,
   },
@@ -176,15 +226,114 @@ export const commonSlice = createSlice({
       state.o365ProductsLookup.loading = false;
     },
 
-        // Category lookup
-        [getCmsCategoryLookup.pending.type]: (state) => {
-          state.cmsCategoryLookup.loading = true;
-        },
-        [getCmsCategoryLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
-          state.cmsCategoryLookup.data = action.payload;
-          state.cmsCategoryLookup.loading = false;
-        },
-    
+    // Expenditure Type lookup
+    [getCmsExpenditureTypeLookup.pending.type]: (state) => {
+      state.cmsExpenditureTypeLookup.loading = true;
+    },
+    [getCmsExpenditureTypeLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsExpenditureTypeLookup.data = action.payload;
+      state.cmsExpenditureTypeLookup.loading = false;
+    },
+
+    // Category lookup
+    [getCmsCategoryLookup.pending.type]: (state) => {
+      state.cmsCategoryLookup.loading = true;
+    },
+    [getCmsCategoryLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsCategoryLookup.data = action.payload;
+      state.cmsCategoryLookup.loading = false;
+    },
+
+    // CMS Purchase lookup
+    [getCmsPurchaseLookup.pending.type]: (state) => {
+      state.cmsPurchaseLookup.loading = true;
+    },
+    [getCmsPurchaseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsPurchaseLookup.data = action.payload;
+      state.cmsPurchaseLookup.loading = false;
+    },
+
+    // CMS Category lookup
+    [getCmsCategoryLookup.pending.type]: (state) => {
+      state.cmsCategoryLookup.loading = true;
+    },
+    [getCmsCategoryLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsCategoryLookup.data = action.payload;
+      state.cmsCategoryLookup.loading = false;
+    },
+
+    // CMS CategoryExtended lookup
+    [getCmsCategoryExtendedLookup.pending.type]: (state) => {
+      state.cmsCategoryExtendedLookup.loading = true;
+    },
+    [getCmsCategoryExtendedLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsCategoryExtendedLookup.data = action.payload;
+      state.cmsCategoryExtendedLookup.loading = false;
+    },
+
+    // CMS Contract Agreement lookup
+    [getCmsContractAgreementLookup.pending.type]: (state) => {
+      state.cmsContractAgreementLookup.loading = true;
+    },
+    [getCmsContractAgreementLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsContractAgreementLookup.data = action.payload;
+      state.cmsContractAgreementLookup.loading = false;
+    },
+
+    // CMS Contract lookup
+    [getCmsContractLookup.pending.type]: (state) => {
+      state.cmsContractLookup.loading = true;
+    },
+    [getCmsContractLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsContractLookup.data = action.payload;
+      state.cmsContractLookup.loading = false;
+    },
+
+    // Users lookup
+    [getUserLookup.pending.type]: (state) => {
+      state.UserLookup.loading = true;
+    },
+    [getUserLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.UserLookup.data = action.payload;
+      state.UserLookup.loading = false;
+    },
+
+    //CMS Contact lookup
+    [getCmsContactLookup.pending.type]: (state) => {
+      state.cmsContactLookup.loading = true;
+    },
+    [getCmsContactLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsContactLookup.data = action.payload;
+      state.cmsContactLookup.loading = false;
+    },
+
+    //CMS Vector lookup
+    [getCmsVectorLookup.pending.type]: (state) => {
+      state.cmsVectorLookup.loading = true;
+    },
+    [getCmsVectorLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsVectorLookup.data = action.payload;
+      state.cmsVectorLookup.loading = false;
+    },
+
+    //CMS Publisher lookup
+    [getCmsPublisherLookup.pending.type]: (state) => {
+      state.cmsPublisherLookup.loading = true;
+    },
+    [getCmsPublisherLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsPublisherLookup.data = action.payload;
+      state.cmsPublisherLookup.loading = false;
+    },
+
+    //CMS TriggerType lookup
+    [getCmsTriggerTypeLookup.pending.type]: (state) => {
+      state.cmsTriggerTypeLookup.loading = true;
+    },
+    [getCmsTriggerTypeLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmsTriggerTypeLookup.data = action.payload;
+      state.cmsTriggerTypeLookup.loading = false;
+    },
+
     // Delete Dataset
     [deleteDataset.pending.type]: (state) => {
       state.deleteDataset.loading = true;

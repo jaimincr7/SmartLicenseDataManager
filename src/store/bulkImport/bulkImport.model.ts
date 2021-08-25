@@ -32,4 +32,14 @@ export interface IBulkImportState {
     hasErrors: boolean;
     messages: string[];
   };
+  getExcelMappingColumns: {
+    loading: boolean;
+    messages: string[];
+    data: any;
+  };
+  saveExcelFileMapping: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

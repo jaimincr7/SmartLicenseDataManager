@@ -41,6 +41,7 @@ export enum Page {
   AzureAPIVmSizes = 'azure-api-vm-sizes',
 
   BulkImport = 'bulk-import',
+  ConfigExcelFileMapping = 'config-excel-file-mapping',
 
   O365ActivationsUserDetail = 'o365-activations-user-detail',
   O365ActiveUserDetail = 'o365-active-user-detail',
@@ -63,7 +64,14 @@ export enum Page {
   HwCiscoSpectrum = 'hw-cisco-spectrum',
 
   CmsCategory = 'cms-category',
+  CmsContact = 'cms-contact',
+  CmsContractAgreement = 'cms-contract-agreement',
+  CmsContractAgreementAttachment = 'cms-contract-agreement-attachment',
+  CmsPurchase = 'cms-purchase',
+  CmsVendor = 'cms-vendor',
+  CmsPurchaseLineItem = 'cms-purchase-line-item',
   CmsCategoryExtended = 'cms-category-extended',
+  CmsTriggerType = 'cms-trigger-type',
 
   PowerBIConfig = 'power-bi-report-config',
 
@@ -82,4 +90,5 @@ export enum Action {
   ProcessData = 'process_data',
   DeleteData = 'delete_data',
   RunAllLicenseScenario = 'run_all_license_scenario',
+  Select = 'select',
 }

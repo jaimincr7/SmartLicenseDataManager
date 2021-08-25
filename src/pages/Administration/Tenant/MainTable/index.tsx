@@ -2,7 +2,10 @@ import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
-import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
+import {
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
@@ -49,6 +52,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('id', form),
             dataIndex: 'id',
             key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Currency</span>,
+        column: 'CurrencyId',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('currency_id', tenant.search.lookups?.currency),
+            dataIndex: 'currency',
+            key: 'currency',
             ellipsis: true,
           },
         ],

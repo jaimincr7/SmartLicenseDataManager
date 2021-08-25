@@ -1,11 +1,13 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { ILookup } from '../../../../services/common/common.model';
 import { ITenant } from '../../../../services/master/tenant/tenant.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
+import { commonSelector } from '../../../../store/common/common.reducer';
 import { getTenantById, saveTenant } from '../../../../store/master/tenant/tenant.action';
 import {
   clearTenantGetById,
@@ -13,10 +15,14 @@ import {
   tenantSelector,
 } from '../../../../store/master/tenant/tenant.reducer';
 import { IAddTenantProps } from './addTenant.model';
+import { getCurrencyLookup } from './../../../../store/common/common.action';
+
+const { Option } = Select;
 
 const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
   const tenant = useAppSelector(tenantSelector);
   const dispatch = useAppDispatch();
+  const commonLookups = useAppSelector(commonSelector);
 
   const { id, showModal, handleModalClose, refreshDataTable } = props;
 
@@ -36,8 +42,12 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
 
   let initialValues: ITenant = {
     name: '',
+    currency_id: undefined,
   };
 
+  useEffect(() => {
+    dispatch(getCurrencyLookup());
+  }, []);
   const onFinish = (values: any) => {
     const inputValues: ITenant = {
       ...values,
@@ -50,6 +60,7 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
     if (data) {
       initialValues = {
         name: data.name,
+        currency_id: data.currency_id,
       };
       form.setFieldsValue(initialValues);
     }
@@ -117,6 +128,33 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
                     rules={[{ required: true, max: 200 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">Currency</label>
+                  <Form.Item name="currency_id" className="m-0" label="Tenant">
+                    <Select
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={commonLookups.currencyLookup.loading}
+                    >
+                      {commonLookups.currencyLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>
