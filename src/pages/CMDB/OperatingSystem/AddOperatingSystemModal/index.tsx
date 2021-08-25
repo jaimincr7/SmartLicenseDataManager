@@ -177,11 +177,11 @@ const AddCmdbOperatingSystemModal: React.FC<IAddCmdbOperatingSystemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SerialNumber</label>
+                  <label className="label">Serial Number</label>
                   <Form.Item
                     name="serial_number"
                     className="m-0"
-                    label="SerialNumber"
+                    label="Serial Number"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
