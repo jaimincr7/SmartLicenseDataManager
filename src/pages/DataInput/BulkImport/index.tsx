@@ -720,7 +720,7 @@ const BulkImport: React.FC = () => {
                   bulkImports.getExcelColumns.data?.excel_sheet_columns && (
                     <Col xs={24} md={6}>
                       <div className="form-group m-0">
-                        <label className="label">Mapping Order</label>
+                        <label className="label">Saved Mapping</label>
                         <Form.Item name="mapping_order" className="m-0">
                           <TreeSelect
                             style={{ width: '100%' }}
