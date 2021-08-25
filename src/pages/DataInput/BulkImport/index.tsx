@@ -205,10 +205,10 @@ const BulkImport: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -446,7 +446,7 @@ const BulkImport: React.FC = () => {
   const getMenuDropdown = () => {
     const dropdown = [];
     const defaultMappingDetail = bulkImports.getExcelMappingColumns.data?.filter(
-      (x) => x.table_name === 'Tenant'
+      (x) => x.table_name === formUpload?.getFieldValue('table_name')
     );
     defaultMappingDetail?.map((m: any) => {
       dropdown.push({
@@ -509,7 +509,7 @@ const BulkImport: React.FC = () => {
       });
 
       let filterExcelColumns: any = bulkImports.getExcelColumns.data.excel_sheet_columns.find(
-        (e) => e.sheet === formUpload.getFieldValue('sheet_name')
+        (e) => e.sheet === formUpload?.getFieldValue('sheet_name')
       ).columns;
       if (filterExcelColumns?.length >= skipRows) {
         filterExcelColumns = filterExcelColumns[skipRows];
@@ -1004,10 +1004,10 @@ const BulkImport: React.FC = () => {
                       onClick={() => {
                         formUpload.getFieldValue('mapping_order')
                           ? saveColumnMapping(
-                              defaultFile?.name?.split('.')[0],
-                              false,
-                              formUpload.getFieldValue('mapping_order')
-                            )
+                            defaultFile?.name?.split('.')[0],
+                            false,
+                            formUpload.getFieldValue('mapping_order')
+                          )
                           : setShowMappingModal(true);
                       }}
                       loading={bulkImports.saveExcelFileMapping.loading}
