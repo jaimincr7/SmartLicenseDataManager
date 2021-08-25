@@ -75,6 +75,7 @@ export enum Page {
 
   CmdbOperatingSystem = 'cmdb-operating-system',
   CmdbProcessor = 'cmdb-processor',
+  CmdbVirtualization = 'cmdb-virtualization',
   PowerBIConfig = 'power-bi-report-config',
 
   // Global search dropdown

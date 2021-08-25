@@ -4,6 +4,7 @@ import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
 import OperatingSystem from './OperatingSystem';
 import Processor from './Processor';
+import Virtualization from './Virtualization';
 
 const CmdbRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -31,6 +32,13 @@ const CmdbRoutes: React.FC = () => {
           <Route exact path={`${match.path}/cmdb-processor`} component={Processor} />
         )}
 
+          {/* Virtualization */}
+          {ability.can(Action.View, Page.CmdbVirtualization) && (
+          <Route exact path={`${match.path}/cmdb-virtualization/:id`} component={Virtualization} />
+        )}
+        {ability.can(Action.View, Page.CmdbVirtualization) && (
+          <Route exact path={`${match.path}/cmdb-virtualization`} component={Virtualization} />
+        )}
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />
