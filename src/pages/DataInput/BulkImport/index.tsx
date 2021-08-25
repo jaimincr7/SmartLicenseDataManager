@@ -171,25 +171,25 @@ const BulkImport: React.FC = () => {
       formUpload.setFieldsValue({ sheet_name: currentSheetName });
     }
     if (bulkImports.getTableColumns.data && bulkImports.getExcelColumns.data?.excel_sheet_columns) {
-      const columnsArray = ['TenantId', 'CompanyId', 'BU_Id', 'Date Added'];
+      const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
       let filterExcelColumns: any = bulkImports.getExcelColumns.data.excel_sheet_columns.find(
         (e) => e.sheet === currentSheetName
       ).columns;
       const filterTableColumns = bulkImports.getTableColumns.data.filter(
-        (x) => !columnsArray.includes(x.name)
+        (x) => !columnsArray.includes(x.name?.toLowerCase())
       );
       if (filterExcelColumns?.length >= skipRows) {
         filterExcelColumns = filterExcelColumns[skipRows];
       }
       const removedColumns = bulkImports.getTableColumns.data.filter((x) =>
-        columnsArray.includes(x.name)
+        columnsArray.includes(x.name?.toLowerCase())
       );
 
       setExcelColumns(filterExcelColumns);
       setTableColumns(filterTableColumns);
       setRemovedColumns(removedColumns);
 
-      removedColumns.some((x) => x.name === 'TenantId') && dispatch(getTenantLookup());
+      removedColumns.some((x) => x.name?.toLowerCase() === 'tenantid') && dispatch(getTenantLookup());
 
       const initialValuesData: any = {
         tenant_id: null,
@@ -775,7 +775,7 @@ const BulkImport: React.FC = () => {
                 <>
                   {removedColumns && removedColumns.length > 0 && (
                     <Row gutter={[30, 0]} className="form-label-hide input-btns-title">
-                      {removedColumns.some((x) => x.name === 'TenantId') && (
+                      {removedColumns.some((x) => x.name?.toLowerCase() === 'tenantid') && (
                         <Col xs={24} sm={12} md={8}>
                           <div className="form-group m-0">
                             <label className="label">Tenant</label>
@@ -819,7 +819,7 @@ const BulkImport: React.FC = () => {
                           </div>
                         </Col>
                       )}
-                      {removedColumns.some((x) => x.name === 'CompanyId') && (
+                      {removedColumns.some((x) => x.name?.toLowerCase() === 'companyid') && (
                         <Col xs={24} sm={12} md={8}>
                           <div className="form-group m-0">
                             <label className="label">Company</label>
@@ -863,7 +863,7 @@ const BulkImport: React.FC = () => {
                           </div>
                         </Col>
                       )}
-                      {removedColumns.some((x) => x.name === 'BU_Id') && (
+                      {removedColumns.some((x) => x.name?.toLowerCase() === 'bu_id') && (
                         <Col xs={24} sm={12} md={8}>
                           <div className="form-group m-0">
                             <label className="label">BU</label>
@@ -906,7 +906,7 @@ const BulkImport: React.FC = () => {
                           </div>
                         </Col>
                       )}
-                      {removedColumns.some((x) => x.name === 'Date Added') && (
+                      {removedColumns.some((x) => x.name?.toLowerCase() === 'date added') && (
                         <Col xs={24} sm={12} md={8}>
                           <div className="form-group m-0">
                             <label className="label">Date Added</label>
