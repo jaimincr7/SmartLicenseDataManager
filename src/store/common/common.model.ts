@@ -41,6 +41,18 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cmdbOperatingSystemLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbProcessorLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbVirtualizationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   cmsExpenditureTypeLookup: {
     data: ILookup[];
     loading: boolean;

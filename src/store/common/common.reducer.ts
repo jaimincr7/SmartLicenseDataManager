@@ -26,6 +26,9 @@ import {
   getCmsTriggerTypeLookup,
   getCmsExpenditureTypeLookup,
   getCmdbLicenseModelLookup,
+  getCmdbOperatingSystemLookup,
+  getCmdbProcessorLookup,
+  getCmdbVirtualizationLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -67,6 +70,18 @@ export const initialState: ICommonState = {
     loading: false,
   },
   cmdbLicenseModelLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbOperatingSystemLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbProcessorLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbVirtualizationLookup: {
     data: [],
     loading: false,
   },
@@ -240,6 +255,33 @@ export const commonSlice = createSlice({
           state.cmdbLicenseModelLookup.loading = false;
         },
     
+    // Cmdb OS lookup
+    [getCmdbOperatingSystemLookup.pending.type]: (state) => {
+      state.cmdbOperatingSystemLookup.loading = true;
+    },
+    [getCmdbOperatingSystemLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbOperatingSystemLookup.data = action.payload;
+      state.cmdbOperatingSystemLookup.loading = false;
+    },
+
+        // Cmdb Processor lookup
+        [getCmdbProcessorLookup.pending.type]: (state) => {
+          state.cmdbProcessorLookup.loading = true;
+        },
+        [getCmdbProcessorLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+          state.cmdbProcessorLookup.data = action.payload;
+          state.cmdbProcessorLookup.loading = false;
+        },
+
+        // Cmdb Virtualization lookup
+        [getCmdbVirtualizationLookup.pending.type]: (state) => {
+          state.cmdbVirtualizationLookup.loading = true;
+        },
+        [getCmdbVirtualizationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+          state.cmdbVirtualizationLookup.data = action.payload;
+          state.cmdbVirtualizationLookup.loading = false;
+        },
+
     // Expenditure Type lookup
     [getCmsExpenditureTypeLookup.pending.type]: (state) => {
       state.cmsExpenditureTypeLookup.loading = true;

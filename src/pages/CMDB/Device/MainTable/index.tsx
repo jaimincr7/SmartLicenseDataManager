@@ -1,0 +1,403 @@
+import { Popconfirm } from 'antd';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { IMainTable } from './mainTable.model';
+import moment from 'moment';
+import { Common } from '../../../../common/constants/common';
+import _ from 'lodash';
+import {
+  FilterByDateSwap,
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTable/DataTableFilters';
+import { ISearch } from '../../../../common/models/common';
+import { useHistory } from 'react-router-dom';
+import DataTable from '../../../../common/components/DataTable';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
+import { deleteCmdbDevice, searchCmdbDevice } from '../../../../store/cmdb/device/device.action';
+import {
+  clearCmdbDeviceMessages,
+  cmdbDeviceSelector,
+  setTableColumnSelection,
+} from '../../../../store/cmdb/device/device.reducer';
+import deviceService from '../../../../services/cmdb/device/device.service';
+
+const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
+  const { setSelectedId } = props;
+  const cmdbDevice = useAppSelector(cmdbDeviceSelector);
+  const dispatch = useAppDispatch();
+  const dataTableRef = useRef(null);
+  const history = useHistory();
+
+  useImperativeHandle(ref, () => ({
+    refreshData() {
+      dataTableRef?.current.refreshData();
+    },
+  }));
+
+  const exportExcelFile = (searchData: ISearch) => {
+    return deviceService.exportExcelFile(searchData);
+  };
+
+  const FilterBySwap = (dataIndex: string, form) => {
+    return FilterWithSwapOption(dataIndex, cmdbDevice.search.tableName, form);
+  };
+
+  const getTableColumns = (form) => {
+    return [
+      {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Tenant</span>,
+        column: 'TenantID',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('tenant_id', cmdbDevice.search.lookups?.tenants),
+            dataIndex: 'tenant_name',
+            key: 'tenant_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Operating System</span>,
+        column: 'OperatingSystemID',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('operating_system_id', cmdbDevice.search.lookups?.operating_systems),
+            dataIndex: 'operating_system_name',
+            key: 'operating_system_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Processor</span>,
+        column: 'ProcessorID',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('processor_id', cmdbDevice.search.lookups?.processors),
+            dataIndex: 'processor_name',
+            key: 'processor_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Virtualization</span>,
+        column: 'VirtualizationID',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('virtualization_id', cmdbDevice.search.lookups?.virtualizations),
+            dataIndex: 'virtualization_name',
+            key: 'virtualization_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Source</span>,
+        column: 'Source',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('source', form),
+            dataIndex: 'source',
+            key: 'source',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Computer Name</span>,
+        column: 'ComputerName',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('computer_name', form),
+            dataIndex: 'computer_name',
+            key: 'computer_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Type</span>,
+        column: 'Type',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('type', form),
+            dataIndex: 'type',
+            key: 'type',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Last Updated</span>,
+        column: 'LastUpdated',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDateSwap('last_updated', cmdbDevice.search.tableName, form),
+            dataIndex: 'last_updated',
+            key: 'last_updated',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Manufacturer</span>,
+        column: 'Manufacturer',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('manufacturer', form),
+            dataIndex: 'manufacturer',
+            key: 'manufacturer',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Model</span>,
+        column: 'Model',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('model', form),
+            dataIndex: 'model',
+            key: 'model',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Architecture</span>,
+        column: 'Architecture',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('architecture', form),
+            dataIndex: 'architecture',
+            key: 'architecture',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Bios Manufacturer</span>,
+        column: 'BiosManufacturer',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('bios_manufacturer', form),
+            dataIndex: 'bios_manufacturer',
+            key: 'bios_manufacturer',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Bios Serial</span>,
+        column: 'BiosSerial',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('bios_serial', form),
+            dataIndex: 'bios_serial',
+            key: 'bios_serial',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Bios Version</span>,
+        column: 'BiosVersion',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('bios_version', form),
+            dataIndex: 'bios_version',
+            key: 'bios_version',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Host Name</span>,
+        column: 'HostName',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('host_name', form),
+            dataIndex: 'host_name',
+            key: 'host_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Hypervisor Name</span>,
+        column: 'HypervisorName',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('bios_manufacturer', form),
+            dataIndex: 'bios_manufacturer',
+            key: 'bios_manufacturer',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is Virtual</span>,
+        column: 'IsVirtual',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('is_virtual', cmdbDevice.search.lookups?.booleanLookup),
+            dataIndex: 'is_virtual',
+            key: 'is_virtual',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is VDI</span>,
+        column: 'IsVDI',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('is_vdi', cmdbDevice.search.lookups?.booleanLookup),
+            dataIndex: 'is_vdi',
+            key: 'is_vdi',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is Server</span>,
+        column: 'IsServer',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('is_server', cmdbDevice.search.lookups?.booleanLookup),
+            dataIndex: 'is_server',
+            key: 'is_server',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is Host</span>,
+        column: 'IsHost',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('is_host', cmdbDevice.search.lookups?.booleanLookup),
+            dataIndex: 'is_host',
+            key: 'is_host',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is Tablet</span>,
+        column: 'IsTablet',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('is_tablet', cmdbDevice.search.lookups?.booleanLookup),
+            dataIndex: 'is_tablet',
+            key: 'is_tablet',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is Portable</span>,
+        column: 'IsPortable',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('is_portable', cmdbDevice.search.lookups?.booleanLookup),
+            dataIndex: 'is_portable',
+            key: 'is_portable',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+    ];
+  };
+
+  const removeCmdbDevice = (id: number) => {
+    dispatch(deleteCmdbDevice(id));
+  };
+  const tableAction = (_, data: any) => (
+    <div className="btns-block">
+      <Can I={Action.Update} a={Page.CmdbDevice}>
+        <a
+          className="action-btn"
+          onClick={() => {
+            setSelectedId(data.id);
+            history.push(`/cmdb/cmdb-device/${data.id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
+        </a>
+      </Can>
+      <Can I={Action.Delete} a={Page.CmdbDevice}>
+        <Popconfirm title="Sure to delete?" onConfirm={() => removeCmdbDevice(data.id)}>
+          <a href="#" title="" className="action-btn">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+          </a>
+        </Popconfirm>
+      </Can>
+    </div>
+  );
+
+  return (
+    <>
+      <DataTable
+        ref={dataTableRef}
+        showAddButton={ability.can(Action.Add, Page.CmdbDevice)}
+        setSelectedId={setSelectedId}
+        tableAction={tableAction}
+        exportExcelFile={exportExcelFile}
+        getTableColumns={getTableColumns}
+        reduxSelector={cmdbDeviceSelector}
+        searchTableData={searchCmdbDevice}
+        clearTableDataMessages={clearCmdbDeviceMessages}
+        setTableColumnSelection={setTableColumnSelection}
+      />
+    </>
+  );
+};
+
+export default forwardRef(MainTable);

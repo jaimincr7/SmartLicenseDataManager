@@ -3,6 +3,7 @@ import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
 import Application from './Application';
+import Device from './Device';
 import OperatingSystem from './OperatingSystem';
 import Processor from './Processor';
 import Virtualization from './Virtualization';
@@ -47,6 +48,14 @@ const CmdbRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmdbApplication) && (
           <Route exact path={`${match.path}/cmdb-application`} component={Application} />
+        )}
+        
+        {/* Device */}
+        {ability.can(Action.View, Page.CmdbDevice) && (
+          <Route exact path={`${match.path}/cmdb-device/:id`} component={Device} />
+        )}
+        {ability.can(Action.View, Page.CmdbDevice) && (
+          <Route exact path={`${match.path}/cmdb-device`} component={Device} />
         )}
 
         {/* keep least always */}

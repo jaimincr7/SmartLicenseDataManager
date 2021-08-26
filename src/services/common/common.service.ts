@@ -72,6 +72,27 @@ class CommonService {
       return res.data;
     });
   }
+  
+  public async getCmdbOperatingSystemLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-operating-system/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbProcessorLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-processor/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbVirtualizationLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-virtualization/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
 
   public async getCmsExpenditureTypeLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cms-expenditure-type/lookup`;
