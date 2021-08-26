@@ -25,6 +25,7 @@ import {
   getCmsPublisherLookup,
   getCmsTriggerTypeLookup,
   getCmsExpenditureTypeLookup,
+  getCmdbLicenseModelLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -62,6 +63,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbLicenseModelLookup: {
     data: [],
     loading: false,
   },
@@ -226,6 +231,15 @@ export const commonSlice = createSlice({
       state.o365ProductsLookup.loading = false;
     },
 
+        // CMDB License Model lookup
+        [getCmdbLicenseModelLookup.pending.type]: (state) => {
+          state.cmdbLicenseModelLookup.loading = true;
+        },
+        [getCmdbLicenseModelLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+          state.cmdbLicenseModelLookup.data = action.payload;
+          state.cmdbLicenseModelLookup.loading = false;
+        },
+    
     // Expenditure Type lookup
     [getCmsExpenditureTypeLookup.pending.type]: (state) => {
       state.cmsExpenditureTypeLookup.loading = true;

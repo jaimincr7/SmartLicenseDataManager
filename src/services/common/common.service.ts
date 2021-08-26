@@ -66,6 +66,13 @@ class CommonService {
     });
   }
 
+  public async getCmdbLicenseModelLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-license-model/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getCmsExpenditureTypeLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cms-expenditure-type/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

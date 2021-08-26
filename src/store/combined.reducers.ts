@@ -67,6 +67,7 @@ import cmsCategoryExtendedReducer from './cms/categoryExtended/categoryExtended.
 import cmdbOperatingSystemReducer from './cmdb/operatingSystem/operatingSystem.reducer';
 import cmdbProcessorReducer from './cmdb/processor/processor.reducer';
 import cmdbVirtualizationReducer from './cmdb/virtualization/virtualization.reducer';
+import cmdbApplicationReducer from './cmdb/application/application.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -159,6 +160,7 @@ export const rootReducer = combineReducers({
   cmdbOperatingSystem: cmdbOperatingSystemReducer,
   cmdbProcessor: cmdbProcessorReducer,
   cmdbVirtualization: cmdbVirtualizationReducer,
+  cmdbApplication: cmdbApplicationReducer,
 
   users: usersReducer,
 
