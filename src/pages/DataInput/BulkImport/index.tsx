@@ -456,6 +456,9 @@ const BulkImport: React.FC = () => {
         children: geChildDropdown(m.config_excel_column_mappings),
       });
     });
+    if (dropdown?.length === 0) {
+      formUpload.setFieldsValue({ mapping_order: undefined });
+    }
     return dropdown;
   };
 
@@ -504,8 +507,8 @@ const BulkImport: React.FC = () => {
           mappingDetail = JSON.parse(mappingOrder?.mapping);
           formUpload.setFieldsValue({ header_row: mappingOrder.header_row });
           setFormFields();
+          skipRows = Number(mappingOrder.header_row) - 1;
         }
-        skipRows = Number(mappingOrder.header_row) - 1;
       });
 
       let filterExcelColumns: any = bulkImports.getExcelColumns.data?.excel_sheet_columns?.find(
@@ -521,6 +524,7 @@ const BulkImport: React.FC = () => {
         }
       });
     } else {
+      formUpload.setFieldsValue({ header_row: 1 });
       setFormFields();
     }
   };
@@ -1034,7 +1038,7 @@ const BulkImport: React.FC = () => {
         records={excelPreviewData}
         headerRowCount={formUpload.getFieldValue('header_row')}
       ></PreviewExcel>
-      <MappingColumn
+      {showMappingModal && <MappingColumn
         handleModalClose={() => {
           setShowMappingModal(false);
         }}
@@ -1043,7 +1047,7 @@ const BulkImport: React.FC = () => {
         saveMapping={(fileName, isPublic) => {
           saveColumnMapping(fileName, isPublic);
         }}
-      ></MappingColumn>
+      ></MappingColumn>}
     </>
   );
 };
