@@ -69,6 +69,7 @@ import cmdbProcessorReducer from './cmdb/processor/processor.reducer';
 import cmdbVirtualizationReducer from './cmdb/virtualization/virtualization.reducer';
 import cmdbApplicationReducer from './cmdb/application/application.reducer';
 import cmdbDeviceReducer from './cmdb/device/device.reducer';
+import cmdbLicenseModelReducer from './cmdb/licenseModel/licenseModel.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -163,6 +164,7 @@ export const rootReducer = combineReducers({
   cmdbVirtualization: cmdbVirtualizationReducer,
   cmdbApplication: cmdbApplicationReducer,
   cmdbDevice: cmdbDeviceReducer,
+  cmdbLicenseModel: cmdbLicenseModelReducer,
 
   users: usersReducer,
 

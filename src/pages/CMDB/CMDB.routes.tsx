@@ -7,6 +7,7 @@ import Device from './Device';
 import OperatingSystem from './OperatingSystem';
 import Processor from './Processor';
 import Virtualization from './Virtualization';
+import LicenseModel from './LicenseModel';
 
 const CmdbRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -56,6 +57,14 @@ const CmdbRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmdbDevice) && (
           <Route exact path={`${match.path}/cmdb-device`} component={Device} />
+        )}
+
+        {/* License Model */}
+        {ability.can(Action.View, Page.CmdbLicenseModel) && (
+          <Route exact path={`${match.path}/cmdb-license-model/:id`} component={LicenseModel} />
+        )}
+        {ability.can(Action.View, Page.CmdbLicenseModel) && (
+          <Route exact path={`${match.path}/cmdb-license-model`} component={LicenseModel} />
         )}
 
         {/* keep least always */}
