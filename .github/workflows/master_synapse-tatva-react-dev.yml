@@ -22,7 +22,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '14.x'
-
+       
+    - name: Set up env
+      uses: azure/appservice-settings@v1
+      with:
+        app-name: synapse-tatva-react-dev
+        slot-name: Production
+        app-settings-json: '${{ secrets.DEV_APP_SETTINGS }}'
+        
     - name: npm install, build, and test
       run: |
         npm install
