@@ -79,7 +79,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('operating_system_id', cmdbDevice.search.lookups?.operating_systems),
+            title: FilterByDropdown(
+              'operating_system_id',
+              cmdbDevice.search.lookups?.operating_systems
+            ),
             dataIndex: 'operating_system_name',
             key: 'operating_system_name',
             ellipsis: true,
@@ -105,7 +108,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('virtualization_id', cmdbDevice.search.lookups?.virtualizations),
+            title: FilterByDropdown(
+              'virtualization_id',
+              cmdbDevice.search.lookups?.virtualizations
+            ),
             dataIndex: 'virtualization_name',
             key: 'virtualization_name',
             ellipsis: true,

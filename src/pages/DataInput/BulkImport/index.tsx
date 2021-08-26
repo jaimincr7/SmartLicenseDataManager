@@ -189,7 +189,8 @@ const BulkImport: React.FC = () => {
       setTableColumns(filterTableColumns);
       setRemovedColumns(removedColumns);
 
-      removedColumns.some((x) => x.name?.toLowerCase() === 'tenantid') && dispatch(getTenantLookup());
+      removedColumns.some((x) => x.name?.toLowerCase() === 'tenantid') &&
+        dispatch(getTenantLookup());
 
       const initialValuesData: any = {
         tenant_id: null,
@@ -205,10 +206,10 @@ const BulkImport: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -1004,10 +1005,10 @@ const BulkImport: React.FC = () => {
                       onClick={() => {
                         formUpload.getFieldValue('mapping_order')
                           ? saveColumnMapping(
-                            defaultFile?.name?.split('.')[0],
-                            false,
-                            formUpload.getFieldValue('mapping_order')
-                          )
+                              defaultFile?.name?.split('.')[0],
+                              false,
+                              formUpload.getFieldValue('mapping_order')
+                            )
                           : setShowMappingModal(true);
                       }}
                       loading={bulkImports.saveExcelFileMapping.loading}

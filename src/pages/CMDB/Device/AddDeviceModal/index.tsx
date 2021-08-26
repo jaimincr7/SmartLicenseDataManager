@@ -1,15 +1,4 @@
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Switch,
-} from 'antd';
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -26,7 +15,12 @@ import {
   clearCmdbDeviceMessages,
   cmdbDeviceSelector,
 } from '../../../../store/cmdb/device/device.reducer';
-import { getCmdbOperatingSystemLookup, getCmdbProcessorLookup, getCmdbVirtualizationLookup, getTenantLookup } from '../../../../store/common/common.action';
+import {
+  getCmdbOperatingSystemLookup,
+  getCmdbProcessorLookup,
+  getCmdbVirtualizationLookup,
+  getTenantLookup,
+} from '../../../../store/common/common.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { IAddCmdbDeviceProps } from './addDevice.model';
 
@@ -89,9 +83,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
     if (data) {
       initialValues = {
         source: data.source,
-        last_updated: _.isNull(data.last_updated)
-        ? null
-        : moment(data.last_updated),
+        last_updated: _.isNull(data.last_updated) ? null : moment(data.last_updated),
         computer_name: data.computer_name,
         type: data.type,
         manufacturer: data.manufacturer,
@@ -109,15 +101,9 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
         is_tablet: data.is_tablet,
         is_portable: data.is_portable,
         tenant_id: data.tenant_id,
-        operating_system_id: _.isNull(data.operating_system_id)
-        ? null
-        : data.operating_system_id,
-        processor_id: _.isNull(data.processor_id)
-        ? null
-        : data.processor_id,
-        virtualization_id: _.isNull(data.virtualization_id)
-        ? null
-        : data.virtualization_id,
+        operating_system_id: _.isNull(data.operating_system_id) ? null : data.operating_system_id,
+        processor_id: _.isNull(data.processor_id) ? null : data.processor_id,
+        virtualization_id: _.isNull(data.virtualization_id) ? null : data.virtualization_id,
       };
       form.setFieldsValue(initialValues);
     }
@@ -179,7 +165,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
             validateMessages={validateMessages}
           >
             <Row gutter={[30, 15]} className="form-label-hide">
-            <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Tenant</label>
                   <Form.Item

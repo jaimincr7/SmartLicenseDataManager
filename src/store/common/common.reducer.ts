@@ -246,15 +246,15 @@ export const commonSlice = createSlice({
       state.o365ProductsLookup.loading = false;
     },
 
-        // CMDB License Model lookup
-        [getCmdbLicenseModelLookup.pending.type]: (state) => {
-          state.cmdbLicenseModelLookup.loading = true;
-        },
-        [getCmdbLicenseModelLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
-          state.cmdbLicenseModelLookup.data = action.payload;
-          state.cmdbLicenseModelLookup.loading = false;
-        },
-    
+    // CMDB License Model lookup
+    [getCmdbLicenseModelLookup.pending.type]: (state) => {
+      state.cmdbLicenseModelLookup.loading = true;
+    },
+    [getCmdbLicenseModelLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbLicenseModelLookup.data = action.payload;
+      state.cmdbLicenseModelLookup.loading = false;
+    },
+
     // Cmdb OS lookup
     [getCmdbOperatingSystemLookup.pending.type]: (state) => {
       state.cmdbOperatingSystemLookup.loading = true;
@@ -264,23 +264,23 @@ export const commonSlice = createSlice({
       state.cmdbOperatingSystemLookup.loading = false;
     },
 
-        // Cmdb Processor lookup
-        [getCmdbProcessorLookup.pending.type]: (state) => {
-          state.cmdbProcessorLookup.loading = true;
-        },
-        [getCmdbProcessorLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
-          state.cmdbProcessorLookup.data = action.payload;
-          state.cmdbProcessorLookup.loading = false;
-        },
+    // Cmdb Processor lookup
+    [getCmdbProcessorLookup.pending.type]: (state) => {
+      state.cmdbProcessorLookup.loading = true;
+    },
+    [getCmdbProcessorLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbProcessorLookup.data = action.payload;
+      state.cmdbProcessorLookup.loading = false;
+    },
 
-        // Cmdb Virtualization lookup
-        [getCmdbVirtualizationLookup.pending.type]: (state) => {
-          state.cmdbVirtualizationLookup.loading = true;
-        },
-        [getCmdbVirtualizationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
-          state.cmdbVirtualizationLookup.data = action.payload;
-          state.cmdbVirtualizationLookup.loading = false;
-        },
+    // Cmdb Virtualization lookup
+    [getCmdbVirtualizationLookup.pending.type]: (state) => {
+      state.cmdbVirtualizationLookup.loading = true;
+    },
+    [getCmdbVirtualizationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbVirtualizationLookup.data = action.payload;
+      state.cmdbVirtualizationLookup.loading = false;
+    },
 
     // Expenditure Type lookup
     [getCmsExpenditureTypeLookup.pending.type]: (state) => {

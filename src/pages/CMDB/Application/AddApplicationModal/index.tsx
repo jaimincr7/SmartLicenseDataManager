@@ -169,11 +169,11 @@ const AddCmdbApplicationModal: React.FC<IAddCmdbApplicationProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">License Model</label>
-                  <Form.Item 
-                  name="license_model_id" 
-                  className="m-0" 
-                  label="License Model"
-                  rules={[{ required: true }]}
+                  <Form.Item
+                    name="license_model_id"
+                    className="m-0"
+                    label="License Model"
+                    rules={[{ required: true }]}
                   >
                     <Select
                       allowClear

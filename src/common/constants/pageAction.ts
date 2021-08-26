@@ -76,7 +76,7 @@ export enum Page {
   CmdbOperatingSystem = 'cmdb-operating-system',
   CmdbProcessor = 'cmdb-processor',
   CmdbVirtualization = 'cmdb-virtualization',
-  CmdbApplication = "cmdb-application",
+  CmdbApplication = 'cmdb-application',
   CmdbDevice = 'cmdb-device',
 
   PowerBIConfig = 'power-bi-report-config',

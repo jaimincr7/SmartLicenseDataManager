@@ -34,8 +34,8 @@ const CmdbRoutes: React.FC = () => {
           <Route exact path={`${match.path}/cmdb-processor`} component={Processor} />
         )}
 
-          {/* Virtualization */}
-          {ability.can(Action.View, Page.CmdbVirtualization) && (
+        {/* Virtualization */}
+        {ability.can(Action.View, Page.CmdbVirtualization) && (
           <Route exact path={`${match.path}/cmdb-virtualization/:id`} component={Virtualization} />
         )}
         {ability.can(Action.View, Page.CmdbVirtualization) && (
@@ -49,7 +49,7 @@ const CmdbRoutes: React.FC = () => {
         {ability.can(Action.View, Page.CmdbApplication) && (
           <Route exact path={`${match.path}/cmdb-application`} component={Application} />
         )}
-        
+
         {/* Device */}
         {ability.can(Action.View, Page.CmdbDevice) && (
           <Route exact path={`${match.path}/cmdb-device/:id`} component={Device} />

@@ -72,7 +72,7 @@ class CommonService {
       return res.data;
     });
   }
-  
+
   public async getCmdbOperatingSystemLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cmdb-operating-system/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
