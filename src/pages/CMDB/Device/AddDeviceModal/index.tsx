@@ -10,6 +10,8 @@ import {
   Spin,
   Switch,
 } from 'antd';
+import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -87,7 +89,9 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
     if (data) {
       initialValues = {
         source: data.source,
-        last_updated: data.last_updated,
+        last_updated: _.isNull(data.last_updated)
+        ? null
+        : moment(data.last_updated),
         computer_name: data.computer_name,
         type: data.type,
         manufacturer: data.manufacturer,
@@ -105,9 +109,15 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
         is_tablet: data.is_tablet,
         is_portable: data.is_portable,
         tenant_id: data.tenant_id,
-        operating_system_id: data.operating_system_id,
-        processor_id: data.processor_id,
-        virtualization_id: data.virtualization_id,
+        operating_system_id: _.isNull(data.operating_system_id)
+        ? null
+        : data.operating_system_id,
+        processor_id: _.isNull(data.processor_id)
+        ? null
+        : data.processor_id,
+        virtualization_id: _.isNull(data.virtualization_id)
+        ? null
+        : data.virtualization_id,
       };
       form.setFieldsValue(initialValues);
     }
@@ -255,7 +265,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">LastUpdated</label>
+                  <label className="label">Last Updated</label>
                   <Form.Item name="last_updated" className="m-0" label="LastUpdated">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -267,7 +277,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item
                     name="computer_name"
                     className="m-0"
-                    label="ComputerName"
+                    label="Computer Name"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -331,11 +341,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BiosSerial</label>
+                  <label className="label">Bios Serial</label>
                   <Form.Item
                     name="bios_serial"
                     className="m-0"
-                    label="BiosSerial"
+                    label="Bios Serial"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -344,11 +354,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BiosVersion</label>
+                  <label className="label">Bios Version</label>
                   <Form.Item
                     name="bios_version"
                     className="m-0"
-                    label="BiosVersion"
+                    label="Bios Version"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -357,11 +367,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">HostName</label>
+                  <label className="label">Host Name</label>
                   <Form.Item
                     name="host_name"
                     className="m-0"
-                    label="HostName"
+                    label="Host Name"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -374,7 +384,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item
                     name="hypervisor_name"
                     className="m-0"
-                    label="HypervisorName"
+                    label="Hypervisor Name"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
