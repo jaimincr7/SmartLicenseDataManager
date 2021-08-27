@@ -78,6 +78,13 @@ export const getCmdbLicenseModelLookup = createAsyncThunk('getCmdbLicenseModelLo
   return response.data;
 });
 
+export const getCmdbApplicationLookup = createAsyncThunk('getCmdbApplicationLookup', async () => {
+  const response = await commonService.getCmdbApplicationLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getCmdbOperatingSystemLookup = createAsyncThunk(
   'getCmdbOperatingSystemLookup',
   async () => {
@@ -90,6 +97,13 @@ export const getCmdbOperatingSystemLookup = createAsyncThunk(
 
 export const getCmdbProcessorLookup = createAsyncThunk('getCmdbProcessorLookup', async () => {
   const response = await commonService.getCmdbProcessorLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getCmdbDeviceLookup = createAsyncThunk('getCmdbDeviceLookup', async () => {
+  const response = await commonService.getCmdbDeviceLookup().then((res) => {
     return res.body;
   });
   return response.data;

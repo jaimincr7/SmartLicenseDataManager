@@ -72,6 +72,13 @@ class CommonService {
       return res.data;
     });
   }
+  
+  public async getCmdbApplicationLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-application/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
 
   public async getCmdbOperatingSystemLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cmdb-operating-system/lookup`;
@@ -89,6 +96,13 @@ class CommonService {
 
   public async getCmdbVirtualizationLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cmdb-virtualization/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+  
+  public async getCmdbDeviceLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-device/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

@@ -53,6 +53,14 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cmdbApplicationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbDeviceLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   cmsExpenditureTypeLookup: {
     data: ILookup[];
     loading: boolean;

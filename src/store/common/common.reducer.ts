@@ -29,6 +29,8 @@ import {
   getCmdbOperatingSystemLookup,
   getCmdbProcessorLookup,
   getCmdbVirtualizationLookup,
+  getCmdbApplicationLookup,
+  getCmdbDeviceLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -82,6 +84,14 @@ export const initialState: ICommonState = {
     loading: false,
   },
   cmdbVirtualizationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbApplicationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbDeviceLookup: {
     data: [],
     loading: false,
   },
@@ -280,6 +290,24 @@ export const commonSlice = createSlice({
     [getCmdbVirtualizationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.cmdbVirtualizationLookup.data = action.payload;
       state.cmdbVirtualizationLookup.loading = false;
+    },
+    
+    // Cmdb Application lookup
+    [getCmdbApplicationLookup.pending.type]: (state) => {
+      state.cmdbApplicationLookup.loading = true;
+    },
+    [getCmdbApplicationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbApplicationLookup.data = action.payload;
+      state.cmdbApplicationLookup.loading = false;
+    },
+
+    // Cmdb Device lookup
+    [getCmdbDeviceLookup.pending.type]: (state) => {
+      state.cmdbDeviceLookup.loading = true;
+    },
+    [getCmdbDeviceLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbDeviceLookup.data = action.payload;
+      state.cmdbDeviceLookup.loading = false;
     },
 
     // Expenditure Type lookup

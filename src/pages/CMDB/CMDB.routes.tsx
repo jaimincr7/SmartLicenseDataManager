@@ -6,6 +6,7 @@ import Application from './Application';
 import Device from './Device';
 import OperatingSystem from './OperatingSystem';
 import Processor from './Processor';
+import Software from './Software';
 import Virtualization from './Virtualization';
 import LicenseModel from './LicenseModel';
 
@@ -65,6 +66,14 @@ const CmdbRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmdbLicenseModel) && (
           <Route exact path={`${match.path}/cmdb-license-model`} component={LicenseModel} />
+          )}
+
+        {/* Software */}
+        {ability.can(Action.View, Page.CmdbSoftware) && (
+          <Route exact path={`${match.path}/cmdb-software/:id`} component={Software} />
+        )}
+        {ability.can(Action.View, Page.CmdbSoftware) && (
+          <Route exact path={`${match.path}/cmdb-software`} component={Software} />
         )}
 
         {/* keep least always */}

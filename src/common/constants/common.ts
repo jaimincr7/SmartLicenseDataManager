@@ -93,4 +93,5 @@ export const allDateColumns = [
   'transaction_date',
   'purchase_date',
   'last_updated',
+  'installed_date',
 ];
