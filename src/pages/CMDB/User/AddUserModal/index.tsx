@@ -254,7 +254,7 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                   <Form.Item name="in_active_directory" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">InActiveDirectory</label>
+                  <label className="label">In Active Directory</label>
                 </div>
               </Col>
             </Row>
