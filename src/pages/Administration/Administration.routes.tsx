@@ -2,6 +2,8 @@ import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
+import APIColumnMappings from './APIMapping';
+import AddAPIMapping from './APIMapping/AddApiColMapping';
 import BU from './BU';
 import Company from './Company';
 import Currency from './Currency';
@@ -95,6 +97,18 @@ const AdministrationRoutes: React.FC = () => {
         {ability.can(Action.View, Page.Role) && (
           <Route exact path={`${match.path}/role/:id`} component={Role} />
         )}
+
+        {/* SPS Api Colum Mapping */}
+        {ability.can(Action.View, Page.ConfigSPSColMapping) && (
+          <Route exact path={`${match.path}/api-col-mapping`} component={APIColumnMappings} />
+        )}
+        {ability.can(Action.View, Page.ConfigSPSColMapping) && (
+          <Route exact path={`${match.path}/api-col-mapping/add`} component={AddAPIMapping} />
+        )}
+        {ability.can(Action.View, Page.ConfigSPSColMapping) && (
+          <Route exact path={`${match.path}/api-col-mapping/add/:id`} component={AddAPIMapping} />
+        )}
+
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

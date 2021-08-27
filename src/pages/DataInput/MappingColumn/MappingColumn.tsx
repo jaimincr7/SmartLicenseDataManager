@@ -14,8 +14,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   };
 
   useEffect(() => {
-    form.setFieldsValue({ "file_name": fileName })
-  }, [fileName])
+    form.setFieldsValue({ file_name: fileName });
+  }, [fileName]);
 
   const onFinish = (values: any) => {
     const { file_name, isPublic } = values;

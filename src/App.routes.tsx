@@ -25,8 +25,8 @@ import { setResponseError } from './utils/request';
 import PowerBiReportsRoutes from './pages/PowerBiReports/PowerBiReports.routes';
 import AdministrationRoutes from './pages/Administration/Administration.routes';
 import CMSRoutes from './pages/CMS/CMS.routes';
-import SPSRoutes from './pages/SPS/APIs/SPS.routes';
 import CmdbRoutes from './pages/CMDB/CMDB.routes';
+import SPSRoutes from './pages/SPS/SPS.routes';
 
 function AppRoutes() {
   const history = useHistory();

@@ -147,8 +147,8 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
                     label="Tenant"
                     rules={[{ required: true }]}
                   >
-                    <Select 
-                      allowClear 
+                    <Select
+                      allowClear
                       showSearch
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
@@ -159,7 +159,8 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
-                      loading={commonLookups.tenantLookup.loading}>
+                      loading={commonLookups.tenantLookup.loading}
+                    >
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}

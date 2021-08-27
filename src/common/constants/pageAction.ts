@@ -84,6 +84,7 @@ export enum Page {
   BUDropdown = 'bu-drop-down',
 
   SPSApi = 'sps-api',
+  ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }
 
 export enum Action {

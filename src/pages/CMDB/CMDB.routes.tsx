@@ -32,8 +32,8 @@ const CmdbRoutes: React.FC = () => {
           <Route exact path={`${match.path}/cmdb-processor`} component={Processor} />
         )}
 
-          {/* Virtualization */}
-          {ability.can(Action.View, Page.CmdbVirtualization) && (
+        {/* Virtualization */}
+        {ability.can(Action.View, Page.CmdbVirtualization) && (
           <Route exact path={`${match.path}/cmdb-virtualization/:id`} component={Virtualization} />
         )}
         {ability.can(Action.View, Page.CmdbVirtualization) && (

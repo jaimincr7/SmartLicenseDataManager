@@ -68,6 +68,7 @@ import spsApiReducer from './sps/spsAPI/spsApi.reducer';
 import cmdbOperatingSystemReducer from './cmdb/operatingSystem/operatingSystem.reducer';
 import cmdbProcessorReducer from './cmdb/processor/processor.reducer';
 import cmdbVirtualizationReducer from './cmdb/virtualization/virtualization.reducer';
+import apiColMappingReducer from './sps/apiColumnMapping/apiColMapping.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -168,4 +169,5 @@ export const rootReducer = combineReducers({
 
   //SPS
   spsApi: spsApiReducer,
+  apiColumnMapping: apiColMappingReducer,
 });
