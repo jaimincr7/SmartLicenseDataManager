@@ -59,6 +59,20 @@ class CommonService {
     });
   }
 
+  public async getCmdbDeviceLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-device/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbUserLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-user/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getO365ProductsLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-o365-products/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -96,13 +110,6 @@ class CommonService {
 
   public async getCmdbVirtualizationLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cmdb-virtualization/lookup`;
-    return request({ url, method: 'GET' }).then((res) => {
-      return res.data;
-    });
-  }
-  
-  public async getCmdbDeviceLookup(): Promise<IApiResponse<ILookup>> {
-    const url = `/cmdb-device/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

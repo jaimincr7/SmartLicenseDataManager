@@ -64,6 +64,13 @@ export const getWindowsServerLicenseLookup = createAsyncThunk(
   }
 );
 
+export const getCmdbUserLookup = createAsyncThunk('getCmdbUserLookup', async () => {
+  const response = await commonService.getCmdbUserLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', async () => {
   const response = await commonService.getO365ProductsLookup().then((res) => {
     return res.body;

@@ -30,6 +30,7 @@ import {
   getCmdbProcessorLookup,
   getCmdbVirtualizationLookup,
   getCmdbApplicationLookup,
+  getCmdbUserLookup,
   getCmdbDeviceLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
@@ -67,6 +68,14 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  cmdbDeviceLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbUserLookup: {
+    data: [],
+    loading: false,
+  },
   o365ProductsLookup: {
     data: [],
     loading: false,
@@ -88,10 +97,6 @@ export const initialState: ICommonState = {
     loading: false,
   },
   cmdbApplicationLookup: {
-    data: [],
-    loading: false,
-  },
-  cmdbDeviceLookup: {
     data: [],
     loading: false,
   },
@@ -245,6 +250,24 @@ export const commonSlice = createSlice({
     [getWindowsServerLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.windowsServerLicenseLookup.data = action.payload;
       state.windowsServerLicenseLookup.loading = false;
+    },
+
+    // CMDB Device lookup
+    [getCmdbDeviceLookup.pending.type]: (state) => {
+      state.cmdbDeviceLookup.loading = true;
+    },
+    [getCmdbDeviceLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbDeviceLookup.data = action.payload;
+      state.cmdbDeviceLookup.loading = false;
+    },
+
+    // CMDB User lookup
+    [getCmdbUserLookup.pending.type]: (state) => {
+      state.cmdbUserLookup.loading = true;
+    },
+    [getCmdbUserLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbUserLookup.data = action.payload;
+      state.cmdbUserLookup.loading = false;
     },
 
     // O365 Products lookup

@@ -33,6 +33,14 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cmdbDeviceLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbUserLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   o365ProductsLookup: {
     data: ILookup[];
     loading: boolean;
@@ -54,10 +62,6 @@ export interface ICommonState {
     loading: boolean;
   };
   cmdbApplicationLookup: {
-    data: ILookup[];
-    loading: boolean;
-  };
-  cmdbDeviceLookup: {
     data: ILookup[];
     loading: boolean;
   };
