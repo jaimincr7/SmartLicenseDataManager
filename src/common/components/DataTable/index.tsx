@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { IDataTable } from './dataTable.model';
 import moment from 'moment';
-import { allDateColumns, DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
+import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
 import _ from 'lodash';
 import { Filter } from './DataTableFilters';
 import {
@@ -83,16 +83,15 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setInlineSearch(inlineSearchFilter);
 
     const inlineSearchFilterObj: { [key: string]: any } = { ...inlineSearchFilter };
-    allDateColumns.forEach((colName: string) => {
-      if (colName in inlineSearchFilterObj) {
-        const currentColValue = inlineSearchFilterObj[colName];
-        if (currentColValue?.length === 2 && typeof currentColValue[0] === 'object') {
-          inlineSearchFilterObj[colName] = {
-            start_date: currentColValue[0],
-            end_date: currentColValue[1],
-          };
-        }
+    Object.keys(inlineSearchFilterObj)?.forEach((key) => {
+      const val = inlineSearchFilterObj[key];
+      if (val?.length === 2 && typeof val[0] === 'object' && moment(val[0]).isValid()) {
+        inlineSearchFilterObj[key] = {
+          start_date: val[0],
+          end_date: val[1],
+        };
       }
+
     });
 
     const searchData: ISearch = {
@@ -232,9 +231,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
