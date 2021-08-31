@@ -100,13 +100,25 @@ const AdministrationRoutes: React.FC = () => {
 
         {/* SPS Api Colum Mapping */}
         {ability.can(Action.View, Page.ConfigSPSColMapping) && (
-          <Route exact path={`${match.path}/api-col-mapping`} component={APIColumnMappings} />
+          <Route
+            exact
+            path={`${match.path}/config-sps-api-column-mapping`}
+            component={APIColumnMappings}
+          />
         )}
         {ability.can(Action.View, Page.ConfigSPSColMapping) && (
-          <Route exact path={`${match.path}/api-col-mapping/add`} component={AddAPIMapping} />
+          <Route
+            exact
+            path={`${match.path}/config-sps-api-column-mapping/add`}
+            component={AddAPIMapping}
+          />
         )}
         {ability.can(Action.View, Page.ConfigSPSColMapping) && (
-          <Route exact path={`${match.path}/api-col-mapping/add/:id`} component={AddAPIMapping} />
+          <Route
+            exact
+            path={`${match.path}/config-sps-api-column-mapping/add/:id`}
+            component={AddAPIMapping}
+          />
         )}
 
         {/* keep least always */}

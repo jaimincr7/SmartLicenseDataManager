@@ -1,6 +1,6 @@
-import { Button } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { useAppSelector } from '../../../../store/app.hooks';
+import { Button, Popover } from 'antd';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import {
@@ -8,16 +8,21 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
-import { ICallAPI } from '../../../../services/sps/spsApi/sps.model';
-import { useAppDispatch } from './../../../../store/app.hooks';
 import { setTableColumnSelection } from '../../../../store/ad/adDevices/adDevices.reducer';
 import { callApi, searchImportAPIs } from '../../../../store/sps/spsAPI/spsApi.action';
-import { spsApiSelector } from '../../../../store/sps/spsAPI/spsApi.reducer';
+import { clearCallApiMessages, spsApiSelector } from '../../../../store/sps/spsAPI/spsApi.reducer';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { toast } from 'react-toastify';
+import { ICallAPI } from '../../../../services/sps/spsApi/sps.model';
+import { useHistory } from 'react-router-dom';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
+  const { setSelectedId } = props;
   const dispatch = useAppDispatch();
   const spsApis = useAppSelector(spsApiSelector);
+  const globalLookups = useAppSelector(globalSearchSelector);
   const dataTableRef = useRef(null);
+  const history = useHistory();
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -28,6 +33,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const FilterBySwap = (dataIndex: string, form) => {
     return FilterWithSwapOption(dataIndex, spsApis.search.tableName, form);
   };
+
+  useEffect(() => {
+    if (spsApis.callApi.messages.length > 0) {
+      if (spsApis.callApi.hasErrors) {
+        toast.error(spsApis.callApi.messages.join(' '));
+      } else {
+        toast.success(spsApis.callApi.messages.join(' '));
+        dataTableRef?.current.refreshData();
+      }
+      dispatch(clearCallApiMessages());
+    }
+  }, [spsApis.callApi.messages]);
 
   const getTableColumns = (form) => {
     return [
@@ -128,25 +145,55 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     ];
   };
 
+  const renderActionButton = (data: any) => {
+    return (
+      <Button
+        htmlType="button"
+        onClick={() => {
+          if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3)
+            data.is_mapping && data.enabled
+              ? onCallApi(data)
+              : history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`);
+        }}
+      >
+        {data.is_mapping ? 'Call' : 'Add'}
+      </Button>
+    );
+  };
   const onCallApi = (data: any) => {
-    const callApiObj: ICallAPI = {
-      id: data.id,
-      group_id: data.group_id,
-      api_type_id: data.api_type_id,
-    };
-    dispatch(callApi(callApiObj));
+    if (data.url) {
+      const newURL = new URL(data.url);
+      const urlSearchParams = new URLSearchParams(newURL.search);
+      const params = Object.fromEntries(urlSearchParams?.entries());
+      const editableParams = Object.values(params)?.filter(
+        (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
+      );
+      if (editableParams?.length > 0) {
+        setSelectedId(data.id, params);
+      } else {
+        const callApiObj: ICallAPI = {
+          id: data.id,
+          company_id: globalLookups.search.company_id,
+          bu_id: globalLookups.search.bu_id,
+          tenant_id: globalLookups.search.tenant_id,
+          spsApiQueryParam: params,
+        };
+        dispatch(callApi(callApiObj));
+      }
+    } else {
+      toast.error('Selected api does not have url.');
+    }
   };
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Button
-        htmlType="button"
-        onClick={() => {
-          onCallApi(data);
-        }}
-      >
-        Call
-      </Button>
+      {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
+        <Popover content={<>Please select global filter first!</>} trigger="click">
+          {renderActionButton(data)}
+        </Popover>
+      ) : (
+        renderActionButton(data)
+      )}
     </div>
   );
 
@@ -161,6 +208,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchImportAPIs}
         setTableColumnSelection={setTableColumnSelection}
         hideExportButton={true}
+        globalSearchExist={false}
       />
     </>
   );

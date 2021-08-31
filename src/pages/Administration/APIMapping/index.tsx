@@ -87,8 +87,8 @@ const APIColumnMappings: React.FC<IApiColMappingProps> = () => {
           ref={dataTableRef}
           setSelectedId={(id) => {
             id === 0
-              ? history.push('/administration/api-col-mapping/add')
-              : history.push(`/administration/api-col-mapping/add/${id}`);
+              ? history.push('/administration/config-sps-api-column-mapping/add')
+              : history.push(`/administration/config-sps-api-column-mapping/add/${id}`);
           }}
         />
       </div>

@@ -22,7 +22,7 @@ export const initialState: ISPSApiState = {
   callApi: {
     loading: false,
     hasErrors: false,
-    data: [],
+    messages: [],
   },
 };
 
@@ -35,6 +35,9 @@ export const spsApiSlice = createSlice({
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
+    },
+    clearCallApiMessages: (state) => {
+      state.callApi.messages = [];
     },
   },
 
@@ -80,7 +83,7 @@ export const spsApiSlice = createSlice({
     [callApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.callApi.loading = false;
       state.callApi.hasErrors = false;
-      state.callApi.data = action.payload;
+      state.callApi.messages = action.payload.messages;
     },
     [callApi.rejected.type]: (state) => {
       state.callApi.loading = false;
@@ -93,7 +96,7 @@ export const spsApiSlice = createSlice({
 export const spsApiSelector = (state: RootState) => state.spsApi;
 
 // Actions
-export const { clearSPS, setTableColumnSelection } = spsApiSlice.actions;
+export const { clearSPS, setTableColumnSelection, clearCallApiMessages } = spsApiSlice.actions;
 
 // The reducer
 export default spsApiSlice.reducer;

@@ -7,8 +7,12 @@ import MainTable from './MainTable';
 import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { clearSPS } from '../../../store/sps/spsAPI/spsApi.reducer';
+import CallApiModal from './CallApiModal';
 
 const SPSAPIs: React.FC<ISPSAPIsProps> = () => {
+  const [callModalVisible, setCallModalVisible] = React.useState(false);
+  const [id, setId] = React.useState(0);
+  const [params, setParams] = React.useState({});
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
 
@@ -18,9 +22,9 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = () => {
     };
   }, []);
 
-  // const refreshDataTable = () => {
-  //   dataTableRef?.current.refreshData();
-  // };
+  const refreshDataTable = () => {
+    dataTableRef?.current.refreshData();
+  };
 
   return (
     <div className="sqlServer">
@@ -33,8 +37,26 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = () => {
         </div>
       </div>
       <div className="main-card">
-        <MainTable ref={dataTableRef} />
+        <MainTable
+          ref={dataTableRef}
+          setSelectedId={(id, params) => {
+            setParams(params);
+            setId(id);
+            setCallModalVisible(true);
+          }}
+        />
       </div>
+      {callModalVisible && (
+        <CallApiModal
+          showModal={callModalVisible}
+          params={params}
+          handleModalClose={() => {
+            setCallModalVisible(false);
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
     </div>
   );
 };

@@ -32,6 +32,7 @@ import {
 } from '../../../../store/sps/apiColumnMapping/apiColMapping.reducer';
 
 const { Option } = Select;
+let api_id = 0;
 const AddAPIMapping: React.FC = () => {
   const history = useHistory();
 
@@ -60,6 +61,18 @@ const AddAPIMapping: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    api_id = Number(params.get('api_id'));
+  }, []);
+
+  useEffect(() => {
+    if (api_id > 0 && spsAPIColMapping.columnLookups.data?.length > 0) {
+      formUpload.setFieldsValue({ sps_api_id: api_id });
+      api_id = 0;
+    }
+  }, [spsAPIColMapping.columnLookups.data]);
   useEffect(() => {
     if (Number(id) > 0) {
       dispatch(getApiColMappingById(Number(id)));
@@ -311,7 +324,7 @@ const AddAPIMapping: React.FC = () => {
                 </>
               )}
               <Row>
-                <Col xs={24} md={6}>
+                <Col xs={24} md={2}>
                   <div className="form-group m-0">
                     <label className="label"></label>
                     <Form.Item className="m-0">
@@ -322,6 +335,23 @@ const AddAPIMapping: React.FC = () => {
                         loading={spsAPIColMapping.apiColumn.loading}
                       >
                         Fetch
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </Col>
+                <Col xs={24} md={2}>
+                  <div className="form-group m-0">
+                    <label className="label"></label>
+                    <Form.Item className="m-0">
+                      <Button
+                        key="button"
+                        type="default"
+                        htmlType="button"
+                        onClick={() => {
+                          history.push('/administration/config-sps-api-column-mapping');
+                        }}
+                      >
+                        Cancel
                       </Button>
                     </Form.Item>
                   </div>

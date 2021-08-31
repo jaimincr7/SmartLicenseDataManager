@@ -18,7 +18,11 @@ export interface ISearchAPI {
 }
 
 export interface ICallAPI {
-  group_id: number;
-  api_type_id: number;
   id: number;
+  company_id: number;
+  bu_id: number;
+  tenant_id: number;
+  spsApiQueryParam: {
+    [key: string]: any;
+  };
 }
