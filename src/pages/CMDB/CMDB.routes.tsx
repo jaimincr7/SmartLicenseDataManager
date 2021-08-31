@@ -67,7 +67,7 @@ const CmdbRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmdbLicenseModel) && (
           <Route exact path={`${match.path}/cmdb-license-model`} component={LicenseModel} />
-          )}
+        )}
 
         {/* Software */}
         {ability.can(Action.View, Page.CmdbSoftware) && (

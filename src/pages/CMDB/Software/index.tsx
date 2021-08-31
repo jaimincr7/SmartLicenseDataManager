@@ -71,7 +71,7 @@ const CmdbSoftware: React.FC<ICmdbSoftwareProps> = (props) => {
                     </em>
                   }
                 >
-                 Import
+                  Import
                 </Button>
               </Col>
             </Can>

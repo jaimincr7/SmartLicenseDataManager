@@ -314,7 +314,7 @@ export const commonSlice = createSlice({
       state.cmdbVirtualizationLookup.data = action.payload;
       state.cmdbVirtualizationLookup.loading = false;
     },
-    
+
     // Cmdb Application lookup
     [getCmdbApplicationLookup.pending.type]: (state) => {
       state.cmdbApplicationLookup.loading = true;

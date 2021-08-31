@@ -82,10 +82,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'application_id',
-              cmdbSoftware.search.lookups?.applications
-            ),
+            title: FilterByDropdown('application_id', cmdbSoftware.search.lookups?.applications),
             dataIndex: 'application_name',
             key: 'application_name',
             ellipsis: true,

@@ -131,7 +131,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('is_down_gradable', cmdbLicenseModel.search.lookups?.booleanLookup),
+            title: FilterByDropdown(
+              'is_down_gradable',
+              cmdbLicenseModel.search.lookups?.booleanLookup
+            ),
             dataIndex: 'is_down_gradable',
             key: 'is_down_gradable',
             ellipsis: true,

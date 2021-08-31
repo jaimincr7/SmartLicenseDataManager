@@ -206,10 +206,10 @@ const BulkImport: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -875,8 +875,9 @@ const BulkImport: React.FC = () => {
                               rules={[
                                 {
                                   required:
-                                    bulkImports.getTableColumns.data.find((x) => x.name?.toLowerCase() === 'bu_id')
-                                      ?.is_nullable === 'NO'
+                                    bulkImports.getTableColumns.data.find(
+                                      (x) => x.name?.toLowerCase() === 'bu_id'
+                                    )?.is_nullable === 'NO'
                                       ? true
                                       : false,
                                 },
@@ -1005,10 +1006,10 @@ const BulkImport: React.FC = () => {
                       onClick={() => {
                         formUpload.getFieldValue('mapping_order')
                           ? saveColumnMapping(
-                            defaultFile?.name?.split('.')[0],
-                            false,
-                            formUpload.getFieldValue('mapping_order')
-                          )
+                              defaultFile?.name?.split('.')[0],
+                              false,
+                              formUpload.getFieldValue('mapping_order')
+                            )
                           : setShowMappingModal(true);
                       }}
                       loading={bulkImports.saveExcelFileMapping.loading}

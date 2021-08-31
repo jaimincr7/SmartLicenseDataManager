@@ -86,7 +86,7 @@ class CommonService {
       return res.data;
     });
   }
-  
+
   public async getCmdbApplicationLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cmdb-application/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

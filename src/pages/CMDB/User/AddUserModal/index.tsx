@@ -75,7 +75,7 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
         is_resource: data.is_resource,
         in_active_directory: data.in_active_directory,
         active_directory_guid: data.active_directory_guid,
-        tenant_id:  _.isNull(data.tenant_id) ? null : data.tenant_id,
+        tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
       };
       form.setFieldsValue(initialValues);
     }
@@ -188,7 +188,7 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                     name="email"
                     className="m-0"
                     label="Email"
-                    rules={[{ max: 200, type: 'email' , required: true }]}
+                    rules={[{ max: 200, type: 'email', required: true }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
