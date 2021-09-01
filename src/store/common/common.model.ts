@@ -65,6 +65,22 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cmdbExclusionComponentLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbExclusionOperationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbExclusionLocationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbExclusionTypeLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   cmsExpenditureTypeLookup: {
     data: ILookup[];
     loading: boolean;

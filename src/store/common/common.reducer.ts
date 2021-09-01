@@ -32,6 +32,10 @@ import {
   getCmdbApplicationLookup,
   getCmdbUserLookup,
   getCmdbDeviceLookup,
+  getCmdbExclusionComponentLookup,
+  getCmdbExclusionOperationLookup,
+  getCmdbExclusionLocationLookup,
+  getCmdbExclusionTypeLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -97,6 +101,22 @@ export const initialState: ICommonState = {
     loading: false,
   },
   cmdbApplicationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbExclusionComponentLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbExclusionOperationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbExclusionLocationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbExclusionTypeLookup: {
     data: [],
     loading: false,
   },
@@ -331,6 +351,42 @@ export const commonSlice = createSlice({
     [getCmdbDeviceLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.cmdbDeviceLookup.data = action.payload;
       state.cmdbDeviceLookup.loading = false;
+    },
+    
+    // Cmdb Exclusion Components lookup
+    [getCmdbExclusionComponentLookup.pending.type]: (state) => {
+      state.cmdbExclusionComponentLookup.loading = true;
+    },
+    [getCmdbExclusionComponentLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbExclusionComponentLookup.data = action.payload;
+      state.cmdbExclusionComponentLookup.loading = false;
+    },
+
+    // Cmdb Exclusion Operations lookup
+    [getCmdbExclusionOperationLookup.pending.type]: (state) => {
+      state.cmdbExclusionOperationLookup.loading = true;
+    },
+    [getCmdbExclusionOperationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbExclusionOperationLookup.data = action.payload;
+      state.cmdbExclusionOperationLookup.loading = false;
+    },
+
+    // Cmdb Exclusion Locations lookup
+    [getCmdbExclusionLocationLookup.pending.type]: (state) => {
+      state.cmdbExclusionLocationLookup.loading = true;
+    },
+    [getCmdbExclusionLocationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbExclusionLocationLookup.data = action.payload;
+      state.cmdbExclusionLocationLookup.loading = false;
+    },
+
+    // Cmdb Exclusion Types lookup
+    [getCmdbExclusionTypeLookup.pending.type]: (state) => {
+      state.cmdbExclusionTypeLookup.loading = true;
+    },
+    [getCmdbExclusionTypeLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbExclusionTypeLookup.data = action.payload;
+      state.cmdbExclusionTypeLookup.loading = false;
     },
 
     // Expenditure Type lookup

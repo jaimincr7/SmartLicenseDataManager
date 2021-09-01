@@ -11,6 +11,7 @@ import Virtualization from './Virtualization';
 import LicenseModel from './LicenseModel';
 import User from './User';
 import UserMap from './UserMap';
+import Exclusion from './Exclusion';
 
 const CmdbRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -84,6 +85,14 @@ const CmdbRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmdbUser) && (
           <Route exact path={`${match.path}/cmdb-user`} component={User} />
+        )}
+        
+        {/* Exclusion */}
+        {ability.can(Action.View, Page.CmdbExclusion) && (
+          <Route exact path={`${match.path}/cmdb-exclusion/:id`} component={Exclusion} />
+        )}
+        {ability.can(Action.View, Page.CmdbExclusion) && (
+          <Route exact path={`${match.path}/cmdb-exclusion`} component={Exclusion} />
         )}
 
         {/* UserMap */}
