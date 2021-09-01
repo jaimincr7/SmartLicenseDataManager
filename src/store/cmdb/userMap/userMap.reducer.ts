@@ -134,9 +134,7 @@ export const cmdbUserMapSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteCmdbUserMap.rejected.type]: (
-      state
-    ) => {
+    [deleteCmdbUserMap.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },

@@ -3,7 +3,8 @@ import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
 import {
-  FilterByDropdown, FilterWithSwapOption,
+  FilterByDropdown,
+  FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
@@ -145,4 +146,3 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 };
 
 export default forwardRef(MainTable);
-

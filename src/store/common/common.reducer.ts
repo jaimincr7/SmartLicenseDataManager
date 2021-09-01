@@ -357,7 +357,7 @@ export const commonSlice = createSlice({
       state.cmdbDeviceLookup.data = action.payload;
       state.cmdbDeviceLookup.loading = false;
     },
-    
+
     // Cmdb Exclusion Components lookup
     [getCmdbExclusionComponentLookup.pending.type]: (state) => {
       state.cmdbExclusionComponentLookup.loading = true;
@@ -393,7 +393,7 @@ export const commonSlice = createSlice({
       state.cmdbExclusionTypeLookup.data = action.payload;
       state.cmdbExclusionTypeLookup.loading = false;
     },
-    
+
     //Config Component lookup
     [getConfigComponentLookup.pending.type]: (state) => {
       state.configComponentLookup.loading = true;

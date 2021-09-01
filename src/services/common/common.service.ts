@@ -86,7 +86,7 @@ class CommonService {
       return res.data;
     });
   }
-  
+
   public async getCmdbExclusionComponentLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-exclusion-component/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -100,7 +100,7 @@ class CommonService {
       return res.data;
     });
   }
-  
+
   public async getCmdbExclusionLocationLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-exclusion-location/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -114,7 +114,7 @@ class CommonService {
       return res.data;
     });
   }
-  
+
   public async getCmdbExclusionOperationLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-exclusion-operation/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -135,7 +135,7 @@ class CommonService {
       return res.data;
     });
   }
-  
+
   public async getCmdbExclusionTypeLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-exclusion-type/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

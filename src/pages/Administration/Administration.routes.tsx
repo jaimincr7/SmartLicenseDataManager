@@ -5,6 +5,7 @@ import { Action, Page } from '../../common/constants/pageAction';
 import BU from './BU';
 import Company from './Company';
 import Currency from './Currency';
+import Component from './Component';
 import MenuAccessRights from './MenuRights/AddRemoveMenuRights';
 import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
@@ -95,6 +96,15 @@ const AdministrationRoutes: React.FC = () => {
         {ability.can(Action.View, Page.Role) && (
           <Route exact path={`${match.path}/role/:id`} component={Role} />
         )}
+
+        {/* Component */}
+        {ability.can(Action.View, Page.ConfigComponent) && (
+          <Route exact path={`${match.path}/config-component/:id`} component={Component} />
+        )}
+        {ability.can(Action.View, Page.ConfigComponent) && (
+          <Route exact path={`${match.path}/config-component`} component={Component} />
+        )}
+
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

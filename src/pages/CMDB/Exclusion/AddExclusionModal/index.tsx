@@ -17,8 +17,20 @@ import {
   clearCmdbExclusionMessages,
   cmdbExclusionSelector,
 } from '../../../../store/cmdb/exclusion/exclusion.reducer';
-import { getBULookup, getCmdbExclusionComponentLookup, getCmdbExclusionLocationLookup, getCmdbExclusionOperationLookup, getCmdbExclusionTypeLookup, getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
-import { clearBULookUp, clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  getBULookup,
+  getCmdbExclusionComponentLookup,
+  getCmdbExclusionLocationLookup,
+  getCmdbExclusionOperationLookup,
+  getCmdbExclusionTypeLookup,
+  getCompanyLookup,
+  getTenantLookup,
+} from '../../../../store/common/common.action';
+import {
+  clearBULookUp,
+  clearCompanyLookUp,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmdbExclusionProps } from './addExclusion.model';
 
 const { Option } = Select;
@@ -103,9 +115,15 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         name: data.name,
-        exclusion_id_component_id: _.isNull(data.exclusion_id_component_id) ? null : data.exclusion_id_component_id,
-        exclusion_id_location_id: _.isNull(data.exclusion_id_location_id) ? null : data.exclusion_id_location_id,
-        exclusion_id_operation_id: _.isNull(data.exclusion_id_operation_id) ? null : data.exclusion_id_operation_id,
+        exclusion_id_component_id: _.isNull(data.exclusion_id_component_id)
+          ? null
+          : data.exclusion_id_component_id,
+        exclusion_id_location_id: _.isNull(data.exclusion_id_location_id)
+          ? null
+          : data.exclusion_id_location_id,
+        exclusion_id_operation_id: _.isNull(data.exclusion_id_operation_id)
+          ? null
+          : data.exclusion_id_operation_id,
         is_enabled: data.is_enabled,
         value: data.value,
         order: data.order,
@@ -173,8 +191,8 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
             onFinish={onFinish}
             validateMessages={validateMessages}
           >
-          <Row gutter={[30, 15]} className="form-label-hide">
-            <Col xs={24} sm={12} md={8}>
+            <Row gutter={[30, 15]} className="form-label-hide">
+              <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Tenant</label>
                   <Form.Item
@@ -210,9 +228,12 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Company</label>
-                  <Form.Item name="company_id" className="m-0" label="Company"
+                  <Form.Item
+                    name="company_id"
+                    className="m-0"
+                    label="Company"
                     rules={[{ required: true }]}
-                    >
+                  >
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -240,9 +261,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU"
-                    rules={[{ required: true }]}
-                    >
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
                     <Select
                       onChange={handleBUChange}
                       allowClear
@@ -411,12 +430,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Value</label>
-                  <Form.Item
-                    name="value"
-                    className="m-0"
-                    label="Value"
-                    rules={[{ max: 500 }]}
-                  >
+                  <Form.Item name="value" className="m-0" label="Value" rules={[{ max: 500 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>

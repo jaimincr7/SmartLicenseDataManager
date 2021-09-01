@@ -3,7 +3,10 @@ import _ from 'lodash';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
-import { FilterByDropdown, FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
+import {
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
@@ -115,7 +118,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('exclusion_id_component_id', cmdbExclusion.search.lookups?.exclusion_components),
+            title: FilterByDropdown(
+              'exclusion_id_component_id',
+              cmdbExclusion.search.lookups?.exclusion_components
+            ),
             dataIndex: 'exclusion_component_name',
             key: 'exclusion_component_name',
             ellipsis: true,
@@ -128,7 +134,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('exclusion_id_location_id', cmdbExclusion.search.lookups?.config_exclusion_locations),
+            title: FilterByDropdown(
+              'exclusion_id_location_id',
+              cmdbExclusion.search.lookups?.config_exclusion_locations
+            ),
             dataIndex: 'config_exclusion_location_name',
             key: 'config_exclusion_location_name',
             ellipsis: true,
@@ -141,7 +150,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('exclusion_id_operation_id', cmdbExclusion.search.lookups?.config_exclusion_operations),
+            title: FilterByDropdown(
+              'exclusion_id_operation_id',
+              cmdbExclusion.search.lookups?.config_exclusion_operations
+            ),
             dataIndex: 'config_exclusion_operation_name',
             key: 'config_exclusion_operation_name',
             ellipsis: true,
@@ -154,7 +166,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('exclusion_type_id', cmdbExclusion.search.lookups?.exclusion_types),
+            title: FilterByDropdown(
+              'exclusion_type_id',
+              cmdbExclusion.search.lookups?.exclusion_types
+            ),
             dataIndex: 'exclusion_type_name',
             key: 'exclusion_type_name',
             ellipsis: true,

@@ -86,7 +86,7 @@ const CmdbRoutes: React.FC = () => {
         {ability.can(Action.View, Page.CmdbUser) && (
           <Route exact path={`${match.path}/cmdb-user`} component={User} />
         )}
-        
+
         {/* Exclusion */}
         {ability.can(Action.View, Page.CmdbExclusion) && (
           <Route exact path={`${match.path}/cmdb-exclusion/:id`} component={Exclusion} />

@@ -85,12 +85,15 @@ export const getCmdbLicenseModelLookup = createAsyncThunk('getCmdbLicenseModelLo
   return response.data;
 });
 
-export const getCmdbExclusionComponentLookup = createAsyncThunk('getCmdbExclusionComponentLookup', async () => {
-  const response = await commonService.getCmdbExclusionComponentLookup().then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
+export const getCmdbExclusionComponentLookup = createAsyncThunk(
+  'getCmdbExclusionComponentLookup',
+  async () => {
+    const response = await commonService.getCmdbExclusionComponentLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const getConfigComponentLookup = createAsyncThunk('getConfigComponentLookup', async () => {
   const response = await commonService.getConfigComponentLookup().then((res) => {
@@ -106,12 +109,15 @@ export const getCmdbApplicationLookup = createAsyncThunk('getCmdbApplicationLook
   return response.data;
 });
 
-export const getCmdbExclusionOperationLookup = createAsyncThunk('getCmdbExclusionOperationLookup', async () => {
-  const response = await commonService.getCmdbExclusionOperationLookup().then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
+export const getCmdbExclusionOperationLookup = createAsyncThunk(
+  'getCmdbExclusionOperationLookup',
+  async () => {
+    const response = await commonService.getCmdbExclusionOperationLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const getCmdbOperatingSystemLookup = createAsyncThunk(
   'getCmdbOperatingSystemLookup',
@@ -130,12 +136,15 @@ export const getCmdbProcessorLookup = createAsyncThunk('getCmdbProcessorLookup',
   return response.data;
 });
 
-export const getCmdbExclusionLocationLookup = createAsyncThunk('getCmdbExclusionLocationLookup', async () => {
-  const response = await commonService.getCmdbExclusionLocationLookup().then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
+export const getCmdbExclusionLocationLookup = createAsyncThunk(
+  'getCmdbExclusionLocationLookup',
+  async () => {
+    const response = await commonService.getCmdbExclusionLocationLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const getCmdbDeviceLookup = createAsyncThunk('getCmdbDeviceLookup', async () => {
   const response = await commonService.getCmdbDeviceLookup().then((res) => {
@@ -144,12 +153,15 @@ export const getCmdbDeviceLookup = createAsyncThunk('getCmdbDeviceLookup', async
   return response.data;
 });
 
-export const getCmdbExclusionTypeLookup = createAsyncThunk('getCmdbExclusionTypeLookup', async () => {
-  const response = await commonService.getCmdbExclusionTypeLookup().then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
+export const getCmdbExclusionTypeLookup = createAsyncThunk(
+  'getCmdbExclusionTypeLookup',
+  async () => {
+    const response = await commonService.getCmdbExclusionTypeLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const getCmdbVirtualizationLookup = createAsyncThunk(
   'getCmdbVirtualizationLookup',

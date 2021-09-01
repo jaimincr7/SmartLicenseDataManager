@@ -173,7 +173,7 @@ export const rootReducer = combineReducers({
   cmdbSoftware: cmdbSoftwareReducer,
   cmdbUser: cmdbUserReducer,
   cmdbUserMap: cmdbUserMapReducer,
- 
+
   cmdbExclusion: cmdbExclusionReducer,
 
   users: usersReducer,
