@@ -143,6 +143,13 @@ class CommonService {
     });
   }
 
+  public async getConfigComponentLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-component/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getCmsExpenditureTypeLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cms-expenditure-type/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

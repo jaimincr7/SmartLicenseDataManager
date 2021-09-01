@@ -92,6 +92,13 @@ export const getCmdbExclusionComponentLookup = createAsyncThunk('getCmdbExclusio
   return response.data;
 });
 
+export const getConfigComponentLookup = createAsyncThunk('getConfigComponentLookup', async () => {
+  const response = await commonService.getConfigComponentLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getCmdbApplicationLookup = createAsyncThunk('getCmdbApplicationLookup', async () => {
   const response = await commonService.getCmdbApplicationLookup().then((res) => {
     return res.body;

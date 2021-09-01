@@ -26,6 +26,7 @@ import PowerBiReportsRoutes from './pages/PowerBiReports/PowerBiReports.routes';
 import AdministrationRoutes from './pages/Administration/Administration.routes';
 import CMSRoutes from './pages/CMS/CMS.routes';
 import CmdbRoutes from './pages/CMDB/CMDB.routes';
+import ConfigRoutes from './pages/Config/Config.routes';
 
 function AppRoutes() {
   const history = useHistory();
@@ -70,6 +71,7 @@ function AppRoutes() {
           />
           <LayoutRoute path="/cms" layout={MainLayout} component={CMSRoutes} />
           <LayoutRoute path="/cmdb" layout={MainLayout} component={CmdbRoutes} />
+          <LayoutRoute path="/config" layout={MainLayout} component={ConfigRoutes} />
 
           {/* Dummy routes for designers */}
           <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />

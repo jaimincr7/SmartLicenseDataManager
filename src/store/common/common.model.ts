@@ -81,6 +81,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  configComponentLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   cmsExpenditureTypeLookup: {
     data: ILookup[];
     loading: boolean;

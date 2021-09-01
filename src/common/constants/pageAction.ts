@@ -83,6 +83,7 @@ export enum Page {
   CmdbUser = 'cmdb-user',
   CmdbUserMap = 'cmdb-user-map',
   CmdbExclusion = "cmdb-exclusion",
+  ConfigComponent = 'config-component',
 
   PowerBIConfig = 'power-bi-report-config',
 
