@@ -72,6 +72,7 @@ import cmdbDeviceReducer from './cmdb/device/device.reducer';
 import cmdbLicenseModelReducer from './cmdb/licenseModel/licenseModel.reducer';
 import cmdbSoftwareReducer from './cmdb/software/software.reducer';
 import cmdbUserReducer from './cmdb/user/user.reducer';
+import cmdbUserMapReducer from './cmdb/userMap/userMap.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -170,6 +171,8 @@ export const rootReducer = combineReducers({
   cmdbSoftware: cmdbSoftwareReducer,
 
   cmdbUser: cmdbUserReducer,
+  cmdbUserMap: cmdbUserMapReducer,
+ 
   users: usersReducer,
 
   //Power-BI Report

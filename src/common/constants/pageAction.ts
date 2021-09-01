@@ -81,6 +81,8 @@ export enum Page {
   CmdbLicenseModel = 'cmdb-license-model',
   CmdbSoftware = 'cmdb-software',
   CmdbUser = 'cmdb-user',
+  CmdbUserMap = 'cmdb-user-map',
+  
   PowerBIConfig = 'power-bi-report-config',
 
   // Global search dropdown
