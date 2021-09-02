@@ -7,6 +7,7 @@ import AddAPIMapping from './APIMapping/AddApiColMapping';
 import BU from './BU';
 import Company from './Company';
 import Currency from './Currency';
+import Component from './Component';
 import MenuAccessRights from './MenuRights/AddRemoveMenuRights';
 import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
@@ -119,6 +120,14 @@ const AdministrationRoutes: React.FC = () => {
             path={`${match.path}/config-sps-api-column-mapping/add/:id`}
             component={AddAPIMapping}
           />
+        )}
+        
+        {/* Component */}
+        {ability.can(Action.View, Page.ConfigComponent) && (
+          <Route exact path={`${match.path}/config-component/:id`} component={Component} />
+        )}
+        {ability.can(Action.View, Page.ConfigComponent) && (
+          <Route exact path={`${match.path}/config-component`} component={Component} />
         )}
 
         {/* keep least always */}

@@ -69,6 +69,14 @@ import cmdbOperatingSystemReducer from './cmdb/operatingSystem/operatingSystem.r
 import cmdbProcessorReducer from './cmdb/processor/processor.reducer';
 import cmdbVirtualizationReducer from './cmdb/virtualization/virtualization.reducer';
 import apiColMappingReducer from './sps/apiColumnMapping/apiColMapping.reducer';
+import cmdbApplicationReducer from './cmdb/application/application.reducer';
+import cmdbDeviceReducer from './cmdb/device/device.reducer';
+import cmdbLicenseModelReducer from './cmdb/licenseModel/licenseModel.reducer';
+import cmdbSoftwareReducer from './cmdb/software/software.reducer';
+import cmdbUserReducer from './cmdb/user/user.reducer';
+import cmdbUserMapReducer from './cmdb/userMap/userMap.reducer';
+import cmdbExclusionReducer from './cmdb/exclusion/exclusion.reducer';
+import configComponentReducer from './config/component/component.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -161,8 +169,19 @@ export const rootReducer = combineReducers({
   cmdbOperatingSystem: cmdbOperatingSystemReducer,
   cmdbProcessor: cmdbProcessorReducer,
   cmdbVirtualization: cmdbVirtualizationReducer,
+  cmdbApplication: cmdbApplicationReducer,
+  cmdbDevice: cmdbDeviceReducer,
+  cmdbLicenseModel: cmdbLicenseModelReducer,
+  cmdbSoftware: cmdbSoftwareReducer,
+  cmdbUser: cmdbUserReducer,
+  cmdbUserMap: cmdbUserMapReducer,
+
+  cmdbExclusion: cmdbExclusionReducer,
 
   users: usersReducer,
+
+  //config
+  configComponent: configComponentReducer,
 
   //Power-BI Report
   configuration: configurationReducer,

@@ -76,6 +76,15 @@ export enum Page {
   CmdbOperatingSystem = 'cmdb-operating-system',
   CmdbProcessor = 'cmdb-processor',
   CmdbVirtualization = 'cmdb-virtualization',
+  CmdbApplication = 'cmdb-application',
+  CmdbDevice = 'cmdb-device',
+  CmdbLicenseModel = 'cmdb-license-model',
+  CmdbSoftware = 'cmdb-software',
+  CmdbUser = 'cmdb-user',
+  CmdbUserMap = 'cmdb-user-map',
+  CmdbExclusion = 'cmdb-exclusion',
+  ConfigComponent = 'config-component',
+
   PowerBIConfig = 'power-bi-report-config',
 
   // Global search dropdown

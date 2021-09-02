@@ -792,7 +792,7 @@ const BulkImport: React.FC = () => {
                                 {
                                   required:
                                     bulkImports.getTableColumns.data.find(
-                                      (x) => x.name === 'TenantId'
+                                      (x) => x.name?.toLowerCase() === 'tenantid'
                                     )?.is_nullable === 'NO'
                                       ? true
                                       : false,
@@ -836,7 +836,7 @@ const BulkImport: React.FC = () => {
                                 {
                                   required:
                                     bulkImports.getTableColumns.data.find(
-                                      (x) => x.name === 'CompanyId'
+                                      (x) => x.name?.toLowerCase() === 'companyid'
                                     )?.is_nullable === 'NO'
                                       ? true
                                       : false,
@@ -879,8 +879,9 @@ const BulkImport: React.FC = () => {
                               rules={[
                                 {
                                   required:
-                                    bulkImports.getTableColumns.data.find((x) => x.name === 'BU_Id')
-                                      ?.is_nullable === 'NO'
+                                    bulkImports.getTableColumns.data.find(
+                                      (x) => x.name?.toLowerCase() === 'bu_id'
+                                    )?.is_nullable === 'NO'
                                       ? true
                                       : false,
                                 },

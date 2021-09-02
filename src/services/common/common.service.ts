@@ -59,8 +59,92 @@ class CommonService {
     });
   }
 
+  public async getCmdbDeviceLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-device/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbUserLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-user/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getO365ProductsLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-o365-products/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbLicenseModelLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-license-model/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbExclusionComponentLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-exclusion-component/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbApplicationLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-application/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbExclusionLocationLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-exclusion-location/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbOperatingSystemLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-operating-system/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbExclusionOperationLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-exclusion-operation/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbProcessorLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-processor/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbVirtualizationLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-virtualization/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbExclusionTypeLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-exclusion-type/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigComponentLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-component/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
