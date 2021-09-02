@@ -43,8 +43,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         dataTableRef?.current.refreshData();
       }
       dispatch(clearCallApiMessages());
-    }
-    else if (spsApis.callAllApi.messages.length > 0) {
+    } else if (spsApis.callAllApi.messages.length > 0) {
       if (spsApis.callAllApi.hasErrors) {
         toast.error(spsApis.callAllApi.messages.join(' '));
       } else {
@@ -205,8 +204,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       )}
     </div>
   );
-
-
 
   return (
     <>

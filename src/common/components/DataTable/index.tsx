@@ -47,7 +47,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     exportExcelFile,
     setTableColumnSelection,
     hideExportButton,
-    showCallApiBtn
+    showCallApiBtn,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -96,7 +96,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           end_date: val[1],
         };
       }
-
     });
 
     const searchData: ISearch = {
@@ -236,8 +235,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -466,18 +466,20 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const renderCallApiButton = () => {
     if (showCallApiBtn)
-      return <Button
-        loading={spsApisState.callAllApi.loading}
-        className="btn-icon"
-        onClick={() => {
-          if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
-            onRowSelection();
-          }
-        }}
-      >
-        Call Api
-      </Button>
-  }
+      return (
+        <Button
+          loading={spsApisState.callAllApi.loading}
+          className="btn-icon"
+          onClick={() => {
+            if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
+              onRowSelection();
+            }
+          }}
+        >
+          Call Api
+        </Button>
+      );
+  };
   return (
     <>
       <div className="title-block search-block">
@@ -505,9 +507,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Show/Hide Columns
             </Button>
           </Popover>
-          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 ? <Popover content={<>Please select global filter first!</>} trigger="click">
-            {renderCallApiButton()}
-          </Popover> : renderCallApiButton()}
+          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 ? (
+            <Popover content={<>Please select global filter first!</>} trigger="click">
+              {renderCallApiButton()}
+            </Popover>
+          ) : (
+            renderCallApiButton()
+          )}
           {showAddButton && (
             <Button
               type="primary"
