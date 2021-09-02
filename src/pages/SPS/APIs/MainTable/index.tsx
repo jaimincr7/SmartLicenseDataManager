@@ -44,7 +44,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       }
       dispatch(clearCallApiMessages());
     }
-  }, [spsApis.callApi.messages]);
+    else if (spsApis.callAllApi.messages.length > 0) {
+      if (spsApis.callAllApi.hasErrors) {
+        toast.error(spsApis.callAllApi.messages.join(' '));
+      } else {
+        toast.success(spsApis.callAllApi.messages.join(' '));
+        dataTableRef?.current.refreshData();
+      }
+      dispatch(clearCallApiMessages());
+    }
+  }, [spsApis.callApi.messages, spsApis.callAllApi.messages]);
 
   const getTableColumns = (form) => {
     return [
@@ -197,6 +206,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     </div>
   );
 
+
+
   return (
     <>
       <DataTable
@@ -209,6 +220,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         hideExportButton={true}
         globalSearchExist={false}
+        showCallApiBtn={true}
       />
     </>
   );

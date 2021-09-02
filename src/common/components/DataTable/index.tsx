@@ -19,6 +19,9 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
+import { spsApiSelector } from './../../../store/sps/spsAPI/spsApi.reducer';
+import { ICallAllApi } from '../../../services/sps/spsApi/sps.model';
+import { callAllApi } from '../../../store/sps/spsAPI/spsApi.action';
 
 let pageLoaded = false;
 
@@ -44,11 +47,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     exportExcelFile,
     setTableColumnSelection,
     hideExportButton,
+    showCallApiBtn
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
   const common = useAppSelector(commonSelector);
   const globalFilters = useAppSelector(globalSearchSelector);
+  const spsApisState = useAppSelector(spsApiSelector);
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
@@ -445,6 +450,34 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
   };
 
+  const onRowSelection = () => {
+    if (tableFilter) {
+      const cllApiObj: ICallAllApi = {
+        filter_keys: tableFilter.filter_keys,
+        keyword: tableFilter.keyword,
+        company_id: globalFilters.search.company_id,
+        bu_id: globalFilters.search.bu_id,
+        tenant_id: globalFilters.search.tenant_id,
+        sps_api_query_param: {},
+      };
+      dispatch(callAllApi(cllApiObj));
+    }
+  };
+
+  const renderCallApiButton = () => {
+    if (showCallApiBtn)
+      return <Button
+        loading={spsApisState.callAllApi.loading}
+        className="btn-icon"
+        onClick={() => {
+          if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
+            onRowSelection();
+          }
+        }}
+      >
+        Call Api
+      </Button>
+  }
   return (
     <>
       <div className="title-block search-block">
@@ -472,6 +505,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Show/Hide Columns
             </Button>
           </Popover>
+          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 ? <Popover content={<>Please select global filter first!</>} trigger="click">
+            {renderCallApiButton()}
+          </Popover> : renderCallApiButton()}
           {showAddButton && (
             <Button
               type="primary"

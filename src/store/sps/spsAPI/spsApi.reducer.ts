@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ISearchAPI } from '../../../services/sps/spsApi/sps.model';
 import { RootState } from '../../app.model';
-import { callApi, searchImportAPIs } from './spsApi.action';
+import { callAllApi, callApi, searchImportAPIs } from './spsApi.action';
 import { ISPSApiState } from './spsApi.model';
 
 export const initialState: ISPSApiState = {
@@ -24,6 +24,11 @@ export const initialState: ISPSApiState = {
     hasErrors: false,
     messages: [],
   },
+  callAllApi: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const spsApiSlice = createSlice({
@@ -38,6 +43,7 @@ export const spsApiSlice = createSlice({
     },
     clearCallApiMessages: (state) => {
       state.callApi.messages = [];
+      state.callAllApi.messages = [];
     },
   },
 
@@ -88,6 +94,20 @@ export const spsApiSlice = createSlice({
     [callApi.rejected.type]: (state) => {
       state.callApi.loading = false;
       state.callApi.hasErrors = true;
+    },
+
+    // Call All API
+    [callAllApi.pending.type]: (state) => {
+      state.callAllApi.loading = true;
+    },
+    [callAllApi.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      state.callAllApi.loading = false;
+      state.callAllApi.hasErrors = false;
+      state.callAllApi.messages = action.payload.messages;
+    },
+    [callAllApi.rejected.type]: (state) => {
+      state.callAllApi.loading = false;
+      state.callAllApi.hasErrors = true;
     },
   },
 });

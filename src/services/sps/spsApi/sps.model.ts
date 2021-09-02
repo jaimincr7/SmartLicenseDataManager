@@ -1,4 +1,5 @@
 import { ISearch } from '../../../common/models/common';
+import { IGlobalSearch } from '../../../store/globalSearch/globalSearch.model';
 
 export interface ISearchImportAPIs extends ISearch {
   is_lookup?: boolean;
@@ -23,6 +24,14 @@ export interface ICallAPI {
   bu_id: number;
   tenant_id: number;
   spsApiQueryParam: {
+    [key: string]: any;
+  };
+}
+
+export interface ICallAllApi extends IGlobalSearch {
+  keyword?: string;
+  filter_keys?: any;
+  sps_api_query_param?: {
     [key: string]: any;
   };
 }

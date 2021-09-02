@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ISearchImportAPIs } from '../../../services/sps/spsApi/sps.model';
+import { ICallAllApi, ISearchImportAPIs } from '../../../services/sps/spsApi/sps.model';
 import { ICallAPI } from '../../../services/sps/spsApi/sps.model';
 import spsService from '../../../services/sps/spsApi/sps.service';
 
@@ -17,6 +17,13 @@ export const searchImportAPIs = createAsyncThunk(
 
 export const callApi = createAsyncThunk('callApi', async (data: ICallAPI) => {
   const response = await spsService.callApi(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
+export const callAllApi = createAsyncThunk('callAllApi', async (searchParam?: ICallAllApi) => {
+  const response = await spsService.callAllApi(searchParam).then((res) => {
     return res.body;
   });
   return response;

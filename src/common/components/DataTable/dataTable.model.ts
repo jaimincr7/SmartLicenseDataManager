@@ -21,4 +21,5 @@ export interface IDataTable {
     type: string;
   };
   hideExportButton?: boolean;
+  showCallApiBtn?: boolean;
 }

@@ -16,4 +16,9 @@ export interface ISPSApiState {
     hasErrors: boolean;
     messages: string[];
   };
+  callAllApi: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }
