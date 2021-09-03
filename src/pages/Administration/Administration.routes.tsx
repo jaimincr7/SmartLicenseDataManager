@@ -141,15 +141,27 @@ const AdministrationRoutes: React.FC = () => {
           />
         )}
         {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
-          <Route exact path={`${match.path}/config-component-table-column`} component={ComponentTableColumn} />
+          <Route
+            exact
+            path={`${match.path}/config-component-table-column`}
+            component={ComponentTableColumn}
+          />
         )}
 
         {/* Exclusion Component */}
         {ability.can(Action.View, Page.ConfigExclusionComponent) && (
-          <Route exact path={`${match.path}/config-exclusion-component/:id`} component={ExclusionComponent} />
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-component/:id`}
+            component={ExclusionComponent}
+          />
         )}
         {ability.can(Action.View, Page.ConfigExclusionComponent) && (
-          <Route exact path={`${match.path}/config-exclusion-component`} component={ExclusionComponent} />
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-component`}
+            component={ExclusionComponent}
+          />
         )}
 
         {/* keep least always */}

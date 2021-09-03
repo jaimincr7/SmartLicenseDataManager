@@ -412,7 +412,10 @@ export const commonSlice = createSlice({
     [getConfigComponentTableColumnLookup.pending.type]: (state) => {
       state.configComponentTableColumnLookup.loading = true;
     },
-    [getConfigComponentTableColumnLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+    [getConfigComponentTableColumnLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
       state.configComponentTableColumnLookup.data = action.payload;
       state.configComponentTableColumnLookup.loading = false;
     },

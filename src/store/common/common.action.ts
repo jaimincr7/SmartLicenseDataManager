@@ -102,12 +102,15 @@ export const getConfigComponentLookup = createAsyncThunk('getConfigComponentLook
   return response.data;
 });
 
-export const getConfigComponentTableColumnLookup = createAsyncThunk('getConfigComponentTableColumnLookup', async () => {
-  const response = await commonService.getConfigComponentTableColumnLookup().then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
+export const getConfigComponentTableColumnLookup = createAsyncThunk(
+  'getConfigComponentTableColumnLookup',
+  async () => {
+    const response = await commonService.getConfigComponentTableColumnLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const getCmdbApplicationLookup = createAsyncThunk('getCmdbApplicationLookup', async () => {
   const response = await commonService.getCmdbApplicationLookup().then((res) => {
