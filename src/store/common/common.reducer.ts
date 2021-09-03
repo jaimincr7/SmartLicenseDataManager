@@ -37,6 +37,7 @@ import {
   getCmdbExclusionLocationLookup,
   getCmdbExclusionTypeLookup,
   getConfigComponentLookup,
+  getConfigComponentTableColumnLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -122,6 +123,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   configComponentLookup: {
+    data: [],
+    loading: false,
+  },
+  configComponentTableColumnLookup: {
     data: [],
     loading: false,
   },
@@ -401,6 +406,15 @@ export const commonSlice = createSlice({
     [getConfigComponentLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.configComponentLookup.data = action.payload;
       state.configComponentLookup.loading = false;
+    },
+
+    //Config Table Column Component lookup
+    [getConfigComponentTableColumnLookup.pending.type]: (state) => {
+      state.configComponentTableColumnLookup.loading = true;
+    },
+    [getConfigComponentTableColumnLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.configComponentTableColumnLookup.data = action.payload;
+      state.configComponentTableColumnLookup.loading = false;
     },
 
     // Expenditure Type lookup

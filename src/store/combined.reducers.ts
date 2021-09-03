@@ -74,7 +74,9 @@ import cmdbSoftwareReducer from './cmdb/software/software.reducer';
 import cmdbUserReducer from './cmdb/user/user.reducer';
 import cmdbUserMapReducer from './cmdb/userMap/userMap.reducer';
 import cmdbExclusionReducer from './cmdb/exclusion/exclusion.reducer';
-import configComponentReducer from './config/component/component.reducer';
+import configComponentReducer from './master/component/component.reducer';
+import configComponentTableColumnReducer from './master/componentTableColumn/componentTableColumn.reducer';
+import configExclusionComponentReducer from './master/exclusionComponent/exclusionComponent.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -180,6 +182,8 @@ export const rootReducer = combineReducers({
 
   //config
   configComponent: configComponentReducer,
+  configExclusionComponent: configExclusionComponentReducer,
+  configComponentTableColumn: configComponentTableColumnReducer,
 
   //Power-BI Report
   configuration: configurationReducer,

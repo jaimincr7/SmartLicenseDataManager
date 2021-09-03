@@ -13,6 +13,8 @@ import Role from './Role';
 import TableColumnSelection from './TableColumnsSelection';
 import Tenant from './Tenant';
 import User from './User';
+import ComponentTableColumn from './ComponentTableColumn';
+import ExclusionComponent from './ExclusionComponent';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -103,6 +105,26 @@ const AdministrationRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.ConfigComponent) && (
           <Route exact path={`${match.path}/config-component`} component={Component} />
+        )}
+
+        {/* ComponentTableColumn */}
+        {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
+          <Route
+            exact
+            path={`${match.path}/config-component-table-column/:id`}
+            component={ComponentTableColumn}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
+          <Route exact path={`${match.path}/config-component-table-column`} component={ComponentTableColumn} />
+        )}
+
+        {/* Exclusion Component */}
+        {ability.can(Action.View, Page.ConfigExclusionComponent) && (
+          <Route exact path={`${match.path}/config-exclusion-component/:id`} component={ExclusionComponent} />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionComponent) && (
+          <Route exact path={`${match.path}/config-exclusion-component`} component={ExclusionComponent} />
         )}
 
         {/* keep least always */}
