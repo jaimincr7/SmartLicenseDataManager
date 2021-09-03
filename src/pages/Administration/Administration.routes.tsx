@@ -121,7 +121,7 @@ const AdministrationRoutes: React.FC = () => {
             component={AddAPIMapping}
           />
         )}
-        
+
         {/* Component */}
         {ability.can(Action.View, Page.ConfigComponent) && (
           <Route exact path={`${match.path}/config-component/:id`} component={Component} />

@@ -250,8 +250,9 @@ class CommonService {
 
   // Bulk import
   public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
-    const url = `/app/table-column/${tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
-      }`;
+    const url = `/app/table-column/${
+      tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
+    }`;
     return request({ url, method: 'GET' }).then((res) => {
       if (res.data?.body.data?.identity_column) {
         const response = res.data?.body.data?.column_data.filter(

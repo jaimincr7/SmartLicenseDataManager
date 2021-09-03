@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Popover,
-  Row,
-  Upload,
-} from 'antd';
+import { Button, Checkbox, Col, Form, Popover, Row, Select, Spin, Upload } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
@@ -32,9 +24,13 @@ import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { SettingOutlined } from '@ant-design/icons';
 import { UploadOutlined } from '@ant-design/icons';
 import RenderBI from '../RenderBI';
-
+import { UploadFile } from 'antd/lib/upload/interface';
+import { IDatabaseTable } from '../../../services/common/common.model';
 
 let valuesArray = [];
+
+const { Option } = Select;
+
 const BulkImport: React.FC = () => {
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -48,8 +44,11 @@ const BulkImport: React.FC = () => {
   const [indeterminate, setIndeterminate] = useState(false);
   const [checkAll, setCheckAll] = useState(false);
   const [excelColumnState, setExcelColumnState] = useState([]);
+  const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
+
   let { table } = useParams<{ table: string }>();
   table && (table = decodeURIComponent(table));
+  const [tableName, setTableName] = useState<string>(table);
 
   const uploadFile = async (options) => {
     const { onSuccess, file } = options;
@@ -60,27 +59,33 @@ const BulkImport: React.FC = () => {
 
   useEffect(() => {
     if (bulkImports.getExcelColumns.data) {
-      setExcelColumnState(bulkImports.getExcelColumns.data)
+      setExcelColumnState(bulkImports.getExcelColumns.data);
     }
-  }, [bulkImports.getExcelColumns.data])
+  }, [bulkImports.getExcelColumns.data]);
 
   const handleOnChange = (info) => {
     const { file, fileList } = info;
 
+    const updatedFileList = [];
+    fileList?.forEach((element) => {
+      updatedFileList?.push(element.originFileObj ? element.originFileObj : element);
+    });
+    setDefaultFileList(updatedFileList);
     if (file.status === 'removed') {
       if (fileList?.length === 0) {
         dispatch(clearExcelColumns());
         setExcelColumnState([]);
         setDefaultFile(null);
-      }
-      else {
-        const result = excelColumnState.filter(o => fileList.some(({ name }) => o.original_filename === name));
+      } else {
+        const result = excelColumnState.filter((o) =>
+          fileList.some(({ name }) => o.original_filename === name)
+        );
         setExcelColumnState(result);
       }
     } else if (file.status === 'done') {
       const formData = new FormData();
-      fileList?.forEach(ele => {
-        formData.append('file', ele.originFileObj);
+      fileList?.forEach((ele) => {
+        formData.append('file', ele.originFileObj ? ele.originFileObj : ele);
       });
       try {
         dispatch(getExcelColumns(formData));
@@ -97,17 +102,18 @@ const BulkImport: React.FC = () => {
   };
 
   useEffect(() => {
-    if (bulkImports.bulkInsert.messages.length > 0) {
+    if (bulkImports.bulkInsert.messages.length > 0 && (count.save > 0 || count.reset > 0)) {
       if (bulkImports.bulkInsert.hasErrors) {
         toast.error(bulkImports.bulkInsert.messages.join(' '));
       } else {
         toast.success(bulkImports.bulkInsert.messages.join(' '));
         dispatch(clearExcelColumns());
+        dispatch(clearBulkImportMessages());
+        onCancel();
         if (table) {
           history.goBack();
         }
       }
-      dispatch(clearBulkImportMessages());
     }
   }, [bulkImports.bulkInsert.messages]);
 
@@ -279,9 +285,18 @@ const BulkImport: React.FC = () => {
         dispatch(bulkInsert(val));
       });
     }
-    setCount({ save: 0, reset: 0 });
-  }
+  };
 
+  const onCancel = () => {
+    dispatch(clearExcelColumns());
+    setExcelColumnState([]);
+    valuesArray = [];
+    setDefaultFileList([]);
+    setCount({ save: 0, reset: 0 });
+    formUpload.resetFields();
+    setDefaultFileList([]);
+    setTableName('');
+  };
   return (
     <>
       <div className="update-excel-page">
@@ -326,7 +341,7 @@ const BulkImport: React.FC = () => {
                         customRequest={uploadFile}
                         multiple={true}
                         onChange={handleOnChange}
-                        defaultFileList={defaultFile}
+                        fileList={defaultFileList}
                         className="py-sm"
                         showUploadList={{
                           showRemoveIcon: true,
@@ -344,27 +359,81 @@ const BulkImport: React.FC = () => {
                     </div>
                   </Form.Item>
                 </Col>
+                <Col xs={24} md={8}>
+                  <div className="form-group m-0">
+                    <label className="label">Table Name</label>
+                    <Form.Item name={'table_name'} className="m-0">
+                      <Select
+                        loading={bulkImports.getTables.loading}
+                        onChange={(name: string) => {
+                          setTableName(name);
+                        }}
+                        showSearch
+                        allowClear
+                        optionFilterProp="children"
+                        filterOption={(input, option: any) =>
+                          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        filterSort={(optionA: any, optionB: any) =>
+                          optionA.children
+                            ?.toLowerCase()
+                            ?.localeCompare(optionB.children?.toLowerCase())
+                        }
+                      >
+                        {bulkImports.getTables.data?.map(
+                          (option: IDatabaseTable, index: number) => (
+                            <Option key={index} value={option.name}>
+                              {option.name}
+                            </Option>
+                          )
+                        )}
+                      </Select>
+                    </Form.Item>
+                  </div>
+                </Col>
               </Row>
             </Form>
           </div>
-          {excelColumnState?.length > 0 && bulkImports.getExcelColumns.data?.map((data: any, index) => (
-            excelColumnState?.find(x => x.original_filename === data.original_filename) && <div key={"render-bi-" + index}>
-              <RenderBI handleSave={(data: any) => (handleSave(data))} count={count} fileData={data} seqNumber={index + 1} ></RenderBI>
-              <br />
+          {bulkImports.getExcelColumns.loading ? (
+            <div className="spin-loader">
+              <Spin spinning={true} />
             </div>
-          ))}
+          ) : (
+            excelColumnState?.length > 0 &&
+            bulkImports.getExcelColumns.data?.map(
+              (data: any, index) =>
+                excelColumnState?.find((x) => x.original_filename === data.original_filename) && (
+                  <div key={'render-bi-' + index}>
+                    <RenderBI
+                      handleSave={(data: any) => handleSave(data)}
+                      count={count}
+                      fileData={data}
+                      seqNumber={index + 1}
+                      table={tableName}
+                    ></RenderBI>
+                    <br />
+                  </div>
+                )
+            )
+          )}
           <br />
           <div className="btns-block">
             <Button
               type="primary"
-              onClick={() => { setCount({ ...count, save: count.save + 1 }); valuesArray = []; }}
+              onClick={() => {
+                setCount({ ...count, save: count.save + 1 });
+                valuesArray = [];
+              }}
               loading={bulkImports.bulkInsert.loading}
             >
               Save
             </Button>
             <Button
               type="primary"
-              onClick={() => { setCount({ save: 0, reset: count.reset + 1 }); valuesArray = []; }}
+              onClick={() => {
+                setCount({ save: 0, reset: count.reset + 1 });
+                onCancel();
+              }}
             >
               Cancel
             </Button>
