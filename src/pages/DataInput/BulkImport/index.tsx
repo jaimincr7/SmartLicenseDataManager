@@ -328,72 +328,76 @@ const BulkImport: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="main-card">
-          <div className="input-btns-title">
-            <Form form={formUpload} name="formUpload" initialValues={formUploadInitialValues}>
-              <Row gutter={[30, 20]} className="align-item-start">
-                <Col xs={24} md={12}>
-                  <label className="label w-100"></label>
-                  <Form.Item name={'upload_file'} className="m-0">
-                    <div className="upload-file">
-                      <Dragger
-                        accept=".xls,.xlsx,.csv"
-                        customRequest={uploadFile}
-                        multiple={true}
-                        onChange={handleOnChange}
-                        fileList={defaultFileList}
-                        className="py-sm"
-                        showUploadList={{
-                          showRemoveIcon: true,
-                          removeIcon: (
-                            <img
-                              src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`}
-                              alt=""
-                            />
-                          ),
-                        }}
-                      >
-                        <UploadOutlined />
-                        <span className="ant-upload-text"> Click or drag file </span>
-                      </Dragger>
-                    </div>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={8}>
-                  <div className="form-group m-0">
-                    <label className="label">Table Name</label>
-                    <Form.Item name={'table_name'} className="m-0">
-                      <Select
-                        loading={bulkImports.getTables.loading}
-                        onChange={(name: string) => {
-                          setTableName(name);
-                        }}
-                        showSearch
-                        allowClear
-                        optionFilterProp="children"
-                        filterOption={(input, option: any) =>
-                          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                        }
-                        filterSort={(optionA: any, optionB: any) =>
-                          optionA.children
-                            ?.toLowerCase()
-                            ?.localeCompare(optionB.children?.toLowerCase())
-                        }
-                      >
-                        {bulkImports.getTables.data?.map(
-                          (option: IDatabaseTable, index: number) => (
-                            <Option key={index} value={option.name}>
-                              {option.name}
-                            </Option>
-                          )
-                        )}
-                      </Select>
+        <div >
+          <div className="main-card">
+            <div >
+              <Form form={formUpload} name="formUpload" initialValues={formUploadInitialValues}>
+                <Row gutter={[30, 20]} className="align-item-start">
+                  <Col xs={24} md={12}>
+                    <label className="label w-100"></label>
+                    <Form.Item name={'upload_file'} className="m-0">
+                      <div className="upload-file">
+                        <Dragger
+                          accept=".xls,.xlsx,.csv"
+                          customRequest={uploadFile}
+                          multiple={true}
+                          onChange={handleOnChange}
+                          fileList={defaultFileList}
+                          className="py-sm"
+                          showUploadList={{
+                            showRemoveIcon: true,
+                            removeIcon: (
+                              <img
+                                src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`}
+                                alt=""
+                              />
+                            ),
+                          }}
+                        >
+                          <UploadOutlined />
+                          <span className="ant-upload-text"> Click or drag file </span>
+                        </Dragger>
+                      </div>
                     </Form.Item>
-                  </div>
-                </Col>
-              </Row>
-            </Form>
+                  </Col>
+                  <Col xs={24} md={8}>
+                    <div className="form-group m-0">
+                      <label className="label">Table Name</label>
+                      <Form.Item name={'table_name'} className="m-0">
+                        <Select
+                          loading={bulkImports.getTables.loading}
+                          onChange={(name: string) => {
+                            setTableName(name);
+                          }}
+                          showSearch
+                          allowClear
+                          optionFilterProp="children"
+                          filterOption={(input, option: any) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                          }
+                          filterSort={(optionA: any, optionB: any) =>
+                            optionA.children
+                              ?.toLowerCase()
+                              ?.localeCompare(optionB.children?.toLowerCase())
+                          }
+                        >
+                          {bulkImports.getTables.data?.map(
+                            (option: IDatabaseTable, index: number) => (
+                              <Option key={index} value={option.name}>
+                                {option.name}
+                              </Option>
+                            )
+                          )}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
           </div>
+          <br />
+          <br />
           {bulkImports.getExcelColumns.loading ? (
             <div className="spin-loader">
               <Spin spinning={true} />
@@ -412,11 +416,11 @@ const BulkImport: React.FC = () => {
                       table={tableName}
                     ></RenderBI>
                     <br />
+                    <br />
                   </div>
                 )
             )
           )}
-          <br />
           <div className="btns-block">
             <Button
               type="primary"
