@@ -245,12 +245,12 @@ class CommonService {
     });
   }
 
-  public async getExcelColumns(file: File): Promise<IApiResponse<any>> {
+  public async getExcelColumns(file: any): Promise<IApiResponse<any>> {
     const headers = { Accept: 'multipart/form-data' };
     const url = `/app/read-excel-file`;
-    const formData = new FormData();
-    formData.append('file', file);
-    return request({ url, method: 'POST', data: formData, headers: headers }).then((res) => {
+    // const formData = new FormData();
+    // formData.append('file', file);
+    return request({ url, method: 'POST', data: file, headers: headers }).then((res) => {
       return res.data;
     });
   }
