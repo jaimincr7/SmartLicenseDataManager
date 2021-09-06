@@ -1,0 +1,203 @@
+import { Popconfirm } from 'antd';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { IMainTable } from './mainTable.model';
+import _ from 'lodash';
+import {
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTable/DataTableFilters';
+import { ISearch } from '../../../../common/models/common';
+import { useHistory } from 'react-router-dom';
+import DataTable from '../../../../common/components/DataTable';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
+import {
+  deleteCmdbOperatingSystem,
+  searchCmdbOperatingSystem,
+} from '../../../../store/cmdb/operatingSystem/operatingSystem.action';
+import {
+  clearCmdbOperatingSystemMessages,
+  cmdbOperatingSystemSelector,
+  setTableColumnSelection,
+} from '../../../../store/cmdb/operatingSystem/operatingSystem.reducer';
+import operatingSystemService from '../../../../services/cmdb/operatingSystem/operatingSystem.service';
+
+const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
+  const { setSelectedId } = props;
+  const cmdbOperatingSystem = useAppSelector(cmdbOperatingSystemSelector);
+  const dispatch = useAppDispatch();
+  const dataTableRef = useRef(null);
+  const history = useHistory();
+
+  useImperativeHandle(ref, () => ({
+    refreshData() {
+      dataTableRef?.current.refreshData();
+    },
+  }));
+
+  const exportExcelFile = (searchData: ISearch) => {
+    return operatingSystemService.exportExcelFile(searchData);
+  };
+
+  const FilterBySwap = (dataIndex: string, form) => {
+    return FilterWithSwapOption(dataIndex, cmdbOperatingSystem.search.tableName, form);
+  };
+
+  const getTableColumns = (form) => {
+    return [
+      {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Name</span>,
+        column: 'Name',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('name', form),
+            dataIndex: 'name',
+            key: 'name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Manufacturer</span>,
+        column: 'Manufacturer',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('manufacturer', form),
+            dataIndex: 'manufacturer',
+            key: 'manufacturer',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Version</span>,
+        column: 'Version',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('version', form),
+            dataIndex: 'version',
+            key: 'version',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Build Number</span>,
+        column: 'BuildNumber',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('build_number', form),
+            dataIndex: 'build_number',
+            key: 'build_number',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Serial Number</span>,
+        column: 'SerialNumber',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('serial_number', form),
+            dataIndex: 'serial_number',
+            key: 'serial_number',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is OEM</span>,
+        column: 'IsOEM',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('is_oem', cmdbOperatingSystem.search.lookups?.booleanLookup),
+            dataIndex: 'is_oem',
+            key: 'is_oem',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is Server</span>,
+        column: 'IsServer',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('is_server', cmdbOperatingSystem.search.lookups?.booleanLookup),
+            dataIndex: 'is_server',
+            key: 'is_server',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
+    ];
+  };
+
+  const removeCmdbOperatingSystem = (id: number) => {
+    dispatch(deleteCmdbOperatingSystem(id));
+  };
+  const tableAction = (_, data: any) => (
+    <div className="btns-block">
+      <Can I={Action.Update} a={Page.CmdbOperatingSystem}>
+        <a
+          className="action-btn"
+          onClick={() => {
+            setSelectedId(data.id);
+            history.push(`/cmdb/cmdb-operating-system/${data.id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
+        </a>
+      </Can>
+      <Can I={Action.Delete} a={Page.CmdbOperatingSystem}>
+        <Popconfirm title="Sure to delete?" onConfirm={() => removeCmdbOperatingSystem(data.id)}>
+          <a href="#" title="" className="action-btn">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+          </a>
+        </Popconfirm>
+      </Can>
+    </div>
+  );
+
+  return (
+    <>
+      <DataTable
+        ref={dataTableRef}
+        showAddButton={ability.can(Action.Add, Page.CmdbOperatingSystem)}
+        setSelectedId={setSelectedId}
+        tableAction={tableAction}
+        exportExcelFile={exportExcelFile}
+        getTableColumns={getTableColumns}
+        reduxSelector={cmdbOperatingSystemSelector}
+        searchTableData={searchCmdbOperatingSystem}
+        clearTableDataMessages={clearCmdbOperatingSystemMessages}
+        setTableColumnSelection={setTableColumnSelection}
+      />
+    </>
+  );
+};
+
+export default forwardRef(MainTable);

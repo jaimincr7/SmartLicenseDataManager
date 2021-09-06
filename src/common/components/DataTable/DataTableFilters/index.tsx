@@ -116,7 +116,7 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
       >
         {dropdownOptions.map((option: IDropDownOption) => (
           <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
-            {option.name}
+            {option.name?.toString()}
           </Select.Option>
         ))}
       </Select>

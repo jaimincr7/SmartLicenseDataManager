@@ -25,7 +25,7 @@ export interface IBulkImportState {
   getExcelColumns: {
     loading: boolean;
     hasErrors: boolean;
-    data?: IGetExcelColumns;
+    data?: IGetExcelColumns[];
   };
   bulkInsert: {
     loading: boolean;

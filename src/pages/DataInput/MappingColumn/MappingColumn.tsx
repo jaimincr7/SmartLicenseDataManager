@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Modal, Row, Switch } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import { IMappingColumnProps } from './MappingColumn.model';
@@ -12,6 +12,10 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     file_name: fileName,
     isPublic: false,
   };
+
+  useEffect(() => {
+    form.setFieldsValue({ file_name: fileName });
+  }, [fileName]);
 
   const onFinish = (values: any) => {
     const { file_name, isPublic } = values;

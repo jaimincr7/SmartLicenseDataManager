@@ -2,9 +2,12 @@ import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
+import APIColumnMappings from './APIMapping';
+import AddAPIMapping from './APIMapping/AddApiColMapping';
 import BU from './BU';
 import Company from './Company';
 import Currency from './Currency';
+import Component from './Component';
 import MenuAccessRights from './MenuRights/AddRemoveMenuRights';
 import CompanyBaseMenuRights from './MenuRights/CompanyBaseMenuRights';
 import RoleBaseMenuRights from './MenuRights/RoleBaseMenuRights';
@@ -12,6 +15,11 @@ import Role from './Role';
 import TableColumnSelection from './TableColumnsSelection';
 import Tenant from './Tenant';
 import User from './User';
+import ComponentTableColumn from './ComponentTableColumn';
+import ExclusionComponent from './ExclusionComponent';
+import ExclusionLocation from './ExclusionLocation';
+import ExclusionOperation from './ExclusionOperation';
+import ExclusionType from './ExclusionType';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -95,6 +103,118 @@ const AdministrationRoutes: React.FC = () => {
         {ability.can(Action.View, Page.Role) && (
           <Route exact path={`${match.path}/role/:id`} component={Role} />
         )}
+
+        {/* SPS Api Colum Mapping */}
+        {ability.can(Action.View, Page.ConfigSPSColMapping) && (
+          <Route
+            exact
+            path={`${match.path}/config-sps-api-column-mapping`}
+            component={APIColumnMappings}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSPSColMapping) && (
+          <Route
+            exact
+            path={`${match.path}/config-sps-api-column-mapping/add`}
+            component={AddAPIMapping}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSPSColMapping) && (
+          <Route
+            exact
+            path={`${match.path}/config-sps-api-column-mapping/add/:id`}
+            component={AddAPIMapping}
+          />
+        )}
+
+        {/* Component */}
+        {ability.can(Action.View, Page.ConfigComponent) && (
+          <Route exact path={`${match.path}/config-component/:id`} component={Component} />
+        )}
+        {ability.can(Action.View, Page.ConfigComponent) && (
+          <Route exact path={`${match.path}/config-component`} component={Component} />
+        )}
+
+        {/* Exclusion Component */}
+        {ability.can(Action.View, Page.ConfigExclusionComponent) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-component/:id`}
+            component={ExclusionComponent}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionComponent) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-component`}
+            component={ExclusionComponent}
+          />
+        )}
+
+        {/* Exclusion Location */}
+        {ability.can(Action.View, Page.ConfigExclusionLocation) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-location/:id`}
+            component={ExclusionLocation}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionLocation) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-location`}
+            component={ExclusionLocation}
+          />
+        )}
+
+        {/* Exclusion Operation */}
+        {ability.can(Action.View, Page.ConfigExclusionOperation) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-operation/:id`}
+            component={ExclusionOperation}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionOperation) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-operation`}
+            component={ExclusionOperation}
+          />
+        )}
+
+        {/* Exclusion Type */}
+        {ability.can(Action.View, Page.ConfigExclusionType) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-type/:id`}
+            component={ExclusionType}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionType) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-type`}
+            component={ExclusionType}
+          />
+        )}
+
+        {/* Component Table Column */}
+        {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
+          <Route
+            exact
+            path={`${match.path}/config-component-table-column/:id`}
+            component={ComponentTableColumn}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
+          <Route
+            exact
+            path={`${match.path}/config-component-table-column`}
+            component={ComponentTableColumn}
+          />
+        )}
+
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

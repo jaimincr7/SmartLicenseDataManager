@@ -20,4 +20,6 @@ export interface IDataTable {
     payload: { [key: string]: boolean };
     type: string;
   };
+  hideExportButton?: boolean;
+  showCallApiBtn?: boolean;
 }

@@ -1,17 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  DatePicker,
-  Form,
-  InputNumber,
-  Popover,
-  Row,
-  Select,
-  Spin,
-  TreeSelect,
-  Upload,
-} from 'antd';
+import { Button, Checkbox, Col, Form, Popover, Row, Select, Spin, Upload } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
@@ -22,7 +9,6 @@ import {
   getTablesForImport,
   saveTableForImport,
   getExcelFileMapping,
-  saveExcelFileMapping,
 } from '../../../store/bulkImport/bulkImport.action';
 import {
   clearExcelColumns,
@@ -33,250 +19,103 @@ import {
 } from '../../../store/bulkImport/bulkImport.reducer';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {
-  IBulkInsertDataset,
-  IDatabaseTable,
-  IExcelSheetColumn,
-  ILookup,
-} from '../../../services/common/common.model';
-import { validateMessages } from '../../../common/constants/common';
 import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { SettingOutlined } from '@ant-design/icons';
-import {
-  clearBULookUp,
-  clearCompanyLookUp,
-  commonSelector,
-} from '../../../store/common/common.reducer';
-import {
-  getCompanyLookup,
-  getBULookup,
-  getTenantLookup,
-} from '../../../store/common/common.action';
-import moment from 'moment';
-import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
 import { UploadOutlined } from '@ant-design/icons';
-import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
-import MappingColumn from './../MappingColumn/MappingColumn';
+import RenderBI from '../RenderBI';
+import { UploadFile } from 'antd/lib/upload/interface';
+import { IDatabaseTable } from '../../../services/common/common.model';
+
+let valuesArray = [];
 
 const { Option } = Select;
 
-let maxHeaderRow = 1;
-
 const BulkImport: React.FC = () => {
   const bulkImports = useAppSelector(bulkImportSelector);
-  const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   const { Dragger } = Upload;
-  const [form] = Form.useForm();
   const [formUpload] = Form.useForm();
 
+  const [count, setCount] = useState({ save: 0, reset: 0 });
   const [defaultFile, setDefaultFile] = useState(null);
-  const [excelColumns, setExcelColumns] = useState(null);
-  const [tableColumns, setTableColumns] = useState(null);
-  const [removedColumns, setRemovedColumns] = useState(null);
   const [indeterminate, setIndeterminate] = useState(false);
   const [checkAll, setCheckAll] = useState(false);
-  const [excelPreviewData, setExcelPreviewData] = useState<any>();
-  const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
-  const [showMappingModal, setShowMappingModal] = useState<boolean>(false);
+  const [excelColumnState, setExcelColumnState] = useState([]);
+  const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
+
   let { table } = useParams<{ table: string }>();
   table && (table = decodeURIComponent(table));
+  const [tableName, setTableName] = useState<string>(table);
 
   const uploadFile = async (options) => {
-    const { onSuccess, onError, file } = options;
-
+    const { onSuccess, file } = options;
     const formData = new FormData();
     formData.append('file', file);
+    onSuccess('Ok');
+  };
 
-    try {
-      dispatch(getExcelColumns(file));
-      onSuccess('Ok');
-    } catch (err) {
-      onError({ err });
+  useEffect(() => {
+    if (bulkImports.getExcelColumns.data) {
+      setExcelColumnState(bulkImports.getExcelColumns.data);
     }
-  };
+  }, [bulkImports.getExcelColumns.data]);
 
-  const handleTableChange = (table: string) => {
-    if (table) {
-      dispatch(getTableColumns(table));
-    } else {
-      dispatch(clearGetTableColumns());
-    }
-  };
+  const handleOnChange = (info) => {
+    const { file, fileList } = info;
 
-  const handleSheetChange = () => {
-    setFormFields();
-  };
-
-  const handleOnChange = ({ file }) => {
+    const updatedFileList = [];
+    fileList?.forEach((element) => {
+      updatedFileList?.push(element.originFileObj ? element.originFileObj : element);
+    });
+    setDefaultFileList(updatedFileList);
     if (file.status === 'removed') {
-      dispatch(clearExcelColumns());
-      setDefaultFile(null);
-      setExcelColumns(null);
-      setTableColumns(null);
+      if (fileList?.length === 0) {
+        dispatch(clearExcelColumns());
+        setExcelColumnState([]);
+        setDefaultFile(null);
+      } else {
+        const result = excelColumnState.filter((o) =>
+          fileList.some(({ name }) => o.original_filename === name)
+        );
+        setExcelColumnState(result);
+      }
     } else if (file.status === 'done') {
-      setDefaultFile(file);
+      const formData = new FormData();
+      fileList?.forEach((ele) => {
+        formData.append('file', ele.originFileObj ? ele.originFileObj : ele);
+      });
+      try {
+        dispatch(getExcelColumns(formData));
+      } catch (err) {
+        toast.error(err?.toString());
+      }
+      setDefaultFile(fileList);
     }
     formUpload.setFieldsValue({ sheet_name: '' });
-  };
-
-  const onFinish = (values: any) => {
-    const { tenant_id, company_id, bu_id, date_added, ...rest } = values;
-
-    const sqlToExcelMapping = [];
-    Object.entries(rest).forEach(([key, value]) => {
-      if (key && value) {
-        sqlToExcelMapping.push({
-          key: `${key}`,
-          value: `${value}`,
-        });
-      }
-    });
-
-    if (sqlToExcelMapping.length === 0) {
-      return false;
-    }
-    const uploadValue = formUpload.getFieldsValue();
-    const inputValues: IBulkInsertDataset = {
-      excel_to_sql_mapping: sqlToExcelMapping,
-      header_row: Number(formUpload.getFieldValue('header_row')) - 1 ?? 0,
-      file_name: bulkImports.getExcelColumns.data.filename,
-      table_name: uploadValue?.table_name,
-      sheet_name: uploadValue?.sheet_name,
-      foreign_key_values: {
-        tenant_id: tenant_id,
-        bu_id: bu_id,
-        company_id: company_id,
-        date_added: date_added,
-      },
-    };
-    dispatch(bulkInsert(inputValues));
   };
 
   const formUploadInitialValues = {
     header_row: 1,
   };
 
-  const setFormFields = async () => {
-    const skipRows =
-      Number(formUpload.getFieldValue('header_row')) > 0
-        ? Number(formUpload.getFieldValue('header_row')) - 1
-        : 0;
-    let currentSheetName = formUpload.getFieldValue('sheet_name');
-    if (!currentSheetName && bulkImports.getExcelColumns.data?.excel_sheet_columns) {
-      currentSheetName = bulkImports.getExcelColumns.data.excel_sheet_columns[0].sheet;
-      formUpload.setFieldsValue({ sheet_name: currentSheetName });
-    }
-    if (bulkImports.getTableColumns.data && bulkImports.getExcelColumns.data?.excel_sheet_columns) {
-      const columnsArray = ['TenantId', 'CompanyId', 'BU_Id', 'Date Added'];
-      let filterExcelColumns: any = bulkImports.getExcelColumns.data.excel_sheet_columns.find(
-        (e) => e.sheet === currentSheetName
-      ).columns;
-      const filterTableColumns = bulkImports.getTableColumns.data.filter(
-        (x) => !columnsArray.includes(x.name)
-      );
-      if (filterExcelColumns?.length >= skipRows) {
-        filterExcelColumns = filterExcelColumns[skipRows];
-      }
-      const removedColumns = bulkImports.getTableColumns.data.filter((x) =>
-        columnsArray.includes(x.name)
-      );
-
-      setExcelColumns(filterExcelColumns);
-      setTableColumns(filterTableColumns);
-      setRemovedColumns(removedColumns);
-
-      removedColumns.some((x) => x.name === 'TenantId') && dispatch(getTenantLookup());
-
-      const initialValuesData: any = {
-        tenant_id: null,
-        bu_id: null,
-        company_id: null,
-        date_added: moment(),
-      };
-      filterTableColumns.map(function (ele) {
-        initialValuesData[ele.name] =
-          filterExcelColumns?.filter(
-            (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-              ele.name.toLowerCase()?.replace(/\s/g, '')
-          ).length > 0
-            ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name.toLowerCase()?.replace(/\s/g, '')
-              )[0]
-            : '';
-      });
-      form.setFieldsValue(initialValuesData);
-    } else {
-      form.setFieldsValue({});
-      setExcelColumns(null);
-      setTableColumns(null);
-    }
-  };
-
-  const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
-    if (tenantId) {
-      dispatch(getCompanyLookup(tenantId));
-      dispatch(clearBULookUp());
-    } else {
-      dispatch(clearCompanyLookUp());
-      dispatch(clearBULookUp());
-    }
-  };
-
-  const handleCompanyChange = (companyId: number) => {
-    form.setFieldsValue({ company_id: companyId, bu_id: null });
-    if (companyId) {
-      dispatch(getBULookup(companyId));
-    } else {
-      dispatch(clearBULookUp());
-    }
-  };
-
-  const handleBUChange = (buId: number) => {
-    form.setFieldsValue({ bu_id: buId });
-  };
-
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current > moment().endOf('day');
-  };
-
-  const resetPage = () => {
-    dispatch(clearGetTableColumns());
-    dispatch(clearExcelColumns());
-    formUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
-    setDefaultFile(null);
-    setExcelColumns(null);
-    setTableColumns(null);
-  };
-
   useEffect(() => {
-    if (bulkImports.bulkInsert.messages.length > 0) {
+    if (bulkImports.bulkInsert.messages.length > 0 && (count.save > 0 || count.reset > 0)) {
       if (bulkImports.bulkInsert.hasErrors) {
         toast.error(bulkImports.bulkInsert.messages.join(' '));
       } else {
         toast.success(bulkImports.bulkInsert.messages.join(' '));
+        dispatch(clearExcelColumns());
+        dispatch(clearBulkImportMessages());
+        onCancel();
         if (table) {
           history.goBack();
         }
       }
-      dispatch(clearBulkImportMessages());
     }
   }, [bulkImports.bulkInsert.messages]);
-
-  useEffect(() => {
-    setFormFields();
-    maxHeaderRow = bulkImports.getExcelColumns.data?.excel_sheet_columns?.find(
-      (e) => e.sheet === formUpload.getFieldValue('sheet_name')
-    )?.columns?.length;
-  }, [bulkImports.getTableColumns.data, bulkImports.getExcelColumns.data?.excel_sheet_columns]);
 
   useEffect(() => {
     if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
@@ -369,17 +208,6 @@ const BulkImport: React.FC = () => {
     }
   };
 
-  const previewData = (headerValue = 0) => {
-    const currentExcelData = [
-      ...bulkImports.getExcelColumns.data?.excel_sheet_columns?.find(
-        (x) => x.sheet === formUpload?.getFieldValue('sheet_name')
-      )?.columns,
-    ];
-    currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
-    setExcelPreviewData(currentExcelData);
-    formUpload.setFieldsValue({ header_row: headerValue });
-    setFormFields();
-  };
   const dropdownMenu = (
     <div className="checkbox-list-wrapper">
       <ul className="checkbox-list">
@@ -431,34 +259,6 @@ const BulkImport: React.FC = () => {
     }
   }, [bulkImports.saveExcelFileMapping.messages]);
 
-  const geChildDropdown = (excelMappings: any) => {
-    const chidDropdown = [];
-    excelMappings?.map((m: any) => {
-      chidDropdown.push({
-        title: m.sheet_name,
-        value: m.id,
-      });
-    });
-
-    return chidDropdown;
-  };
-
-  const getMenuDropdown = () => {
-    const dropdown = [];
-    const defaultMappingDetail = bulkImports.getExcelMappingColumns.data?.filter(
-      (x) => x.table_name === 'Tenant'
-    );
-    defaultMappingDetail?.map((m: any) => {
-      dropdown.push({
-        title: m.key_word,
-        disabled: true,
-        value: `${m.id}-parent`,
-        children: geChildDropdown(m.config_excel_column_mappings),
-      });
-    });
-    return dropdown;
-  };
-
   const getExcelMappingColumns = () => {
     if (formUpload?.getFieldValue('table_name') && defaultFile?.name) {
       dispatch(
@@ -471,19 +271,6 @@ const BulkImport: React.FC = () => {
   };
 
   useEffect(() => {
-    if (bulkImports.getExcelMappingColumns.data?.length > 0) {
-      const defaultSelected = bulkImports.getExcelMappingColumns.data?.find(
-        (x) => x.is_select === true
-      );
-      if (defaultSelected && defaultSelected.config_excel_column_mappings?.length > 0) {
-        const selectedMappingOrder = defaultSelected.config_excel_column_mappings[0]?.id;
-        formUpload.setFieldsValue({ mapping_order: selectedMappingOrder });
-        onChange(selectedMappingOrder);
-      }
-    }
-  }, [bulkImports.getExcelMappingColumns.data]);
-
-  useEffect(() => {
     getExcelMappingColumns();
   }, [formUpload?.getFieldValue('table_name')]);
 
@@ -491,81 +278,35 @@ const BulkImport: React.FC = () => {
     getExcelMappingColumns();
   }, [defaultFile]);
 
-  const onChange = (value) => {
-    if (value) {
-      const defaultMappingDetail = bulkImports.getExcelMappingColumns.data?.filter(
-        (x) => x.table_name === formUpload.getFieldValue('table_name')
-      );
-      let mappingDetail: any = {};
-      let skipRows;
-      defaultMappingDetail?.forEach((element) => {
-        const mappingOrder = element?.config_excel_column_mappings?.find((y) => y.id === value);
-        if (mappingOrder) {
-          mappingDetail = JSON.parse(mappingOrder?.mapping);
-          formUpload.setFieldsValue({ header_row: mappingOrder.header_row });
-          setFormFields();
+  const handleSave = (data) => {
+    valuesArray.push(data);
+    if (valuesArray?.length > 0 && valuesArray?.length === excelColumnState?.length) {
+      const remainingFiles = [];
+      valuesArray?.forEach((val) => {
+        try {
+          dispatch(bulkInsert(val));
         }
-        skipRows = Number(mappingOrder.header_row) - 1;
+        catch (e) {
+          const orgFileName = excelColumnState?.find(x => x.filename === val?.file_name)?.original_filename;
+          remainingFiles.push(orgFileName)
+        }
       });
-
-      let filterExcelColumns: any = bulkImports.getExcelColumns.data.excel_sheet_columns.find(
-        (e) => e.sheet === formUpload.getFieldValue('sheet_name')
-      ).columns;
-      if (filterExcelColumns?.length >= skipRows) {
-        filterExcelColumns = filterExcelColumns[skipRows];
+      if (remainingFiles?.length > 0) {
+        toast.error("Listed filed does not imported ," + remainingFiles.toString());
       }
-      tableColumns?.forEach((element) => {
-        const mapObj = mappingDetail?.find((x) => x.key === element.name);
-        if (mapObj && filterExcelColumns?.includes(mapObj?.value)) {
-          form.setFieldsValue({ [element.name]: mapObj.value });
-        }
-      });
-    } else {
-      setFormFields();
     }
   };
 
-  const saveColumnMapping = (fileName: string, isPublic: boolean, id = 0) => {
-    const parentId = bulkImports.getExcelMappingColumns.data?.find((x) =>
-      x.config_excel_column_mappings?.find((y) => y.id === id)
-    )?.id;
-    const fieldValues = { ...form.getFieldsValue() };
-    delete fieldValues.tenant_id;
-    delete fieldValues.company_id;
-    delete fieldValues.bu_id;
-    delete fieldValues.date_added;
-    const sqlToExcelMapping = [];
-    Object.entries(fieldValues).forEach(([key, value]) => {
-      if (key && value) {
-        sqlToExcelMapping.push({
-          key: `${key}`,
-          value: `${value}`,
-        });
-      }
-    });
-
-    if (sqlToExcelMapping.length === 0) {
-      return false;
-    }
-    const uploadValue = formUpload.getFieldsValue();
-    const excelMappingObj: ISaveExcelMapping = {
-      id: parentId,
-      table_name: uploadValue?.table_name,
-      key_word: fileName ? fileName : bulkImports.getExcelColumns.data.filename,
-      is_public: isPublic,
-      config_excel_column_mappings: [
-        {
-          sheet_name: uploadValue?.sheet_name,
-          header_row: uploadValue?.header_row,
-          mapping: JSON.stringify(sqlToExcelMapping),
-        },
-      ],
-    };
-
-    dispatch(saveExcelFileMapping(excelMappingObj));
-    setShowMappingModal(false);
+  const onCancel = () => {
+    dispatch(clearExcelColumns());
+    setExcelColumnState([]);
+    valuesArray = [];
+    setDefaultFileList([]);
+    setCount({ save: 0, reset: 0 });
+    formUpload.resetFields();
+    setDefaultFileList([]);
+    setTableName('');
   };
-
   return (
     <>
       <div className="update-excel-page">
@@ -597,79 +338,49 @@ const BulkImport: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="main-card">
-          <div className="input-btns-title">
-            <Form form={formUpload} name="formUpload" initialValues={formUploadInitialValues}>
-              <Row gutter={[30, 20]} className="align-item-start">
-                <Col xs={24} md={6}>
-                  <label className="label w-100"></label>
-                  <Form.Item name={'upload_file'} className="m-0">
-                    <div className="upload-file">
-                      <Dragger
-                        accept=".xls,.xlsx,.csv"
-                        customRequest={uploadFile}
-                        onChange={handleOnChange}
-                        defaultFileList={defaultFile}
-                        className="py-sm"
-                        maxCount={1}
-                        showUploadList={{
-                          showRemoveIcon: true,
-                          removeIcon: (
-                            <img
-                              src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`}
-                              alt=""
-                            />
-                          ),
-                        }}
-                      >
-                        <UploadOutlined />
-                        <span className="ant-upload-text"> Click or drag file </span>
-                      </Dragger>
-                    </div>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={6}>
-                  <div className="form-group m-0">
-                    <label className="label">Table Name</label>
-                    <Form.Item name={'table_name'} className="m-0">
-                      <Select
-                        // suffixIcon={!bulkImports.getTables.loading &&
-                        //   (<img
-                        //     src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
-                        //     alt=""
-                        //   />)
-                        // }
-                        onChange={handleTableChange}
-                        loading={bulkImports.getTables.loading}
-                        showSearch
-                        optionFilterProp="children"
-                        filterOption={(input, option: any) =>
-                          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                        }
-                        filterSort={(optionA: any, optionB: any) =>
-                          optionA.children
-                            ?.toLowerCase()
-                            ?.localeCompare(optionB.children?.toLowerCase())
-                        }
-                      >
-                        {bulkImports.getTables.data?.map(
-                          (option: IDatabaseTable, index: number) => (
-                            <Option key={index} value={option.name}>
-                              {option.name}
-                            </Option>
-                          )
-                        )}
-                      </Select>
+        <div>
+          <div className="main-card">
+            <div>
+              <Form form={formUpload} name="formUpload" initialValues={formUploadInitialValues}>
+                <Row gutter={[30, 20]} className="align-item-start">
+                  <Col xs={24} md={12}>
+                    <label className="label w-100"></label>
+                    <Form.Item name={'upload_file'} className="m-0">
+                      <div className="upload-file">
+                        <Dragger
+                          accept=".xls,.xlsx,.csv,.txt"
+                          customRequest={uploadFile}
+                          multiple={true}
+                          onChange={handleOnChange}
+                          fileList={defaultFileList}
+                          className="py-sm"
+                          showUploadList={{
+                            showRemoveIcon: true,
+                            removeIcon: (
+                              <img
+                                src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`}
+                                alt=""
+                              />
+                            ),
+                          }}
+                        >
+                          <UploadOutlined />
+                          <span className="ant-upload-text"> Click or drag file </span>
+                        </Dragger>
+                      </div>
                     </Form.Item>
-                  </div>
-                </Col>
-                {bulkImports.getExcelColumns.data?.excel_sheet_columns && (
-                  <Col xs={24} md={6}>
+                  </Col>
+                  <Col xs={24} md={8}>
                     <div className="form-group m-0">
-                      <label className="label">Sheet Name</label>
-                      <Form.Item name={'sheet_name'} className="m-0">
+                      <label className="label">Table Name</label>
+                      <Form.Item name={'table_name'} className="m-0">
                         <Select
+                          loading={bulkImports.getTables.loading}
+                          onChange={(name: string) => {
+                            setTableName(name);
+                          }}
                           showSearch
+                          allowClear
                           optionFilterProp="children"
                           filterOption={(input, option: any) =>
                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -679,19 +390,11 @@ const BulkImport: React.FC = () => {
                               ?.toLowerCase()
                               ?.localeCompare(optionB.children?.toLowerCase())
                           }
-                          suffixIcon={
-                            <img
-                              src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
-                              alt=""
-                            />
-                          }
-                          onChange={handleSheetChange}
-                          loading={false}
                         >
-                          {bulkImports.getExcelColumns.data?.excel_sheet_columns.map(
-                            (option: IExcelSheetColumn, index: number) => (
-                              <Option key={index} value={option.sheet}>
-                                {option.sheet}
+                          {bulkImports.getTables.data?.map(
+                            (option: IDatabaseTable, index: number) => (
+                              <Option key={index} value={option.name}>
+                                {option.name}
                               </Option>
                             )
                           )}
@@ -699,351 +402,58 @@ const BulkImport: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Col>
-                )}
-                {bulkImports.getExcelColumns.data?.excel_sheet_columns && (
-                  <Col xs={24} md={6}>
-                    <div className="form-group m-0">
-                      <label className="label">Header Row</label>
-                      <Form.Item name="header_row" className="m-0" rules={[{ type: 'integer' }]}>
-                        <InputNumber
-                          min={1}
-                          className="form-control w-100"
-                          onChange={setFormFields}
-                          max={maxHeaderRow}
-                        />
-                      </Form.Item>
-                    </div>
-                  </Col>
-                )}
-                {formUpload?.getFieldValue('table_name') &&
-                  defaultFile?.name &&
-                  bulkImports.getExcelColumns.data?.excel_sheet_columns && (
-                    <Col xs={24} md={6}>
-                      <div className="form-group m-0">
-                        <label className="label">Mapping Order</label>
-                        <Form.Item name="mapping_order" className="m-0">
-                          <TreeSelect
-                            style={{ width: '100%' }}
-                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                            treeData={getMenuDropdown()}
-                            placeholder="Default: Select"
-                            onChange={onChange}
-                            treeDefaultExpandAll
-                            allowClear
-                          />
-                        </Form.Item>
-                      </div>
-                    </Col>
-                  )}
-                {bulkImports.getExcelColumns.data?.excel_sheet_columns && (
-                  <Col xs={24} md={6}>
-                    <div className="form-group m-0">
-                      <label className="label"></label>
-                      <div className="bottom-fix">
-                        <Button
-                          type="primary"
-                          className="w-100"
-                          onClick={() => {
-                            setShowManageExcel(true);
-                          }}
-                        >
-                          Manage Excel
-                        </Button>
-                      </div>
-                    </div>
-                  </Col>
-                )}
-              </Row>
-            </Form>
+                </Row>
+              </Form>
+            </div>
           </div>
-          {(bulkImports.getExcelColumns.loading || bulkImports.getTableColumns.loading) && (
+          <br />
+          <br />
+          {bulkImports.getExcelColumns.loading ? (
             <div className="spin-loader">
               <Spin spinning={true} />
             </div>
-          )}
-          <Form
-            form={form}
-            name="uploadExcelSheet"
-            onFinish={onFinish}
-            validateMessages={validateMessages}
-          >
-            {!bulkImports.getExcelColumns.loading &&
-              !bulkImports.getTableColumns.loading &&
-              tableColumns &&
-              tableColumns.length > 0 &&
-              excelColumns && (
-                <>
-                  {removedColumns && removedColumns.length > 0 && (
-                    <Row gutter={[30, 0]} className="form-label-hide input-btns-title">
-                      {removedColumns.some((x) => x.name === 'TenantId') && (
-                        <Col xs={24} sm={12} md={8}>
-                          <div className="form-group m-0">
-                            <label className="label">Tenant</label>
-                            <Form.Item
-                              name="tenant_id"
-                              className="m-0"
-                              label="Tenant"
-                              rules={[
-                                {
-                                  required:
-                                    bulkImports.getTableColumns.data.find(
-                                      (x) => x.name === 'TenantId'
-                                    )?.is_nullable === 'NO'
-                                      ? true
-                                      : false,
-                                },
-                              ]}
-                            >
-                              <Select
-                                onChange={handleTenantChange}
-                                allowClear
-                                loading={commonLookups.tenantLookup.loading}
-                                showSearch
-                                optionFilterProp="children"
-                                filterOption={(input, option: any) =>
-                                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                                filterSort={(optionA: any, optionB: any) =>
-                                  optionA.children
-                                    ?.toLowerCase()
-                                    ?.localeCompare(optionB.children?.toLowerCase())
-                                }
-                              >
-                                {commonLookups.tenantLookup.data.map((option: ILookup) => (
-                                  <Option key={option.id} value={option.id}>
-                                    {option.name}
-                                  </Option>
-                                ))}
-                              </Select>
-                            </Form.Item>
-                          </div>
-                        </Col>
-                      )}
-                      {removedColumns.some((x) => x.name === 'CompanyId') && (
-                        <Col xs={24} sm={12} md={8}>
-                          <div className="form-group m-0">
-                            <label className="label">Company</label>
-                            <Form.Item
-                              name="company_id"
-                              className="m-0"
-                              label="Company"
-                              rules={[
-                                {
-                                  required:
-                                    bulkImports.getTableColumns.data.find(
-                                      (x) => x.name === 'CompanyId'
-                                    )?.is_nullable === 'NO'
-                                      ? true
-                                      : false,
-                                },
-                              ]}
-                            >
-                              <Select
-                                onChange={handleCompanyChange}
-                                allowClear
-                                loading={commonLookups.companyLookup.loading}
-                                showSearch
-                                optionFilterProp="children"
-                                filterOption={(input, option: any) =>
-                                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                                filterSort={(optionA: any, optionB: any) =>
-                                  optionA.children
-                                    ?.toLowerCase()
-                                    ?.localeCompare(optionB.children?.toLowerCase())
-                                }
-                              >
-                                {commonLookups.companyLookup.data.map((option: ILookup) => (
-                                  <Option key={option.id} value={option.id}>
-                                    {option.name}
-                                  </Option>
-                                ))}
-                              </Select>
-                            </Form.Item>
-                          </div>
-                        </Col>
-                      )}
-                      {removedColumns.some((x) => x.name === 'BU_Id') && (
-                        <Col xs={24} sm={12} md={8}>
-                          <div className="form-group m-0">
-                            <label className="label">BU</label>
-                            <Form.Item
-                              name="bu_id"
-                              className="m-0"
-                              label="BU"
-                              rules={[
-                                {
-                                  required:
-                                    bulkImports.getTableColumns.data.find((x) => x.name === 'BU_Id')
-                                      ?.is_nullable === 'NO'
-                                      ? true
-                                      : false,
-                                },
-                              ]}
-                            >
-                              <Select
-                                onChange={handleBUChange}
-                                allowClear
-                                loading={commonLookups.buLookup.loading}
-                                showSearch
-                                optionFilterProp="children"
-                                filterOption={(input, option: any) =>
-                                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                                filterSort={(optionA: any, optionB: any) =>
-                                  optionA.children
-                                    ?.toLowerCase()
-                                    ?.localeCompare(optionB.children?.toLowerCase())
-                                }
-                              >
-                                {commonLookups.buLookup.data.map((option: ILookup) => (
-                                  <Option key={option.id} value={option.id}>
-                                    {option.name}
-                                  </Option>
-                                ))}
-                              </Select>
-                            </Form.Item>
-                          </div>
-                        </Col>
-                      )}
-                      {removedColumns.some((x) => x.name === 'Date Added') && (
-                        <Col xs={24} sm={12} md={8}>
-                          <div className="form-group m-0">
-                            <label className="label">Date Added</label>
-                            <Form.Item
-                              name="date_added"
-                              label="Date Added"
-                              className="m-0"
-                              rules={[
-                                {
-                                  required:
-                                    bulkImports.getTableColumns.data.find(
-                                      (x) => x.name === 'Date Added'
-                                    )?.is_nullable === 'NO'
-                                      ? true
-                                      : false,
-                                },
-                              ]}
-                            >
-                              <DatePicker className="w-100" disabledDate={disabledDate} />
-                            </Form.Item>
-                          </div>
-                        </Col>
-                      )}
-                    </Row>
-                  )}
-                  <Row gutter={[30, 0]} className="form-label-hide">
-                    <Col xs={24} md={12} lg={12} xl={8}>
-                      <div className="form-group form-inline">
-                        <label className="label strong">Database Column</label>
-                        <label className="strong">Excel Column</label>
-                      </div>
-                    </Col>
-                    <Col xs={24} md={12} lg={12} xl={8} className="sm-none">
-                      <div className="form-group form-inline">
-                        <label className="label strong">Database Column</label>
-                        <label className="strong">Excel Column</label>
-                      </div>
-                    </Col>
-                    <Col xs={24} md={12} lg={12} xl={8} className="lg-none">
-                      <div className="form-group form-inline">
-                        <label className="label strong">Database Column</label>
-                        <label className="strong">Excel Column</label>
-                      </div>
-                    </Col>
-                    {tableColumns.map((col, index: number) => (
-                      <Col xs={24} md={12} lg={12} xl={8} key={index}>
-                        <div className="form-group form-inline">
-                          <label className="label">{col.name}</label>
-                          <Form.Item
-                            name={col.name}
-                            className="m-0 w-100"
-                            label={col.name}
-                            rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
-                          >
-                            <Select
-                              showSearch
-                              allowClear
-                              suffixIcon={
-                                <img
-                                  src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
-                                  alt=""
-                                />
-                              }
-                              optionFilterProp="children"
-                              filterOption={(input, option: any) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                              }
-                              filterSort={(optionA: any, optionB: any) =>
-                                optionA.children
-                                  ?.toLowerCase()
-                                  ?.localeCompare(optionB.children?.toLowerCase())
-                              }
-                            >
-                              {excelColumns.map((option: string, index: number) => (
-                                <Option key={index} value={option}>
-                                  {option}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Form.Item>
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                  <div className="btns-block">
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      loading={bulkImports.bulkInsert.loading}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        formUpload.getFieldValue('mapping_order')
-                          ? saveColumnMapping(
-                              defaultFile?.name?.split('.')[0],
-                              false,
-                              formUpload.getFieldValue('mapping_order')
-                            )
-                          : setShowMappingModal(true);
-                      }}
-                      loading={bulkImports.saveExcelFileMapping.loading}
-                    >
-                      Save Mapping
-                    </Button>
-                    <Button onClick={() => resetPage()}>Cancel</Button>
+          ) : (
+            excelColumnState?.length > 0 &&
+            bulkImports.getExcelColumns.data?.map(
+              (data: any, index) =>
+                excelColumnState?.find((x) => x.original_filename === data.original_filename) && (
+                  <div key={'render-bi-' + index}>
+                    <RenderBI
+                      handleSave={(data: any) => handleSave(data)}
+                      count={count}
+                      fileData={data}
+                      seqNumber={index + 1}
+                      table={tableName}
+                    ></RenderBI>
+                    <br />
+                    <br />
                   </div>
-                </>
-              )}
-          </Form>
+                )
+            )
+          )}
+          <div className="btns-block">
+            <Button
+              type="primary"
+              onClick={() => {
+                setCount({ ...count, save: count.save + 1 });
+                valuesArray = [];
+              }}
+              loading={bulkImports.bulkInsert.loading}
+            >
+              Save
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                setCount({ save: 0, reset: count.reset + 1 });
+                onCancel();
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       </div>
-      <PreviewExcel
-        showModal={showManageExcel}
-        maxCount={maxHeaderRow}
-        handleModalClose={() => {
-          setShowManageExcel(false);
-          if (!formUpload.getFieldValue('header_row')) {
-            formUpload.setFieldsValue({ header_row: 1 });
-          }
-        }}
-        previewData={previewData}
-        records={excelPreviewData}
-        headerRowCount={formUpload.getFieldValue('header_row')}
-      ></PreviewExcel>
-      <MappingColumn
-        handleModalClose={() => {
-          setShowMappingModal(false);
-        }}
-        showModal={showMappingModal}
-        fileName={defaultFile?.name?.split('.')[0]}
-        saveMapping={(fileName, isPublic) => {
-          saveColumnMapping(fileName, isPublic);
-        }}
-      ></MappingColumn>
     </>
   );
 };

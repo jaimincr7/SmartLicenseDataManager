@@ -145,7 +145,7 @@ export const bulkImportSlice = createSlice({
     [getExcelColumns.pending.type]: (state) => {
       state.getExcelColumns.loading = true;
     },
-    [getExcelColumns.fulfilled.type]: (state, action: PayloadAction<IGetExcelColumns>) => {
+    [getExcelColumns.fulfilled.type]: (state, action: PayloadAction<IGetExcelColumns[]>) => {
       state.getExcelColumns.data = action.payload;
       state.getExcelColumns.loading = false;
       state.getExcelColumns.hasErrors = false;
