@@ -348,7 +348,7 @@ const BulkImport: React.FC = () => {
                     <Form.Item name={'upload_file'} className="m-0">
                       <div className="upload-file">
                         <Dragger
-                          accept=".xls,.xlsx,.csv"
+                          accept=".xls,.xlsx,.csv,.txt"
                           customRequest={uploadFile}
                           multiple={true}
                           onChange={handleOnChange}
