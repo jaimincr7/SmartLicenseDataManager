@@ -1,27 +1,30 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import { ISearchConfigComponent, IConfigComponent } from './component.model';
+import {
+  ISearchConfigExclusionOperation,
+  IConfigExclusionOperation,
+} from './exclusionOperation.model';
 
-class ConfigComponentService {
-  ENDPOINT = '/config-component';
+class ConfigExclusionOperationService {
+  ENDPOINT = '/config-exclusion-operation';
 
-  public async searchConfigComponent(
-    searchParams?: ISearchConfigComponent
-  ): Promise<IApiResponse<ISearchResponse<IConfigComponent>>> {
+  public async searchConfigExclusionOperation(
+    searchParams?: ISearchConfigExclusionOperation
+  ): Promise<IApiResponse<ISearchResponse<IConfigExclusionOperation>>> {
     const url = `${this.ENDPOINT}/search`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
   }
 
-  public async getConfigComponentById(id: number): Promise<any> {
+  public async getConfigExclusionOperationById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }
 
-  public async saveConfigComponent(data: IConfigComponent): Promise<any> {
+  public async saveConfigExclusionOperation(data: IConfigExclusionOperation): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {
       const url = `${this.ENDPOINT}/${id}`;
@@ -36,14 +39,14 @@ class ConfigComponentService {
     }
   }
 
-  public async deleteConfigComponent(id: number): Promise<any> {
+  public async deleteConfigExclusionOperation(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
       return res.data;
     });
   }
 
-  public async exportExcelFile(searchParams?: ISearchConfigComponent): Promise<any> {
+  public async exportExcelFile(searchParams?: ISearchConfigExclusionOperation): Promise<any> {
     const url = `${this.ENDPOINT}/search`;
     return request({
       url,
@@ -55,4 +58,4 @@ class ConfigComponentService {
     });
   }
 }
-export default new ConfigComponentService();
+export default new ConfigExclusionOperationService();

@@ -17,6 +17,9 @@ import Tenant from './Tenant';
 import User from './User';
 import ComponentTableColumn from './ComponentTableColumn';
 import ExclusionComponent from './ExclusionComponent';
+import ExclusionLocation from './ExclusionLocation';
+import ExclusionOperation from './ExclusionOperation';
+import ExclusionType from './ExclusionType';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -132,22 +135,6 @@ const AdministrationRoutes: React.FC = () => {
           <Route exact path={`${match.path}/config-component`} component={Component} />
         )}
 
-        {/* ComponentTableColumn */}
-        {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
-          <Route
-            exact
-            path={`${match.path}/config-component-table-column/:id`}
-            component={ComponentTableColumn}
-          />
-        )}
-        {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
-          <Route
-            exact
-            path={`${match.path}/config-component-table-column`}
-            component={ComponentTableColumn}
-          />
-        )}
-
         {/* Exclusion Component */}
         {ability.can(Action.View, Page.ConfigExclusionComponent) && (
           <Route
@@ -161,6 +148,70 @@ const AdministrationRoutes: React.FC = () => {
             exact
             path={`${match.path}/config-exclusion-component`}
             component={ExclusionComponent}
+          />
+        )}
+
+        {/* Exclusion Location */}
+        {ability.can(Action.View, Page.ConfigExclusionLocation) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-location/:id`}
+            component={ExclusionLocation}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionLocation) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-location`}
+            component={ExclusionLocation}
+          />
+        )}
+
+        {/* Exclusion Operation */}
+        {ability.can(Action.View, Page.ConfigExclusionOperation) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-operation/:id`}
+            component={ExclusionOperation}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionOperation) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-operation`}
+            component={ExclusionOperation}
+          />
+        )}
+
+        {/* Exclusion Type */}
+        {ability.can(Action.View, Page.ConfigExclusionType) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-type/:id`}
+            component={ExclusionType}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionType) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-type`}
+            component={ExclusionType}
+          />
+        )}
+
+        {/* Component Table Column */}
+        {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
+          <Route
+            exact
+            path={`${match.path}/config-component-table-column/:id`}
+            component={ComponentTableColumn}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
+          <Route
+            exact
+            path={`${match.path}/config-component-table-column`}
+            component={ComponentTableColumn}
           />
         )}
 

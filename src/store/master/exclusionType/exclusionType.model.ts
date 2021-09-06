@@ -1,11 +1,11 @@
 import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
-import { IConfigComponent } from '../../../services/config/component/component.model';
+import { IConfigExclusionType } from '../../../services/master/exclusionType/exclusionType.model';
 
-export interface IConfigComponentState {
+export interface IConfigExclusionTypeState {
   search: {
     loading: boolean;
     hasErrors: boolean;
-    data: IConfigComponent[];
+    data: IConfigExclusionType[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
@@ -14,7 +14,7 @@ export interface IConfigComponentState {
   getById: {
     loading: boolean;
     hasErrors: boolean;
-    data: IConfigComponent;
+    data: IConfigExclusionType;
   };
   save: {
     loading: boolean;

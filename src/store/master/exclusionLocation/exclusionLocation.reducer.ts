@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody } from '../../../common/models/common';
 import { RootState } from '../../app.model';
-import { IConfigComponentState } from './component.model';
+import { booleanLookup } from '../../../common/constants/common';
+import { IConfigExclusionLocationState } from './exclusionLocation.model';
 import {
-  deleteConfigComponent,
-  getConfigComponentById,
-  saveConfigComponent,
-  searchConfigComponent,
-} from './component.action';
-import { IConfigComponent } from '../../../services/config/component/component.model';
+  deleteConfigExclusionLocation,
+  getConfigExclusionLocationById,
+  saveConfigExclusionLocation,
+  searchConfigExclusionLocation,
+} from './exclusionLocation.action';
+import { IConfigExclusionLocation } from '../../../services/master/exclusionLocation/exclusionLocation.model';
 
-export const initialState: IConfigComponentState = {
+export const initialState: IConfigExclusionLocationState = {
   search: {
     loading: false,
     hasErrors: false,
@@ -41,18 +42,18 @@ export const initialState: IConfigComponentState = {
   },
 };
 
-export const configComponentSlice = createSlice({
-  name: 'configComponent',
+export const configExclusionLocationSlice = createSlice({
+  name: 'configExclusionLocation',
   initialState,
   reducers: {
-    clearConfigComponent: () => {
+    clearConfigExclusionLocation: () => {
       return initialState;
     },
-    clearConfigComponentMessages: (state) => {
+    clearConfigExclusionLocationMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
     },
-    clearConfigComponentGetById: (state) => {
+    clearConfigExclusionLocationGetById: (state) => {
       state.getById.data = null;
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
@@ -61,19 +62,22 @@ export const configComponentSlice = createSlice({
   },
   extraReducers: {
     // Search
-    [searchConfigComponent.pending.type]: (state) => {
+    [searchConfigExclusionLocation.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchConfigComponent.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      const { records, total_count, table_name, column_selection } = action.payload;
-      state.search.data = records;
-      state.search.count = total_count;
+    [searchConfigExclusionLocation.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      const { search_result, ...rest } = action.payload;
+      state.search.data = search_result.records;
+      state.search.count = search_result.total_count;
+      if (JSON.stringify(rest) !== '{}') {
+        state.search.lookups = { ...rest, booleanLookup };
+      }
       state.search.loading = false;
       state.search.hasErrors = false;
-      state.search.tableName = table_name;
-      if (column_selection) {
-        state.tableColumnSelection.id = column_selection.id;
-        const tableSelectionObj = JSON.parse(column_selection.columns as any);
+      state.search.tableName = search_result.table_name;
+      if (search_result.column_selection) {
+        state.tableColumnSelection.id = search_result.column_selection.id;
+        const tableSelectionObj = JSON.parse(search_result.column_selection.columns as any);
         if (tableSelectionObj.columns) {
           state.tableColumnSelection.column_orders = tableSelectionObj.column_orders;
           state.tableColumnSelection.columns = tableSelectionObj.columns;
@@ -81,33 +85,36 @@ export const configComponentSlice = createSlice({
           state.tableColumnSelection.columns = tableSelectionObj;
         }
       }
-      state.tableColumnSelection.table_name = table_name;
+      state.tableColumnSelection.table_name = search_result.table_name;
     },
-    [searchConfigComponent.rejected.type]: (state) => {
+    [searchConfigExclusionLocation.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
 
     // Get by id
-    [getConfigComponentById.pending.type]: (state) => {
+    [getConfigExclusionLocationById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getConfigComponentById.fulfilled.type]: (state, action: PayloadAction<IConfigComponent>) => {
+    [getConfigExclusionLocationById.fulfilled.type]: (
+      state,
+      action: PayloadAction<IConfigExclusionLocation>
+    ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
     },
-    [getConfigComponentById.rejected.type]: (state) => {
+    [getConfigExclusionLocationById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
     },
 
     // Save
-    [saveConfigComponent.pending.type]: (state) => {
+    [saveConfigExclusionLocation.pending.type]: (state) => {
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveConfigComponent.fulfilled.type]: (
+    [saveConfigExclusionLocation.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -115,17 +122,17 @@ export const configComponentSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveConfigComponent.rejected.type]: (state) => {
+    [saveConfigExclusionLocation.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
     },
 
     // Delete
-    [deleteConfigComponent.pending.type]: (state) => {
+    [deleteConfigExclusionLocation.pending.type]: (state) => {
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteConfigComponent.fulfilled.type]: (
+    [deleteConfigExclusionLocation.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -133,7 +140,7 @@ export const configComponentSlice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteConfigComponent.rejected.type]: (state) => {
+    [deleteConfigExclusionLocation.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },
@@ -141,15 +148,15 @@ export const configComponentSlice = createSlice({
 });
 
 // A selector
-export const configComponentSelector = (state: RootState) => state.configComponent;
+export const configExclusionLocationSelector = (state: RootState) => state.configExclusionLocation;
 
 // Actions
 export const {
-  clearConfigComponent,
-  clearConfigComponentMessages,
-  clearConfigComponentGetById,
+  clearConfigExclusionLocation,
+  clearConfigExclusionLocationMessages,
+  clearConfigExclusionLocationGetById,
   setTableColumnSelection,
-} = configComponentSlice.actions;
+} = configExclusionLocationSlice.actions;
 
 // The reducer
-export default configComponentSlice.reducer;
+export default configExclusionLocationSlice.reducer;

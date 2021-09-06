@@ -2,26 +2,30 @@ import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
-import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
+import {
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
+import _ from 'lodash';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import {
-  clearConfigComponentMessages,
-  configComponentSelector,
+  clearConfigExclusionTypeMessages,
+  configExclusionTypeSelector,
   setTableColumnSelection,
-} from '../../../../store/master/component/component.reducer';
+} from '../../../../store/master/exclusionType/exclusionType.reducer';
 import {
-  deleteConfigComponent,
-  searchConfigComponent,
-} from '../../../../store/master/component/component.action';
-import configComponentService from '../../../../services/master/component/component.service';
+  deleteConfigExclusionType,
+  searchConfigExclusionType,
+} from '../../../../store/master/exclusionType/exclusionType.action';
+import configExclusionTypeService from '../../../../services/master/exclusionType/exclusionType.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
-  const configComponent = useAppSelector(configComponentSelector);
+  const configExclusionType = useAppSelector(configExclusionTypeSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -33,11 +37,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }));
 
   const exportExcelFile = (searchData: ISearch) => {
-    return configComponentService.exportExcelFile(searchData);
+    return configExclusionTypeService.exportExcelFile(searchData);
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, configComponent.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, configExclusionType.search.tableName, form);
   };
 
   const getTableColumns = (form) => {
@@ -69,27 +73,44 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      {
+        title: <span className="dragHandler">Is Enabled</span>,
+        column: 'IsEnabled',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'is_enabled',
+              configExclusionType.search.lookups?.booleanLookup
+            ),
+            dataIndex: 'is_enabled',
+            key: 'is_enabled',
+            ellipsis: true,
+            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+          },
+        ],
+      },
     ];
   };
 
-  const removeConfigComponent = (id: number) => {
-    dispatch(deleteConfigComponent(id));
+  const removeConfigExclusionType = (id: number) => {
+    dispatch(deleteConfigExclusionType(id));
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Can I={Action.Update} a={Page.ConfigComponent}>
+      <Can I={Action.Update} a={Page.ConfigExclusionType}>
         <a
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/config/config-component/${data.id}`);
+            history.push(`/administration/config-exclusion-type/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.Delete} a={Page.ConfigComponent}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeConfigComponent(data.id)}>
+      <Can I={Action.Delete} a={Page.ConfigExclusionType}>
+        <Popconfirm title="Sure to delete?" onConfirm={() => removeConfigExclusionType(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -102,14 +123,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={ability.can(Action.Add, Page.ConfigComponent)}
+        showAddButton={ability.can(Action.Add, Page.ConfigExclusionType)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
-        reduxSelector={configComponentSelector}
-        searchTableData={searchConfigComponent}
-        clearTableDataMessages={clearConfigComponentMessages}
+        reduxSelector={configExclusionTypeSelector}
+        searchTableData={searchConfigExclusionType}
+        clearTableDataMessages={clearConfigExclusionTypeMessages}
         setTableColumnSelection={setTableColumnSelection}
       />
     </>

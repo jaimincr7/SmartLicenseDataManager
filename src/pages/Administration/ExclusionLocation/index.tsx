@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import { IConfigComponentProps } from './component.model';
+import { IConfigExclusionLocationProps } from './exclusionLocation.model';
 import React from 'react';
 import MainTable from './MainTable/index';
 import { useHistory } from 'react-router-dom';
@@ -9,14 +9,14 @@ import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import AddConfigComponentModal from './AddComponentModal';
+import AddConfigExclusionLocationModal from './AddExclusionLocationModal';
 import {
-  clearConfigComponent,
-  configComponentSelector,
-} from '../../../store/master/component/component.reducer';
+  clearConfigExclusionLocation,
+  configExclusionLocationSelector,
+} from '../../../store/master/exclusionLocation/exclusionLocation.reducer';
 
-const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
-  const configComponent = useAppSelector(configComponentSelector);
+const ConfigExclusionLocation: React.FC<IConfigExclusionLocationProps> = (props) => {
+  const configExclusionLocation = useAppSelector(configExclusionLocationSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -37,7 +37,7 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearConfigComponent());
+      dispatch(clearConfigExclusionLocation());
     };
   }, []);
 
@@ -49,20 +49,20 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
     <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">
-          <BreadCrumbs pageName={Page.ConfigComponent} />
+          <BreadCrumbs pageName={Page.ConfigExclusionLocation} />
         </h4>
       </div>
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.ConfigComponent}>
+            <Can I={Action.ImportToExcel} a={Page.ConfigExclusionLocation}>
               <Col>
                 <Button
                   className="btn-icon"
                   onClick={() =>
                     history.push(
                       `/data-input/bulk-import/${encodeURIComponent(
-                        configComponent.search.tableName
+                        configExclusionLocation.search.tableName
                       )}`
                     )
                   }
@@ -90,11 +90,11 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddConfigComponentModal
+        <AddConfigExclusionLocationModal
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/config/config-component');
+            history.push('/administration/config-exclusion-location');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -104,7 +104,7 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
         <DeleteDatasetModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={configComponent.search.tableName}
+          tableName={configExclusionLocation.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
@@ -112,4 +112,4 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
   );
 };
 
-export default ConfigComponent;
+export default ConfigExclusionLocation;

@@ -136,13 +136,6 @@ class CommonService {
     });
   }
 
-  public async getCmdbExclusionTypeLookup(): Promise<IApiResponse<ILookup>> {
-    const url = `/config-exclusion-type/lookup`;
-    return request({ url, method: 'GET' }).then((res) => {
-      return res.data;
-    });
-  }
-
   public async getConfigComponentLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-component/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -152,6 +145,13 @@ class CommonService {
 
   public async getConfigComponentTableColumnLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-component-table-column/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCmdbExclusionTypeLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-exclusion-type/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

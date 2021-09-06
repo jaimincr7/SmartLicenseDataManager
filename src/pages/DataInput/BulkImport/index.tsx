@@ -328,9 +328,9 @@ const BulkImport: React.FC = () => {
             )}
           </div>
         </div>
-        <div >
+        <div>
           <div className="main-card">
-            <div >
+            <div>
               <Form form={formUpload} name="formUpload" initialValues={formUploadInitialValues}>
                 <Row gutter={[30, 20]} className="align-item-start">
                   <Col xs={24} md={12}>

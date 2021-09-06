@@ -95,6 +95,16 @@ export const getCmdbExclusionComponentLookup = createAsyncThunk(
   }
 );
 
+export const getCmdbOperatingSystemLookup = createAsyncThunk(
+  'getCmdbOperatingSystemLookup',
+  async () => {
+    const response = await commonService.getCmdbOperatingSystemLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getConfigComponentLookup = createAsyncThunk('getConfigComponentLookup', async () => {
   const response = await commonService.getConfigComponentLookup().then((res) => {
     return res.body;
@@ -129,16 +139,6 @@ export const getCmdbExclusionOperationLookup = createAsyncThunk(
   }
 );
 
-export const getCmdbOperatingSystemLookup = createAsyncThunk(
-  'getCmdbOperatingSystemLookup',
-  async () => {
-    const response = await commonService.getCmdbOperatingSystemLookup().then((res) => {
-      return res.body;
-    });
-    return response.data;
-  }
-);
-
 export const getCmdbProcessorLookup = createAsyncThunk('getCmdbProcessorLookup', async () => {
   const response = await commonService.getCmdbProcessorLookup().then((res) => {
     return res.body;
@@ -156,6 +156,16 @@ export const getCmdbExclusionLocationLookup = createAsyncThunk(
   }
 );
 
+export const getCmdbVirtualizationLookup = createAsyncThunk(
+  'getCmdbVirtualizationLookup',
+  async () => {
+    const response = await commonService.getCmdbVirtualizationLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getCmdbDeviceLookup = createAsyncThunk('getCmdbDeviceLookup', async () => {
   const response = await commonService.getCmdbDeviceLookup().then((res) => {
     return res.body;
@@ -167,16 +177,6 @@ export const getCmdbExclusionTypeLookup = createAsyncThunk(
   'getCmdbExclusionTypeLookup',
   async () => {
     const response = await commonService.getCmdbExclusionTypeLookup().then((res) => {
-      return res.body;
-    });
-    return response.data;
-  }
-);
-
-export const getCmdbVirtualizationLookup = createAsyncThunk(
-  'getCmdbVirtualizationLookup',
-  async () => {
-    const response = await commonService.getCmdbVirtualizationLookup().then((res) => {
       return res.body;
     });
     return response.data;

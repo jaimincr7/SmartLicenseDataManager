@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Spin, Switch } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -6,30 +6,29 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { IConfigComponent } from '../../../../services/master/component/component.model';
+import { IConfigExclusionType } from '../../../../services/master/exclusionType/exclusionType.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
-  getConfigComponentById,
-  saveConfigComponent,
-} from '../../../../store/master/component/component.action';
+  getConfigExclusionTypeById,
+  saveConfigExclusionType,
+} from '../../../../store/master/exclusionType/exclusionType.action';
 import {
-  clearConfigComponentGetById,
-  clearConfigComponentMessages,
-  configComponentSelector,
-} from '../../../../store/master/component/component.reducer';
-import { IAddConfigComponentProps } from './addComponent.model';
+  clearConfigExclusionTypeGetById,
+  clearConfigExclusionTypeMessages,
+  configExclusionTypeSelector,
+} from '../../../../store/master/exclusionType/exclusionType.reducer';
+import { IAddConfigExclusionTypeProps } from './addExclusionType.model';
 
-const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
-  const configComponent = useAppSelector(configComponentSelector);
+const AddConfigExclusionTypeModal: React.FC<IAddConfigExclusionTypeProps> = (props) => {
+  const configExclusionType = useAppSelector(configExclusionTypeSelector);
   const dispatch = useAppDispatch();
-
   const { id, showModal, handleModalClose, refreshDataTable } = props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.ConfigComponent} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.ConfigExclusionType} level={1} />
       </>
     );
   }, [isNew]);
@@ -39,22 +38,24 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  let initialValues: IConfigComponent = {
+  let initialValues: IConfigExclusionType = {
     name: '',
+    is_enabled: false,
   };
 
   const onFinish = (values: any) => {
-    const inputValues: IConfigComponent = {
+    const inputValues: IConfigExclusionType = {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigComponent(inputValues));
+    dispatch(saveConfigExclusionType(inputValues));
   };
 
-  const fillValuesOnEdit = async (data: IConfigComponent) => {
+  const fillValuesOnEdit = async (data: IConfigExclusionType) => {
     if (data) {
       initialValues = {
         name: data.name,
+        is_enabled: data.is_enabled,
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
@@ -62,31 +63,31 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
   };
 
   useEffect(() => {
-    if (configComponent.save.messages.length > 0) {
-      if (configComponent.save.hasErrors) {
-        toast.error(configComponent.save.messages.join(' '));
+    if (configExclusionType.save.messages.length > 0) {
+      if (configExclusionType.save.hasErrors) {
+        toast.error(configExclusionType.save.messages.join(' '));
       } else {
-        toast.success(configComponent.save.messages.join(' '));
+        toast.success(configExclusionType.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearConfigComponentMessages());
+      dispatch(clearConfigExclusionTypeMessages());
     }
-  }, [configComponent.save.messages]);
+  }, [configExclusionType.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && configComponent.getById.data) {
-      const data = configComponent.getById.data;
+    if (+id > 0 && configExclusionType.getById.data) {
+      const data = configExclusionType.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [configComponent.getById.data]);
+  }, [configExclusionType.getById.data]);
 
   useEffect(() => {
     if (+id > 0) {
-      dispatch(getConfigComponentById(+id));
+      dispatch(getConfigExclusionTypeById(+id));
     }
     return () => {
-      dispatch(clearConfigComponentGetById());
+      dispatch(clearConfigExclusionTypeGetById());
     };
   }, [dispatch]);
 
@@ -100,14 +101,14 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
         onCancel={handleModalClose}
         footer={false}
       >
-        {configComponent.getById.loading ? (
+        {configExclusionType.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={configComponent.getById.loading} />
+            <Spin spinning={configExclusionType.getById.loading} />
           </div>
         ) : (
           <Form
             form={form}
-            name="configComponent"
+            name="configExclusionType"
             initialValues={initialValues}
             onFinish={onFinish}
             validateMessages={validateMessages}
@@ -120,10 +121,18 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: true, max: 500 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="is_enabled" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  <label className="label">Is Enabled</label>
                 </div>
               </Col>
             </Row>
@@ -132,7 +141,7 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configComponent.save.loading}
+                loading={configExclusionType.save.loading}
               >
                 {submitButtonText}
               </Button>
@@ -146,4 +155,4 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
     </>
   );
 };
-export default AddConfigComponentModal;
+export default AddConfigExclusionTypeModal;
