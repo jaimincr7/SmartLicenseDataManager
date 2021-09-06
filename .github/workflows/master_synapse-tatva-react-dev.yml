@@ -11,18 +11,25 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    
+    env:
+        NODE_PATH: '/src'
+        REACT_APP_BASE_API: 'https://synapse-tatva-api-dev.azurewebsites.net'
+        REACT_APP_MSAL_CLIENT_ID: '${{ secrets.DEV_MSAL_CLIENT_ID }}'
+        REACT_APP_MSAL_REDIRECT_URI: 'https://synapse-tatva-react-dev.azurewebsites.net/login'
+        REACT_APP_MSAL_SCOPES: '${{ secrets.DEV_MSAL_SCOPES }}'
+        REACT_APP_NAME: 'Synapse'
+        
     steps:
     # checkout the repo
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
 
-
     - name: Set up Node.js version
       uses: actions/setup-node@v1
       with:
         node-version: '14.x'
-
+        
     - name: npm install, build, and test
       run: |
         npm install
