@@ -193,6 +193,12 @@ const AdministrationRoutes: React.FC = () => {
           />
         )}
         {ability.can(Action.View, Page.ConfigExclusionType) && (
+          <Route
+            exact
+            path={`${match.path}/config-exclusion-type`}
+            component={ExclusionType}
+          />
+        )}
 
         {/* File Categories */}
         {ability.can(Action.View, Page.ConfigFileCategories) && (

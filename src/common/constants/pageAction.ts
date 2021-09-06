@@ -83,7 +83,7 @@ export enum Page {
   CmdbUser = 'cmdb-user',
   CmdbUserMap = 'cmdb-user-map',
   CmdbExclusion = 'cmdb-exclusion',
-  
+
   ConfigComponent = 'config-component',
   ConfigComponentTableColumn = 'config-component-table-column',
   ConfigExclusionComponent = 'config-exclusion-component',
