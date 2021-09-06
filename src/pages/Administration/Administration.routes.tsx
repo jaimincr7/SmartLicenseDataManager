@@ -20,6 +20,7 @@ import ExclusionComponent from './ExclusionComponent';
 import ExclusionLocation from './ExclusionLocation';
 import ExclusionOperation from './ExclusionOperation';
 import ExclusionType from './ExclusionType';
+import FileCategories from './FileCategories';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -192,11 +193,17 @@ const AdministrationRoutes: React.FC = () => {
           />
         )}
         {ability.can(Action.View, Page.ConfigExclusionType) && (
+
+        {/* File Categories */}
+        {ability.can(Action.View, Page.ConfigFileCategories) && (
           <Route
             exact
-            path={`${match.path}/config-exclusion-type`}
-            component={ExclusionType}
+            path={`${match.path}/config-file-categories/:id`}
+            component={FileCategories}
           />
+        )}
+        {ability.can(Action.View, Page.ConfigFileCategories) && (
+          <Route exact path={`${match.path}/config-file-categories`} component={FileCategories} />
         )}
 
         {/* Component Table Column */}

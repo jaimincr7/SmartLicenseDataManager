@@ -90,6 +90,7 @@ export enum Page {
   ConfigExclusionLocation = 'config-exclusion-location',
   ConfigExclusionType = 'config-exclusion-type',
   ConfigExclusionOperation = 'config-exclusion-operation',
+  ConfigFileCategories = 'config-file-categories',
 
   PowerBIConfig = 'power-bi-report-config',
 

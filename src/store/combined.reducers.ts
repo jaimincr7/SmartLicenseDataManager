@@ -82,6 +82,7 @@ import configComponentReducer from './master/component/component.reducer';
 import configComponentTableColumnReducer from './master/componentTableColumn/componentTableColumn.reducer';
 import configExclusionTypeReducer from './master/exclusionType/exclusionType.reducer';
 import configExclusionOperationReducer from './master/exclusionOperation/exclusionOperation.reducer';
+import configFileCategoriesReducer from './master/fileCategories/fileCategories.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -192,6 +193,7 @@ export const rootReducer = combineReducers({
   configExclusionLocation: configExclusionLocationReducer,
   configExclusionType: configExclusionTypeReducer,
   configExclusionOperation: configExclusionOperationReducer,
+  configFileCategories: configFileCategoriesReducer,
 
   //Power-BI Report
   configuration: configurationReducer,
