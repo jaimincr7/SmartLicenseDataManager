@@ -281,9 +281,19 @@ const BulkImport: React.FC = () => {
   const handleSave = (data) => {
     valuesArray.push(data);
     if (valuesArray?.length > 0 && valuesArray?.length === excelColumnState?.length) {
+      const remainingFiles = [];
       valuesArray?.forEach((val) => {
-        dispatch(bulkInsert(val));
+        try {
+          dispatch(bulkInsert(val));
+        }
+        catch (e) {
+          const orgFileName = excelColumnState?.find(x => x.filename === val?.file_name)?.original_filename;
+          remainingFiles.push(orgFileName)
+        }
       });
+      if (remainingFiles?.length > 0) {
+        toast.error("Listed filed does not imported ," + remainingFiles.toString());
+      }
     }
   };
 
