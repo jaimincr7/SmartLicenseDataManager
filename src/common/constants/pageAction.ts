@@ -73,12 +73,33 @@ export enum Page {
   CmsCategoryExtended = 'cms-category-extended',
   CmsTriggerType = 'cms-trigger-type',
 
+  CmdbOperatingSystem = 'cmdb-operating-system',
+  CmdbProcessor = 'cmdb-processor',
+  CmdbVirtualization = 'cmdb-virtualization',
+  CmdbApplication = 'cmdb-application',
+  CmdbDevice = 'cmdb-device',
+  CmdbLicenseModel = 'cmdb-license-model',
+  CmdbSoftware = 'cmdb-software',
+  CmdbUser = 'cmdb-user',
+  CmdbUserMap = 'cmdb-user-map',
+  CmdbExclusion = 'cmdb-exclusion',
+  
+  ConfigComponent = 'config-component',
+  ConfigComponentTableColumn = 'config-component-table-column',
+  ConfigExclusionComponent = 'config-exclusion-component',
+  ConfigExclusionLocation = 'config-exclusion-location',
+  ConfigExclusionType = 'config-exclusion-type',
+  ConfigExclusionOperation = 'config-exclusion-operation',
+
   PowerBIConfig = 'power-bi-report-config',
 
   // Global search dropdown
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',
   BUDropdown = 'bu-drop-down',
+
+  SPSApi = 'sps-api',
+  ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }
 
 export enum Action {
@@ -91,4 +112,5 @@ export enum Action {
   DeleteData = 'delete_data',
   RunAllLicenseScenario = 'run_all_license_scenario',
   Select = 'select',
+  Call = 'call',
 }

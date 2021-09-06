@@ -64,6 +64,24 @@ import cmsPurchaseLineItemReducer from './cms/purchaseLineItem/purchaseLineItem.
 import cmsTriggerTypeReducer from './cms/triggerType/triggerType.reducer';
 import cmsVendorReducer from './cms/vendor/vendor.reducer';
 import cmsCategoryExtendedReducer from './cms/categoryExtended/categoryExtended.reducer';
+import spsApiReducer from './sps/spsAPI/spsApi.reducer';
+import cmdbOperatingSystemReducer from './cmdb/operatingSystem/operatingSystem.reducer';
+import cmdbProcessorReducer from './cmdb/processor/processor.reducer';
+import cmdbVirtualizationReducer from './cmdb/virtualization/virtualization.reducer';
+import apiColMappingReducer from './sps/apiColumnMapping/apiColMapping.reducer';
+import cmdbApplicationReducer from './cmdb/application/application.reducer';
+import cmdbDeviceReducer from './cmdb/device/device.reducer';
+import cmdbLicenseModelReducer from './cmdb/licenseModel/licenseModel.reducer';
+import cmdbSoftwareReducer from './cmdb/software/software.reducer';
+import cmdbUserReducer from './cmdb/user/user.reducer';
+import cmdbUserMapReducer from './cmdb/userMap/userMap.reducer';
+import cmdbExclusionReducer from './cmdb/exclusion/exclusion.reducer';
+import configExclusionComponentReducer from './master/exclusionComponent/exclusionComponent.reducer';
+import configExclusionLocationReducer from './master/exclusionLocation/exclusionLocation.reducer';
+import configComponentReducer from './master/component/component.reducer';
+import configComponentTableColumnReducer from './master/componentTableColumn/componentTableColumn.reducer';
+import configExclusionTypeReducer from './master/exclusionType/exclusionType.reducer';
+import configExclusionOperationReducer from './master/exclusionOperation/exclusionOperation.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -152,8 +170,33 @@ export const rootReducer = combineReducers({
   cmsTriggerType: cmsTriggerTypeReducer,
   cmsVendor: cmsVendorReducer,
 
+  //CMDB
+  cmdbOperatingSystem: cmdbOperatingSystemReducer,
+  cmdbProcessor: cmdbProcessorReducer,
+  cmdbVirtualization: cmdbVirtualizationReducer,
+  cmdbApplication: cmdbApplicationReducer,
+  cmdbDevice: cmdbDeviceReducer,
+  cmdbLicenseModel: cmdbLicenseModelReducer,
+  cmdbSoftware: cmdbSoftwareReducer,
+  cmdbUser: cmdbUserReducer,
+  cmdbUserMap: cmdbUserMapReducer,
+
+  cmdbExclusion: cmdbExclusionReducer,
+
   users: usersReducer,
+
+  //config
+  configComponent: configComponentReducer,
+  configComponentTableColumn: configComponentTableColumnReducer,
+  configExclusionComponent: configExclusionComponentReducer,
+  configExclusionLocation: configExclusionLocationReducer,
+  configExclusionType: configExclusionTypeReducer,
+  configExclusionOperation: configExclusionOperationReducer,
 
   //Power-BI Report
   configuration: configurationReducer,
+
+  //SPS
+  spsApi: spsApiReducer,
+  apiColumnMapping: apiColMappingReducer,
 });

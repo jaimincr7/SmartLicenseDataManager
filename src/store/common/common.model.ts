@@ -33,7 +33,59 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cmdbDeviceLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbUserLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   o365ProductsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbLicenseModelLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbOperatingSystemLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbProcessorLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbVirtualizationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbApplicationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbExclusionComponentLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbExclusionOperationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbExclusionLocationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  cmdbExclusionTypeLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configComponentLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configComponentTableColumnLookup: {
     data: ILookup[];
     loading: boolean;
   };

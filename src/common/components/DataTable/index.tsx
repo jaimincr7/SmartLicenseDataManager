@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { IDataTable } from './dataTable.model';
 import moment from 'moment';
-import { allDateColumns, DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
+import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
 import _ from 'lodash';
 import { Filter } from './DataTableFilters';
 import {
@@ -19,6 +19,9 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
+import { spsApiSelector } from './../../../store/sps/spsAPI/spsApi.reducer';
+import { ICallAllApi } from '../../../services/sps/spsApi/sps.model';
+import { callAllApi } from '../../../store/sps/spsAPI/spsApi.action';
 
 let pageLoaded = false;
 
@@ -43,11 +46,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     clearTableDataMessages,
     exportExcelFile,
     setTableColumnSelection,
+    hideExportButton,
+    showCallApiBtn,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
   const common = useAppSelector(commonSelector);
   const globalFilters = useAppSelector(globalSearchSelector);
+  const spsApisState = useAppSelector(spsApiSelector);
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
@@ -82,15 +88,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setInlineSearch(inlineSearchFilter);
 
     const inlineSearchFilterObj: { [key: string]: any } = { ...inlineSearchFilter };
-    allDateColumns.forEach((colName: string) => {
-      if (colName in inlineSearchFilterObj) {
-        const currentColValue = inlineSearchFilterObj[colName];
-        if (currentColValue?.length === 2 && typeof currentColValue[0] === 'object') {
-          inlineSearchFilterObj[colName] = {
-            start_date: currentColValue[0],
-            end_date: currentColValue[1],
-          };
-        }
+    Object.keys(inlineSearchFilterObj)?.forEach((key) => {
+      const val = inlineSearchFilterObj[key];
+      if (val?.length === 2 && typeof val[0] === 'object' && moment(val[0]).isValid()) {
+        inlineSearchFilterObj[key] = {
+          start_date: val[0],
+          end_date: val[1],
+        };
       }
     });
 
@@ -446,19 +450,51 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
   };
 
+  const onRowSelection = () => {
+    if (tableFilter) {
+      const cllApiObj: ICallAllApi = {
+        filter_keys: tableFilter.filter_keys,
+        keyword: tableFilter.keyword,
+        company_id: globalFilters.search.company_id,
+        bu_id: globalFilters.search.bu_id,
+        tenant_id: globalFilters.search.tenant_id,
+        sps_api_query_param: {},
+      };
+      dispatch(callAllApi(cllApiObj));
+    }
+  };
+
+  const renderCallApiButton = () => {
+    if (showCallApiBtn)
+      return (
+        <Button
+          loading={spsApisState.callAllApi.loading}
+          className="btn-icon"
+          onClick={() => {
+            if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
+              onRowSelection();
+            }
+          }}
+        >
+          Call Api
+        </Button>
+      );
+  };
   return (
     <>
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
-          <Button
-            onClick={downloadExcel}
-            icon={<FileExcelOutlined />}
-            loading={loading}
-            disabled={reduxStoreData.search.count === 0}
-          >
-            Export
-          </Button>
+          {!hideExportButton && (
+            <Button
+              onClick={downloadExcel}
+              icon={<FileExcelOutlined />}
+              loading={loading}
+              disabled={reduxStoreData.search.count === 0}
+            >
+              Export
+            </Button>
+          )}
           <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button
               disabled={reduxStoreData.search.count === 0}
@@ -471,6 +507,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Show/Hide Columns
             </Button>
           </Popover>
+          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 ? (
+            <Popover content={<>Please select global filter first!</>} trigger="click">
+              {renderCallApiButton()}
+            </Popover>
+          ) : (
+            renderCallApiButton()
+          )}
           {showAddButton && (
             <Button
               type="primary"
@@ -490,7 +533,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
-            loading={reduxStoreData.search.loading || reduxStoreData.delete.loading}
+            loading={reduxStoreData.search.loading || reduxStoreData?.delete?.loading}
             pagination={{
               ...pagination,
               pageSizeOptions: ['10', '100', '500', '2500'],

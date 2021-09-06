@@ -25,6 +25,19 @@ import {
   getCmsPublisherLookup,
   getCmsTriggerTypeLookup,
   getCmsExpenditureTypeLookup,
+  getCmdbLicenseModelLookup,
+  getCmdbOperatingSystemLookup,
+  getCmdbProcessorLookup,
+  getCmdbVirtualizationLookup,
+  getCmdbApplicationLookup,
+  getCmdbUserLookup,
+  getCmdbDeviceLookup,
+  getCmdbExclusionComponentLookup,
+  getCmdbExclusionOperationLookup,
+  getCmdbExclusionLocationLookup,
+  getCmdbExclusionTypeLookup,
+  getConfigComponentLookup,
+  getConfigComponentTableColumnLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -61,7 +74,59 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  cmdbDeviceLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbUserLookup: {
+    data: [],
+    loading: false,
+  },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbLicenseModelLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbOperatingSystemLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbProcessorLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbVirtualizationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbApplicationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbExclusionComponentLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbExclusionOperationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbExclusionLocationLookup: {
+    data: [],
+    loading: false,
+  },
+  cmdbExclusionTypeLookup: {
+    data: [],
+    loading: false,
+  },
+  configComponentLookup: {
+    data: [],
+    loading: false,
+  },
+  configComponentTableColumnLookup: {
     data: [],
     loading: false,
   },
@@ -217,6 +282,24 @@ export const commonSlice = createSlice({
       state.windowsServerLicenseLookup.loading = false;
     },
 
+    // CMDB Device lookup
+    [getCmdbDeviceLookup.pending.type]: (state) => {
+      state.cmdbDeviceLookup.loading = true;
+    },
+    [getCmdbDeviceLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbDeviceLookup.data = action.payload;
+      state.cmdbDeviceLookup.loading = false;
+    },
+
+    // CMDB User lookup
+    [getCmdbUserLookup.pending.type]: (state) => {
+      state.cmdbUserLookup.loading = true;
+    },
+    [getCmdbUserLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbUserLookup.data = action.payload;
+      state.cmdbUserLookup.loading = false;
+    },
+
     // O365 Products lookup
     [getO365ProductsLookup.pending.type]: (state) => {
       state.o365ProductsLookup.loading = true;
@@ -224,6 +307,117 @@ export const commonSlice = createSlice({
     [getO365ProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.o365ProductsLookup.data = action.payload;
       state.o365ProductsLookup.loading = false;
+    },
+
+    // CMDB License Model lookup
+    [getCmdbLicenseModelLookup.pending.type]: (state) => {
+      state.cmdbLicenseModelLookup.loading = true;
+    },
+    [getCmdbLicenseModelLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbLicenseModelLookup.data = action.payload;
+      state.cmdbLicenseModelLookup.loading = false;
+    },
+
+    // Cmdb OS lookup
+    [getCmdbOperatingSystemLookup.pending.type]: (state) => {
+      state.cmdbOperatingSystemLookup.loading = true;
+    },
+    [getCmdbOperatingSystemLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbOperatingSystemLookup.data = action.payload;
+      state.cmdbOperatingSystemLookup.loading = false;
+    },
+
+    // Cmdb Processor lookup
+    [getCmdbProcessorLookup.pending.type]: (state) => {
+      state.cmdbProcessorLookup.loading = true;
+    },
+    [getCmdbProcessorLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbProcessorLookup.data = action.payload;
+      state.cmdbProcessorLookup.loading = false;
+    },
+
+    // Cmdb Virtualization lookup
+    [getCmdbVirtualizationLookup.pending.type]: (state) => {
+      state.cmdbVirtualizationLookup.loading = true;
+    },
+    [getCmdbVirtualizationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbVirtualizationLookup.data = action.payload;
+      state.cmdbVirtualizationLookup.loading = false;
+    },
+
+    // Cmdb Application lookup
+    [getCmdbApplicationLookup.pending.type]: (state) => {
+      state.cmdbApplicationLookup.loading = true;
+    },
+    [getCmdbApplicationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbApplicationLookup.data = action.payload;
+      state.cmdbApplicationLookup.loading = false;
+    },
+
+    // Cmdb Device lookup
+    [getCmdbDeviceLookup.pending.type]: (state) => {
+      state.cmdbDeviceLookup.loading = true;
+    },
+    [getCmdbDeviceLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbDeviceLookup.data = action.payload;
+      state.cmdbDeviceLookup.loading = false;
+    },
+
+    // Cmdb Exclusion Components lookup
+    [getCmdbExclusionComponentLookup.pending.type]: (state) => {
+      state.cmdbExclusionComponentLookup.loading = true;
+    },
+    [getCmdbExclusionComponentLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbExclusionComponentLookup.data = action.payload;
+      state.cmdbExclusionComponentLookup.loading = false;
+    },
+
+    // Cmdb Exclusion Operations lookup
+    [getCmdbExclusionOperationLookup.pending.type]: (state) => {
+      state.cmdbExclusionOperationLookup.loading = true;
+    },
+    [getCmdbExclusionOperationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbExclusionOperationLookup.data = action.payload;
+      state.cmdbExclusionOperationLookup.loading = false;
+    },
+
+    // Cmdb Exclusion Locations lookup
+    [getCmdbExclusionLocationLookup.pending.type]: (state) => {
+      state.cmdbExclusionLocationLookup.loading = true;
+    },
+    [getCmdbExclusionLocationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbExclusionLocationLookup.data = action.payload;
+      state.cmdbExclusionLocationLookup.loading = false;
+    },
+
+    // Cmdb Exclusion Types lookup
+    [getCmdbExclusionTypeLookup.pending.type]: (state) => {
+      state.cmdbExclusionTypeLookup.loading = true;
+    },
+    [getCmdbExclusionTypeLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cmdbExclusionTypeLookup.data = action.payload;
+      state.cmdbExclusionTypeLookup.loading = false;
+    },
+
+    //Config Component lookup
+    [getConfigComponentLookup.pending.type]: (state) => {
+      state.configComponentLookup.loading = true;
+    },
+    [getConfigComponentLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.configComponentLookup.data = action.payload;
+      state.configComponentLookup.loading = false;
+    },
+
+    //Config Table Column Component lookup
+    [getConfigComponentTableColumnLookup.pending.type]: (state) => {
+      state.configComponentTableColumnLookup.loading = true;
+    },
+    [getConfigComponentTableColumnLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configComponentTableColumnLookup.data = action.payload;
+      state.configComponentTableColumnLookup.loading = false;
     },
 
     // Expenditure Type lookup
