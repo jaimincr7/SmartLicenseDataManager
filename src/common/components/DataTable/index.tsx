@@ -439,7 +439,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const getColumns = () => {
     if (tableColumns.length > 0) {
-      columns = tableColumns.map((i) => columns.find((j) => j.column === i.column));
+      columns = tableColumns.map((i) => columns?.find((j) => j?.column === i?.column));
     }
     return columns?.filter((col) => {
       return col.column in reduxStoreData.tableColumnSelection.columns
