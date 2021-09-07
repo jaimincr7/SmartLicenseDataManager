@@ -91,6 +91,8 @@ export enum Page {
   ConfigExclusionType = 'config-exclusion-type',
   ConfigExclusionOperation = 'config-exclusion-operation',
   ConfigFileCategories = 'config-file-categories',
+  ConfigFileType = 'config-file-types',
+  ConfigLicenseUnits = 'config-license-units',
 
   PowerBIConfig = 'power-bi-report-config',
 

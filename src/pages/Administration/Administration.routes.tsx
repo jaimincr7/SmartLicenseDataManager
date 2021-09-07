@@ -20,7 +20,9 @@ import ExclusionComponent from './ExclusionComponent';
 import ExclusionLocation from './ExclusionLocation';
 import ExclusionOperation from './ExclusionOperation';
 import ExclusionType from './ExclusionType';
+import FileType from './FileTypes';
 import FileCategories from './FileCategories';
+import LicenseUnits from './LicenseUnits';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -186,18 +188,18 @@ const AdministrationRoutes: React.FC = () => {
 
         {/* Exclusion Type */}
         {ability.can(Action.View, Page.ConfigExclusionType) && (
-          <Route
-            exact
-            path={`${match.path}/config-exclusion-type/:id`}
-            component={ExclusionType}
-          />
+          <Route exact path={`${match.path}/config-exclusion-type/:id`} component={ExclusionType} />
         )}
         {ability.can(Action.View, Page.ConfigExclusionType) && (
-          <Route
-            exact
-            path={`${match.path}/config-exclusion-type`}
-            component={ExclusionType}
-          />
+          <Route exact path={`${match.path}/config-exclusion-type`} component={ExclusionType} />
+        )}
+
+        {/* File Type */}
+        {ability.can(Action.View, Page.ConfigFileType) && (
+          <Route exact path={`${match.path}/config-file-types/:id`} component={FileType} />
+        )}
+        {ability.can(Action.View, Page.ConfigFileType) && (
+          <Route exact path={`${match.path}/config-file-types`} component={FileType} />
         )}
 
         {/* File Categories */}
@@ -210,6 +212,14 @@ const AdministrationRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.ConfigFileCategories) && (
           <Route exact path={`${match.path}/config-file-categories`} component={FileCategories} />
+        )}
+
+        {/* License Units */}
+        {ability.can(Action.View, Page.ConfigLicenseUnits) && (
+          <Route exact path={`${match.path}/config-license-units/:id`} component={LicenseUnits} />
+        )}
+        {ability.can(Action.View, Page.ConfigLicenseUnits) && (
+          <Route exact path={`${match.path}/config-license-units`} component={LicenseUnits} />
         )}
 
         {/* Component Table Column */}
