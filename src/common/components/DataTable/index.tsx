@@ -20,8 +20,6 @@ import { saveTableColumnSelection } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
 import { spsApiSelector } from './../../../store/sps/spsAPI/spsApi.reducer';
-import { ICallAllApi } from '../../../services/sps/spsApi/sps.model';
-import { callAllApi } from '../../../store/sps/spsAPI/spsApi.action';
 
 let pageLoaded = false;
 
@@ -48,6 +46,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setTableColumnSelection,
     hideExportButton,
     showCallApiBtn,
+    onCallAllApi,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -235,9 +234,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -451,16 +449,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const onRowSelection = () => {
-    if (tableFilter) {
-      const cllApiObj: ICallAllApi = {
-        filter_keys: tableFilter.filter_keys,
-        keyword: tableFilter.keyword,
-        company_id: globalFilters.search.company_id,
-        bu_id: globalFilters.search.bu_id,
-        tenant_id: globalFilters.search.tenant_id,
-        sps_api_query_param: {},
-      };
-      dispatch(callAllApi(cllApiObj));
+    if (onCallAllApi) {
+      onCallAllApi(tableFilter);
     }
   };
 
@@ -476,7 +466,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             }
           }}
         >
-          Call Api
+          Call All Api
         </Button>
       );
   };

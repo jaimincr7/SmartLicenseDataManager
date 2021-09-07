@@ -304,5 +304,19 @@ class CommonService {
       return res.data;
     });
   }
+
+  public async getSpsApiGroups(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-group/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getSpsApiTypes(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-type/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
 }
 export default new CommonService();

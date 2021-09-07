@@ -143,4 +143,12 @@ export interface ICommonState {
     hasErrors: boolean;
     messages: string[];
   };
+  spsApiGroups: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  spsApiTypes: {
+    data: ILookup[];
+    loading: boolean;
+  };
 }

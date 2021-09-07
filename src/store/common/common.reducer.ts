@@ -38,6 +38,8 @@ import {
   getCmdbExclusionTypeLookup,
   getConfigComponentLookup,
   getConfigComponentTableColumnLookup,
+  getSpsApiGroups,
+  getSpsApiTypes,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -184,6 +186,14 @@ export const initialState: ICommonState = {
     hasErrors: false,
     messages: [],
   },
+  spsApiGroups: {
+    data: [],
+    loading: false,
+  },
+  spsApiTypes: {
+    data: [],
+    loading: false,
+  },
 };
 
 export const commonSlice = createSlice({
@@ -207,6 +217,12 @@ export const commonSlice = createSlice({
     },
     clearSaveTableColumnSelection: (state) => {
       state.saveTableColumnSelection.messages = [];
+    },
+    clearSpsApiTypesLookup: (state) => {
+      state.spsApiTypes.data = [];
+    },
+    clearSpsApiGroupsLookup: (state) => {
+      state.spsApiGroups.data = [];
     },
   },
   extraReducers: {
@@ -560,6 +576,24 @@ export const commonSlice = createSlice({
       state.saveTableColumnSelection.loading = false;
       state.saveTableColumnSelection.hasErrors = true;
     },
+
+    //SPS Api groups
+    [getSpsApiGroups.pending.type]: (state) => {
+      state.spsApiGroups.loading = true;
+    },
+    [getSpsApiGroups.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiGroups.data = action.payload;
+      state.spsApiGroups.loading = false;
+    },
+
+    //SPS Api types
+    [getSpsApiTypes.pending.type]: (state) => {
+      state.spsApiTypes.loading = true;
+    },
+    [getSpsApiTypes.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiTypes.data = action.payload;
+      state.spsApiTypes.loading = false;
+    },
   },
 });
 
@@ -574,6 +608,8 @@ export const {
   // setGlobalSearch,
   clearDeleteDatasetMessages,
   clearSaveTableColumnSelection,
+  clearSpsApiGroupsLookup,
+  clearSpsApiTypesLookup,
 } = commonSlice.actions;
 
 // The reducer

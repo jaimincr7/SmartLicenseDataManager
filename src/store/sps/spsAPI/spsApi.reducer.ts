@@ -1,8 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
-import { ISearchAPI } from '../../../services/sps/spsApi/sps.model';
+import { ISearchAPI, ISpsApi } from '../../../services/sps/spsApi/sps.model';
 import { RootState } from '../../app.model';
-import { callAllApi, callApi, searchImportAPIs } from './spsApi.action';
+import {
+  callAllApi,
+  callApi,
+  deleteSpsApi,
+  getSpsApiById,
+  saveSpsApi,
+  searchImportAPIs,
+} from './spsApi.action';
 import { ISPSApiState } from './spsApi.model';
 
 export const initialState: ISPSApiState = {
@@ -29,6 +36,21 @@ export const initialState: ISPSApiState = {
     hasErrors: false,
     messages: [],
   },
+  getById: {
+    loading: false,
+    hasErrors: false,
+    data: null,
+  },
+  save: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  delete: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const spsApiSlice = createSlice({
@@ -44,6 +66,11 @@ export const spsApiSlice = createSlice({
     clearCallApiMessages: (state) => {
       state.callApi.messages = [];
       state.callAllApi.messages = [];
+      state.delete.messages = [];
+      state.save.messages = [];
+    },
+    clearSpsApiGetById: (state) => {
+      state.getById.data = null;
     },
   },
 
@@ -109,6 +136,50 @@ export const spsApiSlice = createSlice({
       state.callAllApi.loading = false;
       state.callAllApi.hasErrors = true;
     },
+
+    // Get by id
+    [getSpsApiById.pending.type]: (state) => {
+      state.getById.loading = true;
+    },
+    [getSpsApiById.fulfilled.type]: (state, action: PayloadAction<ISpsApi>) => {
+      state.getById.data = action.payload;
+      state.getById.loading = false;
+      state.getById.hasErrors = false;
+    },
+    [getSpsApiById.rejected.type]: (state) => {
+      state.getById.loading = false;
+      state.getById.hasErrors = true;
+    },
+
+    // Save
+    [saveSpsApi.pending.type]: (state) => {
+      state.save.loading = true;
+      state.save.messages = [];
+    },
+    [saveSpsApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.save.loading = false;
+      state.save.hasErrors = false;
+      state.save.messages = action.payload.messages;
+    },
+    [saveSpsApi.rejected.type]: (state) => {
+      state.save.loading = false;
+      state.save.hasErrors = true;
+    },
+
+    // Delete
+    [deleteSpsApi.pending.type]: (state) => {
+      state.delete.loading = true;
+      state.delete.messages = [];
+    },
+    [deleteSpsApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.delete.loading = false;
+      state.delete.hasErrors = false;
+      state.delete.messages = action.payload.messages;
+    },
+    [deleteSpsApi.rejected.type]: (state) => {
+      state.delete.loading = false;
+      state.delete.hasErrors = true;
+    },
   },
 });
 
@@ -116,7 +187,8 @@ export const spsApiSlice = createSlice({
 export const spsApiSelector = (state: RootState) => state.spsApi;
 
 // Actions
-export const { clearSPS, setTableColumnSelection, clearCallApiMessages } = spsApiSlice.actions;
+export const { clearSPS, setTableColumnSelection, clearCallApiMessages, clearSpsApiGetById } =
+  spsApiSlice.actions;
 
 // The reducer
 export default spsApiSlice.reducer;

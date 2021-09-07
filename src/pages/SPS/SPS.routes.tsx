@@ -14,6 +14,9 @@ const SPSRoutes: React.FC = () => {
         {ability.can(Action.View, Page.SPSApi) && (
           <Route exact path={`${match.path}/sps-api`} component={SPSAPI} />
         )}
+        {ability.can(Action.View, Page.SPSApi) && (
+          <Route exact path={`${match.path}/sps-api/:id`} component={SPSAPI} />
+        )}
 
         {/* keep least always */}
         <Route path={`${match.path}/*`}>

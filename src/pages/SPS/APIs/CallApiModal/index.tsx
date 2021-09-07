@@ -1,18 +1,13 @@
 import { Button, Col, DatePicker, Form, Input, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { validateMessages } from '../../../../common/constants/common';
-import { ICallAPI } from '../../../../services/sps/spsApi/sps.model';
-import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { useAppSelector } from '../../../../store/app.hooks';
 import { spsApiSelector } from '../../../../store/sps/spsAPI/spsApi.reducer';
 import { ICallApiModalProps } from './callApiModal.model';
-import { globalSearchSelector } from './../../../../store/globalSearch/globalSearch.reducer';
-import { callApi } from '../../../../store/sps/spsAPI/spsApi.action';
 
 const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
-  const { id, showModal, handleModalClose, refreshDataTable, params } = props;
+  const { showModal, handleModalClose, params, onCallApi } = props;
   const spsApis = useAppSelector(spsApiSelector);
-  const globalLookups = useAppSelector(globalSearchSelector);
-  const dispatch = useAppDispatch();
 
   const [queryParams, setQueryParams] = useState(null);
   const [form] = Form.useForm();
@@ -59,19 +54,25 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
   useEffect(() => {
     if (spsApis.callApi.messages.length > 0) {
       handleModalClose();
-      refreshDataTable();
     }
   }, [spsApis.callApi.messages]);
 
+  useEffect(() => {
+    if (spsApis.callAllApi.messages.length > 0) {
+      handleModalClose();
+    }
+  }, [spsApis.callAllApi.messages]);
+
   const onFinish = (values: any) => {
-    const callApiObj: ICallAPI = {
-      id: id,
-      company_id: globalLookups.search.company_id,
-      bu_id: globalLookups.search.bu_id,
-      tenant_id: globalLookups.search.tenant_id,
-      spsApiQueryParam: values,
-    };
-    dispatch(callApi(callApiObj));
+    onCallApi(values);
+    // const callApiObj: ICallAPI = {
+    //   id: id,
+    //   company_id: globalLookups.search.company_id,
+    //   bu_id: globalLookups.search.bu_id,
+    //   tenant_id: globalLookups.search.tenant_id,
+    //   spsApiQueryParam: values,
+    // };
+    // dispatch(callApi(callApiObj));
   };
 
   return (
@@ -94,7 +95,12 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
             {queryParams && renderHTml()}
           </Row>
           <div className="btns-block modal-footer">
-            <Button key="submit" type="primary" htmlType="submit" loading={spsApis.callApi.loading}>
+            <Button
+              key="submit"
+              type="primary"
+              htmlType="submit"
+              loading={spsApis.callApi.loading || spsApis.callAllApi.loading}
+            >
               Apply
             </Button>
             <Button key="back" onClick={handleModalClose}>
