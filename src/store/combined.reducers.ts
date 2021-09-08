@@ -85,6 +85,9 @@ import configExclusionOperationReducer from './master/exclusionOperation/exclusi
 import configFileTypeReducer from './master/fileTypes/fileTypes.reducer';
 import configFileCategoriesReducer from './master/fileCategories/fileCategories.reducer';
 import configLicenseUnitsReducer from './master/licenseUnits/licenseUnits.reducer';
+import configOnlineProductsReducer from './master/onlineProducts/onlineProducts.reducer';
+import configOnlineProductServicePlansReducer from './master/onlineProductServicePlans/onlineProductServicePlans.reducer';
+import configOnlineServicePlansReducer from './master/onlineServicePlans/onlineServicePlans.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -198,6 +201,9 @@ export const rootReducer = combineReducers({
   configFileCategories: configFileCategoriesReducer,
   configFileType: configFileTypeReducer,
   configLicenseUnits: configLicenseUnitsReducer,
+  configOnlineProducts: configOnlineProductsReducer,
+  configOnlineProductServicePlans: configOnlineProductServicePlansReducer,
+  configOnlineServicePlans: configOnlineServicePlansReducer,
 
   //Power-BI Report
   configuration: configurationReducer,

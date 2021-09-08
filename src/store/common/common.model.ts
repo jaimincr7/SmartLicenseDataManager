@@ -45,6 +45,14 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  configOnlineProductsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configOnlineServicePlansLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   cmdbLicenseModelLookup: {
     data: ILookup[];
     loading: boolean;

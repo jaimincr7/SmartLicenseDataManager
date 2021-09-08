@@ -80,6 +80,20 @@ class CommonService {
     });
   }
 
+  public async getConfigOnlineProductsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-online-products/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigOnlineServicePlansLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-online-service-plans/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getCmdbLicenseModelLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cmdb-license-model/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

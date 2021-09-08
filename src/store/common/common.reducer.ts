@@ -40,6 +40,8 @@ import {
   getConfigComponentTableColumnLookup,
   getSpsApiGroups,
   getSpsApiTypes,
+  getConfigOnlineProductsLookup,
+  getConfigOnlineServicePlansLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -85,6 +87,14 @@ export const initialState: ICommonState = {
     loading: false,
   },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  configOnlineProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  configOnlineServicePlansLookup: {
     data: [],
     loading: false,
   },
@@ -323,6 +333,27 @@ export const commonSlice = createSlice({
     [getO365ProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.o365ProductsLookup.data = action.payload;
       state.o365ProductsLookup.loading = false;
+    },
+
+    // Config Online Products lookup
+    [getConfigOnlineProductsLookup.pending.type]: (state) => {
+      state.configOnlineProductsLookup.loading = true;
+    },
+    [getConfigOnlineProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.configOnlineProductsLookup.data = action.payload;
+      state.configOnlineProductsLookup.loading = false;
+    },
+
+    // Config Online Service Plans lookup
+    [getConfigOnlineServicePlansLookup.pending.type]: (state) => {
+      state.configOnlineServicePlansLookup.loading = true;
+    },
+    [getConfigOnlineServicePlansLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configOnlineServicePlansLookup.data = action.payload;
+      state.configOnlineServicePlansLookup.loading = false;
     },
 
     // CMDB License Model lookup

@@ -78,6 +78,26 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
   return response.data;
 });
 
+export const getConfigOnlineProductsLookup = createAsyncThunk(
+  'getConfigOnlineProductsLookup',
+  async () => {
+    const response = await commonService.getConfigOnlineProductsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigOnlineServicePlansLookup = createAsyncThunk(
+  'getConfigOnlineServicePlansLookup',
+  async () => {
+    const response = await commonService.getConfigOnlineServicePlansLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getCmdbLicenseModelLookup = createAsyncThunk('getCmdbLicenseModelLookup', async () => {
   const response = await commonService.getCmdbLicenseModelLookup().then((res) => {
     return res.body;

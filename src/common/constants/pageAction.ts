@@ -93,6 +93,9 @@ export enum Page {
   ConfigFileCategories = 'config-file-categories',
   ConfigFileType = 'config-file-types',
   ConfigLicenseUnits = 'config-license-units',
+  ConfigOnlineProducts = 'config-online-products',
+  ConfigOnlineProductServicePlans = 'config-online-product-service-plans',
+  ConfigOnlineServicePlans = 'config-online-service-plans',
 
   PowerBIConfig = 'power-bi-report-config',
 
@@ -104,7 +107,6 @@ export enum Page {
   SPSApi = 'sps-api',
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }
-
 export enum Action {
   View = 'view',
   Add = 'add',

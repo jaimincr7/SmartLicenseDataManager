@@ -23,6 +23,9 @@ import ExclusionType from './ExclusionType';
 import FileType from './FileTypes';
 import FileCategories from './FileCategories';
 import LicenseUnits from './LicenseUnits';
+import OnlineProducts from './OnlineProducts';
+import OnlineProductServicePlans from './OnlineProductServicePlans';
+import OnlineServicePlans from './OnlineServicePlans';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -235,6 +238,50 @@ const AdministrationRoutes: React.FC = () => {
             exact
             path={`${match.path}/config-component-table-column`}
             component={ComponentTableColumn}
+          />
+        )}
+
+        {/* Online Products*/}
+        {ability.can(Action.View, Page.ConfigOnlineProducts) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-products/:id`}
+            component={OnlineProducts}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigOnlineProducts) && (
+          <Route exact path={`${match.path}/config-online-products`} component={OnlineProducts} />
+        )}
+
+        {/* Online Product Service Plans */}
+        {ability.can(Action.View, Page.ConfigOnlineProductServicePlans) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-product-service-plans/:id`}
+            component={OnlineProductServicePlans}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigOnlineProductServicePlans) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-product-service-plans`}
+            component={OnlineProductServicePlans}
+          />
+        )}
+
+        {/* Online Service Plans */}
+        {ability.can(Action.View, Page.ConfigOnlineServicePlans) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-service-plans/:id`}
+            component={OnlineServicePlans}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigOnlineServicePlans) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-service-plans`}
+            component={OnlineServicePlans}
           />
         )}
 
