@@ -14,6 +14,7 @@ export interface ISpsApi {
   sps_input_type_id: number;
   stored_procedure: string;
   enabled: boolean;
+  is_mapping?: boolean;
 }
 
 export interface ISearchAPI extends ISpsApi {

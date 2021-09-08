@@ -225,29 +225,48 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const onCallAllApi = (tableFilter: any) => {
     if (spsApis.search.data?.length > 0) {
       const allParams = {};
-      spsApis.search.data?.forEach((data) => {
-        if (data.url) {
-          const newURL = new URL(data.url);
-          const urlSearchParams = new URLSearchParams(newURL.search);
-          const params = Object.fromEntries(urlSearchParams?.entries());
-          const editableParams = Object.values(params)?.filter(
-            (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
-          );
-          if (editableParams?.length > 0 && params) {
-            Object.keys(params).forEach((key) => {
-              if (!(key in allParams)) allParams[key] = params[key];
-            });
+      const searchData = spsApis.search.data?.filter(x => x.url && x.is_mapping && x.enabled);
+      if (searchData?.length > 0) {
+        spsApis.search.data?.forEach((data: any) => {
+          if (data.url && data.is_mapping && data.enabled) {
+            const newURL = new URL(data.url);
+            const urlSearchParams = new URLSearchParams(newURL.search);
+            const params = Object.fromEntries(urlSearchParams?.entries());
+            const editableParams = Object.values(params)?.filter(
+              (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
+            );
+            if (editableParams?.length > 0 && params) {
+              Object.keys(params).forEach((key) => {
+                if (!(key in allParams)) allParams[key] = params[key];
+              });
+            }
           }
+        });
+        if (Object.keys(allParams)?.length > 0) {
+          setCallApiObj({
+            params: allParams,
+            filterKeys: tableFilter.filter_keys,
+            keyword: tableFilter.keyword,
+            show: true,
+            isAll: true,
+            id: 0,
+          });
         }
-      });
-      setCallApiObj({
-        params: allParams,
-        filterKeys: tableFilter.filter_keys,
-        keyword: tableFilter.keyword,
-        show: true,
-        isAll: true,
-        id: 0,
-      });
+        else {
+          const cllApiObj: ICallAllApi = {
+            filter_keys: tableFilter.filterKeys,
+            keyword: tableFilter.keyword,
+            company_id: globalLookups.search.company_id,
+            bu_id: globalLookups.search.bu_id,
+            tenant_id: globalLookups.search.tenant_id,
+            sps_api_query_param: {},
+          };
+          dispatch(callAllApi(cllApiObj));
+        }
+      }
+      else {
+        toast.info("No mapping available for searched apis.")
+      }
     }
   };
 
