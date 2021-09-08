@@ -159,11 +159,11 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
                 </Col>
                 <Col xs={24} sm={12} md={8}>
                   <div className="form-group m-0">
-                    <label className="label">Service Plans</label>
+                    <label className="label">Service Plan</label>
                     <Form.Item
                       name="service_plan_id"
                       className="m-0"
-                      label="Service Plans"
+                      label="Service Plan"
                       rules={[{ required: true }]}
                     >
                       <Select
