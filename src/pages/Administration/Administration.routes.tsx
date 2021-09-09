@@ -26,6 +26,9 @@ import LicenseUnits from './LicenseUnits';
 import OnlineProducts from './OnlineProducts';
 import OnlineProductServicePlans from './OnlineProductServicePlans';
 import OnlineServicePlans from './OnlineServicePlans';
+import Processors from './Processors';
+import SqlServerEditions from './SqlServerEditions';
+import SqlServerServices from './SqlServerServices';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -189,6 +192,38 @@ const AdministrationRoutes: React.FC = () => {
           />
         )}
 
+        {/* Sql Server Editions */}
+        {ability.can(Action.View, Page.ConfigSqlServerEditions) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-editions/:id`}
+            component={SqlServerEditions}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSqlServerEditions) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-editions`}
+            component={SqlServerEditions}
+          />
+        )}
+
+        {/* Sql Server Services */}
+        {ability.can(Action.View, Page.ConfigSqlServerServices) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-services/:id`}
+            component={SqlServerServices}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSqlServerServices) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-services`}
+            component={SqlServerServices}
+          />
+        )}
+
         {/* Exclusion Type */}
         {ability.can(Action.View, Page.ConfigExclusionType) && (
           <Route exact path={`${match.path}/config-exclusion-type/:id`} component={ExclusionType} />
@@ -281,7 +316,22 @@ const AdministrationRoutes: React.FC = () => {
           <Route
             exact
             path={`${match.path}/config-online-service-plans`}
-            component={OnlineServicePlans}
+            component={OnlineServicePlans}/>
+        )}
+        
+        {/* Processors */}
+        {ability.can(Action.View, Page.ConfigProcessors) && (
+          <Route
+            exact
+            path={`${match.path}/config-processors/:id`}
+            component={Processors}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigProcessors) && (
+          <Route
+            exact
+            path={`${match.path}/config-processors`}
+            component={Processors}
           />
         )}
 

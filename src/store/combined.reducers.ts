@@ -88,6 +88,9 @@ import configLicenseUnitsReducer from './master/licenseUnits/licenseUnits.reduce
 import configOnlineProductsReducer from './master/onlineProducts/onlineProducts.reducer';
 import configOnlineProductServicePlansReducer from './master/onlineProductServicePlans/onlineProductServicePlans.reducer';
 import configOnlineServicePlansReducer from './master/onlineServicePlans/onlineServicePlans.reducer';
+import configProcessorsReducer from './master/processors/processors.reducer';
+import configSqlServerEditionsReducer from './master/sqlServerEditions/sqlServerEditions.reducer';
+import configSqlServerServicesReducer from './master/sqlServerServices/sqlServerServices.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -204,6 +207,9 @@ export const rootReducer = combineReducers({
   configOnlineProducts: configOnlineProductsReducer,
   configOnlineProductServicePlans: configOnlineProductServicePlansReducer,
   configOnlineServicePlans: configOnlineServicePlansReducer,
+  configProcessors: configProcessorsReducer,
+  configSqlServerEditions: configSqlServerEditionsReducer,
+  configSqlServerServices: configSqlServerServicesReducer,
 
   //Power-BI Report
   configuration: configurationReducer,

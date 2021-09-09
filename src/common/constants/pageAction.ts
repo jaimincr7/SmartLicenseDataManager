@@ -96,6 +96,9 @@ export enum Page {
   ConfigOnlineProducts = 'config-online-products',
   ConfigOnlineProductServicePlans = 'config-online-product-service-plans',
   ConfigOnlineServicePlans = 'config-online-service-plans',
+  ConfigProcessors = 'config-processors',
+  ConfigSqlServerEditions = 'config-sql-server-editions',
+  ConfigSqlServerServices = 'config-sql-server-services',
 
   PowerBIConfig = 'power-bi-report-config',
 
