@@ -99,6 +99,7 @@ export enum Page {
   ConfigProcessors = 'config-processors',
   ConfigSqlServerEditions = 'config-sql-server-editions',
   ConfigSqlServerServices = 'config-sql-server-services',
+  ConfigSqlServerVersions = 'config-sql-server-versions',
 
   PowerBIConfig = 'power-bi-report-config',
 

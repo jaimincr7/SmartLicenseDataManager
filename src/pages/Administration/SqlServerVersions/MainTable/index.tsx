@@ -2,26 +2,29 @@ import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
-import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
+import {
+  FilterByDropdown,
+  FilterWithSwapOption,
+} from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import {
-  clearConfigSqlServerServicesMessages,
-  configSqlServerServicesSelector,
+  clearConfigSqlServerVersionsMessages,
+  configSqlServerVersionsSelector,
   setTableColumnSelection,
-} from '../../../../store/master/sqlServerServices/sqlServerServices.reducer';
+} from '../../../../store/master/sqlServerVersions/sqlServerVersions.reducer';
 import {
-  deleteConfigSqlServerServices,
-  searchConfigSqlServerServices,
-} from '../../../../store/master/sqlServerServices/sqlServerServices.action';
-import configSqlServerServicesService from '../../../../services/master/sqlServerServices/sqlServerServices.service';
+  deleteConfigSqlServerVersions,
+  searchConfigSqlServerVersions,
+} from '../../../../store/master/sqlServerVersions/sqlServerVersions.action';
+import configSqlServerVersionsService from '../../../../services/master/sqlServerVersions/sqlServerVersions.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
-  const configSqlServerServices = useAppSelector(configSqlServerServicesSelector);
+  const configSqlServerVersions = useAppSelector(configSqlServerVersionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -33,11 +36,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }));
 
   const exportExcelFile = (searchData: ISearch) => {
-    return configSqlServerServicesService.exportExcelFile(searchData);
+    return configSqlServerVersionsService.exportExcelFile(searchData);
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, configSqlServerServices.search.tableName, form);
+    return FilterWithSwapOption(dataIndex, configSqlServerVersions.search.tableName, form);
   };
 
   const getTableColumns = (form) => {
@@ -57,14 +60,30 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Service</span>,
-        column: 'Service',
+        title: <span className="dragHandler">Version</span>,
+        column: 'Version',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('service', form),
-            dataIndex: 'service',
-            key: 'service',
+            title: FilterBySwap('version', form),
+            dataIndex: 'version',
+            key: 'version',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Support Type</span>,
+        column: 'SupportTypeId',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'support_type_id',
+              configSqlServerVersions.search.lookups?.support_types
+            ),
+            dataIndex: 'support_type_name',
+            key: 'support_type_name',
             ellipsis: true,
           },
         ],
@@ -72,26 +91,26 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     ];
   };
 
-  const removeConfigSqlServerServices = (id: number) => {
-    dispatch(deleteConfigSqlServerServices(id));
+  const removeConfigSqlServerVersions = (id: number) => {
+    dispatch(deleteConfigSqlServerVersions(id));
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Can I={Action.Update} a={Page.ConfigSqlServerServices}>
+      <Can I={Action.Update} a={Page.ConfigSqlServerVersions}>
         <a
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/administration/config-sql-server-services/${data.id}`);
+            history.push(`/administration/config-sql-server-versions/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.Delete} a={Page.ConfigSqlServerServices}>
+      <Can I={Action.Delete} a={Page.ConfigSqlServerVersions}>
         <Popconfirm
           title="Sure to delete?"
-          onConfirm={() => removeConfigSqlServerServices(data.id)}
+          onConfirm={() => removeConfigSqlServerVersions(data.id)}
         >
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
@@ -105,14 +124,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={ability.can(Action.Add, Page.ConfigSqlServerServices)}
+        showAddButton={ability.can(Action.Add, Page.ConfigSqlServerVersions)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
-        reduxSelector={configSqlServerServicesSelector}
-        searchTableData={searchConfigSqlServerServices}
-        clearTableDataMessages={clearConfigSqlServerServicesMessages}
+        reduxSelector={configSqlServerVersionsSelector}
+        searchTableData={searchConfigSqlServerVersions}
+        clearTableDataMessages={clearConfigSqlServerVersionsMessages}
         setTableColumnSelection={setTableColumnSelection}
       />
     </>

@@ -29,6 +29,7 @@ import OnlineServicePlans from './OnlineServicePlans';
 import Processors from './Processors';
 import SqlServerEditions from './SqlServerEditions';
 import SqlServerServices from './SqlServerServices';
+import SqlServerVersions from './SqlServerVersions';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -260,6 +261,22 @@ const AdministrationRoutes: React.FC = () => {
           <Route exact path={`${match.path}/config-license-units`} component={LicenseUnits} />
         )}
 
+        {/* Sql Server Versions */}
+        {ability.can(Action.View, Page.ConfigSqlServerVersions) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-versions/:id`}
+            component={SqlServerVersions}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSqlServerVersions) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-versions`}
+            component={SqlServerVersions}
+          />
+        )}
+
         {/* Component Table Column */}
         {ability.can(Action.View, Page.ConfigComponentTableColumn) && (
           <Route
@@ -316,23 +333,16 @@ const AdministrationRoutes: React.FC = () => {
           <Route
             exact
             path={`${match.path}/config-online-service-plans`}
-            component={OnlineServicePlans}/>
+            component={OnlineServicePlans}
+          />
         )}
-        
+
         {/* Processors */}
         {ability.can(Action.View, Page.ConfigProcessors) && (
-          <Route
-            exact
-            path={`${match.path}/config-processors/:id`}
-            component={Processors}
-          />
+          <Route exact path={`${match.path}/config-processors/:id`} component={Processors} />
         )}
         {ability.can(Action.View, Page.ConfigProcessors) && (
-          <Route
-            exact
-            path={`${match.path}/config-processors`}
-            component={Processors}
-          />
+          <Route exact path={`${match.path}/config-processors`} component={Processors} />
         )}
 
         {/* keep least always */}

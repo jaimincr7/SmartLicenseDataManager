@@ -80,6 +80,13 @@ class CommonService {
     });
   }
 
+  public async getConfigSupportTypesLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-support-types/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getConfigOnlineProductsLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-online-products/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

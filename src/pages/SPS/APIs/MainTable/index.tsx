@@ -225,7 +225,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const onCallAllApi = (tableFilter: any) => {
     if (spsApis.search.data?.length > 0) {
       const allParams = {};
-      const searchData = spsApis.search.data?.filter(x => x.url && x.is_mapping && x.enabled);
+      const searchData = spsApis.search.data?.filter((x) => x.url && x.is_mapping && x.enabled);
       if (searchData?.length > 0) {
         spsApis.search.data?.forEach((data: any) => {
           if (data.url && data.is_mapping && data.enabled) {
@@ -251,8 +251,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             isAll: true,
             id: 0,
           });
-        }
-        else {
+        } else {
           const cllApiObj: ICallAllApi = {
             filter_keys: tableFilter.filterKeys,
             keyword: tableFilter.keyword,
@@ -263,9 +262,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           };
           dispatch(callAllApi(cllApiObj));
         }
-      }
-      else {
-        toast.info("No mapping available for searched apis.")
+      } else {
+        toast.info('No mapping available for searched apis.');
       }
     }
   };

@@ -42,6 +42,7 @@ import {
   getSpsApiTypes,
   getConfigOnlineProductsLookup,
   getConfigOnlineServicePlansLookup,
+  getConfigSupportTypesLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -87,6 +88,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  configSupportTypesLookup: {
     data: [],
     loading: false,
   },
@@ -333,6 +338,15 @@ export const commonSlice = createSlice({
     [getO365ProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.o365ProductsLookup.data = action.payload;
       state.o365ProductsLookup.loading = false;
+    },
+
+    // Config Support Types lookup
+    [getConfigSupportTypesLookup.pending.type]: (state) => {
+      state.configSupportTypesLookup.loading = true;
+    },
+    [getConfigSupportTypesLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.configSupportTypesLookup.data = action.payload;
+      state.configSupportTypesLookup.loading = false;
     },
 
     // Config Online Products lookup

@@ -131,7 +131,7 @@ const AddConfigProcessorsModal: React.FC<IAddConfigProcessorsProps> = (props) =>
                     name="cores"
                     label="Cores"
                     className="m-0"
-                    rules={[{ required: true,type: 'number' }]}
+                    rules={[{ required: true, type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>

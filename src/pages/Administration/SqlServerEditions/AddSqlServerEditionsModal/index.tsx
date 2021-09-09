@@ -116,7 +116,12 @@ const AddConfigSqlServerEditionsModal: React.FC<IAddConfigSqlServerEditionsProps
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Edition</label>
-                  <Form.Item name="edition" label="Edition" className="m-0" rules={[{ required: true,max: 255 }]}>
+                  <Form.Item
+                    name="edition"
+                    label="Edition"
+                    className="m-0"
+                    rules={[{ required: true, max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>

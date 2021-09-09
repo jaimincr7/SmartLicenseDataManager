@@ -45,6 +45,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  configSupportTypesLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   configOnlineProductsLookup: {
     data: ILookup[];
     loading: boolean;

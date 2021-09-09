@@ -91,6 +91,7 @@ import configOnlineServicePlansReducer from './master/onlineServicePlans/onlineS
 import configProcessorsReducer from './master/processors/processors.reducer';
 import configSqlServerEditionsReducer from './master/sqlServerEditions/sqlServerEditions.reducer';
 import configSqlServerServicesReducer from './master/sqlServerServices/sqlServerServices.reducer';
+import configSqlServerVersionsReducer from './master/sqlServerVersions/sqlServerVersions.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -210,6 +211,7 @@ export const rootReducer = combineReducers({
   configProcessors: configProcessorsReducer,
   configSqlServerEditions: configSqlServerEditionsReducer,
   configSqlServerServices: configSqlServerServicesReducer,
+  configSqlServerVersions: configSqlServerVersionsReducer,
 
   //Power-BI Report
   configuration: configurationReducer,

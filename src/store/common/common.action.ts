@@ -78,6 +78,16 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
   return response.data;
 });
 
+export const getConfigSupportTypesLookup = createAsyncThunk(
+  'getConfigSupportTypesLookup',
+  async () => {
+    const response = await commonService.getConfigSupportTypesLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getConfigOnlineProductsLookup = createAsyncThunk(
   'getConfigOnlineProductsLookup',
   async () => {
