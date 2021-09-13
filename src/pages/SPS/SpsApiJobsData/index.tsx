@@ -10,7 +10,7 @@ import BreadCrumbs from '../../../common/components/Breadcrumbs';
 const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
   const dataTableRef = useRef(null);
 
-  const { id : job_id } = useParams<{ id?: string }>();
+  const { id: job_id } = useParams<{ id?: string }>();
 
   {
     /*const refreshDataTable = () => {
@@ -29,8 +29,7 @@ const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
         </div>
       </div>
       <div className="main-card">
-        <MainTable ref={dataTableRef}
-                   job_id = {+job_id} />
+        <MainTable ref={dataTableRef} job_id={+job_id} />
       </div>
     </div>
   );

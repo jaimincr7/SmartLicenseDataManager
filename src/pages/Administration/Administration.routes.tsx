@@ -324,7 +324,11 @@ const AdministrationRoutes: React.FC = () => {
           />
         )}
         {ability.can(Action.View, Page.ConfigWindowsServerEditions) && (
-          <Route exact path={`${match.path}/config-windows-server-editions`} component={WindowsServerEditions} />
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-editions`}
+            component={WindowsServerEditions}
+          />
         )}
 
         {/* Online Product Service Plans */}

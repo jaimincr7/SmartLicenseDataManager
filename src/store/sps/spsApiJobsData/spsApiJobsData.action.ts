@@ -1,5 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ICallAPI, ISearchSpsApiJobsData } from '../../../services/sps/spsApiJobsData/spsApiJobsData.model';
+import {
+  ICallAPI,
+  ISearchSpsApiJobsData,
+} from '../../../services/sps/spsApiJobsData/spsApiJobsData.model';
 import spsApiJobsDataService from '../../../services/sps/spsApiJobsData/spsApiJobsData.service';
 
 // Asynchronous thunk action

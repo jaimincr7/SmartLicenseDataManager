@@ -5,7 +5,10 @@ import {
   spsApiJobsDataSelector,
 } from '../../../../store/sps/spsApiJobsData/spsApiJobsData.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { runJobData, searchSpsApiJobsData } from '../../../../store/sps/spsApiJobsData/spsApiJobsData.action';
+import {
+  runJobData,
+  searchSpsApiJobsData,
+} from '../../../../store/sps/spsApiJobsData/spsApiJobsData.action';
 import { IMainTable } from './mainTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
@@ -172,10 +175,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const onRun = () => {
     const callApiObj: ICallAPI = {
-       company_id: globalLookups.search.company_id,
-       bu_id: globalLookups.search.bu_id,
-       tenant_id: globalLookups.search.tenant_id,
-    }
+      company_id: globalLookups.search.company_id,
+      bu_id: globalLookups.search.bu_id,
+      tenant_id: globalLookups.search.tenant_id,
+    };
     dispatch(runJobData(callApiObj));
   };
 
@@ -185,24 +188,27 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         href="#"
         title=""
         className="action-btn"
-        onClick={() => { onRun() }}   
+        onClick={() => {
+          if(Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3){
+            onRun();
+          }
+        }}
       >
-          <ReloadOutlined title="Run Job Data" />
+        <ReloadOutlined title="Run Job Data" />
       </a>
     );
   };
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {data.status !== 'Success' && (
-        Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
+      {data.status !== 'Success' &&
+        (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
           <Popover content={<>Please select global filter first!</>} trigger="click">
             {renderActionButton()}
           </Popover>
         ) : (
           renderActionButton()
-        )
-      )}
+        ))}
       <Can I={Action.Delete} a={Page.SpsApiJobs}>
         <Popconfirm title="Sure to delete?">
           <a href="#" title="" className="action-btn">
@@ -216,6 +222,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   return (
     <>
       <DataTable
+        globalSearchExist={false}
         ref={dataTableRef}
         showAddButton={false}
         tableAction={tableAction}

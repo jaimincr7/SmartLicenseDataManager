@@ -111,8 +111,8 @@ export enum Page {
   BUDropdown = 'bu-drop-down',
 
   SPSApi = 'sps-api',
-  SpsApiJobs = "sps-api-jobs",
-  SpsApiJobsData = "sps-api-jobs-data",
+  SpsApiJobs = 'sps-api-jobs',
+  SpsApiJobsData = 'sps-api-jobs-data',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }
