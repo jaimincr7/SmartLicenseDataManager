@@ -30,6 +30,8 @@ import Processors from './Processors';
 import SqlServerEditions from './SqlServerEditions';
 import SqlServerServices from './SqlServerServices';
 import SqlServerVersions from './SqlServerVersions';
+import SupportTypes from './SupportTypes';
+import WindowsServerEditions from './WindowsServerEditions';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -293,6 +295,14 @@ const AdministrationRoutes: React.FC = () => {
           />
         )}
 
+        {/* SupportTypes */}
+        {ability.can(Action.View, Page.ConfigSupportTypes) && (
+          <Route exact path={`${match.path}/config-support-types/:id`} component={SupportTypes} />
+        )}
+        {ability.can(Action.View, Page.ConfigSupportTypes) && (
+          <Route exact path={`${match.path}/config-support-types`} component={SupportTypes} />
+        )}
+
         {/* Online Products*/}
         {ability.can(Action.View, Page.ConfigOnlineProducts) && (
           <Route
@@ -303,6 +313,18 @@ const AdministrationRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.ConfigOnlineProducts) && (
           <Route exact path={`${match.path}/config-online-products`} component={OnlineProducts} />
+        )}
+
+        {/* WindowsServerEditions*/}
+        {ability.can(Action.View, Page.ConfigWindowsServerEditions) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-editions/:id`}
+            component={WindowsServerEditions}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigWindowsServerEditions) && (
+          <Route exact path={`${match.path}/config-windows-server-editions`} component={WindowsServerEditions} />
         )}
 
         {/* Online Product Service Plans */}

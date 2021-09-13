@@ -92,6 +92,8 @@ import configProcessorsReducer from './master/processors/processors.reducer';
 import configSqlServerEditionsReducer from './master/sqlServerEditions/sqlServerEditions.reducer';
 import configSqlServerServicesReducer from './master/sqlServerServices/sqlServerServices.reducer';
 import configSqlServerVersionsReducer from './master/sqlServerVersions/sqlServerVersions.reducer';
+import configSupportTypesReducer from './master/supportTypes/supportTypes.reducer';
+import configWindowsServerEditionsReducer from './master/windowsServerEditions/windowsServerEditions.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -212,6 +214,8 @@ export const rootReducer = combineReducers({
   configSqlServerEditions: configSqlServerEditionsReducer,
   configSqlServerServices: configSqlServerServicesReducer,
   configSqlServerVersions: configSqlServerVersionsReducer,
+  configSupportTypes: configSupportTypesReducer,
+  configWindowsServerEditions: configWindowsServerEditionsReducer,
 
   //Power-BI Report
   configuration: configurationReducer,

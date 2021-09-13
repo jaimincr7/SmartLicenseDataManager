@@ -100,6 +100,8 @@ export enum Page {
   ConfigSqlServerEditions = 'config-sql-server-editions',
   ConfigSqlServerServices = 'config-sql-server-services',
   ConfigSqlServerVersions = 'config-sql-server-versions',
+  ConfigSupportTypes = 'config-support-types',
+  ConfigWindowsServerEditions = 'config-windows-server-editions',
 
   PowerBIConfig = 'power-bi-report-config',
 
