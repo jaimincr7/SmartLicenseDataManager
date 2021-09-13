@@ -150,15 +150,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">SPS Input Type Id</span>,
+        title: <span className="dragHandler">SPS Input Type</span>,
         column: 'SPS_InputTypeId',
         sorter: true,
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('sps_input_type_id', spsApiJobs.search.lookups?.agreementTypes),
-            dataIndex: 'sps_input_type_name',
-            key: 'sps_input_type_name',
+            title: FilterBySwap('sps_input_type_id', form),
+            dataIndex: 'sps_input_type_id',
+            key: 'sps_input_type_id',
             ellipsis: true,
           },
         ],
