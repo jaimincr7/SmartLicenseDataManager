@@ -94,6 +94,8 @@ import configSqlServerServicesReducer from './master/sqlServerServices/sqlServer
 import configSqlServerVersionsReducer from './master/sqlServerVersions/sqlServerVersions.reducer';
 import configSupportTypesReducer from './master/supportTypes/supportTypes.reducer';
 import configWindowsServerEditionsReducer from './master/windowsServerEditions/windowsServerEditions.reducer';
+import spsApiJobsReducer from './sps/spsApiJobs/spsApiJobs.reducer';
+import spsApiJobsDataReducer from './sps/spsApiJobsData/spsApiJobsData.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -222,5 +224,8 @@ export const rootReducer = combineReducers({
 
   //SPS
   spsApi: spsApiReducer,
+  spsApiJobs: spsApiJobsReducer,
+  spsApiJobsData: spsApiJobsDataReducer,
+
   apiColumnMapping: apiColMappingReducer,
 });
