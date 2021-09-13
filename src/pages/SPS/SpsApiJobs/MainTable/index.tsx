@@ -170,7 +170,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('api_call_id', spsApiJobs.search.lookups?.booleanLookup),
+            title: FilterBySwap('api_call_id', form),
             dataIndex: 'api_call_name',
             key: 'api_call_name',
             ellipsis: true,
@@ -184,7 +184,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('api_type_id', spsApiJobs.search.lookups?.booleanLookup),
+            title: FilterBySwap('api_type_id', form),
             dataIndex: 'api_type_name',
             key: 'api_type_name',
             ellipsis: true,
