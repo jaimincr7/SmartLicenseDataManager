@@ -45,6 +45,34 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  configSqlServerEditionsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configSqlServerVersionsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configSqlServerServicesLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configLicenseUnitsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configSupportTypesLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configOnlineProductsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configOnlineServicePlansLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   cmdbLicenseModelLookup: {
     data: ILookup[];
     loading: boolean;
@@ -142,5 +170,13 @@ export interface ICommonState {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
+  };
+  spsApiGroups: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  spsApiTypes: {
+    data: ILookup[];
+    loading: boolean;
   };
 }

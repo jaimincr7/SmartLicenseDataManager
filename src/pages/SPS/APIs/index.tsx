@@ -7,14 +7,23 @@ import MainTable from './MainTable';
 import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { clearSPS } from '../../../store/sps/spsAPI/spsApi.reducer';
-import CallApiModal from './CallApiModal';
+import AddApiModal from './AddApiModal/index';
+import { useHistory } from 'react-router-dom';
 
-const SPSAPIs: React.FC<ISPSAPIsProps> = () => {
-  const [callModalVisible, setCallModalVisible] = React.useState(false);
+const SPSAPIs: React.FC<ISPSAPIsProps> = (props) => {
+  const { id: urlId } = props.match?.params;
+  const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
-  const [params, setParams] = React.useState({});
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (+urlId > 0) {
+      setAddModalVisible(true);
+      setId(+urlId);
+    }
+  }, [+urlId]);
 
   useEffect(() => {
     return () => {
@@ -39,19 +48,18 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = () => {
       <div className="main-card">
         <MainTable
           ref={dataTableRef}
-          setSelectedId={(id, params) => {
-            setParams(params);
+          setSelectedId={(id) => {
+            setAddModalVisible(true);
             setId(id);
-            setCallModalVisible(true);
           }}
         />
       </div>
-      {callModalVisible && (
-        <CallApiModal
-          showModal={callModalVisible}
-          params={params}
+      {addModalVisible && (
+        <AddApiModal
+          showModal={addModalVisible}
           handleModalClose={() => {
-            setCallModalVisible(false);
+            setAddModalVisible(false);
+            history.push('/sps/sps-api');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}

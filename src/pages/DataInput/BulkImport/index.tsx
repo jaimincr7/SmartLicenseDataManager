@@ -285,14 +285,15 @@ const BulkImport: React.FC = () => {
       valuesArray?.forEach((val) => {
         try {
           dispatch(bulkInsert(val));
-        }
-        catch (e) {
-          const orgFileName = excelColumnState?.find(x => x.filename === val?.file_name)?.original_filename;
-          remainingFiles.push(orgFileName)
+        } catch (e) {
+          const orgFileName = excelColumnState?.find(
+            (x) => x.filename === val?.file_name
+          )?.original_filename;
+          remainingFiles.push(orgFileName);
         }
       });
       if (remainingFiles?.length > 0) {
-        toast.error("Listed filed does not imported ," + remainingFiles.toString());
+        toast.error('Listed filed does not imported ,' + remainingFiles.toString());
       }
     }
   };

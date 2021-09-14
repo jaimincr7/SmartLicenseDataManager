@@ -83,13 +83,27 @@ export enum Page {
   CmdbUser = 'cmdb-user',
   CmdbUserMap = 'cmdb-user-map',
   CmdbExclusion = 'cmdb-exclusion',
-  
+
   ConfigComponent = 'config-component',
   ConfigComponentTableColumn = 'config-component-table-column',
   ConfigExclusionComponent = 'config-exclusion-component',
   ConfigExclusionLocation = 'config-exclusion-location',
   ConfigExclusionType = 'config-exclusion-type',
   ConfigExclusionOperation = 'config-exclusion-operation',
+  ConfigFileCategories = 'config-file-categories',
+  ConfigFileType = 'config-file-types',
+  ConfigLicenseUnits = 'config-license-units',
+  ConfigOnlineProducts = 'config-online-products',
+  ConfigOnlineProductServicePlans = 'config-online-product-service-plans',
+  ConfigOnlineServicePlans = 'config-online-service-plans',
+  ConfigProcessors = 'config-processors',
+  ConfigSqlServerEditions = 'config-sql-server-editions',
+  ConfigSqlServerServices = 'config-sql-server-services',
+  ConfigSqlServerVersions = 'config-sql-server-versions',
+  ConfigSupportTypes = 'config-support-types',
+  ConfigWindowsServerEditions = 'config-windows-server-editions',
+  ConfigSqlServerLicense = 'config-sql-server-license',
+  ConfigWindowsServerVersions = 'config-windows-server-versions',
 
   PowerBIConfig = 'power-bi-report-config',
 
@@ -97,11 +111,14 @@ export enum Page {
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',
   BUDropdown = 'bu-drop-down',
+  AgreementTypes = 'agreement-types',
 
   SPSApi = 'sps-api',
+  SpsApiJobs = 'sps-api-jobs',
+  SpsApiJobsData = 'sps-api-jobs-data',
+
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }
-
 export enum Action {
   View = 'view',
   Add = 'add',
