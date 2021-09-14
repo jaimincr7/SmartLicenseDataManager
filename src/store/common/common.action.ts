@@ -78,6 +78,76 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
   return response.data;
 });
 
+export const getConfigSqlServerEditionsLookup = createAsyncThunk(
+  'getConfigSqlServerEditionsLookup',
+  async () => {
+    const response = await commonService.getConfigSqlServerEditionsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigSqlServerServicesLookup = createAsyncThunk(
+  'getConfigSqlServerServicesLookup',
+  async () => {
+    const response = await commonService.getConfigSqlServerServicesLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigSqlServerVersionsLookup = createAsyncThunk(
+  'getConfigSqlServerVersionsLookup',
+  async () => {
+    const response = await commonService.getConfigSqlServerVersionsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigLicenseUnitsLookup = createAsyncThunk(
+  'getConfigLicenseUnitsLookup',
+  async () => {
+    const response = await commonService.getConfigLicenseUnitsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigSupportTypesLookup = createAsyncThunk(
+  'getConfigSupportTypesLookup',
+  async () => {
+    const response = await commonService.getConfigSupportTypesLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigOnlineProductsLookup = createAsyncThunk(
+  'getConfigOnlineProductsLookup',
+  async () => {
+    const response = await commonService.getConfigOnlineProductsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigOnlineServicePlansLookup = createAsyncThunk(
+  'getConfigOnlineServicePlansLookup',
+  async () => {
+    const response = await commonService.getConfigOnlineServicePlansLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getCmdbLicenseModelLookup = createAsyncThunk('getCmdbLicenseModelLookup', async () => {
   const response = await commonService.getCmdbLicenseModelLookup().then((res) => {
     return res.body;
@@ -279,3 +349,17 @@ export const saveTableColumnSelection = createAsyncThunk(
     return response;
   }
 );
+
+export const getSpsApiGroups = createAsyncThunk('getSpsApiGroups', async () => {
+  const response = await commonService.getSpsApiGroups().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getSpsApiTypes = createAsyncThunk('getSpsApiTypes', async () => {
+  const response = await commonService.getSpsApiTypes().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});

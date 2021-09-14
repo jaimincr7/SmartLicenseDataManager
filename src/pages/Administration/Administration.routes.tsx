@@ -20,6 +20,21 @@ import ExclusionComponent from './ExclusionComponent';
 import ExclusionLocation from './ExclusionLocation';
 import ExclusionOperation from './ExclusionOperation';
 import ExclusionType from './ExclusionType';
+import FileType from './FileTypes';
+import FileCategories from './FileCategories';
+import LicenseUnits from './LicenseUnits';
+import OnlineProducts from './OnlineProducts';
+import OnlineProductServicePlans from './OnlineProductServicePlans';
+import OnlineServicePlans from './OnlineServicePlans';
+import Processors from './Processors';
+import SqlServerEditions from './SqlServerEditions';
+import SqlServerServices from './SqlServerServices';
+import SqlServerVersions from './SqlServerVersions';
+import SupportTypes from './SupportTypes';
+import WindowsServerEditions from './WindowsServerEditions';
+import SqlServerLicense from './SqlServerLicense';
+import AgreementTypes from './AgreementTypes';
+import WindowsServerVersions from './WindowsServerVersions';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -135,6 +150,14 @@ const AdministrationRoutes: React.FC = () => {
           <Route exact path={`${match.path}/config-component`} component={Component} />
         )}
 
+        {/* Agreement Types */}
+        {ability.can(Action.View, Page.AgreementTypes) && (
+          <Route exact path={`${match.path}/agreement-types/:id`} component={AgreementTypes} />
+        )}
+        {ability.can(Action.View, Page.AgreementTypes) && (
+          <Route exact path={`${match.path}/agreement-types`} component={AgreementTypes} />
+        )}
+
         {/* Exclusion Component */}
         {ability.can(Action.View, Page.ConfigExclusionComponent) && (
           <Route
@@ -183,19 +206,119 @@ const AdministrationRoutes: React.FC = () => {
           />
         )}
 
-        {/* Exclusion Type */}
-        {ability.can(Action.View, Page.ConfigExclusionType) && (
+        {/* Sql Server Editions */}
+        {ability.can(Action.View, Page.ConfigSqlServerEditions) && (
           <Route
             exact
-            path={`${match.path}/config-exclusion-type/:id`}
-            component={ExclusionType}
+            path={`${match.path}/config-sql-server-editions/:id`}
+            component={SqlServerEditions}
           />
         )}
-        {ability.can(Action.View, Page.ConfigExclusionType) && (
+        {ability.can(Action.View, Page.ConfigSqlServerEditions) && (
           <Route
             exact
-            path={`${match.path}/config-exclusion-type`}
-            component={ExclusionType}
+            path={`${match.path}/config-sql-server-editions`}
+            component={SqlServerEditions}
+          />
+        )}
+
+        {/* Sql Server License */}
+        {ability.can(Action.View, Page.ConfigSqlServerLicense) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-license/:id`}
+            component={SqlServerLicense}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSqlServerLicense) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-license`}
+            component={SqlServerLicense}
+          />
+        )}
+
+        {/* Sql Server Services */}
+        {ability.can(Action.View, Page.ConfigSqlServerServices) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-services/:id`}
+            component={SqlServerServices}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSqlServerServices) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-services`}
+            component={SqlServerServices}
+          />
+        )}
+
+        {/* Exclusion Type */}
+        {ability.can(Action.View, Page.ConfigExclusionType) && (
+          <Route exact path={`${match.path}/config-exclusion-type/:id`} component={ExclusionType} />
+        )}
+        {ability.can(Action.View, Page.ConfigExclusionType) && (
+          <Route exact path={`${match.path}/config-exclusion-type`} component={ExclusionType} />
+        )}
+
+        {/* File Type */}
+        {ability.can(Action.View, Page.ConfigFileType) && (
+          <Route exact path={`${match.path}/config-file-types/:id`} component={FileType} />
+        )}
+        {ability.can(Action.View, Page.ConfigFileType) && (
+          <Route exact path={`${match.path}/config-file-types`} component={FileType} />
+        )}
+
+        {/* WindowsServerVersions */}
+        {ability.can(Action.View, Page.ConfigWindowsServerVersions) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-versions/:id`}
+            component={WindowsServerVersions}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigWindowsServerVersions) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-versions`}
+            component={WindowsServerVersions}
+          />
+        )}
+
+        {/* File Categories */}
+        {ability.can(Action.View, Page.ConfigFileCategories) && (
+          <Route
+            exact
+            path={`${match.path}/config-file-categories/:id`}
+            component={FileCategories}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigFileCategories) && (
+          <Route exact path={`${match.path}/config-file-categories`} component={FileCategories} />
+        )}
+
+        {/* License Units */}
+        {ability.can(Action.View, Page.ConfigLicenseUnits) && (
+          <Route exact path={`${match.path}/config-license-units/:id`} component={LicenseUnits} />
+        )}
+        {ability.can(Action.View, Page.ConfigLicenseUnits) && (
+          <Route exact path={`${match.path}/config-license-units`} component={LicenseUnits} />
+        )}
+
+        {/* Sql Server Versions */}
+        {ability.can(Action.View, Page.ConfigSqlServerVersions) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-versions/:id`}
+            component={SqlServerVersions}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSqlServerVersions) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-versions`}
+            component={SqlServerVersions}
           />
         )}
 
@@ -213,6 +336,82 @@ const AdministrationRoutes: React.FC = () => {
             path={`${match.path}/config-component-table-column`}
             component={ComponentTableColumn}
           />
+        )}
+
+        {/* SupportTypes */}
+        {ability.can(Action.View, Page.ConfigSupportTypes) && (
+          <Route exact path={`${match.path}/config-support-types/:id`} component={SupportTypes} />
+        )}
+        {ability.can(Action.View, Page.ConfigSupportTypes) && (
+          <Route exact path={`${match.path}/config-support-types`} component={SupportTypes} />
+        )}
+
+        {/* Online Products*/}
+        {ability.can(Action.View, Page.ConfigOnlineProducts) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-products/:id`}
+            component={OnlineProducts}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigOnlineProducts) && (
+          <Route exact path={`${match.path}/config-online-products`} component={OnlineProducts} />
+        )}
+
+        {/* WindowsServerEditions*/}
+        {ability.can(Action.View, Page.ConfigWindowsServerEditions) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-editions/:id`}
+            component={WindowsServerEditions}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigWindowsServerEditions) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-editions`}
+            component={WindowsServerEditions}
+          />
+        )}
+
+        {/* Online Product Service Plans */}
+        {ability.can(Action.View, Page.ConfigOnlineProductServicePlans) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-product-service-plans/:id`}
+            component={OnlineProductServicePlans}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigOnlineProductServicePlans) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-product-service-plans`}
+            component={OnlineProductServicePlans}
+          />
+        )}
+
+        {/* Online Service Plans */}
+        {ability.can(Action.View, Page.ConfigOnlineServicePlans) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-service-plans/:id`}
+            component={OnlineServicePlans}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigOnlineServicePlans) && (
+          <Route
+            exact
+            path={`${match.path}/config-online-service-plans`}
+            component={OnlineServicePlans}
+          />
+        )}
+
+        {/* Processors */}
+        {ability.can(Action.View, Page.ConfigProcessors) && (
+          <Route exact path={`${match.path}/config-processors/:id`} component={Processors} />
+        )}
+        {ability.can(Action.View, Page.ConfigProcessors) && (
+          <Route exact path={`${match.path}/config-processors`} component={Processors} />
         )}
 
         {/* keep least always */}

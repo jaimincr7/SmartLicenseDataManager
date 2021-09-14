@@ -38,6 +38,15 @@ import {
   getCmdbExclusionTypeLookup,
   getConfigComponentLookup,
   getConfigComponentTableColumnLookup,
+  getSpsApiGroups,
+  getSpsApiTypes,
+  getConfigOnlineProductsLookup,
+  getConfigOnlineServicePlansLookup,
+  getConfigSupportTypesLookup,
+  getConfigSqlServerEditionsLookup,
+  getConfigSqlServerServicesLookup,
+  getConfigSqlServerVersionsLookup,
+  getConfigLicenseUnitsLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -83,6 +92,34 @@ export const initialState: ICommonState = {
     loading: false,
   },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  configSqlServerEditionsLookup: {
+    data: [],
+    loading: false,
+  },
+  configSqlServerVersionsLookup: {
+    data: [],
+    loading: false,
+  },
+  configSqlServerServicesLookup: {
+    data: [],
+    loading: false,
+  },
+  configLicenseUnitsLookup: {
+    data: [],
+    loading: false,
+  },
+  configSupportTypesLookup: {
+    data: [],
+    loading: false,
+  },
+  configOnlineProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  configOnlineServicePlansLookup: {
     data: [],
     loading: false,
   },
@@ -184,6 +221,14 @@ export const initialState: ICommonState = {
     hasErrors: false,
     messages: [],
   },
+  spsApiGroups: {
+    data: [],
+    loading: false,
+  },
+  spsApiTypes: {
+    data: [],
+    loading: false,
+  },
 };
 
 export const commonSlice = createSlice({
@@ -207,6 +252,12 @@ export const commonSlice = createSlice({
     },
     clearSaveTableColumnSelection: (state) => {
       state.saveTableColumnSelection.messages = [];
+    },
+    clearSpsApiTypesLookup: (state) => {
+      state.spsApiTypes.data = [];
+    },
+    clearSpsApiGroupsLookup: (state) => {
+      state.spsApiGroups.data = [];
     },
   },
   extraReducers: {
@@ -307,6 +358,81 @@ export const commonSlice = createSlice({
     [getO365ProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.o365ProductsLookup.data = action.payload;
       state.o365ProductsLookup.loading = false;
+    },
+
+    // Config Sql Server Editions lookup
+    [getConfigSqlServerEditionsLookup.pending.type]: (state) => {
+      state.configSqlServerEditionsLookup.loading = true;
+    },
+    [getConfigSqlServerEditionsLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configSqlServerEditionsLookup.data = action.payload;
+      state.configSqlServerEditionsLookup.loading = false;
+    },
+
+    // Config Sql Server Services lookup
+    [getConfigSqlServerServicesLookup.pending.type]: (state) => {
+      state.configSqlServerServicesLookup.loading = true;
+    },
+    [getConfigSqlServerServicesLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configSqlServerServicesLookup.data = action.payload;
+      state.configSqlServerServicesLookup.loading = false;
+    },
+
+    // Config Sql Server Versions lookup
+    [getConfigSqlServerVersionsLookup.pending.type]: (state) => {
+      state.configSqlServerVersionsLookup.loading = true;
+    },
+    [getConfigSqlServerVersionsLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configSqlServerVersionsLookup.data = action.payload;
+      state.configSqlServerVersionsLookup.loading = false;
+    },
+
+    // Config License Units lookup
+    [getConfigLicenseUnitsLookup.pending.type]: (state) => {
+      state.configLicenseUnitsLookup.loading = true;
+    },
+    [getConfigLicenseUnitsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.configLicenseUnitsLookup.data = action.payload;
+      state.configLicenseUnitsLookup.loading = false;
+    },
+
+    // Config Support Types lookup
+    [getConfigSupportTypesLookup.pending.type]: (state) => {
+      state.configSupportTypesLookup.loading = true;
+    },
+    [getConfigSupportTypesLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.configSupportTypesLookup.data = action.payload;
+      state.configSupportTypesLookup.loading = false;
+    },
+
+    // Config Online Products lookup
+    [getConfigOnlineProductsLookup.pending.type]: (state) => {
+      state.configOnlineProductsLookup.loading = true;
+    },
+    [getConfigOnlineProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.configOnlineProductsLookup.data = action.payload;
+      state.configOnlineProductsLookup.loading = false;
+    },
+
+    // Config Online Service Plans lookup
+    [getConfigOnlineServicePlansLookup.pending.type]: (state) => {
+      state.configOnlineServicePlansLookup.loading = true;
+    },
+    [getConfigOnlineServicePlansLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configOnlineServicePlansLookup.data = action.payload;
+      state.configOnlineServicePlansLookup.loading = false;
     },
 
     // CMDB License Model lookup
@@ -560,6 +686,24 @@ export const commonSlice = createSlice({
       state.saveTableColumnSelection.loading = false;
       state.saveTableColumnSelection.hasErrors = true;
     },
+
+    //SPS Api groups
+    [getSpsApiGroups.pending.type]: (state) => {
+      state.spsApiGroups.loading = true;
+    },
+    [getSpsApiGroups.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiGroups.data = action.payload;
+      state.spsApiGroups.loading = false;
+    },
+
+    //SPS Api types
+    [getSpsApiTypes.pending.type]: (state) => {
+      state.spsApiTypes.loading = true;
+    },
+    [getSpsApiTypes.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiTypes.data = action.payload;
+      state.spsApiTypes.loading = false;
+    },
   },
 });
 
@@ -574,6 +718,8 @@ export const {
   // setGlobalSearch,
   clearDeleteDatasetMessages,
   clearSaveTableColumnSelection,
+  clearSpsApiGroupsLookup,
+  clearSpsApiTypesLookup,
 } = commonSlice.actions;
 
 // The reducer

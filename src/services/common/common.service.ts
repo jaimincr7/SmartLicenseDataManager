@@ -80,6 +80,55 @@ class CommonService {
     });
   }
 
+  public async getConfigSqlServerEditionsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-sql-server-editions/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigSqlServerVersionsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-sql-server-versions/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigSqlServerServicesLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-sql-server-services/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigLicenseUnitsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-license-units/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigSupportTypesLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-support-types/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigOnlineProductsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-online-products/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigOnlineServicePlansLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-online-service-plans/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getCmdbLicenseModelLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cmdb-license-model/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -301,6 +350,20 @@ class CommonService {
     };
     const url = `/table-column-selection`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getSpsApiGroups(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-group/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getSpsApiTypes(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-type/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
   }

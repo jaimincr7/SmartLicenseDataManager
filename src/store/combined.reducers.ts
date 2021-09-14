@@ -82,6 +82,23 @@ import configComponentReducer from './master/component/component.reducer';
 import configComponentTableColumnReducer from './master/componentTableColumn/componentTableColumn.reducer';
 import configExclusionTypeReducer from './master/exclusionType/exclusionType.reducer';
 import configExclusionOperationReducer from './master/exclusionOperation/exclusionOperation.reducer';
+import configFileTypeReducer from './master/fileTypes/fileTypes.reducer';
+import configFileCategoriesReducer from './master/fileCategories/fileCategories.reducer';
+import configLicenseUnitsReducer from './master/licenseUnits/licenseUnits.reducer';
+import configOnlineProductsReducer from './master/onlineProducts/onlineProducts.reducer';
+import configOnlineProductServicePlansReducer from './master/onlineProductServicePlans/onlineProductServicePlans.reducer';
+import configOnlineServicePlansReducer from './master/onlineServicePlans/onlineServicePlans.reducer';
+import configProcessorsReducer from './master/processors/processors.reducer';
+import configSqlServerEditionsReducer from './master/sqlServerEditions/sqlServerEditions.reducer';
+import configSqlServerServicesReducer from './master/sqlServerServices/sqlServerServices.reducer';
+import configSqlServerVersionsReducer from './master/sqlServerVersions/sqlServerVersions.reducer';
+import configSupportTypesReducer from './master/supportTypes/supportTypes.reducer';
+import configWindowsServerEditionsReducer from './master/windowsServerEditions/windowsServerEditions.reducer';
+import spsApiJobsReducer from './sps/spsApiJobs/spsApiJobs.reducer';
+import spsApiJobsDataReducer from './sps/spsApiJobsData/spsApiJobsData.reducer';
+import configSqlServerLicenseReducer from './master/sqlServerLicense/sqlServerLicense.reducer';
+import agreementTypesReducer from './master/agreementTypes/agreementTypes.reducer';
+import configWindowsServerVersionsReducer from './master/windowsServerVersions/windowsServerVersions.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -126,6 +143,7 @@ export const rootReducer = combineReducers({
   bu: buReducer,
   currency: currencyReducer,
   role: roleReducer,
+  agreementTypes: agreementTypesReducer,
 
   // RV Tools
   tabVCluster: tabVClusterReducer,
@@ -192,11 +210,28 @@ export const rootReducer = combineReducers({
   configExclusionLocation: configExclusionLocationReducer,
   configExclusionType: configExclusionTypeReducer,
   configExclusionOperation: configExclusionOperationReducer,
+  configFileCategories: configFileCategoriesReducer,
+  configFileType: configFileTypeReducer,
+  configLicenseUnits: configLicenseUnitsReducer,
+  configOnlineProducts: configOnlineProductsReducer,
+  configOnlineProductServicePlans: configOnlineProductServicePlansReducer,
+  configOnlineServicePlans: configOnlineServicePlansReducer,
+  configProcessors: configProcessorsReducer,
+  configSqlServerEditions: configSqlServerEditionsReducer,
+  configSqlServerServices: configSqlServerServicesReducer,
+  configSqlServerVersions: configSqlServerVersionsReducer,
+  configSupportTypes: configSupportTypesReducer,
+  configWindowsServerEditions: configWindowsServerEditionsReducer,
+  configSqlServerLicense: configSqlServerLicenseReducer,
+  configWindowsServerVersions: configWindowsServerVersionsReducer,
 
   //Power-BI Report
   configuration: configurationReducer,
 
   //SPS
   spsApi: spsApiReducer,
+  spsApiJobs: spsApiJobsReducer,
+  spsApiJobsData: spsApiJobsDataReducer,
+
   apiColumnMapping: apiColMappingReducer,
 });

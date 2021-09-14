@@ -22,4 +22,5 @@ export interface IDataTable {
   };
   hideExportButton?: boolean;
   showCallApiBtn?: boolean;
+  onCallAllApi?: (tableFilter: any) => void;
 }

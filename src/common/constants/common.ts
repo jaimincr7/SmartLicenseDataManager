@@ -94,4 +94,10 @@ export const allDateColumns = [
   'purchase_date',
   'last_updated',
   'installed_date',
+  'api_call_start',
+  'api_call_end',
+  'insert_data_start',
+  'processed',
+  'call_start',
+  'call_end',
 ];

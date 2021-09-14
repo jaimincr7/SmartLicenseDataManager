@@ -5,7 +5,7 @@ export interface ISearchImportAPIs extends ISearch {
   is_lookup?: boolean;
 }
 
-export interface ISearchAPI {
+export interface ISpsApi {
   id?: number;
   name: string;
   url: string;
@@ -14,6 +14,10 @@ export interface ISearchAPI {
   sps_input_type_id: number;
   stored_procedure: string;
   enabled: boolean;
+  is_mapping?: boolean;
+}
+
+export interface ISearchAPI extends ISpsApi {
   group_name: string;
   type_name: string;
 }
