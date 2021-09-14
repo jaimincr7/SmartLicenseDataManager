@@ -96,6 +96,9 @@ import configSupportTypesReducer from './master/supportTypes/supportTypes.reduce
 import configWindowsServerEditionsReducer from './master/windowsServerEditions/windowsServerEditions.reducer';
 import spsApiJobsReducer from './sps/spsApiJobs/spsApiJobs.reducer';
 import spsApiJobsDataReducer from './sps/spsApiJobsData/spsApiJobsData.reducer';
+import configSqlServerLicenseReducer from './master/sqlServerLicense/sqlServerLicense.reducer';
+import agreementTypesReducer from './master/agreementTypes/agreementTypes.reducer';
+import configWindowsServerVersionsReducer from './master/windowsServerVersions/windowsServerVersions.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -140,6 +143,7 @@ export const rootReducer = combineReducers({
   bu: buReducer,
   currency: currencyReducer,
   role: roleReducer,
+  agreementTypes: agreementTypesReducer,
 
   // RV Tools
   tabVCluster: tabVClusterReducer,
@@ -218,6 +222,8 @@ export const rootReducer = combineReducers({
   configSqlServerVersions: configSqlServerVersionsReducer,
   configSupportTypes: configSupportTypesReducer,
   configWindowsServerEditions: configWindowsServerEditionsReducer,
+  configSqlServerLicense: configSqlServerLicenseReducer,
+  configWindowsServerVersions: configWindowsServerVersionsReducer,
 
   //Power-BI Report
   configuration: configurationReducer,

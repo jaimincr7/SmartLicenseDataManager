@@ -102,6 +102,8 @@ export enum Page {
   ConfigSqlServerVersions = 'config-sql-server-versions',
   ConfigSupportTypes = 'config-support-types',
   ConfigWindowsServerEditions = 'config-windows-server-editions',
+  ConfigSqlServerLicense = 'config-sql-server-license',
+  ConfigWindowsServerVersions = 'config-windows-server-versions',
 
   PowerBIConfig = 'power-bi-report-config',
 
@@ -109,6 +111,7 @@ export enum Page {
   TenantDropdown = 'tenant-drop-down',
   CompanyDropdown = 'company-drop-down',
   BUDropdown = 'bu-drop-down',
+  AgreementTypes = 'agreement-types',
 
   SPSApi = 'sps-api',
   SpsApiJobs = 'sps-api-jobs',

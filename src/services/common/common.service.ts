@@ -80,6 +80,34 @@ class CommonService {
     });
   }
 
+  public async getConfigSqlServerEditionsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-sql-server-editions/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigSqlServerVersionsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-sql-server-versions/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigSqlServerServicesLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-sql-server-services/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigLicenseUnitsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-license-units/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getConfigSupportTypesLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-support-types/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

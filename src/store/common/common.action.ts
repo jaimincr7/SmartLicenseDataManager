@@ -78,6 +78,46 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
   return response.data;
 });
 
+export const getConfigSqlServerEditionsLookup = createAsyncThunk(
+  'getConfigSqlServerEditionsLookup',
+  async () => {
+    const response = await commonService.getConfigSqlServerEditionsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigSqlServerServicesLookup = createAsyncThunk(
+  'getConfigSqlServerServicesLookup',
+  async () => {
+    const response = await commonService.getConfigSqlServerServicesLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigSqlServerVersionsLookup = createAsyncThunk(
+  'getConfigSqlServerVersionsLookup',
+  async () => {
+    const response = await commonService.getConfigSqlServerVersionsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigLicenseUnitsLookup = createAsyncThunk(
+  'getConfigLicenseUnitsLookup',
+  async () => {
+    const response = await commonService.getConfigLicenseUnitsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getConfigSupportTypesLookup = createAsyncThunk(
   'getConfigSupportTypesLookup',
   async () => {

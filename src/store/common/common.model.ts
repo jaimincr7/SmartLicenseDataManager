@@ -45,6 +45,22 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  configSqlServerEditionsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configSqlServerVersionsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configSqlServerServicesLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configLicenseUnitsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   configSupportTypesLookup: {
     data: ILookup[];
     loading: boolean;

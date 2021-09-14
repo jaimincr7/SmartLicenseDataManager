@@ -189,7 +189,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title=""
         className="action-btn"
         onClick={() => {
-          if(Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3){
+          if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3) {
             onRun();
           }
         }}

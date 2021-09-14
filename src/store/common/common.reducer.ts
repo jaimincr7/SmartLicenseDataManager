@@ -43,6 +43,10 @@ import {
   getConfigOnlineProductsLookup,
   getConfigOnlineServicePlansLookup,
   getConfigSupportTypesLookup,
+  getConfigSqlServerEditionsLookup,
+  getConfigSqlServerServicesLookup,
+  getConfigSqlServerVersionsLookup,
+  getConfigLicenseUnitsLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -88,6 +92,22 @@ export const initialState: ICommonState = {
     loading: false,
   },
   o365ProductsLookup: {
+    data: [],
+    loading: false,
+  },
+  configSqlServerEditionsLookup: {
+    data: [],
+    loading: false,
+  },
+  configSqlServerVersionsLookup: {
+    data: [],
+    loading: false,
+  },
+  configSqlServerServicesLookup: {
+    data: [],
+    loading: false,
+  },
+  configLicenseUnitsLookup: {
     data: [],
     loading: false,
   },
@@ -338,6 +358,51 @@ export const commonSlice = createSlice({
     [getO365ProductsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.o365ProductsLookup.data = action.payload;
       state.o365ProductsLookup.loading = false;
+    },
+
+    // Config Sql Server Editions lookup
+    [getConfigSqlServerEditionsLookup.pending.type]: (state) => {
+      state.configSqlServerEditionsLookup.loading = true;
+    },
+    [getConfigSqlServerEditionsLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configSqlServerEditionsLookup.data = action.payload;
+      state.configSqlServerEditionsLookup.loading = false;
+    },
+
+    // Config Sql Server Services lookup
+    [getConfigSqlServerServicesLookup.pending.type]: (state) => {
+      state.configSqlServerServicesLookup.loading = true;
+    },
+    [getConfigSqlServerServicesLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configSqlServerServicesLookup.data = action.payload;
+      state.configSqlServerServicesLookup.loading = false;
+    },
+
+    // Config Sql Server Versions lookup
+    [getConfigSqlServerVersionsLookup.pending.type]: (state) => {
+      state.configSqlServerVersionsLookup.loading = true;
+    },
+    [getConfigSqlServerVersionsLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configSqlServerVersionsLookup.data = action.payload;
+      state.configSqlServerVersionsLookup.loading = false;
+    },
+
+    // Config License Units lookup
+    [getConfigLicenseUnitsLookup.pending.type]: (state) => {
+      state.configLicenseUnitsLookup.loading = true;
+    },
+    [getConfigLicenseUnitsLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.configLicenseUnitsLookup.data = action.payload;
+      state.configLicenseUnitsLookup.loading = false;
     },
 
     // Config Support Types lookup

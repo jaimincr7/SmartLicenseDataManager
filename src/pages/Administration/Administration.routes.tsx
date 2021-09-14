@@ -32,6 +32,9 @@ import SqlServerServices from './SqlServerServices';
 import SqlServerVersions from './SqlServerVersions';
 import SupportTypes from './SupportTypes';
 import WindowsServerEditions from './WindowsServerEditions';
+import SqlServerLicense from './SqlServerLicense';
+import AgreementTypes from './AgreementTypes';
+import WindowsServerVersions from './WindowsServerVersions';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -147,6 +150,14 @@ const AdministrationRoutes: React.FC = () => {
           <Route exact path={`${match.path}/config-component`} component={Component} />
         )}
 
+        {/* Agreement Types */}
+        {ability.can(Action.View, Page.AgreementTypes) && (
+          <Route exact path={`${match.path}/agreement-types/:id`} component={AgreementTypes} />
+        )}
+        {ability.can(Action.View, Page.AgreementTypes) && (
+          <Route exact path={`${match.path}/agreement-types`} component={AgreementTypes} />
+        )}
+
         {/* Exclusion Component */}
         {ability.can(Action.View, Page.ConfigExclusionComponent) && (
           <Route
@@ -211,6 +222,22 @@ const AdministrationRoutes: React.FC = () => {
           />
         )}
 
+        {/* Sql Server License */}
+        {ability.can(Action.View, Page.ConfigSqlServerLicense) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-license/:id`}
+            component={SqlServerLicense}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigSqlServerLicense) && (
+          <Route
+            exact
+            path={`${match.path}/config-sql-server-license`}
+            component={SqlServerLicense}
+          />
+        )}
+
         {/* Sql Server Services */}
         {ability.can(Action.View, Page.ConfigSqlServerServices) && (
           <Route
@@ -241,6 +268,22 @@ const AdministrationRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.ConfigFileType) && (
           <Route exact path={`${match.path}/config-file-types`} component={FileType} />
+        )}
+
+        {/* WindowsServerVersions */}
+        {ability.can(Action.View, Page.ConfigWindowsServerVersions) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-versions/:id`}
+            component={WindowsServerVersions}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigWindowsServerVersions) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-versions`}
+            component={WindowsServerVersions}
+          />
         )}
 
         {/* File Categories */}
