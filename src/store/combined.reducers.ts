@@ -99,6 +99,9 @@ import spsApiJobsDataReducer from './sps/spsApiJobsData/spsApiJobsData.reducer';
 import configSqlServerLicenseReducer from './master/sqlServerLicense/sqlServerLicense.reducer';
 import agreementTypesReducer from './master/agreementTypes/agreementTypes.reducer';
 import configWindowsServerVersionsReducer from './master/windowsServerVersions/windowsServerVersions.reducer';
+import configWindowsServerLicenseReducer from './master/windowsServerLicense/windowsServerLicense.reducer';
+import spsApiGroupReducer from './sps/apiGroup/apiGroup.reducer';
+import spsApiTypeReducer from './sps/apiType/apiType.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -224,6 +227,7 @@ export const rootReducer = combineReducers({
   configWindowsServerEditions: configWindowsServerEditionsReducer,
   configSqlServerLicense: configSqlServerLicenseReducer,
   configWindowsServerVersions: configWindowsServerVersionsReducer,
+  configWindowsServerLicense: configWindowsServerLicenseReducer,
 
   //Power-BI Report
   configuration: configurationReducer,
@@ -232,6 +236,8 @@ export const rootReducer = combineReducers({
   spsApi: spsApiReducer,
   spsApiJobs: spsApiJobsReducer,
   spsApiJobsData: spsApiJobsDataReducer,
+  spsApiGroup: spsApiGroupReducer,
+  spsApiType: spsApiTypeReducer,
 
   apiColumnMapping: apiColMappingReducer,
 });

@@ -35,6 +35,7 @@ import WindowsServerEditions from './WindowsServerEditions';
 import SqlServerLicense from './SqlServerLicense';
 import AgreementTypes from './AgreementTypes';
 import WindowsServerVersions from './WindowsServerVersions';
+import WindowsServerLicense from './WindowsServerLicense';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -283,6 +284,22 @@ const AdministrationRoutes: React.FC = () => {
             exact
             path={`${match.path}/config-windows-server-versions`}
             component={WindowsServerVersions}
+          />
+        )}
+
+        {/* WindowsServerLicense */}
+        {ability.can(Action.View, Page.ConfigWindowsServerLicense) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-license/:id`}
+            component={WindowsServerLicense}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigWindowsServerLicense) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-license`}
+            component={WindowsServerLicense}
           />
         )}
 

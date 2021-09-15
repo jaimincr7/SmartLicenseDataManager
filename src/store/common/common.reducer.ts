@@ -47,6 +47,10 @@ import {
   getConfigSqlServerServicesLookup,
   getConfigSqlServerVersionsLookup,
   getConfigLicenseUnitsLookup,
+  getConfigWindowsServerVersionsLookup,
+  getConfigWindowsServerEditionsLookup,
+  getConfigWindowsServerServicesLookup,
+  getSpsApiGroupLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -95,6 +99,10 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  spsApiGroupLookup: {
+    data: [],
+    loading: false,
+  },
   configSqlServerEditionsLookup: {
     data: [],
     loading: false,
@@ -104,6 +112,18 @@ export const initialState: ICommonState = {
     loading: false,
   },
   configSqlServerServicesLookup: {
+    data: [],
+    loading: false,
+  },
+  configWindowsServerEditionsLookup: {
+    data: [],
+    loading: false,
+  },
+  configWindowsServerVersionsLookup: {
+    data: [],
+    loading: false,
+  },
+  configWindowsServerServicesLookup: {
     data: [],
     loading: false,
   },
@@ -360,6 +380,15 @@ export const commonSlice = createSlice({
       state.o365ProductsLookup.loading = false;
     },
 
+    // SpsApiGroup lookup
+    [getSpsApiGroupLookup.pending.type]: (state) => {
+      state.spsApiGroups.loading = true;
+    },
+    [getSpsApiGroupLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiGroups.data = action.payload;
+      state.spsApiGroups.loading = false;
+    },
+
     // Config Sql Server Editions lookup
     [getConfigSqlServerEditionsLookup.pending.type]: (state) => {
       state.configSqlServerEditionsLookup.loading = true;
@@ -394,6 +423,42 @@ export const commonSlice = createSlice({
     ) => {
       state.configSqlServerVersionsLookup.data = action.payload;
       state.configSqlServerVersionsLookup.loading = false;
+    },
+
+    // Config Windows Server Versions lookup
+    [getConfigWindowsServerVersionsLookup.pending.type]: (state) => {
+      state.configWindowsServerVersionsLookup.loading = true;
+    },
+    [getConfigWindowsServerVersionsLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configWindowsServerVersionsLookup.data = action.payload;
+      state.configWindowsServerVersionsLookup.loading = false;
+    },
+
+    // Config Windows Server Editions lookup
+    [getConfigWindowsServerEditionsLookup.pending.type]: (state) => {
+      state.configWindowsServerEditionsLookup.loading = true;
+    },
+    [getConfigWindowsServerEditionsLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configWindowsServerEditionsLookup.data = action.payload;
+      state.configWindowsServerEditionsLookup.loading = false;
+    },
+
+    // Config Windows Server Services lookup
+    [getConfigWindowsServerServicesLookup.pending.type]: (state) => {
+      state.configWindowsServerServicesLookup.loading = true;
+    },
+    [getConfigWindowsServerServicesLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configWindowsServerServicesLookup.data = action.payload;
+      state.configWindowsServerServicesLookup.loading = false;
     },
 
     // Config License Units lookup

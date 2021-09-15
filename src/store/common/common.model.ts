@@ -45,6 +45,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  spsApiGroupLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   configSqlServerEditionsLookup: {
     data: ILookup[];
     loading: boolean;
@@ -54,6 +58,18 @@ export interface ICommonState {
     loading: boolean;
   };
   configSqlServerServicesLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configWindowsServerEditionsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configWindowsServerVersionsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configWindowsServerServicesLookup: {
     data: ILookup[];
     loading: boolean;
   };

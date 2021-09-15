@@ -78,6 +78,13 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
   return response.data;
 });
 
+export const getSpsApiGroupLookup = createAsyncThunk('getSpsApiGroupLookup', async () => {
+  const response = await commonService.getSpsApiGroupLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getConfigSqlServerEditionsLookup = createAsyncThunk(
   'getConfigSqlServerEditionsLookup',
   async () => {
@@ -102,6 +109,36 @@ export const getConfigSqlServerVersionsLookup = createAsyncThunk(
   'getConfigSqlServerVersionsLookup',
   async () => {
     const response = await commonService.getConfigSqlServerVersionsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigWindowsServerEditionsLookup = createAsyncThunk(
+  'getConfigWindowsServerEditionsLookup',
+  async () => {
+    const response = await commonService.getConfigWindowsServerEditionsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigWindowsServerServicesLookup = createAsyncThunk(
+  'getConfigWindowsServerServicesLookup',
+  async () => {
+    const response = await commonService.getConfigWindowsServerServicesLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigWindowsServerVersionsLookup = createAsyncThunk(
+  'getConfigWindowsServerVersionsLookup',
+  async () => {
+    const response = await commonService.getConfigWindowsServerVersionsLookup().then((res) => {
       return res.body;
     });
     return response.data;

@@ -104,6 +104,7 @@ export enum Page {
   ConfigWindowsServerEditions = 'config-windows-server-editions',
   ConfigSqlServerLicense = 'config-sql-server-license',
   ConfigWindowsServerVersions = 'config-windows-server-versions',
+  ConfigWindowsServerLicense = 'config-windows-server-license',
 
   PowerBIConfig = 'power-bi-report-config',
 
@@ -116,6 +117,8 @@ export enum Page {
   SPSApi = 'sps-api',
   SpsApiJobs = 'sps-api-jobs',
   SpsApiJobsData = 'sps-api-jobs-data',
+  SpsApiGroup = 'sps-api-group',
+  SpsApiType = 'sps-api-type',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }

@@ -80,6 +80,13 @@ class CommonService {
     });
   }
 
+  public async getSpsApiGroupLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/sps-api-group/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getConfigSqlServerEditionsLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-sql-server-editions/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -96,6 +103,27 @@ class CommonService {
 
   public async getConfigSqlServerServicesLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-sql-server-services/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigWindowsServerEditionsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-windows-server-editions/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigWindowsServerVersionsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-windows-server-versions/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigWindowsServerServicesLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-windows-server-services/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
