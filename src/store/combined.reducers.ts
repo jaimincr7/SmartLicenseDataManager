@@ -102,6 +102,8 @@ import configWindowsServerVersionsReducer from './master/windowsServerVersions/w
 import configWindowsServerLicenseReducer from './master/windowsServerLicense/windowsServerLicense.reducer';
 import spsApiGroupReducer from './sps/apiGroup/apiGroup.reducer';
 import spsApiTypeReducer from './sps/apiType/apiType.reducer';
+import slim360O365LicensesReducer from './slim360/o365Licenses/o365Licenses.reducer';
+import slim360O365UserLicensesReducer from './slim360/o365UserLicenses/o365UserLicenses.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -228,6 +230,10 @@ export const rootReducer = combineReducers({
   configSqlServerLicense: configSqlServerLicenseReducer,
   configWindowsServerVersions: configWindowsServerVersionsReducer,
   configWindowsServerLicense: configWindowsServerLicenseReducer,
+
+  //Slim360
+  slim360O365Licenses: slim360O365LicensesReducer,
+  slim360O365UserLicenses: slim360O365UserLicensesReducer,
 
   //Power-BI Report
   configuration: configurationReducer,

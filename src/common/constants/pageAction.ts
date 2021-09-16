@@ -106,6 +106,10 @@ export enum Page {
   ConfigWindowsServerVersions = 'config-windows-server-versions',
   ConfigWindowsServerLicense = 'config-windows-server-license',
 
+  //Slim360
+  Slim360O365Licenses = 'slim360-o365-licenses',
+  Slim360O365UserLicenses = 'slim360-o365-user-licenses',
+
   PowerBIConfig = 'power-bi-report-config',
 
   // Global search dropdown
