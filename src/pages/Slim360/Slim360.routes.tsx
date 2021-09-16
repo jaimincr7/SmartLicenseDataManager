@@ -13,20 +13,19 @@ const Slim360Routes: React.FC = () => {
       <Switch>
         {/* o365Licenses */}
         {ability.can(Action.View, Page.Slim360O365Licenses) && (
-          <Route exact path={`${match.path}/o365-licenses/:id`} component={O365Licenses} />
+          <Route exact path={`${match.path}/slim360-o365-licenses/:id`} component={O365Licenses} />
         )}
         {ability.can(Action.View, Page.Slim360O365Licenses) && (
-          <Route exact path={`${match.path}/o365-licenses`} component={O365Licenses} />
+          <Route exact path={`${match.path}/slim360-o365-licenses`} component={O365Licenses} />
         )}
 
         {/* o365UserLicenses */}
         {ability.can(Action.View, Page.Slim360O365UserLicenses) && (
-          <Route exact path={`${match.path}/o365-user-licenses/:id`} component={O365UserLicenses} />
+          <Route exact path={`${match.path}/slim360-o365-user-licenses/:id`} component={O365UserLicenses} />
         )}
         {ability.can(Action.View, Page.Slim360O365UserLicenses) && (
-          <Route exact path={`${match.path}/o365-user-licenses`} component={O365UserLicenses} />
+          <Route exact path={`${match.path}/slim360-o365-user-licenses`} component={O365UserLicenses} />
         )}
-
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />
