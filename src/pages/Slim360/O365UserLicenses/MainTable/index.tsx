@@ -171,7 +171,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/slim360/o365-user-licenses/${data.id}`);
+            history.push(`/slim360/slim360-o365-user-licenses/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />

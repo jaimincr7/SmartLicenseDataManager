@@ -96,7 +96,7 @@ const Slim360O365License: React.FC<ISlim360O365LicenseProps> = (props) => {
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/slim360/o365-licenses');
+            history.push('/slim360/slim360-o365-licenses');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
