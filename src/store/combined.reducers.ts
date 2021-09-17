@@ -100,10 +100,13 @@ import configSqlServerLicenseReducer from './master/sqlServerLicense/sqlServerLi
 import agreementTypesReducer from './master/agreementTypes/agreementTypes.reducer';
 import configWindowsServerVersionsReducer from './master/windowsServerVersions/windowsServerVersions.reducer';
 import configWindowsServerLicenseReducer from './master/windowsServerLicense/windowsServerLicense.reducer';
-import spsApiGroupReducer from './sps/apiGroup/apiGroup.reducer';
-import spsApiTypeReducer from './sps/apiType/apiType.reducer';
 import slim360O365LicensesReducer from './slim360/o365Licenses/o365Licenses.reducer';
 import slim360O365UserLicensesReducer from './slim360/o365UserLicenses/o365UserLicenses.reducer';
+import slim360O365UserPlansReducer from './slim360/o365UserPlans/o365UserPlans.reducer';
+import spsApiGroupReducer from './sps/apiGroup/apiGroup.reducer';
+import spsApiTypeReducer from './sps/apiType/apiType.reducer';
+import spsApiOauthReducer from './sps/apiOauth/apiOauth.reducer';
+import spsApiTokenConfigOptionsReducer from './sps/apiTokenConfigOptions/apiTokenConfigOptions.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -234,6 +237,7 @@ export const rootReducer = combineReducers({
   //Slim360
   slim360O365Licenses: slim360O365LicensesReducer,
   slim360O365UserLicenses: slim360O365UserLicensesReducer,
+  slim360O365UserPlans: slim360O365UserPlansReducer,
 
   //Power-BI Report
   configuration: configurationReducer,
@@ -244,6 +248,8 @@ export const rootReducer = combineReducers({
   spsApiJobsData: spsApiJobsDataReducer,
   spsApiGroup: spsApiGroupReducer,
   spsApiType: spsApiTypeReducer,
+  spsApiOauth: spsApiOauthReducer,
+  spsApiTokenConfigOptions: spsApiTokenConfigOptionsReducer,
 
   apiColumnMapping: apiColMappingReducer,
 });

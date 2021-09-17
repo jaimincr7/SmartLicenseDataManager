@@ -50,6 +50,7 @@ import {
   getConfigWindowsServerVersionsLookup,
   getConfigWindowsServerEditionsLookup,
   getConfigWindowsServerServicesLookup,
+  getSpsApiTypeLookup,
   getSpsApiGroupLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
@@ -100,6 +101,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   spsApiGroupLookup: {
+    data: [],
+    loading: false,
+  },
+  spsApiTypeLookup: {
     data: [],
     loading: false,
   },
@@ -387,6 +392,15 @@ export const commonSlice = createSlice({
     [getSpsApiGroupLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.spsApiGroups.data = action.payload;
       state.spsApiGroups.loading = false;
+    },
+
+    // SpsApiType lookup
+    [getSpsApiTypeLookup.pending.type]: (state) => {
+      state.spsApiTypes.loading = true;
+    },
+    [getSpsApiTypeLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiTypes.data = action.payload;
+      state.spsApiTypes.loading = false;
     },
 
     // Config Sql Server Editions lookup

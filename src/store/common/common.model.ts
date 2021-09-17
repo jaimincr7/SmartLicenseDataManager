@@ -49,6 +49,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  spsApiTypeLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   configSqlServerEditionsLookup: {
     data: ILookup[];
     loading: boolean;

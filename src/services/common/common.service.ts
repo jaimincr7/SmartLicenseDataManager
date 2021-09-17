@@ -87,6 +87,13 @@ class CommonService {
     });
   }
 
+  public async getSpsApiTypeLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/sps-api-type/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getConfigSqlServerEditionsLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-sql-server-editions/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

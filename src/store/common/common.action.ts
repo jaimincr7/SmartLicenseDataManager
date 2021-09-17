@@ -85,6 +85,13 @@ export const getSpsApiGroupLookup = createAsyncThunk('getSpsApiGroupLookup', asy
   return response.data;
 });
 
+export const getSpsApiTypeLookup = createAsyncThunk('getSpsApiTypeLookup', async () => {
+  const response = await commonService.getSpsApiTypeLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getConfigSqlServerEditionsLookup = createAsyncThunk(
   'getConfigSqlServerEditionsLookup',
   async () => {

@@ -4,6 +4,7 @@ import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
 import O365Licenses from './O365Licenses';
 import O365UserLicenses from './O365UserLicenses';
+import O365UserPlans from './O365UserPlans';
 
 const Slim360Routes: React.FC = () => {
   const match = useRouteMatch();
@@ -26,6 +27,15 @@ const Slim360Routes: React.FC = () => {
         {ability.can(Action.View, Page.Slim360O365UserLicenses) && (
           <Route exact path={`${match.path}/slim360-o365-user-licenses`} component={O365UserLicenses} />
         )}
+
+        {/* o365UserPlans */}
+        {ability.can(Action.View, Page.Slim360O365UserPlans) && (
+          <Route exact path={`${match.path}/slim360-o365-user-plans/:id`} component={O365UserPlans} />
+        )}
+        {ability.can(Action.View, Page.Slim360O365UserPlans) && (
+          <Route exact path={`${match.path}/slim360-o365-user-plans`} component={O365UserPlans} />
+        )}
+
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />
