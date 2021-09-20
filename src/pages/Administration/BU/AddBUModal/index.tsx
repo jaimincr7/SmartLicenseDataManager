@@ -60,6 +60,9 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
       const Obj: any = {
         ...valuesForSelection,
       };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
       const objectForSelection = {
         BU: inputValues,
         filterKeys: Obj.filterKeys,
@@ -71,8 +74,9 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
         order_by: Obj.order_by,
         order_direction: Obj.order_direction,
       };
-      objectForSelection['selectedIds'] = Obj.selectedIds;
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
       console.log(objectForSelection);
+      handleModalClose();
     }
   };
 

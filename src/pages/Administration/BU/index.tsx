@@ -90,6 +90,7 @@ const BU: React.FC<IBUProps> = (props) => {
       {addModalVisible && (
         <AddBUModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
             history.push('/administration/bu');
@@ -102,7 +103,7 @@ const BU: React.FC<IBUProps> = (props) => {
         <AddBUModal
           showModal={showSelectedListModal}
           valuesForSelection={valuesForSelection}
-          isMultiple={showSelectedListModal}
+          isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
             history.push('/administration/bu');
