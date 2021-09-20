@@ -25,7 +25,8 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -53,7 +54,26 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveBU(inputValues));
+    if (!isMultiple) {
+      dispatch(saveBU(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const objectForSelection = {
+        BU: inputValues,
+        filterKeys: Obj.filterKeys,
+        isLookup: Obj.isLookup,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = Obj.selectedIds;
+      console.log(objectForSelection);
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -169,7 +189,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                     name="company_id"
                     className="m-0"
                     label="Company"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -201,7 +221,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                     name="name"
                     label="BU Name"
                     className="m-0"
-                    rules={[{ required: true, max: 200 }]}
+                    rules={[{ required: !isMultiple, max: 200 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
