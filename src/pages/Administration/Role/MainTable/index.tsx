@@ -1,7 +1,6 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { IMainTable } from './mainTable.model';
 import {
   FilterByDropdown,
   FilterWithSwapOption,
@@ -16,6 +15,7 @@ import {
   setTableColumnSelection,
 } from '../../../../store/master/role/role.reducer';
 import { deleteRole, searchRole } from '../../../../store/master/role/role.action';
+import { IMainTable } from '../../../../common/models/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;

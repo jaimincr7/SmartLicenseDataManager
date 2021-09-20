@@ -9,7 +9,6 @@ import {
   runJobData,
   searchSpsApiJobsData,
 } from '../../../../store/sps/spsApiJobsData/spsApiJobsData.action';
-import { IMainTable } from './mainTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
@@ -26,6 +25,7 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { Popconfirm, Popover } from 'antd';
 import { ICallAPI } from '../../../../services/sps/spsApiJobsData/spsApiJobsData.model';
 import { ReloadOutlined } from '@ant-design/icons';
+import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { job_id } = props;

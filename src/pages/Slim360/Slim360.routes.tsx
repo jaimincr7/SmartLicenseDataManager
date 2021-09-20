@@ -22,15 +22,27 @@ const Slim360Routes: React.FC = () => {
 
         {/* o365UserLicenses */}
         {ability.can(Action.View, Page.Slim360O365UserLicenses) && (
-          <Route exact path={`${match.path}/slim360-o365-user-licenses/:id`} component={O365UserLicenses} />
+          <Route
+            exact
+            path={`${match.path}/slim360-o365-user-licenses/:id`}
+            component={O365UserLicenses}
+          />
         )}
         {ability.can(Action.View, Page.Slim360O365UserLicenses) && (
-          <Route exact path={`${match.path}/slim360-o365-user-licenses`} component={O365UserLicenses} />
+          <Route
+            exact
+            path={`${match.path}/slim360-o365-user-licenses`}
+            component={O365UserLicenses}
+          />
         )}
 
         {/* o365UserPlans */}
         {ability.can(Action.View, Page.Slim360O365UserPlans) && (
-          <Route exact path={`${match.path}/slim360-o365-user-plans/:id`} component={O365UserPlans} />
+          <Route
+            exact
+            path={`${match.path}/slim360-o365-user-plans/:id`}
+            component={O365UserPlans}
+          />
         )}
         {ability.can(Action.View, Page.Slim360O365UserPlans) && (
           <Route exact path={`${match.path}/slim360-o365-user-plans`} component={O365UserPlans} />

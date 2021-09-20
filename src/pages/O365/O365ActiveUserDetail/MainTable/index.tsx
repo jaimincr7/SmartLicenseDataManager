@@ -10,7 +10,6 @@ import {
   deleteO365ActiveUserDetail,
   searchO365ActiveUserDetail,
 } from '../../../../store/o365/o365ActiveUserDetail/o365ActiveUserDetail.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import o365ActiveUserDetailService from '../../../../services/o365/o365ActiveUserDetail/o365ActiveUserDetail.service';
 import {
@@ -18,7 +17,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';

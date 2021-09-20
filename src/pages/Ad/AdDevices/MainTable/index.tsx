@@ -7,7 +7,6 @@ import {
 } from '../../../../store/ad/adDevices/adDevices.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { deleteAdDevice, searchAdDevices } from '../../../../store/ad/adDevices/adDevices.action';
-import { IMainTable } from './mainTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
@@ -17,7 +16,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';

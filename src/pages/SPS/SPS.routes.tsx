@@ -58,10 +58,18 @@ const SPSRoutes: React.FC = () => {
 
         {/* SPS API TokenConfigOptions */}
         {ability.can(Action.View, Page.SpsApiTokenConfigOptions) && (
-          <Route exact path={`${match.path}/sps-api-token-config-options`} component={SpsApiTokenConfigOptions} />
+          <Route
+            exact
+            path={`${match.path}/sps-api-token-config-options`}
+            component={SpsApiTokenConfigOptions}
+          />
         )}
         {ability.can(Action.View, Page.SpsApiTokenConfigOptions) && (
-          <Route exact path={`${match.path}/sps-api-token-config-options/:id`} component={SpsApiTokenConfigOptions} />
+          <Route
+            exact
+            path={`${match.path}/sps-api-token-config-options/:id`}
+            component={SpsApiTokenConfigOptions}
+          />
         )}
 
         {/* SPS API Jobs Data */}

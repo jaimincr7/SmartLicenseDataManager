@@ -59,3 +59,7 @@ export interface IDetailParams {
 export interface IReportParams {
   name: string;
 }
+
+export interface IMainTable {
+  setSelectedId: (id: number) => void;
+}

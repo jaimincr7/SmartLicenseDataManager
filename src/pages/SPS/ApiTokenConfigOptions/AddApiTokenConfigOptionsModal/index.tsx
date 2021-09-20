@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input,  Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -19,12 +19,8 @@ import {
 } from '../../../../store/sps/apiTokenConfigOptions/apiTokenConfigOptions.reducer';
 import { IAddSpsApiTokenConfigOptionsProps } from './addApiTokenConfigOptions.model';
 import { ILookup } from '../../../../services/common/common.model';
-import {
-  commonSelector,
-} from '../../../../store/common/common.reducer';
-import {
-  getSpsApiTypeLookup,
-} from '../../../../store/common/common.action';
+import { commonSelector } from '../../../../store/common/common.reducer';
+import { getSpsApiTypeLookup } from '../../../../store/common/common.action';
 
 const { Option } = Select;
 

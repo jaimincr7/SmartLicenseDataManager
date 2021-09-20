@@ -7,7 +7,6 @@ import {
 } from '../../../../store/rvTools/tabVInfo/tabVInfo.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { deleteTabVInfo, searchTabVInfo } from '../../../../store/rvTools/tabVInfo/tabVInfo.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import tabVInfoService from '../../../../services/rvTools/tabVInfo/tabVInfo.service';
 import {
@@ -15,7 +14,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';

@@ -7,7 +7,6 @@ import {
 } from '../../../../store/rvTools/tabVHost/tabVHost.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { deleteTabVHost, searchTabVHost } from '../../../../store/rvTools/tabVHost/tabVHost.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import tabVHostService from '../../../../services/rvTools/tabVHost/tabVHost.service';
 import {
@@ -15,7 +14,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';

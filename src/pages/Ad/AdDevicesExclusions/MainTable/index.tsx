@@ -10,14 +10,13 @@ import {
   deleteAdDevicesExclusions,
   searchAdDevicesExclusions,
 } from '../../../../store/ad/adDevicesExclusions/adDevicesExclusions.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import adDevicesExclusionsService from '../../../../services/ad/adDevicesExclusions/adDevicesExclusions.service';
 import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';

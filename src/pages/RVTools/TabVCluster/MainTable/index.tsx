@@ -10,7 +10,6 @@ import {
   deleteTabVCluster,
   searchTabVCluster,
 } from '../../../../store/rvTools/tabVCluster/tabVCluster.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import tabVClusterService from '../../../../services/rvTools/tabVCluster/tabVCluster.service';
 import {
@@ -18,7 +17,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';

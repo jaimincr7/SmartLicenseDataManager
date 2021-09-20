@@ -238,7 +238,7 @@ const AddSlim360O365UserPlansModal: React.FC<IAddSlim360O365UserPlansProps> = (p
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">BU</label>
-                  <Form.Item name="bu_id" className="m-0" label="BU" >
+                  <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
                       allowClear
