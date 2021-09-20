@@ -127,7 +127,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       </Can>
       <Can I={Action.Delete} a={Page.ConfigExclusionComponent}>
         <Popconfirm
-          title="Sure to delete?"
+          title="Delete Record?"
           onConfirm={() => removeConfigExclusionComponent(data.id)}
         >
           <a href="#" title="" className="action-btn">

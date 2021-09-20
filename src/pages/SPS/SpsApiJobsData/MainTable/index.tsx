@@ -210,7 +210,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           renderActionButton()
         ))}
       <Can I={Action.Delete} a={Page.SpsApiJobs}>
-        <Popconfirm title="Sure to delete?">
+        <Popconfirm title="Delete Record?">
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

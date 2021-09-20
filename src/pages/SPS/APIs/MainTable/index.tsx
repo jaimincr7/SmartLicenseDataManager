@@ -283,7 +283,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       </Can>
       <Can I={Action.Delete} a={Page.SPSApi}>
         <Popconfirm
-          title="Sure to delete?"
+          title="Delete Record?"
           onConfirm={() => {
             dispatch(deleteSpsApi(data.id));
           }}

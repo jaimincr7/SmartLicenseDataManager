@@ -101,7 +101,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.ConfigFileCategories}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeConfigFileCategories(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeConfigFileCategories(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
