@@ -69,6 +69,10 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
           bu1[x] = inputValues[x];
         }
       }
+      if(Object.keys(bu1).length === 0){
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
       const objectForSelection = {
         table_name: 'BU',
         update_data: bu1,
@@ -84,7 +88,6 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
 
       objectForSelection['selectedIds'] = rowList.selectedRowList;
       dispatch(updateMultiple(objectForSelection));
-      handleModalClose();
     }
   };
 
@@ -262,6 +265,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
                       <Checkbox>Active</Checkbox>

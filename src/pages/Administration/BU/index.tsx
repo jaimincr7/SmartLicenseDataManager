@@ -80,7 +80,10 @@ const BU: React.FC<IBUProps> = (props) => {
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
           setValuesForSelection={setValuesForSelection}
-          setShowSelectedListModal={setShowSelectedListModal}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
