@@ -52,5 +52,12 @@ class BUService {
       return res;
     });
   }
+
+  public async updateMultiple(searchParams?: any): Promise<any> {
+    const url = `${this.ENDPOINT}/updateAll`;
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
+      return res.data;
+    });
+  }
 }
 export default new BUService();

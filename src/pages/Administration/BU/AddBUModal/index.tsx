@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -10,7 +10,7 @@ import { IBU } from '../../../../services/master/bu/bu.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
 import { clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
-import { getBUById, saveBU } from '../../../../store/master/bu/bu.action';
+import { getBUById, saveBU, updateMultiple } from '../../../../store/master/bu/bu.action';
 import {
   clearBUGetById,
   clearBUMessages,
@@ -63,19 +63,27 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
       const rowList = {
         ...Obj.selectedIds,
       };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
       const objectForSelection = {
-        BU: inputValues,
+        table_name: 'BU',
+        update_data: bu1,
         filterKeys: Obj.filterKeys,
-        isLookup: Obj.isLookup,
         is_export_to_excel: false,
         keyword: Obj.keyword,
         limit: Obj.limit,
         offset: Obj.offset,
         order_by: Obj.order_by,
+        current_user: {},
         order_direction: Obj.order_direction,
       };
+
       objectForSelection['selectedIds'] = rowList.selectedRowList;
-      console.log(objectForSelection);
+      dispatch(updateMultiple(objectForSelection));
       handleModalClose();
     }
   };
@@ -160,7 +168,13 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item name="tenant_id" className="m-0" label="Tenant">
                     <Select
                       onChange={handleTenantChange}
@@ -188,7 +202,13 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item
                     name="company_id"
                     className="m-0"
@@ -220,7 +240,13 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>BU Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="BU Name"
@@ -236,7 +262,13 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Active</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
+                      <Checkbox>Active</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Active'
+                  )}
                 </div>
               </Col>
             </Row>

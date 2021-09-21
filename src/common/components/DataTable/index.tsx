@@ -548,7 +548,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               setShowSelectedListModal(true);
             }}
           >
-            {selectedRowList.length === 0 ? 'Update All' : 'Update Selected'}
+            {Object.keys(selectedRowList).length <= 1 ? 'Update All ' : 'Update Selected '}
           </Button>
           {showAddButton && (
             <Button
