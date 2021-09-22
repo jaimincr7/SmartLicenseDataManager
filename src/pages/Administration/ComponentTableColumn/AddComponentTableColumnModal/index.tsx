@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -21,6 +21,7 @@ import { IAddConfigComponentTableColumnProps } from './addComponentTableColumn.m
 import { ILookup } from '../../../../services/common/common.model';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { getConfigComponentLookup } from '../../../../store/common/common.action';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const { Option } = Select;
 
@@ -30,7 +31,8 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
   const configComponentTableColumn = useAppSelector(configComponentTableColumnSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -58,7 +60,40 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigComponentTableColumn(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigComponentTableColumn(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigComponentTableColumn) => {
@@ -128,12 +163,18 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Component</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'component_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Component</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Component'
+                  )}
                   <Form.Item
                     name="component_id"
                     className="m-0"
                     label="Component"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -160,12 +201,18 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Table Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'table_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Table Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Table Name'
+                  )}
                   <Form.Item
                     name="table_name"
                     label="Table Name"
                     className="m-0"
-                    rules={[{ required: true, max: 500 }]}
+                    rules={[{ required: !isMultiple, max: 500 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -173,12 +220,18 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Column Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'column_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Column Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Column Name'
+                  )}
                   <Form.Item
                     name="column_name"
                     label="Column Name"
                     className="m-0"
-                    rules={[{ required: true, max: 500 }]}
+                    rules={[{ required: !isMultiple, max: 500 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

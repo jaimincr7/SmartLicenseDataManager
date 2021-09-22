@@ -25,6 +25,8 @@ const ConfigExclusionComponent: React.FC<IConfigExclusionComponentProps> = (prop
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const ConfigExclusionComponent: React.FC<IConfigExclusionComponentProps> = (prop
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearConfigExclusionComponent());
     };
@@ -83,6 +86,12 @@ const ConfigExclusionComponent: React.FC<IConfigExclusionComponentProps> = (prop
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -92,8 +101,22 @@ const ConfigExclusionComponent: React.FC<IConfigExclusionComponentProps> = (prop
       {addModalVisible && (
         <AddConfigExclusionComponentModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/administration/config-exclusion-component');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddConfigExclusionComponentModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/administration/config-exclusion-component');
           }}
           id={id}

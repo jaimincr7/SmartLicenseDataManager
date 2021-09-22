@@ -25,6 +25,8 @@ const ConfigWindowsServerLicense: React.FC<IConfigWindowsServerLicenseProps> = (
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const ConfigWindowsServerLicense: React.FC<IConfigWindowsServerLicenseProps> = (
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearConfigWindowsServerLicense());
     };
@@ -83,6 +86,12 @@ const ConfigWindowsServerLicense: React.FC<IConfigWindowsServerLicenseProps> = (
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -92,8 +101,22 @@ const ConfigWindowsServerLicense: React.FC<IConfigWindowsServerLicenseProps> = (
       {addModalVisible && (
         <AddConfigWindowsServerLicenseModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/administration/config-windows-server-license');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddConfigWindowsServerLicenseModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/administration/config-windows-server-license');
           }}
           id={id}

@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin, Switch } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -21,6 +21,7 @@ import { IAddConfigExclusionLocationProps } from './addExclusionLocation.model';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { ILookup } from '../../../../services/common/common.model';
 import { getConfigComponentTableColumnLookup } from '../../../../store/common/common.action';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const { Option } = Select;
 
@@ -28,7 +29,8 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
   const configExclusionLocation = useAppSelector(configExclusionLocationSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -54,7 +56,40 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigExclusionLocation(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigExclusionLocation(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigExclusionLocation) => {
@@ -125,7 +160,17 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Component Table Column</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'component_table_column_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Component Table Column</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Component Table Column'
+                  )}
                   <Form.Item
                     name="component_table_column_id"
                     className="m-0"
@@ -162,7 +207,13 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
                   <Form.Item name="is_excludable" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Excludable</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_excludable']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Excludable</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                 </div>
               </Col>
             </Row>

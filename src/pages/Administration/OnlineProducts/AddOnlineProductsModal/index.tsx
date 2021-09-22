@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Spin, Switch } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -18,11 +18,13 @@ import {
   configOnlineProductsSelector,
 } from '../../../../store/master/onlineProducts/onlineProducts.reducer';
 import { IAddConfigOnlineProductsProps } from './addOnlineProducts.model';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (props) => {
   const configOnlineProducts = useAppSelector(configOnlineProductsSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -52,7 +54,40 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigOnlineProducts(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigOnlineProducts(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigOnlineProducts) => {
@@ -124,12 +159,18 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -137,7 +178,13 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">String ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'string_id']} valuePropName="checked" noStyle>
+                      <Checkbox>String ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'String ID'
+                  )}
                   <Form.Item
                     name="string_id"
                     label="String ID"
@@ -150,7 +197,13 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">GUID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'guid']} valuePropName="checked" noStyle>
+                      <Checkbox>GUID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'GUID'
+                  )}
                   <Form.Item name="guid" label="GUID" className="m-0" rules={[{ max: 36 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -158,7 +211,13 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Price</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'price']} valuePropName="checked" noStyle>
+                      <Checkbox>Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Price'
+                  )}
                   <Form.Item
                     name="price"
                     label="Price"
@@ -171,7 +230,13 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Units</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'units']} valuePropName="checked" noStyle>
+                      <Checkbox>Units</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Units'
+                  )}
                   <Form.Item name="units" label="Units" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -182,7 +247,17 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
                   <Form.Item name="enterprise_product" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Enterprise Product</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'enterprise_product']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Enterprise Product</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Enterprise Product'
+                  )}
                 </div>
               </Col>
             </Row>

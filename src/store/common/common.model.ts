@@ -37,6 +37,11 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  save: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
   cmdbUserLookup: {
     data: ILookup[];
     loading: boolean;

@@ -335,6 +335,13 @@ export const getCmsContractAgreementLookup = createAsyncThunk(
   }
 );
 
+export const updateMultiple = createAsyncThunk('updateMultiple', async (data: any) => {
+  const response = await commonService.updateMultiple(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
 export const getCmsContactLookup = createAsyncThunk('getCmsContact', async () => {
   const response = await commonService.getCmsContactLookup().then((res) => {
     return res.body;

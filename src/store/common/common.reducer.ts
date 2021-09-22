@@ -52,6 +52,7 @@ import {
   getConfigWindowsServerServicesLookup,
   getSpsApiTypeLookup,
   getSpsApiGroupLookup,
+  updateMultiple,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -71,6 +72,11 @@ export const initialState: ICommonState = {
   buLookup: {
     data: [],
     loading: false,
+  },
+  save: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
   },
   sqlServerLicenseLookup: {
     data: [],
@@ -284,6 +290,9 @@ export const commonSlice = createSlice({
     clearSpsApiGroupsLookup: (state) => {
       state.spsApiGroups.data = [];
     },
+    clearMultipleUpdateMessages: (state) => {
+      state.save.messages = [];
+    },
   },
   extraReducers: {
     // Tenant lookup
@@ -320,6 +329,21 @@ export const commonSlice = createSlice({
     [getBULookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.buLookup.data = action.payload;
       state.buLookup.loading = false;
+    },
+
+    // Update Multiple
+    [updateMultiple.pending.type]: (state) => {
+      state.save.loading = true;
+      state.save.messages = [];
+    },
+    [updateMultiple.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.save.loading = false;
+      state.save.hasErrors = false;
+      state.save.messages = action.payload.messages;
+    },
+    [updateMultiple.rejected.type]: (state) => {
+      state.save.loading = false;
+      state.save.hasErrors = true;
     },
 
     // Sql Server License lookup

@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -16,6 +16,7 @@ import {
 } from '../../../../store/master/tenant/tenant.reducer';
 import { IAddTenantProps } from './addTenant.model';
 import { getCurrencyLookup } from './../../../../store/common/common.action';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const { Option } = Select;
 
@@ -24,7 +25,8 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -48,12 +50,46 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
   useEffect(() => {
     dispatch(getCurrencyLookup());
   }, []);
+
   const onFinish = (values: any) => {
     const inputValues: ITenant = {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveTenant(inputValues));
+    if (!isMultiple) {
+      dispatch(saveTenant(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: ITenant) => {
@@ -120,12 +156,18 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Tenant Name"
                     className="m-0"
-                    rules={[{ required: true, max: 200 }]}
+                    rules={[{ required: !isMultiple, max: 200 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -133,8 +175,14 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Currency</label>
-                  <Form.Item name="currency_id" className="m-0" label="Tenant">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'currency_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Currency'
+                  )}
+                  <Form.Item name="currency_id" className="m-0" label="Currency">
                     <Select
                       allowClear
                       showSearch

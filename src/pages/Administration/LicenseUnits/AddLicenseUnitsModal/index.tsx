@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -6,6 +6,7 @@ import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { IConfigLicenseUnits } from '../../../../services/master/licenseUnits/licenseUnits.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 import {
   getConfigLicenseUnitsById,
   saveConfigLicenseUnits,
@@ -20,7 +21,8 @@ import { IAddConfigLicenseUnitsProps } from './addLicenseUnits.model';
 const AddConfigLicenseUnitsModal: React.FC<IAddConfigLicenseUnitsProps> = (props) => {
   const configLicenseUnits = useAppSelector(configLicenseUnitsSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -45,7 +47,40 @@ const AddConfigLicenseUnitsModal: React.FC<IAddConfigLicenseUnitsProps> = (props
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigLicenseUnits(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigLicenseUnits(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigLicenseUnits) => {
@@ -111,12 +146,18 @@ const AddConfigLicenseUnitsModal: React.FC<IAddConfigLicenseUnitsProps> = (props
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License Unit</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'license_unit']} valuePropName="checked" noStyle>
+                      <Checkbox>License Unit</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'License Unit'
+                  )}
                   <Form.Item
                     name="license_unit"
                     label="License Unit"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

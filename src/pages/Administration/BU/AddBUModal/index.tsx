@@ -24,7 +24,6 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
   const bu = useAppSelector(buSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
-
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
@@ -69,7 +68,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
           bu1[x] = inputValues[x];
         }
       }
-      if(Object.keys(bu1).length === 0){
+      if (Object.keys(bu1).length === 0) {
         toast.error('Please select at least 1 field to update');
         return;
       }
@@ -85,7 +84,6 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
         current_user: {},
         order_direction: Obj.order_direction,
       };
-
       objectForSelection['selectedIds'] = rowList.selectedRowList;
       dispatch(updateMultiple(objectForSelection));
     }

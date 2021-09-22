@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
@@ -23,6 +23,7 @@ import {
   configOnlineProductServicePlansSelector,
 } from '../../../../store/master/onlineProductServicePlans/onlineProductServicePlans.reducer';
 import { IAddConfigOnlineProductServicePlansProps } from './addOnlineProductServicePlans.model';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const { Option } = Select;
 
@@ -30,7 +31,9 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
   (props) => {
     const configOnlineProductServicePlans = useAppSelector(configOnlineProductServicePlansSelector);
     const dispatch = useAppDispatch();
-    const { id, showModal, handleModalClose, refreshDataTable } = props;
+    const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+      props;
+
     const commonLookups = useAppSelector(commonSelector);
 
     const isNew: boolean = id ? false : true;
@@ -58,7 +61,40 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
         ...values,
         id: id ? +id : null,
       };
-      dispatch(saveConfigOnlineProductServicePlans(inputValues));
+      if (!isMultiple) {
+        dispatch(saveConfigOnlineProductServicePlans(inputValues));
+      } else {
+        const Obj: any = {
+          ...valuesForSelection,
+        };
+        const rowList = {
+          ...Obj.selectedIds,
+        };
+        const bu1 = {};
+        for (const x in inputValues.checked) {
+          if (inputValues.checked[x] === true) {
+            bu1[x] = inputValues[x];
+          }
+        }
+        if (Object.keys(bu1).length === 0) {
+          toast.error('Please select at least 1 field to update');
+          return;
+        }
+        const objectForSelection = {
+          table_name: 'BU',
+          update_data: bu1,
+          filterKeys: Obj.filterKeys,
+          is_export_to_excel: false,
+          keyword: Obj.keyword,
+          limit: Obj.limit,
+          offset: Obj.offset,
+          order_by: Obj.order_by,
+          current_user: {},
+          order_direction: Obj.order_direction,
+        };
+        objectForSelection['selectedIds'] = rowList.selectedRowList;
+        dispatch(updateMultiple(objectForSelection));
+      }
     };
 
     const fillValuesOnEdit = async (data: IConfigOnlineProductServicePlans) => {
@@ -127,12 +163,18 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
               <Row gutter={[30, 15]} className="form-label-hide">
                 <Col xs={24} sm={12} md={8}>
                   <div className="form-group m-0">
-                    <label className="label">Product</label>
+                    {isMultiple ? (
+                      <Form.Item name={['checked', 'product_id']} valuePropName="checked" noStyle>
+                        <Checkbox>Product</Checkbox>
+                      </Form.Item>
+                    ) : (
+                      'Product'
+                    )}
                     <Form.Item
                       name="product_id"
                       className="m-0"
                       label="Product"
-                      rules={[{ required: true }]}
+                      rules={[{ required: !isMultiple }]}
                     >
                       <Select
                         allowClear
@@ -159,12 +201,22 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
                 </Col>
                 <Col xs={24} sm={12} md={8}>
                   <div className="form-group m-0">
-                    <label className="label">Service Plan</label>
+                    {isMultiple ? (
+                      <Form.Item
+                        name={['checked', 'service_plan_id']}
+                        valuePropName="checked"
+                        noStyle
+                      >
+                        <Checkbox>Service Plan</Checkbox>
+                      </Form.Item>
+                    ) : (
+                      'Service Plan'
+                    )}
                     <Form.Item
                       name="service_plan_id"
                       className="m-0"
                       label="Service Plan"
-                      rules={[{ required: true }]}
+                      rules={[{ required: !isMultiple }]}
                     >
                       <Select
                         allowClear

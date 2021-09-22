@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -18,12 +18,14 @@ import {
   configComponentSelector,
 } from '../../../../store/master/component/component.reducer';
 import { IAddConfigComponentProps } from './addComponent.model';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
   const configComponent = useAppSelector(configComponentSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -48,7 +50,40 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigComponent(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigComponent(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigComponent) => {
@@ -115,12 +150,18 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

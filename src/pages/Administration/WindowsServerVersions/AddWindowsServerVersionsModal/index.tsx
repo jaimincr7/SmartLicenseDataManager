@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
@@ -20,6 +20,7 @@ import {
   configWindowsServerVersionsSelector,
 } from '../../../../store/master/windowsServerVersions/windowsServerVersions.reducer';
 import { IAddConfigWindowsServerVersionsProps } from './addWindowsServerVersions.model';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const { Option } = Select;
 
@@ -29,7 +30,8 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
   const configWindowsServerVersions = useAppSelector(configWindowsServerVersionsSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -57,7 +59,40 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigWindowsServerVersions(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigWindowsServerVersions(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigWindowsServerVersions) => {
@@ -125,7 +160,13 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Version</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'version']} valuePropName="checked" noStyle>
+                      <Checkbox>Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Version'
+                  )}
                   <Form.Item name="version" label="Version" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -133,7 +174,17 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Support Type</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'support_type_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Support Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Support Type'
+                  )}
                   <Form.Item
                     name="support_type_id"
                     className="m-0"

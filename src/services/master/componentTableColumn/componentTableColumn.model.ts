@@ -2,6 +2,7 @@ import { ISearch } from '../../../common/models/common';
 import { Moment } from 'moment';
 
 export interface IConfigComponentTableColumn {
+  [x: string]: any;
   id?: number;
   table_name: string;
   column_name: string;

@@ -2,6 +2,7 @@ import { ISearch } from '../../../common/models/common';
 import { Moment } from 'moment';
 
 export interface IConfigWindowsServerLicense {
+  [x: string]: any;
   id?: number;
   product_name: string;
   edition_id: number;

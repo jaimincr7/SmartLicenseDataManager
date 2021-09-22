@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -10,6 +10,7 @@ import { IRole } from '../../../../services/master/role/role.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
 import { clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 import { getRoleById, saveRole } from '../../../../store/master/role/role.action';
 import {
   clearRoleGetById,
@@ -25,7 +26,8 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -52,7 +54,40 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveRole(inputValues));
+    if (!isMultiple) {
+      dispatch(saveRole(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IRole) => {
@@ -134,12 +169,18 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -167,12 +208,18 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Role Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'role_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Role Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Role Name'
+                  )}
                   <Form.Item
                     name="role_name"
-                    label="RoleName"
+                    label="Role Name"
                     className="m-0"
-                    rules={[{ required: true, max: 200 }]}
+                    rules={[{ required: !isMultiple, max: 200 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -180,8 +227,19 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Role Key</label>
-                  <Form.Item name="role_key" label="RoleKey" className="m-0" rules={[{ max: 200 }]}>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'role_key']} valuePropName="checked" noStyle>
+                      <Checkbox>Role Key</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Role Key'
+                  )}
+                  <Form.Item
+                    name="role_key"
+                    label="Role Key"
+                    className="m-0"
+                    rules={[{ max: 200 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>

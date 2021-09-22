@@ -77,7 +77,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           </div>
         </Col>
         <Table
-          showHeader={false}
+          showHeader={true}
           scroll={{ x: true }}
           pagination={{
             ...pagination,

@@ -378,6 +378,13 @@ class CommonService {
     });
   }
 
+  public async updateMultiple(searchParams?: any): Promise<any> {
+    const url = `/app/bulkUpdate`;
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveTableColumnSelection(data: ITableColumnSelection): Promise<any> {
     const inputValues = {
       ...data,

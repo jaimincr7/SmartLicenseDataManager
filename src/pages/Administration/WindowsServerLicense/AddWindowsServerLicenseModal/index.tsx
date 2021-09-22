@@ -1,4 +1,16 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -25,6 +37,7 @@ import {
   getConfigWindowsServerEditionsLookup,
   getConfigWindowsServerVersionsLookup,
 } from '../../../../store/common/common.action';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const { Option } = Select;
 
@@ -33,7 +46,8 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
 ) => {
   const configWindowsServerLicense = useAppSelector(configWindowsServerLicenseSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
   const commonLookups = useAppSelector(commonSelector);
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -69,7 +83,40 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigWindowsServerLicense(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigWindowsServerLicense(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigWindowsServerLicense) => {
@@ -149,7 +196,13 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Edition</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'edition_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Edition</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Edition'
+                  )}
                   <Form.Item
                     name="edition_id"
                     className="m-0"
@@ -183,7 +236,13 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Version</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'version_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Version'
+                  )}
                   <Form.Item
                     name="version_id"
                     className="m-0"
@@ -217,7 +276,17 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License Unit</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'license_unit_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>License Unit</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'License Unit'
+                  )}
                   <Form.Item
                     name="license_unit_id"
                     className="m-0"
@@ -249,7 +318,13 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Name'
+                  )}
                   <Form.Item
                     name="product_name"
                     label="Product Name"
@@ -262,7 +337,17 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Units Per License</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'units_per_license']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Units Per License</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Units Per License'
+                  )}
                   <Form.Item
                     name="units_per_license"
                     label="Units Per License"
@@ -275,7 +360,17 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Additional Virtual OSEs</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'additional_virtual_oes_s']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Additional Virtual OSEs</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Additional Virtual OSEs'
+                  )}
                   <Form.Item
                     name="additional_virtual_oes_s"
                     label="Additional Virtual OSEs"
@@ -288,7 +383,17 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License Quantity Minimum</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'license_quantity_minimum']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>License Quantity Minimum</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'License Quantity Minimum'
+                  )}
                   <Form.Item
                     name="license_quantity_minimum"
                     label="License Quantity Minimum"
@@ -304,7 +409,17 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                   <Form.Item name="includes_windows_server" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Includes Windows Server</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'includes_windows_server']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Includes Windows server</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Includes Windows server'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -312,7 +427,17 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                   <Form.Item name="alternate_license_type" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Alternate License Type</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'alternate_license_type']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Alternate License Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Alternate License Type'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -320,7 +445,13 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                   <Form.Item name="includes_sa" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Includes SA</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'includes_sa']} valuePropName="checked" noStyle>
+                      <Checkbox>Includes SA</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Includes SA'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -328,7 +459,17 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                   <Form.Item name="includes_system_center" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Includes System Center</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'includes_system_center']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Includes system Center</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Includes system Center'
+                  )}
                 </div>
               </Col>
             </Row>

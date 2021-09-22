@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -18,11 +18,13 @@ import {
   configFileTypeSelector,
 } from '../../../../store/master/fileTypes/fileTypes.reducer';
 import { IAddConfigFileTypeProps } from './addFileTypes.model';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const AddConfigFileTypeModal: React.FC<IAddConfigFileTypeProps> = (props) => {
   const configFileType = useAppSelector(configFileTypeSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -48,7 +50,40 @@ const AddConfigFileTypeModal: React.FC<IAddConfigFileTypeProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigFileType(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigFileType(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigFileType) => {
@@ -116,12 +151,18 @@ const AddConfigFileTypeModal: React.FC<IAddConfigFileTypeProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 500 }]}
+                    rules={[{ required: !isMultiple, max: 500 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -129,12 +170,18 @@ const AddConfigFileTypeModal: React.FC<IAddConfigFileTypeProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Description</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'description']} valuePropName="checked" noStyle>
+                      <Checkbox>Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Description'
+                  )}
                   <Form.Item
                     name="description"
                     label="Description"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

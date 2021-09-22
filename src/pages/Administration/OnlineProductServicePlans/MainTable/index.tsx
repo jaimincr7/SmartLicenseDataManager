@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   FilterByDropdown,
@@ -22,7 +22,7 @@ import {
 import configOnlineProductServicePlansService from '../../../../services/master/onlineProductServicePlans/onlineProductServicePlans.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const configOnlineProductServicePlans = useAppSelector(configOnlineProductServicePlansSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -33,6 +33,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return configOnlineProductServicePlansService.exportExcelFile(searchData);
@@ -135,6 +141,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchConfigOnlineProductServicePlans}
         clearTableDataMessages={clearConfigOnlineProductServicePlansMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection}
       />
     </>
   );

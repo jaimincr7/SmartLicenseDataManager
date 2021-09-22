@@ -1,4 +1,16 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -26,13 +38,15 @@ import {
   getConfigSqlServerServicesLookup,
   getConfigSqlServerVersionsLookup,
 } from '../../../../store/common/common.action';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const { Option } = Select;
 
 const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> = (props) => {
   const configSqlServerLicense = useAppSelector(configSqlServerLicenseSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
   const commonLookups = useAppSelector(commonSelector);
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -67,7 +81,40 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigSqlServerLicense(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigSqlServerLicense(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigSqlServerLicense) => {
@@ -148,12 +195,18 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'service_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Service</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service'
+                  )}
                   <Form.Item
                     name="service_id"
                     className="m-0"
                     label="Service"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -180,12 +233,18 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Edition</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'edition_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Edition</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Edition'
+                  )}
                   <Form.Item
                     name="edition_id"
                     className="m-0"
                     label="Edition"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -212,12 +271,18 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Version</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'version_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Version'
+                  )}
                   <Form.Item
                     name="version_id"
                     className="m-0"
                     label="Version"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -244,12 +309,22 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License Unit</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'license_unit_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>License Unit</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'License Unit'
+                  )}
                   <Form.Item
                     name="license_unit_id"
                     className="m-0"
                     label="License Unit"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -276,12 +351,18 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Name'
+                  )}
                   <Form.Item
                     name="product_name"
                     label="Product Name"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -289,12 +370,22 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Units Per License</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'units_per_license']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Units Per License</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Units Per License'
+                  )}
                   <Form.Item
                     name="units_per_license"
                     label="Units Per License"
                     className="m-0"
-                    rules={[{ type: 'number', required: true }]}
+                    rules={[{ type: 'number', required: !isMultiple }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -302,12 +393,22 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License Quantity Minimum</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'license_quantity_minimum']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>License Quantity Minimum</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'License Quantity Minimum'
+                  )}
                   <Form.Item
                     name="license_quantity_minimum"
                     label="License Quantity Minimum"
                     className="m-0"
-                    rules={[{ type: 'number', required: true }]}
+                    rules={[{ type: 'number', required: !isMultiple }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -318,7 +419,17 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
                   <Form.Item name="server_cal_eligible" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Server CAL Eligible</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'server_cal_eligible']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Server CAl Eligible</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Server CAl Eligible'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -326,7 +437,17 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
                   <Form.Item name="alternate_license_type" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Alternate License Type</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'alternate_license_type']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Alternate License Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Alternate License Type'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -334,7 +455,13 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
                   <Form.Item name="includes_sa" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Includes SA</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'includes_sa']} valuePropName="checked" noStyle>
+                      <Checkbox>Includes SA</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Includes SA'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -342,7 +469,17 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
                   <Form.Item name="server_mobility_rights" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Server Mobility Rights</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'server_mobility_rights']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Server Mobility Rights</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Server Mobility Rights'
+                  )}
                 </div>
               </Col>
             </Row>

@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin, Switch } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -18,11 +18,13 @@ import {
   configExclusionOperationSelector,
 } from '../../../../store/master/exclusionOperation/exclusionOperation.reducer';
 import { IAddConfigExclusionOperationProps } from './addExclusionOperation.model';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 
 const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationProps> = (props) => {
   const configExclusionOperation = useAppSelector(configExclusionOperationSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -49,7 +51,40 @@ const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationPro
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigExclusionOperation(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigExclusionOperation(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigExclusionOperation) => {
@@ -119,12 +154,18 @@ const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationPro
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 500 }]}
+                    rules={[{ required: !isMultiple, max: 500 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -132,7 +173,17 @@ const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationPro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Logical Operation</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'logical_operation']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Logical Operation</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Logical Operation'
+                  )}
                   <Form.Item name="logical_operation" label="Logical Operation" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
@@ -140,7 +191,13 @@ const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationPro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SQL Operation</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'sql_operation']} valuePropName="checked" noStyle>
+                      <Checkbox>SQL Operation</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SQL Operation'
+                  )}
                   <Form.Item name="sql_operation" label="SQL Operation" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
@@ -151,7 +208,13 @@ const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationPro
                   <Form.Item name="is_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Enabled</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_enabled']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Enabled</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Enabled'
+                  )}
                 </div>
               </Col>
             </Row>

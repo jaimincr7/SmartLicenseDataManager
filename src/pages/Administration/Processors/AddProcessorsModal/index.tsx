@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -6,6 +6,7 @@ import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { IConfigProcessors } from '../../../../services/master/processors/processors.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
+import { updateMultiple } from '../../../../store/master/bu/bu.action';
 import {
   getConfigProcessorsById,
   saveConfigProcessors,
@@ -20,7 +21,8 @@ import { IAddConfigProcessorsProps } from './addProcessors.model';
 const AddConfigProcessorsModal: React.FC<IAddConfigProcessorsProps> = (props) => {
   const configProcessors = useAppSelector(configProcessorsSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -46,7 +48,40 @@ const AddConfigProcessorsModal: React.FC<IAddConfigProcessorsProps> = (props) =>
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigProcessors(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigProcessors(inputValues));
+    } else {
+      const Obj: any = {
+        ...valuesForSelection,
+      };
+      const rowList = {
+        ...Obj.selectedIds,
+      };
+      const bu1 = {};
+      for (const x in inputValues.checked) {
+        if (inputValues.checked[x] === true) {
+          bu1[x] = inputValues[x];
+        }
+      }
+      if (Object.keys(bu1).length === 0) {
+        toast.error('Please select at least 1 field to update');
+        return;
+      }
+      const objectForSelection = {
+        table_name: 'BU',
+        update_data: bu1,
+        filterKeys: Obj.filterKeys,
+        is_export_to_excel: false,
+        keyword: Obj.keyword,
+        limit: Obj.limit,
+        offset: Obj.offset,
+        order_by: Obj.order_by,
+        current_user: {},
+        order_direction: Obj.order_direction,
+      };
+      objectForSelection['selectedIds'] = rowList.selectedRowList;
+      dispatch(updateMultiple(objectForSelection));
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigProcessors) => {
@@ -113,12 +148,18 @@ const AddConfigProcessorsModal: React.FC<IAddConfigProcessorsProps> = (props) =>
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Processor Description</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'processor_desc']} valuePropName="checked" noStyle>
+                      <Checkbox>Processor Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Processor Description'
+                  )}
                   <Form.Item
                     name="processor_desc"
                     label="Processor Description"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -126,12 +167,18 @@ const AddConfigProcessorsModal: React.FC<IAddConfigProcessorsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Cores</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cores']} valuePropName="checked" noStyle>
+                      <Checkbox>Cores</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cores'
+                  )}
                   <Form.Item
                     name="cores"
                     label="Cores"
                     className="m-0"
-                    rules={[{ required: true, type: 'number' }]}
+                    rules={[{ required: !isMultiple, type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
