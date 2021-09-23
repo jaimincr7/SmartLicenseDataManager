@@ -9,7 +9,7 @@ export const getPageHeight = () => {
   return finalHeight;
 };
 
-export const getObjectForUpdateMultiple = (valuesForSelection: any, inputValues: any) => {
+export const getObjectForUpdateMultiple = (valuesForSelection: any, inputValues: any,tableName: string) => {
   const Obj: any = {
     ...valuesForSelection,
   };
@@ -27,7 +27,7 @@ export const getObjectForUpdateMultiple = (valuesForSelection: any, inputValues:
     return;
   }
   const objectForSelection = {
-    table_name: 'BU',
+    table_name: tableName,
     update_data: bu1,
     filterKeys: Obj.filterKeys,
     is_export_to_excel: false,

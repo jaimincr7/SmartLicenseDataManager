@@ -18,15 +18,17 @@ import {
   configFileCategoriesSelector,
 } from '../../../../store/master/fileCategories/fileCategories.reducer';
 import { IAddConfigFileCategoriesProps } from './addFileCategories.model';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 
 const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (props) => {
   const configFileCategories = useAppSelector(configFileCategoriesSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -70,7 +72,7 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configFileCategories.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -109,6 +111,19 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
       dispatch(clearConfigFileCategoriesMessages());
     }
   }, [configFileCategories.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configFileCategories.getById.data) {
@@ -193,7 +208,7 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configFileCategories.save.loading}
+                loading={configFileCategories.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

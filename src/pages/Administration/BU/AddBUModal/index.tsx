@@ -9,14 +9,17 @@ import { ILookup } from '../../../../services/common/common.model';
 import { IBU } from '../../../../services/master/bu/bu.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
-import { clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
-import { getBUById, saveBU, updateMultiple } from '../../../../store/master/bu/bu.action';
+import { clearCompanyLookUp, clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import { getBUById, saveBU } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 import {
   clearBUGetById,
   clearBUMessages,
   buSelector,
 } from '../../../../store/master/bu/bu.reducer';
 import { IAddBUProps } from './addBU.model';
+import React from 'react';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -27,7 +30,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -56,36 +59,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveBU(inputValues));
     } else {
-      const Obj: any = {
-        ...valuesForSelection,
-      };
-      const rowList = {
-        ...Obj.selectedIds,
-      };
-      const bu1 = {};
-      for (const x in inputValues.checked) {
-        if (inputValues.checked[x] === true) {
-          bu1[x] = inputValues[x];
-        }
-      }
-      if (Object.keys(bu1).length === 0) {
-        toast.error('Please select at least 1 field to update');
-        return;
-      }
-      const objectForSelection = {
-        table_name: 'BU',
-        update_data: bu1,
-        filterKeys: Obj.filterKeys,
-        is_export_to_excel: false,
-        keyword: Obj.keyword,
-        limit: Obj.limit,
-        offset: Obj.offset,
-        order_by: Obj.order_by,
-        current_user: {},
-        order_direction: Obj.order_direction,
-      };
-      objectForSelection['selectedIds'] = rowList.selectedRowList;
-      dispatch(updateMultiple(objectForSelection));
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,bu.search.tableName)));
     }
   };
 
@@ -125,6 +99,19 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
       dispatch(clearBUMessages());
     }
   }, [bu.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && bu.getById.data) {
@@ -275,7 +262,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={bu.save.loading}>
+              <Button key="submit" type="primary" htmlType="submit" loading={bu.save.loading || commonLookups.save.loading}>
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

@@ -9,7 +9,7 @@ import { ILookup } from '../../../../services/common/common.model';
 import { IConfigSqlServerVersions } from '../../../../services/master/sqlServerVersions/sqlServerVersions.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getConfigSupportTypesLookup } from '../../../../store/common/common.action';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import {
   getConfigSqlServerVersionsById,
   saveConfigSqlServerVersions,
@@ -31,7 +31,7 @@ const AddConfigSqlServerVersionsModal: React.FC<IAddConfigSqlServerVersionsProps
     props;
   const commonLookups = useAppSelector(commonSelector);
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -75,7 +75,7 @@ const AddConfigSqlServerVersionsModal: React.FC<IAddConfigSqlServerVersionsProps
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configSqlServerVersions.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -113,6 +113,19 @@ const AddConfigSqlServerVersionsModal: React.FC<IAddConfigSqlServerVersionsProps
       dispatch(clearConfigSqlServerVersionsMessages());
     }
   }, [configSqlServerVersions.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configSqlServerVersions.getById.data) {
@@ -221,7 +234,7 @@ const AddConfigSqlServerVersionsModal: React.FC<IAddConfigSqlServerVersionsProps
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configSqlServerVersions.save.loading}
+                loading={configSqlServerVersions.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

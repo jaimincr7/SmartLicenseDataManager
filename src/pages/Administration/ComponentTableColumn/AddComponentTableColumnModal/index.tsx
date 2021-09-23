@@ -19,9 +19,9 @@ import {
 } from '../../../../store/master/componentTableColumn/componentTableColumn.reducer';
 import { IAddConfigComponentTableColumnProps } from './addComponentTableColumn.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import { getConfigComponentLookup } from '../../../../store/common/common.action';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 
 const { Option } = Select;
 
@@ -34,7 +34,7 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -80,7 +80,7 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configComponentTableColumn.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -120,6 +120,19 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
       dispatch(clearConfigComponentTableColumnMessages());
     }
   }, [configComponentTableColumn.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configComponentTableColumn.getById.data) {
@@ -243,7 +256,7 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configComponentTableColumn.save.loading}
+                loading={configComponentTableColumn.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

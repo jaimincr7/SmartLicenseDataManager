@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import _ from 'lodash';
 import {
@@ -23,7 +23,7 @@ import {
 } from '../../../../store/ad/adUsersExclusions/adUsersExclusions.action';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const AdUsersExclusions = useAppSelector(adUsersExclusionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -34,6 +34,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return adUsersExclusionsService.exportExcelFile(searchData);
@@ -225,6 +231,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchAdUsersExclusion}
         clearTableDataMessages={clearAdUsersExclusionMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection}
       />
     </>
   );

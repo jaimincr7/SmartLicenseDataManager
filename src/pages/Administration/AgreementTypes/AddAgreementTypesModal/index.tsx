@@ -18,15 +18,19 @@ import {
   agreementTypesSelector,
 } from '../../../../store/master/agreementTypes/agreementTypes.reducer';
 import { IAddAgreementTypesProps } from './addAgreementTypes.model';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { commonSelector , clearMultipleUpdateMessages } from '../../../../store/common/common.reducer';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
   const agreementTypes = useAppSelector(agreementTypesSelector);
   const dispatch = useAppDispatch();
+  const common = useAppSelector(commonSelector);
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+    const isNew: boolean = id || isMultiple ? false : true;
+
   const title = useMemo(() => {
     return (
       <>
@@ -52,36 +56,7 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAgreementTypes(inputValues));
     } else {
-      const Obj: any = {
-        ...valuesForSelection,
-      };
-      const rowList = {
-        ...Obj.selectedIds,
-      };
-      const bu1 = {};
-      for (const x in inputValues.checked) {
-        if (inputValues.checked[x] === true) {
-          bu1[x] = inputValues[x];
-        }
-      }
-      if (Object.keys(bu1).length === 0) {
-        toast.error('Please select at least 1 field to update');
-        return;
-      }
-      const objectForSelection = {
-        table_name: 'Agreement_Types',
-        update_data: bu1,
-        filterKeys: Obj.filterKeys,
-        is_export_to_excel: false,
-        keyword: Obj.keyword,
-        limit: Obj.limit,
-        offset: Obj.offset,
-        order_by: Obj.order_by,
-        current_user: {},
-        order_direction: Obj.order_direction,
-      };
-      objectForSelection['selectedIds'] = rowList.selectedRowList;
-      dispatch(updateMultiple(objectForSelection));
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,agreementTypes.search.tableName)));
     }
   };
 
@@ -107,6 +82,19 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
       dispatch(clearAgreementTypesMessages());
     }
   }, [agreementTypes.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && agreementTypes.getById.data) {
@@ -172,7 +160,7 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={agreementTypes.save.loading}
+                loading={agreementTypes.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

@@ -1,6 +1,6 @@
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
-import { IBulkInsertDataset, IDeleteDataset, ILookup } from './common.model';
+import { IBulkInsertDataset, IBulkUpdate, IDeleteDataset, ILookup } from './common.model';
 
 class CommonService {
   public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
@@ -378,8 +378,8 @@ class CommonService {
     });
   }
 
-  public async updateMultiple(searchParams?: any): Promise<any> {
-    const url = `/app/bulkUpdate`;
+  public async updateMultiple(searchParams?: IBulkUpdate): Promise<any> {
+    const url = `/app/bulk-update`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });

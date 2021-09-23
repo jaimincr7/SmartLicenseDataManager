@@ -18,16 +18,18 @@ import {
   configComponentSelector,
 } from '../../../../store/master/component/component.reducer';
 import { IAddConfigComponentProps } from './addComponent.model';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 
 const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
   const configComponent = useAppSelector(configComponentSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -70,7 +72,7 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: 'config_Component',
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -108,6 +110,19 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
       dispatch(clearConfigComponentMessages());
     }
   }, [configComponent.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configComponent.getById.data) {
@@ -173,7 +188,7 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configComponent.save.loading}
+                loading={configComponent.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

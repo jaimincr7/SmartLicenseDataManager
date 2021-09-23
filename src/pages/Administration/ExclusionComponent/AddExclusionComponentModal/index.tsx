@@ -18,13 +18,13 @@ import {
   configExclusionComponentSelector,
 } from '../../../../store/master/exclusionComponent/exclusionComponent.reducer';
 import { IAddConfigExclusionComponentProps } from './addExclusionComponent.model';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import { ILookup } from '../../../../services/common/common.model';
 import {
   getConfigComponentLookup,
   getConfigComponentTableColumnLookup,
 } from '../../../../store/common/common.action';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 
 const { Option } = Select;
 
@@ -35,7 +35,7 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -81,7 +81,7 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configExclusionComponent.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -129,6 +129,19 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
       dispatch(clearConfigExclusionComponentMessages());
     }
   }, [configExclusionComponent.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configExclusionComponent.getById.data) {
@@ -255,11 +268,11 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Company</Checkbox>
+                    <Form.Item name={['checked', 'exclusion_desc_component_table_column_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Exclusion Description Component Table Column</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Company'
+                    'Exclusion Description Component Table Column'
                   )}
                   <Form.Item
                     name="exclusion_desc_component_table_column_id"
@@ -297,7 +310,7 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configExclusionComponent.save.loading}
+                loading={configExclusionComponent.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

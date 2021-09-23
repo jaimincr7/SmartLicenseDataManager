@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITableColumnSelection } from '../../common/models/common';
-import { IDeleteDataset } from '../../services/common/common.model';
+import { IBulkUpdate, IDeleteDataset } from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
 // Asynchronous thunk action
@@ -335,7 +335,7 @@ export const getCmsContractAgreementLookup = createAsyncThunk(
   }
 );
 
-export const updateMultiple = createAsyncThunk('updateMultiple', async (data: any) => {
+export const updateMultiple = createAsyncThunk('updateMultiple', async (data: IBulkUpdate) => {
   const response = await commonService.updateMultiple(data).then((res) => {
     return res.body;
   });

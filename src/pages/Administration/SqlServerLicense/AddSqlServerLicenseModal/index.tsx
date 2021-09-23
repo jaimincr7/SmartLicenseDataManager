@@ -31,24 +31,25 @@ import {
 } from '../../../../store/master/sqlServerLicense/sqlServerLicense.reducer';
 import { IAddConfigSqlServerLicenseProps } from './addSqlServerLicense.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import {
   getConfigLicenseUnitsLookup,
   getConfigSqlServerEditionsLookup,
   getConfigSqlServerServicesLookup,
   getConfigSqlServerVersionsLookup,
 } from '../../../../store/common/common.action';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 
 const { Option } = Select;
 
 const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> = (props) => {
   const configSqlServerLicense = useAppSelector(configSqlServerLicenseSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
   const commonLookups = useAppSelector(commonSelector);
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -101,7 +102,7 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configSqlServerLicense.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -149,6 +150,19 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
       dispatch(clearConfigSqlServerLicenseMessages());
     }
   }, [configSqlServerLicense.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configSqlServerLicense.getById.data) {
@@ -488,7 +502,7 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configSqlServerLicense.save.loading}
+                loading={configSqlServerLicense.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

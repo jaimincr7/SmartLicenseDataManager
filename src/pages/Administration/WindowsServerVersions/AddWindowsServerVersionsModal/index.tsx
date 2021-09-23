@@ -8,7 +8,7 @@ import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IConfigWindowsServerVersions } from '../../../../services/master/windowsServerVersions/windowsServerVersions.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import {
   getConfigWindowsServerVersionsById,
   saveConfigWindowsServerVersions,
@@ -20,7 +20,7 @@ import {
   configWindowsServerVersionsSelector,
 } from '../../../../store/master/windowsServerVersions/windowsServerVersions.reducer';
 import { IAddConfigWindowsServerVersionsProps } from './addWindowsServerVersions.model';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 
 const { Option } = Select;
 
@@ -33,7 +33,7 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -79,7 +79,7 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configWindowsServerVersions.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -117,6 +117,19 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
       dispatch(clearConfigWindowsServerVersionsMessages());
     }
   }, [configWindowsServerVersions.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configWindowsServerVersions.getById.data) {
@@ -220,7 +233,7 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configWindowsServerVersions.save.loading}
+                loading={configWindowsServerVersions.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

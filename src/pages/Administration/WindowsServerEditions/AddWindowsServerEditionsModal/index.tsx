@@ -6,7 +6,8 @@ import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { IConfigWindowsServerEditions } from '../../../../services/master/windowsServerEditions/windowsServerEditions.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import {
   getConfigWindowsServerEditionsById,
   saveConfigWindowsServerEditions,
@@ -22,11 +23,12 @@ const AddConfigWindowsServerEditionsModal: React.FC<IAddConfigWindowsServerEditi
   props
 ) => {
   const configWindowsServerEditions = useAppSelector(configWindowsServerEditionsSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -70,7 +72,7 @@ const AddConfigWindowsServerEditionsModal: React.FC<IAddConfigWindowsServerEditi
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configWindowsServerEditions.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -107,6 +109,19 @@ const AddConfigWindowsServerEditionsModal: React.FC<IAddConfigWindowsServerEditi
       dispatch(clearConfigWindowsServerEditionsMessages());
     }
   }, [configWindowsServerEditions.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configWindowsServerEditions.getById.data) {
@@ -172,7 +187,7 @@ const AddConfigWindowsServerEditionsModal: React.FC<IAddConfigWindowsServerEditi
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configWindowsServerEditions.save.loading}
+                loading={configWindowsServerEditions.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

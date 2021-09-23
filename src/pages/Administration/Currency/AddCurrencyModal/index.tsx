@@ -6,7 +6,8 @@ import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { ICurrency } from '../../../../services/master/currency/currency.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import { getCurrencyById, saveCurrency } from '../../../../store/master/currency/currency.action';
 import {
   clearCurrencyGetById,
@@ -17,12 +18,13 @@ import { IAddCurrencyProps } from './addCurrency.model';
 
 const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
   const currency = useAppSelector(currencySelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -67,7 +69,7 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: currency.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -106,6 +108,19 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
       dispatch(clearCurrencyMessages());
     }
   }, [currency.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && currency.getById.data) {
@@ -200,7 +215,7 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={currency.save.loading}>
+              <Button key="submit" type="primary" htmlType="submit" loading={currency.save.loading || common.save.loading}>
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

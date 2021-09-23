@@ -823,6 +823,7 @@ export const {
   clearSaveTableColumnSelection,
   clearSpsApiGroupsLookup,
   clearSpsApiTypesLookup,
+  clearMultipleUpdateMessages,
 } = commonSlice.actions;
 
 // The reducer

@@ -104,7 +104,7 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/config/config-component');
+            history.push('/administration/config-component');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}

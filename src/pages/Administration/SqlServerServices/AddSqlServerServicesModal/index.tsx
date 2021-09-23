@@ -6,7 +6,8 @@ import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { IConfigSqlServerServices } from '../../../../services/master/sqlServerServices/sqlServerServices.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import {
   getConfigSqlServerServicesById,
   saveConfigSqlServerServices,
@@ -20,11 +21,12 @@ import { IAddConfigSqlServerServicesProps } from './addSqlServerServices.model';
 
 const AddConfigSqlServerServicesModal: React.FC<IAddConfigSqlServerServicesProps> = (props) => {
   const configSqlServerServices = useAppSelector(configSqlServerServicesSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -68,7 +70,7 @@ const AddConfigSqlServerServicesModal: React.FC<IAddConfigSqlServerServicesProps
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configSqlServerServices.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -106,6 +108,19 @@ const AddConfigSqlServerServicesModal: React.FC<IAddConfigSqlServerServicesProps
       dispatch(clearConfigSqlServerServicesMessages());
     }
   }, [configSqlServerServices.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configSqlServerServices.getById.data) {
@@ -171,7 +186,7 @@ const AddConfigSqlServerServicesModal: React.FC<IAddConfigSqlServerServicesProps
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configSqlServerServices.save.loading}
+                loading={configSqlServerServices.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

@@ -18,10 +18,10 @@ import {
   configExclusionLocationSelector,
 } from '../../../../store/master/exclusionLocation/exclusionLocation.reducer';
 import { IAddConfigExclusionLocationProps } from './addExclusionLocation.model';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import { ILookup } from '../../../../services/common/common.model';
 import { getConfigComponentTableColumnLookup } from '../../../../store/common/common.action';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 
 const { Option } = Select;
 
@@ -32,7 +32,7 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -76,7 +76,7 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configExclusionLocation.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -117,6 +117,19 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
       dispatch(clearConfigExclusionLocationMessages());
     }
   }, [configExclusionLocation.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configExclusionLocation.getById.data) {
@@ -175,7 +188,7 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
                     name="component_table_column_id"
                     className="m-0"
                     label="Component Table Column"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -222,7 +235,7 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configExclusionLocation.save.loading}
+                loading={configExclusionLocation.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

@@ -14,6 +14,7 @@ import {
   clearAgreementTypes,
   agreementTypesSelector,
 } from '../../../store/master/agreementTypes/agreementTypes.reducer';
+import { clearCommon } from '../../../store/common/common.reducer';
 
 const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
   const agreementTypes = useAppSelector(agreementTypesSelector);
@@ -40,6 +41,7 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
     setShowSelectedListModal(false);
     return () => {
       dispatch(clearAgreementTypes());
+      dispatch(clearCommon());
     };
   }, []);
 

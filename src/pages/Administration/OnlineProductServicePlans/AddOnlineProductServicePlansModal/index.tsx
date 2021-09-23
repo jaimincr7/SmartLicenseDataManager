@@ -12,7 +12,7 @@ import {
   getConfigOnlineProductsLookup,
   getConfigOnlineServicePlansLookup,
 } from '../../../../store/common/common.action';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import {
   getConfigOnlineProductServicePlansById,
   saveConfigOnlineProductServicePlans,
@@ -23,7 +23,7 @@ import {
   configOnlineProductServicePlansSelector,
 } from '../../../../store/master/onlineProductServicePlans/onlineProductServicePlans.reducer';
 import { IAddConfigOnlineProductServicePlansProps } from './addOnlineProductServicePlans.model';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 
 const { Option } = Select;
 
@@ -36,7 +36,7 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
 
     const commonLookups = useAppSelector(commonSelector);
 
-    const isNew: boolean = id ? false : true;
+    const isNew: boolean = id || isMultiple? false : true;
     const title = useMemo(() => {
       return (
         <>
@@ -81,7 +81,7 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
           return;
         }
         const objectForSelection = {
-          table_name: 'BU',
+          table_name: configOnlineProductServicePlans.search.tableName,
           update_data: bu1,
           filterKeys: Obj.filterKeys,
           is_export_to_excel: false,
@@ -119,6 +119,19 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
         dispatch(clearConfigOnlineProductServicePlansMessages());
       }
     }, [configOnlineProductServicePlans.save.messages]);
+
+    useEffect(() => {
+      if (commonLookups.save.messages.length > 0) {
+        if (commonLookups.save.hasErrors) {
+          toast.error(commonLookups.save.messages.join(' '));
+        } else {
+          toast.success(commonLookups.save.messages.join(' '));
+          handleModalClose();
+          refreshDataTable();
+        }
+        dispatch(clearMultipleUpdateMessages());
+      }
+    }, [commonLookups.save.messages]);
 
     useEffect(() => {
       if (+id > 0 && configOnlineProductServicePlans.getById.data) {
@@ -249,7 +262,7 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
                   key="submit"
                   type="primary"
                   htmlType="submit"
-                  loading={configOnlineProductServicePlans.save.loading}
+                  loading={configOnlineProductServicePlans.save.loading || commonLookups.save.loading}
                 >
                   {submitButtonText}
                 </Button>

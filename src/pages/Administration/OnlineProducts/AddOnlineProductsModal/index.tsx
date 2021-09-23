@@ -18,15 +18,17 @@ import {
   configOnlineProductsSelector,
 } from '../../../../store/master/onlineProducts/onlineProducts.reducer';
 import { IAddConfigOnlineProductsProps } from './addOnlineProducts.model';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 
 const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (props) => {
   const configOnlineProducts = useAppSelector(configOnlineProductsSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -74,7 +76,7 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: configOnlineProducts.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -117,6 +119,19 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
       dispatch(clearConfigOnlineProductsMessages());
     }
   }, [configOnlineProducts.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configOnlineProducts.getById.data) {
@@ -266,7 +281,7 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configOnlineProducts.save.loading}
+                loading={configOnlineProducts.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

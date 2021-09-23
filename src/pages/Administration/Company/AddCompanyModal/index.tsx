@@ -25,9 +25,10 @@ import { getCurrencyLookup, getTenantLookup } from '../../../../store/common/com
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 import { getCompanyById, saveCompany } from '../../../../store/master/company/company.action';
 import {
   clearCompanyGetById,
@@ -46,7 +47,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+    const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -148,6 +149,19 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
       dispatch(clearCompanyMessages());
     }
   }, [company.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && company.getById.data) {
@@ -435,7 +449,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={company.save.loading}>
+              <Button key="submit" type="primary" htmlType="submit" loading={company.save.loading || commonLookups.save.loading}>
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

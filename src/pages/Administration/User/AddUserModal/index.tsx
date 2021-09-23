@@ -10,8 +10,8 @@ import { ILookup } from '../../../../services/common/common.model';
 import { IUser } from '../../../../services/master/user/users.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
-import { clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
-import { updateMultiple } from '../../../../store/master/bu/bu.action';
+import { clearCompanyLookUp, clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import { updateMultiple } from '../../../../store/common/common.action';
 import { getUserById, saveUser } from '../../../../store/master/users/users.action';
 import {
   clearUserGetById,
@@ -30,7 +30,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -95,7 +95,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
         return;
       }
       const objectForSelection = {
-        table_name: 'BU',
+        table_name: users.search.tableName,
         update_data: bu1,
         filterKeys: Obj.filterKeys,
         is_export_to_excel: false,
@@ -160,6 +160,19 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
       dispatch(clearUserMessages());
     }
   }, [users.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && users.getById.data) {
@@ -434,7 +447,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={users.save.loading}>
+              <Button key="submit" type="primary" htmlType="submit" loading={users.save.loading || commonLookups.save.loading}>
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

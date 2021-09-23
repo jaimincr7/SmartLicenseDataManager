@@ -51,3 +51,16 @@ export interface IGetExcelColumns {
   excel_sheet_columns: IExcelSheetColumn[];
   filename: string;
 }
+
+export interface IBulkUpdate {
+        table_name: string,
+        update_data?: any,
+        filterKeys: string,
+        is_export_to_excel: boolean,
+        keyword: string,
+        limit: number,
+        offset: number,
+        order_by: string,
+        current_user: any,
+        order_direction: string,
+}
