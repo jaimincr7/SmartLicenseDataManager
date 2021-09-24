@@ -136,6 +136,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearConfigSqlServerVersionsMessages}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
         setValuesForSelection={setValuesForSelection}
       />
     </>

@@ -34,6 +34,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const {
     defaultOrderBy,
     showAddButton,
+    showBulkUpdate,
     setShowSelectedListModal,
     globalSearchExist,
     extraSearchData,
@@ -542,6 +543,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           ) : (
             renderCallApiButton()
           )}
+          {showBulkUpdate && (
           <Button
             type="primary"
             onClick={() => {
@@ -550,6 +552,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           >
             {Object.keys(selectedRowList).length <= 1 ? 'Update All ' : 'Update Selected '}
           </Button>
+          )}
           {showAddButton && (
             <Button
               type="primary"

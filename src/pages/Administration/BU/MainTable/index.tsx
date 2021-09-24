@@ -155,6 +155,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showAddButton={ability.can(Action.Add, Page.Bu)}
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
         globalSearchExist={false}
         setSelectedId={setSelectedId}
         tableAction={tableAction}

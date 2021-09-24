@@ -31,10 +31,3 @@ export const deleteBU = createAsyncThunk('deleteBU', async (id: number) => {
   });
   return response;
 });
-
-export const updateMultiple = createAsyncThunk('updateMultiple', async (data: IBU) => {
-  const response = await buService.updateMultiple(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});

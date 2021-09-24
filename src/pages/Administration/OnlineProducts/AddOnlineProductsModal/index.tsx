@@ -20,6 +20,7 @@ import {
 import { IAddConfigOnlineProductsProps } from './addOnlineProducts.model';
 import { updateMultiple } from '../../../../store/common/common.action';
 import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (props) => {
   const configOnlineProducts = useAppSelector(configOnlineProductsSelector);
@@ -59,36 +60,7 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
     if (!isMultiple) {
       dispatch(saveConfigOnlineProducts(inputValues));
     } else {
-      const Obj: any = {
-        ...valuesForSelection,
-      };
-      const rowList = {
-        ...Obj.selectedIds,
-      };
-      const bu1 = {};
-      for (const x in inputValues.checked) {
-        if (inputValues.checked[x] === true) {
-          bu1[x] = inputValues[x];
-        }
-      }
-      if (Object.keys(bu1).length === 0) {
-        toast.error('Please select at least 1 field to update');
-        return;
-      }
-      const objectForSelection = {
-        table_name: configOnlineProducts.search.tableName,
-        update_data: bu1,
-        filterKeys: Obj.filterKeys,
-        is_export_to_excel: false,
-        keyword: Obj.keyword,
-        limit: Obj.limit,
-        offset: Obj.offset,
-        order_by: Obj.order_by,
-        current_user: {},
-        order_direction: Obj.order_direction,
-      };
-      objectForSelection['selectedIds'] = rowList.selectedRowList;
-      dispatch(updateMultiple(objectForSelection));
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configOnlineProducts.search.tableName)));
     }
   };
 

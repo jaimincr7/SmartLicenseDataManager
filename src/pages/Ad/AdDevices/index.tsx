@@ -25,6 +25,8 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearAdDevices());
     };
@@ -117,6 +120,12 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -126,8 +135,22 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
       {addModalVisible && (
         <AddAdDeviceModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/ad/ad-devices');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddAdDeviceModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/ad/ad-devices');
           }}
           id={id}

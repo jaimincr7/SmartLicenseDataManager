@@ -24,6 +24,8 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -33,6 +35,7 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearAzureAPIVmSizes());
     };
@@ -80,6 +83,12 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -89,8 +98,22 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
       {addModalVisible && (
         <AddAzureAPIVmSizesModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/azure/azure-api-vm-sizes');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddAzureAPIVmSizesModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/azure/azure-api-vm-sizes');
           }}
           id={id}

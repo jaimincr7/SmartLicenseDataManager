@@ -27,6 +27,8 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -36,6 +38,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearAzureDailyUsage());
     };
@@ -101,6 +104,12 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -110,8 +119,22 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
       {addModalVisible && (
         <AddAzureDailyUsageModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/azure/azure-daily-usage');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddAzureDailyUsageModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/azure/azure-daily-usage');
           }}
           id={id}

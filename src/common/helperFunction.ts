@@ -29,7 +29,7 @@ export const getObjectForUpdateMultiple = (valuesForSelection: any, inputValues:
   const objectForSelection = {
     table_name: tableName,
     update_data: bu1,
-    filterKeys: Obj.filterKeys,
+    filter_keys: Obj.filterKeys,
     is_export_to_excel: false,
     keyword: Obj.keyword,
     limit: Obj.limit,

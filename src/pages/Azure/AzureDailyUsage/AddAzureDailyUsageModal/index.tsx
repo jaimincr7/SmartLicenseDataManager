@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Col,
   DatePicker,
   Form,
@@ -21,10 +22,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -41,6 +44,7 @@ import moment from 'moment';
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -49,9 +53,10 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -159,7 +164,11 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
       extended_cost: Number(values.extended_cost),
       id: id ? +id : null,
     };
-    dispatch(saveAzureDailyUsage(inputValues));
+    if (!isMultiple) {
+      dispatch(saveAzureDailyUsage(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,azureDailyUsage.search.tableName)));
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -302,6 +311,19 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
   }, [azureDailyUsage.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && azureDailyUsage.getById.data) {
       const data = azureDailyUsage.getById.data;
       fillValuesOnEdit(data);
@@ -345,12 +367,18 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -378,7 +406,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -406,7 +440,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -434,7 +474,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Account OwnerId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'account_owner_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Account OwnerId</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Account OwnerId'
+                  )}
                   <Form.Item
                     name="account_owner_id"
                     className="m-0"
@@ -447,10 +493,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Account Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'account_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Account Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Account Name'
+                  )}
                   <Form.Item
                     name="account_name"
-                    label="Account name"
+                    label="Account Name"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -460,7 +512,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service Administrator Id</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'service_administrator_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Service Administrator Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service Administrator Id'
+                  )}
                   <Form.Item
                     name="service_administrator_id"
                     label="Service Administrator Id"
@@ -473,10 +531,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SubscriptionId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'subscription_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Subscription Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Subscription Id'
+                  )}
                   <Form.Item
                     name="subscription_id"
-                    label="SubscriptionId"
+                    label="Subscription Id"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -486,7 +550,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Subscription GUId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'subscription_guid']} valuePropName="checked" noStyle>
+                      <Checkbox>Subscription GUId</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Subscription GUId'
+                  )}
                   <Form.Item
                     name="subscription_guid"
                     label="Subscription GUId"
@@ -499,10 +569,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Subscription Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'subscription_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Subscription Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Subscription Name'
+                  )}
                   <Form.Item
                     name="subscription_name"
-                    label="Subscription name"
+                    label="Subscription Name"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -512,7 +588,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'date']} valuePropName="checked" noStyle>
+                      <Checkbox>Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date'
+                  )}
                   <Form.Item name="date" label="Date" className="m-0">
                     <DatePicker
                       className="form-control w-100"
@@ -530,7 +612,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Day</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'day']} valuePropName="checked" noStyle>
+                      <Checkbox>Day</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Day'
+                  )}
                   <Form.Item name="day" label="Day" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber min={1} max={31} className="form-control w-100" />
                   </Form.Item>
@@ -538,7 +626,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Month</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'month']} valuePropName="checked" noStyle>
+                      <Checkbox>Month</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Month'
+                  )}
                   <Form.Item
                     name="month"
                     label="Month"
@@ -551,7 +645,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Month Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'month_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Month Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Month Name'
+                  )}
                   <Form.Item
                     name="month_name"
                     label="Month Name"
@@ -564,7 +664,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Year</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'year']} valuePropName="checked" noStyle>
+                      <Checkbox>Year</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Year'
+                  )}
                   <Form.Item name="year" label="Year" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -572,7 +678,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product']} valuePropName="checked" noStyle>
+                      <Checkbox>Product</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product'
+                  )}
                   <Form.Item name="product" className="m-0" label="Product" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -580,15 +692,27 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">MeterId</label>
-                  <Form.Item name="meter_id" label="MeterId" className="m-0" rules={[{ max: 510 }]}>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'meter_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Meter Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Meter Id'
+                  )}
+                  <Form.Item name="meter_id" label="Meter Id" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Meter Category</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'meter_category']} valuePropName="checked" noStyle>
+                      <Checkbox>Meter Category</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Meter Category'
+                  )}
                   <Form.Item
                     name="meter_category"
                     label="Meter Category"
@@ -601,7 +725,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Meter Sub-Category</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'meter_sub_category']} valuePropName="checked" noStyle>
+                      <Checkbox>Meter Sub-Category</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Meter Sub-Category'
+                  )}
                   <Form.Item
                     name="meter_sub_category"
                     label="Meter Sub-Category"
@@ -614,7 +744,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Meter Region</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'meter_region']} valuePropName="checked" noStyle>
+                      <Checkbox>Meter Region</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Meter Region'
+                  )}
                   <Form.Item
                     name="meter_region"
                     label="Meter Region"
@@ -627,10 +763,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Meter Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'meter_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Meter Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Meter Name'
+                  )}
                   <Form.Item
                     name="meter_name"
-                    label="Meter name"
+                    label="Meter Name"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -640,7 +782,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Consumed Quantity</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'consumed_quantity']} valuePropName="checked" noStyle>
+                      <Checkbox>Consumed Quantity</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Consumed Quantity'
+                  )}
                   <Form.Item
                     name="consumed_quantity"
                     label="Consumed Quantity"
@@ -654,7 +802,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Resource Rate</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'resource_rate']} valuePropName="checked" noStyle>
+                      <Checkbox>Resource Rate</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Resource Rate'
+                  )}
                   <Form.Item
                     name="resource_rate"
                     label="Resource Rate"
@@ -667,7 +821,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Extended Cost</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'extended_cost']} valuePropName="checked" noStyle>
+                      <Checkbox>Extended Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Extended Cost'
+                  )}
                   <Form.Item
                     name="extended_cost"
                     label="Extended Cost"
@@ -680,7 +840,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Resource Location</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'resource_location']} valuePropName="checked" noStyle>
+                      <Checkbox>Resource Location</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Resource Location'
+                  )}
                   <Form.Item
                     name="resource_location"
                     label="Resource Location"
@@ -693,7 +859,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Consumed Service</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'consumed_service']} valuePropName="checked" noStyle>
+                      <Checkbox>Consumed Service</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Consumed Service'
+                  )}
                   <Form.Item
                     name="consumed_service"
                     label="Consumed Service"
@@ -706,15 +878,27 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">InstanceId</label>
-                  <Form.Item name="instance_id" label="InstanceId" className="m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'instance_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Instance Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Instance Id'
+                  )}
+                  <Form.Item name="instance_id" label="Instance Id" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service Info1</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'service_info1']} valuePropName="checked" noStyle>
+                      <Checkbox>Service Info1</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service Info1'
+                  )}
                   <Form.Item
                     name="service_info1"
                     label="Service Info1"
@@ -727,7 +911,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service Info2</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'service_info2']} valuePropName="checked" noStyle>
+                      <Checkbox>Service Info2</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service Info2'
+                  )}
                   <Form.Item
                     name="service_info2"
                     label="Service Info2"
@@ -740,7 +930,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Additional Info</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'additional_info']} valuePropName="checked" noStyle>
+                      <Checkbox>Additional Info</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Additional Info'
+                  )}
                   <Form.Item name="additional_info" label="Additional Info" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
@@ -748,7 +944,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tags</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tags']} valuePropName="checked" noStyle>
+                      <Checkbox>Tags</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tags'
+                  )}
                   <Form.Item name="tags" label="Tags" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
@@ -756,7 +958,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Store Service Identifier</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'store_service_identifier']} valuePropName="checked" noStyle>
+                      <Checkbox>Store Service Identifier</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Store Service Identifier'
+                  )}
                   <Form.Item
                     name="store_service_identifier"
                     label="Store Service Identifier"
@@ -769,7 +977,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Department Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'department_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Department Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Department Name'
+                  )}
                   <Form.Item
                     name="department_name"
                     label="Department Name"
@@ -782,7 +996,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Cost Center</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cost_center']} valuePropName="checked" noStyle>
+                      <Checkbox>Cost Center</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cost Center'
+                  )}
                   <Form.Item
                     name="cost_center"
                     label="Cost Center"
@@ -795,7 +1015,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Unit Of Measure</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'unit_of_measure']} valuePropName="checked" noStyle>
+                      <Checkbox>Unit Of Measure</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Unit Of Measure'
+                  )}
                   <Form.Item
                     name="unit_of_measure"
                     label="Unit Of Measure"
@@ -808,7 +1034,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Resource Group</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'resource_group']} valuePropName="checked" noStyle>
+                      <Checkbox>Resource Group</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Resource Group'
+                  )}
                   <Form.Item
                     name="resource_group"
                     label="Resource Group"
@@ -821,7 +1053,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Billing Currency</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'billing_currency']} valuePropName="checked" noStyle>
+                      <Checkbox>Billing Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Billing Currency'
+                  )}
                   <Form.Item
                     name="billing_currency"
                     label="Billing Currency"
@@ -834,18 +1072,30 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">OfferId</label>
-                  <Form.Item name="offer_id" label="OfferId" className="m-0" rules={[{ max: 100 }]}>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'offer_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Offer Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Offer Id'
+                  )}
+                  <Form.Item name="offer_id" label="Offer Id" className="m-0" rules={[{ max: 100 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Billing AccountId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'billing_account_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Billing Account Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Billing Account Id'
+                  )}
                   <Form.Item
                     name="billing_account_id"
-                    label="Billing AccountId"
+                    label="Billing Account Id"
                     className="m-0"
                     rules={[{ max: 40 }]}
                   >
@@ -855,7 +1105,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Billing Account Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'billing_account_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Billing Account Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Billing Account Name'
+                  )}
                   <Form.Item
                     name="billing_account_name"
                     label="Billing Account Name"
@@ -868,7 +1124,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Billing Period Start Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'billing_period_start_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Billing Period Start Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Billing Period Start Date'
+                  )}
                   <Form.Item
                     name="billing_period_start_date"
                     label="Billing Period Start Date"
@@ -880,7 +1142,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Billing Period End Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'billing_period_end_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Billing Period End Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Billing Period End Date'
+                  )}
                   <Form.Item
                     name="billing_period_end_date"
                     label="Billing Period End Date"
@@ -892,10 +1160,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Billing ProfileId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'billing_profile_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Billing Profile Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Billing Profile Id'
+                  )}
                   <Form.Item
                     name="billing_profile_id"
-                    label="Billing ProfileId"
+                    label="Billing Profile Id"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -905,7 +1179,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Billing Profile Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'billing_profile_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Billing Profile Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Billing Profile Name'
+                  )}
                   <Form.Item
                     name="billing_profile_name"
                     label="Billing Profile Name"
@@ -918,10 +1198,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Part Number</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'part_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Part Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Part Number'
+                  )}
                   <Form.Item
                     name="part_number"
-                    label="Part number"
+                    label="Part Number"
                     className="m-0"
                     rules={[{ max: 40 }]}
                   >
@@ -931,7 +1217,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service Family</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'service_family']} valuePropName="checked" noStyle>
+                      <Checkbox>Service Family</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service Family'
+                  )}
                   <Form.Item
                     name="service_family"
                     label="Service Family"
@@ -944,7 +1236,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Unit Price</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'unit_price']} valuePropName="checked" noStyle>
+                      <Checkbox>Unit Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Unit Price'
+                  )}
                   <Form.Item
                     name="unit_price"
                     label="Unit Price"
@@ -957,7 +1255,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Availability Zone</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'availability_zone']} valuePropName="checked" noStyle>
+                      <Checkbox>Availability Zone</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Availability Zone'
+                  )}
                   <Form.Item
                     name="availability_zone"
                     label="Availability Zone"
@@ -970,7 +1274,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Resource Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'resource_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Resource Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Resource Name'
+                  )}
                   <Form.Item
                     name="resource_name"
                     label="Resource Name"
@@ -983,10 +1293,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Invoice SectionId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'invoice_section_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Invoice Section Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Invoice Section Id'
+                  )}
                   <Form.Item
                     name="invoice_section_id"
-                    label="Invoice SectionId"
+                    label="Invoice Section Id"
                     className="m-0"
                     rules={[{ max: 40 }]}
                   >
@@ -996,7 +1312,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Invoice Section</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'invoice_section']} valuePropName="checked" noStyle>
+                      <Checkbox>Invoice Section</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Invoice Section'
+                  )}
                   <Form.Item
                     name="invoice_section"
                     label="Invoice Section"
@@ -1009,7 +1331,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Reservation Id</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'reservation_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Reservation Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Reservation Id'
+                  )}
                   <Form.Item
                     name="reservation_id"
                     label="Reservation Id"
@@ -1022,7 +1350,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Reservation Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'reservation_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Reservation Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Reservation Name'
+                  )}
                   <Form.Item
                     name="reservation_name"
                     label="Reservation Name"
@@ -1035,10 +1369,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product OrderId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_order_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Order Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Order Id'
+                  )}
                   <Form.Item
                     name="product_order_id"
-                    label="Product OrderId"
+                    label="Product Order Id"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -1048,7 +1388,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Order Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_order_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Order Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Order Name'
+                  )}
                   <Form.Item
                     name="product_order_name"
                     label="Product Order Name"
@@ -1061,7 +1407,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Term</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'term']} valuePropName="checked" noStyle>
+                      <Checkbox>Term</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Term'
+                  )}
                   <Form.Item name="term" label="Term" className="m-0" rules={[{ type: 'number' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -1069,7 +1421,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Publisher Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'publisher_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Publisher Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Publisher Name'
+                  )}
                   <Form.Item
                     name="publisher_name"
                     label="Publisher Name"
@@ -1082,7 +1440,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Plan Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'plan_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Plan Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Plan Name'
+                  )}
                   <Form.Item
                     name="plan_name"
                     label="Plan Name"
@@ -1095,7 +1459,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Charge Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'charge_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Charge Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Charge Type'
+                  )}
                   <Form.Item
                     name="charge_type"
                     label="Charge Type"
@@ -1108,7 +1478,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Frequency</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'frequency']} valuePropName="checked" noStyle>
+                      <Checkbox>Frequency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Frequency'
+                  )}
                   <Form.Item
                     name="frequency"
                     label="Frequency"
@@ -1121,7 +1497,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Publisher Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'publisher_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Publisher Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Publisher Type'
+                  )}
                   <Form.Item
                     name="publisher_type"
                     label="Publisher Type"
@@ -1134,7 +1516,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">PayGPrice</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'pay_g_price']} valuePropName="checked" noStyle>
+                      <Checkbox>PayGPrice</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'PayGPrice'
+                  )}
                   <Form.Item
                     name="pay_g_price"
                     label="PayGPrice"
@@ -1147,7 +1535,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Pricing Model</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'pricing_model']} valuePropName="checked" noStyle>
+                      <Checkbox>Pricing Model</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Pricing Model'
+                  )}
                   <Form.Item
                     name="pricing_model"
                     label="Pricing Model"
@@ -1160,7 +1554,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Idle - EST Savings</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'idle_est_savings']} valuePropName="checked" noStyle>
+                      <Checkbox>Idle - EST Savings</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Idle - EST Savings'
+                  )}
                   <Form.Item
                     name="idle_est_savings"
                     label="Idle - EST Savings"
@@ -1173,7 +1573,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Placement - EST Savings</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'placement_est_savings']} valuePropName="checked" noStyle>
+                      <Checkbox>Placement - EST Savings</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Placement - EST Savings'
+                  )}
                   <Form.Item
                     name="placement_est_savings"
                     label="Placement - EST Savings"
@@ -1186,7 +1592,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">VM - Resource Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'vm_resource_name']} valuePropName="checked" noStyle>
+                      <Checkbox>VM - Resource Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'VM - Resource Name'
+                  )}
                   <Form.Item
                     name="vm_resource_name"
                     label="VM - Resource Name"
@@ -1199,7 +1611,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">RI - Est Savings</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ri_est_savings']} valuePropName="checked" noStyle>
+                      <Checkbox>RI - Est Savings</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'RI - Est Savings'
+                  )}
                   <Form.Item
                     name="ri_est_savings"
                     label="RI - Est Savings"
@@ -1212,7 +1630,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">AHB - Est Savings</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ahb_est_savings']} valuePropName="checked" noStyle>
+                      <Checkbox>AHB - Est Savings</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'AHB - Est Savings'
+                  )}
                   <Form.Item
                     name="ahb_est_savings"
                     label="AHB - Est Savings"
@@ -1225,7 +1649,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">DevTest - Est Savings</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'dev_test_est_savings']} valuePropName="checked" noStyle>
+                      <Checkbox>DevTest - Est Savings</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'DevTest - Est Savings'
+                  )}
                   <Form.Item
                     name="dev_test_est_savings"
                     label="DevTest - Est Savings"
@@ -1238,7 +1668,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">ResourceRate - List</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'resource_rate_list']} valuePropName="checked" noStyle>
+                      <Checkbox>ResourceRate - List</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'ResourceRate - List'
+                  )}
                   <Form.Item
                     name="resource_rate_list"
                     label="ResourceRate - List"
@@ -1251,7 +1687,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Discount</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'discount']} valuePropName="checked" noStyle>
+                      <Checkbox>Discount</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Discount'
+                  )}
                   <Form.Item
                     name="discount"
                     label="Discount"
@@ -1264,7 +1706,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Rate Card Unit</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'rate_card_unit']} valuePropName="checked" noStyle>
+                      <Checkbox>Rate Card Unit</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Rate Card Unit'
+                  )}
                   <Form.Item
                     name="rate_card_unit"
                     label="Rate Card Unit"
@@ -1277,7 +1725,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Usage %</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'usage']} valuePropName="checked" noStyle>
+                      <Checkbox>Usage</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Usage'
+                  )}
                   <Form.Item
                     name="usage"
                     label="Usage"
@@ -1290,7 +1744,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Growth %</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'growth']} valuePropName="checked" noStyle>
+                      <Checkbox>Growth</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Growth'
+                  )}
                   <Form.Item
                     name="growth"
                     label="Growth"
@@ -1311,7 +1771,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   >
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Charges Billed Separately</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'charges_billed_separately']} valuePropName="checked" noStyle>
+                      <Checkbox>Charges Billed Separately</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Charges Billed Separately'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1323,7 +1789,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   >
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Azure Credit Eligible</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_azure_credit_eligible']} valuePropName="checked" noStyle>
+                      <Checkbox>is Azure Credit Eligible</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'is Azure Credit Eligible'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1331,7 +1803,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="idle" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Idle</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'idle']} valuePropName="checked" noStyle>
+                      <Checkbox>Idle</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Idle'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1339,7 +1817,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="placement" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Placement</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'placement']} valuePropName="checked" noStyle>
+                      <Checkbox>Placement</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Placement'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1347,7 +1831,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="ri_applied" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">RI - Applied</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ri_applied']} valuePropName="checked" noStyle>
+                      <Checkbox>RI Applied</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'RI Applied'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1355,7 +1845,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="ri_suggested" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">RI - Suggested</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ri_suggested']} valuePropName="checked" noStyle>
+                      <Checkbox>RI Suggested</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'RI Suggested'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1363,7 +1859,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="ahb_applied" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">AHB - Applied</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ahb_applied']} valuePropName="checked" noStyle>
+                      <Checkbox>AHB - Applied</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'AHB - Applied'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1371,7 +1873,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="ahb_suggested" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">AHB - Suggested</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ahb_suggested']} valuePropName="checked" noStyle>
+                      <Checkbox>AHB - Suggested</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'AHB - Suggested'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1379,7 +1887,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="dev_test_applied" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">DevTest - Applied</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'dev_test_applied']} valuePropName="checked" noStyle>
+                      <Checkbox>Dev - Test Applied</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Dev - Test Applied'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1387,7 +1901,13 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="dev_test_suggested" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">DevTest - Suggested</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'dev_test_suggested']} valuePropName="checked" noStyle>
+                      <Checkbox>dev_test_suggested</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'dev_test_suggested'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -1396,7 +1916,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={azureDailyUsage.save.loading}
+                loading={azureDailyUsage.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

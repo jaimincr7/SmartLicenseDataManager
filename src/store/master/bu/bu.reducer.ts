@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { IBU } from '../../../services/master/bu/bu.model';
 import { RootState } from '../../app.model';
-import { deleteBU, getBUById, saveBU, searchBU, updateMultiple } from './bu.action';
+import { deleteBU, getBUById, saveBU, searchBU } from './bu.action';
 import { IBUState } from './bu.model';
 
 export const initialState: IBUState = {
@@ -115,22 +115,7 @@ export const buSlice = createSlice({
       state.save.loading = false;
       state.save.hasErrors = true;
     },
-
-    // Update Multiple
-    [updateMultiple.pending.type]: (state) => {
-      state.save.loading = true;
-      state.save.messages = [];
-    },
-    [updateMultiple.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.save.loading = false;
-      state.save.hasErrors = false;
-      state.save.messages = action.payload.messages;
-    },
-    [updateMultiple.rejected.type]: (state) => {
-      state.save.loading = false;
-      state.save.hasErrors = true;
-    },
-
+    
     // Delete
     [deleteBU.pending.type]: (state) => {
       state.delete.loading = true;

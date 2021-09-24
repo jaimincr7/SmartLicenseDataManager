@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
 import {
   setTableColumnSelection,
   clearAzureRateCardMessages,
@@ -25,7 +25,7 @@ import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const azureRateCard = useAppSelector(azureRateCardSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -36,6 +36,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return azureRateCardService.exportExcelFile(searchData);
@@ -261,6 +267,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchAzureRateCard}
         clearTableDataMessages={clearAzureRateCardMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
+        setValuesForSelection={setValuesForSelection}
       />
     </>
   );
