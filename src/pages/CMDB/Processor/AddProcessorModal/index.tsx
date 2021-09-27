@@ -1,9 +1,10 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ICmdbProcessor } from '../../../../services/cmdb/processor/processor.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -15,17 +16,19 @@ import {
   clearCmdbProcessorMessages,
   cmdbProcessorSelector,
 } from '../../../../store/cmdb/processor/processor.reducer';
-import { getTenantLookup } from '../../../../store/common/common.action';
-import { clearBULookUp, clearCompanyLookUp } from '../../../../store/common/common.reducer';
+import { getTenantLookup, updateMultiple } from '../../../../store/common/common.action';
+import { clearBULookUp, clearCompanyLookUp, clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import { IAddCmdbProcessorProps } from './addProcessor.model';
 
 const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
   const cmdbProcessor = useAppSelector(cmdbProcessorSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -55,7 +58,11 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmdbProcessor(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmdbProcessor(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbProcessor.search.tableName)));
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmdbProcessor) => {
@@ -86,6 +93,19 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
       dispatch(clearCmdbProcessorMessages());
     }
   }, [cmdbProcessor.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && cmdbProcessor.getById.data) {
@@ -131,12 +151,18 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ max: 200, required: true }]}
+                    rules={[{ max: 200, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -144,7 +170,13 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Manufacturer</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'manufacturer']} valuePropName="checked" noStyle>
+                      <Checkbox>Manufacturer</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Manufacturer'
+                  )}
                   <Form.Item
                     name="manufacturer"
                     className="m-0"
@@ -157,7 +189,13 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Model</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'model']} valuePropName="checked" noStyle>
+                      <Checkbox>Model</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Model'
+                  )}
                   <Form.Item name="model" className="m-0" label="Model" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -165,7 +203,13 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Family</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'family']} valuePropName="checked" noStyle>
+                      <Checkbox>Family</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Family'
+                  )}
                   <Form.Item name="family" className="m-0" label="Family" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -173,11 +217,17 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Number Of Processors</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'number_of_processors']} valuePropName="checked" noStyle>
+                      <Checkbox>Number Of Processors</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Number Of Processors'
+                  )}
                   <Form.Item
                     name="number_of_processors"
                     className="m-0"
-                    label="NumberOfProcessors"
+                    label="Number Of Processors"
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
@@ -186,11 +236,17 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Number Of Logical Processors</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'number_of_logical_processors']} valuePropName="checked" noStyle>
+                      <Checkbox>Number Of Logical Processors</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Number Of Logical Processors'
+                  )}
                   <Form.Item
                     name="number_of_logical_processors"
                     className="m-0"
-                    label="NumberOfLogicalProcessors"
+                    label="Number Of Logical Processors"
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
@@ -199,11 +255,17 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Number Of Cores</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'number_of_cores']} valuePropName="checked" noStyle>
+                      <Checkbox>Number Of Cores</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Number Of Cores'
+                  )}
                   <Form.Item
                     name="number_of_cores"
                     className="m-0"
-                    label="NumberOfCores"
+                    label="Number Of Cores"
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
@@ -212,11 +274,17 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Hyper Threading</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'hyper_threading']} valuePropName="checked" noStyle>
+                      <Checkbox>Hyper Threading</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Hyper Threading'
+                  )}
                   <Form.Item
                     name="hyper_threading"
                     className="m-0"
-                    label="HyperThreading"
+                    label="Hyper Threading"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -229,7 +297,7 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmdbProcessor.save.loading}
+                loading={cmdbProcessor.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

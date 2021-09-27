@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
@@ -26,7 +26,7 @@ import {
 import softwareService from '../../../../services/cmdb/software/software.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const cmdbSoftware = useAppSelector(cmdbSoftwareSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -37,6 +37,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return softwareService.exportExcelFile(searchData);
@@ -261,6 +267,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchCmdbSoftware}
         clearTableDataMessages={clearCmdbSoftwareMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection} 
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
       />
     </>
   );

@@ -25,6 +25,8 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearCmdbLicenseModel());
     };
@@ -94,6 +97,12 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -103,8 +112,22 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
       {addModalVisible && (
         <AddCmdbLicenseModelModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/cmdb/cmdb-license-model');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddCmdbLicenseModelModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/cmdb/cmdb-license-model');
           }}
           id={id}

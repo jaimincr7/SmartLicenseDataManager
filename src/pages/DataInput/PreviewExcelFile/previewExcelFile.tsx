@@ -27,6 +27,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     if (records?.length > 0) {
       for (let index = 0; index <= maxCount; index++) {
         mainColumns.push({
+          title: 'description' + (index+1),
           dataIndex: 'description' + index,
           key: 'description' + index,
           ellipsis: true,

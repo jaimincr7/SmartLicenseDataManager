@@ -25,6 +25,8 @@ const CmsCategory: React.FC<ICmsCategoryProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const CmsCategory: React.FC<ICmsCategoryProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearCmsCategory());
     };
@@ -96,6 +99,12 @@ const CmsCategory: React.FC<ICmsCategoryProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -105,8 +114,22 @@ const CmsCategory: React.FC<ICmsCategoryProps> = (props) => {
       {addModalVisible && (
         <AddCmsCategoryModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/cms/cms-category');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddCmsCategoryModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/cms/cms-category');
           }}
           id={id}

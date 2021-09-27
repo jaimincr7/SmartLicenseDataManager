@@ -26,6 +26,8 @@ const CmdbExclusion: React.FC<ICmdbExclusionProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -37,6 +39,7 @@ const CmdbExclusion: React.FC<ICmdbExclusionProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearCmdbExclusion());
     };
@@ -102,6 +105,12 @@ const CmdbExclusion: React.FC<ICmdbExclusionProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -111,6 +120,7 @@ const CmdbExclusion: React.FC<ICmdbExclusionProps> = (props) => {
       {addModalVisible && (
         <AddCmdbExclusionModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
             history.push('/cmdb/cmdb-exclusion');
@@ -119,6 +129,19 @@ const CmdbExclusion: React.FC<ICmdbExclusionProps> = (props) => {
           refreshDataTable={() => refreshDataTable()}
         />
       )}
+      {showSelectedListModal && (
+        <AddCmdbExclusionModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
+            history.push('/cmdb/cmdb-exclusion');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+)}
       {deleteModalVisible && (
         <DeleteDatasetModal
           showModal={deleteModalVisible}

@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -14,13 +14,15 @@ import {
   clearCmdbUserMessages,
   cmdbUserSelector,
 } from '../../../../store/cmdb/user/user.reducer';
-import { getTenantLookup } from '../../../../store/common/common.action';
+import { getTenantLookup, updateMultiple } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddCmdbUserProps } from './addUser.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -28,9 +30,10 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
   const cmdbUser = useAppSelector(cmdbUserSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -61,7 +64,11 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmdbUser(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmdbUser(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbUser.search.tableName)));
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmdbUser) => {
@@ -93,6 +100,19 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
       dispatch(clearCmdbUserMessages());
     }
   }, [cmdbUser.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && cmdbUser.getById.data) {
@@ -138,12 +158,18 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -170,12 +196,18 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ max: 200, required: true }]}
+                    rules={[{ max: 200, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -183,12 +215,18 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Email</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'email']} valuePropName="checked" noStyle>
+                      <Checkbox>Email</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Email'
+                  )}
                   <Form.Item
                     name="email"
                     className="m-0"
                     label="Email"
-                    rules={[{ max: 200, type: 'email', required: true }]}
+                    rules={[{ max: 200, type: 'email', required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -196,12 +234,18 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">First Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'first_name']} valuePropName="checked" noStyle>
+                      <Checkbox>First Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'First Name'
+                  )}
                   <Form.Item
                     name="first_name"
                     className="m-0"
                     label="First Name"
-                    rules={[{ max: 200, required: true }]}
+                    rules={[{ max: 200, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -209,7 +253,13 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'last_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Last Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Name'
+                  )}
                   <Form.Item
                     name="last_name"
                     className="m-0"
@@ -222,7 +272,13 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Active Directory GUID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'active_directory_guid']} valuePropName="checked" noStyle>
+                      <Checkbox>Active Directory GUID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Active Directory GUID'
+                  )}
                   <Form.Item
                     name="active_directory_guid"
                     className="m-0"
@@ -238,7 +294,13 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                   <Form.Item name="is_service_account" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Service Account</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_service_account']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Service Account</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Service Account'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -246,7 +308,13 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                   <Form.Item name="is_resource" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Resource</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_resource']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Resource</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Resource'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -254,12 +322,18 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                   <Form.Item name="in_active_directory" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">In Active Directory</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'in_active_directory']} valuePropName="checked" noStyle>
+                      <Checkbox>In Active Directory</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'In Active Directory'
+                  )}
                 </div>
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={cmdbUser.save.loading}>
+              <Button key="submit" type="primary" htmlType="submit" loading={cmdbUser.save.loading || commonLookups.save.loading}>
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

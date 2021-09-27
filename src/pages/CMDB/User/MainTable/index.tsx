@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import _ from 'lodash';
 import {
@@ -20,7 +20,7 @@ import {
 import userService from '../../../../services/cmdb/user/user.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const cmdbUser = useAppSelector(cmdbUserSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -31,6 +31,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return userService.exportExcelFile(searchData);
@@ -218,6 +224,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchCmdbUser}
         clearTableDataMessages={clearCmdbUserMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection} 
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ICmdbDevice } from '../../../../services/cmdb/device/device.model';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -20,8 +21,9 @@ import {
   getCmdbProcessorLookup,
   getCmdbVirtualizationLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import { IAddCmdbDeviceProps } from './addDevice.model';
 
 const { Option } = Select;
@@ -30,9 +32,10 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
   const cmdbDevice = useAppSelector(cmdbDeviceSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
   const commonLookups = useAppSelector(commonSelector);
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -76,7 +79,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmdbDevice(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmdbDevice(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbDevice.search.tableName)));
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmdbDevice) => {
@@ -123,6 +130,19 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
   }, [cmdbDevice.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && cmdbDevice.getById.data) {
       const data = cmdbDevice.getById.data;
       fillValuesOnEdit(data);
@@ -167,12 +187,18 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select allowClear loading={commonLookups.tenantLookup.loading}>
                       {commonLookups.tenantLookup.data.map((option: ILookup) => (
@@ -186,12 +212,18 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Operating System</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'operating_system_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Operating System</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Operating System'
+                  )}
                   <Form.Item
                     name="operating_system_id"
                     className="m-0"
                     label="Operating System"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select allowClear loading={commonLookups.cmdbOperatingSystemLookup.loading}>
                       {commonLookups.cmdbOperatingSystemLookup.data.map((option: ILookup) => (
@@ -205,12 +237,18 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Processor</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'processor_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Processor</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Processor'
+                  )}
                   <Form.Item
                     name="processor_id"
                     className="m-0"
                     label="Processor"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select allowClear loading={commonLookups.cmdbProcessorLookup.loading}>
                       {commonLookups.cmdbProcessorLookup.data.map((option: ILookup) => (
@@ -224,12 +262,18 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Virtualization</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'virtualization_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Virtualization</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Virtualization'
+                  )}
                   <Form.Item
                     name="virtualization_id"
                     className="m-0"
                     label="Virtualization"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select allowClear loading={commonLookups.cmdbVirtualizationLookup.loading}>
                       {commonLookups.cmdbVirtualizationLookup.data.map((option: ILookup) => (
@@ -243,7 +287,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -251,15 +301,27 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Updated</label>
-                  <Form.Item name="last_updated" className="m-0" label="LastUpdated">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'last_updated']} valuePropName="checked" noStyle>
+                      <Checkbox>Last Updated</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Updated'
+                  )}
+                  <Form.Item name="last_updated" className="m-0" label="Last Updated">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Computer Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'computer_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Computer Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Computer Name'
+                  )}
                   <Form.Item
                     name="computer_name"
                     className="m-0"
@@ -272,7 +334,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'type']} valuePropName="checked" noStyle>
+                      <Checkbox>Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Type'
+                  )}
                   <Form.Item name="type" className="m-0" label="Type" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -280,7 +348,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Manufacturer</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'manufacturer']} valuePropName="checked" noStyle>
+                      <Checkbox>Manufacturer</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Manufacturer'
+                  )}
                   <Form.Item
                     name="manufacturer"
                     className="m-0"
@@ -293,7 +367,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Model</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'model']} valuePropName="checked" noStyle>
+                      <Checkbox>Model</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Model'
+                  )}
                   <Form.Item name="model" className="m-0" label="Model" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -301,7 +381,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Architecture</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'architecture']} valuePropName="checked" noStyle>
+                      <Checkbox>Architecture</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Architecture'
+                  )}
                   <Form.Item
                     name="architecture"
                     className="m-0"
@@ -314,11 +400,17 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Bios Manufacturer</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bios_manufacturer']} valuePropName="checked" noStyle>
+                      <Checkbox>Bios Manufacturer</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Bios Manufacturer'
+                  )}
                   <Form.Item
                     name="bios_manufacturer"
                     className="m-0"
-                    label="BiosManufacturer"
+                    label="Bios Manufacturer"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -327,7 +419,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Bios Serial</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bios_serial']} valuePropName="checked" noStyle>
+                      <Checkbox>Bios Serial</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Bios Serial'
+                  )}
                   <Form.Item
                     name="bios_serial"
                     className="m-0"
@@ -340,7 +438,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Bios Version</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bios_version']} valuePropName="checked" noStyle>
+                      <Checkbox>Bios Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Bios Version'
+                  )}
                   <Form.Item
                     name="bios_version"
                     className="m-0"
@@ -353,7 +457,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Host Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'host_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Host Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Host Name'
+                  )}
                   <Form.Item
                     name="host_name"
                     className="m-0"
@@ -366,7 +476,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Hypervisor Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'hypervisor_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Hypervisor Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Hypervisor Name'
+                  )}
                   <Form.Item
                     name="hypervisor_name"
                     className="m-0"
@@ -382,7 +498,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_virtual" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Virtual</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_virtual']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Virtual</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Virtual'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -390,7 +512,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_vdi" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is VDI</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_vdi']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Vdi</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Vdi'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -398,7 +526,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_server" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Server</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_server']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Server</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Server'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -406,7 +540,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_host" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Host</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_host']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Host</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Host'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -414,7 +554,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_tablet" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Tablet</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_tablet']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Tablet</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Tablet'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -422,7 +568,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_portable" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Portable</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_portable']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Portable</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Portable'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -431,7 +583,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmdbDevice.save.loading}
+                loading={cmdbDevice.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -22,9 +22,11 @@ import {
   getCmdbApplicationLookup,
   getCmdbDeviceLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 import { IAddCmdbSoftwareProps } from './addSoftware.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -32,9 +34,10 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
   const cmdbSoftware = useAppSelector(cmdbSoftwareSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -68,7 +71,11 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmdbSoftware(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmdbSoftware(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbSoftware.search.tableName)));
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmdbSoftware) => {
@@ -103,6 +110,19 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
       dispatch(clearCmdbSoftwareMessages());
     }
   }, [cmdbSoftware.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && cmdbSoftware.getById.data) {
@@ -148,12 +168,18 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -180,12 +206,18 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Application</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'application_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Application</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Application'
+                  )}
                   <Form.Item
                     name="application_id"
                     className="m-0"
                     label="Application"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -212,12 +244,18 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Device</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'device_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Device</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Device'
+                  )}
                   <Form.Item
                     name="device_id"
                     className="m-0"
                     label="Device"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -244,12 +282,18 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ max: 510, required: true }]}
+                    rules={[{ max: 510, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -257,7 +301,13 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Version</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'version']} valuePropName="checked" noStyle>
+                      <Checkbox>Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Version'
+                  )}
                   <Form.Item name="version" className="m-0" label="Version" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -265,7 +315,13 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Edition</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'edition']} valuePropName="checked" noStyle>
+                      <Checkbox>Edition</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Edition'
+                  )}
                   <Form.Item name="edition" className="m-0" label="Edition" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -273,27 +329,45 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed Date</label>
-                  <Form.Item name="installed_date" className="m-0" label="InstalledDate">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'installed_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Installed Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed Date'
+                  )}
+                  <Form.Item name="installed_date" className="m-0" label="Installed Date">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Uninstall String</label>
-                  <Form.Item name="uninstall_string" className="m-0" label="UninstallString">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'uninstall_string']} valuePropName="checked" noStyle>
+                      <Checkbox>Uninstall String</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Uninstall String'
+                  )}
+                  <Form.Item name="uninstall_string" className="m-0" label="Uninstall String">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">File Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'file_name']} valuePropName="checked" noStyle>
+                      <Checkbox>File Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'File Name'
+                  )}
                   <Form.Item
                     name="file_name"
                     className="m-0"
-                    label="FileName"
+                    label="File Name"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -302,11 +376,17 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">File Path</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'file_path']} valuePropName="checked" noStyle>
+                      <Checkbox>File Path</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'File Path'
+                  )}
                   <Form.Item
                     name="file_path"
                     className="m-0"
-                    label="FilePath"
+                    label="File Path"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -315,11 +395,17 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Package GUID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'package_guid']} valuePropName="checked" noStyle>
+                      <Checkbox>Package GUID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Package GUID'
+                  )}
                   <Form.Item
                     name="package_guid"
                     className="m-0"
-                    label="PackageGUID"
+                    label="Package GUID"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control w-100" />
@@ -328,11 +414,17 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Scanned</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'last_scanned']} valuePropName="checked" noStyle>
+                      <Checkbox>Last Scanned</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Scanned'
+                  )}
                   <Form.Item
                     name="last_scanned"
                     className="m-0"
-                    label="LastScanned"
+                    label="Last Scanned"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control w-100" />
@@ -345,7 +437,7 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmdbSoftware.save.loading}
+                loading={cmdbSoftware.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

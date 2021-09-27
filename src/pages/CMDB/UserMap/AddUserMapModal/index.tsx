@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
@@ -18,13 +18,16 @@ import {
   getCmdbDeviceLookup,
   getCmdbUserLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddCmdbUserMapProps } from './addUserMap.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -32,9 +35,10 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
   const cmdbUserMap = useAppSelector(cmdbUserMapSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -59,7 +63,11 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmdbUserMap(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmdbUserMap(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbUserMap.search.tableName)));
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmdbUserMap) => {
@@ -85,6 +93,19 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
       dispatch(clearCmdbUserMapMessages());
     }
   }, [cmdbUserMap.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && cmdbUserMap.getById.data) {
@@ -132,12 +153,18 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -164,12 +191,18 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Device</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'device_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Device</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Device'
+                  )}
                   <Form.Item
                     name="device_id"
                     className="m-0"
                     label="Device"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -196,12 +229,18 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">User</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'user_id']} valuePropName="checked" noStyle>
+                      <Checkbox>User</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'User'
+                  )}
                   <Form.Item
                     name="user_id"
                     className="m-0"
                     label="User"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -232,7 +271,7 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmdbUserMap.save.loading}
+                loading={cmdbUserMap.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
