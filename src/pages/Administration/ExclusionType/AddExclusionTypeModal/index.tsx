@@ -19,7 +19,10 @@ import {
 } from '../../../../store/master/exclusionType/exclusionType.reducer';
 import { IAddConfigExclusionTypeProps } from './addExclusionType.model';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigExclusionTypeModal: React.FC<IAddConfigExclusionTypeProps> = (props) => {
@@ -56,7 +59,15 @@ const AddConfigExclusionTypeModal: React.FC<IAddConfigExclusionTypeProps> = (pro
     if (!isMultiple) {
       dispatch(saveConfigExclusionType(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configExclusionType.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configExclusionType.search.tableName
+          )
+        )
+      );
     }
   };
 

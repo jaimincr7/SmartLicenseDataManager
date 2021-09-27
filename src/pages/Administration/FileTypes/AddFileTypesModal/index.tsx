@@ -19,7 +19,10 @@ import {
 } from '../../../../store/master/fileTypes/fileTypes.reducer';
 import { IAddConfigFileTypeProps } from './addFileTypes.model';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigFileTypeModal: React.FC<IAddConfigFileTypeProps> = (props) => {
@@ -56,7 +59,15 @@ const AddConfigFileTypeModal: React.FC<IAddConfigFileTypeProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveConfigFileType(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configFileType.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configFileType.search.tableName
+          )
+        )
+      );
     }
   };
 

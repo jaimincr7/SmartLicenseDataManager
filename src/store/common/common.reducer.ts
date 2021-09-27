@@ -53,6 +53,7 @@ import {
   getSpsApiTypeLookup,
   getSpsApiGroupLookup,
   updateMultiple,
+  getCronFormula,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -62,6 +63,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   companyLookup: {
+    data: [],
+    loading: false,
+  },
+  cronFormula: {
     data: [],
     loading: false,
   },
@@ -311,6 +316,15 @@ export const commonSlice = createSlice({
     [getCompanyLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.companyLookup.data = action.payload;
       state.companyLookup.loading = false;
+    },
+
+    // Company lookup
+    [getCronFormula.pending.type]: (state) => {
+      state.cronFormula.loading = true;
+    },
+    [getCronFormula.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cronFormula.data = action.payload;
+      state.cronFormula.loading = false;
     },
 
     // All Company lookup

@@ -8,7 +8,10 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IConfigOnlineServicePlans } from '../../../../services/master/onlineServicePlans/onlineServicePlans.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigOnlineServicePlansById,
   saveConfigOnlineServicePlans,
@@ -56,7 +59,15 @@ const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansPro
     if (!isMultiple) {
       dispatch(saveConfigOnlineServicePlans(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configOnlineServicePlans.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configOnlineServicePlans.search.tableName
+          )
+        )
+      );
     }
   };
 

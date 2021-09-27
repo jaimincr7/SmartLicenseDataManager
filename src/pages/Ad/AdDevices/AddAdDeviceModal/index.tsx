@@ -108,7 +108,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAdDevice(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,adDevices.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, adDevices.search.tableName)
+        )
+      );
     }
   };
 
@@ -358,7 +362,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'distinguished_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'distinguished_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Distinguished Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -453,7 +461,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_logon_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_logon_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Logon Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -467,7 +479,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_logon_timestamp']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_logon_timestamp']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Logon Timestamp</Checkbox>
                     </Form.Item>
                   ) : (
@@ -552,7 +568,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'operating_system']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'operating_system']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Operating system</Checkbox>
                     </Form.Item>
                   ) : (
@@ -571,7 +591,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'password_last_set']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'password_last_set']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Password Last Set</Checkbox>
                     </Form.Item>
                   ) : (
@@ -585,7 +609,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'sam_account_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'sam_account_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Sam Account Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -618,7 +646,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'user_principal_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>User Principal Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -722,7 +754,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'password_expired']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'password_expired']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Password Expired</Checkbox>
                     </Form.Item>
                   ) : (
@@ -736,7 +772,11 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'password_never_expires']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'password_never_expires']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Password Never Expires</Checkbox>
                     </Form.Item>
                   ) : (

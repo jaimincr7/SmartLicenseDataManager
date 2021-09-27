@@ -17,7 +17,12 @@ import {
   cmdbLicenseModelSelector,
 } from '../../../../store/cmdb/licenseModel/licenseModel.reducer';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearBULookUp, clearCompanyLookUp, clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearBULookUp,
+  clearCompanyLookUp,
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmdbLicenseModelProps } from './addLicenseModel.model';
 
 const AddCmdbLicenseModelModal: React.FC<IAddCmdbLicenseModelProps> = (props) => {
@@ -59,7 +64,15 @@ const AddCmdbLicenseModelModal: React.FC<IAddCmdbLicenseModelProps> = (props) =>
     if (!isMultiple) {
       dispatch(saveCmdbLicenseModel(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbLicenseModel.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmdbLicenseModel.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -235,7 +248,11 @@ const AddCmdbLicenseModelModal: React.FC<IAddCmdbLicenseModelProps> = (props) =>
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_down_gradable']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_down_gradable']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Downgradable</Checkbox>
                     </Form.Item>
                   ) : (

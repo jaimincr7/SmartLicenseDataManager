@@ -18,7 +18,10 @@ import {
   configExclusionLocationSelector,
 } from '../../../../store/master/exclusionLocation/exclusionLocation.reducer';
 import { IAddConfigExclusionLocationProps } from './addExclusionLocation.model';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { ILookup } from '../../../../services/common/common.model';
 import { getConfigComponentTableColumnLookup } from '../../../../store/common/common.action';
 import { updateMultiple } from '../../../../store/common/common.action';
@@ -60,7 +63,15 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
     if (!isMultiple) {
       dispatch(saveConfigExclusionLocation(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configExclusionLocation.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configExclusionLocation.search.tableName
+          )
+        )
+      );
     }
   };
 

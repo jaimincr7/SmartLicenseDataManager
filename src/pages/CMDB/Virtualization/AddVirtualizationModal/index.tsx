@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -69,7 +81,15 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
     if (!isMultiple) {
       dispatch(saveCmdbVirtualization(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbVirtualization.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmdbVirtualization.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -237,7 +257,11 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'data_center_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'data_center_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Data Center Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -275,7 +299,11 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'hypervisor_type']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'hypervisor_type']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Hypervisor Type</Checkbox>
                     </Form.Item>
                   ) : (

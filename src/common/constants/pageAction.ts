@@ -126,6 +126,7 @@ export enum Page {
   SpsApiType = 'sps-api-type',
   SpsApiOauth = 'sps-api-oauth',
   SpsApiTokenConfigOptions = 'sps-api-token-config-options',
+  Cron = 'cron-job-data',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }

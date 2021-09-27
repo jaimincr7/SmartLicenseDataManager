@@ -19,7 +19,10 @@ import {
 } from '../../../../store/master/onlineProducts/onlineProducts.reducer';
 import { IAddConfigOnlineProductsProps } from './addOnlineProducts.model';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (props) => {
@@ -60,7 +63,15 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
     if (!isMultiple) {
       dispatch(saveConfigOnlineProducts(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configOnlineProducts.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configOnlineProducts.search.tableName
+          )
+        )
+      );
     }
   };
 

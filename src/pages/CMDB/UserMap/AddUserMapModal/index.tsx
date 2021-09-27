@@ -66,7 +66,11 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbUserMap(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbUserMap.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbUserMap.search.tableName)
+        )
+      );
     }
   };
 

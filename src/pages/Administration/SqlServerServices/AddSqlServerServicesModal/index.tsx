@@ -8,7 +8,10 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IConfigSqlServerServices } from '../../../../services/master/sqlServerServices/sqlServerServices.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigSqlServerServicesById,
   saveConfigSqlServerServices,
@@ -54,7 +57,15 @@ const AddConfigSqlServerServicesModal: React.FC<IAddConfigSqlServerServicesProps
     if (!isMultiple) {
       dispatch(saveConfigSqlServerServices(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configSqlServerServices.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configSqlServerServices.search.tableName
+          )
+        )
+      );
     }
   };
 

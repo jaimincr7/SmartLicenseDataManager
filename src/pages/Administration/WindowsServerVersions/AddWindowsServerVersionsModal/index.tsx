@@ -8,7 +8,10 @@ import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IConfigWindowsServerVersions } from '../../../../services/master/windowsServerVersions/windowsServerVersions.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigWindowsServerVersionsById,
   saveConfigWindowsServerVersions,
@@ -63,7 +66,15 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
     if (!isMultiple) {
       dispatch(saveConfigWindowsServerVersions(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configWindowsServerVersions.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configWindowsServerVersions.search.tableName
+          )
+        )
+      );
     }
   };
 

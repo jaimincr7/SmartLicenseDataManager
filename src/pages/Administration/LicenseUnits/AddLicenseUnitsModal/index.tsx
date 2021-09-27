@@ -8,7 +8,10 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IConfigLicenseUnits } from '../../../../services/master/licenseUnits/licenseUnits.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigLicenseUnitsById,
   saveConfigLicenseUnits,
@@ -53,7 +56,15 @@ const AddConfigLicenseUnitsModal: React.FC<IAddConfigLicenseUnitsProps> = (props
     if (!isMultiple) {
       dispatch(saveConfigLicenseUnits(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configLicenseUnits.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configLicenseUnits.search.tableName
+          )
+        )
+      );
     }
   };
 

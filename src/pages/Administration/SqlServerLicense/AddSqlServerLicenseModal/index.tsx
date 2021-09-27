@@ -31,7 +31,10 @@ import {
 } from '../../../../store/master/sqlServerLicense/sqlServerLicense.reducer';
 import { IAddConfigSqlServerLicenseProps } from './addSqlServerLicense.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigLicenseUnitsLookup,
   getConfigSqlServerEditionsLookup,
@@ -86,7 +89,15 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
     if (!isMultiple) {
       dispatch(saveConfigSqlServerLicense(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configSqlServerLicense.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configSqlServerLicense.search.tableName
+          )
+        )
+      );
     }
   };
 

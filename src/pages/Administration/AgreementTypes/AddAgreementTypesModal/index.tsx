@@ -19,7 +19,10 @@ import {
 } from '../../../../store/master/agreementTypes/agreementTypes.reducer';
 import { IAddAgreementTypesProps } from './addAgreementTypes.model';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { commonSelector , clearMultipleUpdateMessages } from '../../../../store/common/common.reducer';
+import {
+  commonSelector,
+  clearMultipleUpdateMessages,
+} from '../../../../store/common/common.reducer';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
@@ -29,7 +32,7 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-    const isNew: boolean = id || isMultiple ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
 
   const title = useMemo(() => {
     return (
@@ -56,7 +59,15 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAgreementTypes(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,agreementTypes.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            agreementTypes.search.tableName
+          )
+        )
+      );
     }
   };
 

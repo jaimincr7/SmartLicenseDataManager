@@ -19,7 +19,10 @@ import {
 } from '../../../../store/master/exclusionOperation/exclusionOperation.reducer';
 import { IAddConfigExclusionOperationProps } from './addExclusionOperation.model';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationProps> = (props) => {
@@ -57,7 +60,15 @@ const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationPro
     if (!isMultiple) {
       dispatch(saveConfigExclusionOperation(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configExclusionOperation.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configExclusionOperation.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -86,7 +97,7 @@ const AddConfigExclusionOperationModal: React.FC<IAddConfigExclusionOperationPro
       dispatch(clearConfigExclusionOperationMessages());
     }
   }, [configExclusionOperation.save.messages]);
-  
+
   useEffect(() => {
     if (common.save.messages.length > 0) {
       if (common.save.hasErrors) {

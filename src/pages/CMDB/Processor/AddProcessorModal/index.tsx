@@ -17,7 +17,12 @@ import {
   cmdbProcessorSelector,
 } from '../../../../store/cmdb/processor/processor.reducer';
 import { getTenantLookup, updateMultiple } from '../../../../store/common/common.action';
-import { clearBULookUp, clearCompanyLookUp, clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearBULookUp,
+  clearCompanyLookUp,
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmdbProcessorProps } from './addProcessor.model';
 
 const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
@@ -61,7 +66,15 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbProcessor(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbProcessor.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmdbProcessor.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -218,7 +231,11 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'number_of_processors']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'number_of_processors']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Number Of Processors</Checkbox>
                     </Form.Item>
                   ) : (
@@ -237,7 +254,11 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'number_of_logical_processors']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'number_of_logical_processors']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Number Of Logical Processors</Checkbox>
                     </Form.Item>
                   ) : (
@@ -256,7 +277,11 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'number_of_cores']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'number_of_cores']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Number Of Cores</Checkbox>
                     </Form.Item>
                   ) : (
@@ -275,7 +300,11 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'hyper_threading']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'hyper_threading']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Hyper Threading</Checkbox>
                     </Form.Item>
                   ) : (

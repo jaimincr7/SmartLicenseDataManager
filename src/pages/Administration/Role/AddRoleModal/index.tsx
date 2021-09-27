@@ -9,7 +9,11 @@ import { ILookup } from '../../../../services/common/common.model';
 import { IRole } from '../../../../services/master/role/role.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
-import { clearCompanyLookUp, clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearCompanyLookUp,
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { updateMultiple } from '../../../../store/common/common.action';
 import { getRoleById, saveRole } from '../../../../store/master/role/role.action';
 import {
@@ -58,7 +62,11 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveRole(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,role.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, role.search.tableName)
+        )
+      );
     }
   };
 
@@ -231,7 +239,12 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={role.save.loading || commonLookups.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={role.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

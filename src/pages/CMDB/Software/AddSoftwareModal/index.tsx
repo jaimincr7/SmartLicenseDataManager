@@ -24,7 +24,10 @@ import {
   getTenantLookup,
   updateMultiple,
 } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmdbSoftwareProps } from './addSoftware.model';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
@@ -74,7 +77,11 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbSoftware(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbSoftware.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbSoftware.search.tableName)
+        )
+      );
     }
   };
 
@@ -344,7 +351,11 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'uninstall_string']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'uninstall_string']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Uninstall String</Checkbox>
                     </Form.Item>
                   ) : (

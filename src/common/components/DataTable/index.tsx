@@ -544,14 +544,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             renderCallApiButton()
           )}
           {showBulkUpdate && (
-          <Button
-            type="primary"
-            onClick={() => {
-              setShowSelectedListModal(true);
-            }}
-          >
-            {Object.keys(selectedRowList).length <= 1 ? 'Update All ' : 'Update Selected '}
-          </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                setShowSelectedListModal(true);
+              }}
+            >
+              {Object.keys(selectedRowList).length <= 1 ? 'Update All ' : 'Update Selected '}
+            </Button>
           )}
           {showAddButton && (
             <Button

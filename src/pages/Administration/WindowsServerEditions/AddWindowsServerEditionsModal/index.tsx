@@ -8,7 +8,10 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IConfigWindowsServerEditions } from '../../../../services/master/windowsServerEditions/windowsServerEditions.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigWindowsServerEditionsById,
   saveConfigWindowsServerEditions,
@@ -56,7 +59,15 @@ const AddConfigWindowsServerEditionsModal: React.FC<IAddConfigWindowsServerEditi
     if (!isMultiple) {
       dispatch(saveConfigWindowsServerEditions(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configWindowsServerEditions.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configWindowsServerEditions.search.tableName
+          )
+        )
+      );
     }
   };
 

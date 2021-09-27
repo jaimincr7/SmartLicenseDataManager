@@ -31,7 +31,10 @@ import {
 } from '../../../../store/master/windowsServerLicense/windowsServerLicense.reducer';
 import { IAddConfigWindowsServerLicenseProps } from './addWindowsServerLicense.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigLicenseUnitsLookup,
   getConfigWindowsServerEditionsLookup,
@@ -87,7 +90,15 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
     if (!isMultiple) {
       dispatch(saveConfigWindowsServerLicense(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configWindowsServerLicense.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configWindowsServerLicense.search.tableName
+          )
+        )
+      );
     }
   };
 

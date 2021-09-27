@@ -36,6 +36,7 @@ import SqlServerLicense from './SqlServerLicense';
 import AgreementTypes from './AgreementTypes';
 import WindowsServerVersions from './WindowsServerVersions';
 import WindowsServerLicense from './WindowsServerLicense';
+import Cron from './Cron';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -111,6 +112,13 @@ const AdministrationRoutes: React.FC = () => {
         {ability.can(Action.View, Page.User) && (
           <Route exact path={`${match.path}/user/:id`} component={User} />
         )}
+
+        {/* Cron */}
+        {/* {ability.can(Action.View, Page.Cron) && ( */}
+        <Route exact path={`${match.path}/cron-job-data`} component={Cron} />
+
+        {/* {ability.can(Action.View, Page.Cron) && ( */}
+        <Route exact path={`${match.path}/cron-job-data/:id`} component={Cron} />
 
         {/* Role */}
         {ability.can(Action.View, Page.Role) && (

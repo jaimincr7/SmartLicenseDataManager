@@ -7,7 +7,10 @@ import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITenant } from '../../../../services/master/tenant/tenant.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getTenantById, saveTenant } from '../../../../store/master/tenant/tenant.action';
 import {
   clearTenantGetById,
@@ -60,7 +63,11 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveTenant(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,tenant.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, tenant.search.tableName)
+        )
+      );
     }
   };
 
@@ -193,7 +200,12 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={tenant.save.loading || commonLookups.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={tenant.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

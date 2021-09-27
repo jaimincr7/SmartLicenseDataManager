@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
 import { IMainTable, ISearch } from '../../../../common/models/common';
@@ -208,7 +208,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearCmdbProcessorMessages}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
-        setValuesForSelection={setValuesForSelection} 
+        setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.Bu)}
       />
     </>

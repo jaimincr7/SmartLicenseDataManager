@@ -53,15 +53,15 @@ export interface IGetExcelColumns {
 }
 
 export interface IBulkUpdate {
-        table_name: string,
-        update_data?: any,
-        filter_keys: string,
-        is_export_to_excel: boolean,
-        is_column_selection?: boolean,
-        keyword: string,
-        limit: number,
-        offset: number,
-        order_by: string,
-        current_user: any,
-        order_direction: string,
+  table_name: string;
+  update_data?: any;
+  filter_keys: string;
+  is_export_to_excel: boolean;
+  is_column_selection?: boolean;
+  keyword: string;
+  limit: number;
+  offset: number;
+  order_by: string;
+  current_user: any;
+  order_direction: string;
 }

@@ -8,7 +8,10 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IConfigProcessors } from '../../../../services/master/processors/processors.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigProcessorsById,
   saveConfigProcessors,
@@ -54,7 +57,15 @@ const AddConfigProcessorsModal: React.FC<IAddConfigProcessorsProps> = (props) =>
     if (!isMultiple) {
       dispatch(saveConfigProcessors(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configProcessors.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configProcessors.search.tableName
+          )
+        )
+      );
     }
   };
 

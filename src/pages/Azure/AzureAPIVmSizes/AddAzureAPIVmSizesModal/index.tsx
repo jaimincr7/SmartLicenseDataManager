@@ -17,7 +17,10 @@ import {
   azureAPIVmSizesSelector,
 } from '../../../../store/azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddAzureAPIVmSizesProps } from './addAzureAPIVmSizes.model';
 
 const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
@@ -59,7 +62,15 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAzureAPIVmSizes(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,azureAPIVmSizes.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            azureAPIVmSizes.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -159,7 +170,11 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'number_of_cores']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'number_of_cores']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Number Of Cores</Checkbox>
                     </Form.Item>
                   ) : (
@@ -178,7 +193,11 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'os_disk_size_in_gb']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'os_disk_size_in_gb']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>OS Disk Size in GB</Checkbox>
                     </Form.Item>
                   ) : (
@@ -197,7 +216,11 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'resource_disk_size_in_gb']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'resource_disk_size_in_gb']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Resource Disk Size in GB</Checkbox>
                     </Form.Item>
                   ) : (
@@ -235,7 +258,11 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'max_data_disk_count']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'max_data_disk_count']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Max Data Disk Count</Checkbox>
                     </Form.Item>
                   ) : (

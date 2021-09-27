@@ -18,7 +18,10 @@ import {
   configExclusionComponentSelector,
 } from '../../../../store/master/exclusionComponent/exclusionComponent.reducer';
 import { IAddConfigExclusionComponentProps } from './addExclusionComponent.model';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { ILookup } from '../../../../services/common/common.model';
 import {
   getConfigComponentLookup,
@@ -65,7 +68,15 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
     if (!isMultiple) {
       dispatch(saveConfigExclusionComponent(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configExclusionComponent.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configExclusionComponent.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -240,7 +251,11 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'exclusion_desc_component_table_column_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'exclusion_desc_component_table_column_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Exclusion Description Component Table Column</Checkbox>
                     </Form.Item>
                   ) : (

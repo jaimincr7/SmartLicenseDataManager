@@ -19,6 +19,13 @@ export const getCompanyLookup = createAsyncThunk('getCompanyLookup', async (tena
   return response.data;
 });
 
+export const getCronFormula = createAsyncThunk('getCronFormula', async () => {
+  const response = await commonService.getCronFormula().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getAllCompanyLookup = createAsyncThunk('getAllCompanyLookup', async () => {
   const response = await commonService.getAllCompanyLookup().then((res) => {
     return res.body;

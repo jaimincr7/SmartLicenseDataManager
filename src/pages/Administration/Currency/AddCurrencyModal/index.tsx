@@ -8,7 +8,10 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ICurrency } from '../../../../services/master/currency/currency.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getCurrencyById, saveCurrency } from '../../../../store/master/currency/currency.action';
 import {
   clearCurrencyGetById,
@@ -25,7 +28,7 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id || isMultiple? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -53,7 +56,11 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCurrency(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,currency.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, currency.search.tableName)
+        )
+      );
     }
   };
 
@@ -187,7 +194,12 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={currency.save.loading || common.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={currency.save.loading || common.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

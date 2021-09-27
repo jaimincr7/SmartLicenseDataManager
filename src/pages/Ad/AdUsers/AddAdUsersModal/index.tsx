@@ -111,7 +111,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAdUser(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,adUsers.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, adUsers.search.tableName)
+        )
+      );
     }
   };
 
@@ -341,7 +345,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="bu_id"
+                    className="m-0"
+                    label="BU"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleBUChange}
                       allowClear
@@ -435,7 +444,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'distinguished_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'distinguished_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Distinguished Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -468,7 +481,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_logon_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_logon_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Logon Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -553,7 +570,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'operating_system']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'operating_system']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Operating System</Checkbox>
                     </Form.Item>
                   ) : (
@@ -572,7 +593,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'password_last_set']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'password_last_set']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Password Last Set</Checkbox>
                     </Form.Item>
                   ) : (
@@ -586,7 +611,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'sam_account_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'sam_account_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Sam Account Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -619,7 +648,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'user_principal_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>User Principal Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -763,7 +796,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'password_never_expires']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'password_never_expires']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Password Never Expires</Checkbox>
                     </Form.Item>
                   ) : (
@@ -777,7 +814,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'password_not_required']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'password_not_required']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Password Not Required</Checkbox>
                     </Form.Item>
                   ) : (
@@ -833,7 +874,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'exchangeActiveMailbox']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'exchangeActiveMailbox']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Exchange Active Mailbox</Checkbox>
                     </Form.Item>
                   ) : (
@@ -857,7 +902,12 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={adUsers.save.loading || commonLookups.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={adUsers.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

@@ -115,7 +115,7 @@ export const buSlice = createSlice({
       state.save.loading = false;
       state.save.hasErrors = true;
     },
-    
+
     // Delete
     [deleteBU.pending.type]: (state) => {
       state.delete.loading = true;

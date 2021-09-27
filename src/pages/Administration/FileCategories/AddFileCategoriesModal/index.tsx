@@ -19,7 +19,10 @@ import {
 } from '../../../../store/master/fileCategories/fileCategories.reducer';
 import { IAddConfigFileCategoriesProps } from './addFileCategories.model';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (props) => {
@@ -56,7 +59,15 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
     if (!isMultiple) {
       dispatch(saveConfigFileCategories(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configFileCategories.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configFileCategories.search.tableName
+          )
+        )
+      );
     }
   };
 

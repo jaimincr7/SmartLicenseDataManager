@@ -17,6 +17,13 @@ class CommonService {
     });
   }
 
+  public async getCronFormula(): Promise<IApiResponse<ILookup>> {
+    const url = `/cron-job-formula/lookup/`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getAllCompanyLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/company/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

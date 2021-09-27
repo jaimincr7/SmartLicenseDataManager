@@ -19,7 +19,10 @@ import {
 } from '../../../../store/master/component/component.reducer';
 import { IAddConfigComponentProps } from './addComponent.model';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
@@ -56,7 +59,15 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveConfigComponent(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configComponent.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configComponent.search.tableName
+          )
+        )
+      );
     }
   };
 

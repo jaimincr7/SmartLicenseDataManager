@@ -8,7 +8,10 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IConfigSqlServerEditions } from '../../../../services/master/sqlServerEditions/sqlServerEditions.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigSqlServerEditionsById,
   saveConfigSqlServerEditions,
@@ -55,7 +58,15 @@ const AddConfigSqlServerEditionsModal: React.FC<IAddConfigSqlServerEditionsProps
     if (!isMultiple) {
       dispatch(saveConfigSqlServerEditions(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configSqlServerEditions.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configSqlServerEditions.search.tableName
+          )
+        )
+      );
     }
   };
 

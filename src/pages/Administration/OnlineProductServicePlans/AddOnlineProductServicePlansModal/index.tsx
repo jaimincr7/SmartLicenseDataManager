@@ -12,7 +12,10 @@ import {
   getConfigOnlineProductsLookup,
   getConfigOnlineServicePlansLookup,
 } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigOnlineProductServicePlansById,
   saveConfigOnlineProductServicePlans,
@@ -37,7 +40,7 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
 
     const commonLookups = useAppSelector(commonSelector);
 
-    const isNew: boolean = id || isMultiple? false : true;
+    const isNew: boolean = id || isMultiple ? false : true;
     const title = useMemo(() => {
       return (
         <>
@@ -65,7 +68,15 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
       if (!isMultiple) {
         dispatch(saveConfigOnlineProductServicePlans(inputValues));
       } else {
-        dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configOnlineProductServicePlans.search.tableName)));
+        dispatch(
+          updateMultiple(
+            getObjectForUpdateMultiple(
+              valuesForSelection,
+              inputValues,
+              configOnlineProductServicePlans.search.tableName
+            )
+          )
+        );
       }
     };
 
@@ -234,7 +245,9 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
                   key="submit"
                   type="primary"
                   htmlType="submit"
-                  loading={configOnlineProductServicePlans.save.loading || commonLookups.save.loading}
+                  loading={
+                    configOnlineProductServicePlans.save.loading || commonLookups.save.loading
+                  }
                 >
                   {submitButtonText}
                 </Button>

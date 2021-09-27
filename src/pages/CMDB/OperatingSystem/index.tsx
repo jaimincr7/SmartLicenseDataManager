@@ -137,7 +137,7 @@ const CmdbOperatingSystem: React.FC<ICmdbOperatingSystemProps> = (props) => {
           id={id}
           refreshDataTable={() => refreshDataTable()}
         />
-)}
+      )}
       {deleteModalVisible && (
         <DeleteDatasetModal
           showModal={deleteModalVisible}

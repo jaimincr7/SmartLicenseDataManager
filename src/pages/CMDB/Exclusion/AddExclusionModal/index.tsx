@@ -82,7 +82,15 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbExclusion(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbExclusion.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmdbExclusion.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -328,7 +336,11 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'exclusion_id_component_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'exclusion_id_component_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Exclusion Component</Checkbox>
                     </Form.Item>
                   ) : (
@@ -366,7 +378,11 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'exclusion_id_location_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'exclusion_id_location_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Exclusion Location</Checkbox>
                     </Form.Item>
                   ) : (
@@ -404,7 +420,11 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'exclusion_id_operation_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'exclusion_id_operation_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Exclusion Operation</Checkbox>
                     </Form.Item>
                   ) : (
@@ -442,7 +462,11 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'exclusion_type_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'exclusion_type_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Exclusion Type</Checkbox>
                     </Form.Item>
                   ) : (

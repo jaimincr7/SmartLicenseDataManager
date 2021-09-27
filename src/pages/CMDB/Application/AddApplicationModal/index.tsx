@@ -18,7 +18,10 @@ import {
   cmdbApplicationSelector,
 } from '../../../../store/cmdb/application/application.reducer';
 import { getCmdbLicenseModelLookup, updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmdbApplicationProps } from './addApplication.model';
 
 const { Option } = Select;
@@ -60,7 +63,15 @@ const AddCmdbApplicationModal: React.FC<IAddCmdbApplicationProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbApplication(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbApplication.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmdbApplication.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -212,7 +223,11 @@ const AddCmdbApplicationModal: React.FC<IAddCmdbApplicationProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'license_model_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'license_model_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>License Model</Checkbox>
                     </Form.Item>
                   ) : (

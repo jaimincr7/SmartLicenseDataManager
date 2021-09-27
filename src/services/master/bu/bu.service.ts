@@ -52,6 +52,5 @@ class BUService {
       return res;
     });
   }
-
 }
 export default new BUService();

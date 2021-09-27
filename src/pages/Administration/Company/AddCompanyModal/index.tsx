@@ -48,7 +48,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-    const isNew: boolean = id || isMultiple ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -85,7 +85,11 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCompany(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,company.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, company.search.tableName)
+        )
+      );
     }
   };
 
@@ -421,7 +425,12 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={company.save.loading || commonLookups.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={company.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

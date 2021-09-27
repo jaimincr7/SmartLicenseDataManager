@@ -67,7 +67,11 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbUser(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbUser.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbUser.search.tableName)
+        )
+      );
     }
   };
 
@@ -273,7 +277,11 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'active_directory_guid']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'active_directory_guid']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Active Directory GUID</Checkbox>
                     </Form.Item>
                   ) : (
@@ -295,7 +303,11 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_service_account']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_service_account']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Service Account</Checkbox>
                     </Form.Item>
                   ) : (
@@ -323,7 +335,11 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'in_active_directory']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'in_active_directory']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>In Active Directory</Checkbox>
                     </Form.Item>
                   ) : (
@@ -333,7 +349,12 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={cmdbUser.save.loading || commonLookups.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={cmdbUser.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

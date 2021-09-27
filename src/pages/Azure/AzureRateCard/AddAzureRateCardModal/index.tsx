@@ -1,4 +1,15 @@
-import { Button, Checkbox, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Spin,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -20,7 +31,10 @@ import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 
 const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
   const azureRateCard = useAppSelector(azureRateCardSelector);
@@ -30,7 +44,7 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id || isMultiple? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -66,7 +80,15 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAzureRateCard(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,azureRateCard.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            azureRateCard.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -163,7 +185,12 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
                   ) : (
                     'Meter Id'
                   )}
-                  <Form.Item name="meter_id" label="Meter Id" className="m-0" rules={[{ max: 510 }]}>
+                  <Form.Item
+                    name="meter_id"
+                    label="Meter Id"
+                    className="m-0"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -209,7 +236,11 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'meter_sub_category']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'meter_sub_category']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Meter Sub-Category</Checkbox>
                     </Form.Item>
                   ) : (
@@ -318,7 +349,11 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'included_quantity']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'included_quantity']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Included quantity</Checkbox>
                     </Form.Item>
                   ) : (

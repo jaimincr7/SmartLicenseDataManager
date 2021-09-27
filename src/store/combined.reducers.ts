@@ -107,6 +107,7 @@ import spsApiGroupReducer from './sps/apiGroup/apiGroup.reducer';
 import spsApiTypeReducer from './sps/apiType/apiType.reducer';
 import spsApiOauthReducer from './sps/apiOauth/apiOauth.reducer';
 import spsApiTokenConfigOptionsReducer from './sps/apiTokenConfigOptions/apiTokenConfigOptions.reducer';
+import cronReducer from './master/cron/cron.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -152,6 +153,7 @@ export const rootReducer = combineReducers({
   currency: currencyReducer,
   role: roleReducer,
   agreementTypes: agreementTypesReducer,
+  cron: cronReducer,
 
   // RV Tools
   tabVCluster: tabVClusterReducer,

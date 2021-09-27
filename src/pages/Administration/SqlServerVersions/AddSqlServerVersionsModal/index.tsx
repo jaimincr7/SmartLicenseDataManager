@@ -9,7 +9,10 @@ import { ILookup } from '../../../../services/common/common.model';
 import { IConfigSqlServerVersions } from '../../../../services/master/sqlServerVersions/sqlServerVersions.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getConfigSupportTypesLookup } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigSqlServerVersionsById,
   saveConfigSqlServerVersions,
@@ -59,7 +62,15 @@ const AddConfigSqlServerVersionsModal: React.FC<IAddConfigSqlServerVersionsProps
     if (!isMultiple) {
       dispatch(saveConfigSqlServerVersions(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configSqlServerVersions.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configSqlServerVersions.search.tableName
+          )
+        )
+      );
     }
   };
 

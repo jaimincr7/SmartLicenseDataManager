@@ -9,7 +9,11 @@ import { ILookup } from '../../../../services/common/common.model';
 import { IBU } from '../../../../services/master/bu/bu.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
-import { clearCompanyLookUp, clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearCompanyLookUp,
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getBUById, saveBU } from '../../../../store/master/bu/bu.action';
 import { updateMultiple } from '../../../../store/common/common.action';
 import {
@@ -59,7 +63,11 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveBU(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,bu.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, bu.search.tableName)
+        )
+      );
     }
   };
 
@@ -262,7 +270,12 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={bu.save.loading || commonLookups.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={bu.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

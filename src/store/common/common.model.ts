@@ -9,6 +9,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cronFormula: {
+    data: ILookup[];
+    loading: boolean;
+  };
   allCompanyLookup: {
     data: ILookup[];
     loading: boolean;

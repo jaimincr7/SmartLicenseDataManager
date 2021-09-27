@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -23,7 +35,10 @@ import {
   getTenantLookup,
   updateMultiple,
 } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmdbDeviceProps } from './addDevice.model';
 
 const { Option } = Select;
@@ -82,7 +97,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbDevice(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbDevice.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbDevice.search.tableName)
+        )
+      );
     }
   };
 
@@ -213,7 +232,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'operating_system_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'operating_system_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Operating System</Checkbox>
                     </Form.Item>
                   ) : (
@@ -263,7 +286,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'virtualization_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'virtualization_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Virtualization</Checkbox>
                     </Form.Item>
                   ) : (
@@ -401,7 +428,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'bios_manufacturer']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'bios_manufacturer']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Bios Manufacturer</Checkbox>
                     </Form.Item>
                   ) : (
@@ -477,7 +508,11 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'hypervisor_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'hypervisor_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Hypervisor Name</Checkbox>
                     </Form.Item>
                   ) : (

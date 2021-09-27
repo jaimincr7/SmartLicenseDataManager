@@ -17,7 +17,12 @@ import {
   cmdbOperatingSystemSelector,
 } from '../../../../store/cmdb/operatingSystem/operatingSystem.reducer';
 import { getTenantLookup, updateMultiple } from '../../../../store/common/common.action';
-import { clearBULookUp, clearCompanyLookUp, clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearBULookUp,
+  clearCompanyLookUp,
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmdbOperatingSystemProps } from './addOperatingSystem.model';
 
 const AddCmdbOperatingSystemModal: React.FC<IAddCmdbOperatingSystemProps> = (props) => {
@@ -60,7 +65,15 @@ const AddCmdbOperatingSystemModal: React.FC<IAddCmdbOperatingSystemProps> = (pro
     if (!isMultiple) {
       dispatch(saveCmdbOperatingSystem(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,cmdbOperatingSystem.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmdbOperatingSystem.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -188,7 +201,7 @@ const AddCmdbOperatingSystemModal: React.FC<IAddCmdbOperatingSystemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                {isMultiple ? (
+                  {isMultiple ? (
                     <Form.Item name={['checked', 'version']} valuePropName="checked" noStyle>
                       <Checkbox>Version</Checkbox>
                     </Form.Item>

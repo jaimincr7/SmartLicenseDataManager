@@ -19,7 +19,10 @@ import {
 } from '../../../../store/master/componentTableColumn/componentTableColumn.reducer';
 import { IAddConfigComponentTableColumnProps } from './addComponentTableColumn.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getConfigComponentLookup } from '../../../../store/common/common.action';
 import { updateMultiple } from '../../../../store/common/common.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
@@ -64,7 +67,15 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
     if (!isMultiple) {
       dispatch(saveConfigComponentTableColumn(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configComponentTableColumn.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configComponentTableColumn.search.tableName
+          )
+        )
+      );
     }
   };
 

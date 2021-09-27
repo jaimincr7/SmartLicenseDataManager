@@ -141,7 +141,7 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
           id={id}
           refreshDataTable={() => refreshDataTable()}
         />
-)}
+      )}
       {deleteModalVisible && (
         <DeleteDatasetModal
           showModal={deleteModalVisible}

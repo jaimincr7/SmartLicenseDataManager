@@ -141,7 +141,7 @@ const CmdbExclusion: React.FC<ICmdbExclusionProps> = (props) => {
           id={id}
           refreshDataTable={() => refreshDataTable()}
         />
-)}
+      )}
       {deleteModalVisible && (
         <DeleteDatasetModal
           showModal={deleteModalVisible}

@@ -9,7 +9,11 @@ export const getPageHeight = () => {
   return finalHeight;
 };
 
-export const getObjectForUpdateMultiple = (valuesForSelection: any, inputValues: any,tableName: string) => {
+export const getObjectForUpdateMultiple = (
+  valuesForSelection: any,
+  inputValues: any,
+  tableName: string
+) => {
   const Obj: any = {
     ...valuesForSelection,
   };

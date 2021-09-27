@@ -8,7 +8,10 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IConfigSupportTypes } from '../../../../services/master/supportTypes/supportTypes.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigSupportTypesById,
   saveConfigSupportTypes,
@@ -53,7 +56,15 @@ const AddConfigSupportTypesModal: React.FC<IAddConfigSupportTypesProps> = (props
     if (!isMultiple) {
       dispatch(saveConfigSupportTypes(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,configSupportTypes.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configSupportTypes.search.tableName
+          )
+        )
+      );
     }
   };
 
