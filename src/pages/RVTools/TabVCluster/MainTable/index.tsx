@@ -10,7 +10,6 @@ import {
   deleteTabVCluster,
   searchTabVCluster,
 } from '../../../../store/rvTools/tabVCluster/tabVCluster.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import tabVClusterService from '../../../../services/rvTools/tabVCluster/tabVCluster.service';
 import {
@@ -18,7 +17,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -370,7 +369,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.TabVCluster}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeTabVCluster(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeTabVCluster(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

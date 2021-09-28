@@ -7,7 +7,6 @@ import {
 } from '../../../../store/rvTools/tabVHost/tabVHost.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { deleteTabVHost, searchTabVHost } from '../../../../store/rvTools/tabVHost/tabVHost.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import tabVHostService from '../../../../services/rvTools/tabVHost/tabVHost.service';
 import {
@@ -15,7 +14,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -264,7 +263,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.TabVHost}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeTabVHost(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeTabVHost(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

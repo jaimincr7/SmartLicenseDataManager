@@ -2,6 +2,7 @@ import { ISearch } from '../../../common/models/common';
 import { Moment } from 'moment';
 
 export interface IConfigOnlineServicePlans {
+  [x: string]: any;
   id?: number;
   name?: string;
   string_id?: string;

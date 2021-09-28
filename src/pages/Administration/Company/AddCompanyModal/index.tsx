@@ -1,4 +1,16 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -13,8 +25,10 @@ import { getCurrencyLookup, getTenantLookup } from '../../../../store/common/com
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
+import { updateMultiple } from '../../../../store/common/common.action';
 import { getCompanyById, saveCompany } from '../../../../store/master/company/company.action';
 import {
   clearCompanyGetById,
@@ -22,6 +36,7 @@ import {
   companySelector,
 } from '../../../../store/master/company/company.reducer';
 import { IAddCompanyProps } from './addCompany.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -30,9 +45,10 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -66,7 +82,15 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCompany(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCompany(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, company.search.tableName)
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: ICompany) => {
@@ -101,6 +125,19 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
       dispatch(clearCompanyMessages());
     }
   }, [company.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && company.getById.data) {
@@ -147,7 +184,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item name="tenant_id" className="m-0" label="Tenant">
                     <Select
                       allowClear
@@ -174,7 +217,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Currency</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'currency_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Currency'
+                  )}
                   <Form.Item name="currency_id" className="m-0" label="Currency">
                     <Select
                       loading={commonLookups.currencyLookup.loading}
@@ -201,12 +250,18 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Company Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Company Name"
                     className="m-0"
-                    rules={[{ required: true, max: 200 }]}
+                    rules={[{ required: !isMultiple, max: 200 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -214,7 +269,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Address</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'address']} valuePropName="checked" noStyle>
+                      <Checkbox>Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Address'
+                  )}
                   <Form.Item name="address" label="Address" className="m-0" rules={[{ max: 200 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -222,7 +283,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">City</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'city']} valuePropName="checked" noStyle>
+                      <Checkbox>City</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'City'
+                  )}
                   <Form.Item name="city" label="City" className="m-0" rules={[{ max: 200 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -230,7 +297,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Province</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'province']} valuePropName="checked" noStyle>
+                      <Checkbox>Province</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Province'
+                  )}
                   <Form.Item
                     name="province"
                     label="Province"
@@ -243,7 +316,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Postal Code</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'postal_code']} valuePropName="checked" noStyle>
+                      <Checkbox>Postal Code</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Postal Code'
+                  )}
                   <Form.Item
                     name="postal_code"
                     label="Postal Code "
@@ -256,7 +335,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Phone</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'phone']} valuePropName="checked" noStyle>
+                      <Checkbox>Phone</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Phone'
+                  )}
                   <Form.Item
                     name="phone"
                     label="Phone"
@@ -269,7 +354,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Fax</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'fax']} valuePropName="checked" noStyle>
+                      <Checkbox>Fax</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Fax'
+                  )}
                   <Form.Item
                     name="fax"
                     label="Fax"
@@ -282,7 +373,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Email</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'email']} valuePropName="checked" noStyle>
+                      <Checkbox>Email</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Email'
+                  )}
                   <Form.Item
                     name="email"
                     label="Email"
@@ -295,12 +392,18 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Joined Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'joined_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Joined Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Joined Date'
+                  )}
                   <Form.Item
                     name="joined_date"
                     label="Joined Date"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="w-100" />
                   </Form.Item>
@@ -311,12 +414,23 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Active</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
+                      <Checkbox>Active</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Active'
+                  )}
                 </div>
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={company.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={company.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

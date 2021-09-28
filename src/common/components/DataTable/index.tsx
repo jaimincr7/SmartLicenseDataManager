@@ -34,6 +34,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const {
     defaultOrderBy,
     showAddButton,
+    showScheduleAllButton,
+    showBulkUpdate,
+    setShowSelectedListModal,
     globalSearchExist,
     extraSearchData,
     setSelectedId,
@@ -47,6 +50,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     hideExportButton,
     showCallApiBtn,
     onCallAllApi,
+    setValuesForSelection,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -67,7 +71,20 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [checkAll, setCheckAll] = React.useState(false);
   const [isDragged, setIsDragged] = React.useState(false);
   const [tableColumns, setTableColumns] = React.useState([]);
+  const [selectedRowList, setSelectedRowList] = React.useState([]);
+
   tableFilter.order_by = defaultOrderBy ? defaultOrderBy : tableFilter.order_by;
+
+  //For checked List of Rows Selection
+  const rowSelection = {
+    selectedRowList,
+    onChange: (selectedRowList) => {
+      setSelectedRowList({
+        ...selectedRowList,
+        selectedRowList: selectedRowList,
+      });
+    },
+  };
 
   const getSearchData = (page, isExportToExcel: boolean) => {
     const { filter_keys, ...rest } = tableFilter;
@@ -119,9 +136,25 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     refreshData() {
       fetchTableData();
     },
+    getValuesForSelection() {
+      const Obj = {
+        isLookup: !pageLoaded,
+        filterKeys: tableFilter.filter_keys,
+        is_export_to_excel: !pageLoaded,
+        limit: 10,
+        offset: 0,
+        order_by: tableFilter.order_by,
+        order_direction: tableFilter.order_direction,
+        keyword: tableFilter.keyword,
+      };
+      Obj['selectedIds'] = selectedRowList;
+      setValuesForSelection(Obj);
+    },
   }));
+
   React.useEffect(() => {
     return () => {
+      //For RowSelection in Table
       pageLoaded = false;
       tableFilter = {
         keyword: '',
@@ -166,6 +199,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     };
     setPagination(paginating);
     fetchTableData(paginating);
+
+    {
+      /*const valuesForSelection = {...tableFilter};
+      valuesForSelection['selectedIds']=selectedRowList
+  setValuesForSelection(valuesForSelection);*/
+    }
   };
 
   React.useEffect(() => {
@@ -456,7 +495,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const renderCallApiButton = () => {
-    if (showCallApiBtn)
+    if (showCallApiBtn) {
       return (
         <Button
           loading={spsApisState.callAllApi.loading}
@@ -470,6 +509,22 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           Call All Api
         </Button>
       );
+    }
+    if (showScheduleAllButton) {
+      return (
+        <Button
+          loading={spsApisState.callAllApi.loading}
+          className="btn-icon"
+          onClick={() => {
+            if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
+              onRowSelection();
+            }
+          }}
+        >
+          Schedule All
+        </Button>
+      );
+    }
   };
   return (
     <>
@@ -505,6 +560,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           ) : (
             renderCallApiButton()
           )}
+          {showBulkUpdate && (
+            <Button
+              type="primary"
+              onClick={() => {
+                setShowSelectedListModal(true);
+              }}
+            >
+              {Object.keys(selectedRowList).length <= 1
+                ? `Update All (${reduxStoreData.search.count})`
+                : `Update Selected (${Object.keys(selectedRowList).length - 1})`}
+            </Button>
+          )}
           {showAddButton && (
             <Button
               type="primary"
@@ -520,6 +587,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
         <ReactDragListView {...dragProps}>
           <Table
+            rowSelection={rowSelection}
             scroll={{ x: true }}
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}

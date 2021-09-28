@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import {
   setTableColumnSelection,
   clearAzureAPIVmSizesMessages,
@@ -10,7 +10,6 @@ import {
   deleteAzureAPIVmSizes,
   searchAzureAPIVmSizes,
 } from '../../../../store/azure/azureAPIVmSizes/azureAPIVmSizes.action';
-import { IMainTable } from './mainTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
@@ -19,14 +18,14 @@ import {
   FilterByDateSwap,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const azureAPIVmSizes = useAppSelector(azureAPIVmSizesSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -37,6 +36,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return azureAPIVmSizesService.exportExcelFile(searchData);
@@ -174,7 +179,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.AzureAPIVmSizes}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeAzureAPIVmSizes(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeAzureAPIVmSizes(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -196,6 +201,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchAzureAPIVmSizes}
         clearTableDataMessages={clearAzureAPIVmSizesMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
+        setValuesForSelection={setValuesForSelection}
       />
     </>
   );

@@ -1,9 +1,8 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { IMainTable } from './mainTable.model';
 import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -20,7 +19,7 @@ import {
 import configProcessorsService from '../../../../services/master/processors/processors.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const configProcessors = useAppSelector(configProcessorsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -31,6 +30,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return configProcessorsService.exportExcelFile(searchData);
@@ -102,7 +107,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.ConfigProcessors}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeConfigProcessors(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeConfigProcessors(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -124,6 +129,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchConfigProcessors}
         clearTableDataMessages={clearConfigProcessorsMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
+        setValuesForSelection={setValuesForSelection}
       />
     </>
   );

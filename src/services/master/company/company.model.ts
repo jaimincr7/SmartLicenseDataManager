@@ -2,6 +2,7 @@ import { Moment } from 'moment';
 import { ISearch } from '../../../common/models/common';
 
 export interface ICompany {
+  [x: string]: any;
   id?: number;
   name?: string;
   address?: string;

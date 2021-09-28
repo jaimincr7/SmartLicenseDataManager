@@ -1,6 +1,6 @@
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
-import { IBulkInsertDataset, IDeleteDataset, ILookup } from './common.model';
+import { IBulkInsertDataset, IBulkUpdate, IDeleteDataset, ILookup } from './common.model';
 
 class CommonService {
   public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
@@ -12,6 +12,13 @@ class CommonService {
 
   public async getCompanyLookup(tenantId: number): Promise<IApiResponse<ILookup>> {
     const url = `/company/lookup/${tenantId}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getCronFormula(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-cron-job-frequency/lookup/`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
@@ -80,6 +87,20 @@ class CommonService {
     });
   }
 
+  public async getSpsApiGroupLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/sps-api-group/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getSpsApiTypeLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/sps-api-type/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getConfigSqlServerEditionsLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-sql-server-editions/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -96,6 +117,27 @@ class CommonService {
 
   public async getConfigSqlServerServicesLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-sql-server-services/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigWindowsServerEditionsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-windows-server-editions/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigWindowsServerVersionsLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-windows-server-versions/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getConfigWindowsServerServicesLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/config-windows-server-services/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
@@ -339,6 +381,13 @@ class CommonService {
     const inputValues = { ...data, debug: false };
     const url = `/app/delete-dataset`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async updateMultiple(searchParams?: IBulkUpdate): Promise<any> {
+    const url = `/app/bulk-update`;
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
   }

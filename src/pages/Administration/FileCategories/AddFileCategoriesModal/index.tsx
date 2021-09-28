@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -18,13 +18,21 @@ import {
   configFileCategoriesSelector,
 } from '../../../../store/master/fileCategories/fileCategories.reducer';
 import { IAddConfigFileCategoriesProps } from './addFileCategories.model';
+import { updateMultiple } from '../../../../store/common/common.action';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (props) => {
   const configFileCategories = useAppSelector(configFileCategoriesSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -48,7 +56,19 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigFileCategories(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigFileCategories(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configFileCategories.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigFileCategories) => {
@@ -74,6 +94,19 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
       dispatch(clearConfigFileCategoriesMessages());
     }
   }, [configFileCategories.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configFileCategories.getById.data) {
@@ -116,12 +149,18 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 500 }]}
+                    rules={[{ required: !isMultiple, max: 500 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -129,12 +168,18 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Description</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'description']} valuePropName="checked" noStyle>
+                      <Checkbox>Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Description'
+                  )}
                   <Form.Item
                     name="description"
                     label="Description"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -146,7 +191,7 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configFileCategories.save.loading}
+                loading={configFileCategories.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

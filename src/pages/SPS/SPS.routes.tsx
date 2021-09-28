@@ -2,7 +2,11 @@ import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
+import SpsApiGroup from './ApiGroup';
+import SpsApiOauth from './ApiOauth';
 import SPSAPI from './APIs/index';
+import SpsApiTokenConfigOptions from './ApiTokenConfigOptions';
+import SpsApiType from './ApiType';
 import SpsApiJobs from './SpsApiJobs';
 import SpsApiJobsData from './SpsApiJobsData';
 
@@ -26,6 +30,46 @@ const SPSRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.SpsApiJobs) && (
           <Route exact path={`${match.path}/sps-api-jobs/:id`} component={SpsApiJobs} />
+        )}
+
+        {/* SPS API Group */}
+        {ability.can(Action.View, Page.SpsApiGroup) && (
+          <Route exact path={`${match.path}/sps-api-group`} component={SpsApiGroup} />
+        )}
+        {ability.can(Action.View, Page.SpsApiGroup) && (
+          <Route exact path={`${match.path}/sps-api-group/:id`} component={SpsApiGroup} />
+        )}
+
+        {/* SPS API Type */}
+        {ability.can(Action.View, Page.SpsApiType) && (
+          <Route exact path={`${match.path}/sps-api-type`} component={SpsApiType} />
+        )}
+        {ability.can(Action.View, Page.SpsApiType) && (
+          <Route exact path={`${match.path}/sps-api-type/:id`} component={SpsApiType} />
+        )}
+
+        {/* SPS API Oauth */}
+        {ability.can(Action.View, Page.SpsApiOauth) && (
+          <Route exact path={`${match.path}/sps-api-oauth`} component={SpsApiOauth} />
+        )}
+        {ability.can(Action.View, Page.SpsApiOauth) && (
+          <Route exact path={`${match.path}/sps-api-oauth/:id`} component={SpsApiOauth} />
+        )}
+
+        {/* SPS API TokenConfigOptions */}
+        {ability.can(Action.View, Page.SpsApiTokenConfigOptions) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-token-config-options`}
+            component={SpsApiTokenConfigOptions}
+          />
+        )}
+        {ability.can(Action.View, Page.SpsApiTokenConfigOptions) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-token-config-options/:id`}
+            component={SpsApiTokenConfigOptions}
+          />
         )}
 
         {/* SPS API Jobs Data */}

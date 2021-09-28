@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -18,14 +18,22 @@ import {
   configComponentSelector,
 } from '../../../../store/master/component/component.reducer';
 import { IAddConfigComponentProps } from './addComponent.model';
+import { updateMultiple } from '../../../../store/common/common.action';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
   const configComponent = useAppSelector(configComponentSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -48,7 +56,19 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigComponent(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigComponent(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configComponent.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigComponent) => {
@@ -73,6 +93,19 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
       dispatch(clearConfigComponentMessages());
     }
   }, [configComponent.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configComponent.getById.data) {
@@ -115,12 +148,18 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -132,7 +171,7 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configComponent.save.loading}
+                loading={configComponent.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

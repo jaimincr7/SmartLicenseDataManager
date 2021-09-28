@@ -1,7 +1,6 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { IMainTable } from './mainTable.model';
 import {
   FilterByDropdown,
   FilterWithSwapOption,
@@ -16,9 +15,10 @@ import {
   setTableColumnSelection,
 } from '../../../../store/master/role/role.reducer';
 import { deleteRole, searchRole } from '../../../../store/master/role/role.action';
+import { IMainTable } from '../../../../common/models/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const role = useAppSelector(roleSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -29,6 +29,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const FilterBySwap = (dataIndex: string, form) => {
     return FilterWithSwapOption(dataIndex, role.search.tableName, form);
@@ -110,7 +116,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.Role}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeRole(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeRole(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -132,6 +138,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchRole}
         clearTableDataMessages={clearRoleMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
+        setValuesForSelection={setValuesForSelection}
       />
     </>
   );

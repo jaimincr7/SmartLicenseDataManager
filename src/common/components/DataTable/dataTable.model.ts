@@ -7,6 +7,9 @@ import { RootState } from '../../../store/app.model';
 export interface IDataTable {
   defaultOrderBy?: string;
   showAddButton?: boolean;
+  showScheduleAllButton?: boolean;
+  showBulkUpdate?: boolean;
+  setShowSelectedListModal?: (show: boolean) => void;
   globalSearchExist?: boolean;
   extraSearchData?: { [key: string]: any };
   setSelectedId?: (id: number) => void;
@@ -23,4 +26,5 @@ export interface IDataTable {
   hideExportButton?: boolean;
   showCallApiBtn?: boolean;
   onCallAllApi?: (tableFilter: any) => void;
+  setValuesForSelection?: (val: any) => void;
 }

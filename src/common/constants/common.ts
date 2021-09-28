@@ -100,4 +100,9 @@ export const allDateColumns = [
   'processed',
   'call_start',
   'call_end',
+  'expiration_date',
+  'start_time',
+  'end_time',
+  'run_date',
+  'complete_date',
 ];

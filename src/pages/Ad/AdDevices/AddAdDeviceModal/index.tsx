@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Col,
   DatePicker,
   Form,
@@ -18,6 +19,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IAdDevices } from '../../../../services/ad/adDevices/adDevices.model';
 import { ILookup } from '../../../../services/common/common.model';
 import { getAdDeviceById, saveAdDevice } from '../../../../store/ad/adDevices/adDevices.action';
@@ -31,10 +33,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddAdDeviceProps } from './addAdDevice.model';
@@ -46,9 +50,10 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -100,7 +105,15 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveAdDevice(inputValues));
+    if (!isMultiple) {
+      dispatch(saveAdDevice(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, adDevices.search.tableName)
+        )
+      );
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -185,6 +198,19 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
   }, [adDevices.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && adDevices.getById.data) {
       const data = adDevices.getById.data;
       fillValuesOnEdit(data);
@@ -228,7 +254,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
@@ -261,7 +293,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -289,7 +327,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -317,7 +361,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Distinguished Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'distinguished_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Distinguished Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Distinguished Name'
+                  )}
                   <Form.Item
                     name="distinguished_name"
                     label="Distinguished Name"
@@ -330,7 +384,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">DNS Host Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'dns_host_name']} valuePropName="checked" noStyle>
+                      <Checkbox>DNS Host Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'DNS Host Name'
+                  )}
                   <Form.Item
                     name="dns_host_name"
                     className="m-0"
@@ -343,7 +403,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">iPv4 Address</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'iPv4_address']} valuePropName="checked" noStyle>
+                      <Checkbox>iPv4 Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'iPv4 Address'
+                  )}
                   <Form.Item
                     name="iPv4_address"
                     label="iPv4 Address"
@@ -356,7 +422,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Device Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'device_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Device type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Device type'
+                  )}
                   <Form.Item
                     name="device_type"
                     label="Device type"
@@ -369,7 +441,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Logon</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'last_logon']} valuePropName="checked" noStyle>
+                      <Checkbox>Last Logon</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Logon'
+                  )}
                   <Form.Item
                     name="last_logon"
                     label="Last Logon"
@@ -382,7 +460,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Logon Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'last_logon_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Logon Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Logon Date'
+                  )}
                   <Form.Item name="last_logon_date" label="Last Logon Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -390,7 +478,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Logon Timestamp</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'last_logon_timestamp']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Logon Timestamp</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Logon Timestamp'
+                  )}
                   <Form.Item
                     name="last_logon_timestamp"
                     label="Last Logon Timestamp"
@@ -403,7 +501,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item name="name" label="Name" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -411,7 +515,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Object Class</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'object_class']} valuePropName="checked" noStyle>
+                      <Checkbox>Object Class</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Object Class'
+                  )}
                   <Form.Item
                     name="object_class"
                     label="Object Class"
@@ -424,7 +534,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Object GUId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'object_guid']} valuePropName="checked" noStyle>
+                      <Checkbox>Object GUId</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Object GUId'
+                  )}
                   <Form.Item
                     name="object_guid"
                     label="Object GUId"
@@ -437,7 +553,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -445,7 +567,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Operating System</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'operating_system']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Operating system</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Operating system'
+                  )}
                   <Form.Item
                     name="operating_system"
                     label="Operating system"
@@ -458,7 +590,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Password Last Set</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'password_last_set']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Password Last Set</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Password Last Set'
+                  )}
                   <Form.Item name="password_last_set" label="Password Last Set" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -466,7 +608,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Sam Account Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'sam_account_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Sam Account Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Sam Account Name'
+                  )}
                   <Form.Item
                     name="sam_account_name"
                     label="Sam Account Name"
@@ -479,7 +631,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">sId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'sid']} valuePropName="checked" noStyle>
+                      <Checkbox>sId</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'sId'
+                  )}
                   <Form.Item name="sid" label="sId" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -487,7 +645,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">User Principal Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>User Principal Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'User Principal Name'
+                  )}
                   <Form.Item
                     name="user_principal_name"
                     label="User Principal Name"
@@ -500,7 +668,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">When Created</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'when_created']} valuePropName="checked" noStyle>
+                      <Checkbox>When Created</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'When Created'
+                  )}
                   <Form.Item name="when_created" label="When Created" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -508,7 +682,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Exclusion</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'exclusion']} valuePropName="checked" noStyle>
+                      <Checkbox>Exclusion</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exclusion'
+                  )}
                   <Form.Item
                     name="exclusion"
                     label="Exclusion"
@@ -521,7 +701,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Exclusion Id</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'exclusion_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Exclusion Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exclusion Id'
+                  )}
                   <Form.Item
                     name="exclusion_id"
                     label="Exclusion Id"
@@ -534,7 +720,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Domain</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'domain']} valuePropName="checked" noStyle>
+                      <Checkbox>Domain</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Domain'
+                  )}
                   <Form.Item name="domain" label="Domain" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -547,7 +739,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Enabled</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'enabled']} valuePropName="checked" noStyle>
+                      <Checkbox>Enabled</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Enabled'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -555,7 +753,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="password_expired" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Password Expired</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'password_expired']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Password Expired</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Password Expired'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -563,7 +771,17 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="password_never_expires" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Password Never Expires</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'password_never_expires']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Password Never Expires</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Password Never Expires'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -571,7 +789,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="inventoried" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Inventoried</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'inventoried']} valuePropName="checked" noStyle>
+                      <Checkbox>Inventoried</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Inventoried'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -579,7 +803,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Active</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
+                      <Checkbox>Active</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Active'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -587,12 +817,24 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="qualified" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Qualified</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'qualified']} valuePropName="checked" noStyle>
+                      <Checkbox>Qualified</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Qualified'
+                  )}
                 </div>
               </Col>
               <Col xs={24}>
                 <div className="form-group m-0">
-                  <label className="label">Description</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'description']} valuePropName="checked" noStyle>
+                      <Checkbox>Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Description'
+                  )}
                   <Form.Item name="description" label="Description" className="m-0">
                     <Input.TextArea className="form-control" />
                   </Form.Item>
@@ -604,7 +846,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={adDevices.save.loading}
+                loading={adDevices.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

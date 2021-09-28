@@ -14,6 +14,7 @@ import {
   clearAgreementTypes,
   agreementTypesSelector,
 } from '../../../store/master/agreementTypes/agreementTypes.reducer';
+import { clearCommon } from '../../../store/common/common.reducer';
 
 const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
   const agreementTypes = useAppSelector(agreementTypesSelector);
@@ -25,8 +26,9 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
-
   const [id, setId] = React.useState(0);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -36,8 +38,10 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearAgreementTypes());
+      dispatch(clearCommon());
     };
   }, []);
 
@@ -83,6 +87,12 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -92,8 +102,22 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
       {addModalVisible && (
         <AddAgreementTypesModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/administration/agreement-types');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddAgreementTypesModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/administration/agreement-types');
           }}
           id={id}

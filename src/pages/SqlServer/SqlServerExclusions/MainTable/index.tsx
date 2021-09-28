@@ -10,14 +10,13 @@ import {
   deleteSqlServerExclusions,
   searchSqlServerExclusions,
 } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import sqlServerExclusionsService from '../../../../services/sqlServer/sqlServerExclusions/sqlServerExclusions.service';
 import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -185,7 +184,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.SqlServerExclusions}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeSqlServerExclusions(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeSqlServerExclusions(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

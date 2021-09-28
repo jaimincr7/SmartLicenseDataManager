@@ -1,7 +1,6 @@
 import { Popconfirm, Popover } from 'antd';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import {
   FilterByDropdown,
@@ -24,6 +23,7 @@ import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { DownloadOutlined, RetweetOutlined } from '@ant-design/icons';
 import CallApiModal from '../CallApiModal';
+import { IMainTable } from '../../../../common/models/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
@@ -283,7 +283,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       </Can>
       <Can I={Action.Delete} a={Page.SPSApi}>
         <Popconfirm
-          title="Sure to delete?"
+          title="Delete Record?"
           onConfirm={() => {
             dispatch(deleteSpsApi(data.id));
           }}

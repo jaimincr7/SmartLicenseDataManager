@@ -10,7 +10,6 @@ import {
   deleteSpsApiJobs,
   searchSpsApiJobs,
 } from '../../../../store/sps/spsApiJobs/spsApiJobs.action';
-import { IMainTable } from './mainTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
@@ -25,6 +24,7 @@ import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const spsApiJobs = useAppSelector(spsApiJobsSelector);
@@ -266,7 +266,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.SpsApiJobs}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeSpsApiJobs(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeSpsApiJobs(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

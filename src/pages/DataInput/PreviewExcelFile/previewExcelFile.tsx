@@ -27,6 +27,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     if (records?.length > 0) {
       for (let index = 0; index <= maxCount; index++) {
         mainColumns.push({
+          title: 'description' + (index + 1),
           dataIndex: 'description' + index,
           key: 'description' + index,
           ellipsis: true,
@@ -77,7 +78,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           </div>
         </Col>
         <Table
-          showHeader={false}
+          showHeader={true}
           scroll={{ x: true }}
           pagination={{
             ...pagination,

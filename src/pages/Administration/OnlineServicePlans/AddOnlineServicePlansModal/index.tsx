@@ -1,11 +1,17 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IConfigOnlineServicePlans } from '../../../../services/master/onlineServicePlans/onlineServicePlans.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
+import { updateMultiple } from '../../../../store/common/common.action';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigOnlineServicePlansById,
   saveConfigOnlineServicePlans,
@@ -19,10 +25,12 @@ import { IAddConfigOnlineServicePlansProps } from './addOnlineservicePlans.model
 
 const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansProps> = (props) => {
   const configOnlineServicePlans = useAppSelector(configOnlineServicePlansSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -48,7 +56,19 @@ const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansPro
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveConfigOnlineServicePlans(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfigOnlineServicePlans(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            configOnlineServicePlans.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfigOnlineServicePlans) => {
@@ -74,6 +94,19 @@ const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansPro
       dispatch(clearConfigOnlineServicePlansMessages());
     }
   }, [configOnlineServicePlans.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configOnlineServicePlans.getById.data) {
@@ -116,12 +149,18 @@ const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansPro
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -129,7 +168,13 @@ const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansPro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">String ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'string_id']} valuePropName="checked" noStyle>
+                      <Checkbox>String ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'String ID'
+                  )}
                   <Form.Item
                     name="string_id"
                     label="String ID"
@@ -142,7 +187,13 @@ const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansPro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">GUID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'guid']} valuePropName="checked" noStyle>
+                      <Checkbox>GUID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'GUID'
+                  )}
                   <Form.Item name="guid" label="GUID" className="m-0" rules={[{ max: 36 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -154,7 +205,7 @@ const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansPro
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configOnlineServicePlans.save.loading}
+                loading={configOnlineServicePlans.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

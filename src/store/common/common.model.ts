@@ -9,6 +9,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cronFormula: {
+    data: ILookup[];
+    loading: boolean;
+  };
   allCompanyLookup: {
     data: ILookup[];
     loading: boolean;
@@ -37,11 +41,24 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  save: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
   cmdbUserLookup: {
     data: ILookup[];
     loading: boolean;
   };
   o365ProductsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  spsApiGroupLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  spsApiTypeLookup: {
     data: ILookup[];
     loading: boolean;
   };
@@ -54,6 +71,18 @@ export interface ICommonState {
     loading: boolean;
   };
   configSqlServerServicesLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configWindowsServerEditionsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configWindowsServerVersionsLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  configWindowsServerServicesLookup: {
     data: ILookup[];
     loading: boolean;
   };

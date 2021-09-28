@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -9,7 +9,12 @@ import { ILookup } from '../../../../services/common/common.model';
 import { IRole } from '../../../../services/master/role/role.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import { getCompanyLookup, getTenantLookup } from '../../../../store/common/common.action';
-import { clearCompanyLookUp, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearCompanyLookUp,
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
+import { updateMultiple } from '../../../../store/common/common.action';
 import { getRoleById, saveRole } from '../../../../store/master/role/role.action';
 import {
   clearRoleGetById,
@@ -17,6 +22,7 @@ import {
   roleSelector,
 } from '../../../../store/master/role/role.reducer';
 import { IAddRoleProps } from './addRole.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -25,9 +31,10 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -52,7 +59,15 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveRole(inputValues));
+    if (!isMultiple) {
+      dispatch(saveRole(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, role.search.tableName)
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: IRole) => {
@@ -90,6 +105,19 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
       dispatch(clearRoleMessages());
     }
   }, [role.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && role.getById.data) {
@@ -134,12 +162,18 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -167,12 +201,18 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Role Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'role_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Role Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Role Name'
+                  )}
                   <Form.Item
                     name="role_name"
-                    label="RoleName"
+                    label="Role Name"
                     className="m-0"
-                    rules={[{ required: true, max: 200 }]}
+                    rules={[{ required: !isMultiple, max: 200 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -180,15 +220,31 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Role Key</label>
-                  <Form.Item name="role_key" label="RoleKey" className="m-0" rules={[{ max: 200 }]}>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'role_key']} valuePropName="checked" noStyle>
+                      <Checkbox>Role Key</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Role Key'
+                  )}
+                  <Form.Item
+                    name="role_key"
+                    label="Role Key"
+                    className="m-0"
+                    rules={[{ max: 200 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={role.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={role.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

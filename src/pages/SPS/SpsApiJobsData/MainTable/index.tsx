@@ -9,7 +9,6 @@ import {
   runJobData,
   searchSpsApiJobsData,
 } from '../../../../store/sps/spsApiJobsData/spsApiJobsData.action';
-import { IMainTable } from './mainTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
@@ -26,6 +25,7 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { Popconfirm, Popover } from 'antd';
 import { ICallAPI } from '../../../../services/sps/spsApiJobsData/spsApiJobsData.model';
 import { ReloadOutlined } from '@ant-design/icons';
+import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { job_id } = props;
@@ -210,7 +210,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           renderActionButton()
         ))}
       <Can I={Action.Delete} a={Page.SpsApiJobs}>
-        <Popconfirm title="Sure to delete?">
+        <Popconfirm title="Delete Record?">
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

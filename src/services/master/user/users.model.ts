@@ -2,6 +2,7 @@ import { ISearch } from '../../../common/models/common';
 import { Moment } from 'moment';
 
 export interface IUser {
+  [x: string]: any;
   id: number;
   username: string;
   display_name: string;
