@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -18,13 +18,22 @@ import {
   agreementTypesSelector,
 } from '../../../../store/master/agreementTypes/agreementTypes.reducer';
 import { IAddAgreementTypesProps } from './addAgreementTypes.model';
+import { updateMultiple } from '../../../../store/common/common.action';
+import {
+  commonSelector,
+  clearMultipleUpdateMessages,
+} from '../../../../store/common/common.reducer';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
   const agreementTypes = useAppSelector(agreementTypesSelector);
   const dispatch = useAppDispatch();
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const common = useAppSelector(commonSelector);
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
+
   const title = useMemo(() => {
     return (
       <>
@@ -47,7 +56,19 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveAgreementTypes(inputValues));
+    if (!isMultiple) {
+      dispatch(saveAgreementTypes(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            agreementTypes.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: IAgreementTypes) => {
@@ -72,6 +93,19 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
       dispatch(clearAgreementTypesMessages());
     }
   }, [agreementTypes.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && agreementTypes.getById.data) {
@@ -114,12 +148,18 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Agreement Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'agreement_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Agreement Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Agreement Type'
+                  )}
                   <Form.Item
                     name="agreement_type"
                     label="Agreement Type"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -131,7 +171,7 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={agreementTypes.save.loading}
+                loading={agreementTypes.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

@@ -10,7 +10,6 @@ import {
   deleteO365ActiveUserDetail,
   searchO365ActiveUserDetail,
 } from '../../../../store/o365/o365ActiveUserDetail/o365ActiveUserDetail.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import o365ActiveUserDetailService from '../../../../services/o365/o365ActiveUserDetail/o365ActiveUserDetail.service';
 import {
@@ -18,7 +17,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -565,7 +564,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.O365ActiveUserDetail}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeO365ActiveUserDetail(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeO365ActiveUserDetail(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

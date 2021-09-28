@@ -47,6 +47,13 @@ import {
   getConfigSqlServerServicesLookup,
   getConfigSqlServerVersionsLookup,
   getConfigLicenseUnitsLookup,
+  getConfigWindowsServerVersionsLookup,
+  getConfigWindowsServerEditionsLookup,
+  getConfigWindowsServerServicesLookup,
+  getSpsApiTypeLookup,
+  getSpsApiGroupLookup,
+  updateMultiple,
+  getCronFormula,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -59,6 +66,10 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  cronFormula: {
+    data: [],
+    loading: false,
+  },
   allCompanyLookup: {
     data: [],
     loading: false,
@@ -66,6 +77,11 @@ export const initialState: ICommonState = {
   buLookup: {
     data: [],
     loading: false,
+  },
+  save: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
   },
   sqlServerLicenseLookup: {
     data: [],
@@ -95,6 +111,14 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  spsApiGroupLookup: {
+    data: [],
+    loading: false,
+  },
+  spsApiTypeLookup: {
+    data: [],
+    loading: false,
+  },
   configSqlServerEditionsLookup: {
     data: [],
     loading: false,
@@ -104,6 +128,18 @@ export const initialState: ICommonState = {
     loading: false,
   },
   configSqlServerServicesLookup: {
+    data: [],
+    loading: false,
+  },
+  configWindowsServerEditionsLookup: {
+    data: [],
+    loading: false,
+  },
+  configWindowsServerVersionsLookup: {
+    data: [],
+    loading: false,
+  },
+  configWindowsServerServicesLookup: {
     data: [],
     loading: false,
   },
@@ -259,6 +295,9 @@ export const commonSlice = createSlice({
     clearSpsApiGroupsLookup: (state) => {
       state.spsApiGroups.data = [];
     },
+    clearMultipleUpdateMessages: (state) => {
+      state.save.messages = [];
+    },
   },
   extraReducers: {
     // Tenant lookup
@@ -279,6 +318,15 @@ export const commonSlice = createSlice({
       state.companyLookup.loading = false;
     },
 
+    // Company lookup
+    [getCronFormula.pending.type]: (state) => {
+      state.cronFormula.loading = true;
+    },
+    [getCronFormula.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cronFormula.data = action.payload;
+      state.cronFormula.loading = false;
+    },
+
     // All Company lookup
     [getAllCompanyLookup.pending.type]: (state) => {
       state.allCompanyLookup.loading = true;
@@ -295,6 +343,21 @@ export const commonSlice = createSlice({
     [getBULookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.buLookup.data = action.payload;
       state.buLookup.loading = false;
+    },
+
+    // Update Multiple
+    [updateMultiple.pending.type]: (state) => {
+      state.save.loading = true;
+      state.save.messages = [];
+    },
+    [updateMultiple.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.save.loading = false;
+      state.save.hasErrors = false;
+      state.save.messages = action.payload.messages;
+    },
+    [updateMultiple.rejected.type]: (state) => {
+      state.save.loading = false;
+      state.save.hasErrors = true;
     },
 
     // Sql Server License lookup
@@ -360,6 +423,24 @@ export const commonSlice = createSlice({
       state.o365ProductsLookup.loading = false;
     },
 
+    // SpsApiGroup lookup
+    [getSpsApiGroupLookup.pending.type]: (state) => {
+      state.spsApiGroups.loading = true;
+    },
+    [getSpsApiGroupLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiGroups.data = action.payload;
+      state.spsApiGroups.loading = false;
+    },
+
+    // SpsApiType lookup
+    [getSpsApiTypeLookup.pending.type]: (state) => {
+      state.spsApiTypes.loading = true;
+    },
+    [getSpsApiTypeLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiTypes.data = action.payload;
+      state.spsApiTypes.loading = false;
+    },
+
     // Config Sql Server Editions lookup
     [getConfigSqlServerEditionsLookup.pending.type]: (state) => {
       state.configSqlServerEditionsLookup.loading = true;
@@ -394,6 +475,42 @@ export const commonSlice = createSlice({
     ) => {
       state.configSqlServerVersionsLookup.data = action.payload;
       state.configSqlServerVersionsLookup.loading = false;
+    },
+
+    // Config Windows Server Versions lookup
+    [getConfigWindowsServerVersionsLookup.pending.type]: (state) => {
+      state.configWindowsServerVersionsLookup.loading = true;
+    },
+    [getConfigWindowsServerVersionsLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configWindowsServerVersionsLookup.data = action.payload;
+      state.configWindowsServerVersionsLookup.loading = false;
+    },
+
+    // Config Windows Server Editions lookup
+    [getConfigWindowsServerEditionsLookup.pending.type]: (state) => {
+      state.configWindowsServerEditionsLookup.loading = true;
+    },
+    [getConfigWindowsServerEditionsLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configWindowsServerEditionsLookup.data = action.payload;
+      state.configWindowsServerEditionsLookup.loading = false;
+    },
+
+    // Config Windows Server Services lookup
+    [getConfigWindowsServerServicesLookup.pending.type]: (state) => {
+      state.configWindowsServerServicesLookup.loading = true;
+    },
+    [getConfigWindowsServerServicesLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.configWindowsServerServicesLookup.data = action.payload;
+      state.configWindowsServerServicesLookup.loading = false;
     },
 
     // Config License Units lookup
@@ -720,6 +837,7 @@ export const {
   clearSaveTableColumnSelection,
   clearSpsApiGroupsLookup,
   clearSpsApiTypesLookup,
+  clearMultipleUpdateMessages,
 } = commonSlice.actions;
 
 // The reducer

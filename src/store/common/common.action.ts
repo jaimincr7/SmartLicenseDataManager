@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITableColumnSelection } from '../../common/models/common';
-import { IDeleteDataset } from '../../services/common/common.model';
+import { IBulkUpdate, IDeleteDataset } from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
 // Asynchronous thunk action
@@ -14,6 +14,13 @@ export const getTenantLookup = createAsyncThunk('getTenantLookup', async () => {
 
 export const getCompanyLookup = createAsyncThunk('getCompanyLookup', async (tenantId: number) => {
   const response = await commonService.getCompanyLookup(tenantId).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getCronFormula = createAsyncThunk('getCronFormula', async () => {
+  const response = await commonService.getCronFormula().then((res) => {
     return res.body;
   });
   return response.data;
@@ -78,6 +85,20 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
   return response.data;
 });
 
+export const getSpsApiGroupLookup = createAsyncThunk('getSpsApiGroupLookup', async () => {
+  const response = await commonService.getSpsApiGroupLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getSpsApiTypeLookup = createAsyncThunk('getSpsApiTypeLookup', async () => {
+  const response = await commonService.getSpsApiTypeLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getConfigSqlServerEditionsLookup = createAsyncThunk(
   'getConfigSqlServerEditionsLookup',
   async () => {
@@ -102,6 +123,36 @@ export const getConfigSqlServerVersionsLookup = createAsyncThunk(
   'getConfigSqlServerVersionsLookup',
   async () => {
     const response = await commonService.getConfigSqlServerVersionsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigWindowsServerEditionsLookup = createAsyncThunk(
+  'getConfigWindowsServerEditionsLookup',
+  async () => {
+    const response = await commonService.getConfigWindowsServerEditionsLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigWindowsServerServicesLookup = createAsyncThunk(
+  'getConfigWindowsServerServicesLookup',
+  async () => {
+    const response = await commonService.getConfigWindowsServerServicesLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getConfigWindowsServerVersionsLookup = createAsyncThunk(
+  'getConfigWindowsServerVersionsLookup',
+  async () => {
+    const response = await commonService.getConfigWindowsServerVersionsLookup().then((res) => {
       return res.body;
     });
     return response.data;
@@ -290,6 +341,13 @@ export const getCmsContractAgreementLookup = createAsyncThunk(
     return response.data;
   }
 );
+
+export const updateMultiple = createAsyncThunk('updateMultiple', async (data: IBulkUpdate) => {
+  const response = await commonService.updateMultiple(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
 
 export const getCmsContactLookup = createAsyncThunk('getCmsContact', async () => {
   const response = await commonService.getCmsContactLookup().then((res) => {

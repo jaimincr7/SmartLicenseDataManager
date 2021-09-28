@@ -25,6 +25,8 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearConfigComponentTableColumn());
     };
@@ -83,6 +86,12 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -92,8 +101,22 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
       {addModalVisible && (
         <AddConfigComponentTableColumnModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/administration/config-component-table-column');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddConfigComponentTableColumnModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/administration/config-component-table-column');
           }}
           id={id}

@@ -1,7 +1,6 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import {
   FilterByDropdown,
@@ -19,9 +18,10 @@ import buService from '../../../../services/master/bu/bu.service';
 import { deleteBU, searchBU } from '../../../../store/master/bu/bu.action';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const bu = useAppSelector(buSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -32,6 +32,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return buService.exportExcelFile(searchData);
@@ -133,7 +139,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.Bu}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeBU(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeBU(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -146,7 +152,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection}
         showAddButton={ability.can(Action.Add, Page.Bu)}
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
         globalSearchExist={false}
         setSelectedId={setSelectedId}
         tableAction={tableAction}

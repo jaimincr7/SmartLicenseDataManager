@@ -2,6 +2,7 @@ import { ISearch } from '../../../common/models/common';
 import { Moment } from 'moment';
 
 export interface IRole {
+  [x: string]: any;
   id?: number;
   role_name: string;
   tenant_id: number;

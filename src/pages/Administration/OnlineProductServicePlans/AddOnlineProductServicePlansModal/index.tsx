@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
@@ -12,7 +12,10 @@ import {
   getConfigOnlineProductsLookup,
   getConfigOnlineServicePlansLookup,
 } from '../../../../store/common/common.action';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import {
   getConfigOnlineProductServicePlansById,
   saveConfigOnlineProductServicePlans,
@@ -23,6 +26,8 @@ import {
   configOnlineProductServicePlansSelector,
 } from '../../../../store/master/onlineProductServicePlans/onlineProductServicePlans.reducer';
 import { IAddConfigOnlineProductServicePlansProps } from './addOnlineProductServicePlans.model';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -30,10 +35,12 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
   (props) => {
     const configOnlineProductServicePlans = useAppSelector(configOnlineProductServicePlansSelector);
     const dispatch = useAppDispatch();
-    const { id, showModal, handleModalClose, refreshDataTable } = props;
+    const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+      props;
+
     const commonLookups = useAppSelector(commonSelector);
 
-    const isNew: boolean = id ? false : true;
+    const isNew: boolean = id || isMultiple ? false : true;
     const title = useMemo(() => {
       return (
         <>
@@ -58,7 +65,19 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
         ...values,
         id: id ? +id : null,
       };
-      dispatch(saveConfigOnlineProductServicePlans(inputValues));
+      if (!isMultiple) {
+        dispatch(saveConfigOnlineProductServicePlans(inputValues));
+      } else {
+        dispatch(
+          updateMultiple(
+            getObjectForUpdateMultiple(
+              valuesForSelection,
+              inputValues,
+              configOnlineProductServicePlans.search.tableName
+            )
+          )
+        );
+      }
     };
 
     const fillValuesOnEdit = async (data: IConfigOnlineProductServicePlans) => {
@@ -83,6 +102,19 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
         dispatch(clearConfigOnlineProductServicePlansMessages());
       }
     }, [configOnlineProductServicePlans.save.messages]);
+
+    useEffect(() => {
+      if (commonLookups.save.messages.length > 0) {
+        if (commonLookups.save.hasErrors) {
+          toast.error(commonLookups.save.messages.join(' '));
+        } else {
+          toast.success(commonLookups.save.messages.join(' '));
+          handleModalClose();
+          refreshDataTable();
+        }
+        dispatch(clearMultipleUpdateMessages());
+      }
+    }, [commonLookups.save.messages]);
 
     useEffect(() => {
       if (+id > 0 && configOnlineProductServicePlans.getById.data) {
@@ -127,12 +159,18 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
               <Row gutter={[30, 15]} className="form-label-hide">
                 <Col xs={24} sm={12} md={8}>
                   <div className="form-group m-0">
-                    <label className="label">Product</label>
+                    {isMultiple ? (
+                      <Form.Item name={['checked', 'product_id']} valuePropName="checked" noStyle>
+                        <Checkbox>Product</Checkbox>
+                      </Form.Item>
+                    ) : (
+                      'Product'
+                    )}
                     <Form.Item
                       name="product_id"
                       className="m-0"
                       label="Product"
-                      rules={[{ required: true }]}
+                      rules={[{ required: !isMultiple }]}
                     >
                       <Select
                         allowClear
@@ -159,12 +197,22 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
                 </Col>
                 <Col xs={24} sm={12} md={8}>
                   <div className="form-group m-0">
-                    <label className="label">Service Plan</label>
+                    {isMultiple ? (
+                      <Form.Item
+                        name={['checked', 'service_plan_id']}
+                        valuePropName="checked"
+                        noStyle
+                      >
+                        <Checkbox>Service Plan</Checkbox>
+                      </Form.Item>
+                    ) : (
+                      'Service Plan'
+                    )}
                     <Form.Item
                       name="service_plan_id"
                       className="m-0"
                       label="Service Plan"
-                      rules={[{ required: true }]}
+                      rules={[{ required: !isMultiple }]}
                     >
                       <Select
                         allowClear
@@ -197,7 +245,9 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
                   key="submit"
                   type="primary"
                   htmlType="submit"
-                  loading={configOnlineProductServicePlans.save.loading}
+                  loading={
+                    configOnlineProductServicePlans.save.loading || commonLookups.save.loading
+                  }
                 >
                   {submitButtonText}
                 </Button>

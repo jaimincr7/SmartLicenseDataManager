@@ -7,7 +7,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -22,7 +22,6 @@ import {
   setTableColumnSelection,
 } from '../../../../store/o365/o365Subscriptions/o365Subscriptions.reducer';
 import o365SubscriptionsService from '../../../../services/o365/o365Subscriptions/o365Subscriptions.service';
-import { IMainTable } from './mainTable.model';
 import { Common } from '../../../../common/constants/common';
 import moment from 'moment';
 
@@ -192,7 +191,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.O365Subscriptions}>
-        <Popconfirm title="Sure to delete?" onConfirm={() => removeO365Subscriptions(data.id)}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeO365Subscriptions(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

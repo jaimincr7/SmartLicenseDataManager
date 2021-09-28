@@ -17,6 +17,8 @@ const Role: React.FC<IRoleProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -28,6 +30,7 @@ const Role: React.FC<IRoleProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearRole());
     };
@@ -47,6 +50,12 @@ const Role: React.FC<IRoleProps> = (props) => {
       <div className="main-card">
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -55,9 +64,23 @@ const Role: React.FC<IRoleProps> = (props) => {
       </div>
       {addModalVisible && (
         <AddRoleModal
+          isMultiple={false}
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/administration/role');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddRoleModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/administration/role');
           }}
           id={id}

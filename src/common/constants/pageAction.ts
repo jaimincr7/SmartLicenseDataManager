@@ -104,6 +104,12 @@ export enum Page {
   ConfigWindowsServerEditions = 'config-windows-server-editions',
   ConfigSqlServerLicense = 'config-sql-server-license',
   ConfigWindowsServerVersions = 'config-windows-server-versions',
+  ConfigWindowsServerLicense = 'config-windows-server-license',
+
+  //Slim360
+  Slim360O365Licenses = 'slim360-o365-licenses',
+  Slim360O365UserLicenses = 'slim360-o365-user-licenses',
+  Slim360O365UserPlans = 'slim360-o365-user-plans',
 
   PowerBIConfig = 'power-bi-report-config',
 
@@ -116,6 +122,12 @@ export enum Page {
   SPSApi = 'sps-api',
   SpsApiJobs = 'sps-api-jobs',
   SpsApiJobsData = 'sps-api-jobs-data',
+  SpsApiGroup = 'sps-api-group',
+  SpsApiType = 'sps-api-type',
+  SpsApiOauth = 'sps-api-oauth',
+  SpsApiTokenConfigOptions = 'sps-api-token-config-options',
+  Cron = 'cron-job-data',
+  CronViewLogData = 'cron-job-log',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }

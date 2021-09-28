@@ -27,6 +27,7 @@ import AdministrationRoutes from './pages/Administration/Administration.routes';
 import CMSRoutes from './pages/CMS/CMS.routes';
 import CmdbRoutes from './pages/CMDB/CMDB.routes';
 import SPSRoutes from './pages/SPS/SPS.routes';
+import Slim360Routes from './pages/Slim360/Slim360.routes';
 
 function AppRoutes() {
   const history = useHistory();
@@ -72,6 +73,7 @@ function AppRoutes() {
           <LayoutRoute path="/cms" layout={MainLayout} component={CMSRoutes} />
           <LayoutRoute path="/sps" layout={MainLayout} component={SPSRoutes} />
           <LayoutRoute path="/cmdb" layout={MainLayout} component={CmdbRoutes} />
+          <LayoutRoute path="/slim360" layout={MainLayout} component={Slim360Routes} />
 
           {/* Dummy routes for designers */}
           <LayoutRoute exact path="/home" layout={MainLayout} component={Home} />

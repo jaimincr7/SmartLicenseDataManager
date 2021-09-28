@@ -10,7 +10,6 @@ import {
   deleteO365ActivationsUserDetail,
   searchO365ActivationsUserDetail,
 } from '../../../../store/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.action';
-import { IMainTable } from './mainTable.model';
 import _ from 'lodash';
 import o365ActivationsUserDetailService from '../../../../services/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.service';
 import {
@@ -18,7 +17,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -297,7 +296,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       </Can>
       <Can I={Action.Delete} a={Page.O365ActivationsUserDetail}>
         <Popconfirm
-          title="Sure to delete?"
+          title="Delete Record?"
           onConfirm={() => removeO365ActivationsUserDetail(data.id)}
         >
           <a href="#" title="" className="action-btn">

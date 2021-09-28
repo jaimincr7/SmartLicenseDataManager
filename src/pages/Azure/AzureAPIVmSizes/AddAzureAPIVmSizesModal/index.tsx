@@ -1,9 +1,10 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IAzureAPIVmSizes } from '../../../../services/azure/azureAPIVmSizes/azureAPIVmSizes.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -15,15 +16,22 @@ import {
   clearAzureAPIVmSizesMessages,
   azureAPIVmSizesSelector,
 } from '../../../../store/azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
+import { updateMultiple } from '../../../../store/common/common.action';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddAzureAPIVmSizesProps } from './addAzureAPIVmSizes.model';
 
 const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
   const azureAPIVmSizes = useAppSelector(azureAPIVmSizesSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -51,7 +59,19 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveAzureAPIVmSizes(inputValues));
+    if (!isMultiple) {
+      dispatch(saveAzureAPIVmSizes(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            azureAPIVmSizes.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: IAzureAPIVmSizes) => {
@@ -80,6 +100,19 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
       dispatch(clearAzureAPIVmSizesMessages());
     }
   }, [azureAPIVmSizes.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && azureAPIVmSizes.getById.data) {
@@ -122,7 +155,13 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item name="name" label="Name" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -130,7 +169,17 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Number Of Cores</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'number_of_cores']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Number Of Cores</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Number Of Cores'
+                  )}
                   <Form.Item
                     name="number_of_cores"
                     label="Number Of Cores"
@@ -143,7 +192,17 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">OS Disk Size in GB</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'os_disk_size_in_gb']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>OS Disk Size in GB</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'OS Disk Size in GB'
+                  )}
                   <Form.Item
                     name="os_disk_size_in_gb"
                     label="OS Disk Size in GB"
@@ -156,7 +215,17 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Resource Disk Size in GB</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'resource_disk_size_in_gb']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Resource Disk Size in GB</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Resource Disk Size in GB'
+                  )}
                   <Form.Item
                     name="resource_disk_size_in_gb"
                     label="Resource Disk Size in GB"
@@ -169,7 +238,13 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Memory in GB</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'memory_in_gb']} valuePropName="checked" noStyle>
+                      <Checkbox>Memory in GB</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Memory in GB'
+                  )}
                   <Form.Item
                     name="memory_in_gb"
                     label="Memory in GB"
@@ -182,7 +257,17 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Max Data Disk Count</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'max_data_disk_count']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Max Data Disk Count</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Max Data Disk Count'
+                  )}
                   <Form.Item
                     name="max_data_disk_count"
                     label="Max Data Disk Count"
@@ -199,7 +284,7 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={azureAPIVmSizes.save.loading}
+                loading={azureAPIVmSizes.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

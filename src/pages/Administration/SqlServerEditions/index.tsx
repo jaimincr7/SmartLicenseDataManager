@@ -25,6 +25,8 @@ const ConfigSqlServerEditions: React.FC<IConfigSqlServerEditionsProps> = (props)
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const ConfigSqlServerEditions: React.FC<IConfigSqlServerEditionsProps> = (props)
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearConfigSqlServerEditions());
     };
@@ -83,6 +86,12 @@ const ConfigSqlServerEditions: React.FC<IConfigSqlServerEditionsProps> = (props)
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -92,8 +101,22 @@ const ConfigSqlServerEditions: React.FC<IConfigSqlServerEditionsProps> = (props)
       {addModalVisible && (
         <AddConfigSqlServerEditionsModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/administration/config-sql-server-editions');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddConfigSqlServerEditionsModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/administration/config-sql-server-editions');
           }}
           id={id}

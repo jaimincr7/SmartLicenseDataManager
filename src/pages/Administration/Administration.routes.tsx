@@ -35,6 +35,9 @@ import WindowsServerEditions from './WindowsServerEditions';
 import SqlServerLicense from './SqlServerLicense';
 import AgreementTypes from './AgreementTypes';
 import WindowsServerVersions from './WindowsServerVersions';
+import WindowsServerLicense from './WindowsServerLicense';
+import Cron from './Cron';
+import CronViewLog from './CronViewLog';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -110,6 +113,13 @@ const AdministrationRoutes: React.FC = () => {
         {ability.can(Action.View, Page.User) && (
           <Route exact path={`${match.path}/user/:id`} component={User} />
         )}
+
+        {/* Cron */}
+        {/* {ability.can(Action.View, Page.Cron) && ( */}
+        <Route exact path={`${match.path}/schedule-api-data`} component={Cron} />
+
+        {/* {ability.can(Action.View, Page.Cron) && ( */}
+        <Route exact path={`${match.path}/schedule-api-log/:id`} component={CronViewLog} />
 
         {/* Role */}
         {ability.can(Action.View, Page.Role) && (
@@ -283,6 +293,22 @@ const AdministrationRoutes: React.FC = () => {
             exact
             path={`${match.path}/config-windows-server-versions`}
             component={WindowsServerVersions}
+          />
+        )}
+
+        {/* WindowsServerLicense */}
+        {ability.can(Action.View, Page.ConfigWindowsServerLicense) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-license/:id`}
+            component={WindowsServerLicense}
+          />
+        )}
+        {ability.can(Action.View, Page.ConfigWindowsServerLicense) && (
+          <Route
+            exact
+            path={`${match.path}/config-windows-server-license`}
+            component={WindowsServerLicense}
           />
         )}
 

@@ -2,6 +2,7 @@ import { ISearch } from '../../../common/models/common';
 import { Moment } from 'moment';
 
 export interface IConfigSqlServerLicense {
+  [x: string]: any;
   id?: number;
   product_name: string;
   service_id: number;
