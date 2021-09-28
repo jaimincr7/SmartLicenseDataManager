@@ -14,7 +14,7 @@ import { IStartApiModalProps } from './startApiModal.model';
 const { Option } = Select;
 
 const StartApiModal: React.FC<IStartApiModalProps> = (props) => {
-  const { id, startTime, setShowApi, refreshDataTable, queryParams , frequency, showModal } = props;
+  const { id, startTime, setShowApi, refreshDataTable, queryParams, frequency, showModal } = props;
   const cron = useAppSelector(cronSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
@@ -22,9 +22,9 @@ const StartApiModal: React.FC<IStartApiModalProps> = (props) => {
 
   useEffect(() => {
     dispatch(getCronFormula());
-     const inputValues = {
-      cron_job_frequency_id: frequency
-    }
+    const inputValues = {
+      cron_job_frequency_id: frequency,
+    };
     form.setFieldsValue(inputValues);
   }, []);
 
@@ -168,7 +168,9 @@ const StartApiModal: React.FC<IStartApiModalProps> = (props) => {
             <Button key="submit" type="primary" htmlType="submit" loading={cron.startApi.loading}>
               Set
             </Button>
-            <Button key="back" onClick={()=>setShowApi(false)}>Cancel</Button>
+            <Button key="back" onClick={() => setShowApi(false)}>
+              Cancel
+            </Button>
           </div>
         </Form>
       </Modal>

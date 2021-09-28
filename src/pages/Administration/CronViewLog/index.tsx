@@ -26,18 +26,18 @@ const CronViewLog: React.FC<ICronViewLogProps> = () => {
           <BreadCrumbs pageName={Page.CronViewLogData} />
         </h4>
         <div className="right-title">
-        <Button
-                className="btn-icon"
-                type="primary"
-                onClick={() => history.goBack()}
-                icon={
-                  <em className="anticon">
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-left-arrow.svg`} alt="" />
-                  </em>
-                }
-              >
-                Back
-        </Button>
+          <Button
+            className="btn-icon"
+            type="primary"
+            onClick={() => history.goBack()}
+            icon={
+              <em className="anticon">
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-left-arrow.svg`} alt="" />
+              </em>
+            }
+          >
+            Back
+          </Button>
         </div>
       </div>
       <div className="main-card">

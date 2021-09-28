@@ -568,8 +568,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               }}
             >
               {Object.keys(selectedRowList).length <= 1
-                ? `Update All ${reduxStoreData.search.count}`
-                : `Update Selected ${Object.keys(selectedRowList).length - 1}`}
+                ? `Update All (${reduxStoreData.search.count})`
+                : `Update Selected (${Object.keys(selectedRowList).length - 1})`}
             </Button>
           )}
           {showAddButton && (

@@ -94,34 +94,34 @@ export const cronSlice = createSlice({
     },
 
     // start API
-  [startApi.pending.type]: (state) => {
-    state.startApi.loading = true;
-    state.startApi.messages = [];
-  },
-  [startApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-    state.startApi.loading = false;
-    state.startApi.hasErrors = false;
-    state.startApi.messages = action.payload.messages;
-  },
-  [startApi.rejected.type]: (state) => {
-    state.startApi.loading = false;
-    state.startApi.hasErrors = true;
-  },
+    [startApi.pending.type]: (state) => {
+      state.startApi.loading = true;
+      state.startApi.messages = [];
+    },
+    [startApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.startApi.loading = false;
+      state.startApi.hasErrors = false;
+      state.startApi.messages = action.payload.messages;
+    },
+    [startApi.rejected.type]: (state) => {
+      state.startApi.loading = false;
+      state.startApi.hasErrors = true;
+    },
 
-  // Stop
-  [stopApi.pending.type]: (state) => {
-    state.delete.loading = true;
-    state.delete.messages = [];
-  },
-  [stopApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-    state.delete.loading = false;
-    state.delete.hasErrors = false;
-    state.delete.messages = action.payload.messages;
-  },
-  [stopApi.rejected.type]: (state) => {
-    state.delete.loading = false;
-    state.delete.hasErrors = true;
-  },
+    // Stop
+    [stopApi.pending.type]: (state) => {
+      state.delete.loading = true;
+      state.delete.messages = [];
+    },
+    [stopApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.delete.loading = false;
+      state.delete.hasErrors = false;
+      state.delete.messages = action.payload.messages;
+    },
+    [stopApi.rejected.type]: (state) => {
+      state.delete.loading = false;
+      state.delete.hasErrors = true;
+    },
   },
 });
 
