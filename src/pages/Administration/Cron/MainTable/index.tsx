@@ -227,7 +227,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           title=""
           className="action-btn"
           onClick={() => {
-            history.push(`/administration/cron-view-log/${data.id}`);
+            history.push(`/administration/schedule-api-log/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
@@ -281,6 +281,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         <StartApiModal
           startTime={startTimeDisabled}
           setShowApi={setShowStartApi}
+          showModal={showStartApi}
           id={id}
           refreshDataTable={refreshDataTable}
           queryParams={query}

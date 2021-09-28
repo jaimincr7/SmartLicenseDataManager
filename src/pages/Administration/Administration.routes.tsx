@@ -116,10 +116,10 @@ const AdministrationRoutes: React.FC = () => {
 
         {/* Cron */}
         {/* {ability.can(Action.View, Page.Cron) && ( */}
-        <Route exact path={`${match.path}/sps-api-cron-job`} component={Cron} />
+        <Route exact path={`${match.path}/schedule-api-data`} component={Cron} />
 
         {/* {ability.can(Action.View, Page.Cron) && ( */}
-        <Route exact path={`${match.path}/cron-view-log/:id`} component={CronViewLog} />
+        <Route exact path={`${match.path}/schedule-api-log/:id`} component={CronViewLog} />
 
         {/* Role */}
         {ability.can(Action.View, Page.Role) && (

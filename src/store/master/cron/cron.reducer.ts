@@ -92,9 +92,8 @@ export const cronSlice = createSlice({
       state.search.loading = false;
       state.search.hasErrors = true;
     },
-  },
 
-  // Save
+    // start API
   [startApi.pending.type]: (state) => {
     state.startApi.loading = true;
     state.startApi.messages = [];
@@ -122,6 +121,7 @@ export const cronSlice = createSlice({
   [stopApi.rejected.type]: (state) => {
     state.delete.loading = false;
     state.delete.hasErrors = true;
+  },
   },
 });
 

@@ -29,5 +29,5 @@ export const stopApi = createAsyncThunk('stopApi', async (id?: number) => {
   const response = await cronService.stopApi(id).then((res) => {
     return res.body;
   });
-  return response.data;
+  return response;
 });

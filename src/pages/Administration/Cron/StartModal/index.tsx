@@ -14,7 +14,7 @@ import { IStartApiModalProps } from './startApiModal.model';
 const { Option } = Select;
 
 const StartApiModal: React.FC<IStartApiModalProps> = (props) => {
-  const { id, startTime, setShowApi, refreshDataTable, queryParams , frequency } = props;
+  const { id, startTime, setShowApi, refreshDataTable, queryParams , frequency, showModal } = props;
   const cron = useAppSelector(cronSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
@@ -96,7 +96,7 @@ const StartApiModal: React.FC<IStartApiModalProps> = (props) => {
         wrapClassName="custom-modal"
         title={'Schedule API'}
         centered
-        visible={true}
+        visible={showModal}
         footer={false}
         onCancel={() => {
           setShowApi(false);
@@ -166,9 +166,9 @@ const StartApiModal: React.FC<IStartApiModalProps> = (props) => {
           </Row>
           <div className="btns-block modal-footer">
             <Button key="submit" type="primary" htmlType="submit" loading={cron.startApi.loading}>
-              Apply
+              Set
             </Button>
-            <Button key="back">Cancel</Button>
+            <Button key="back" onClick={()=>setShowApi(false)}>Cancel</Button>
           </div>
         </Form>
       </Modal>
