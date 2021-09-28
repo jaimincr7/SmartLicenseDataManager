@@ -34,6 +34,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const {
     defaultOrderBy,
     showAddButton,
+    showScheduleAllButton,
     showBulkUpdate,
     setShowSelectedListModal,
     globalSearchExist,
@@ -494,7 +495,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const renderCallApiButton = () => {
-    if (showCallApiBtn)
+    if (showCallApiBtn) {
       return (
         <Button
           loading={spsApisState.callAllApi.loading}
@@ -508,6 +509,22 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           Call All Api
         </Button>
       );
+    }
+    if (showScheduleAllButton) {
+      return (
+        <Button
+          loading={spsApisState.callAllApi.loading}
+          className="btn-icon"
+          onClick={() => {
+            if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
+              onRowSelection();
+            }
+          }}
+        >
+          Schedule All
+        </Button>
+      );
+    }
   };
   return (
     <>
@@ -550,7 +567,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                 setShowSelectedListModal(true);
               }}
             >
-              {Object.keys(selectedRowList).length <= 1 ? 'Update All ' : 'Update Selected '}
+              {Object.keys(selectedRowList).length <= 1
+                ? `Update All ${reduxStoreData.search.count}`
+                : `Update Selected ${Object.keys(selectedRowList).length - 1}`}
             </Button>
           )}
           {showAddButton && (

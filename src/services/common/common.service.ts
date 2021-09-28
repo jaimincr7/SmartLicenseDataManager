@@ -18,7 +18,7 @@ class CommonService {
   }
 
   public async getCronFormula(): Promise<IApiResponse<ILookup>> {
-    const url = `/cron-job-formula/lookup/`;
+    const url = `/config-cron-job-frequency/lookup/`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

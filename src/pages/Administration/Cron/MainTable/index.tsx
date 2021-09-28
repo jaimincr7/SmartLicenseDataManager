@@ -1,6 +1,6 @@
-import { Button, Popover } from 'antd';
+import { Popover } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import { useAppSelector } from '../../../../store/app.hooks';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import _ from 'lodash';
 import {
   FilterByDateSwap,
@@ -9,7 +9,7 @@ import {
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
 import { setTableColumnSelection } from '../../../../store/ad/adDevices/adDevices.reducer';
-import { searchCron } from '../../../../store/master/cron/cron.action';
+import { searchCron, stopApi } from '../../../../store/master/cron/cron.action';
 import { clearCronMessages, cronSelector } from '../../../../store/master/cron/cron.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { useHistory } from 'react-router-dom';
@@ -19,21 +19,29 @@ import { IMainTable } from '../../../../common/models/common';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import StartApiModal from '../StartModal';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const cron = useAppSelector(cronSelector);
   const globalLookups = useAppSelector(globalSearchSelector);
   const dataTableRef = useRef(null);
+  const dispatch = useAppDispatch();
   const history = useHistory();
-  const [ showStartApi, setShowStartApi ] = useState(false);
-  const [ startTimeDisabled, setStartTimeDisabled ] = useState(true);
-  const [ id, setId ] = useState(0);
+  const [showStartApi, setShowStartApi] = useState(false);
+  const [startTimeDisabled, setStartTimeDisabled] = useState(true);
+  const [id, setId] = useState(0);
+  const [frequencyId, setFrequencyId] = useState(0);
+  const [query, setQuery] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
       dataTableRef?.current.refreshData();
     },
   }));
+
+  const refreshDataTable = () => {
+    dataTableRef?.current.refreshData();
+  };
 
   const FilterBySwap = (dataIndex: string, form) => {
     return FilterWithSwapOption(dataIndex, cron.search.tableName, form);
@@ -42,15 +50,29 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
-        title: <span className="dragHandler">Api Id</span>,
+        title: <span className="dragHandler">Id</span>,
+        column: 'Id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Api</span>,
         column: 'Api_Id',
         sorter: true,
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('api_id', cron.search.lookups?.sps_apis),
-            dataIndex: 'api_name',
-            key: 'api_name',
+            title: FilterByDropdown('api_id', cron.search.lookups?.api_groups),
+            dataIndex: 'api_group_name',
+            key: 'api_group_name',
             ellipsis: true,
           },
         ],
@@ -98,15 +120,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Formula</span>,
-        column: 'FormulaId',
+        title: <span className="dragHandler">Frequencies</span>,
+        column: 'CronJobFrequencyId',
         sorter: true,
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('formula_id', cron.search.lookups?.bus),
-            dataIndex: 'cron_job_formula_description',
-            key: 'cron_job_formula_description',
+            title: FilterByDropdown(
+              'cron_job_frequency_id',
+              cron.search.lookups?.cron_job_frequencies
+            ),
+            dataIndex: 'cron_job_frequency_description',
+            key: 'cron_job_frequency_description',
             ellipsis: true,
           },
         ],
@@ -141,21 +166,21 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-       {
-         title: <span className="dragHandler">Schedule Time</span>,
-         column: 'ScheduleTime',
-         sorter: true,
-         ellipsis: true,
-         children: [
-           {
-             title: FilterByDateSwap('schedule_time', cron.search.tableName, form),
-             dataIndex: 'schedule_time',
-             key: 'schedule_time',
-             ellipsis: true,
-             render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
-           },
-         ],
-       },
+      {
+        title: <span className="dragHandler">Schedule Time</span>,
+        column: 'ScheduleTime',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDateSwap('schedule_time', cron.search.tableName, form),
+            dataIndex: 'schedule_time',
+            key: 'schedule_time',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+          },
+        ],
+      },
       {
         title: <span className="dragHandler">Status</span>,
         column: 'Status',
@@ -170,26 +195,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-      {
-        title: <span className="dragHandler">Api Url</span>,
-        column: 'Api_Url',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterBySwap('api_url', form),
-            dataIndex: 'api_url',
-            key: 'api_url',
-            ellipsis: true,
-          },
-        ],
-      },
     ];
   };
-
-  // const removeSpsApiJobs = (id: number) => {
-  //   //dispatch(deleteSpsApiJobs(id));
-  // };
 
   const renderActionButton = (data: any) => {
     return (
@@ -199,58 +206,49 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         className="action-btn"
         onClick={(e) => {
           e.preventDefault();
-          if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3)
-            {
-              if(data.status == 'Stopped')
-              {
-                setShowStartApi(true);
-                setId(data.id);
+          if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3) {
+            if (data.status == 'Stopped') {
+              setFrequencyId(data.cron_job_frequency_id);
+              setShowStartApi(true);
+              setId(data.id);
+              if (data.url) {
+                const newURL = new URL(data.url);
+                const urlSearchParams = new URLSearchParams(newURL.search);
+                const params = Object.fromEntries(urlSearchParams?.entries());
+                const editableParams = Object.values(params)?.filter(
+                  (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
+                );
+                if (editableParams?.length > 0) {
+                  setQuery(params);
+                  setStartTimeDisabled(false);
+                }
               }
             }
+            if (data.status == 'Running') {
+              dispatch(stopApi(data.id));
+            }
+          }
         }}
       >
-        {data.status == 'Stopped' ? (
-          <Button type="primary" onClick={(data)=> onStart(data)}>
-          Start!
-        </Button>
-        ) : (
-          <Button type="primary" >
-          Stop!
-        </Button>
-        )}
+        {data.status == 'Stopped' ? <CaretRightOutlined /> : <PauseOutlined />}
       </a>
     );
   };
 
-  const onStart = (data: any) => {
-    if (data.url) {
-      const newURL = new URL(data.url);
-      const urlSearchParams = new URLSearchParams(newURL.search);
-      const params = Object.fromEntries(urlSearchParams?.entries());
-      const editableParams = Object.values(params)?.filter(
-        (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
-      );
-      if (editableParams?.length > 0) {
-        setStartTimeDisabled(false);
-      }
-  }
-  }
-
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {/* <Can I={Action.View} a={Page.SpsApiJobs}>
+      <Can I={Action.View} a={Page.SpsApiJobs}>
         <a
           title=""
           className="action-btn"
           onClick={() => {
-            //setSelectedId(data.id);
-            history.push(`/administration/cron/${data.id}`);
+            history.push(`/administration/cron-view-log/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
         </a>
-      </Can> */}
-     <Can I={Action.Update} a={Page.SpsApiJobs}>
+      </Can>
+      <Can I={Action.Update} a={Page.SpsApiJobs}>
         <a
           hidden
           className="action-btn"
@@ -261,7 +259,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
-      </Can> 
+      </Can>
       {/* <Can I={Action.Delete} a={Page.SpsApiJobs}>
         <Popconfirm title="Delete Record?" onConfirm={() => removeSpsApiJobs(data.id)}>
           <a href="#" title="" className="action-btn">
@@ -294,15 +292,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearCronMessages}
         setTableColumnSelection={setTableColumnSelection}
       />
-      {
-        showStartApi && (
-          <StartApiModal
-            startTime={startTimeDisabled}
-            setShowApi={setShowStartApi}
-            id={id}
-          />
-        )
-      }
+      {showStartApi && (
+        <StartApiModal
+          startTime={startTimeDisabled}
+          setShowApi={setShowStartApi}
+          id={id}
+          refreshDataTable={refreshDataTable}
+          queryParams={query}
+          frequency={frequencyId}
+        />
+      )}
     </>
   );
 };

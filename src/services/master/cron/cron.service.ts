@@ -14,16 +14,23 @@ class CronService {
     });
   }
 
-  public async startApi(searchParams?: IStartApi): Promise<IApiResponse<{}>> {
+  // public async startApi(searchParams?: IStartApi): Promise<any> {
+  //   const url = `${this.ENDPOINT}/start`;
+  //   return request({ url, method: 'POST', data: searchParams }).then((res) => {
+  //     return res.data;
+  //   });
+  // }
+
+  public async startApi(searchParams: IStartApi): Promise<any> {
     const url = `${this.ENDPOINT}/start`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
   }
 
-  public async getCronById(id: number): Promise<any> {
-    const url = `${this.ENDPOINT}/${id}`;
-    return request({ url, method: 'GET' }).then((res) => {
+  public async stopApi(id: number): Promise<any> {
+    const url = `${this.ENDPOINT}/stop/${id}`;
+    return request({ url, method: 'POST' }).then((res) => {
       return res.data;
     });
   }

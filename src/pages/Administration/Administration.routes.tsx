@@ -37,6 +37,7 @@ import AgreementTypes from './AgreementTypes';
 import WindowsServerVersions from './WindowsServerVersions';
 import WindowsServerLicense from './WindowsServerLicense';
 import Cron from './Cron';
+import CronViewLog from './CronViewLog';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -115,10 +116,10 @@ const AdministrationRoutes: React.FC = () => {
 
         {/* Cron */}
         {/* {ability.can(Action.View, Page.Cron) && ( */}
-        <Route exact path={`${match.path}/cron-job-data`} component={Cron} />
+        <Route exact path={`${match.path}/sps-api-cron-job`} component={Cron} />
 
         {/* {ability.can(Action.View, Page.Cron) && ( */}
-        <Route exact path={`${match.path}/cron-job-data/:id`} component={Cron} />
+        <Route exact path={`${match.path}/cron-view-log/:id`} component={CronViewLog} />
 
         {/* Role */}
         {ability.can(Action.View, Page.Role) && (

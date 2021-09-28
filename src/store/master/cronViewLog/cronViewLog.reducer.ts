@@ -1,10 +1,8 @@
 import { booleanLookup } from '../../../common/constants/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
-import { ICron } from '../../../services/master/cron/cron.model';
 import { RootState } from '../../app.model';
-import { searchCron, startApi, stopApi } from './cron.action';
-import { ICronState } from './cron.model';
+import { ICronState } from './cronViewLog.model';
+import { searchCronViewLog } from './cronViewLog.action';
 
 export const initialState: ICronState = {
   search: {
@@ -25,11 +23,6 @@ export const initialState: ICronState = {
     hasErrors: false,
     data: null,
   },
-  startApi: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
   save: {
     loading: false,
     hasErrors: false,
@@ -42,19 +35,18 @@ export const initialState: ICronState = {
   },
 };
 
-export const cronSlice = createSlice({
-  name: 'cron',
+export const cronViewLogSlice = createSlice({
+  name: 'cronViewLog',
   initialState,
   reducers: {
-    clearCron: () => {
+    clearCronViewLog: () => {
       return initialState;
     },
-    clearCronMessages: (state) => {
-      state.startApi.messages = [];
+    clearCronViewLogMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
     },
-    clearCronGetById: (state) => {
+    clearCronViewLogGetById: (state) => {
       state.getById.data = null;
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
@@ -63,10 +55,10 @@ export const cronSlice = createSlice({
   },
   extraReducers: {
     // Search
-    [searchCron.pending.type]: (state) => {
+    [searchCronViewLog.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchCron.fulfilled.type]: (state, action: PayloadAction<ISearchResponse<ICron>>) => {
+    [searchCronViewLog.fulfilled.type]: (state, action: PayloadAction<any>) => {
       const { search_result, ...rest } = action.payload;
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
@@ -88,49 +80,23 @@ export const cronSlice = createSlice({
       }
       state.tableColumnSelection.table_name = search_result.table_name;
     },
-    [searchCron.rejected.type]: (state) => {
+    [searchCronViewLog.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
   },
-
-  // Save
-  [startApi.pending.type]: (state) => {
-    state.startApi.loading = true;
-    state.startApi.messages = [];
-  },
-  [startApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-    state.startApi.loading = false;
-    state.startApi.hasErrors = false;
-    state.startApi.messages = action.payload.messages;
-  },
-  [startApi.rejected.type]: (state) => {
-    state.startApi.loading = false;
-    state.startApi.hasErrors = true;
-  },
-
-  // Stop
-  [stopApi.pending.type]: (state) => {
-    state.delete.loading = true;
-    state.delete.messages = [];
-  },
-  [stopApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-    state.delete.loading = false;
-    state.delete.hasErrors = false;
-    state.delete.messages = action.payload.messages;
-  },
-  [stopApi.rejected.type]: (state) => {
-    state.delete.loading = false;
-    state.delete.hasErrors = true;
-  },
 });
 
 // A selector
-export const cronSelector = (state: RootState) => state.cron;
+export const cronViewLogSelector = (state: RootState) => state.cronViewLog;
 
 // Actions
-export const { clearCron, clearCronMessages, clearCronGetById, setTableColumnSelection } =
-  cronSlice.actions;
+export const {
+  clearCronViewLog,
+  clearCronViewLogMessages,
+  clearCronViewLogGetById,
+  setTableColumnSelection,
+} = cronViewLogSlice.actions;
 
 // The reducer
-export default cronSlice.reducer;
+export default cronViewLogSlice.reducer;

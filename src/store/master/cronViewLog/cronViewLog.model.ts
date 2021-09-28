@@ -16,11 +16,6 @@ export interface ICronState {
     hasErrors: boolean;
     data: ICron;
   };
-  startApi: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
   save: {
     loading: boolean;
     hasErrors: boolean;
