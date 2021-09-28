@@ -1,6 +1,6 @@
 export interface IStartApiModalProps {
   // params: { [key: string]: any };
-  // showModal: boolean;
+  showModal: boolean;
   // handleModalClose: () => void;
   refreshDataTable: () => void;
   // onStartApi: (values: any) => void;
