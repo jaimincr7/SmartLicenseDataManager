@@ -69,7 +69,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Api Id</span>,
+        title: <span className="dragHandler">Api</span>,
         column: 'Api_Id',
         sorter: true,
         ellipsis: true,

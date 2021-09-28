@@ -64,13 +64,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Api</span>,
-        column: 'Api_Id',
+        title: <span className="dragHandler">Api Group</span>,
+        column: 'ApiGroupId',
         sorter: true,
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('api_id', cron.search.lookups?.api_groups),
+            title: FilterByDropdown('api_group_id', cron.search.lookups?.api_groups),
             dataIndex: 'api_group_name',
             key: 'api_group_name',
             ellipsis: true,
@@ -120,7 +120,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Frequencies</span>,
+        title: <span className="dragHandler">Cron Job Frequencies</span>,
         column: 'CronJobFrequencyId',
         sorter: true,
         ellipsis: true,
@@ -161,21 +161,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDateSwap('end_time', cron.search.tableName, form),
             dataIndex: 'end_time',
             key: 'end_time',
-            ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Schedule Time</span>,
-        column: 'ScheduleTime',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterByDateSwap('schedule_time', cron.search.tableName, form),
-            dataIndex: 'schedule_time',
-            key: 'schedule_time',
             ellipsis: true,
             render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
           },
