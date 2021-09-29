@@ -429,10 +429,10 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'vendor_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Vendor ID</Checkbox>
+                      <Checkbox>Vendor</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Vendor ID'
+                    'Vendor'
                   )}
                   <Form.Item name="vendor_id" className="m-0" label="Vendor ID">
                     <Select
