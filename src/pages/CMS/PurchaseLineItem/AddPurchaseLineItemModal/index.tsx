@@ -1,4 +1,16 @@
-import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+} from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -12,8 +24,12 @@ import {
   getCmsCategoryLookup,
   getCmsPurchaseLookup,
   getCurrencyLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
-import { commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmsPurchaseLineItemProps } from './addPurchaseLineItem.model';
 import { ILookup } from '../../../../services/common/common.model';
 import {
@@ -26,6 +42,7 @@ import {
   getCmsPurchaseLineItemById,
   saveCmsPurchaseLineItem,
 } from '../../../../store/cms/purchaseLineItem/purchaseLineItem.action';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -33,9 +50,10 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
   const cmsPurchaseLineItem = useAppSelector(cmsPurchaseLineItemSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -68,7 +86,19 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmsPurchaseLineItem(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmsPurchaseLineItem(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmsPurchaseLineItem.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmsPurchaseLineItem) => {
@@ -105,6 +135,19 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
       dispatch(clearCmsPurchaseLineItemMessages());
     }
   }, [cmsPurchaseLineItem.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && cmsPurchaseLineItem.getById.data) {
@@ -160,9 +203,15 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Purchase</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'purchase_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Purchase</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Purchase'
+                  )}
                   <Form.Item
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                     name="purchase_id"
                     className="m-0"
                     label="Purchase"
@@ -192,12 +241,18 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Category</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'category_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Category</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Category'
+                  )}
                   <Form.Item
                     name="category_id"
                     className="m-0"
                     label="Category"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -224,12 +279,22 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Category Extended</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'category_extended_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Category Extended</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Category Extended'
+                  )}
                   <Form.Item
                     name="category_extended_id"
                     className="m-0"
                     label="Category Extended"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -256,12 +321,18 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Currency</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'currency_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Currency'
+                  )}
                   <Form.Item
                     name="currency_id"
                     className="m-0"
                     label="Currency"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -288,12 +359,18 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Part Number</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'part_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Part Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Part Number'
+                  )}
                   <Form.Item
                     name="part_number"
                     label="Part Number"
                     className="m-0"
-                    rules={[{ max: 100, required: true }]}
+                    rules={[{ max: 100, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -301,12 +378,18 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Name'
+                  )}
                   <Form.Item
                     name="product_name"
                     label="Product Name"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -314,12 +397,18 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Quantity</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'quantity']} valuePropName="checked" noStyle>
+                      <Checkbox>Quantity</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Quantity'
+                  )}
                   <Form.Item
                     name="quantity"
                     label="Quantity"
                     className="m-0"
-                    rules={[{ type: 'number', required: true }]}
+                    rules={[{ type: 'number', required: !isMultiple }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -327,12 +416,18 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Unit Price</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'unit_price']} valuePropName="checked" noStyle>
+                      <Checkbox>Unit Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Unit Price'
+                  )}
                   <Form.Item
                     name="unit_price"
                     label="Unit Price"
                     className="m-0"
-                    rules={[{ type: 'number', required: true }]}
+                    rules={[{ type: 'number', required: !isMultiple }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -340,12 +435,18 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Extended Price</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'extended_price']} valuePropName="checked" noStyle>
+                      <Checkbox>Extended Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Extended Price'
+                  )}
                   <Form.Item
                     name="extended_price"
                     label="Extended Price"
                     className="m-0"
-                    rules={[{ required: true, type: 'number' }]}
+                    rules={[{ required: !isMultiple, type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -353,7 +454,13 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Start Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'start_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Start Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Start Date'
+                  )}
                   <Form.Item name="start_date" label="Start Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -361,7 +468,13 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">End Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'end_date']} valuePropName="checked" noStyle>
+                      <Checkbox>End Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'End Date'
+                  )}
                   <Form.Item name="end_date" label="End Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -373,7 +486,7 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmsPurchaseLineItem.save.loading}
+                loading={cmsPurchaseLineItem.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

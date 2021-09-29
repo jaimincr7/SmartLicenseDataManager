@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -15,10 +15,12 @@ import {
   getCmsVectorLookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -33,6 +35,7 @@ import {
   saveCmsContractAgreement,
 } from '../../../../store/cms/contractAgreement/contractAgreement.action';
 import { ILookup } from '../../../../services/common/common.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -40,9 +43,10 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
   const cmsContractAgreement = useAppSelector(cmsContractAgreementSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -77,7 +81,19 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmsContractAgreement(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmsContractAgreement(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmsContractAgreement.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -148,6 +164,19 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
   }, [cmsContractAgreement.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && cmsContractAgreement.getById.data) {
       const data = cmsContractAgreement.getById.data;
       fillValuesOnEdit(data);
@@ -207,12 +236,18 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -240,7 +275,13 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -268,7 +309,13 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -296,9 +343,19 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Contractual Owner Contact</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'contractual_owner_contact_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Contractual Owner Contact</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Contractual Owner Contact'
+                  )}
                   <Form.Item
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                     name="contractual_owner_contact_id"
                     className="m-0"
                     label="Contractual Owner Contact"
@@ -328,12 +385,22 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Trigger Type</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'trigger_type_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Trigger Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Trigger Type'
+                  )}
                   <Form.Item
                     name="trigger_type_id"
                     className="m-0"
                     label="Trigger Type"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -360,7 +427,13 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Vendor</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'vendor_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Vendor ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Vendor ID'
+                  )}
                   <Form.Item name="vendor_id" className="m-0" label="Vendor ID">
                     <Select
                       allowClear
@@ -387,12 +460,18 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Publisher</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'publisher_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Publisher</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Publisher'
+                  )}
                   <Form.Item
                     name="publisher_id"
                     className="m-0"
                     label="Publisher"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -419,12 +498,18 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Start Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'start_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Start Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Start Date'
+                  )}
                   <Form.Item
                     name="start_date"
                     label="Start Date"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -432,7 +517,13 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">End Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'end_date']} valuePropName="checked" noStyle>
+                      <Checkbox>End Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'End Date'
+                  )}
                   <Form.Item name="end_date" label="End Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -440,12 +531,22 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Transaction Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'transaction_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Transaction Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Transaction Date'
+                  )}
                   <Form.Item
                     name="transaction_date"
                     label="Transaction Date"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -453,7 +554,17 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Contract Number</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'contract_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Contract Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Contract Number'
+                  )}
                   <Form.Item
                     name="contract_number"
                     label="Contract Number"
@@ -466,12 +577,18 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Contract Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'contract_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Contract Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Contract Name'
+                  )}
                   <Form.Item
                     name="contract_name"
                     label="Contract Name"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -479,7 +596,13 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Description</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'description']} valuePropName="checked" noStyle>
+                      <Checkbox>Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Description'
+                  )}
                   <Form.Item name="description" label="Description" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
@@ -491,7 +614,7 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmsContractAgreement.save.loading}
+                loading={cmsContractAgreement.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

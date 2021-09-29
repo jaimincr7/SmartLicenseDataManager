@@ -34,7 +34,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const {
     defaultOrderBy,
     showAddButton,
-    showScheduleAllButton,
     showBulkUpdate,
     setShowSelectedListModal,
     globalSearchExist,
@@ -507,21 +506,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           }}
         >
           Call All Api
-        </Button>
-      );
-    }
-    if (showScheduleAllButton) {
-      return (
-        <Button
-          loading={spsApisState.callAllApi.loading}
-          className="btn-icon"
-          onClick={() => {
-            if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
-              onRowSelection();
-            }
-          }}
-        >
-          Schedule All
         </Button>
       );
     }

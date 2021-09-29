@@ -137,32 +137,6 @@ const StartApiModal: React.FC<IStartApiModalProps> = (props) => {
               </div>
             </Col>
             {!startTime && renderHTml()}
-            {/* <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Start Time</label>
-                <Form.Item
-                  name="startTime"
-                  label="Start Time"
-                  className="m-0"
-                  rules={[{ required: !startTime }]}
-                >
-                  <Input className="form-control" disabled={startTime} />
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">End Time</label>
-                <Form.Item
-                  name="endTime"
-                  label="End Time"
-                  className="m-0"
-                  rules={[{ required: !startTime }]}
-                >
-                  <Input className="form-control" disabled={startTime} />
-                </Form.Item>
-              </div>
-            </Col> */}
           </Row>
           <div className="btns-block modal-footer">
             <Button key="submit" type="primary" htmlType="submit" loading={cron.startApi.loading}>

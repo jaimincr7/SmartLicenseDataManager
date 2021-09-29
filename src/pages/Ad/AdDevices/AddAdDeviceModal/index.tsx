@@ -739,6 +739,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'enabled']} valuePropName="checked" noStyle>
                       <Checkbox>Enabled</Checkbox>
@@ -753,6 +754,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="password_expired" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'password_expired']}
@@ -771,6 +773,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="password_never_expires" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'password_never_expires']}
@@ -789,6 +792,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="inventoried" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'inventoried']} valuePropName="checked" noStyle>
                       <Checkbox>Inventoried</Checkbox>
@@ -803,6 +807,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
                       <Checkbox>Active</Checkbox>
@@ -817,6 +822,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   <Form.Item name="qualified" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'qualified']} valuePropName="checked" noStyle>
                       <Checkbox>Qualified</Checkbox>

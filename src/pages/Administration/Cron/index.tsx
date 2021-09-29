@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { ICronProps } from './cron.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
@@ -8,12 +8,6 @@ import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
 const Cron: React.FC<ICronProps> = () => {
   const dataTableRef = useRef(null);
-
-  useEffect(() => {
-    return () => {
-      //dispatch(clearSPS());
-    };
-  }, []);
 
   return (
     <div className="sqlServer">

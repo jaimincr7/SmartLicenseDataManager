@@ -13,12 +13,6 @@ const CronViewLog: React.FC<ICronViewLogProps> = () => {
 
   const { id: job_id } = useParams<{ id?: string }>();
 
-  {
-    /*const refreshDataTable = () => {
-    dataTableRef?.current.refreshData();
-  };*/
-  }
-
   return (
     <div className="sps">
       <div className="title-block">

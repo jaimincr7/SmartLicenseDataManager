@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -11,10 +11,12 @@ import {
   getCmsContractAgreementLookup,
   getTenantLookup,
   getUserLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -29,6 +31,7 @@ import {
   saveCmsContractAgreementAttachment,
 } from '../../../../store/cms/contractAgreementAttachment/contractAgreementAttachment.action';
 import { ILookup } from '../../../../services/common/common.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -38,9 +41,10 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
   const cmsContractAgreementAttachment = useAppSelector(cmsContractAgreementAttachmentSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -68,7 +72,19 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmsContractAgreementAttachment(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmsContractAgreementAttachment(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmsContractAgreementAttachment.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmsContractAgreementAttachment) => {
@@ -99,6 +115,19 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
       dispatch(clearCmsContractAgreementAttachmentMessages());
     }
   }, [cmsContractAgreementAttachment.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && cmsContractAgreementAttachment.getById.data) {
@@ -146,9 +175,19 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Contract Agreement</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'contract_agreement_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Contract Agreement</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Contract Agreement'
+                  )}
                   <Form.Item
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                     name="contract_agreement_id"
                     className="m-0"
                     label="Contract Agreement"
@@ -178,9 +217,15 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">User</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'user_id']} valuePropName="checked" noStyle>
+                      <Checkbox>User</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'User'
+                  )}
                   <Form.Item
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                     name="user_id"
                     className="m-0"
                     label="User"
@@ -210,12 +255,18 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Original Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'original_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Original Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Original Name'
+                  )}
                   <Form.Item
                     name="original_name"
                     label="Original Name"
                     className="m-0"
-                    rules={[{ max: 510, required: true }]}
+                    rules={[{ max: 510, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -223,12 +274,18 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">File Path</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'file_path']} valuePropName="checked" noStyle>
+                      <Checkbox>File Path</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'File Path'
+                  )}
                   <Form.Item
                     name="file_path"
                     label="File Path"
                     className="m-0"
-                    rules={[{ max: 510, required: true }]}
+                    rules={[{ max: 510, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -236,12 +293,18 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">File Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'file_name']} valuePropName="checked" noStyle>
+                      <Checkbox>File Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'File Name'
+                  )}
                   <Form.Item
                     name="file_name"
                     label="File Name"
                     className="m-0"
-                    rules={[{ max: 510, required: true }]}
+                    rules={[{ max: 510, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -253,7 +316,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmsContractAgreementAttachment.save.loading}
+                loading={cmsContractAgreementAttachment.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

@@ -107,7 +107,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Bu Name</span>,
-        column: 'Bu_Id',
+        column: 'BU_Id',
         sorter: true,
         ellipsis: true,
         children: [
@@ -238,20 +238,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           hidden
           className="action-btn"
           onClick={() => {
-            //setSelectedId(data.id);
             history.push(`/administration/cron/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
-      {/* <Can I={Action.Delete} a={Page.SpsApiJobs}>
-        <Popconfirm title="Delete Record?" onConfirm={() => removeSpsApiJobs(data.id)}>
-          <a href="#" title="" className="action-btn">
-            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-          </a>
-        </Popconfirm>
-      </Can> */}
       {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
         <Popover content={<>Please select global filter first!</>} trigger="click">
           {renderActionButton(data)}
@@ -267,7 +259,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       <DataTable
         ref={dataTableRef}
         showAddButton={false}
-        //setSelectedId={setSelectedId}
         tableAction={tableAction}
         hideExportButton={true}
         globalSearchExist={false}
