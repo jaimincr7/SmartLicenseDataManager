@@ -51,6 +51,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     onCallAllApi,
     setValuesForSelection,
     setNumberOfRecords,
+    isNotCheckBox,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -454,8 +455,15 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       fromIndex = tableColumns.findIndex((x) => x.column === visibleColumns[fromIndex]?.column);
       toIndex = tableColumns.findIndex((x) => x.column === visibleColumns[toIndex]?.column);
       const updatedColumns = [...tableColumns];
-      const item = updatedColumns.splice(fromIndex, 1)[0];
-      updatedColumns.splice(toIndex, 0, item);
+      if(isNotCheckBox)
+      {
+        const item = updatedColumns.splice(fromIndex, 1)[0];
+        updatedColumns.splice(toIndex, 0, item);
+      }
+      else {
+        const item = updatedColumns.splice(fromIndex-1, 1)[0];
+        updatedColumns.splice(toIndex-1, 0, item);
+      }
       setTableColumns(updatedColumns);
       setIsDragged(true);
       setTimeout(() => {
@@ -579,7 +587,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
         <ReactDragListView {...dragProps}>
           <Table
-            rowSelection={rowSelection}
+            rowSelection={ !isNotCheckBox ? rowSelection : null}
             scroll={{ x: true }}
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}
