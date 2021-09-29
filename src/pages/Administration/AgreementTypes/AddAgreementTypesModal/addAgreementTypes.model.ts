@@ -5,4 +5,5 @@ export interface IAddAgreementTypesProps {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   valuesForSelection?: any[];
+  numberOfRecords?: number;
 }

@@ -29,8 +29,15 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
   const agreementTypes = useAppSelector(agreementTypesSelector);
   const dispatch = useAppDispatch();
   const common = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+    numberOfRecords,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
 
@@ -173,7 +180,7 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
                 htmlType="submit"
                 loading={agreementTypes.save.loading || common.save.loading}
               >
-                {submitButtonText}
+                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel

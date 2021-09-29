@@ -61,7 +61,7 @@ const CMSRoutes: React.FC = () => {
         {ability.can(Action.View, Page.CmsVendor) && (
           <Route exact path={`${match.path}/cms-vendor`} component={Vendor} />
         )}
-        
+
         {/* Category Extended */}
         {ability.can(Action.View, Page.CmsCategoryExtended) && (
           <Route

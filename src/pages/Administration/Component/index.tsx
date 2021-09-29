@@ -27,6 +27,7 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [numberOfRecords, setNumberOfRecords] = React.useState(0);
 
   const [id, setId] = React.useState(0);
 
@@ -87,6 +88,7 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
+          setNumberOfRecords={setNumberOfRecords}
           setValuesForSelection={setValuesForSelection}
           setShowSelectedListModal={(state) => {
             setId(0);
@@ -113,6 +115,7 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
       {showSelectedListModal && (
         <AddConfigComponentModal
           showModal={showSelectedListModal}
+          numberOfRecords={numberOfRecords}
           valuesForSelection={valuesForSelection}
           isMultiple={true}
           handleModalClose={() => {

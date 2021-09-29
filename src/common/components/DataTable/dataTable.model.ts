@@ -12,6 +12,7 @@ export interface IDataTable {
   globalSearchExist?: boolean;
   extraSearchData?: { [key: string]: any };
   setSelectedId?: (id: number) => void;
+  setNumberOfRecords?: (id: number) => void;
   getTableColumns: (form: FormInstance<any>) => any[];
   reduxSelector: (state: RootState) => any;
   tableAction?: (_: any, data: any) => JSX.Element;

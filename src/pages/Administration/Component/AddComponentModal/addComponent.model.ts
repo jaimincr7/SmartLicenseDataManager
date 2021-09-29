@@ -5,4 +5,5 @@ export interface IAddConfigComponentProps {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   valuesForSelection?: any[];
+  numberOfRecords?: number;
 }

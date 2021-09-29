@@ -30,8 +30,15 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
   const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+    numberOfRecords,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -173,7 +180,7 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
                 htmlType="submit"
                 loading={configComponent.save.loading || common.save.loading}
               >
-                {submitButtonText}
+                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel

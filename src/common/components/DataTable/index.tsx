@@ -50,6 +50,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     showCallApiBtn,
     onCallAllApi,
     setValuesForSelection,
+    setNumberOfRecords,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -148,6 +149,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       };
       Obj['selectedIds'] = selectedRowList;
       setValuesForSelection(Obj);
+    },
+    getNumberOfRecordsForUpdate() {
+      if (Object.keys(selectedRowList).length <= 1) {
+        setNumberOfRecords(reduxStoreData.search.count);
+      } else {
+        setNumberOfRecords(Object.keys(selectedRowList).length - 1);
+      }
     },
   }));
 

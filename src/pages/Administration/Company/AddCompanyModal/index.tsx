@@ -45,8 +45,15 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+    numberOfRecords,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -432,7 +439,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
                 htmlType="submit"
                 loading={company.save.loading || commonLookups.save.loading}
               >
-                {submitButtonText}
+                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel
