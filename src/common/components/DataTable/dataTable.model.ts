@@ -27,5 +27,5 @@ export interface IDataTable {
   showCallApiBtn?: boolean;
   onCallAllApi?: (tableFilter: any) => void;
   setValuesForSelection?: (val: any) => void;
-  isNotCheckBox?: boolean;
+  disableRowSelection?: boolean;
 }

@@ -144,6 +144,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         globalSearchExist={false}
         hideExportButton={true}
+        disableRowSelection={true}
       />
     </>
   );
