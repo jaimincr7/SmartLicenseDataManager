@@ -245,7 +245,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'asset_type',
             key: 'asset_type',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
           },
         ],
       },
