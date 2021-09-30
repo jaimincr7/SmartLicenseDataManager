@@ -533,6 +533,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_virtual" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_virtual']} valuePropName="checked" noStyle>
                       <Checkbox>Is Virtual</Checkbox>
@@ -547,6 +548,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_vdi" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_vdi']} valuePropName="checked" noStyle>
                       <Checkbox>Is Vdi</Checkbox>
@@ -561,6 +563,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_server" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_server']} valuePropName="checked" noStyle>
                       <Checkbox>Is Server</Checkbox>
@@ -575,6 +578,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_host" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_host']} valuePropName="checked" noStyle>
                       <Checkbox>Is Host</Checkbox>
@@ -589,6 +593,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_tablet" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_tablet']} valuePropName="checked" noStyle>
                       <Checkbox>Is Tablet</Checkbox>
@@ -603,6 +608,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
                   <Form.Item name="is_portable" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_portable']} valuePropName="checked" noStyle>
                       <Checkbox>Is Portable</Checkbox>

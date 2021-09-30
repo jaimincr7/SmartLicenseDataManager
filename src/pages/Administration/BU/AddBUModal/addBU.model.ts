@@ -5,4 +5,5 @@ export interface IAddBUProps {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   valuesForSelection?: any[];
+  numberOfRecords?: number;
 }

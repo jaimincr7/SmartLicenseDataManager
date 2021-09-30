@@ -1,6 +1,6 @@
 import { Popconfirm } from 'antd';
 import _ from 'lodash';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   FilterByDateSwap,
@@ -26,7 +26,7 @@ import {
 import purchaseLineItemService from '../../../../services/cms/purchaseLineItem/purchaseLineItem.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const cmsPurchaseLineItem = useAppSelector(cmsPurchaseLineItemSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -37,6 +37,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return purchaseLineItemService.exportExcelFile(searchData);
@@ -258,6 +264,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchCmsPurchaseLineItem}
         clearTableDataMessages={clearCmsPurchaseLineItemMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection}
+        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
       />
     </>
   );

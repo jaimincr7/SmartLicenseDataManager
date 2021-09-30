@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -14,17 +14,25 @@ import {
   clearCmsContactMessages,
   cmsContactSelector,
 } from '../../../../store/cms/contact/contact.reducer';
-import { getTenantLookup } from '../../../../store/common/common.action';
-import { clearBULookUp, clearCompanyLookUp } from '../../../../store/common/common.reducer';
+import { getTenantLookup, updateMultiple } from '../../../../store/common/common.action';
+import {
+  clearBULookUp,
+  clearCompanyLookUp,
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmsContactProps } from './addContact.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const AddCmsContactModal: React.FC<IAddCmsContactProps> = (props) => {
   const cmsContact = useAppSelector(cmsContactSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -49,7 +57,15 @@ const AddCmsContactModal: React.FC<IAddCmsContactProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmsContact(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmsContact(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsContact.search.tableName)
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmsContact) => {
@@ -76,6 +92,19 @@ const AddCmsContactModal: React.FC<IAddCmsContactProps> = (props) => {
       dispatch(clearCmsContactMessages());
     }
   }, [cmsContact.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && cmsContact.getById.data) {
@@ -121,12 +150,18 @@ const AddCmsContactModal: React.FC<IAddCmsContactProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -134,12 +169,18 @@ const AddCmsContactModal: React.FC<IAddCmsContactProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Email</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'email']} valuePropName="checked" noStyle>
+                      <Checkbox>Email</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Email'
+                  )}
                   <Form.Item
                     name="email"
                     label="Email"
                     className="m-0"
-                    rules={[{ required: true, type: 'email', max: 510 }]}
+                    rules={[{ required: !isMultiple, type: 'email', max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -147,12 +188,18 @@ const AddCmsContactModal: React.FC<IAddCmsContactProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Phone Number</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'phone_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Phone Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Phone Number'
+                  )}
                   <Form.Item
                     name="phone_number"
                     label="Phone Number"
                     className="m-0"
-                    rules={[{ required: true, max: 100 }]}
+                    rules={[{ required: !isMultiple, max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -164,7 +211,7 @@ const AddCmsContactModal: React.FC<IAddCmsContactProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmsContact.save.loading}
+                loading={cmsContact.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>

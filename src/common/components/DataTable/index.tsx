@@ -34,7 +34,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const {
     defaultOrderBy,
     showAddButton,
-    showScheduleAllButton,
     showBulkUpdate,
     setShowSelectedListModal,
     globalSearchExist,
@@ -51,6 +50,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     showCallApiBtn,
     onCallAllApi,
     setValuesForSelection,
+    setNumberOfRecords,
+    disableRowSelection,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -149,6 +150,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       };
       Obj['selectedIds'] = selectedRowList;
       setValuesForSelection(Obj);
+    },
+    getNumberOfRecordsForUpdate() {
+      if (Object.keys(selectedRowList).length <= 1) {
+        setNumberOfRecords(reduxStoreData.search.count);
+      } else {
+        setNumberOfRecords(Object.keys(selectedRowList).length - 1);
+      }
     },
   }));
 
@@ -447,8 +455,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       fromIndex = tableColumns.findIndex((x) => x.column === visibleColumns[fromIndex]?.column);
       toIndex = tableColumns.findIndex((x) => x.column === visibleColumns[toIndex]?.column);
       const updatedColumns = [...tableColumns];
-      const item = updatedColumns.splice(fromIndex, 1)[0];
-      updatedColumns.splice(toIndex, 0, item);
+      if (disableRowSelection) {
+        const item = updatedColumns.splice(fromIndex, 1)[0];
+        updatedColumns.splice(toIndex, 0, item);
+      } else {
+        const item = updatedColumns.splice(fromIndex - 1, 1)[0];
+        updatedColumns.splice(toIndex - 1, 0, item);
+      }
       setTableColumns(updatedColumns);
       setIsDragged(true);
       setTimeout(() => {
@@ -510,21 +523,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         </Button>
       );
     }
-    if (showScheduleAllButton) {
-      return (
-        <Button
-          loading={spsApisState.callAllApi.loading}
-          className="btn-icon"
-          onClick={() => {
-            if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
-              onRowSelection();
-            }
-          }}
-        >
-          Schedule All
-        </Button>
-      );
-    }
   };
   return (
     <>
@@ -566,6 +564,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               onClick={() => {
                 setShowSelectedListModal(true);
               }}
+              disabled={reduxStoreData.search.count == 0}
             >
               {Object.keys(selectedRowList).length <= 1
                 ? `Update All (${reduxStoreData.search.count})`
@@ -587,7 +586,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
         <ReactDragListView {...dragProps}>
           <Table
-            rowSelection={rowSelection}
+            rowSelection={!disableRowSelection ? rowSelection : null}
             scroll={{ x: true }}
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}

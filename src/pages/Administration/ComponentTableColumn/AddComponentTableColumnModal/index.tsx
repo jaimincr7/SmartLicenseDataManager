@@ -35,8 +35,15 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
   const configComponentTableColumn = useAppSelector(configComponentTableColumnSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+    numberOfRecords,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -241,7 +248,7 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
                 htmlType="submit"
                 loading={configComponentTableColumn.save.loading || commonLookups.save.loading}
               >
-                {submitButtonText}
+                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel

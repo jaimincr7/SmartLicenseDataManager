@@ -1,4 +1,16 @@
-import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -6,6 +18,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoProductAttributes } from '../../../../services/hwCisco/ciscoProductAttributes/ciscoProductAttributes.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -13,10 +26,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -37,9 +52,10 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -86,7 +102,19 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCiscoProductAttributes(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCiscoProductAttributes(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            ciscoProductAttributes.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -165,6 +193,19 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
   }, [ciscoProductAttributes.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && ciscoProductAttributes.getById.data) {
       const data = ciscoProductAttributes.getById.data;
       fillValuesOnEdit(data);
@@ -208,12 +249,18 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -241,7 +288,13 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -269,7 +322,13 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -297,7 +356,13 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -305,12 +370,18 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Product ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product ID'
+                  )}
                   <Form.Item
                     name="product_id"
                     className="m-0"
                     label="Product ID"
-                    rules={[{ max: 100, required: true }]}
+                    rules={[{ max: 100, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -318,11 +389,21 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Description</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'product_description']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Product Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Description'
+                  )}
                   <Form.Item
                     name="product_description"
                     className="m-0"
-                    label="Product_Description"
+                    label="Product Description"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -331,7 +412,13 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">LDo Sales</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'l_do_sales']} valuePropName="checked" noStyle>
+                      <Checkbox>LDoSales</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'LDoSales'
+                  )}
                   <Form.Item name="l_do_sales" label="LDoSales" className="m-0">
                     <DatePicker className="w-100" />
                   </Form.Item>
@@ -339,7 +426,13 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">LDo Support</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'l_do_support']} valuePropName="checked" noStyle>
+                      <Checkbox>LDoSupport</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'LDoSupport'
+                  )}
                   <Form.Item name="l_do_support" label="LDoSupport" className="m-0">
                     <DatePicker className="w-100" />
                   </Form.Item>
@@ -347,11 +440,21 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">LDoS Category</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'l_do_s_category']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>LDoS Category</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'LDoS Category'
+                  )}
                   <Form.Item
                     name="l_do_s_category"
                     className="m-0"
-                    label="LDoS_Category"
+                    label="LDoS Category"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -360,7 +463,13 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Date Confirmed</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'date_confirmed']} valuePropName="checked" noStyle>
+                      <Checkbox>Date_Confirmed</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date_Confirmed'
+                  )}
                   <Form.Item name="date_confirmed" label="Date_Confirmed" className="m-0">
                     <DatePicker className="w-100" />
                   </Form.Item>
@@ -368,10 +477,16 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Date Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'date_source']} valuePropName="checked" noStyle>
+                      <Checkbox>Date Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Source'
+                  )}
                   <Form.Item
                     name="date_source"
-                    label="Date_Source"
+                    label="Date Source"
                     className="m-0"
                     rules={[{ max: 100 }]}
                   >
@@ -381,10 +496,16 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Asset Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'asset_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Asset Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Asset Type'
+                  )}
                   <Form.Item
                     name="asset_type"
-                    label="Asset_Type"
+                    label="Asset Type"
                     className="m-0"
                     rules={[{ max: 100 }]}
                   >
@@ -394,10 +515,16 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Type'
+                  )}
                   <Form.Item
                     name="product_type"
-                    label="Product_Type"
+                    label="Product Type"
                     className="m-0"
                     rules={[{ max: 100 }]}
                   >
@@ -407,10 +534,16 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Group</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_group']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Group</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Group'
+                  )}
                   <Form.Item
                     name="product_group"
-                    label="Product_Group"
+                    label="Product Group"
                     className="m-0"
                     rules={[{ max: 100 }]}
                   >
@@ -420,10 +553,16 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Family</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_family']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Family</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Family'
+                  )}
                   <Form.Item
                     name="product_family"
-                    label="Product_Family"
+                    label="Product Family"
                     className="m-0"
                     rules={[{ max: 100 }]}
                   >
@@ -433,10 +572,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Sub Type</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'product_sub_type']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Product SubType</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product SubType'
+                  )}
                   <Form.Item
                     name="product_sub_type"
-                    label="Product_SubType"
+                    label="Product SubType"
                     className="m-0"
                     rules={[{ max: 200 }]}
                   >
@@ -446,10 +595,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Generalized Type</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'generalized_type']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Generalized Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Generalized Type'
+                  )}
                   <Form.Item
                     name="generalized_type"
-                    label="Generalized_Type"
+                    label="Generalized Type"
                     className="m-0"
                     rules={[{ max: 200 }]}
                   >
@@ -459,10 +618,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Software Analysis Category</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'software_analysis_category']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Software Analysis Category</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Software Analysis Category'
+                  )}
                   <Form.Item
                     name="software_analysis_category"
-                    label="Software_Analysis_Category"
+                    label="Software Analysis Category"
                     className="m-0"
                     rules={[{ max: 200 }]}
                   >
@@ -472,10 +641,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Architecture Group</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'architecture_group']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Architecture Group</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Architecture Group'
+                  )}
                   <Form.Item
                     name="architecture_group"
-                    label="Architecture_Group"
+                    label="Architecture Group"
                     className="m-0"
                     rules={[{ max: 200 }]}
                   >
@@ -485,10 +664,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Architecture Sub Group</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'architecture_sub_group']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Architecture SubGroup</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Architecture SubGroup'
+                  )}
                   <Form.Item
                     name="architecture_sub_group"
-                    label="Architecture_SubGroup"
+                    label="Architecture SubGroup"
                     className="m-0"
                     rules={[{ max: 200 }]}
                   >
@@ -498,10 +687,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Coverage Policy</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'coverage_policy']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Coverage Policy</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Coverage Policy'
+                  )}
                   <Form.Item
                     name="coverage_policy"
-                    label="Coverage_Policy"
+                    label="Coverage Policy"
                     className="m-0"
                     rules={[{ max: 100 }]}
                   >
@@ -511,10 +710,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">No Coverage Reason</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'no_coverage_reason']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>No Coverage Reason</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'No Coverage Reason'
+                  )}
                   <Form.Item
                     name="no_coverage_reason"
-                    label="No_Coverage_Reason"
+                    label="No Coverage Reason"
                     className="m-0"
                     rules={[{ max: 100 }]}
                   >
@@ -524,10 +733,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Hardware List Price</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'hardware_list_price']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Hardware List Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Hardware List Price'
+                  )}
                   <Form.Item
                     name="hardware_list_price"
-                    label="Hardware_List_Price"
+                    label="Hardware List Price"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
@@ -537,10 +756,20 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Maintenance List Price</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'maintenance_list_price']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Maintenance List Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Maintenance List Price'
+                  )}
                   <Form.Item
                     name="maintenance_list_price"
-                    label="Maintenance_List_Price"
+                    label="Maintenance List Price"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
@@ -554,7 +783,7 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={ciscoProductAttributes.save.loading}
+                loading={ciscoProductAttributes.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
