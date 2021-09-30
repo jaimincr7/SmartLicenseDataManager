@@ -8,7 +8,7 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
-import { setTableColumnSelection } from '../../../../store/ad/adDevices/adDevices.reducer';
+import { setTableColumnSelection } from '../../../../store/master/cron/cron.reducer';
 import { searchCron, stopApi } from '../../../../store/master/cron/cron.action';
 import { clearCronMessages, cronSelector } from '../../../../store/master/cron/cron.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
