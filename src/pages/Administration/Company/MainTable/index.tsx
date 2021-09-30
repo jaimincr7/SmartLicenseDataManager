@@ -23,7 +23,13 @@ import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setNumberOfRecords,
+  } = props;
   const company = useAppSelector(companySelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -32,6 +38,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   useEffect(() => {
     if (isMultiple) {
       dataTableRef?.current.getValuesForSelection();
+      dataTableRef?.current.getNumberOfRecordsForUpdate();
     }
   }, [isMultiple]);
 
@@ -272,6 +279,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
+        setNumberOfRecords={setNumberOfRecords}
         showBulkUpdate={ability.can(Action.Update, Page.Bu)}
       />
     </>

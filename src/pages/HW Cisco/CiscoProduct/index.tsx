@@ -26,6 +26,8 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -37,6 +39,7 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearCiscoProduct());
     };
@@ -100,6 +103,12 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -111,6 +120,19 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
           showModal={addModalVisible}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/hw-cisco/cisco-product');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddCiscoProductModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/hw-cisco/cisco-product');
           }}
           id={id}

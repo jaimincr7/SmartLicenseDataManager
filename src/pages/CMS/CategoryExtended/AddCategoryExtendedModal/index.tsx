@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -17,10 +17,15 @@ import {
   clearCmsCategoryExtendedMessages,
   cmsCategoryExtendedSelector,
 } from '../../../../store/cms/categoryExtended/categoryExtended.reducer';
-import { getCmsCategoryLookup } from '../../../../store/common/common.action';
-import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
+import { getCmsCategoryLookup, updateMultiple } from '../../../../store/common/common.action';
+import {
+  clearBULookUp,
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IAddCmsCategoryExtendedProps } from './addCategoryExtended.model';
 import { ILookup } from '../../../../services/common/common.model';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -29,9 +34,10 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -55,7 +61,19 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCmsCategoryExtended(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCmsCategoryExtended(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            cmsCategoryExtended.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const fillValuesOnEdit = async (data: ICmsCategoryExtended) => {
@@ -81,6 +99,19 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
       dispatch(clearCmsCategoryExtendedMessages());
     }
   }, [cmsCategoryExtended.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && cmsCategoryExtended.getById.data) {
@@ -125,8 +156,19 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Category</label>
-                  <Form.Item name="category_id" className="m-0" label="Category ID">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'category_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Category ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Category ID'
+                  )}
+                  <Form.Item
+                    name="category_id"
+                    className="m-0"
+                    label="Category ID"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       allowClear
                       loading={commonLookups.cmsCategoryLookup.loading}
@@ -152,8 +194,19 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
-                  <Form.Item name="name" label="Name" className="m-0" rules={[{ max: 510 }]}>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
+                  <Form.Item
+                    name="name"
+                    label="Name"
+                    className="m-0"
+                    rules={[{ required: !isMultiple, max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -164,7 +217,7 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmsCategoryExtended.save.loading}
+                loading={cmsCategoryExtended.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

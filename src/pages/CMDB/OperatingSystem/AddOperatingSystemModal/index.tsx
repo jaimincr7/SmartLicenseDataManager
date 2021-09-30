@@ -256,6 +256,7 @@ const AddCmdbOperatingSystemModal: React.FC<IAddCmdbOperatingSystemProps> = (pro
                   <Form.Item name="is_oem" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_oem']} valuePropName="checked" noStyle>
                       <Checkbox>Is OEM</Checkbox>
@@ -270,6 +271,7 @@ const AddCmdbOperatingSystemModal: React.FC<IAddCmdbOperatingSystemProps> = (pro
                   <Form.Item name="is_server" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_server']} valuePropName="checked" noStyle>
                       <Checkbox>Is Server</Checkbox>

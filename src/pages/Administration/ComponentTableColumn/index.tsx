@@ -27,6 +27,7 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [numberOfRecords, setNumberOfRecords] = React.useState(0);
 
   const [id, setId] = React.useState(0);
 
@@ -87,6 +88,7 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
+          setNumberOfRecords={setNumberOfRecords}
           setValuesForSelection={setValuesForSelection}
           setShowSelectedListModal={(state) => {
             setId(0);
@@ -115,6 +117,7 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
           showModal={showSelectedListModal}
           valuesForSelection={valuesForSelection}
           isMultiple={true}
+          numberOfRecords={numberOfRecords}
           handleModalClose={() => {
             setShowSelectedListModal(false);
             history.push('/administration/config-component-table-column');

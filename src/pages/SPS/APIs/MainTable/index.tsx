@@ -7,7 +7,7 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
-import { setTableColumnSelection } from '../../../../store/ad/adDevices/adDevices.reducer';
+import { setTableColumnSelection } from '../../../../store/sps/spsAPI/spsApi.reducer';
 import {
   callAllApi,
   callApi,

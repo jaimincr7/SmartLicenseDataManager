@@ -26,6 +26,8 @@ const CiscoSpectrum: React.FC<ICiscoSpectrumProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -37,6 +39,7 @@ const CiscoSpectrum: React.FC<ICiscoSpectrumProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearCiscoSpectrum());
     };
@@ -102,6 +105,12 @@ const CiscoSpectrum: React.FC<ICiscoSpectrumProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -111,8 +120,22 @@ const CiscoSpectrum: React.FC<ICiscoSpectrumProps> = (props) => {
       {addModalVisible && (
         <AddCiscoSpectrumModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/hw-cisco/cisco-spectrum');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddCiscoSpectrumModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/hw-cisco/cisco-spectrum');
           }}
           id={id}

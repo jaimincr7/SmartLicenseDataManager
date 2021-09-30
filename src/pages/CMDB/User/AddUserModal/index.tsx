@@ -302,6 +302,7 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                   <Form.Item name="is_service_account" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'is_service_account']}
@@ -320,6 +321,7 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                   <Form.Item name="is_resource" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_resource']} valuePropName="checked" noStyle>
                       <Checkbox>Is Resource</Checkbox>
@@ -334,6 +336,7 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
                   <Form.Item name="in_active_directory" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'in_active_directory']}

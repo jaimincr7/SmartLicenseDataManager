@@ -31,6 +31,7 @@ export enum Page {
   MenuAccessRights = 'menu-access-rights',
   User = 'user',
   Role = 'role',
+  Application = 'application',
 
   TabVCluster = 'tab-v-cluster',
   TabVHost = 'tab-v-host',
@@ -142,4 +143,5 @@ export enum Action {
   RunAllLicenseScenario = 'run_all_license_scenario',
   Select = 'select',
   Call = 'call',
+  Error = 'error_view',
 }

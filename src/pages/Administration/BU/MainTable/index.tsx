@@ -21,7 +21,13 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setNumberOfRecords,
+  } = props;
   const bu = useAppSelector(buSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -36,6 +42,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   useEffect(() => {
     if (isMultiple) {
       dataTableRef?.current.getValuesForSelection();
+      dataTableRef?.current.getNumberOfRecordsForUpdate();
     }
   }, [isMultiple]);
 
@@ -165,6 +172,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchBU}
         clearTableDataMessages={clearBUMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setNumberOfRecords={setNumberOfRecords}
       />
     </>
   );

@@ -343,6 +343,7 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
                   <Form.Item name="is_drs_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_drs_enabled']} valuePropName="checked" noStyle>
                       <Checkbox>Is DRS Enabled</Checkbox>
@@ -357,6 +358,7 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
                   <Form.Item name="is_ha_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_ha_enabled']} valuePropName="checked" noStyle>
                       <Checkbox>Is HA Enabled</Checkbox>

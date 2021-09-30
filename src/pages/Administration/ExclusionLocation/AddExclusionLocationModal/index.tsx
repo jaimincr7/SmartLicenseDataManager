@@ -203,6 +203,7 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
                   <Form.Item name="is_excludable" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'is_excludable']} valuePropName="checked" noStyle>
                       <Checkbox>Is Excludable</Checkbox>

@@ -404,6 +404,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                   <Form.Item name="desktop" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'desktop']} valuePropName="checked" noStyle>
                       <Checkbox>Desktop</Checkbox>
@@ -418,6 +419,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                   <Form.Item name="server" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'server']} valuePropName="checked" noStyle>
                       <Checkbox>Server</Checkbox>
@@ -432,6 +434,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                   <Form.Item name="unknown" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'unknown']} valuePropName="checked" noStyle>
                       <Checkbox>Unknown</Checkbox>
@@ -446,6 +449,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                   <Form.Item name="decom" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'decom']} valuePropName="checked" noStyle>
                       <Checkbox>Decom</Checkbox>

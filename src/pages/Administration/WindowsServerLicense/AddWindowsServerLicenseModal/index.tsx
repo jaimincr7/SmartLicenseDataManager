@@ -405,6 +405,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                   <Form.Item name="includes_windows_server" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'includes_windows_server']}
@@ -423,6 +424,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                   <Form.Item name="alternate_license_type" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'alternate_license_type']}
@@ -441,6 +443,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                   <Form.Item name="includes_sa" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'includes_sa']} valuePropName="checked" noStyle>
                       <Checkbox>Includes SA</Checkbox>
@@ -455,6 +458,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                   <Form.Item name="includes_system_center" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'includes_system_center']}

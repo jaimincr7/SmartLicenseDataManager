@@ -25,6 +25,8 @@ const CmsPurchaseLineItem: React.FC<ICmsPurchaseLineItemProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const CmsPurchaseLineItem: React.FC<ICmsPurchaseLineItemProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearCmsPurchaseLineItem());
     };
@@ -83,6 +86,12 @@ const CmsPurchaseLineItem: React.FC<ICmsPurchaseLineItemProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -92,8 +101,22 @@ const CmsPurchaseLineItem: React.FC<ICmsPurchaseLineItemProps> = (props) => {
       {addModalVisible && (
         <AddCmsPurchaseLineItemModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/cms/cms-purchase-line-item');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddCmsPurchaseLineItemModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/cms/cms-purchase-line-item');
           }}
           id={id}
