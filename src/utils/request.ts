@@ -61,9 +61,9 @@ export const setResponseError = (history) => {
           history.push('/403');
           break;
         case 500:
-          if(ability.can(Action.Error, Page.Application)){
+          if (ability.can(Action.Error, Page.Application)) {
             toast.error(e);
-          }else{
+          } else {
             history.push('/500');
           }
           break;

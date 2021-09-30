@@ -147,7 +147,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoPolicy(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,ciscoPolicy.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoPolicy.search.tableName)
+        )
+      );
     }
   };
 
@@ -496,7 +500,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_child_indicator']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_child_indicator']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent Child Indicator</Checkbox>
                     </Form.Item>
                   ) : (
@@ -534,7 +542,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'quote_service_level']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'quote_service_level']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Quote Service Level</Checkbox>
                     </Form.Item>
                   ) : (
@@ -553,7 +565,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'quote_begin_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'quote_begin_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Quote Begin Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -600,7 +616,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_level_compare']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_level_compare']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Level Compare</Checkbox>
                     </Form.Item>
                   ) : (
@@ -709,7 +729,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'requested_service_level']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'requested_service_level']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Requested Service Level</Checkbox>
                     </Form.Item>
                   ) : (
@@ -728,7 +752,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'duration_exception']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'duration_exception']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Duration Exception</Checkbox>
                     </Form.Item>
                   ) : (
@@ -766,7 +794,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'cancellation_tracking']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'cancellation_tracking']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>CANCELLATION TRACKING</Checkbox>
                     </Form.Item>
                   ) : (
@@ -785,7 +817,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'canceled_recovered_amount']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'canceled_recovered_amount']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>CANCELED RECOVERED AMOUNT</Checkbox>
                     </Form.Item>
                   ) : (
@@ -804,7 +840,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'ineligible_reason']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'ineligible_reason']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Ineligible Reason</Checkbox>
                     </Form.Item>
                   ) : (
@@ -823,7 +863,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'coverage_review']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'coverage_review']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Coverage Review</Checkbox>
                     </Form.Item>
                   ) : (
@@ -842,7 +886,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'coverage_review_category']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'coverage_review_category']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Coverage Review Category</Checkbox>
                     </Form.Item>
                   ) : (
@@ -861,7 +909,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'coverage_policy_exclusion_reason']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'coverage_policy_exclusion_reason']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Coverage Policy Exclusion Reason</Checkbox>
                     </Form.Item>
                   ) : (
@@ -880,7 +932,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'coverage_declined_reason']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'coverage_declined_reason']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Coverage Declined Reason</Checkbox>
                     </Form.Item>
                   ) : (
@@ -899,7 +955,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'coverage_expiration']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'coverage_expiration']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Coverage Expiration</Checkbox>
                     </Form.Item>
                   ) : (
@@ -913,7 +973,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'product_quantity']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'product_quantity']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Product Quantity</Checkbox>
                     </Form.Item>
                   ) : (
@@ -932,7 +996,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_indicator']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_indicator']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Indicator</Checkbox>
                     </Form.Item>
                   ) : (
@@ -970,7 +1038,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_level_desc']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_level_desc']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Level Description</Checkbox>
                     </Form.Item>
                   ) : (
@@ -989,7 +1061,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'contract_status']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'contract_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Contract Status</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1008,7 +1084,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'contract_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'contract_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Contract Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1074,7 +1154,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'maintenance_price']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'maintenance_price']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Maintenance Price</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1131,7 +1215,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_program']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_program']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Program</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1150,7 +1238,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_service_level']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_service_level']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Service Level</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1169,7 +1261,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_service_level_desc']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_service_level_desc']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Service Level Description</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1188,7 +1284,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_contract_status']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_contract_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Contract Status</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1207,7 +1307,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_contract_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_contract_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Contract Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1226,7 +1330,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_start_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_start_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Start Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1240,7 +1348,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_end_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_end_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd End Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1254,7 +1366,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_svc_vendor']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_svc_vendor']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Svc Vendor</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1273,7 +1389,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_maintenance_price']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_maintenance_price']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Maintenance Price</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1292,7 +1412,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_maintenance_po']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_maintenance_po']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Maintenance PO</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1311,7 +1435,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_maintenance_so']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_maintenance_so']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Maintenance SO</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1330,7 +1458,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'second_service_program']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'second_service_program']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>2nd Service Program</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1349,7 +1481,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_renewal_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_renewal_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Renewal Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1368,7 +1504,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_auto_renewal_term']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_auto_renewal_term']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Auto-Renewal Term</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1387,7 +1527,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_billing_frequency']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_billing_frequency']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Billing Frequency</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1406,7 +1550,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_monthly_cost']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_monthly_cost']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Monthly Cost</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1445,7 +1593,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                   </Form.Item>
                   &nbsp;
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'minor_follow_parent']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'minor_follow_parent']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Minor Follow Parent</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1460,7 +1612,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                   </Form.Item>
                   &nbsp;
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'redundant_system']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'redundant_system']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Redundant System</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1479,7 +1635,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                   </Form.Item>
                   &nbsp;
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_device_within_coverage_policy']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_device_within_coverage_policy']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Device Within Coverage Policy</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1508,7 +1668,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'valid_through_l_do_s']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'valid_through_l_do_s']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Valid Through LDoS</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1523,7 +1687,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                   </Form.Item>
                   &nbsp;
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'eligible_for_quoting']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'eligible_for_quoting']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Eligible For Quoting</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1537,7 +1705,11 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'coverage_required']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'coverage_required']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Coverage Required</Checkbox>
                     </Form.Item>
                   ) : (

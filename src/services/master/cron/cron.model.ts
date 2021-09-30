@@ -1,5 +1,4 @@
 import { ISearch } from '../../../common/models/common';
-import { IGlobalSearch } from '../../../store/globalSearch/globalSearch.model';
 
 export interface ISearchCron extends ISearch {
   is_lookup?: boolean;

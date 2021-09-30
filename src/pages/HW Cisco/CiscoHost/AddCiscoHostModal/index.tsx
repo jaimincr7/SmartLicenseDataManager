@@ -89,7 +89,11 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoHost(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,ciscoHost.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoHost.search.tableName)
+        )
+      );
     }
   };
 
@@ -345,7 +349,11 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'child_relationship']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'child_relationship']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Child Relationship</Checkbox>
                     </Form.Item>
                   ) : (
@@ -440,7 +448,11 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_instance_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_instance_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent Instance ID</Checkbox>
                     </Form.Item>
                   ) : (
@@ -459,7 +471,11 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_child_relationship']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_child_relationship']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent / Child Relationship</Checkbox>
                     </Form.Item>
                   ) : (
@@ -492,7 +508,11 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_child_indicator']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_child_indicator']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent Child Indicator</Checkbox>
                     </Form.Item>
                   ) : (
@@ -610,7 +630,11 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'previous_host_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'previous_host_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Previous HostName</Checkbox>
                     </Form.Item>
                   ) : (
@@ -629,7 +653,11 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'network_device_type']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'network_device_type']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Network Device Type</Checkbox>
                     </Form.Item>
                   ) : (

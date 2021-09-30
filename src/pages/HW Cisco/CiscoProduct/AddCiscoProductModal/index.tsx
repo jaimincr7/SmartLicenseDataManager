@@ -123,7 +123,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoProduct(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,ciscoProduct.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoProduct.search.tableName)
+        )
+      );
     }
   };
 
@@ -414,7 +418,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'current_organization']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'current_organization']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Current Organization</Checkbox>
                     </Form.Item>
                   ) : (
@@ -433,7 +441,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'previous_organization']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'previous_organization']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Previous Organization</Checkbox>
                     </Form.Item>
                   ) : (
@@ -452,7 +464,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'responsible_party']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'responsible_party']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Responsible Party</Checkbox>
                     </Form.Item>
                   ) : (
@@ -471,7 +487,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'cisco_install_site_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'cisco_install_site_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Cisco Install Site ID</Checkbox>
                     </Form.Item>
                   ) : (
@@ -490,7 +510,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'cisco_ship_to_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'cisco_ship_to_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Cisco Ship To ID</Checkbox>
                     </Form.Item>
                   ) : (
@@ -585,7 +609,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_instance_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_instance_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent Instance ID</Checkbox>
                     </Form.Item>
                   ) : (
@@ -604,7 +632,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_child_relationship']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_child_relationship']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent / Child Relationship</Checkbox>
                     </Form.Item>
                   ) : (
@@ -656,7 +688,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'install_base_status']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'install_base_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Install Base Status</Checkbox>
                     </Form.Item>
                   ) : (
@@ -694,7 +730,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'zone_assignment']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'zone_assignment']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Zone Assignment</Checkbox>
                     </Form.Item>
                   ) : (
@@ -713,7 +753,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'zone_description']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'zone_description']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Zone Description</Checkbox>
                     </Form.Item>
                   ) : (
@@ -732,7 +776,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'software_license_pak']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'software_license_pak']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Software License PAK</Checkbox>
                     </Form.Item>
                   ) : (
@@ -751,7 +799,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'product_relationship']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'product_relationship']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Product Relationship</Checkbox>
                     </Form.Item>
                   ) : (
@@ -770,7 +822,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_child_indicator']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_child_indicator']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent Child Indicator</Checkbox>
                     </Form.Item>
                   ) : (
@@ -789,7 +845,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'discovery_system_status']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'discovery_system_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Discovery System Status</Checkbox>
                     </Form.Item>
                   ) : (
@@ -822,7 +882,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'corrective_action']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'corrective_action']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Corrective Action</Checkbox>
                     </Form.Item>
                   ) : (
@@ -855,7 +919,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'product_quantity']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'product_quantity']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Product Quantity</Checkbox>
                     </Form.Item>
                   ) : (
@@ -874,7 +942,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'date_data_added']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'date_data_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Date Data Added</Checkbox>
                     </Form.Item>
                   ) : (
@@ -888,7 +960,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'original_data_source']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'original_data_source']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Original Data Source</Checkbox>
                     </Form.Item>
                   ) : (
@@ -907,7 +983,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_update_data_source']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_update_data_source']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Update Data Source</Checkbox>
                     </Form.Item>
                   ) : (
@@ -926,7 +1006,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_update_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_update_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Update Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -978,7 +1062,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'warranty_end_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'warranty_end_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Warranty End Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -992,7 +1080,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'hardware_bill_to']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'hardware_bill_to']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Hardware Bill To</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1043,7 +1135,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
                   </Form.Item>
                   &nbsp;
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'minor_follow_parent']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'minor_follow_parent']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Minor Follow Parent</Checkbox>
                     </Form.Item>
                   ) : (

@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -147,7 +159,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoIB(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,ciscoIB.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoIB.search.tableName)
+        )
+      );
     }
   };
 
@@ -490,7 +506,12 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
                   ) : (
                     'Asset ID'
                   )}
-                  <Form.Item name="asset_id" className="m-0" label="Asset ID" rules={[{ max: 510 }]}>
+                  <Form.Item
+                    name="asset_id"
+                    className="m-0"
+                    label="Asset ID"
+                    rules={[{ max: 510 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -517,7 +538,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'duplicate_record']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'duplicate_record']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Duplicate Record</Checkbox>
                     </Form.Item>
                   ) : (
@@ -536,7 +561,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'duplicate_coverage']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'duplicate_coverage']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Duplicate Coverage</Checkbox>
                     </Form.Item>
                   ) : (
@@ -555,7 +584,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'zone_assignment']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'zone_assignment']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Zone Assignment</Checkbox>
                     </Form.Item>
                   ) : (
@@ -574,7 +607,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'zone_description']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'zone_description']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Zone Description</Checkbox>
                     </Form.Item>
                   ) : (
@@ -612,7 +649,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'instance_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'instance_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Instance Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -631,7 +672,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_serial_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_serial_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent Serial Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -650,7 +695,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'parent_instance_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'parent_instance_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Parent Instance Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -669,7 +718,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'product_relationship']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'product_relationship']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Product Relationship</Checkbox>
                     </Form.Item>
                   ) : (
@@ -707,7 +760,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'product_description']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'product_description']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Product Description</Checkbox>
                     </Form.Item>
                   ) : (
@@ -726,7 +783,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'product_quantity']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'product_quantity']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Product Quantity</Checkbox>
                     </Form.Item>
                   ) : (
@@ -764,7 +825,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'architecture_group']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'architecture_group']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Architecture Group</Checkbox>
                     </Form.Item>
                   ) : (
@@ -783,7 +848,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'architecture_sub_group']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'architecture_sub_group']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Architecture Sub Group</Checkbox>
                     </Form.Item>
                   ) : (
@@ -835,7 +904,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_base_status']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_base_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Base Status</Checkbox>
                     </Form.Item>
                   ) : (
@@ -911,7 +984,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'hardware_list_price']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'hardware_list_price']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Hardware List Price</Checkbox>
                     </Form.Item>
                   ) : (
@@ -930,7 +1007,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'maintenance_list_price']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'maintenance_list_price']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Maintenance List Price</Checkbox>
                     </Form.Item>
                   ) : (
@@ -949,7 +1030,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'ship_to_customer_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'ship_to_customer_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Ship-To Customer Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -968,7 +1053,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'best_available_ship_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'best_available_ship_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Best Available ShipDate</Checkbox>
                     </Form.Item>
                   ) : (
@@ -986,7 +1075,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'shipped_within_5_years']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'shipped_within_5_years']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Shipped Within 5 Years</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1071,7 +1164,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_site_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_site_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Site ID</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1090,7 +1187,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_site_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_site_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Site Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1109,7 +1210,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_site_address_1']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_site_address_1']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Site Address 1</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1128,7 +1233,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_site_city']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_site_city']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Site City</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1147,7 +1256,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_site_state']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_site_state']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Site State</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1166,7 +1279,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_site_province']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_site_province']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Site Province</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1185,7 +1302,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_site_postal_code']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_site_postal_code']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Site Postal Code</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1204,7 +1325,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'installed_site_country']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'installed_site_country']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Installed Site Country</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1223,7 +1348,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'covered_line_status']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'covered_line_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Covered Line Status</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1242,7 +1371,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'coverage_status']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'coverage_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Coverage Status</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1261,7 +1394,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'contract_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'contract_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Contract Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1280,7 +1417,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'contract_bill_to_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'contract_bill_to_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Contract Bill-to Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1299,7 +1440,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'contract_bill_to_country']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'contract_bill_to_country']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Contract Bill-To Country</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1337,7 +1482,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_level_description']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_level_description']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Level Description</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1356,7 +1505,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'service_level_category']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'service_level_category']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Service Level Category</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1375,7 +1528,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'product_coverage_line_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'product_coverage_line_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Product Coverage Line Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1394,7 +1551,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'covered_line_start_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'covered_line_start_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Covered Line Start Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1412,7 +1573,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'covered_line_end_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'covered_line_end_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Covered End Start Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1430,7 +1595,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'expiration_range']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'expiration_range']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Expiration Range</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1449,7 +1618,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'termination_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'termination_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Termination Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1468,13 +1641,21 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_date_of_support']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_date_of_support']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Date of Support</Checkbox>
                     </Form.Item>
                   ) : (
                     'Last Date of Support'
                   )}
-                  <Form.Item name="last_date_of_support" label="Last Date of Support" className="m-0">
+                  <Form.Item
+                    name="last_date_of_support"
+                    label="Last Date of Support"
+                    className="m-0"
+                  >
                     <DatePicker className="w-100" />
                   </Form.Item>
                 </div>
@@ -1482,7 +1663,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'l_do_s_category']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'l_do_s_category']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>LDoS Category</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1520,7 +1705,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'warranty_end_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'warranty_end_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Warranty End Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1539,7 +1728,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'hardware_po_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'hardware_po_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Hardware PO Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1558,7 +1751,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'hardware_so_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'hardware_so_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Hardware SO Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1577,7 +1774,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'maintenance_po_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'maintenance_po_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Maintenance PO Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1596,7 +1797,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'maintenance_so_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'maintenance_so_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Maintenance SO Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1615,7 +1820,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_sale_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_sale_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End Of Sale Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1634,7 +1843,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_routine_failure_analysis_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_routine_failure_analysis_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End Of Routine Failure Analysis Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1653,7 +1866,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_new_service_attachment_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_new_service_attachment_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End of New Service Attachment Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1672,7 +1889,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_service_contract_renewal']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_service_contract_renewal']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End of Service Contract Renewal</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1691,7 +1912,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_sig_releases_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_sig_releases_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End Of Sig Releases Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1710,7 +1935,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_security_support_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_security_support_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End Of Security Support Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1729,7 +1958,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_software_availability_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_software_availability_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End Of Software Availability Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1748,7 +1981,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_software_license_availability_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_software_license_availability_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End Of Software License Availability Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1767,7 +2004,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'end_of_software_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'end_of_software_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>End Of Software Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1785,7 +2026,12 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={ciscoIB.save.loading || commonLookups.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={ciscoIB.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

@@ -564,7 +564,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               onClick={() => {
                 setShowSelectedListModal(true);
               }}
-              disabled={reduxStoreData.search.count==0}
+              disabled={reduxStoreData.search.count == 0}
             >
               {Object.keys(selectedRowList).length <= 1
                 ? `Update All (${reduxStoreData.search.count})`
