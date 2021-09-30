@@ -142,4 +142,5 @@ export enum Action {
   RunAllLicenseScenario = 'run_all_license_scenario',
   Select = 'select',
   Call = 'call',
+  Error = 'error',
 }

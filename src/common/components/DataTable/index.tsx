@@ -455,14 +455,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       fromIndex = tableColumns.findIndex((x) => x.column === visibleColumns[fromIndex]?.column);
       toIndex = tableColumns.findIndex((x) => x.column === visibleColumns[toIndex]?.column);
       const updatedColumns = [...tableColumns];
-      if(disableRowSelection)
-      {
+      if (disableRowSelection) {
         const item = updatedColumns.splice(fromIndex, 1)[0];
         updatedColumns.splice(toIndex, 0, item);
-      }
-      else {
-        const item = updatedColumns.splice(fromIndex-1, 1)[0];
-        updatedColumns.splice(toIndex-1, 0, item);
+      } else {
+        const item = updatedColumns.splice(fromIndex - 1, 1)[0];
+        updatedColumns.splice(toIndex - 1, 0, item);
       }
       setTableColumns(updatedColumns);
       setIsDragged(true);
@@ -566,6 +564,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               onClick={() => {
                 setShowSelectedListModal(true);
               }}
+              disabled={reduxStoreData.search.count==0}
             >
               {Object.keys(selectedRowList).length <= 1
                 ? `Update All (${reduxStoreData.search.count})`
@@ -587,7 +586,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
         <ReactDragListView {...dragProps}>
           <Table
-            rowSelection={ !disableRowSelection ? rowSelection : null}
+            rowSelection={!disableRowSelection ? rowSelection : null}
             scroll={{ x: true }}
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}

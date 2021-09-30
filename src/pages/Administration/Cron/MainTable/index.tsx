@@ -120,7 +120,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Cron Job Frequencies</span>,
+        title: <span className="dragHandler">Schedule Api Frequencies</span>,
         column: 'CronJobFrequencyId',
         sorter: true,
         ellipsis: true,

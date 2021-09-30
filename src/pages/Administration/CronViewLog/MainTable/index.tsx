@@ -18,6 +18,8 @@ import DataTable from '../../../../common/components/DataTable';
 import { Popover } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { IMainTable } from './mainTable.model';
+import { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { job_id } = props;
@@ -55,7 +57,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Cron Data Id</span>,
+        title: <span className="dragHandler">Schedule Api Id</span>,
         column: 'CronDataId',
         sorter: true,
         ellipsis: true,
@@ -139,11 +141,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
+      <Can I={Action.Error} a={Page.CronViewLogData}>
       {data.status == 'Error' && (
         <Popover content={data.comment} trigger="hover">
           {renderActionButton()}
         </Popover>
       )}
+      </Can>
     </div>
   );
 

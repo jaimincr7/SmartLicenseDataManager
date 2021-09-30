@@ -1,10 +1,11 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoHost } from '../../../../services/hwCisco/ciscoHost/ciscoHost.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -12,10 +13,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -36,9 +39,10 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -82,7 +86,11 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCiscoHost(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCiscoHost(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,ciscoHost.search.tableName)));
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -159,6 +167,19 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
   }, [ciscoHost.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && ciscoHost.getById.data) {
       const data = ciscoHost.getById.data;
       fillValuesOnEdit(data);
@@ -202,12 +223,18 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -235,7 +262,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -263,7 +296,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -291,7 +330,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -299,7 +344,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Child Relationship</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'child_relationship']} valuePropName="checked" noStyle>
+                      <Checkbox>Child Relationship</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Child Relationship'
+                  )}
                   <Form.Item
                     name="child_relationship"
                     className="m-0"
@@ -312,7 +363,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Product ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product ID'
+                  )}
                   <Form.Item
                     name="product_id"
                     className="m-0"
@@ -325,7 +382,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Serial Number</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'serial_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Serial Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Serial Number'
+                  )}
                   <Form.Item
                     name="serial_number"
                     className="m-0"
@@ -338,7 +401,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Instance ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'instance_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Instance ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Instance ID'
+                  )}
                   <Form.Item
                     name="instance_id"
                     className="m-0"
@@ -351,7 +420,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Parent SN</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'parent_sn']} valuePropName="checked" noStyle>
+                      <Checkbox>Parent SN</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Parent SN'
+                  )}
                   <Form.Item
                     name="parent_sn"
                     label="Parent SN"
@@ -364,7 +439,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Parent Instance ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'parent_instance_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Parent Instance ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Parent Instance ID'
+                  )}
                   <Form.Item
                     name="parent_instance_id"
                     label="Parent Instance ID"
@@ -377,7 +458,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Parent / Child Relationship</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'parent_child_relationship']} valuePropName="checked" noStyle>
+                      <Checkbox>Parent / Child Relationship</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Parent / Child Relationship'
+                  )}
                   <Form.Item
                     name="parent_child_relationship"
                     label="Parent / Child Relationship"
@@ -390,7 +477,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">UID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'uid']} valuePropName="checked" noStyle>
+                      <Checkbox>UID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'UID'
+                  )}
                   <Form.Item name="uid" label="UID" className="m-0" rules={[{ max: 40 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -398,7 +491,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Parent Child Indicator</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'parent_child_indicator']} valuePropName="checked" noStyle>
+                      <Checkbox>Parent Child Indicator</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Parent Child Indicator'
+                  )}
                   <Form.Item
                     name="parent_child_indicator"
                     label="Parent Child Indicator"
@@ -411,7 +510,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Hosp Code</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'hosp_code']} valuePropName="checked" noStyle>
+                      <Checkbox>Hosp Code</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Hosp Code'
+                  )}
                   <Form.Item
                     name="hosp_code"
                     label="Hosp Code"
@@ -424,7 +529,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Status</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'status']} valuePropName="checked" noStyle>
+                      <Checkbox>Status</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Status'
+                  )}
                   <Form.Item name="status" className="m-0" label="Status">
                     <Input className="form-control " />
                   </Form.Item>
@@ -432,10 +543,16 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">HostName</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'host_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Host Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Host Name'
+                  )}
                   <Form.Item
                     name="host_name"
-                    label="HostName"
+                    label="Host Name"
                     className="m-0"
                     rules={[{ max: 100 }]}
                   >
@@ -445,7 +562,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">IP</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ip']} valuePropName="checked" noStyle>
+                      <Checkbox>IP</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'IP'
+                  )}
                   <Form.Item name="ip" label="IP" className="m-0" rules={[{ max: 100 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -453,7 +576,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SNMP</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'snmp']} valuePropName="checked" noStyle>
+                      <Checkbox>SNMP</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SNMP'
+                  )}
                   <Form.Item name="snmp" label="SNMP" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -461,7 +590,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Stack</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'stack']} valuePropName="checked" noStyle>
+                      <Checkbox>Stack</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Stack'
+                  )}
                   <Form.Item
                     name="stack"
                     label="Stack"
@@ -474,7 +609,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Previous HostName</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'previous_host_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Previous HostName</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Previous HostName'
+                  )}
                   <Form.Item
                     name="previous_host_name"
                     label="Previous HostName"
@@ -487,7 +628,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Network Device Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'network_device_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Network Device Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Network Device Type'
+                  )}
                   <Form.Item
                     name="network_device_type"
                     label="Network Device Type"
@@ -504,7 +651,7 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={ciscoHost.save.loading}
+                loading={ciscoHost.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
