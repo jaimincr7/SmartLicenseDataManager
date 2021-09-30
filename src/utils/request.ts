@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import ability from '../common/ability';
+import { Action, Page } from '../common/constants/pageAction';
 import authService from '../services/auth/auth.service';
 import config from './config';
 
@@ -59,7 +61,11 @@ export const setResponseError = (history) => {
           history.push('/403');
           break;
         case 500:
-          history.push('/500');
+          if(ability.can(Action.Error, Page.Application)){
+            toast.error(e);
+          }else{
+            history.push('/500');
+          }
           break;
         default:
           toast.error(e);
