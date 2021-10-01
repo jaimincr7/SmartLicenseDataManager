@@ -1,10 +1,11 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoSpectrum } from '../../../../services/hwCisco/ciscoSpectrum/ciscoSpectrum.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -12,10 +13,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -36,9 +39,10 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -82,7 +86,19 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCiscoSpectrum(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCiscoSpectrum(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            ciscoSpectrum.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -159,6 +175,19 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
   }, [ciscoSpectrum.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && ciscoSpectrum.getById.data) {
       const data = ciscoSpectrum.getById.data;
       fillValuesOnEdit(data);
@@ -202,12 +231,18 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -235,7 +270,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -263,7 +304,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -291,7 +338,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -299,7 +352,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Condition</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'condition']} valuePropName="checked" noStyle>
+                      <Checkbox>Condition</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Condition'
+                  )}
                   <Form.Item
                     name="condition"
                     className="m-0"
@@ -312,7 +371,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item name="name" className="m-0" label="Name" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -320,7 +385,17 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Network Address</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'network_address']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Network Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Network Address'
+                  )}
                   <Form.Item
                     name="network_address"
                     className="m-0"
@@ -333,7 +408,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">MAC Address</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'mac_address']} valuePropName="checked" noStyle>
+                      <Checkbox>MAC Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'MAC Address'
+                  )}
                   <Form.Item
                     name="mac_address"
                     className="m-0"
@@ -346,7 +427,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Serial Number</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'serial_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Serial Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Serial Number'
+                  )}
                   <Form.Item
                     name="serial_number"
                     label="Serial Number"
@@ -359,7 +446,17 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Successful Poll</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'last_successful_poll']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Successful Poll</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Successful Poll'
+                  )}
                   <Form.Item
                     name="last_successful_poll"
                     label="Last Successful Poll"
@@ -372,10 +469,20 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Running Firmware Tooltip</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'running_firmware_tooltip']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Running Firmware Tooltip</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Running Firmware Tooltip'
+                  )}
                   <Form.Item
                     name="running_firmware_tooltip"
-                    label="Running Firmware_tooltip"
+                    label="Running Firmware Tooltip"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -385,7 +492,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'type']} valuePropName="checked" noStyle>
+                      <Checkbox>Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Type'
+                  )}
                   <Form.Item name="type" label="Type" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -393,7 +506,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Notes</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'notes']} valuePropName="checked" noStyle>
+                      <Checkbox>Notes</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Notes'
+                  )}
                   <Form.Item name="notes" label="Notes" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
@@ -401,7 +520,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Device Family</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'device_family']} valuePropName="checked" noStyle>
+                      <Checkbox>Device Family</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Device Family'
+                  )}
                   <Form.Item
                     name="device_family"
                     label="Device Family"
@@ -414,7 +539,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Capture</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'last_capture']} valuePropName="checked" noStyle>
+                      <Checkbox>Last Capture</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Capture'
+                  )}
                   <Form.Item
                     name="last_capture"
                     className="m-0"
@@ -427,7 +558,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Manufacturer</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'manufacturer']} valuePropName="checked" noStyle>
+                      <Checkbox>Manufacturer</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Manufacturer'
+                  )}
                   <Form.Item
                     name="manufacturer"
                     label="Manufacturer"
@@ -440,7 +577,17 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Model Type Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'model_type_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Model Type Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Model Type Name'
+                  )}
                   <Form.Item
                     name="model_type_name"
                     label="Model Type Name"
@@ -453,7 +600,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Model Class</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'model_class']} valuePropName="checked" noStyle>
+                      <Checkbox>Model Class</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Model Class'
+                  )}
                   <Form.Item
                     name="model_class"
                     label="Model Class"
@@ -466,7 +619,17 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Violated NCM Policies</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'violated_ncm_policies']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Violated NCM Policies</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Violated NCM Policies'
+                  )}
                   <Form.Item
                     name="violated_ncm_policies"
                     label="Violated NCM Policies"
@@ -479,10 +642,20 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Topology Container Tooltip</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'topology_container_tooltip']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Topology Container Tooltip</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Topology Container Tooltip'
+                  )}
                   <Form.Item
                     name="topology_container_tooltip"
-                    label="Topology Container_tooltip"
+                    label="Topology Container Tooltip"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -492,7 +665,13 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Creation Time</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'creation_time']} valuePropName="checked" noStyle>
+                      <Checkbox>Creation Time</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Creation Time'
+                  )}
                   <Form.Item
                     name="creation_time"
                     label="Creation Time"
@@ -509,7 +688,7 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={ciscoSpectrum.save.loading}
+                loading={ciscoSpectrum.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
