@@ -1667,6 +1667,7 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                   <Form.Item name="valid_through_l_do_s" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'valid_through_l_do_s']}
@@ -1704,6 +1705,7 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                   <Form.Item name="coverage_required" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'coverage_required']}

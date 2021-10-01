@@ -1699,6 +1699,7 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
                   <Form.Item name="mapped_to_swss" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'mapped_to_swss']} valuePropName="checked" noStyle>
                       <Checkbox>Mapped To SWSS</Checkbox>
@@ -1713,6 +1714,7 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
                   <Form.Item name="mapped_to_c1" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'mapped_to_c1']} valuePropName="checked" noStyle>
                       <Checkbox>Mapped To C1</Checkbox>

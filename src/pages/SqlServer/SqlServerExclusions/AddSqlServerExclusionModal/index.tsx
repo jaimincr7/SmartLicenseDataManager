@@ -308,7 +308,7 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
                     name="field"
                     label="Field"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -327,7 +327,7 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
                     name="condition"
                     className="m-0"
                     label="Condition"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -346,7 +346,7 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
                     name="value"
                     label="Value"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -376,6 +376,7 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
                   <Form.Item name="enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'enabled']} valuePropName="checked" noStyle>
                       <Checkbox>Enabled</Checkbox>
