@@ -26,6 +26,8 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -37,6 +39,7 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearO365M365AppsUsageUserDetail());
     };
@@ -100,6 +103,12 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -109,8 +118,22 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
       {addModalVisible && (
         <AddO365M365AppsUsageUserDetailModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/o365/o365-m365-apps-usage-user-detail');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddO365M365AppsUsageUserDetailModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/o365/o365-m365-apps-usage-user-detail');
           }}
           id={id}

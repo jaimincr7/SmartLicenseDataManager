@@ -26,6 +26,8 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -37,6 +39,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearO365OneDriveUsage());
     };
@@ -102,6 +105,12 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -111,8 +120,22 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
       {addModalVisible && (
         <AddO365OneDriveUsageModal
           showModal={addModalVisible}
+          isMultiple={false}              
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/o365/o365-one-drive-usage');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddO365OneDriveUsageModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/o365/o365-one-drive-usage');
           }}
           id={id}
