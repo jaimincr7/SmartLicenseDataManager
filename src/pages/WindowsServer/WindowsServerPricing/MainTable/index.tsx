@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
 import {
   setTableColumnSelection,
   clearWindowsServerPricingMessages,
@@ -26,7 +26,7 @@ import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const windowsServerPricing = useAppSelector(windowsServerPricingSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -37,6 +37,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return windowsServerPricingService.exportExcelFile(searchData);
@@ -215,6 +221,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchWindowsServerPricing}
         clearTableDataMessages={clearWindowsServerPricingMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection} 
+        showBulkUpdate={ability.can(Action.Update, Page.WindowsServerPricing)}
       />
     </>
   );

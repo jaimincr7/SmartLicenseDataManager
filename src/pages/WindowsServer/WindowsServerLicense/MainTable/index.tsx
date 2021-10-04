@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef , useEffect} from 'react';
 import {
   setTableColumnSelection,
   clearWindowsServerLicenseMessages,
@@ -10,7 +10,6 @@ import {
   deleteWindowsServerLicense,
   searchWindowsServerLicense,
 } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.action';
-import { IMainTable } from './mainTable.model';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
@@ -20,14 +19,14 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
-import { Can } from '../../../../common/ability';
+import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const windowsServerLicense = useAppSelector(windowsServerLicenseSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -38,6 +37,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return windowsServerLicenseService.exportExcelFile(searchData);
@@ -260,6 +265,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchWindowsServerLicense}
         clearTableDataMessages={clearWindowsServerLicenseMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection} 
+        showBulkUpdate={ability.can(Action.Update, Page.WindowsServerLicense)}
       />
     </>
   );

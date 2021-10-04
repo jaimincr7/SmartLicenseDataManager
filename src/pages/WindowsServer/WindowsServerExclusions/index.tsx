@@ -28,6 +28,8 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -39,6 +41,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearWindowsServerExclusions());
     };
@@ -120,6 +123,12 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -129,8 +138,22 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
       {addModalVisible && (
         <AddWindowsServerExclusionsModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/windows-server/exclusions');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddWindowsServerExclusionsModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/windows-server/exclusions');
           }}
           id={id}

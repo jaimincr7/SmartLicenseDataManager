@@ -1,10 +1,11 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerOverrides } from '../../../../services/sqlServer/sqlServerOverrides/sqlServerOverrides.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -12,10 +13,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -36,9 +39,10 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -71,7 +75,11 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveSqlServerOverrides(inputValues));
+    if (!isMultiple) {
+      dispatch(saveSqlServerOverrides(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,sqlServerOverrides.search.tableName)));
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -137,6 +145,19 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
   }, [sqlServerOverrides.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && sqlServerOverrides.getById.data) {
       const data = sqlServerOverrides.getById.data;
       fillValuesOnEdit(data);
@@ -180,12 +201,18 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -213,7 +240,13 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -241,7 +274,13 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -269,10 +308,16 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Device Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'device_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Device Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Device Name'
+                  )}
                   <Form.Item
                     name="device_name"
-                    label="Device name"
+                    label="Device Name"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >
@@ -282,7 +327,13 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Override Field</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'override_field']} valuePropName="checked" noStyle>
+                      <Checkbox>Override Field</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Override Field'
+                  )}
                   <Form.Item
                     name="override_field"
                     label="Override Field"
@@ -295,7 +346,13 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Override Value</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'override_value']} valuePropName="checked" noStyle>
+                      <Checkbox>Override Value</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Override Value'
+                  )}
                   <Form.Item
                     name="override_value"
                     className="m-0"
@@ -308,7 +365,13 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Version</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'version']} valuePropName="checked" noStyle>
+                      <Checkbox>Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Version'
+                  )}
                   <Form.Item name="version" label="Version" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -316,7 +379,13 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Edition</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'edition']} valuePropName="checked" noStyle>
+                      <Checkbox>Edition</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Edition'
+                  )}
                   <Form.Item name="edition" label="Edition" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -324,7 +393,13 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -335,12 +410,24 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
                   <Form.Item name="enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Enabled</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'enabled']} valuePropName="checked" noStyle>
+                      <Checkbox>Enabled</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Enabled'
+                  )}
                 </div>
               </Col>
               <Col xs={24}>
                 <div className="form-group m-0">
-                  <label className="label">Notes</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'notes']} valuePropName="checked" noStyle>
+                      <Checkbox>Notes</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Notes'
+                  )}
                   <Form.Item name="notes" label="Notes" className="m-0">
                     <Input.TextArea className="form-control" />
                   </Form.Item>
@@ -352,7 +439,7 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={sqlServerOverrides.save.loading}
+                loading={sqlServerOverrides.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

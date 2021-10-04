@@ -62,6 +62,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
+    let process = {
+      company_id: null,
+      bu_id: null,
+    }
+    process = form.getFieldsValue();
+    console.log(process.company_id , process.bu_id);
     form.setFieldsValue({ bu_id: buId });
   };
 

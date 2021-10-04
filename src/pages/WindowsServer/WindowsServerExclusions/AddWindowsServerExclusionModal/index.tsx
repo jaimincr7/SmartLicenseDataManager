@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -9,10 +9,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddWindowsServerExclusionsProps } from './addWindowsServerExclusions.model';
@@ -28,6 +30,7 @@ import {
 } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
 import { Page } from '../../../../common/constants/pageAction';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -36,9 +39,10 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -68,7 +72,11 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveWindowsServerExclusions(inputValues));
+    if (!isMultiple) {
+      dispatch(saveWindowsServerExclusions(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,windowsServerExclusions.search.tableName)));
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -131,6 +139,19 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
   }, [windowsServerExclusions.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && windowsServerExclusions.getById.data) {
       const data = windowsServerExclusions.getById.data;
       fillValuesOnEdit(data);
@@ -174,7 +195,13 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item name="tenant_id" className="m-0" label="Tenant">
                     <Select
                       onChange={handleTenantChange}
@@ -202,7 +229,13 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -230,7 +263,13 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -258,12 +297,18 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Field</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'field']} valuePropName="checked" noStyle>
+                      <Checkbox>Field</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Field'
+                  )}
                   <Form.Item
                     name="field"
                     label="Field"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -271,12 +316,18 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Condition</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'condition']} valuePropName="checked" noStyle>
+                      <Checkbox>Condition</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Condition'
+                  )}
                   <Form.Item
                     name="condition"
                     className="m-0"
                     label="Condition"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -284,12 +335,18 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Value</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'value']} valuePropName="checked" noStyle>
+                      <Checkbox>Value</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Value'
+                  )}
                   <Form.Item
                     name="value"
                     label="Value"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -297,7 +354,13 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Instance Count</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'instance_count']} valuePropName="checked" noStyle>
+                      <Checkbox>Instance Count</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Instance Count'
+                  )}
                   <Form.Item
                     name="instance_count"
                     label="Instance Count"
@@ -313,7 +376,13 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
                   <Form.Item name="enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Enabled</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'enabled']} valuePropName="checked" noStyle>
+                      <Checkbox>Enabled</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Enabled'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -322,7 +391,7 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={windowsServerExclusions.save.loading}
+                loading={windowsServerExclusions.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
