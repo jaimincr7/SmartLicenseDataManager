@@ -268,6 +268,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection} 
         showBulkUpdate={ability.can(Action.Update, Page.WindowsServerLicense)}
+        disableRowSelection={!ability.can(Action.Update, Page.WindowsServerLicense)}
       />
     </>
   );

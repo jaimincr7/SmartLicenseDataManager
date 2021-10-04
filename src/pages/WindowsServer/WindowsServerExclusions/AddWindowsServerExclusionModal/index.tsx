@@ -376,6 +376,7 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
                   <Form.Item name="enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'enabled']} valuePropName="checked" noStyle>
                       <Checkbox>Enabled</Checkbox>

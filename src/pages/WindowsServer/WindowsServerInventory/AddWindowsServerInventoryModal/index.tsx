@@ -254,7 +254,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -731,6 +731,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                   <Form.Item name="ha_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'ha_enabled']} valuePropName="checked" noStyle>
                       <Checkbox>HA Enabled</Checkbox>
@@ -745,6 +746,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                   <Form.Item name="azure_hosted" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'azure_hosted']} valuePropName="checked" noStyle>
                       <Checkbox>Azure Hosted</Checkbox>
@@ -759,6 +761,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                   <Form.Item name="drs_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'drs_enabled']} valuePropName="checked" noStyle>
                       <Checkbox>DRS Enabled</Checkbox>
@@ -773,6 +776,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                   <Form.Item name="exempt" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'exempt']} valuePropName="checked" noStyle>
                       <Checkbox>Exempt</Checkbox>
@@ -787,6 +791,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                   <Form.Item name="sc_exempt" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'sc_exempt']} valuePropName="checked" noStyle>
                       <Checkbox>SC Exempt</Checkbox>
@@ -801,6 +806,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                   <Form.Item name="sc_server" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'sc_server']} valuePropName="checked" noStyle>
                       <Checkbox>SC Server</Checkbox>
@@ -815,6 +821,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                   <Form.Item name="sc_agent" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'sc_agent']} valuePropName="checked" noStyle>
                       <Checkbox>SC Agent</Checkbox>
