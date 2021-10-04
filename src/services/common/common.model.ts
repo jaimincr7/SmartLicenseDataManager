@@ -31,6 +31,13 @@ export interface IDeleteDataset {
   debug?: boolean;
 }
 
+export interface IScheduleDate {
+  table_name: string;
+  tenant_id?: number;
+  company_id?: number;
+  bu_id?: number;
+}
+
 export interface IDatabaseTable {
   name: string;
 }

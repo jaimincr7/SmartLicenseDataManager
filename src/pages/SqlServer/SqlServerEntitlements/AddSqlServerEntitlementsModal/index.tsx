@@ -75,7 +75,15 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
     if (!isMultiple) {
       dispatch(saveSqlServerEntitlements(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,sqlServersEntitlements.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            sqlServersEntitlements.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -192,7 +200,7 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                {isMultiple ? (
+                  {isMultiple ? (
                     <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
                       <Checkbox>Tenant</Checkbox>
                     </Form.Item>

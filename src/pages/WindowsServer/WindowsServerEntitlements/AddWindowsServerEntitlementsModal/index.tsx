@@ -76,7 +76,11 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
     if (!isMultiple) {
       dispatch(saveWindowsServerEntitlements(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,entitlements.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, entitlements.search.tableName)
+        )
+      );
     }
   };
 
@@ -196,7 +200,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                {isMultiple ? (
+                  {isMultiple ? (
                     <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
                       <Checkbox>Tenant</Checkbox>
                     </Form.Item>

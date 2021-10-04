@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -99,7 +111,11 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
     if (!isMultiple) {
       dispatch(saveWindowsServerInventory(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,inventory.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(valuesForSelection, inputValues, inventory.search.tableName)
+        )
+      );
     }
   };
 
@@ -568,7 +584,11 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'operating_system']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'operating_system']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Operating System</Checkbox>
                     </Form.Item>
                   ) : (
@@ -620,7 +640,11 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'line_of_business']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'line_of_business']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Line of Business</Checkbox>
                     </Form.Item>
                   ) : (

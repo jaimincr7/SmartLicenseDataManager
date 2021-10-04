@@ -120,7 +120,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
       {addModalVisible && (
         <AddO365OneDriveUsageModal
           showModal={addModalVisible}
-          isMultiple={false}              
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
             history.push('/o365/o365-one-drive-usage');

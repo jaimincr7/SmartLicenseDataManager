@@ -1,8 +1,12 @@
-import { Button, Col, Form, Modal, Row, Select, DatePicker } from 'antd';
+import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import { useEffect } from 'react';
-import { ILookup } from '../../../../services/common/common.model';
+import { ILookup, IScheduleDate } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getAllCompanyLookup, getBULookup } from '../../../../store/common/common.action';
+import {
+  getAllCompanyLookup,
+  getBULookup,
+  getScheduleDate,
+} from '../../../../store/common/common.action';
 import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { toast } from 'react-toastify';
@@ -35,10 +39,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     dispatch(processData(values));
   };
 
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current > moment().endOf('day');
-  };
+  // const disabledDate = (current) => {
+  //   // Can not select days before today and today
+  //   return current && current > moment().endOf('day');
+  // };
 
   useEffect(() => {
     if (windowsServerExclusions.processData.messages.length > 0) {
@@ -62,12 +66,19 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    // let process = {
-    //   company_id: null,
-    //   bu_id: null,
-    // }
-    // process = form.getFieldsValue();
-    // console.log(process.company_id , process.bu_id);
+    let process = {
+      company_id: null,
+      bu_id: null,
+      tenant_id: null,
+      table_name: '',
+    };
+    process = form.getFieldsValue();
+    const getDataScheduleDate: IScheduleDate = {
+      company_id: process.company_id,
+      bu_id: process.bu_id,
+      table_name: 'Windows Server Exclusions',
+    };
+    dispatch(getScheduleDate(getDataScheduleDate));
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -159,19 +170,39 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 </Form.Item>
               </div>
             </Col>
-            <Col xs={24} sm={12} md={8}>
+            {/* <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date</label>
                 <Form.Item
                   name="selected_date"
-                  label="Selected Date"
                   className="m-0"
+                  label="Selected Date"
                   rules={[{ required: true }]}
                 >
-                  <DatePicker className="w-100" disabledDate={disabledDate} />
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDate.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDate.data.map((option: ILookup) => (
+                      <Option key={option.id} value={option.id}>
+                        {option.name}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </div>
-            </Col>
+            </Col> */}
           </Row>
           <div className="btns-block modal-footer pt-lg">
             <Button

@@ -1,6 +1,12 @@
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
-import { IBulkInsertDataset, IBulkUpdate, IDeleteDataset, ILookup } from './common.model';
+import {
+  IBulkInsertDataset,
+  IBulkUpdate,
+  IDeleteDataset,
+  ILookup,
+  IScheduleDate,
+} from './common.model';
 
 class CommonService {
   public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
@@ -34,6 +40,13 @@ class CommonService {
   public async getBULookup(companyId: number): Promise<IApiResponse<ILookup>> {
     const url = `/bu/lookup/${companyId}`;
     return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getScheduleDate(data: IScheduleDate): Promise<IApiResponse<any>> {
+    const url = `/app/get-date-added`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }

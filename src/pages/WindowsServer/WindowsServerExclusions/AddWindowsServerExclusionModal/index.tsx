@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -75,7 +87,15 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
     if (!isMultiple) {
       dispatch(saveWindowsServerExclusions(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,windowsServerExclusions.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            windowsServerExclusions.search.tableName
+          )
+        )
+      );
     }
   };
 

@@ -77,7 +77,15 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
     if (!isMultiple) {
       dispatch(saveSqlServerPricing(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,sqlServerPricing.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            sqlServerPricing.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -199,7 +207,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                {isMultiple ? (
+                  {isMultiple ? (
                     <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
                       <Checkbox>Tenant</Checkbox>
                     </Form.Item>
@@ -340,7 +348,11 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'agreement_type_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'agreement_type_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Agreement Type</Checkbox>
                     </Form.Item>
                   ) : (
@@ -428,7 +440,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={sqlServerPricing.save.loading || commonLookups.save.loading }
+                loading={sqlServerPricing.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

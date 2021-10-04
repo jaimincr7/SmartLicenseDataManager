@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -66,7 +78,15 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
     if (!isMultiple) {
       dispatch(saveWindowsServerLicense(values));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,values,windowsServerLicense.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            values,
+            windowsServerLicense.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -219,7 +239,12 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="bu_id"
+                    className="m-0"
+                    label="BU"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleBUChange}
                       allowClear
@@ -247,7 +272,11 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'opt_agreement_type']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'opt_agreement_type']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Agreement Type</Checkbox>
                     </Form.Item>
                   ) : (
@@ -283,7 +312,11 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'opt_exclude_non_prod']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'opt_exclude_non_prod']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>OPT Exclude Non Prod</Checkbox>
                     </Form.Item>
                   ) : (
@@ -301,7 +334,11 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'opt_default_to_data_center_on_hosts']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'opt_default_to_data_center_on_hosts']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>OPT Default to DataCenter on Hosts</Checkbox>
                     </Form.Item>
                   ) : (
@@ -315,7 +352,11 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'opt_entitlements']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'opt_entitlements']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>OPT Entitlements</Checkbox>
                     </Form.Item>
                   ) : (

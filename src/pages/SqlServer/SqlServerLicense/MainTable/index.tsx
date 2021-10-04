@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import {
   setTableColumnSelection,
   clearSqlServerLicenseMessages,
@@ -284,7 +284,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearSqlServerLicenseMessages}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
-        setValuesForSelection={setValuesForSelection} 
+        setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SqlServerLicense)}
         disableRowSelection={true}
       />

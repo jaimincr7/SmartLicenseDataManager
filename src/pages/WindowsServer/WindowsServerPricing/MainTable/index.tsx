@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import {
   setTableColumnSelection,
   clearWindowsServerPricingMessages,
@@ -222,7 +222,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearWindowsServerPricingMessages}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
-        setValuesForSelection={setValuesForSelection} 
+        setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.WindowsServerPricing)}
       />
     </>

@@ -54,6 +54,7 @@ import {
   getSpsApiGroupLookup,
   updateMultiple,
   getCronFormula,
+  getScheduleDate,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -75,6 +76,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   buLookup: {
+    data: [],
+    loading: false,
+  },
+  getScheduledDate: {
     data: [],
     loading: false,
   },
@@ -283,6 +288,9 @@ export const commonSlice = createSlice({
     clearBULookUp: (state) => {
       state.buLookup.data = [];
     },
+    clearDateLookup: (state) => {
+      state.getScheduledDate.data = [];
+    },
     clearCommon: () => {
       return initialState;
     },
@@ -343,6 +351,15 @@ export const commonSlice = createSlice({
     [getBULookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.buLookup.data = action.payload;
       state.buLookup.loading = false;
+    },
+
+    // Scheduled Date Multiple
+    [getScheduleDate.pending.type]: (state) => {
+      state.getScheduledDate.loading = true;
+    },
+    [getScheduleDate.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.getScheduledDate.data = action.payload;
+      state.getScheduledDate.loading = false;
     },
 
     // Update Multiple
@@ -838,6 +855,7 @@ export const {
   clearSpsApiGroupsLookup,
   clearSpsApiTypesLookup,
   clearMultipleUpdateMessages,
+  clearDateLookup
 } = commonSlice.actions;
 
 // The reducer
