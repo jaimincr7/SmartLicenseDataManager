@@ -235,7 +235,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   name="sc_version_id"
                   label="SC Version"
                   className="m-0"
-                  rules={[{ max: 255 }]}
+                  rules={[{ type: 'integer' }]}
                 >
                   <InputNumber className="form-control w-100" />
                 </Form.Item>
