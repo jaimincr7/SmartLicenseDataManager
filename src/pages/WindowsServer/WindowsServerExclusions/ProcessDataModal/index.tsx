@@ -1,13 +1,13 @@
 import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import { useEffect } from 'react';
-import { ILookup, IScheduleDate } from '../../../../services/common/common.model';
+import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getAllCompanyLookup,
   getBULookup,
   getScheduleDate,
 } from '../../../../store/common/common.action';
-import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
+import { clearBULookUp, clearDateLookup, commonSelector } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { toast } from 'react-toastify';
 import moment from 'moment';
@@ -16,7 +16,8 @@ import {
   clearWindowsServerExclusionsMessages,
 } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
 import { processData } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.action';
-import { validateMessages } from '../../../../common/constants/common';
+import { Common, validateMessages } from '../../../../common/constants/common';
+import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -32,7 +33,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: moment(),
+    selected_date: null,
   };
 
   const onFinish = (values: any) => {
@@ -58,6 +59,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
+    dispatch(clearDateLookup());
     if (companyId) {
       dispatch(getBULookup(companyId));
     } else {
@@ -66,19 +68,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    let process = {
-      company_id: null,
-      bu_id: null,
-      tenant_id: null,
-      table_name: '',
-    };
-    process = form.getFieldsValue();
-    const getDataScheduleDate: IScheduleDate = {
-      company_id: process.company_id,
-      bu_id: process.bu_id,
-      table_name: 'Windows Server Exclusions',
-    };
-    dispatch(getScheduleDate(getDataScheduleDate));
+    if(buId) {
+      dispatch(getScheduleDate(getScheduleDateHelperLookup(form,windowsServerExclusions.search.tableName)));
+    } else {
+      dispatch(clearDateLookup());
+    }
+
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -86,6 +81,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     dispatch(getAllCompanyLookup());
     return () => {
       dispatch(clearBULookUp());
+      dispatch(clearDateLookup());
     };
   }, [dispatch]);
 
@@ -170,7 +166,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 </Form.Item>
               </div>
             </Col>
-            {/* <Col xs={24} sm={12} md={8}>
+            <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date</label>
                 <Form.Item
@@ -194,15 +190,15 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                         ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
-                    {commonLookups.getScheduledDate.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
+                    {commonLookups.getScheduledDate.data.map((option: any) => (
+                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                        {moment(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}
                   </Select>
                 </Form.Item>
               </div>
-            </Col> */}
+            </Col>
           </Row>
           <div className="btns-block modal-footer pt-lg">
             <Button

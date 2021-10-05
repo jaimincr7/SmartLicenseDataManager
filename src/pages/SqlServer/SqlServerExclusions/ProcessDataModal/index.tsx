@@ -1,9 +1,9 @@
-import { Button, Col, Form, Modal, Row, Select, DatePicker } from 'antd';
+import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getAllCompanyLookup, getBULookup } from '../../../../store/common/common.action';
-import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
+import { getAllCompanyLookup, getBULookup, getScheduleDate } from '../../../../store/common/common.action';
+import { clearBULookUp, clearDateLookup, commonSelector } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { processData } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
 import {
@@ -12,7 +12,8 @@ import {
 } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.reducer';
 import { toast } from 'react-toastify';
 import moment from 'moment';
-import { validateMessages } from '../../../../common/constants/common';
+import { Common, validateMessages } from '../../../../common/constants/common';
+import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -28,17 +29,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: moment(),
+    selected_date: null,
   };
 
   const onFinish = (values: any) => {
     dispatch(processData(values));
   };
 
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current > moment().endOf('day');
-  };
+  // const disabledDate = (current) => {
+  //   // Can not select days before today and today
+  //   return current && current > moment().endOf('day');
+  // };
 
   useEffect(() => {
     if (sqlServerExclusions.processData.messages.length > 0) {
@@ -54,6 +55,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
+    dispatch(clearDateLookup());
     if (companyId) {
       dispatch(getBULookup(companyId));
     } else {
@@ -62,6 +64,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
+    if(buId) {
+      dispatch(getScheduleDate(getScheduleDateHelperLookup(form,sqlServerExclusions.search.tableName)));
+    } else {
+      dispatch(clearDateLookup());
+    }
+
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -69,6 +77,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     dispatch(getAllCompanyLookup());
     return () => {
       dispatch(clearBULookUp());
+      dispatch(clearDateLookup());
     };
   }, [dispatch]);
 
@@ -158,6 +167,39 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 <label className="label">Selected Date</label>
                 <Form.Item
                   name="selected_date"
+                  className="m-0"
+                  label="Selected Date"
+                  rules={[{ required: true }]}
+                >
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDate.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDate.data.map((option: any) => (
+                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                        {moment(option).format(Common.DATEFORMAT)}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </Col>
+            {/* <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
+                <label className="label">Selected Date</label>
+                <Form.Item
+                  name="selected_date"
                   label="Selected Date"
                   className="m-0"
                   rules={[{ required: true }]}
@@ -165,7 +207,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   <DatePicker className="w-100" disabledDate={disabledDate} />
                 </Form.Item>
               </div>
-            </Col>
+            </Col> */}
           </Row>
           <div className="btns-block modal-footer pt-lg">
             <Button

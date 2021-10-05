@@ -33,7 +33,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    date_added: '',
+    date_added: null,
     set_device_states: false,
     set_device_states_inc_non_prod: false,
     set_device_states_by_keyword: false,
@@ -185,7 +185,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   rules={[{ required: true }]}
                 >
                   <Select
-                    placeholder="Select Date Added"
+                    placeholder="Select Date"
                     loading={commonLookups.getScheduledDate.loading}
                     allowClear
                     showSearch

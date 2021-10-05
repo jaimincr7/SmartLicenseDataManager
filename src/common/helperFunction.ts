@@ -52,10 +52,10 @@ export const getScheduleDateHelperLookup = (form: any,tableName: string) => {
     company_id: null,
     bu_id: null,
     tenant_id: null,
-    table_name: '',
   };
   process = form.getFieldsValue();
   const getDataScheduleDate: IScheduleDate = {
+    tenant_id: process.tenant_id,
     company_id: process.company_id,
     bu_id: process.bu_id,
     table_name: tableName,
