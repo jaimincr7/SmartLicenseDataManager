@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Select, Switch } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Row, Select, Switch } from 'antd';
 import { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -7,7 +7,11 @@ import {
   getBULookup,
   getScheduleDate,
 } from '../../../../store/common/common.action';
-import { clearBULookUp, clearDateLookup, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearBULookUp,
+  clearDateLookup,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { processData } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.action';
 import {
@@ -39,7 +43,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     set_device_states_by_keyword: false,
     x_ref_ad: false,
     x_ref_azure: false,
-    set_desktop_non_prod: false,
+    sc_version_apply_all: false,
+    sc_version_id: null,
     update_rv_tools_vm: false,
     update_rv_tools_host: false,
     apply_overrides: false,
@@ -77,12 +82,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    if(buId) {
-      dispatch(getScheduleDate(getScheduleDateHelperLookup(form,windowsServerInventory.search.tableName)));
+    if (buId) {
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form, windowsServerInventory.search.tableName))
+      );
     } else {
       dispatch(clearDateLookup());
     }
-    
+
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -222,6 +229,19 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </div>
             </Col> */}
             <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
+                <label className="label">SC Version</label>
+                <Form.Item
+                  name="sc_version_id"
+                  label="SC Version"
+                  className="m-0"
+                  rules={[{ max: 255 }]}
+                >
+                  <InputNumber className="form-control w-100" />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
                 <Form.Item name="set_device_states" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
@@ -271,10 +291,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="set_desktop_non_prod" className="m-0" valuePropName="checked">
+                <Form.Item name="sc_version_apply_all" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">Set Desktops Non Prod</label>
+                <label className="label">SC Version Apply All</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>

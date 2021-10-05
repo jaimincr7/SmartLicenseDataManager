@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Col,
   DatePicker,
   Form,
@@ -18,6 +19,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IO365MailboxUsage } from '../../../../services/o365/o365MailboxUsage/o365MailboxUsage.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -25,10 +27,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -49,9 +53,10 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -91,7 +96,19 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365MailboxUsage(inputValues));
+    if (!isMultiple) {
+      dispatch(saveO365MailboxUsage(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            o365MailboxUsage.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -173,6 +190,19 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
   }, [o365MailboxUsage.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && o365MailboxUsage.getById.data) {
       const data = o365MailboxUsage.getById.data;
       fillValuesOnEdit(data);
@@ -216,12 +246,18 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -249,7 +285,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -277,7 +319,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -305,7 +353,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Report Refresh Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'report_refresh_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Report Refresh Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Report Refresh Date'
+                  )}
                   <Form.Item name="report_refresh_date" label="Report Refresh Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -313,7 +371,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">User Principal Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>User Principal Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'User Principal Name'
+                  )}
                   <Form.Item
                     name="user_principal_name"
                     label="User Principal Name"
@@ -326,7 +394,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Display Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'display_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Display Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Display Name'
+                  )}
                   <Form.Item
                     name="display_name"
                     className="m-0"
@@ -339,7 +413,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Deleted Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'deleted_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Deleted Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Deleted Date'
+                  )}
                   <Form.Item
                     name="deleted_date"
                     label="Deleted Date"
@@ -352,7 +432,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Created Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'created_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Created Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Created Date'
+                  )}
                   <Form.Item name="created_date" label="Created Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -360,7 +446,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Activity Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Activity Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Activity Date'
+                  )}
                   <Form.Item name="last_activity_date" label="Last Activity Date" className="m-0">
                     <DatePicker className="form-control w-100" disabledDate={disabledDate} />
                   </Form.Item>
@@ -368,7 +464,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Item Count</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'item_count']} valuePropName="checked" noStyle>
+                      <Checkbox>Item Count</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Item Count'
+                  )}
                   <Form.Item
                     name="item_count"
                     label="Item Count"
@@ -381,7 +483,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Storage Used (Byte)</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'storage_used_byte']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Storage Used (Byte)</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Storage Used (Byte)'
+                  )}
                   <Form.Item
                     name="storage_used_byte"
                     label="Storage Used (Byte)"
@@ -394,7 +506,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Issue Warning Quota (Byte)</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'issue_warning_quota_byte']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Issue Warning Quota (Byte)</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Issue Warning Quota (Byte)'
+                  )}
                   <Form.Item
                     name="issue_warning_quota_byte"
                     label="Issue Warning Quota (Byte)"
@@ -407,7 +529,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Prohibit Send Quota (Byte)</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'prohibit_send_quota_byte']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Prohibit Send Quota (Byte)</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Prohibit Send Quota (Byte)'
+                  )}
                   <Form.Item
                     name="prohibit_send_quota_byte"
                     label="Prohibit Send Quota (Byte)"
@@ -420,7 +552,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Prohibit Send/Receive Quota (Byte)</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'prohibit_send_receive_quota_byte']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Prohibit Send/Receive Quota (Byte)</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Prohibit Send/Receive Quota (Byte)'
+                  )}
                   <Form.Item
                     name="prohibit_send_receive_quota_byte"
                     label="Prohibit Send/Receive Quota (Byte)"
@@ -433,7 +575,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Deleted Item Count</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'deleted_item_count']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Deleted Item Count</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Deleted Item Count'
+                  )}
                   <Form.Item
                     name="deleted_item_count"
                     label="Deleted Item Count"
@@ -446,7 +598,17 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Deleted Item Size (Byte)</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'deleted_item_size_byte']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Deleted Item Size (Byte)</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Deleted Item Size (Byte)'
+                  )}
                   <Form.Item
                     name="deleted_item_size_byte"
                     label="Deleted Item Size (Byte)"
@@ -459,7 +621,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Report Period</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'report_period']} valuePropName="checked" noStyle>
+                      <Checkbox>Report Period</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Report Period'
+                  )}
                   <Form.Item
                     name="report_period"
                     label="Report Period"
@@ -475,7 +643,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                   <Form.Item name="is_deleted" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Deleted</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_deleted']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Deleted</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Deleted'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -484,7 +658,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365MailboxUsage.save.loading}
+                loading={o365MailboxUsage.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

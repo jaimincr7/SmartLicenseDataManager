@@ -855,7 +855,7 @@ export const {
   clearSpsApiGroupsLookup,
   clearSpsApiTypesLookup,
   clearMultipleUpdateMessages,
-  clearDateLookup
+  clearDateLookup,
 } = commonSlice.actions;
 
 // The reducer

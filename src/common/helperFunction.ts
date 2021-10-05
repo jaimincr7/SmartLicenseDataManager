@@ -47,7 +47,7 @@ export const getObjectForUpdateMultiple = (
   return objectForSelection;
 };
 
-export const getScheduleDateHelperLookup = (form: any,tableName: string) => {
+export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
   let process = {
     company_id: null,
     bu_id: null,
@@ -61,4 +61,4 @@ export const getScheduleDateHelperLookup = (form: any,tableName: string) => {
     table_name: tableName,
   };
   return getDataScheduleDate;
-}
+};

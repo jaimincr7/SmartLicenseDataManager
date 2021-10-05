@@ -7,7 +7,11 @@ import {
   getBULookup,
   getScheduleDate,
 } from '../../../../store/common/common.action';
-import { clearBULookUp, clearDateLookup, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearBULookUp,
+  clearDateLookup,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { toast } from 'react-toastify';
 import moment from 'moment';
@@ -68,8 +72,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    if(buId) {
-      dispatch(getScheduleDate(getScheduleDateHelperLookup(form,windowsServerExclusions.search.tableName)));
+    if (buId) {
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form, windowsServerExclusions.search.tableName))
+      );
     } else {
       dispatch(clearDateLookup());
     }

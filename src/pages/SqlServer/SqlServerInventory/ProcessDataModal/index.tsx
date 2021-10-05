@@ -7,7 +7,11 @@ import {
   getBULookup,
   getScheduleDate,
 } from '../../../../store/common/common.action';
-import { clearBULookUp, clearDateLookup, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearBULookUp,
+  clearDateLookup,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { processData } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.action';
 import {
@@ -77,12 +81,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    if(buId) {
-      dispatch(getScheduleDate(getScheduleDateHelperLookup(form,sqlServerInventory.search.tableName)));
+    if (buId) {
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form, sqlServerInventory.search.tableName))
+      );
     } else {
       dispatch(clearDateLookup());
     }
-    
+
     form.setFieldsValue({ bu_id: buId });
   };
 

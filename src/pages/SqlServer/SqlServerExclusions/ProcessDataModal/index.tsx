@@ -2,8 +2,16 @@ import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getAllCompanyLookup, getBULookup, getScheduleDate } from '../../../../store/common/common.action';
-import { clearBULookUp, clearDateLookup, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  getAllCompanyLookup,
+  getBULookup,
+  getScheduleDate,
+} from '../../../../store/common/common.action';
+import {
+  clearBULookUp,
+  clearDateLookup,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { processData } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
 import {
@@ -64,8 +72,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    if(buId) {
-      dispatch(getScheduleDate(getScheduleDateHelperLookup(form,sqlServerExclusions.search.tableName)));
+    if (buId) {
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form, sqlServerExclusions.search.tableName))
+      );
     } else {
       dispatch(clearDateLookup());
     }

@@ -53,7 +53,7 @@ class WindowsServerInventoryService {
       return res.data;
     });
   }
-  
+
   public async exportExcelFile(searchParams?: ISearchWindowsServerInventory): Promise<any> {
     const url = `${this.ENDPOINT}/search`;
     return request({

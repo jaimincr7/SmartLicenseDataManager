@@ -126,7 +126,15 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
     if (!isMultiple) {
       dispatch(saveO365M365AppsUsageUserDetail(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,o365M365AppsUsageUserDetail.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            o365M365AppsUsageUserDetail.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -400,7 +408,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'report_refresh_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'report_refresh_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Report Refresh Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -414,7 +426,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'user_principal_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>User Principal Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -434,7 +450,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_activation_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_activation_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Activation Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -452,7 +472,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_activity_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Activity Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -489,7 +513,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_windows']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_windows']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Windows</Checkbox>
                     </Form.Item>
                   ) : (
@@ -503,7 +531,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_mac']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_mac']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on MAC</Checkbox>
                     </Form.Item>
                   ) : (
@@ -517,7 +549,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_mobile']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Mobile</Checkbox>
                     </Form.Item>
                   ) : (
@@ -531,7 +567,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_web']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_web']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Web</Checkbox>
                     </Form.Item>
                   ) : (
@@ -545,7 +585,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_outlook']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_outlook']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Outlook</Checkbox>
                     </Form.Item>
                   ) : (
@@ -559,7 +603,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_word']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_word']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Word</Checkbox>
                     </Form.Item>
                   ) : (
@@ -573,7 +621,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_excel']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_excel']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Excel</Checkbox>
                     </Form.Item>
                   ) : (
@@ -591,7 +643,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_power_point']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_power_point']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Power Point</Checkbox>
                     </Form.Item>
                   ) : (
@@ -605,7 +661,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_one_note']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_one_note']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on One Note</Checkbox>
                     </Form.Item>
                   ) : (
@@ -619,7 +679,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_teams']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_teams']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Teams</Checkbox>
                     </Form.Item>
                   ) : (
@@ -637,7 +701,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_outlook_windows']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_outlook_windows']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Outlook Windows</Checkbox>
                     </Form.Item>
                   ) : (
@@ -655,7 +723,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_word_windows']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_word_windows']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Word Windows</Checkbox>
                     </Form.Item>
                   ) : (
@@ -673,7 +745,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_excel_windows']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_excel_windows']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Excel Windows</Checkbox>
                     </Form.Item>
                   ) : (
@@ -691,7 +767,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_power_point_windows']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_power_point_windows']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Power Point Windows</Checkbox>
                     </Form.Item>
                   ) : (
@@ -709,7 +789,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_one_note_windows']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_one_note_windows']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on One Note Windows</Checkbox>
                     </Form.Item>
                   ) : (
@@ -727,7 +811,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_teams_windows']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_teams_windows']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Teams Windows</Checkbox>
                     </Form.Item>
                   ) : (
@@ -745,7 +833,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_outlook_mac']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_outlook_mac']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Outlook MAC</Checkbox>
                     </Form.Item>
                   ) : (
@@ -759,7 +851,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_word_mac']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_word_mac']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Word MAC</Checkbox>
                     </Form.Item>
                   ) : (
@@ -773,7 +869,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_excel_mac']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_excel_mac']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Ative on Excel MAC</Checkbox>
                     </Form.Item>
                   ) : (
@@ -791,7 +891,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_power_point_mac']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_power_point_mac']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Power Point MAC</Checkbox>
                     </Form.Item>
                   ) : (
@@ -809,7 +913,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_one_note_mac']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_one_note_mac']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on One Note MAC</Checkbox>
                     </Form.Item>
                   ) : (
@@ -823,7 +931,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_teams_mac']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_teams_mac']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Teams MAC</Checkbox>
                     </Form.Item>
                   ) : (
@@ -841,7 +953,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_outlook_mobile']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_outlook_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Outlook Mobile</Checkbox>
                     </Form.Item>
                   ) : (
@@ -859,7 +975,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_word_mobile']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_word_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Word Mobile</Checkbox>
                     </Form.Item>
                   ) : (
@@ -877,7 +997,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_excel_mobile']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_excel_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Excel Mobile</Checkbox>
                     </Form.Item>
                   ) : (
@@ -895,7 +1019,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_power_point_mobile']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_power_point_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Power Point Mobile</Checkbox>
                     </Form.Item>
                   ) : (
@@ -913,7 +1041,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_one_note_mobile']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_one_note_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on One Note Mobile</Checkbox>
                     </Form.Item>
                   ) : (
@@ -931,7 +1063,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_teams_mobile']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_teams_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Teams Mobile</Checkbox>
                     </Form.Item>
                   ) : (
@@ -949,7 +1085,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_outlook_web']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_outlook_web']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Outlook Web</Checkbox>
                     </Form.Item>
                   ) : (
@@ -963,7 +1103,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_word_web']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_word_web']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Word Web</Checkbox>
                     </Form.Item>
                   ) : (
@@ -977,7 +1121,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_excel_web']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_excel_web']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Excel Web</Checkbox>
                     </Form.Item>
                   ) : (
@@ -995,7 +1143,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_power_point_web']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_power_point_web']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Actie on Power Point Web</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1013,7 +1165,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_one_note_web']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_one_note_web']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on One Note Web</Checkbox>
                     </Form.Item>
                   ) : (
@@ -1027,7 +1183,11 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_active_on_teams_web']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_active_on_teams_web']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Active on Teams Web</Checkbox>
                     </Form.Item>
                   ) : (

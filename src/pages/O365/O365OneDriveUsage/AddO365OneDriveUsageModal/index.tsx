@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Col,
   DatePicker,
   Form,
@@ -20,10 +21,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddO365OneDriveUsageProps } from './addO365OneDriveUsage.model';
@@ -39,6 +42,7 @@ import {
 import { IO365OneDriveUsage } from '../../../../services/o365/o365OneDriveUsage/o365OneDriveUsage.model';
 import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -47,9 +51,10 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return isNew ? 'Add OneDrive Usage' : 'Edit OneDrive Usage';
   }, [isNew]);
@@ -81,7 +86,19 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365OneDriveUsage(inputValues));
+    if (!isMultiple) {
+      dispatch(saveO365OneDriveUsage(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            o365OneDriveUsage.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -159,6 +176,19 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
   }, [o365OneDriveUsage.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && o365OneDriveUsage.getById.data) {
       const data = o365OneDriveUsage.getById.data;
       fillValuesOnEdit(data);
@@ -202,7 +232,13 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
@@ -235,7 +271,13 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -263,7 +305,13 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -291,7 +339,17 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Report Refresh Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'report_refresh_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Report Refresh Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Report Refresh Date'
+                  )}
                   <Form.Item name="report_refresh_date" label="Report Refresh Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -299,7 +357,17 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Owner Principal Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'owner_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Owner Principal Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Owner Principal Name'
+                  )}
                   <Form.Item
                     name="owner_principal_name"
                     className="m-0"
@@ -312,7 +380,17 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Owner Display Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'owner_display_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Owner Display Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Owner Display Name'
+                  )}
                   <Form.Item
                     name="owner_display_name"
                     className="m-0"
@@ -325,7 +403,13 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Site URL</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'site_url']} valuePropName="checked" noStyle>
+                      <Checkbox>Site URL</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Site URL'
+                  )}
                   <Form.Item
                     name="site_url"
                     className="m-0"
@@ -338,7 +422,17 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Activity Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Activity Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Activity Date'
+                  )}
                   <Form.Item name="last_activity_date" label="Last Activity Date" className="m-0">
                     <DatePicker className="form-control w-100" disabledDate={disabledDate} />
                   </Form.Item>
@@ -347,7 +441,13 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">File Count</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'file_count']} valuePropName="checked" noStyle>
+                      <Checkbox>File Count</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'File Count'
+                  )}
                   <Form.Item
                     name="file_count"
                     label="File Count"
@@ -360,7 +460,17 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Active File Count</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'active_file_count']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Active File Count</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Active File Count'
+                  )}
                   <Form.Item
                     name="active_file_count"
                     label="Active File Count"
@@ -373,7 +483,17 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Storage Used (Byte)</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'storage_used_byte']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Storage Used (Byte)</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Storage Used (Byte)'
+                  )}
                   <Form.Item
                     name="storage_used_byte"
                     label="Storage Used (Byte)"
@@ -386,7 +506,17 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Storage Allocated (Byte)</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'storage_allocated_byte']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Storage Allocated (Byte)</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Storage Allocated (Byte)'
+                  )}
                   <Form.Item
                     name="storage_allocated_byte"
                     label="Storage Allocated (Byte)"
@@ -399,7 +529,13 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Report Period</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'report_period']} valuePropName="checked" noStyle>
+                      <Checkbox>Report Period</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Report Period'
+                  )}
                   <Form.Item
                     name="report_period"
                     label="Report Period"
@@ -415,7 +551,13 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
                   <Form.Item name="is_deleted" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Deleted</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_deleted']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Deleted</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Deleted'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -424,7 +566,7 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365OneDriveUsage.save.loading}
+                loading={o365OneDriveUsage.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

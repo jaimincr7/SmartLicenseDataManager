@@ -96,7 +96,15 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
     if (!isMultiple) {
       dispatch(saveO365ActivationsUserDetail(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,o365ActivationsUserDetail.search.tableName)));
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            o365ActivationsUserDetail.search.tableName
+          )
+        )
+      );
     }
   };
 
@@ -339,7 +347,11 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'report_refresh_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'report_refresh_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Report Refresh Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -353,7 +365,11 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'user_principal_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>User Principal Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -410,7 +426,11 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_activated_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_activated_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Activated Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -457,7 +477,11 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'windows_10_mobile']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'windows_10_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Windows 10 Mobile</Checkbox>
                     </Form.Item>
                   ) : (
@@ -516,7 +540,11 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'activated_on_shared_computer']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'activated_on_shared_computer']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Activated on Shared Computer</Checkbox>
                     </Form.Item>
                   ) : (

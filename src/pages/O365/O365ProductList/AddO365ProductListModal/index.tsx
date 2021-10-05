@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IO365ProductList } from '../../../../services/o365/o365ProductList/o365ProductList.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -12,10 +13,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -36,9 +39,10 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -68,7 +72,19 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365ProductList(inputValues));
+    if (!isMultiple) {
+      dispatch(saveO365ProductList(inputValues));
+    } else {
+      dispatch(
+        updateMultiple(
+          getObjectForUpdateMultiple(
+            valuesForSelection,
+            inputValues,
+            o365ProductList.search.tableName
+          )
+        )
+      );
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -129,6 +145,19 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
       dispatch(clearO365ProductListMessages());
     }
   }, [o365ProductList.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && o365ProductList.getById.data) {

@@ -49,7 +49,8 @@ export interface IProcessData {
   set_device_states_by_keyword?: boolean;
   x_ref_ad?: boolean;
   x_ref_azure?: boolean;
-  set_desktop_non_prod?: boolean;
+  sc_version_apply_all?: boolean;
+  sc_version_id?: number;
   update_rv_tools_vm?: boolean;
   update_rv_tools_host?: boolean;
   apply_overrides?: boolean;
