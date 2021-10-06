@@ -1,10 +1,11 @@
-import { Button, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IO365Subscriptions } from '../../../../services/o365/o365Subscriptions/o365Subscriptions.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -14,10 +15,12 @@ import {
   getCurrencyLookup,
   getO365ProductsLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -38,9 +41,10 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || commonLookups.save.loading ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -71,7 +75,11 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365Subscriptions(inputValues));
+    if (!isMultiple) {
+      dispatch(saveO365Subscriptions(inputValues));
+    } else {
+      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,o365Subscriptions.search.tableName)));
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -133,6 +141,19 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
   }, [o365Subscriptions.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && o365Subscriptions.getById.data) {
       const data = o365Subscriptions.getById.data;
       fillValuesOnEdit(data);
@@ -178,12 +199,18 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -211,7 +238,13 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -239,7 +272,13 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -266,7 +305,13 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Currency</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'currency_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Currency'
+                  )}
                   <Form.Item name="currency_id" className="m-0" label="Currency">
                     <Select
                       loading={commonLookups.currencyLookup.loading}
@@ -293,8 +338,14 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product</label>
-                  <Form.Item name="license_id" className="m-0" label="product">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'license_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Product</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product'
+                  )}
+                  <Form.Item name="license_id" className="m-0" label="Product">
                     <Select
                       loading={commonLookups.o365ProductsLookup.loading}
                       allowClear
@@ -320,10 +371,16 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Price</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'price']} valuePropName="checked" noStyle>
+                      <Checkbox>Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Price'
+                  )}
                   <Form.Item
                     name="price"
-                    label="price"
+                    label="Price"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
@@ -333,10 +390,16 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">ValidQty</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'valid_qty']} valuePropName="checked" noStyle>
+                      <Checkbox>Valid Qty</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Valid Qty'
+                  )}
                   <Form.Item
                     name="valid_qty"
-                    label="valid_qty"
+                    label="Valid Qty"
                     className="m-0"
                     rules={[{ type: 'integer' }]}
                   >
@@ -350,7 +413,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365Subscriptions.save.loading}
+                loading={o365Subscriptions.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

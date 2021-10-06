@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -203,12 +203,18 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -236,7 +242,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -264,7 +276,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -292,7 +310,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Title</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_title']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Title</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Title'
+                  )}
                   <Form.Item
                     name="product_title"
                     label="Product Title"
@@ -305,7 +329,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Total Licenses</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'total_licenses']} valuePropName="checked" noStyle>
+                      <Checkbox>Total Licenses</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Total Licenses'
+                  )}
                   <Form.Item
                     name="total_licenses"
                     label="Total Licenses"
@@ -318,7 +348,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Expired Licenses</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'expired_licenses']} valuePropName="checked" noStyle>
+                      <Checkbox>Expired Licenses</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Expired Licenses'
+                  )}
                   <Form.Item
                     name="expired_licenses"
                     label="Expired Licenses"
@@ -331,7 +367,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Assigned Licenses</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'assigned_licenses']} valuePropName="checked" noStyle>
+                      <Checkbox>Assigned Licenses</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Assigned Licenses'
+                  )}
                   <Form.Item
                     name="assigned_licenses"
                     label="Assigned Licenses"
@@ -344,7 +386,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Status Message</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'status_message']} valuePropName="checked" noStyle>
+                      <Checkbox>Status Message</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Status Message'
+                  )}
                   <Form.Item
                     name="status_message"
                     className="m-0"
@@ -361,7 +409,7 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365ProductList.save.loading}
+                loading={o365ProductList.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
