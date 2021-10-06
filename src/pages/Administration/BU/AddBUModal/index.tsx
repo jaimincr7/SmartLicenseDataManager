@@ -70,11 +70,14 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveBU(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, bu.search.tableName)
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        bu.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 
@@ -265,6 +268,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
+                  &nbsp;
                   &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
