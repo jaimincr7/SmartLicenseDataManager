@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -22,14 +22,19 @@ import {
 } from '../../../../store/powerBiReports/configuration/configuration.reducer';
 import { IAddConfigurationProps } from './addConfiguration.model';
 import { getGroups } from './../../../../store/powerBiReports/configuration/configuration.action';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
 
 const { Option } = Select;
 
 const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
   const configuration = useAppSelector(configurationSelector);
+  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id ? false : true;
   const title = useMemo(() => {
@@ -59,7 +64,19 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
       embedded_url: form.getFieldValue('embedded_url'),
       id: id ? +id : null,
     };
-    dispatch(saveConfiguration(inputValues));
+    if (!isMultiple) {
+      dispatch(saveConfiguration(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configuration.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
+    }
   };
 
   const fillValuesOnEdit = async (data: IConfiguration) => {
@@ -87,6 +104,19 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
       dispatch(clearConfigurationMessages());
     }
   }, [configuration.save.messages]);
+
+  useEffect(() => {
+    if (common.save.messages.length > 0) {
+      if (common.save.hasErrors) {
+        toast.error(common.save.messages.join(' '));
+      } else {
+        toast.success(common.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [common.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && configuration.getById.data) {
@@ -146,7 +176,13 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Workspace</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'work_space_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Workspace</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Workspace'
+                  )}
                   <Form.Item name="work_space_id" className="m-0" label="Workspace">
                     <Select
                       onChange={handleWorkspaceChange}
@@ -174,7 +210,13 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Report</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'pb_report_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Report</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Report'
+                  )}
                   <Form.Item name="pb_report_id" className="m-0" label="Report">
                     <Select
                       onChange={handleReportChange}
@@ -202,7 +244,13 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'description']} valuePropName="checked" noStyle>
+                      <Checkbox>Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Description'
+                  )}
                   <Form.Item
                     name="description"
                     label="Description"
@@ -219,7 +267,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={configuration.save.loading}
+                loading={configuration.save.loading || common.save.loading}
               >
                 {submitButtonText}
               </Button>
