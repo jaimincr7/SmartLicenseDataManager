@@ -15,7 +15,8 @@ import {
   setTableColumnSelection,
 } from '../../../../store/master/role/role.reducer';
 import { deleteRole, searchRole } from '../../../../store/master/role/role.action';
-import { IMainTable } from '../../../../common/models/common';
+import { IMainTable , ISearch } from '../../../../common/models/common';
+import roleService from '../../../../services/master/role/role.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
@@ -29,6 +30,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  const exportExcelFile = (searchData: ISearch) => {
+    return roleService.exportExcelFile(searchData);
+  };
 
   useEffect(() => {
     if (isMultiple) {
@@ -131,6 +136,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ref={dataTableRef}
         showAddButton={ability.can(Action.Add, Page.Role)}
         globalSearchExist={false}
+        exportExcelFile={exportExcelFile}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         getTableColumns={getTableColumns}
