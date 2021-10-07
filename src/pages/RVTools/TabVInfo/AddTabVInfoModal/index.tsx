@@ -1,10 +1,23 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITabVInfo } from '../../../../services/rvTools/tabVInfo/tabVInfo.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -12,10 +25,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { getTabVInfoById, saveTabVInfo } from '../../../../store/rvTools/tabVInfo/tabVInfo.action';
@@ -33,9 +48,10 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -77,7 +93,19 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveTabVInfo(inputValues));
+    if (!isMultiple) {
+      dispatch(saveTabVInfo(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, tabVInfo.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -152,6 +180,19 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
   }, [tabVInfo.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && tabVInfo.getById.data) {
       const data = tabVInfo.getById.data;
       fillValuesOnEdit(data);
@@ -195,7 +236,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
@@ -228,7 +275,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -256,7 +309,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -284,7 +343,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Host</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'host']} valuePropName="checked" noStyle>
+                      <Checkbox>Host</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Host'
+                  )}
                   <Form.Item name="host" label="Host" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -292,7 +357,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Cluster</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cluster']} valuePropName="checked" noStyle>
+                      <Checkbox>Cluster</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cluster'
+                  )}
                   <Form.Item name="cluster" label="Cluster" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -300,7 +371,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -308,7 +385,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Data Center</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'data_center']} valuePropName="checked" noStyle>
+                      <Checkbox>Data Center</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Data Center'
+                  )}
                   <Form.Item
                     name="data_center"
                     label="Data Center"
@@ -321,7 +404,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">CPUs</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cpus']} valuePropName="checked" noStyle>
+                      <Checkbox>CPUs</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'CPUs'
+                  )}
                   <Form.Item name="cpus" label="CPUs" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -329,7 +418,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">VM</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'vm']} valuePropName="checked" noStyle>
+                      <Checkbox>VM</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'VM'
+                  )}
                   <Form.Item name="vm" className="m-0" label="VM" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -337,7 +432,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">DNS Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'dns_name']} valuePropName="checked" noStyle>
+                      <Checkbox>DNS Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'DNS Name'
+                  )}
                   <Form.Item
                     name="dns_name"
                     className="m-0"
@@ -350,7 +451,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Power State</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'power_state']} valuePropName="checked" noStyle>
+                      <Checkbox>Power State</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Power State'
+                  )}
                   <Form.Item
                     name="power_state"
                     className="m-0"
@@ -363,7 +470,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Guest State</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'guest_state']} valuePropName="checked" noStyle>
+                      <Checkbox>Guest State</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Guest State'
+                  )}
                   <Form.Item
                     name="guest_state"
                     className="m-0"
@@ -376,7 +489,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">OS</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'os']} valuePropName="checked" noStyle>
+                      <Checkbox>OS</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'OS'
+                  )}
                   <Form.Item name="os" className="m-0" label="OS" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -384,7 +503,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Customer Id</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'customer_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Customer Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Customer Id'
+                  )}
                   <Form.Item
                     name="customer_id"
                     className="m-0"
@@ -397,7 +522,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">sId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 's_id']} valuePropName="checked" noStyle>
+                      <Checkbox>sId</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'sId'
+                  )}
                   <Form.Item name="s_id" className="m-0" label="sId" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -405,11 +536,21 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">OS according to the configuration file</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'os_according_to_the_configuration_file']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>OS According to the Configuration File</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'OS According to the Configuration File'
+                  )}
                   <Form.Item
                     name="os_according_to_the_configuration_file"
                     className="m-0"
-                    label="OS according to the configuration file"
+                    label="OS According to the Configuration File"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -418,11 +559,21 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">OS according to the VMware Tools</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'os_according_to_the_vm_ware_tools']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>OS According to the VMware Tools</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'OS According to the VMware Tools'
+                  )}
                   <Form.Item
                     name="os_according_to_the_vm_ware_tools"
                     className="m-0"
-                    label="OS according to the VMware Tools"
+                    label="OS According to the VMware Tools"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -431,7 +582,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">VM UUID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'vm_uuid']} valuePropName="checked" noStyle>
+                      <Checkbox>VM UUID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'VM UUID'
+                  )}
                   <Form.Item name="vm_uuid" className="m-0" label="VM UUID" rules={[{ max: 72 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -439,7 +596,17 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">CPU Size Recommendation</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'cpu_size_recommendation']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>CPU Size Recommendation</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'CPU Size Recommendation'
+                  )}
                   <Form.Item
                     name="cpu_size_recommendation"
                     label="CPU Size Recommendation"
@@ -455,12 +622,23 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
                   <Form.Item name="vmc" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">VMC</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'vmc']} valuePropName="checked" noStyle>
+                      <Checkbox>VMC</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'VMC'
+                  )}
                 </div>
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={tabVInfo.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={tabVInfo.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>

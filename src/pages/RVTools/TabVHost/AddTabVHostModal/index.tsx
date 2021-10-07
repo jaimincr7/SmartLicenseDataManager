@@ -1,10 +1,11 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITabVHost } from '../../../../services/rvTools/tabVHost/tabVHost.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -12,10 +13,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { getTabVHostById, saveTabVHost } from '../../../../store/rvTools/tabVHost/tabVHost.action';
@@ -33,9 +36,10 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -70,7 +74,19 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveTabVHost(inputValues));
+    if (!isMultiple) {
+      dispatch(saveTabVHost(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, tabVHost.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -138,6 +154,19 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
   }, [tabVHost.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && tabVHost.getById.data) {
       const data = tabVHost.getById.data;
       fillValuesOnEdit(data);
@@ -181,7 +210,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
@@ -214,7 +249,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -242,7 +283,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -270,7 +317,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Host</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'host']} valuePropName="checked" noStyle>
+                      <Checkbox>Host</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Host'
+                  )}
                   <Form.Item name="host" label="Host" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -278,7 +331,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Cluster</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cluster']} valuePropName="checked" noStyle>
+                      <Checkbox>Cluster</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cluster'
+                  )}
                   <Form.Item name="cluster" label="Cluster" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -286,7 +345,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">CPU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cpu']} valuePropName="checked" noStyle>
+                      <Checkbox>CPU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'CPU'
+                  )}
                   <Form.Item name="cpu" label="CPU" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -294,7 +359,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Cores per CPU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cores_per_cpu']} valuePropName="checked" noStyle>
+                      <Checkbox>Cores per CPU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cores per CPU'
+                  )}
                   <Form.Item
                     name="cores_per_cpu"
                     label="Cores per CPU"
@@ -307,7 +378,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Cores</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cores']} valuePropName="checked" noStyle>
+                      <Checkbox>Cores</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cores'
+                  )}
                   <Form.Item
                     name="cores"
                     label="Cores"
@@ -320,7 +397,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Domain</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'domain']} valuePropName="checked" noStyle>
+                      <Checkbox>Domain</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Domain'
+                  )}
                   <Form.Item name="domain" className="m-0" label="Domain" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -328,7 +411,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">CPU Model</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cpu_model']} valuePropName="checked" noStyle>
+                      <Checkbox>CPU Model</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'CPU Model'
+                  )}
                   <Form.Item
                     name="cpu_model"
                     className="m-0"
@@ -341,7 +430,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">ESX Version</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'esx_version']} valuePropName="checked" noStyle>
+                      <Checkbox>ESX Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'ESX Version'
+                  )}
                   <Form.Item
                     name="esx_version"
                     className="m-0"
@@ -354,7 +449,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -362,7 +463,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Data Center</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'data_center']} valuePropName="checked" noStyle>
+                      <Checkbox>Data Center</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Data Center'
+                  )}
                   <Form.Item
                     name="data_center"
                     label="Data Center"
@@ -375,7 +482,12 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               </Col>
             </Row>
             <div className="btns-block modal-footer">
-              <Button key="submit" type="primary" htmlType="submit" loading={tabVHost.save.loading}>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={tabVHost.save.loading || commonLookups.save.loading}
+              >
                 {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>
