@@ -80,11 +80,15 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmsPurchase(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsPurchase.search.tableName)
-        )
-      );
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsPurchase.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
     }
   };
 

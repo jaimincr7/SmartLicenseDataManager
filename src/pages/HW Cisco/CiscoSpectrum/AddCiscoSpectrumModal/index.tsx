@@ -89,15 +89,15 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoSpectrum(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            ciscoSpectrum.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoSpectrum.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

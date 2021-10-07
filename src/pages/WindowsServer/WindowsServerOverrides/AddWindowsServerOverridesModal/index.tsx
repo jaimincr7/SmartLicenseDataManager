@@ -81,11 +81,15 @@ const AddWindowsServerOverridesModal: React.FC<IAddWindowsServerOverridesProps> 
     if (!isMultiple) {
       dispatch(saveWindowsServerOverrides(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, overrides.search.tableName)
-        )
-      );
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, overrides.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
     }
   };
 

@@ -107,15 +107,15 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
     if (!isMultiple) {
       dispatch(saveO365ActiveUserDetail(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            o365ActiveUserDetail.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365ActiveUserDetail.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

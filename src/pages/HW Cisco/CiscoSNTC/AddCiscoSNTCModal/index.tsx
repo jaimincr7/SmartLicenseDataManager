@@ -148,11 +148,15 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoSNTC(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoSNTC.search.tableName)
-        )
-      );
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoSNTC.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
     }
   };
 

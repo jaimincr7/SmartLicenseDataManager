@@ -111,11 +111,15 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAdUser(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, adUsers.search.tableName)
-        )
-      );
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, adUsers.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
     }
   };
 

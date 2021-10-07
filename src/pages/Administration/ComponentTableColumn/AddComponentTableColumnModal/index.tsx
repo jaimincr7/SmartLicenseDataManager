@@ -74,15 +74,15 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
     if (!isMultiple) {
       dispatch(saveConfigComponentTableColumn(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configComponentTableColumn.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configComponentTableColumn.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

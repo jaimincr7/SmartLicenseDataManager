@@ -78,15 +78,15 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
     if (!isMultiple) {
       dispatch(saveWindowsServerLicense(values));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            values,
-            windowsServerLicense.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, values, windowsServerLicense.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

@@ -75,15 +75,15 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
     if (!isMultiple) {
       dispatch(saveCmsContractAgreementAttachment(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            cmsContractAgreementAttachment.search.tableName
+        const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsContractAgreementAttachment.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

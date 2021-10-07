@@ -141,7 +141,15 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveO365Users(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,o365Users.search.tableName)));
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365Users.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
     }
   };
 

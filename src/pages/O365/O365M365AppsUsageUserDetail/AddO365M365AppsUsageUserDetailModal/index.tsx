@@ -126,15 +126,15 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
     if (!isMultiple) {
       dispatch(saveO365M365AppsUsageUserDetail(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            o365M365AppsUsageUserDetail.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365M365AppsUsageUserDetail.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

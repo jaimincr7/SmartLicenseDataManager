@@ -92,11 +92,15 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCompany(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, company.search.tableName)
-        )
-      );
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, company.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
     }
   };
 

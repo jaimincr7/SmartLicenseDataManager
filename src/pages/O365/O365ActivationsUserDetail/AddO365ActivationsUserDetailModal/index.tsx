@@ -96,15 +96,15 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
     if (!isMultiple) {
       dispatch(saveO365ActivationsUserDetail(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            o365ActivationsUserDetail.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365ActivationsUserDetail.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

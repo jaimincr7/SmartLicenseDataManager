@@ -59,15 +59,15 @@ const AddConfigExclusionTypeModal: React.FC<IAddConfigExclusionTypeProps> = (pro
     if (!isMultiple) {
       dispatch(saveConfigExclusionType(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configExclusionType.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configExclusionType.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

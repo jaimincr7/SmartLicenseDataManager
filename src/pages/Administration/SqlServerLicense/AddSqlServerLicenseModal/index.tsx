@@ -89,15 +89,15 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
     if (!isMultiple) {
       dispatch(saveConfigSqlServerLicense(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configSqlServerLicense.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configSqlServerLicense.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

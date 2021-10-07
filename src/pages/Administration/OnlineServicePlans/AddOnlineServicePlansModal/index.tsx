@@ -59,15 +59,15 @@ const AddConfigOnlineServicePlansModal: React.FC<IAddConfigOnlineServicePlansPro
     if (!isMultiple) {
       dispatch(saveConfigOnlineServicePlans(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configOnlineServicePlans.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configOnlineServicePlans.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

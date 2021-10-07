@@ -89,15 +89,15 @@ const AddAdUsersExclusionsModal: React.FC<IAddAdUsersExclusionsProps> = (props) 
     if (!isMultiple) {
       dispatch(saveAdUsersExclusion(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            adUsersExclusions.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, adUsersExclusions.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

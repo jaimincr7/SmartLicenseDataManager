@@ -89,15 +89,15 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
     if (!isMultiple) {
       dispatch(saveO365OneDriveUsage(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            o365OneDriveUsage.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365OneDriveUsage.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

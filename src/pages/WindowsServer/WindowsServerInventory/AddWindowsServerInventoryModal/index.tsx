@@ -111,11 +111,15 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
     if (!isMultiple) {
       dispatch(saveWindowsServerInventory(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, inventory.search.tableName)
-        )
-      );
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, inventory.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
     }
   };
 

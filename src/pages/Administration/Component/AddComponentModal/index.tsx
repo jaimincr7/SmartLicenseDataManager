@@ -66,15 +66,15 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveConfigComponent(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configComponent.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configComponent.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

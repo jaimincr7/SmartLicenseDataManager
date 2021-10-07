@@ -66,15 +66,15 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
     if (!isMultiple) {
       dispatch(saveConfigWindowsServerVersions(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configWindowsServerVersions.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configWindowsServerVersions.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

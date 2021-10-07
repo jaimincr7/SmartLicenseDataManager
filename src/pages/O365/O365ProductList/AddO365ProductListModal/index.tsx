@@ -75,15 +75,15 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveO365ProductList(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            o365ProductList.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365ProductList.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

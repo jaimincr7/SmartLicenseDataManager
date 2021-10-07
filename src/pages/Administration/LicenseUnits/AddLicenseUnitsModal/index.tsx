@@ -56,15 +56,15 @@ const AddConfigLicenseUnitsModal: React.FC<IAddConfigLicenseUnitsProps> = (props
     if (!isMultiple) {
       dispatch(saveConfigLicenseUnits(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configLicenseUnits.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configLicenseUnits.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

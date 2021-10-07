@@ -113,15 +113,15 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
     if (!isMultiple) {
       dispatch(saveSqlServerInventory(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            sqlServerInventory.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, sqlServerInventory.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

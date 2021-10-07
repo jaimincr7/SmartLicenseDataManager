@@ -59,15 +59,15 @@ const AddConfigFileCategoriesModal: React.FC<IAddConfigFileCategoriesProps> = (p
     if (!isMultiple) {
       dispatch(saveConfigFileCategories(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configFileCategories.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configFileCategories.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

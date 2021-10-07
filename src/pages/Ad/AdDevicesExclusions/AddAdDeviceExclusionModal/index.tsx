@@ -90,15 +90,15 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
     if (!isMultiple) {
       dispatch(saveAdDevicesExclusions(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            adDevicesExclusions.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, adDevicesExclusions.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

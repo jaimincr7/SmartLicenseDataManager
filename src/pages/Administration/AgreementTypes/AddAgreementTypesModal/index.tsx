@@ -66,15 +66,15 @@ const AddAgreementTypesModal: React.FC<IAddAgreementTypesProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAgreementTypes(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            agreementTypes.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, agreementTypes.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

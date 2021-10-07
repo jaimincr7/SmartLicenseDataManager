@@ -59,15 +59,15 @@ const AddConfigWindowsServerEditionsModal: React.FC<IAddConfigWindowsServerEditi
     if (!isMultiple) {
       dispatch(saveConfigWindowsServerEditions(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configWindowsServerEditions.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configWindowsServerEditions.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

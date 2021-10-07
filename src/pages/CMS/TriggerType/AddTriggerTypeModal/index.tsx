@@ -62,15 +62,15 @@ const AddCmsTriggerTypeModal: React.FC<IAddCmsTriggerTypeProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmsTriggerType(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            cmsTriggerType.search.tableName
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsTriggerType.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
           )
-        )
-      );
+        );
+      }
     }
   };
 

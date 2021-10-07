@@ -78,7 +78,15 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
     if (!isMultiple) {
       dispatch(saveO365Subscriptions(inputValues));
     } else {
-      dispatch(updateMultiple(getObjectForUpdateMultiple(valuesForSelection,inputValues,o365Subscriptions.search.tableName)));
+      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365Subscriptions.search.tableName);
+      if(result)
+      {
+        dispatch(
+          updateMultiple(
+            result
+          )
+        );
+      }
     }
   };
 
