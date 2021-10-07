@@ -221,7 +221,7 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}

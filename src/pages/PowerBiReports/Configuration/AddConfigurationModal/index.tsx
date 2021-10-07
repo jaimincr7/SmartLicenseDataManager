@@ -246,14 +246,14 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'description']} valuePropName="checked" noStyle>
-                      <Checkbox>Description</Checkbox>
+                      <Checkbox>Name</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Description'
+                    'Name'
                   )}
                   <Form.Item
                     name="description"
-                    label="Description"
+                    label="Name"
                     className="m-0"
                     rules={[{ required: true, max: 500 }]}
                   >
