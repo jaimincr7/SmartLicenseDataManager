@@ -1,6 +1,6 @@
 import { Popconfirm } from 'antd';
 import _ from 'lodash';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   FilterByDropdown,
@@ -23,7 +23,7 @@ import {
 import spsApiOauthService from '../../../../services/sps/apiOauth/apiOauth.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const spsApiOauth = useAppSelector(spsApiOauthSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -34,6 +34,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
     return spsApiOauthService.exportExcelFile(searchData);
@@ -233,6 +239,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchSpsApiOauth}
         clearTableDataMessages={clearSpsApiOauthMessages}
         setTableColumnSelection={setTableColumnSelection}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection} 
+        showBulkUpdate={ability.can(Action.Update, Page.SpsApiOauth)}
       />
     </>
   );

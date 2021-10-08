@@ -25,6 +25,8 @@ const SpsApiTokenConfigOptions: React.FC<ISpsApiTokenConfigOptionsProps> = (prop
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -36,6 +38,7 @@ const SpsApiTokenConfigOptions: React.FC<ISpsApiTokenConfigOptionsProps> = (prop
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearSpsApiTokenConfigOptions());
     };
@@ -83,6 +86,12 @@ const SpsApiTokenConfigOptions: React.FC<ISpsApiTokenConfigOptionsProps> = (prop
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -92,8 +101,22 @@ const SpsApiTokenConfigOptions: React.FC<ISpsApiTokenConfigOptionsProps> = (prop
       {addModalVisible && (
         <AddSpsApiTokenConfigOptionsModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/sps/sps-api-token-config-options');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddSpsApiTokenConfigOptionsModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/sps/sps-api-token-config-options');
           }}
           id={id}
