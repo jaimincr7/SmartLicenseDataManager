@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
   clearSqlServerPricingMessages,
@@ -26,21 +26,17 @@ import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const {
-    setSelectedId,
-    setShowSelectedListModal,
-    setValuesForSelection,
-    isMultiple,
-  } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [Obj, setObj] = useState({ filter_keys: {}, keyword: '' });
 
   useImperativeHandle(ref, () => ({
     refreshData() {
       dataTableRef?.current.refreshData();
-      dataTableRef?.current.getValuesForSelection();
+      dataTableRef?.current.getDropDownDetails();
     },
   }));
 
@@ -59,6 +55,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataIndex,
       sqlServerPricing.search.tableName,
       form,
+      null,
+      Obj.filter_keys,
+      Obj.keyword
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(
+      dataIndex,
+      sqlServerPricing.search.tableName,
+      form,
+      null,
+      Obj.filter_keys,
+      Obj.keyword
     );
   };
 
@@ -123,7 +133,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', sqlServerPricing.search.tableName, form),
+            title: FilterByDateSwapTable('date_added', sqlServerPricing.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -234,6 +244,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SqlServerPricing)}
+        setObj={setObj}
       />
     </>
   );

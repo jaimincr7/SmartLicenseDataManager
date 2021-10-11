@@ -28,4 +28,5 @@ export interface IDataTable {
   onCallAllApi?: (tableFilter: any) => void;
   setValuesForSelection?: (val: any) => void;
   disableRowSelection?: boolean;
+  setObj?: (val: {}) => void;
 }

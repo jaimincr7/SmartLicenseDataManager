@@ -21,8 +21,11 @@ export const FilterByDateSwap = (
   dataIndex: string,
   tableName: string,
   form: any,
-  getColumnLookup?: (index: string) => Promise<any>
+  getColumnLookup?: (index: string) => Promise<any>,
+  filter_keys?: {},
+  keyword?: string
 ) => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [swap, setSwap] = useState<boolean>(true);
 
   const [options, setOptions] = useState<IDropDownOption[]>([]);
@@ -35,7 +38,7 @@ export const FilterByDateSwap = (
         });
       } else {
         commonService
-          .getColumnLookup(tableName, dataIndex)
+          .getColumnLookup(tableName, dataIndex,filter_keys , keyword)
           .then((res) => {
             return res.body.data;
           })
@@ -44,6 +47,7 @@ export const FilterByDateSwap = (
               name: moment(element.name).format(Common.DATEFORMAT),
               id: element.id,
             }));
+            setLoading(false);
             setOptions(updatedRes);
           });
       }
@@ -60,7 +64,7 @@ export const FilterByDateSwap = (
             <RangePicker defaultPickerValue={[moment().utc(), moment().utc()]} />
           </Form.Item>
         ) : (
-          FilterByDropdown(dataIndex, options || [])
+          FilterByDropdown(dataIndex, options || [], loading)
         )}
         <Button
           onClick={() => {
@@ -91,7 +95,11 @@ export const FilterByInput = (dataIndex: string) => (
   </>
 );
 
-export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOption[] = []) => (
+export const FilterByDropdown = (
+  dataIndex: string,
+  dropdownOptions: IDropDownOption[] = [],
+  loading?: boolean
+) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input">
       <Select
@@ -101,7 +109,7 @@ export const FilterByDropdown = (dataIndex: string, dropdownOptions: IDropDownOp
         placeholder="Select and search"
         maxTagCount="responsive"
         allowClear
-        loading={dropdownOptions.length === 0}
+        loading={ loading }
         showSearch
         optionFilterProp="children"
         filterOption={(input, option: any) =>
@@ -129,8 +137,11 @@ export const FilterWithSwapOption = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
+  filter_keys?: {},
+  keyword?: string
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [options, setOptions] = useState<IDropDownOption[]>([]);
 
@@ -142,11 +153,12 @@ export const FilterWithSwapOption = (
         });
       } else {
         commonService
-          .getColumnLookup(tableName, dataIndex)
+          .getColumnLookup(tableName, dataIndex, filter_keys , keyword)
           .then((res) => {
             return res.body.data;
           })
           .then((res) => {
+            setLoading(false);
             setOptions(res);
           });
       }
@@ -158,7 +170,7 @@ export const FilterWithSwapOption = (
   return (
     <>
       <div className="input-filter-group">
-        {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, options || [])}
+        {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, options || [], loading)}
         <Button onClick={() => setSwap(!swap)} className={`filter-btn ${swap ? '' : 'active'}`}>
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
           <img
