@@ -26,7 +26,7 @@ import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple , valuesForSelection } = props;
   const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -35,6 +35,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   useImperativeHandle(ref, () => ({
     refreshData() {
       dataTableRef?.current.refreshData();
+      dataTableRef?.current.getValuesForSelection();
     },
   }));
 
@@ -49,7 +50,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, sqlServerPricing.search.tableName, form);
+    const Obj: any = {
+      ...valuesForSelection
+    }
+    return FilterWithSwapOption(dataIndex, sqlServerPricing.search.tableName, form , Obj.filter_keys , Obj.keyword);
   };
 
   const getTableColumns = (form) => {

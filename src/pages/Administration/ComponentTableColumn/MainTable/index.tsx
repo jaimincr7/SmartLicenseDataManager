@@ -27,7 +27,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setShowSelectedListModal,
     setValuesForSelection,
     isMultiple,
-    setNumberOfRecords,
   } = props;
   const configComponentTableColumn = useAppSelector(configComponentTableColumnSelector);
   const dispatch = useAppDispatch();
@@ -37,7 +36,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   useEffect(() => {
     if (isMultiple) {
       dataTableRef?.current.getValuesForSelection();
-      dataTableRef?.current.getNumberOfRecordsForUpdate();
     }
   }, [isMultiple]);
 
@@ -160,7 +158,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
-        setNumberOfRecords={setNumberOfRecords}
         showBulkUpdate={ability.can(Action.Update, Page.ConfigComponentTableColumn)}
       />
     </>

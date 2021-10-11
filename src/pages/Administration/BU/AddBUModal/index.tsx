@@ -38,7 +38,6 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
     refreshDataTable,
     isMultiple,
     valuesForSelection,
-    numberOfRecords,
   } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -287,7 +286,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                 htmlType="submit"
                 loading={bu.save.loading || commonLookups.save.loading}
               >
-                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
+                {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel

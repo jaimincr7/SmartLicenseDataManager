@@ -23,7 +23,6 @@ const Company: React.FC<ICompanyProps> = (props) => {
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
-  const [numberOfRecords, setNumberOfRecords] = React.useState(0);
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -79,7 +78,6 @@ const Company: React.FC<ICompanyProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
-          setNumberOfRecords={setNumberOfRecords}
           isMultiple={showSelectedListModal}
           setValuesForSelection={setValuesForSelection}
           setShowSelectedListModal={(state) => {
@@ -109,7 +107,6 @@ const Company: React.FC<ICompanyProps> = (props) => {
           showModal={showSelectedListModal}
           valuesForSelection={valuesForSelection}
           isMultiple={true}
-          numberOfRecords={numberOfRecords}
           handleModalClose={() => {
             setShowSelectedListModal(false);
             history.push('/administration/company');

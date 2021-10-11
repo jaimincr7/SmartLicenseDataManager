@@ -52,7 +52,6 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
     refreshDataTable,
     isMultiple,
     valuesForSelection,
-    numberOfRecords,
   } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -443,7 +442,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
                 htmlType="submit"
                 loading={company.save.loading || commonLookups.save.loading}
               >
-                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
+                {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel

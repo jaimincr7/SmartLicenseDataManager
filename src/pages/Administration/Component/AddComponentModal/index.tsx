@@ -37,7 +37,6 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
     refreshDataTable,
     isMultiple,
     valuesForSelection,
-    numberOfRecords,
   } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -180,7 +179,7 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
                 htmlType="submit"
                 loading={configComponent.save.loading || common.save.loading}
               >
-                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
+                {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel
