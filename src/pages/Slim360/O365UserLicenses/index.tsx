@@ -26,6 +26,8 @@ const Slim360O365UserLicense: React.FC<ISlim360O365UserLicenseProps> = (props) =
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -37,6 +39,7 @@ const Slim360O365UserLicense: React.FC<ISlim360O365UserLicenseProps> = (props) =
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearSlim360O365UserLicenses());
     };
@@ -87,6 +90,12 @@ const Slim360O365UserLicense: React.FC<ISlim360O365UserLicenseProps> = (props) =
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -96,8 +105,22 @@ const Slim360O365UserLicense: React.FC<ISlim360O365UserLicenseProps> = (props) =
       {addModalVisible && (
         <AddSlim360O365UserLicenseModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/slim360/slim360-o365-user-licenses');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddSlim360O365UserLicenseModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/slim360/slim360-o365-user-licenses');
           }}
           id={id}

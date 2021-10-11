@@ -8,6 +8,7 @@ import {
   getWindowsServerInventoryById,
   saveWindowsServerInventory,
   deleteWindowsServerInventory,
+  processData,
 } from './windowsServerInventory.action';
 import { IWindowsServerInventoryState } from './windowsServerInventory.model';
 
@@ -40,6 +41,11 @@ export const initialState: IWindowsServerInventoryState = {
     hasErrors: false,
     messages: [],
   },
+  processData: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const windowsServerInventorySlice = createSlice({
@@ -52,6 +58,7 @@ export const windowsServerInventorySlice = createSlice({
     clearWindowsServerInventoryMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
+      state.processData.messages = [];
     },
     clearWindowsServerInventoryGetById: (state) => {
       state.getById.data = null;
@@ -146,6 +153,21 @@ export const windowsServerInventorySlice = createSlice({
     [deleteWindowsServerInventory.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
+    },
+
+    // Process Data
+    [processData.pending.type]: (state) => {
+      state.processData.loading = true;
+      state.processData.messages = [];
+    },
+    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = false;
+      state.processData.messages = action.payload.messages;
+    },
+    [processData.rejected.type]: (state) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = true;
     },
   },
 });

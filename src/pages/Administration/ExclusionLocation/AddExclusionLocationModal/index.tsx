@@ -63,15 +63,14 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
     if (!isMultiple) {
       dispatch(saveConfigExclusionLocation(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configExclusionLocation.search.tableName
-          )
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configExclusionLocation.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 

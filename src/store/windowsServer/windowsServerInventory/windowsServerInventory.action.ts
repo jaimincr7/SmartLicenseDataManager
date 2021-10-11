@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
+  IProcessData,
   ISearchWindowsServerInventory,
   IWindowsServerInventory,
 } from '../../../services/windowsServer/windowsServerInventory/windowsServerInventory.model';
@@ -54,3 +55,10 @@ export const deleteWindowsServerInventory = createAsyncThunk(
     return response;
   }
 );
+
+export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
+  const response = await windowsServerInventoryService.processData(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});

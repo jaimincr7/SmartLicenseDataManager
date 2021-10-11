@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   ISearchAzureDailyUsage,
   IAzureDailyUsage,
+  IProcessData,
 } from '../../../services/azure/azureDailyUsage/azureDailyUsage.model';
 import azureDailyUsageService from '../../../services/azure/azureDailyUsage/azureDailyUsage.service';
 
@@ -46,3 +47,10 @@ export const deleteAzureDailyUsage = createAsyncThunk(
     return response;
   }
 );
+
+export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
+  const response = await azureDailyUsageService.processData(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});

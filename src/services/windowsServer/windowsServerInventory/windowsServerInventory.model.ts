@@ -39,3 +39,19 @@ export interface IWindowsServerInventory {
 export interface ISearchWindowsServerInventory extends ISearch {
   is_lookup?: boolean;
 }
+
+export interface IProcessData {
+  company_id?: number;
+  bu_id?: number;
+  date_added?: Date;
+  set_device_states?: boolean;
+  set_device_states_inc_non_prod?: boolean;
+  set_device_states_by_keyword?: boolean;
+  x_ref_ad?: boolean;
+  x_ref_azure?: boolean;
+  sc_version_apply_all?: boolean;
+  sc_version_id?: number;
+  update_rv_tools_vm?: boolean;
+  update_rv_tools_host?: boolean;
+  apply_overrides?: boolean;
+}

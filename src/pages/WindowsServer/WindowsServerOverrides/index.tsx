@@ -27,6 +27,8 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -36,6 +38,7 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearWindowsServerOverrides());
     };
@@ -99,6 +102,12 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -108,8 +117,22 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
       {addModalVisible && (
         <AddWindowsServerOverridesModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/windows-server/overrides');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddWindowsServerOverridesModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/windows-server/overrides');
           }}
           id={id}

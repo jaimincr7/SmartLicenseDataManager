@@ -1,4 +1,16 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -8,10 +20,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddO365ActiveUserDetailProps } from './addO365ActiveUserDetail.model';
@@ -29,6 +43,7 @@ import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -37,9 +52,10 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -88,7 +104,18 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365ActiveUserDetail(inputValues));
+    if (!isMultiple) {
+      dispatch(saveO365ActiveUserDetail(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        o365ActiveUserDetail.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -203,6 +230,19 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
   }, [o365ActiveUserDetail.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && o365ActiveUserDetail.getById.data) {
       const data = o365ActiveUserDetail.getById.data;
       fillValuesOnEdit(data);
@@ -246,12 +286,18 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -279,7 +325,13 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -307,7 +359,13 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -335,7 +393,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Report Refresh Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'report_refresh_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Report Refresh Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Report Refresh Date'
+                  )}
                   <Form.Item name="report_refresh_date" label="Report Refresh Date" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -343,7 +411,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">User Principal Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>User Principal Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'User Principal Name'
+                  )}
                   <Form.Item
                     name="user_principal_name"
                     className="m-0"
@@ -356,7 +434,13 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Display Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'display_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Display Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Display Name'
+                  )}
                   <Form.Item
                     name="display_name"
                     className="m-0"
@@ -369,7 +453,13 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Deleted Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'deleted_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Deleted Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Deleted Date'
+                  )}
                   <Form.Item
                     name="deleted_date"
                     className="m-0"
@@ -382,7 +472,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Assigned Products</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'assigned_products']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Assigned Products</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Assigned Products'
+                  )}
                   <Form.Item
                     name="assigned_products"
                     className="m-0"
@@ -396,7 +496,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Exchange Last Activity Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'exchange_last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Exchange Last Activity Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exchange Last Activity Date'
+                  )}
                   <Form.Item
                     name="exchange_last_activity_date"
                     label="Exchange Last Activity Date"
@@ -408,10 +518,20 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">OneDrive Last Activity Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'one_drive_last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>OneDrive Last Activity Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'OneDrive Last Activity Date'
+                  )}
                   <Form.Item
                     name="one_drive_last_activity_date"
-                    label="'OneDrive Last Activity Date'"
+                    label="OneDrive Last Activity Date"
                     className="m-0"
                   >
                     <DatePicker className="form-control w-100" disabledDate={disabledDate} />
@@ -420,7 +540,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SharePoint Last Activity Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'share_point_last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>SharePoint Last Activity Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SharePoint Last Activity Date'
+                  )}
                   <Form.Item
                     name="share_point_last_activity_date"
                     label="SharePoint Last Activity Date"
@@ -432,7 +562,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Skype For Business Last Activity Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'skype_for_business_last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Skype For Business Last Activity Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Skype For Business Last Activity Date'
+                  )}
                   <Form.Item
                     name="skype_for_business_last_activity_date"
                     label="Skype For Business Last Activity Date"
@@ -444,10 +584,20 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Yammer Last Activity Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'yammer_last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Yammer Last Activity Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Yammer Last Activity Date'
+                  )}
                   <Form.Item
                     name="yammer_last_activity_date"
-                    label="'Yammer Last Activity Date"
+                    label="Yammer Last Activity Date"
                     className="m-0"
                   >
                     <DatePicker className="form-control w-100" disabledDate={disabledDate} />
@@ -456,7 +606,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Teams Last Activity Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'teams_last_activity_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Teams Last Activity Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Teams Last Activity Date'
+                  )}
                   <Form.Item
                     name="teams_last_activity_date"
                     label="Teams Last Activity Date"
@@ -468,7 +628,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Exchange License Assign Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'exchange_license_assign_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Exchange License Assign Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exchange License Assign Date'
+                  )}
                   <Form.Item
                     name="exchange_license_assign_date"
                     label="Exchange License Assign Date"
@@ -480,7 +650,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">OneDrive License Assign Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'one_drive_license_assign_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>OneDrive License Assign Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'OneDrive License Assign Date'
+                  )}
                   <Form.Item
                     name="one_drive_license_assign_date"
                     label="OneDrive License Assign Date"
@@ -492,7 +672,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SharePoint License Assign Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'share_point_license_assign_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>SharePoint License Assign Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SharePoint License Assign Date'
+                  )}
                   <Form.Item
                     name="share_point_license_assign_date"
                     label="SharePoint License Assign Date"
@@ -504,7 +694,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Skype For Business License Assign Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'skype_for_business_license_assign_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Skype For Business License Assign Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Skype For Business License Assign Date'
+                  )}
                   <Form.Item
                     name="skype_for_business_license_assign_date"
                     label="Skype For Business License Assign Date"
@@ -516,7 +716,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Yammer License Assign Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'yammer_license_assign_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Yammer License Assign Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Yammer License Assign Date'
+                  )}
                   <Form.Item
                     name="yammer_license_assign_date"
                     label="Yammer License Assign Date"
@@ -528,7 +738,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Teams License Assign Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'teams_license_assign_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Teams License Assign Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Teams License Assign Date'
+                  )}
                   <Form.Item
                     name="teams_license_assign_date"
                     label="Teams License Assign Date"
@@ -543,7 +763,13 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                   <Form.Item name="is_deleted" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Deleted</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_deleted']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Deleted</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Deleted'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -551,7 +777,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                   <Form.Item name="has_exchange_license" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Has Exchange License</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'has_exchange_license']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Has Exchange License</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Has Exchange License'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -559,7 +795,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                   <Form.Item name="has_one_drive_license" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Has OneDrive License</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'has_one_drive_license']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Has One Drive License</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Has One Drive License'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -567,7 +813,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                   <Form.Item name="has_share_point_license" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Has SharePoint License</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'has_share_point_license']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Has Share Point License</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Has Share Point License'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -579,7 +835,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                   >
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Has Skype For Business License</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'has_skype_for_business_license']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Has Skype for Business License</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Has Skype for Business License'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -587,7 +853,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                   <Form.Item name="has_yammer_license" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Has Yammer License</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'has_yammer_license']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Has Yammer License</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Has Yammer License'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -595,7 +871,17 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                   <Form.Item name="has_teams_license" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Has Teams License</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'has_teams_license']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Has Teams License</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Has Teams License'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -604,7 +890,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365ActiveUserDetail.save.loading}
+                loading={o365ActiveUserDetail.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

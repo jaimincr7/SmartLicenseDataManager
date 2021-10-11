@@ -1,4 +1,4 @@
-import { ISearchAzureDailyUsage, IAzureDailyUsage } from './azureDailyUsage.model';
+import { ISearchAzureDailyUsage, IAzureDailyUsage, IProcessData } from './azureDailyUsage.model';
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
 
@@ -39,6 +39,17 @@ class AzureDailyUsageService {
   public async deleteAzureDailyUsage(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async processData(data: IProcessData): Promise<any> {
+    const inputValues = {
+      ...data,
+      debug: false,
+    };
+    const url = `${this.ENDPOINT}/process-data`;
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }

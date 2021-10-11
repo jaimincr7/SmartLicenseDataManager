@@ -128,7 +128,7 @@ export const FilterWithSwapOption = (
   dataIndex: string,
   tableName: string,
   form: any,
-  getColumnLookup?: (index: string) => Promise<any>
+  getColumnLookup?: (index: string) => Promise<any>,
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
 

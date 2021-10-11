@@ -5,5 +5,4 @@ export interface IAddCompanyProps {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   valuesForSelection?: any[];
-  numberOfRecords?: number;
 }

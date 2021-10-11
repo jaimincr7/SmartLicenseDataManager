@@ -26,7 +26,7 @@ import CallApiModal from '../CallApiModal';
 import { IMainTable } from '../../../../common/models/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const dispatch = useAppDispatch();
   const spsApis = useAppSelector(spsApiSelector);
   const globalLookups = useAppSelector(globalSearchSelector);
@@ -46,6 +46,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const FilterBySwap = (dataIndex: string, form) => {
     return FilterWithSwapOption(dataIndex, spsApis.search.tableName, form);
@@ -335,6 +341,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearCallApiMessages}
         setSelectedId={(id) => setSelectedId(id)}
         onCallAllApi={(tableFilter) => onCallAllApi(tableFilter)}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection}
+        showBulkUpdate={ability.can(Action.Update, Page.SPSApi)}
       />
       {callApiObj.show && (
         <CallApiModal

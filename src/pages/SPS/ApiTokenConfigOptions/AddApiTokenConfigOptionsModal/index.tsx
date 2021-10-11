@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -19,8 +19,12 @@ import {
 } from '../../../../store/sps/apiTokenConfigOptions/apiTokenConfigOptions.reducer';
 import { IAddSpsApiTokenConfigOptionsProps } from './addApiTokenConfigOptions.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { commonSelector } from '../../../../store/common/common.reducer';
-import { getSpsApiTypeLookup } from '../../../../store/common/common.action';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
+import { getSpsApiTypeLookup, updateMultiple } from '../../../../store/common/common.action';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -28,9 +32,10 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
   const spsApiTokenConfigOptions = useAppSelector(spsApiTokenConfigOptionsSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -58,7 +63,18 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveSpsApiTokenConfigOptions(inputValues));
+    if (!isMultiple) {
+      dispatch(saveSpsApiTokenConfigOptions(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        spsApiTokenConfigOptions.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const fillValuesOnEdit = async (data: ISpsApiTokenConfigOptions) => {
@@ -87,6 +103,19 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
       dispatch(clearSpsApiTokenConfigOptionsMessages());
     }
   }, [spsApiTokenConfigOptions.save.messages]);
+
+  useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
 
   useEffect(() => {
     if (+id > 0 && spsApiTokenConfigOptions.getById.data) {
@@ -130,12 +159,18 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -143,12 +178,18 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Value</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'value']} valuePropName="checked" noStyle>
+                      <Checkbox>Value</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Value'
+                  )}
                   <Form.Item
                     name="value"
                     label="Value"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -156,12 +197,18 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'type']} valuePropName="checked" noStyle>
+                      <Checkbox>Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Type'
+                  )}
                   <Form.Item
                     name="type"
                     label="Type"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -169,12 +216,18 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">API Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'api_type_id']} valuePropName="checked" noStyle>
+                      <Checkbox>API Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'API Type'
+                  )}
                   <Form.Item
                     name="api_type_id"
                     className="m-0"
                     label="API Type"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -204,7 +257,13 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
                   <Form.Item name="is_env_var" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Env Var</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_env_var']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Env Var</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Env Var'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -213,7 +272,7 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={spsApiTokenConfigOptions.save.loading}
+                loading={spsApiTokenConfigOptions.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

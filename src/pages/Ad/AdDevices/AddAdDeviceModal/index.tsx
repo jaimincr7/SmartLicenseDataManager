@@ -108,11 +108,14 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAdDevice(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, adDevices.search.tableName)
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        adDevices.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 
@@ -265,7 +268,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}

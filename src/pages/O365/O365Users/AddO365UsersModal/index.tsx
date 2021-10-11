@@ -1,4 +1,16 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -8,10 +20,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddO365UsersProps } from './addO365Users.model';
@@ -25,6 +39,7 @@ import { IO365Users } from '../../../../services/o365/o365Users/o365Users.model'
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -33,9 +48,10 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -134,7 +150,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365Users(inputValues));
+    if (!isMultiple) {
+      dispatch(saveO365Users(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        o365Users.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -265,6 +292,19 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
   }, [o365Users.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && o365Users.getById.data) {
       const data = o365Users.getById.data;
       fillValuesOnEdit(data);
@@ -308,12 +348,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -341,7 +387,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -369,7 +421,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -397,7 +455,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">First Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'first_name']} valuePropName="checked" noStyle>
+                      <Checkbox>First Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'First Name'
+                  )}
                   <Form.Item
                     name="first_name"
                     className="m-0"
@@ -410,7 +474,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'last_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Last Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Name'
+                  )}
                   <Form.Item
                     name="last_name"
                     className="m-0"
@@ -423,7 +493,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Display Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'display_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Display Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Display Name'
+                  )}
                   <Form.Item
                     name="display_name"
                     className="m-0"
@@ -436,7 +512,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Street Address</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'street_address']} valuePropName="checked" noStyle>
+                      <Checkbox>Street Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Street Address'
+                  )}
                   <Form.Item
                     name="street_address"
                     className="m-0"
@@ -449,7 +531,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">City</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'city']} valuePropName="checked" noStyle>
+                      <Checkbox>City</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'City'
+                  )}
                   <Form.Item name="city" className="m-0" label="City" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -457,7 +545,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">State</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'state']} valuePropName="checked" noStyle>
+                      <Checkbox>State</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'State'
+                  )}
                   <Form.Item name="state" className="m-0" label="State" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -465,7 +559,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Country</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'country']} valuePropName="checked" noStyle>
+                      <Checkbox>Country</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Country'
+                  )}
                   <Form.Item name="country" className="m-0" label="Country" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -473,7 +573,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Postal Code</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'postal_code']} valuePropName="checked" noStyle>
+                      <Checkbox>Postal Code</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Postal Code'
+                  )}
                   <Form.Item
                     name="postal_code"
                     className="m-0"
@@ -486,7 +592,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Proxy Addresses</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'proxy_addresses']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Proxy Addresses</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Proxy Addresses'
+                  )}
                   <Form.Item name="proxy_addresses" className="m-0" label="Proxy Addresses">
                     <Input className="form-control" />
                   </Form.Item>
@@ -494,7 +610,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Fax</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'fax']} valuePropName="checked" noStyle>
+                      <Checkbox>Fax</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Fax'
+                  )}
                   <Form.Item
                     name="fax"
                     className="m-0"
@@ -507,7 +629,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Mobile Phone</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'mobile_phone']} valuePropName="checked" noStyle>
+                      <Checkbox>Mobile Phone</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Mobile Phone'
+                  )}
                   <Form.Item
                     name="mobile_phone"
                     className="m-0"
@@ -520,7 +648,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Phone Number</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'phone_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Phone Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Phone Number'
+                  )}
                   <Form.Item
                     name="phone_number"
                     className="m-0"
@@ -533,7 +667,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Office</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'office']} valuePropName="checked" noStyle>
+                      <Checkbox>Office</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Office'
+                  )}
                   <Form.Item name="office" className="m-0" label="Office" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -541,7 +681,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Department</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'department']} valuePropName="checked" noStyle>
+                      <Checkbox>Department</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Department'
+                  )}
                   <Form.Item
                     name="department"
                     className="m-0"
@@ -554,12 +700,22 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Alternate Email Addresses</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'alternate_email_addresses']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Alternate Email Addresses</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Alternate Email Addresses'
+                  )}
                   <Form.Item
                     name="alternate_email_addresses"
                     className="m-0"
                     label="Alternate Email Addresses"
-                    rules={[{ type: 'email', max: 510, required: true }]}
+                    rules={[{ type: 'email', max: 510, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -567,7 +723,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Dir Sync Time</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'last_dir_sync_time']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Dir Sync Time</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Dir Sync Time'
+                  )}
                   <Form.Item
                     name="last_dir_sync_time"
                     className="m-0"
@@ -580,7 +746,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Last Password Change Timestamp</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'last_password_change_timestamp']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Password Change Timestamp</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Password Change Timestamp'
+                  )}
                   <Form.Item
                     name="last_password_change_timestamp"
                     className="m-0"
@@ -593,7 +769,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License Assignment Details</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'license_assignment_details']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>License Assignment Details</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'License Assignment Details'
+                  )}
                   <Form.Item
                     name="license_assignment_details"
                     className="m-0"
@@ -606,7 +792,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Licenses</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'licenses']} valuePropName="checked" noStyle>
+                      <Checkbox>Licenses</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Licenses'
+                  )}
                   <Form.Item name="licenses" className="m-0" label="Licenses">
                     <Input className="form-control" />
                   </Form.Item>
@@ -614,7 +806,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Oath Token Metadata</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'oath_token_metadata']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Oath Token Metadata</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Oath Token Metadata'
+                  )}
                   <Form.Item
                     name="oath_token_metadata"
                     className="m-0"
@@ -627,11 +829,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">ObjectId</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'object_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Object Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Object Id'
+                  )}
                   <Form.Item
                     name="object_id"
                     className="m-0"
-                    label="ObjectId"
+                    label="Object Id"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -640,7 +848,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Password Never Expires</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'password_never_expires']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Password Never Expires</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Password Never Expires'
+                  )}
                   <Form.Item
                     name="password_never_expires"
                     className="m-0"
@@ -653,7 +871,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Preferred Data Location</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'preferred_data_location']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Preferred Data Location</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Preferred Data Location'
+                  )}
                   <Form.Item
                     name="preferred_data_location"
                     className="m-0"
@@ -666,7 +894,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Preferred Language</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'preferred_language']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Preferred Language</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Preferred Language'
+                  )}
                   <Form.Item
                     name="preferred_language"
                     className="m-0"
@@ -679,7 +917,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Release Track</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'release_track']} valuePropName="checked" noStyle>
+                      <Checkbox>Release Track</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Release Track'
+                  )}
                   <Form.Item
                     name="release_track"
                     className="m-0"
@@ -692,7 +936,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Soft Deletion Timestamp</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'soft_deletion_timestamp']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Soft Deletion Timestamp</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Soft Deletion Timestamp'
+                  )}
                   <Form.Item
                     name="soft_deletion_timestamp"
                     className="m-0"
@@ -705,7 +959,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Strong Password Required</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'strong_password_required']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Strong Password Required</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Strong Password Required'
+                  )}
                   <Form.Item
                     name="strong_password_required"
                     className="m-0"
@@ -718,7 +982,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Title</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'title']} valuePropName="checked" noStyle>
+                      <Checkbox>Title</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Title'
+                  )}
                   <Form.Item name="title" className="m-0" label="Title" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -726,7 +996,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Usage Location</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'usage_location']} valuePropName="checked" noStyle>
+                      <Checkbox>Usage Location</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Usage Location'
+                  )}
                   <Form.Item
                     name="usage_location"
                     className="m-0"
@@ -739,7 +1015,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">User Principal Name</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>User Principal Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'User Principal Name'
+                  )}
                   <Form.Item
                     name="user_principal_name"
                     className="m-0"
@@ -752,7 +1038,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">When Created</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'when_created']} valuePropName="checked" noStyle>
+                      <Checkbox>When Created</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'When Created'
+                  )}
                   <Form.Item
                     name="when_created"
                     className="m-0"
@@ -765,7 +1057,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">AD Exclusion</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ad_exclusion']} valuePropName="checked" noStyle>
+                      <Checkbox>AD Exclusion</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'AD Exclusion'
+                  )}
                   <Form.Item
                     name="ad_exclusion"
                     className="m-0"
@@ -778,7 +1076,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Assigned Licenses</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'assigned_licenses']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Assigned Licenses</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Assigned Licenses'
+                  )}
                   <Form.Item name="assigned_licenses" className="m-0" label="Assigned Licenses">
                     <Input className="form-control" />
                   </Form.Item>
@@ -786,7 +1094,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Cost</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cost']} valuePropName="checked" noStyle>
+                      <Checkbox>Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cost'
+                  )}
                   <Form.Item name="cost" label="Cost" className="m-0" rules={[{ type: 'number' }]}>
                     <InputNumber min={0} className="form-control w-100" />
                   </Form.Item>
@@ -794,7 +1108,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">M365 Apps Assigned</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_activations']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps Assigned</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Assigned'
+                  )}
                   <Form.Item
                     name="m365_apps_activations"
                     label="M365 Apps Assigned"
@@ -807,7 +1131,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Project Activations</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'project_activations']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Project Activations</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Project Activations'
+                  )}
                   <Form.Item
                     name="project_activations"
                     label="Project Activations"
@@ -820,7 +1154,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Visio Activations</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'visio_activations']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Visio Activations</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Visio Activations'
+                  )}
                   <Form.Item
                     name="visio_activations"
                     label="Visio Activations"
@@ -833,7 +1177,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Network Access</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'network_access']} valuePropName="checked" noStyle>
+                      <Checkbox>Network Access</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Network Access'
+                  )}
                   <Form.Item
                     name="network_access"
                     label="Network Access"
@@ -846,7 +1196,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Exchange</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'exchange']} valuePropName="checked" noStyle>
+                      <Checkbox>Exchange</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exchange'
+                  )}
                   <Form.Item
                     name="exchange"
                     label="Exchange"
@@ -859,10 +1215,16 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">OneDrive</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'one_drive']} valuePropName="checked" noStyle>
+                      <Checkbox>One Drive</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'One Drive'
+                  )}
                   <Form.Item
                     name="one_drive"
-                    label="OneDrive"
+                    label="One Drive"
                     className="m-0"
                     rules={[{ type: 'integer' }]}
                   >
@@ -872,10 +1234,16 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SharePoint</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'share_point']} valuePropName="checked" noStyle>
+                      <Checkbox>Share Point</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Share Point'
+                  )}
                   <Form.Item
                     name="share_point"
-                    label="SharePoint"
+                    label="Share Point"
                     className="m-0"
                     rules={[{ type: 'integer' }]}
                   >
@@ -885,7 +1253,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Skype For Business</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'skype_for_business']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Skype For Business</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Skype For Business'
+                  )}
                   <Form.Item
                     name="skype_for_business"
                     label="Skype For Business"
@@ -898,7 +1276,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Teams</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'teams']} valuePropName="checked" noStyle>
+                      <Checkbox>Teams</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Teams'
+                  )}
                   <Form.Item
                     name="teams"
                     label="Teams"
@@ -911,7 +1295,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Yammer</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'yammer']} valuePropName="checked" noStyle>
+                      <Checkbox>Yammer</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Yammer'
+                  )}
                   <Form.Item
                     name="yammer"
                     label="Yammer"
@@ -924,7 +1314,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">M365 Apps</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'm365_apps']} valuePropName="checked" noStyle>
+                      <Checkbox>M365 Apps</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps'
+                  )}
                   <Form.Item
                     name="m365_apps"
                     label="M365 Apps"
@@ -937,7 +1333,17 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Min Last Activity</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'min_last_activity']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Min Last Activity</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Min Last Activity'
+                  )}
                   <Form.Item
                     name="min_last_activity"
                     label="Min Last Activity"
@@ -950,7 +1356,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License Cost</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'license_cost']} valuePropName="checked" noStyle>
+                      <Checkbox>License Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'License Cost'
+                  )}
                   <Form.Item name="license_cost" className="m-0" label="License Cost">
                     <Input className="form-control" />
                   </Form.Item>
@@ -958,7 +1370,13 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Assigned Plans</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'assigned_plans']} valuePropName="checked" noStyle>
+                      <Checkbox>Assigned Plans</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Assigned Plans'
+                  )}
                   <Form.Item name="assigned_plans" className="m-0" label="Assigned Plans">
                     <Input className="form-control" />
                   </Form.Item>
@@ -969,7 +1387,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="block_credential" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Block Credential</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'block_credential']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Block Credentials</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Block Credentials'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -977,7 +1406,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="non_human" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">NonHuman</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'non_human']} valuePropName="checked" noStyle>
+                      <Checkbox>Non Human</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Non Human'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -985,7 +1421,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="in_ad" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">In AD</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'in_ad']} valuePropName="checked" noStyle>
+                      <Checkbox>In Ad</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'In Ad'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -993,7 +1436,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="active_in_ad" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Active in AD</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'active_in_ad']} valuePropName="checked" noStyle>
+                      <Checkbox>Active in Ad</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Active in Ad'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1001,7 +1451,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="licensed" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Licensed</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'licensed']} valuePropName="checked" noStyle>
+                      <Checkbox>Licensed</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Licensed'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1009,7 +1466,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="dir_sync_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Dir Sync Enabled</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'dir_sync_enabled']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Dir Sync Enabled</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Dir Sync Enabled'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1017,7 +1485,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="secondary_account" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Secondary Account</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'secondary_account']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Secondary Account</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Secondary Account'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1025,7 +1504,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_assigned" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Assigned</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_assigned']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps Assigned</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Assigned'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1033,7 +1523,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="project_assigned" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Project Assigned</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'project_assigned']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Project Assigned</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Project Assigned'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1041,7 +1542,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="visio_assigned" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Visio Assigned</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'visio_assigned']} valuePropName="checked" noStyle>
+                      <Checkbox>Visio Assigned</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Visio Assigned'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1053,7 +1561,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   >
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Not in Active Users List</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'not_in_active_users_list']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Not In Active Users List</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Not In Active Users List'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1061,7 +1580,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="is_deleted" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Is Deleted</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_deleted']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Deleted</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Deleted'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1069,7 +1595,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="no_network_access" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">No Network Access</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'no_network_access']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>No Network Access</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'No Network Access'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1077,7 +1614,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="no_activity" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">No Activity</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'no_activity']} valuePropName="checked" noStyle>
+                      <Checkbox>No Activity</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'No Activity'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1085,7 +1629,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="no_activity_in_30_days" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">No Activity in 30 Days</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'no_activity_in_30_days']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>No Activity In 30 Days</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'No Activity In 30 Days'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1093,7 +1648,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_mac" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Mac</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'm365_apps_mac']} valuePropName="checked" noStyle>
+                      <Checkbox>M365 Apps Mac</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Mac'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1101,7 +1663,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_windows" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Windows</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_windows']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps Windows</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Windows'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1109,7 +1682,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_mobile" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Mobile</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_mobile']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps Mobile</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Mobile'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1117,7 +1701,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_web" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Web</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'm365_apps_web']} valuePropName="checked" noStyle>
+                      <Checkbox>M365 Apps Web</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Web'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1125,7 +1716,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_outlook" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Outlook</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_outlook']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps Outlook</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Outlook'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1133,7 +1735,14 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_word" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Word</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'm365_apps_word']} valuePropName="checked" noStyle>
+                      <Checkbox>M365 Apps Word</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Word'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1141,7 +1750,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_excel" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Excel</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_excel']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps Excel</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Excel'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1149,7 +1769,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_power_point" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps PowerPoint</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_power_point']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps Power Point</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Power Point'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1157,7 +1788,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_one_note" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps OneNote</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_one_note']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps One Note</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps One Note'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -1165,7 +1807,18 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   <Form.Item name="m365_apps_teams" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">M365 Apps Teams</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'm365_apps_teams']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>M365 Apps Teams</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'M365 Apps Teams'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -1174,7 +1827,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365Users.save.loading}
+                loading={o365Users.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

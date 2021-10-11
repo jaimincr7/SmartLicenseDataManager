@@ -22,6 +22,8 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [runAllScenariosModalVisible, setRunAllScenariosModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -33,6 +35,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearSqlServerLicense());
     };
@@ -98,6 +101,12 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -107,8 +116,22 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
       {addModalVisible && (
         <AddSqlServerLicenseModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/sql-server/license');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddSqlServerLicenseModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/sql-server/license');
           }}
           id={id}

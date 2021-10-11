@@ -1,10 +1,11 @@
-import { Button, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerEntitlements } from '../../../../services/windowsServer/windowsServerEntitlements/windowsServerEntitlements.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -13,10 +14,12 @@ import {
   getCompanyLookup,
   getTenantLookup,
   getWindowsServerLicenseLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -37,9 +40,10 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -69,7 +73,18 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveWindowsServerEntitlements(inputValues));
+    if (!isMultiple) {
+      dispatch(saveWindowsServerEntitlements(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        entitlements.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -131,6 +146,19 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
   }, [entitlements.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && entitlements.getById.data) {
       const data = entitlements.getById.data;
       fillValuesOnEdit(data);
@@ -175,12 +203,18 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -208,7 +242,13 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -236,7 +276,13 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -264,7 +310,13 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Qty1</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'qty_01']} valuePropName="checked" noStyle>
+                      <Checkbox>Qty1</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Qty1'
+                  )}
                   <Form.Item
                     name="qty_01"
                     label="Qty1"
@@ -277,7 +329,13 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Qty2</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'qty_02']} valuePropName="checked" noStyle>
+                      <Checkbox>Qty2</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Qty2'
+                  )}
                   <Form.Item
                     name="qty_02"
                     label="Qty2"
@@ -290,7 +348,13 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Qty3</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'qty_03']} valuePropName="checked" noStyle>
+                      <Checkbox>Qty3</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Qty3'
+                  )}
                   <Form.Item
                     name="qty_03"
                     label="Qty3"
@@ -303,8 +367,14 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Name</label>
-                  <Form.Item name="license_id" className="m-0" label="Product name">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'license_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Name'
+                  )}
+                  <Form.Item name="license_id" className="m-0" label="Product Name">
                     <Select
                       loading={commonLookups.windowsServerLicenseLookup.loading}
                       allowClear
@@ -334,7 +404,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={entitlements.save.loading}
+                loading={entitlements.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

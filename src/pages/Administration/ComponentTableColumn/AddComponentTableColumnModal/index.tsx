@@ -35,15 +35,8 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
   const configComponentTableColumn = useAppSelector(configComponentTableColumnSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const {
-    id,
-    showModal,
-    handleModalClose,
-    refreshDataTable,
-    isMultiple,
-    valuesForSelection,
-    numberOfRecords,
-  } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -74,15 +67,14 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
     if (!isMultiple) {
       dispatch(saveConfigComponentTableColumn(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            configComponentTableColumn.search.tableName
-          )
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configComponentTableColumn.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 
@@ -248,7 +240,7 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
                 htmlType="submit"
                 loading={configComponentTableColumn.save.loading || commonLookups.save.loading}
               >
-                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
+                {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel

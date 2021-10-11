@@ -63,15 +63,14 @@ const AddCmdbApplicationModal: React.FC<IAddCmdbApplicationProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbApplication(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            cmdbApplication.search.tableName
-          )
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmdbApplication.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 

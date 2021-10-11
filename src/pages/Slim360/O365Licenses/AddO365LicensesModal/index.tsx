@@ -1,4 +1,16 @@
-import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -6,6 +18,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISlim360O365Licenses } from '../../../../services/slim360/o365Licenses/o365Licenses.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -13,10 +26,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -37,9 +52,10 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -94,7 +110,18 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveSlim360O365Licenses(inputValues));
+    if (!isMultiple) {
+      dispatch(saveSlim360O365Licenses(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        slim360O365Licenses.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -181,6 +208,19 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
   }, [slim360O365Licenses.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && slim360O365Licenses.getById.data) {
       const data = slim360O365Licenses.getById.data;
       fillValuesOnEdit(data);
@@ -224,12 +264,18 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -257,12 +303,18 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item
                     name="company_id"
                     className="m-0"
                     label="Company"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleCompanyChange}
@@ -290,7 +342,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -318,7 +376,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Azure Id</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'azure_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Azure Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Azure Id'
+                  )}
                   <Form.Item
                     name="azure_id"
                     label="Azure Id"
@@ -331,12 +395,22 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Azure Tenant Id</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'azure_tenant_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Azure Tenant Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Azure Tenant Id'
+                  )}
                   <Form.Item
                     name="azure_tenant_id"
                     className="m-0"
                     label="Azure Tenant Id"
-                    rules={[{ max: 36, required: true }]}
+                    rules={[{ max: 36, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -344,7 +418,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Sku Id</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'sku_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Sku Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Sku Id'
+                  )}
                   <Form.Item name="sku_id" className="m-0" label="Sku Id" rules={[{ max: 36 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -352,7 +432,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Sku Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'sku_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Sku Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Sku Name'
+                  )}
                   <Form.Item
                     name="sku_name"
                     className="m-0"
@@ -365,7 +451,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Sku Part Number</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'sku_part_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Sku Part Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Sku Part Number'
+                  )}
                   <Form.Item
                     name="sku_part_number"
                     className="m-0"
@@ -378,7 +474,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Applies To</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'applies_to']} valuePropName="checked" noStyle>
+                      <Checkbox>Applies To</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Applies To'
+                  )}
                   <Form.Item
                     name="applies_to"
                     label="Applies To"
@@ -391,7 +493,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Purchased</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'purchased']} valuePropName="checked" noStyle>
+                      <Checkbox>Purchased</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Purchased'
+                  )}
                   <Form.Item
                     name="purchased"
                     label="Purchased"
@@ -404,7 +512,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Consumed</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'consumed']} valuePropName="checked" noStyle>
+                      <Checkbox>Consumed</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Consumed'
+                  )}
                   <Form.Item
                     name="consumed"
                     label="Consumed"
@@ -417,7 +531,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Available</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'available']} valuePropName="checked" noStyle>
+                      <Checkbox>Available</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Available'
+                  )}
                   <Form.Item
                     name="available"
                     label="Available"
@@ -430,7 +550,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Suspended</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'suspended']} valuePropName="checked" noStyle>
+                      <Checkbox>Suspended</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Suspended'
+                  )}
                   <Form.Item
                     name="suspended"
                     label="Suspended"
@@ -443,7 +569,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Warning</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'warning']} valuePropName="checked" noStyle>
+                      <Checkbox>Warning</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Warning'
+                  )}
                   <Form.Item
                     name="warning"
                     label="Warning"
@@ -456,7 +588,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Baseline</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'baseline']} valuePropName="checked" noStyle>
+                      <Checkbox>Baseline</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Baseline'
+                  )}
                   <Form.Item name="baseline" className="m-0" label="Baseline">
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -464,7 +602,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Cost</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cost']} valuePropName="checked" noStyle>
+                      <Checkbox>Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cost'
+                  )}
                   <Form.Item name="cost" label="Cost" className="m-0" rules={[{ type: 'number' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -472,7 +616,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Item Cost</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'item_cost']} valuePropName="checked" noStyle>
+                      <Checkbox>Item Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Item Cost'
+                  )}
                   <Form.Item
                     name="item_cost"
                     label="Item Cost"
@@ -485,12 +635,22 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Expiration Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'expiration_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Expiration Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Expiration Date'
+                  )}
                   <Form.Item
                     name="expiration_date"
                     label="Expiration Date"
                     className="m-0"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -498,7 +658,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Payment Cycle</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'payment_cycle']} valuePropName="checked" noStyle>
+                      <Checkbox>Payment Cycle</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Payment Cycle'
+                  )}
                   <Form.Item
                     name="payment_cycle"
                     label="Payment Cycle"
@@ -511,7 +677,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Plans</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'plans']} valuePropName="checked" noStyle>
+                      <Checkbox>Plans</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Plans'
+                  )}
                   <Form.Item name="plans" label="Plans" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
@@ -519,7 +691,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Committed Year 1</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'committed_year_1']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Committed Year 1</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Committed Year 1'
+                  )}
                   <Form.Item
                     name="committed_year_1"
                     label="Committed Year 1"
@@ -532,7 +714,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Committed Year 2</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'committed_year_2']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Committed Year 2</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Committed Year 2'
+                  )}
                   <Form.Item
                     name="committed_year_2"
                     label="Committed Year 2"
@@ -545,7 +737,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Committed Year 3</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'committed_year_3']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Committed Year 3</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Committed Year 3'
+                  )}
                   <Form.Item
                     name="committed_year_3"
                     label="Committed Year 3"
@@ -558,7 +760,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Year 1 Item Cost</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'year_1_item_cost']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Year 1 Item Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Year 1 Item Cost'
+                  )}
                   <Form.Item
                     name="year_1_item_cost"
                     label="Year 1 Item Cost"
@@ -571,7 +783,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Year 2 Item Cost</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'year_2_item_cost']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Year 2 Item Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Year 2 Item Cost'
+                  )}
                   <Form.Item
                     name="year_2_item_cost"
                     label="Year 2 Item Cost"
@@ -584,7 +806,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Year 3 Item Cost</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'year_3_item_cost']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Year 3 Item Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Year 3 Item Cost'
+                  )}
                   <Form.Item
                     name="year_3_item_cost"
                     label="Year 3 Item Cost"
@@ -597,7 +829,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Future Item Cost</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'future_item_cost']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Future Item Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Future Item Cost'
+                  )}
                   <Form.Item
                     name="future_item_cost"
                     label="Future Item Cost"
@@ -610,7 +852,13 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Csp Item Cost</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'csp_item_cost']} valuePropName="checked" noStyle>
+                      <Checkbox>Csp Item Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Csp Item Cost'
+                  )}
                   <Form.Item
                     name="csp_item_cost"
                     label="Csp Item Cost"
@@ -623,7 +871,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Current Year Item Cost</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'current_year_item_cost']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Current Year Item Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Current Year Item Cost'
+                  )}
                   <Form.Item
                     name="current_year_item_cost"
                     label="Current Year Item Cost"
@@ -636,7 +894,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Current Year Committed</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'current_year_committed']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Current Year Committed</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Current Year Committed'
+                  )}
                   <Form.Item
                     name="current_year_committed"
                     label="Current Year Committed"
@@ -649,7 +917,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Current Average Price</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'current_avg_price']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Current Average Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Current Average Price'
+                  )}
                   <Form.Item
                     name="current_avg_price"
                     label="Current Average Price"
@@ -662,7 +940,17 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Current Purchase Cost</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'current_purchase_cost']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Current Purchase Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Current Purchase Cost'
+                  )}
                   <Form.Item
                     name="current_purchase_cost"
                     label="Current Purchase Cost"
@@ -679,7 +967,7 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={slim360O365Licenses.save.loading}
+                loading={slim360O365Licenses.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

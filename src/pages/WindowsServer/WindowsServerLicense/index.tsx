@@ -22,6 +22,8 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [runAllScenariosModalVisible, setRunAllScenariosModalVisible] = React.useState(false);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
 
@@ -33,6 +35,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearWindowsServerLicense());
     };
@@ -98,6 +101,12 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -107,8 +116,22 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
       {addModalVisible && (
         <AddWindowsServerLicenseModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/windows-server/license');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddWindowsServerLicenseModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/windows-server/license');
           }}
           id={id}

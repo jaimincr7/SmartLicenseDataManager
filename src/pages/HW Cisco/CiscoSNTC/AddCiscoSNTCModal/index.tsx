@@ -1,4 +1,16 @@
-import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -6,6 +18,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoSNTC } from '../../../../services/hwCisco/ciscoSNTC/ciscoSNTC.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -13,10 +26,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -37,9 +52,10 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -129,7 +145,18 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveCiscoSNTC(inputValues));
+    if (!isMultiple) {
+      dispatch(saveCiscoSNTC(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        ciscoSNTC.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -259,6 +286,19 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
   }, [ciscoSNTC.getById.data]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     dispatch(getTenantLookup());
     if (+id > 0) {
       dispatch(getCiscoSNTCById(+id));
@@ -295,12 +335,18 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -328,7 +374,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -356,7 +408,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -384,7 +442,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -392,11 +456,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Host Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'hostname']} valuePropName="checked" noStyle>
+                      <Checkbox>Host Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Host Name'
+                  )}
                   <Form.Item
                     name="hostname"
                     className="m-0"
-                    label="Hostname"
+                    label="Host Name"
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
@@ -405,7 +475,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SNMP SYS Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'snmp_sys_name']} valuePropName="checked" noStyle>
+                      <Checkbox>SNMP sysName</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SNMP sysName'
+                  )}
                   <Form.Item
                     name="snmp_sys_name"
                     className="m-0"
@@ -418,7 +494,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">IP Address</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ip_address']} valuePropName="checked" noStyle>
+                      <Checkbox>IP Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'IP Address'
+                  )}
                   <Form.Item
                     name="ip_address"
                     className="m-0"
@@ -431,7 +513,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Mac Address</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'mac_address']} valuePropName="checked" noStyle>
+                      <Checkbox>Mac Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Mac Address'
+                  )}
                   <Form.Item
                     name="mac_address"
                     className="m-0"
@@ -444,7 +532,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Serial Number</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'serial_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Serial Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Serial Number'
+                  )}
                   <Form.Item
                     name="serial_number"
                     className="m-0"
@@ -457,7 +551,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Collected SN</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'collected_sn']} valuePropName="checked" noStyle>
+                      <Checkbox>Collected SN</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Collected SN'
+                  )}
                   <Form.Item
                     name="collected_sn"
                     className="m-0"
@@ -470,7 +570,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Parent SN</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'parent_sn']} valuePropName="checked" noStyle>
+                      <Checkbox>Parent SN</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Parent SN'
+                  )}
                   <Form.Item
                     name="parent_sn"
                     className="m-0"
@@ -483,7 +589,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">P/C/S</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'p_c_s']} valuePropName="checked" noStyle>
+                      <Checkbox>P/C/S</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'P/C/S'
+                  )}
                   <Form.Item name="p_c_s" className="m-0" label="P/C/S" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -491,7 +603,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Parent Instance ID</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'parent_instance_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Parent Instance ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Parent Instance ID'
+                  )}
                   <Form.Item
                     name="parent_instance_id"
                     className="m-0"
@@ -504,7 +626,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Product ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product ID'
+                  )}
                   <Form.Item
                     name="product_id"
                     className="m-0"
@@ -517,7 +645,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Name'
+                  )}
                   <Form.Item
                     name="product_name"
                     className="m-0"
@@ -530,7 +664,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Description</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'product_description']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Product Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Description'
+                  )}
                   <Form.Item
                     name="product_description"
                     className="m-0"
@@ -543,7 +687,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Family</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_family']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Family</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Family'
+                  )}
                   <Form.Item
                     name="product_family"
                     className="m-0"
@@ -556,7 +706,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Sub Type</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'product_subtype']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Product Subtype</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Subtype'
+                  )}
                   <Form.Item
                     name="product_subtype"
                     className="m-0"
@@ -569,7 +729,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Product Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Type'
+                  )}
                   <Form.Item
                     name="product_type"
                     className="m-0"
@@ -582,7 +748,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Equipment Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'equipment_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Equipment Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Equipment Type'
+                  )}
                   <Form.Item
                     name="equipment_type"
                     className="m-0"
@@ -595,7 +767,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Coverage Start</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'coverage_start']} valuePropName="checked" noStyle>
+                      <Checkbox>Coverage Start</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Coverage Start'
+                  )}
                   <Form.Item
                     name="coverage_start"
                     className="m-0"
@@ -608,7 +786,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Coverage End</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'coverage_end']} valuePropName="checked" noStyle>
+                      <Checkbox>Coverage End</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Coverage End'
+                  )}
                   <Form.Item
                     name="coverage_end"
                     className="m-0"
@@ -621,7 +805,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Contract No#</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'contract_no']} valuePropName="checked" noStyle>
+                      <Checkbox>Contract No#</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Contract No#'
+                  )}
                   <Form.Item
                     name="contract_no"
                     className="m-0"
@@ -634,7 +824,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Contract Status</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'contract_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Contract Status</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Contract Status'
+                  )}
                   <Form.Item
                     name="contract_status"
                     className="m-0"
@@ -647,7 +847,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service Level</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'service_level']} valuePropName="checked" noStyle>
+                      <Checkbox>Service Level</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service Level'
+                  )}
                   <Form.Item
                     name="service_level"
                     className="m-0"
@@ -660,7 +866,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service Level Description</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'service_level_description']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Service Level Description</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service Level Description'
+                  )}
                   <Form.Item
                     name="service_level_description"
                     className="m-0"
@@ -673,7 +889,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service Program</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'service_program']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Service Program</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service Program'
+                  )}
                   <Form.Item
                     name="service_program"
                     className="m-0"
@@ -686,7 +912,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Bill To Customer</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'bill_to_customer']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Bill-to Customer</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Bill-to Customer'
+                  )}
                   <Form.Item
                     name="bill_to_customer"
                     className="m-0"
@@ -699,7 +935,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Warranty Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'warranty_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Warranty Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Warranty Type'
+                  )}
                   <Form.Item
                     name="warranty_type"
                     className="m-0"
@@ -712,7 +954,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Warranty Start</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'warranty_start']} valuePropName="checked" noStyle>
+                      <Checkbox>Warranty Start</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Warranty Start'
+                  )}
                   <Form.Item name="warranty_start" className="m-0" label="Warranty Start">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -720,7 +968,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Warranty End</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'warranty_end']} valuePropName="checked" noStyle>
+                      <Checkbox>Warranty End</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Warranty End'
+                  )}
                   <Form.Item name="warranty_end" className="m-0" label="Warranty End">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -728,7 +982,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SNMP SYS Location</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'snmp_sys_location']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>SNMP sysLocation</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SNMP sysLocation'
+                  )}
                   <Form.Item
                     name="snmp_sys_location"
                     className="m-0"
@@ -741,7 +1005,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed at Site ID</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_at_site_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed-at Site ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed-at Site ID'
+                  )}
                   <Form.Item
                     name="installed_at_site_id"
                     className="m-0"
@@ -754,7 +1028,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed at Site</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_at_site']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed-at Site</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed-at Site'
+                  )}
                   <Form.Item
                     name="installed_at_site"
                     className="m-0"
@@ -767,7 +1051,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed at Address</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_at_address']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed-at Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed-at Address'
+                  )}
                   <Form.Item
                     name="installed_at_address"
                     className="m-0"
@@ -780,7 +1074,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed at City</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_at_city']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed-at City</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed-at City'
+                  )}
                   <Form.Item
                     name="installed_at_city"
                     className="m-0"
@@ -793,7 +1097,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed at State</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_at_state']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed-at State</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed-at State'
+                  )}
                   <Form.Item
                     name="installed_at_state"
                     className="m-0"
@@ -806,7 +1120,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed at Province</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_at_province']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed-at Province</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed-at Province'
+                  )}
                   <Form.Item
                     name="installed_at_province"
                     className="m-0"
@@ -819,7 +1143,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed at Postal Code</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_at_postal_code']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed-at Postal Code</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed-at Postal Code'
+                  )}
                   <Form.Item
                     name="installed_at_postal_code"
                     className="m-0"
@@ -832,7 +1166,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed at Country</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_at_country']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed-at Country</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed-at Country'
+                  )}
                   <Form.Item
                     name="installed_at_country"
                     className="m-0"
@@ -845,7 +1189,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Ship to Address</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'ship_to_address']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Ship-to Address</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Ship-to Address'
+                  )}
                   <Form.Item
                     name="ship_to_address"
                     className="m-0"
@@ -858,7 +1212,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Ship Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ship_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Ship Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Ship Date'
+                  )}
                   <Form.Item name="ship_date" className="m-0" label="Ship Date">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -866,7 +1226,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SW Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'sw_type']} valuePropName="checked" noStyle>
+                      <Checkbox>SW Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SW Type'
+                  )}
                   <Form.Item name="sw_type" className="m-0" label="SW Type" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -874,7 +1240,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SW Version</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'sw_version']} valuePropName="checked" noStyle>
+                      <Checkbox>SW Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SW Version'
+                  )}
                   <Form.Item
                     name="sw_version"
                     label="SW Version"
@@ -887,7 +1259,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Feature Set</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'feature_set']} valuePropName="checked" noStyle>
+                      <Checkbox>Feature Set</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Feature Set'
+                  )}
                   <Form.Item
                     name="feature_set"
                     label="Feature Set"
@@ -900,7 +1278,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">HW Revision</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'hw_revision']} valuePropName="checked" noStyle>
+                      <Checkbox>HW Revision</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'HW Revision'
+                  )}
                   <Form.Item
                     name="hw_revision"
                     label="HW Revision"
@@ -913,7 +1297,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Bootstrap Version</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'bootstrap_version']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Bootstrap Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Bootstrap Version'
+                  )}
                   <Form.Item
                     name="bootstrap_version"
                     label="Bootstrap Version"
@@ -926,7 +1320,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Installed Flash</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'installed_flash']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Installed Flash</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Installed Flash'
+                  )}
                   <Form.Item
                     name="installed_flash"
                     label="Installed Flash"
@@ -939,7 +1343,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Running Config</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'running_config']} valuePropName="checked" noStyle>
+                      <Checkbox>Running Config</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Running Config'
+                  )}
                   <Form.Item
                     name="running_config"
                     label="Running Config"
@@ -952,7 +1362,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Startup Config</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'startup_config']} valuePropName="checked" noStyle>
+                      <Checkbox>Startup Config</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Startup Config'
+                  )}
                   <Form.Item
                     name="startup_config"
                     label="Startup Config"
@@ -965,7 +1381,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">HW Alerts</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'hw_alerts']} valuePropName="checked" noStyle>
+                      <Checkbox>HW Alerts</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'HW Alerts'
+                  )}
                   <Form.Item
                     name="hw_alerts"
                     label="HW Alerts"
@@ -978,7 +1400,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">HW LDoS</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'hw_l_do_s']} valuePropName="checked" noStyle>
+                      <Checkbox>HW LDoS</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'HW LDoS'
+                  )}
                   <Form.Item name="hw_l_do_s" label="HW LDoS" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -986,7 +1414,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SW Alerts</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'sw_alerts']} valuePropName="checked" noStyle>
+                      <Checkbox>SW Alerts</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SW Alerts'
+                  )}
                   <Form.Item
                     name="sw_alerts"
                     label="SW Alerts"
@@ -999,7 +1433,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Security Advisory (PSIRT)</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'security_advisory_psirt']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Security Advisory (PSIRT)</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Security Advisory (PSIRT)'
+                  )}
                   <Form.Item
                     name="security_advisory_psirt"
                     label="Security Advisory (PSIRT)"
@@ -1012,7 +1456,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Field Notices</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'field_notices']} valuePropName="checked" noStyle>
+                      <Checkbox>Field Notices</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Field Notices'
+                  )}
                   <Form.Item
                     name="field_notices"
                     label="Field Notices"
@@ -1025,7 +1475,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Customer</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'customer']} valuePropName="checked" noStyle>
+                      <Checkbox>Customer</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Customer'
+                  )}
                   <Form.Item
                     name="customer"
                     label="Customer"
@@ -1038,7 +1494,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Inventory</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'inventory']} valuePropName="checked" noStyle>
+                      <Checkbox>Inventory</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Inventory'
+                  )}
                   <Form.Item
                     name="inventory"
                     label="Inventory"
@@ -1051,7 +1513,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Segment</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'segment']} valuePropName="checked" noStyle>
+                      <Checkbox>Segment</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Segment'
+                  )}
                   <Form.Item name="segment" label="Segment" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -1059,7 +1527,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Collection Date</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'collection_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Collection Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Collection Date'
+                  )}
                   <Form.Item name="collection_date" label="Collection Date" className="m-0">
                     <DatePicker className="form-control w-100 w-100" />
                   </Form.Item>
@@ -1067,7 +1545,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Appliance ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'appliance_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Appliance ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Appliance ID'
+                  )}
                   <Form.Item
                     name="appliance_id"
                     label="Appliance ID"
@@ -1080,7 +1564,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Imported By</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'imported_by']} valuePropName="checked" noStyle>
+                      <Checkbox>Imported By</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Imported By'
+                  )}
                   <Form.Item
                     name="imported_by"
                     label="Imported By"
@@ -1093,7 +1583,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Imported File</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'imported_file']} valuePropName="checked" noStyle>
+                      <Checkbox>Imported File</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Imported File'
+                  )}
                   <Form.Item
                     name="imported_file"
                     label="Imported File"
@@ -1106,7 +1602,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">SN Recognized</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'sn_recognized']} valuePropName="checked" noStyle>
+                      <Checkbox>SN Recognized</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'SN Recognized'
+                  )}
                   <Form.Item
                     name="sn_recognized"
                     label="SN Recognized"
@@ -1119,7 +1621,17 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Device Diagnostics Supported</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'device_diagnostics_supported']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Device Diagnostics Supported</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Device Diagnostics Supported'
+                  )}
                   <Form.Item
                     name="device_diagnostics_supported"
                     label="Device Diagnostics Supported"
@@ -1132,7 +1644,13 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Relationship</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'relationship']} valuePropName="checked" noStyle>
+                      <Checkbox>Relationship</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Relationship'
+                  )}
                   <Form.Item
                     name="relationship"
                     label="Relationship"
@@ -1149,7 +1667,7 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={ciscoSNTC.save.loading}
+                loading={ciscoSNTC.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

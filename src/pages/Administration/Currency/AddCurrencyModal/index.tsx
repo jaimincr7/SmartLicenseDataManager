@@ -56,11 +56,14 @@ const AddCurrencyModal: React.FC<IAddCurrencyProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCurrency(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, currency.search.tableName)
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        currency.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 

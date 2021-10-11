@@ -27,7 +27,6 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     if (records?.length > 0) {
       for (let index = 0; index <= maxCount; index++) {
         mainColumns.push({
-          title: 'description' + (index + 1),
           dataIndex: 'description' + index,
           key: 'description' + index,
           ellipsis: true,
@@ -78,18 +77,18 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           </div>
         </Col>
         <Table
-          showHeader={true}
+          showHeader={false}
           scroll={{ x: true }}
           pagination={{
             ...pagination,
-            pageSizeOptions: ['10', '100', '500', '2500'],
+            pageSizeOptions: ['10', '100', '500', '1000'],
             total: records?.length,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
           dataSource={records}
           columns={columns}
-          className="custom-table"
+          className="custom-table first-row-header"
         />
       </Form>
 
