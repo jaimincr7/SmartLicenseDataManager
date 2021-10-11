@@ -36,7 +36,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   useImperativeHandle(ref, () => ({
     refreshData() {
       dataTableRef?.current.refreshData();
-      dataTableRef?.current.getDropDownDetails();
     },
   }));
 
@@ -64,7 +63,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
     return FilterByDateSwap(
       dataIndex,
-      sqlServerPricing.search.tableName,
+      tableName,
       form,
       null,
       Obj.filter_keys,

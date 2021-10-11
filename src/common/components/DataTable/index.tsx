@@ -117,7 +117,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
 
     const searchData: ISearch = {
-      is_lookup: !pageLoaded,
+      is_lookup: true,
       is_column_selection: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
