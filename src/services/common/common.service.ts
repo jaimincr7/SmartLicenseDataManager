@@ -341,15 +341,11 @@ class CommonService {
   public async getColumnLookup(
     tableName: string,
     columnName: string,
-    filter_keys: any[],
-    keywords: string
   ): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
     const data = {
       table_name: tableName,
       column_name: columnName,
-      filter_keys: filter_keys,
-      keywords: keywords,
     };
     return request({ url, method: 'POST', data }).then((res) => {
       return res.data;

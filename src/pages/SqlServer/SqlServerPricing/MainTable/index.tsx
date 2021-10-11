@@ -31,7 +31,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setShowSelectedListModal,
     setValuesForSelection,
     isMultiple,
-    valuesForSelection,
   } = props;
   const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
   const dispatch = useAppDispatch();
@@ -56,15 +55,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    const Obj: any = {
-      ...valuesForSelection,
-    };
     return FilterWithSwapOption(
       dataIndex,
       sqlServerPricing.search.tableName,
       form,
-      Obj.filter_keys,
-      Obj.keyword
     );
   };
 
