@@ -62,14 +62,13 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveRole(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, role.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        role.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

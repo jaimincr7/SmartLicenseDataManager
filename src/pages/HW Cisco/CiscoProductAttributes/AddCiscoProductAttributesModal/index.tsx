@@ -105,14 +105,13 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
     if (!isMultiple) {
       dispatch(saveCiscoProductAttributes(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoProductAttributes.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        ciscoProductAttributes.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

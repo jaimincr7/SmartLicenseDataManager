@@ -78,14 +78,13 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
     if (!isMultiple) {
       dispatch(saveO365Subscriptions(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365Subscriptions.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        o365Subscriptions.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };
@@ -207,7 +206,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                {isMultiple ? (
+                  {isMultiple ? (
                     <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
                       <Checkbox>Tenant</Checkbox>
                     </Form.Item>

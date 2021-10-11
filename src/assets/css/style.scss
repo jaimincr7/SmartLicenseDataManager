@@ -667,10 +667,10 @@ textarea.ant-input {
   }
 }
 
-.custom-table.first-row-header{
-  .ant-table-tbody{
-    tr.ant-table-row:nth-child(2){
-      td{
+.custom-table.first-row-header {
+  .ant-table-tbody {
+    tr.ant-table-row:nth-child(2) {
+      td {
         background-color: #f6f6f6;
         color: #4f4f4f;
       }

@@ -57,14 +57,13 @@ const AddConfigProcessorsModal: React.FC<IAddConfigProcessorsProps> = (props) =>
     if (!isMultiple) {
       dispatch(saveConfigProcessors(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configProcessors.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configProcessors.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

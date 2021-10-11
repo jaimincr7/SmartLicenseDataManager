@@ -77,14 +77,13 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
     if (!isMultiple) {
       dispatch(saveSqlServerPricing(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, sqlServerPricing.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        sqlServerPricing.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

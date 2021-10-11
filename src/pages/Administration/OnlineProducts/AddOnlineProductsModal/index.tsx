@@ -63,14 +63,13 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
     if (!isMultiple) {
       dispatch(saveConfigOnlineProducts(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configOnlineProducts.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configOnlineProducts.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

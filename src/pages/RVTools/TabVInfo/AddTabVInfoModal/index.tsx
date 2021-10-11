@@ -96,14 +96,13 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveTabVInfo(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, tabVInfo.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        tabVInfo.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

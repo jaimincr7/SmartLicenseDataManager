@@ -23,7 +23,7 @@ export const FilterByDateSwap = (
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
   filter_keys?: any[],
-  keyword?: string,
+  keyword?: string
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
 
@@ -37,7 +37,7 @@ export const FilterByDateSwap = (
         });
       } else {
         commonService
-          .getColumnLookup(tableName, dataIndex,filter_keys ,keyword)
+          .getColumnLookup(tableName, dataIndex, filter_keys, keyword)
           .then((res) => {
             return res.body.data;
           })
@@ -132,7 +132,7 @@ export const FilterWithSwapOption = (
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
   filter_keys?: any[],
-  keyword?: string,
+  keyword?: string
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
 
@@ -146,7 +146,7 @@ export const FilterWithSwapOption = (
         });
       } else {
         commonService
-          .getColumnLookup(tableName, dataIndex , filter_keys , keyword)
+          .getColumnLookup(tableName, dataIndex, filter_keys, keyword)
           .then((res) => {
             return res.body.data;
           })

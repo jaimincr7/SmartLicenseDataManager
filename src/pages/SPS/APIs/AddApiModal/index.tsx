@@ -7,7 +7,11 @@ import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getSpsApiGroups, getSpsApiTypes, updateMultiple } from '../../../../store/common/common.action';
+import {
+  getSpsApiGroups,
+  getSpsApiTypes,
+  updateMultiple,
+} from '../../../../store/common/common.action';
 import {
   clearMultipleUpdateMessages,
   clearSpsApiGroupsLookup,
@@ -67,14 +71,13 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveSpsApi(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, spsApiState.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        spsApiState.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };
@@ -282,7 +285,11 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'stored_procedure']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'stored_procedure']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Stored Procedure</Checkbox>
                     </Form.Item>
                   ) : (

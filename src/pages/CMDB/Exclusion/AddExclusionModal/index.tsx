@@ -82,14 +82,13 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbExclusion(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbExclusion.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmdbExclusion.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

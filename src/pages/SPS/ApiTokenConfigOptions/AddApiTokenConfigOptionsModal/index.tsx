@@ -19,7 +19,10 @@ import {
 } from '../../../../store/sps/apiTokenConfigOptions/apiTokenConfigOptions.reducer';
 import { IAddSpsApiTokenConfigOptionsProps } from './addApiTokenConfigOptions.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getSpsApiTypeLookup, updateMultiple } from '../../../../store/common/common.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
@@ -63,14 +66,13 @@ const AddSpsApiTokenConfigOptionsModal: React.FC<IAddSpsApiTokenConfigOptionsPro
     if (!isMultiple) {
       dispatch(saveSpsApiTokenConfigOptions(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, spsApiTokenConfigOptions.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        spsApiTokenConfigOptions.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

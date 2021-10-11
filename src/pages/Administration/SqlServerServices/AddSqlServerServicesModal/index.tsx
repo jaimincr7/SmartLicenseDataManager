@@ -57,14 +57,13 @@ const AddConfigSqlServerServicesModal: React.FC<IAddConfigSqlServerServicesProps
     if (!isMultiple) {
       dispatch(saveConfigSqlServerServices(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configSqlServerServices.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configSqlServerServices.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

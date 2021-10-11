@@ -31,14 +31,8 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
   const bu = useAppSelector(buSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
-  const {
-    id,
-    showModal,
-    handleModalClose,
-    refreshDataTable,
-    isMultiple,
-    valuesForSelection,
-  } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -267,8 +261,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
-                  &nbsp;
+                  &nbsp; &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
                       <Checkbox>Active</Checkbox>

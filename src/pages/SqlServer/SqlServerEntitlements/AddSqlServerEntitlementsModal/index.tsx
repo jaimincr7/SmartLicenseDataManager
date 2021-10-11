@@ -75,14 +75,13 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
     if (!isMultiple) {
       dispatch(saveSqlServerEntitlements(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, sqlServersEntitlements.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        sqlServersEntitlements.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

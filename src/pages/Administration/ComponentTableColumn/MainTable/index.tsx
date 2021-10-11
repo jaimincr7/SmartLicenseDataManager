@@ -22,12 +22,7 @@ import {
 import configComponentTableColumnService from '../../../../services/master/componentTableColumn/componentTableColumn.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const {
-    setSelectedId,
-    setShowSelectedListModal,
-    setValuesForSelection,
-    isMultiple,
-  } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const configComponentTableColumn = useAppSelector(configComponentTableColumnSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

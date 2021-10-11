@@ -87,14 +87,13 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
     if (!isMultiple) {
       dispatch(saveWindowsServerExclusions(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, windowsServerExclusions.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        windowsServerExclusions.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

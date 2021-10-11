@@ -35,14 +35,8 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
   const configComponentTableColumn = useAppSelector(configComponentTableColumnSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const {
-    id,
-    showModal,
-    handleModalClose,
-    refreshDataTable,
-    isMultiple,
-    valuesForSelection,
-  } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -73,14 +67,13 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
     if (!isMultiple) {
       dispatch(saveConfigComponentTableColumn(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configComponentTableColumn.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configComponentTableColumn.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

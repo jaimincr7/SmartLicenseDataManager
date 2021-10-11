@@ -159,14 +159,13 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoIB(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoIB.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        ciscoIB.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

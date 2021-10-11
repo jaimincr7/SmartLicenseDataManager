@@ -87,14 +87,13 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
     if (!isMultiple) {
       dispatch(saveSqlServerExclusions(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, sqlServerExclusions.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        sqlServerExclusions.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

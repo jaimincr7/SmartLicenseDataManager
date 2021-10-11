@@ -45,14 +45,8 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const {
-    id,
-    showModal,
-    handleModalClose,
-    refreshDataTable,
-    isMultiple,
-    valuesForSelection,
-  } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -91,14 +85,13 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCompany(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, company.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        company.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

@@ -102,14 +102,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveTabVCluster(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, tabVCluster.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        tabVCluster.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

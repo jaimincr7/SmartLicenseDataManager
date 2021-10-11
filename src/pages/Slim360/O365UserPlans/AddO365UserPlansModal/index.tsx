@@ -74,14 +74,13 @@ const AddSlim360O365UserPlansModal: React.FC<IAddSlim360O365UserPlansProps> = (p
     if (!isMultiple) {
       dispatch(saveSlim360O365UserPlans(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, slim360O365UserPlans.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        slim360O365UserPlans.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };
@@ -313,7 +312,11 @@ const AddSlim360O365UserPlansModal: React.FC<IAddSlim360O365UserPlansProps> = (p
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'azure_tenant_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'azure_tenant_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Azure Tenant Id</Checkbox>
                     </Form.Item>
                   ) : (
@@ -332,7 +335,11 @@ const AddSlim360O365UserPlansModal: React.FC<IAddSlim360O365UserPlansProps> = (p
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'user_principal_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'user_principal_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>User Principal Name</Checkbox>
                     </Form.Item>
                   ) : (

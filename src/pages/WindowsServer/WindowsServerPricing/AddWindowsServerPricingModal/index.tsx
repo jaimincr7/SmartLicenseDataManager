@@ -77,14 +77,13 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
     if (!isMultiple) {
       dispatch(saveWindowsServerPricing(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, windowsServerPricing.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        windowsServerPricing.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

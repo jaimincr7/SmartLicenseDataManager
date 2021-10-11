@@ -62,14 +62,13 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAzureAPIVmSizes(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, azureAPIVmSizes.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        azureAPIVmSizes.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

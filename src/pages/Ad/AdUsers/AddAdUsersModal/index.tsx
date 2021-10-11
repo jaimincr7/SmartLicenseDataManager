@@ -111,14 +111,13 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAdUser(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, adUsers.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        adUsers.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };
@@ -503,7 +502,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_logon_timestamp']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_logon_timestamp']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Logon Timestamp</Checkbox>
                     </Form.Item>
                   ) : (

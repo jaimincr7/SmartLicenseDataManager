@@ -68,14 +68,13 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
     if (!isMultiple) {
       dispatch(saveConfigExclusionComponent(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configExclusionComponent.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configExclusionComponent.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

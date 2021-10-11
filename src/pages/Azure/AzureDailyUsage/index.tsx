@@ -15,6 +15,7 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import ProcessDataModal from './ProcessDataModal';
 
 const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   const azureDailyUsage = useAppSelector(azureDailyUsageSelector);
@@ -26,6 +27,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
@@ -61,6 +63,24 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
+            <Can I={Action.ProcessData} a={Page.ADDevices}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setProcessModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Process Data
+                </Button>
+              </Col>
+            </Can>
             <Can I={Action.ImportToExcel} a={Page.AzureDailyUsage}>
               <Col>
                 <Button
@@ -139,6 +159,12 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
         />
       )}
       {deleteModalVisible && (

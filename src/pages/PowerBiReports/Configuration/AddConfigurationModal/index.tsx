@@ -24,7 +24,10 @@ import { IAddConfigurationProps } from './addConfiguration.model';
 import { getGroups } from './../../../../store/powerBiReports/configuration/configuration.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 
 const { Option } = Select;
 
@@ -67,14 +70,13 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveConfiguration(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configuration.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configuration.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

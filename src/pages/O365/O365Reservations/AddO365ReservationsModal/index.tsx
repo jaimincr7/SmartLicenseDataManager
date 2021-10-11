@@ -80,14 +80,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
     if (!isMultiple) {
       dispatch(saveO365Reservations(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365Reservations.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        o365Reservations.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

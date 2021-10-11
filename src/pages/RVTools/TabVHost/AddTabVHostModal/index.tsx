@@ -77,14 +77,13 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveTabVHost(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, tabVHost.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        tabVHost.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

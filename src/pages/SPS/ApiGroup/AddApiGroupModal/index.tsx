@@ -20,7 +20,10 @@ import {
 import { IAddSpsApiGroupProps } from './addApiGroup.model';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 
 const AddSpsApiGroupModal: React.FC<IAddSpsApiGroupProps> = (props) => {
   const spsApiGroup = useAppSelector(spsApiGroupSelector);
@@ -56,14 +59,13 @@ const AddSpsApiGroupModal: React.FC<IAddSpsApiGroupProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveSpsApiGroup(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, spsApiGroup.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        spsApiGroup.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };
@@ -166,7 +168,11 @@ const AddSpsApiGroupModal: React.FC<IAddSpsApiGroupProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'stored_procedure_post_process']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'stored_procedure_post_process']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Stored Procedure Post Process</Checkbox>
                     </Form.Item>
                   ) : (

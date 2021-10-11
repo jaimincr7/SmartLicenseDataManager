@@ -78,14 +78,13 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
     if (!isMultiple) {
       dispatch(saveSqlServerOverrides(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, sqlServerOverrides.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        sqlServerOverrides.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

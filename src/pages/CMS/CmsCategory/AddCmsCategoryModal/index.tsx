@@ -61,14 +61,13 @@ const AddCmsCategoryModal: React.FC<IAddCmsCategoryProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmsCategory(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsCategory.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmsCategory.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

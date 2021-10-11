@@ -62,14 +62,13 @@ const AddConfigSqlServerVersionsModal: React.FC<IAddConfigSqlServerVersionsProps
     if (!isMultiple) {
       dispatch(saveConfigSqlServerVersions(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configSqlServerVersions.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configSqlServerVersions.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

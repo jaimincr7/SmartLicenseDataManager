@@ -155,14 +155,13 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoReady(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoReady.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        ciscoReady.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

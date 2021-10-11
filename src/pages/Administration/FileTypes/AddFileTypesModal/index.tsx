@@ -59,14 +59,13 @@ const AddConfigFileTypeModal: React.FC<IAddConfigFileTypeProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveConfigFileType(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configFileType.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configFileType.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

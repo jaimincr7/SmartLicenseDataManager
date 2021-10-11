@@ -19,12 +19,7 @@ import {
 import agreementTypesService from '../../../../services/master/agreementTypes/agreementTypes.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const {
-    setSelectedId,
-    setShowSelectedListModal,
-    setValuesForSelection,
-    isMultiple,
-  } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const agreementTypes = useAppSelector(agreementTypesSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

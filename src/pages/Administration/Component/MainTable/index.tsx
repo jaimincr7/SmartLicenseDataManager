@@ -19,12 +19,7 @@ import {
 import configComponentService from '../../../../services/master/component/component.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const {
-    setSelectedId,
-    setShowSelectedListModal,
-    setValuesForSelection,
-    isMultiple,
-  } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const configComponent = useAppSelector(configComponentSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

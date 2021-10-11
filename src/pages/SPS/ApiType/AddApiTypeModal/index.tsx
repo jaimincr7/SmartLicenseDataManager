@@ -16,7 +16,10 @@ import {
 } from '../../../../store/sps/apiType/apiType.reducer';
 import { IAddSpsApiTypeProps } from './addApiType.model';
 import { ILookup } from '../../../../services/common/common.model';
-import { clearMultipleUpdateMessages, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  clearMultipleUpdateMessages,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { getSpsApiGroupLookup, updateMultiple } from '../../../../store/common/common.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
@@ -59,14 +62,13 @@ const AddSpsApiTypeModal: React.FC<IAddSpsApiTypeProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveSpsApiType(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, spsApiType.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        spsApiType.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

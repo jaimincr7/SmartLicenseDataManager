@@ -64,14 +64,13 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
     if (!isMultiple) {
       dispatch(saveCmsCategoryExtended(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsCategoryExtended.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmsCategoryExtended.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

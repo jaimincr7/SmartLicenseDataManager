@@ -147,14 +147,13 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoPolicy(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoPolicy.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        ciscoPolicy.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

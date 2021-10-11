@@ -63,14 +63,13 @@ const AddTenantModal: React.FC<IAddTenantProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveTenant(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, tenant.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        tenant.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

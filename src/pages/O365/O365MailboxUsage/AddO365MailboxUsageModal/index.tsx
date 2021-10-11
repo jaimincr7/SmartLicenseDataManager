@@ -99,14 +99,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
     if (!isMultiple) {
       dispatch(saveO365MailboxUsage(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365MailboxUsage.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        o365MailboxUsage.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

@@ -58,14 +58,13 @@ const AddConfigSqlServerEditionsModal: React.FC<IAddConfigSqlServerEditionsProps
     if (!isMultiple) {
       dispatch(saveConfigSqlServerEditions(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configSqlServerEditions.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configSqlServerEditions.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

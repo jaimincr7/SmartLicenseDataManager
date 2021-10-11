@@ -81,14 +81,13 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
     if (!isMultiple) {
       dispatch(saveCmdbVirtualization(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbVirtualization.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmdbVirtualization.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

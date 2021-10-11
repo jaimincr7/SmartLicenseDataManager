@@ -77,14 +77,13 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbSoftware(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbSoftware.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmdbSoftware.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

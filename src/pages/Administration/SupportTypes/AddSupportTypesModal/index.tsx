@@ -56,14 +56,13 @@ const AddConfigSupportTypesModal: React.FC<IAddConfigSupportTypesProps> = (props
     if (!isMultiple) {
       dispatch(saveConfigSupportTypes(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configSupportTypes.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configSupportTypes.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

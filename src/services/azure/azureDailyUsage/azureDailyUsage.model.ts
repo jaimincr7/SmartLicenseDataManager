@@ -92,3 +92,9 @@ export interface IAzureDailyUsage {
 export interface ISearchAzureDailyUsage extends ISearch {
   is_lookup?: boolean;
 }
+
+export interface IProcessData {
+  company_id?: number;
+  bu_id?: number;
+  date_added?: Date;
+}

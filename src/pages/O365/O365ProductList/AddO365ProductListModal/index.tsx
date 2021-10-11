@@ -75,14 +75,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveO365ProductList(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, o365ProductList.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        o365ProductList.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };
@@ -349,7 +348,11 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'expired_licenses']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'expired_licenses']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Expired Licenses</Checkbox>
                     </Form.Item>
                   ) : (
@@ -368,7 +371,11 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'assigned_licenses']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'assigned_licenses']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Assigned Licenses</Checkbox>
                     </Form.Item>
                   ) : (

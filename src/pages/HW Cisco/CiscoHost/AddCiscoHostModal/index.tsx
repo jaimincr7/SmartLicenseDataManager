@@ -89,14 +89,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoHost(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoHost.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        ciscoHost.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

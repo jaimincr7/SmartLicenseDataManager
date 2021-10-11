@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -78,14 +90,13 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveSpsApiOauth(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, spsApiOauth.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        spsApiOauth.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

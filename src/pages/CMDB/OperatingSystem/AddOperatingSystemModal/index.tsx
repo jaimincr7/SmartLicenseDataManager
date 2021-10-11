@@ -65,14 +65,13 @@ const AddCmdbOperatingSystemModal: React.FC<IAddCmdbOperatingSystemProps> = (pro
     if (!isMultiple) {
       dispatch(saveCmdbOperatingSystem(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbOperatingSystem.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmdbOperatingSystem.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

@@ -108,14 +108,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAdDevice(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, adDevices.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        adDevices.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

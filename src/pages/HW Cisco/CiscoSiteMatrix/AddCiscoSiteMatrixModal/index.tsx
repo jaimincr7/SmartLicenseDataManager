@@ -85,14 +85,13 @@ const AddCiscoSiteMatrixModal: React.FC<IAddCiscoSiteMatrixProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCiscoSiteMatrix(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, ciscoSiteMatrix.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        ciscoSiteMatrix.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

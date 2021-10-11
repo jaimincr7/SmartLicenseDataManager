@@ -1,8 +1,8 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef , useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
-import { IMainTable , ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -144,7 +144,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearConfigurationMessages}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
-        setValuesForSelection={setValuesForSelection} 
+        setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.PowerBIConfig)}
       />
     </>

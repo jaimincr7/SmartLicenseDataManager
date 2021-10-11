@@ -39,7 +39,7 @@ const SpsApiOauth: React.FC<ISpsApiOauthProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
-    setShowSelectedListModal(false); 
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearSpsApiOauth());
     };

@@ -342,7 +342,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setSelectedId={(id) => setSelectedId(id)}
         onCallAllApi={(tableFilter) => onCallAllApi(tableFilter)}
         setShowSelectedListModal={setShowSelectedListModal}
-        setValuesForSelection={setValuesForSelection} 
+        setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SPSApi)}
       />
       {callApiObj.show && (

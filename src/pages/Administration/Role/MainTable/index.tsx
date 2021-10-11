@@ -15,7 +15,7 @@ import {
   setTableColumnSelection,
 } from '../../../../store/master/role/role.reducer';
 import { deleteRole, searchRole } from '../../../../store/master/role/role.action';
-import { IMainTable , ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import roleService from '../../../../services/master/role/role.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {

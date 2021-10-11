@@ -30,14 +30,8 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
   const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const {
-    id,
-    showModal,
-    handleModalClose,
-    refreshDataTable,
-    isMultiple,
-    valuesForSelection,
-  } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -65,14 +59,13 @@ const AddConfigComponentModal: React.FC<IAddConfigComponentProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveConfigComponent(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, configComponent.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        configComponent.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

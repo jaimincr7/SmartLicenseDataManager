@@ -76,14 +76,13 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
     if (!isMultiple) {
       dispatch(saveWindowsServerEntitlements(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, entitlements.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        entitlements.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

@@ -80,14 +80,13 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAzureRateCard(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, azureRateCard.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        azureRateCard.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };

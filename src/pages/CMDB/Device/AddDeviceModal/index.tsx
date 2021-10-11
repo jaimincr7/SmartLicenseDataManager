@@ -97,14 +97,13 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbDevice(inputValues));
     } else {
-      const result = getObjectForUpdateMultiple(valuesForSelection, inputValues, cmdbDevice.search.tableName);
-      if(result)
-      {
-        dispatch(
-          updateMultiple(
-            result
-          )
-        );
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmdbDevice.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
       }
     }
   };
