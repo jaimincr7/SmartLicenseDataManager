@@ -233,6 +233,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearSpsApiJobsDataMessages}
         setTableColumnSelection={setTableColumnSelection}
         extraSearchData={extraSearchData}
+        disableRowSelection={true}
       />
     </>
   );

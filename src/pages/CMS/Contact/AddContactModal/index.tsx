@@ -60,11 +60,14 @@ const AddCmsContactModal: React.FC<IAddCmsContactProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmsContact(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsContact.search.tableName)
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmsContact.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 

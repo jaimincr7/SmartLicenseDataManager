@@ -66,15 +66,14 @@ const AddCmdbProcessorModal: React.FC<IAddCmdbProcessorProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmdbProcessor(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            cmdbProcessor.search.tableName
-          )
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmdbProcessor.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 

@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { IScheduleDate } from '../services/common/common.model';
 
 export const getPageHeight = () => {
   const header = document.querySelector('.header')?.clientHeight;
@@ -44,4 +45,20 @@ export const getObjectForUpdateMultiple = (
   };
   objectForSelection['selectedIds'] = rowList.selectedRowList;
   return objectForSelection;
+};
+
+export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
+  let process = {
+    company_id: null,
+    bu_id: null,
+    tenant_id: null,
+  };
+  process = form.getFieldsValue();
+  const getDataScheduleDate: IScheduleDate = {
+    tenant_id: process.tenant_id,
+    company_id: process.company_id,
+    bu_id: process.bu_id,
+    table_name: tableName,
+  };
+  return getDataScheduleDate;
 };

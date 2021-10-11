@@ -142,7 +142,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearConfigOnlineProductServicePlansMessages}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
-        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
+        showBulkUpdate={ability.can(Action.Update, Page.ConfigOnlineProductServicePlans)}
         setValuesForSelection={setValuesForSelection}
       />
     </>

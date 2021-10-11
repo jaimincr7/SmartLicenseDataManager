@@ -27,6 +27,8 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -36,6 +38,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearWindowsServerPricing());
     };
@@ -101,6 +104,12 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
         </div>
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -110,8 +119,22 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
       {addModalVisible && (
         <AddWindowsServerPricingModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/windows-server/pricing');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddWindowsServerPricingModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/windows-server/pricing');
           }}
           id={id}

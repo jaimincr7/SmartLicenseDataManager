@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITableColumnSelection } from '../../common/models/common';
-import { IBulkUpdate, IDeleteDataset } from '../../services/common/common.model';
+import { IBulkUpdate, IDeleteDataset, IScheduleDate } from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
 // Asynchronous thunk action
@@ -35,6 +35,13 @@ export const getAllCompanyLookup = createAsyncThunk('getAllCompanyLookup', async
 
 export const getBULookup = createAsyncThunk('getBULookup', async (companyId: number) => {
   const response = await commonService.getBULookup(companyId).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getScheduleDate = createAsyncThunk('getScheduleDate', async (data: IScheduleDate) => {
+  const response = await commonService.getScheduleDate(data).then((res) => {
     return res.body;
   });
   return response.data;

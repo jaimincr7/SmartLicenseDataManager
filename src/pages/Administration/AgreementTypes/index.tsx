@@ -29,7 +29,6 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
-  const [numberOfRecords, setNumberOfRecords] = React.useState(0);
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -89,7 +88,6 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
-          setNumberOfRecords={setNumberOfRecords}
           setValuesForSelection={setValuesForSelection}
           setShowSelectedListModal={(state) => {
             setId(0);
@@ -118,7 +116,6 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
           showModal={showSelectedListModal}
           valuesForSelection={valuesForSelection}
           isMultiple={true}
-          numberOfRecords={numberOfRecords}
           handleModalClose={() => {
             setShowSelectedListModal(false);
             history.push('/administration/agreement-types');

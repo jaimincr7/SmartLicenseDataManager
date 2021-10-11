@@ -8,6 +8,7 @@ import {
   getAzureDailyUsageById,
   saveAzureDailyUsage,
   deleteAzureDailyUsage,
+  processData,
 } from './azureDailyUsage.action';
 import { IAzureDailyUsageState } from './azureDailyUsage.model';
 
@@ -40,6 +41,11 @@ export const initialState: IAzureDailyUsageState = {
     hasErrors: false,
     messages: [],
   },
+  processData: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const azureDailyUsageSlice = createSlice({
@@ -52,6 +58,7 @@ export const azureDailyUsageSlice = createSlice({
     clearAzureDailyUsageMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
+      state.processData.messages = [];
     },
     clearAzureDailyUsageGetById: (state) => {
       state.getById.data = null;
@@ -143,6 +150,21 @@ export const azureDailyUsageSlice = createSlice({
     [deleteAzureDailyUsage.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
+    },
+
+    // Process Data
+    [processData.pending.type]: (state) => {
+      state.processData.loading = true;
+      state.processData.messages = [];
+    },
+    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = false;
+      state.processData.messages = action.payload.messages;
+    },
+    [processData.rejected.type]: (state) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = true;
     },
   },
 });

@@ -111,11 +111,14 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveAdUser(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, adUsers.search.tableName)
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        adUsers.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 
@@ -499,11 +502,15 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Company</Checkbox>
+                    <Form.Item
+                      name={['checked', 'last_logon_timestamp']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Logon Timestamp</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Company'
+                    'Last Logon Timestamp'
                   )}
                   <Form.Item
                     name="last_logon_timestamp"
@@ -518,11 +525,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Company</Checkbox>
+                    <Form.Item name={['checked', 'object_class']} valuePropName="checked" noStyle>
+                      <Checkbox>Object Class</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Company'
+                    'Object Class'
                   )}
                   <Form.Item
                     name="object_class"

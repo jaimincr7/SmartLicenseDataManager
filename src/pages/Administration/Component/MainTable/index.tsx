@@ -19,13 +19,7 @@ import {
 import configComponentService from '../../../../services/master/component/component.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const {
-    setSelectedId,
-    setShowSelectedListModal,
-    setValuesForSelection,
-    isMultiple,
-    setNumberOfRecords,
-  } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const configComponent = useAppSelector(configComponentSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -34,7 +28,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   useEffect(() => {
     if (isMultiple) {
       dataTableRef?.current.getValuesForSelection();
-      dataTableRef?.current.getNumberOfRecordsForUpdate();
     }
   }, [isMultiple]);
 
@@ -94,7 +87,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/config/config-component/${data.id}`);
+            history.push(`/administration/config-component/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
@@ -125,8 +118,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
-        setNumberOfRecords={setNumberOfRecords}
-        showBulkUpdate={ability.can(Action.Update, Page.Bu)}
+        showBulkUpdate={ability.can(Action.Update, Page.ConfigComponent)}
       />
     </>
   );

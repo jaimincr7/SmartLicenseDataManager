@@ -1,10 +1,23 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITabVCluster } from '../../../../services/rvTools/tabVCluster/tabVCluster.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -12,10 +25,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -36,9 +51,10 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -83,7 +99,18 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
       drs_enabled: values.drs_enabled ? 'True' : 'False',
       id: id ? +id : null,
     };
-    dispatch(saveTabVCluster(inputValues));
+    if (!isMultiple) {
+      dispatch(saveTabVCluster(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        tabVCluster.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -159,6 +186,19 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
   }, [tabVCluster.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && tabVCluster.getById.data) {
       const data = tabVCluster.getById.data;
       fillValuesOnEdit(data);
@@ -202,12 +242,18 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -235,7 +281,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -263,7 +315,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -291,7 +349,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Name</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Name'
+                  )}
                   <Form.Item name="name" label="Name" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -299,7 +363,17 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Over All Status</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'over_all_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Over All Status</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Over All Status'
+                  )}
                   <Form.Item
                     name="over_all_status"
                     label="Over All Status"
@@ -312,7 +386,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Hosts</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'num_hosts']} valuePropName="checked" noStyle>
+                      <Checkbox>Hosts</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Hosts'
+                  )}
                   <Form.Item
                     name="num_hosts"
                     label="Hosts"
@@ -325,7 +405,17 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Effective Hosts</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'num_effective_hosts']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Effective Hosts</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Effective Hosts'
+                  )}
                   <Form.Item
                     name="num_effective_hosts"
                     label="Effective Hosts"
@@ -338,7 +428,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Total CPU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'total_cpu']} valuePropName="checked" noStyle>
+                      <Checkbox>Total CPU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Total CPU'
+                  )}
                   <Form.Item
                     name="total_cpu"
                     label="Total CPU"
@@ -351,7 +447,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">CPU Cores</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'num_cpu_cores']} valuePropName="checked" noStyle>
+                      <Checkbox>CPU Cores</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'CPU Cores'
+                  )}
                   <Form.Item
                     name="num_cpu_cores"
                     label="CPU Cores"
@@ -364,7 +466,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">V Motions</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'num_v_motions']} valuePropName="checked" noStyle>
+                      <Checkbox>V Motions</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'V Motions'
+                  )}
                   <Form.Item
                     name="num_v_motions"
                     label="V Motions"
@@ -377,7 +485,17 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">DRS Default VM Behavior</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'drs_default_vm_behavior']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>DRS Default VM Behavior</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'DRS Default VM Behavior'
+                  )}
                   <Form.Item
                     name="drs_default_vm_behavior"
                     className="m-0"
@@ -390,7 +508,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Fail Over Level</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'failover_level']} valuePropName="checked" noStyle>
+                      <Checkbox>Fail Over Level</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Fail Over Level'
+                  )}
                   <Form.Item
                     name="failover_level"
                     label="Fail Over Level"
@@ -403,10 +527,20 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">DRS Default VM Behavior Value</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'drs_default_vm_behavior_value']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Drs Default VM Behavior Value</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Drs Default VM Behavior Value'
+                  )}
                   <Form.Item
                     name="drs_default_vm_behavior_value"
-                    label="drs_default_vm_behavior_value"
+                    label="Drs Default VM Behavior Value"
                     className="m-0"
                     rules={[{ type: 'integer' }]}
                   >
@@ -416,7 +550,17 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">DRS v Motion Rate</label>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'drs_v_motion_rate']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>DRS v Motion Rate</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'DRS v Motion Rate'
+                  )}
                   <Form.Item
                     name="drs_v_motion_rate"
                     label="DRS v Motion Rate"
@@ -429,7 +573,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Source</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
                   <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -437,7 +587,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Data Center</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'data_center']} valuePropName="checked" noStyle>
+                      <Checkbox>Data Center</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Data Center'
+                  )}
                   <Form.Item
                     name="data_center"
                     label="Data Center"
@@ -450,7 +606,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">VMs Per Host</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'vm_sper_host']} valuePropName="checked" noStyle>
+                      <Checkbox>VMs Per Host</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'VMs Per Host'
+                  )}
                   <Form.Item
                     name="vm_sper_host"
                     label="VMs Per Host"
@@ -463,7 +625,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">VMs</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'vms']} valuePropName="checked" noStyle>
+                      <Checkbox>VMs</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'VMs'
+                  )}
                   <Form.Item name="vms" label="VMs" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -471,7 +639,13 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Health</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'health']} valuePropName="checked" noStyle>
+                      <Checkbox>Health</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Health'
+                  )}
                   <Form.Item
                     name="health"
                     label="Health"
@@ -487,7 +661,14 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                   <Form.Item name="ha_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">HA Enabled</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'ha_enabled']} valuePropName="checked" noStyle>
+                      <Checkbox>HA Enabled</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'HA Enabled'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -495,7 +676,14 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                   <Form.Item name="drs_enabled" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">DRS Enabled</label>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'drs_enabled']} valuePropName="checked" noStyle>
+                      <Checkbox>DRS Enabled</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'DRS Enabled'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -504,7 +692,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={tabVCluster.save.loading}
+                loading={tabVCluster.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

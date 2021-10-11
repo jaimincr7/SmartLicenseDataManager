@@ -89,15 +89,14 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
     if (!isMultiple) {
       dispatch(saveCmsPurchaseLineItem(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            cmsPurchaseLineItem.search.tableName
-          )
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmsPurchaseLineItem.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 

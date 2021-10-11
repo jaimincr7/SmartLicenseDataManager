@@ -64,15 +64,14 @@ const AddCmdbLicenseModelModal: React.FC<IAddCmdbLicenseModelProps> = (props) =>
     if (!isMultiple) {
       dispatch(saveCmdbLicenseModel(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(
-            valuesForSelection,
-            inputValues,
-            cmdbLicenseModel.search.tableName
-          )
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmdbLicenseModel.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 

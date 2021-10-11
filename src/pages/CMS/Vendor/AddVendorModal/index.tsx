@@ -57,11 +57,14 @@ const AddCmsVendorModal: React.FC<IAddCmsVendorProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCmsVendor(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, cmsVendor.search.tableName)
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        cmsVendor.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 

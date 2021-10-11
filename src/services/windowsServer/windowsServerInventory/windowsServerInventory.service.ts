@@ -1,4 +1,5 @@
 import {
+  IProcessData,
   ISearchWindowsServerInventory,
   IWindowsServerInventory,
 } from './windowsServerInventory.model';
@@ -42,6 +43,13 @@ class WindowsServerInventoryService {
   public async deleteWindowsServerInventory(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async processData(data: IProcessData): Promise<any> {
+    const url = `${this.ENDPOINT}/process-data`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }

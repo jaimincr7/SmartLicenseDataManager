@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -8,10 +8,12 @@ import {
   getBULookup,
   getCompanyLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddO365ReservationsProps } from './addO365Reservations.model';
@@ -28,6 +30,7 @@ import { IO365Reservations } from '../../../../services/o365/o365Reservations/o3
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -36,9 +39,10 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -73,7 +77,18 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveO365Reservations(inputValues));
+    if (!isMultiple) {
+      dispatch(saveO365Reservations(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        o365Reservations.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -141,6 +156,19 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
   }, [o365Reservations.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && o365Reservations.getById.data) {
       const data = o365Reservations.getById.data;
       fillValuesOnEdit(data);
@@ -184,12 +212,18 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -217,7 +251,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
@@ -245,7 +285,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -273,7 +319,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Reservation ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'reservation_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Reservation ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Reservation ID'
+                  )}
                   <Form.Item
                     name="reservation_id"
                     className="m-0"
@@ -286,7 +338,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">License ID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'license_id']} valuePropName="checked" noStyle>
+                      <Checkbox>License ID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'License ID'
+                  )}
                   <Form.Item
                     name="license_id"
                     label="License ID"
@@ -299,7 +357,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Organization</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'organization']} valuePropName="checked" noStyle>
+                      <Checkbox>Organization</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Organization'
+                  )}
                   <Form.Item
                     name="organization"
                     className="m-0"
@@ -312,7 +376,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Service</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'service']} valuePropName="checked" noStyle>
+                      <Checkbox>Service</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Service'
+                  )}
                   <Form.Item name="service" className="m-0" label="Service" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -320,7 +390,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Licenses</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'licenses']} valuePropName="checked" noStyle>
+                      <Checkbox>Licenses</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Licenses'
+                  )}
                   <Form.Item
                     name="licenses"
                     label="Licenses"
@@ -333,7 +409,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Action</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'action']} valuePropName="checked" noStyle>
+                      <Checkbox>Action</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Action'
+                  )}
                   <Form.Item name="action" className="m-0" label="Action" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -341,7 +423,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Requestor</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'requestor']} valuePropName="checked" noStyle>
+                      <Checkbox>Requestor</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Requestor'
+                  )}
                   <Form.Item
                     name="requestor"
                     className="m-0"
@@ -354,7 +442,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Usage Date</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'usage_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Usage Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Usage Date'
+                  )}
                   <Form.Item
                     name="usage_date"
                     className="m-0"
@@ -367,7 +461,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Usage Country</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'usage_country']} valuePropName="checked" noStyle>
+                      <Checkbox>Usage Country</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Usage Country'
+                  )}
                   <Form.Item
                     name="usage_country"
                     className="m-0"
@@ -380,7 +480,13 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Status</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'status']} valuePropName="checked" noStyle>
+                      <Checkbox>Status</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Status'
+                  )}
                   <Form.Item name="status" className="m-0" label="Status" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -392,7 +498,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365Reservations.save.loading}
+                loading={o365Reservations.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

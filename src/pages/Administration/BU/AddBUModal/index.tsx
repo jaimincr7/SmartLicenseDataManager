@@ -31,15 +31,8 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
   const bu = useAppSelector(buSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
-  const {
-    id,
-    showModal,
-    handleModalClose,
-    refreshDataTable,
-    isMultiple,
-    valuesForSelection,
-    numberOfRecords,
-  } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -70,11 +63,14 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveBU(inputValues));
     } else {
-      dispatch(
-        updateMultiple(
-          getObjectForUpdateMultiple(valuesForSelection, inputValues, bu.search.tableName)
-        )
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        bu.search.tableName
       );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
     }
   };
 
@@ -265,7 +261,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
+                  &nbsp; &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
                       <Checkbox>Active</Checkbox>
@@ -283,7 +279,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                 htmlType="submit"
                 loading={bu.save.loading || commonLookups.save.loading}
               >
-                {submitButtonText} {isMultiple ? `(${numberOfRecords})` : ''}
+                {submitButtonText}
               </Button>
               <Button key="back" onClick={handleModalClose}>
                 Cancel

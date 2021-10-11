@@ -1,4 +1,16 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+} from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -22,6 +34,7 @@ import { ILookup } from '../../../../services/common/common.model';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import {
@@ -29,7 +42,9 @@ import {
   getCompanyLookup,
   getSpsApiTypeLookup,
   getTenantLookup,
+  updateMultiple,
 } from '../../../../store/common/common.action';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -37,9 +52,10 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
   const spsApiOauth = useAppSelector(spsApiOauthSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable } = props;
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+    props;
 
-  const isNew: boolean = id ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
@@ -71,7 +87,18 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    dispatch(saveSpsApiOauth(inputValues));
+    if (!isMultiple) {
+      dispatch(saveSpsApiOauth(inputValues));
+    } else {
+      const result = getObjectForUpdateMultiple(
+        valuesForSelection,
+        inputValues,
+        spsApiOauth.search.tableName
+      );
+      if (result) {
+        dispatch(updateMultiple(result));
+      }
+    }
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -137,6 +164,19 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
   }, [spsApiOauth.save.messages]);
 
   useEffect(() => {
+    if (commonLookups.save.messages.length > 0) {
+      if (commonLookups.save.hasErrors) {
+        toast.error(commonLookups.save.messages.join(' '));
+      } else {
+        toast.success(commonLookups.save.messages.join(' '));
+        handleModalClose();
+        refreshDataTable();
+      }
+      dispatch(clearMultipleUpdateMessages());
+    }
+  }, [commonLookups.save.messages]);
+
+  useEffect(() => {
     if (+id > 0 && spsApiOauth.getById.data) {
       const data = spsApiOauth.getById.data;
       fillValuesOnEdit(data);
@@ -179,12 +219,18 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
             <Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Tenant</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Tenant</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Tenant'
+                  )}
                   <Form.Item
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -211,12 +257,18 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Company</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Company</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company'
+                  )}
                   <Form.Item
                     name="company_id"
                     className="m-0"
                     label="Company"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleCompanyChange}
@@ -243,7 +295,13 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">BU</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'bu_id']} valuePropName="checked" noStyle>
+                      <Checkbox>BU</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'BU'
+                  )}
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
@@ -270,7 +328,13 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">UID</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'uid']} valuePropName="checked" noStyle>
+                      <Checkbox>UID</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'UID'
+                  )}
                   <Form.Item name="uid" label="UID" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
@@ -278,7 +342,13 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Token</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'token']} valuePropName="checked" noStyle>
+                      <Checkbox>Token</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Token'
+                  )}
                   <Form.Item name="token" label="Token" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
@@ -286,7 +356,13 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Url Base</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'url_base']} valuePropName="checked" noStyle>
+                      <Checkbox>Url Base</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Url Base'
+                  )}
                   <Form.Item
                     name="url_base"
                     label="Url Base"
@@ -299,7 +375,13 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">Base Url Id</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'base_url_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Base Url Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Base Url Id'
+                  )}
                   <Form.Item
                     name="base_url_id"
                     label="Base Url Id"
@@ -312,12 +394,18 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">API Type</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'api_type_id']} valuePropName="checked" noStyle>
+                      <Checkbox>API Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'API Type'
+                  )}
                   <Form.Item
                     name="api_type_id"
                     className="m-0"
                     label="API Type"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -347,7 +435,13 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
                   <Form.Item name="consent" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Consent</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'consent']} valuePropName="checked" noStyle>
+                      <Checkbox>Consent</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Consent'
+                  )}
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
@@ -355,7 +449,13 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
                   <Form.Item name="active" className="m-0" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  <label className="label">Active</label>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
+                      <Checkbox>Active</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Active'
+                  )}
                 </div>
               </Col>
             </Row>
@@ -364,7 +464,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={spsApiOauth.save.loading}
+                loading={spsApiOauth.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>

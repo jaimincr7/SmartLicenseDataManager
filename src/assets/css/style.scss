@@ -666,6 +666,18 @@ textarea.ant-input {
     display: none;
   }
 }
+
+.custom-table.first-row-header {
+  .ant-table-tbody {
+    tr.ant-table-row:nth-child(2) {
+      td {
+        background-color: #f6f6f6;
+        color: #4f4f4f;
+      }
+    }
+  }
+}
+
 .ant-table-tbody > tr > td {
   border-bottom: 1px solid #e1e1e1;
 }

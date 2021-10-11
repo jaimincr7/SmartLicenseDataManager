@@ -14,6 +14,8 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = (props) => {
   const { id: urlId } = props.match?.params;
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
+  const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [valuesForSelection, setValuesForSelection] = React.useState(null);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -26,6 +28,7 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = (props) => {
   }, [+urlId]);
 
   useEffect(() => {
+    setShowSelectedListModal(false);
     return () => {
       dispatch(clearSPS());
     };
@@ -48,6 +51,12 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = (props) => {
       <div className="main-card">
         <MainTable
           ref={dataTableRef}
+          isMultiple={showSelectedListModal}
+          setValuesForSelection={setValuesForSelection}
+          setShowSelectedListModal={(state) => {
+            setId(0);
+            setShowSelectedListModal(state);
+          }}
           setSelectedId={(id) => {
             setAddModalVisible(true);
             setId(id);
@@ -57,8 +66,22 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = (props) => {
       {addModalVisible && (
         <AddApiModal
           showModal={addModalVisible}
+          isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
+            history.push('/sps/sps-api');
+          }}
+          id={id}
+          refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {showSelectedListModal && (
+        <AddApiModal
+          showModal={showSelectedListModal}
+          valuesForSelection={valuesForSelection}
+          isMultiple={true}
+          handleModalClose={() => {
+            setShowSelectedListModal(false);
             history.push('/sps/sps-api');
           }}
           id={id}
