@@ -31,7 +31,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
-  const [Obj, setObj] = useState({ filter_keys: {}, keyword: '' });
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({
+    filter_keys: {},
+    keyword: '',
+  });
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -55,8 +58,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       sqlServerPricing.search.tableName,
       form,
       null,
-      Obj.filter_keys,
-      Obj.keyword
+      ObjectForColumnFilter.filter_keys,
+      ObjectForColumnFilter.keyword
     );
   };
 
@@ -66,8 +69,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       tableName,
       form,
       null,
-      Obj.filter_keys,
-      Obj.keyword
+      ObjectForColumnFilter.filter_keys,
+      ObjectForColumnFilter.keyword
     );
   };
 
@@ -243,7 +246,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SqlServerPricing)}
-        setObj={setObj}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

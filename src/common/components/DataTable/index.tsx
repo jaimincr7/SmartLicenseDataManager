@@ -52,7 +52,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setValuesForSelection,
     setNumberOfRecords,
     disableRowSelection,
-    setObj,
+    setObjectForColumnFilter,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -132,7 +132,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const fetchTableData = (page = null) => {
     const searchData = getSearchData(page, false);
-    setObj({ filter_keys: tableFilter.filter_keys, keyword: tableFilter.keyword });
+    if (setObjectForColumnFilter) {
+      setObjectForColumnFilter({
+        filter_keys: tableFilter.filter_keys,
+        keyword: tableFilter.keyword,
+      });
+    }
+    //setCallColumnApi(true);
     dispatch(searchTableData(searchData));
   };
   useImperativeHandle(ref, () => ({
@@ -159,9 +165,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       } else {
         setNumberOfRecords(Object.keys(selectedRowList).length - 1);
       }
-    },
-    getDropDownDetails() {
-      setObj({ filter_keys: tableFilter.filter_keys, keyword: tableFilter.keyword });
     },
   }));
 

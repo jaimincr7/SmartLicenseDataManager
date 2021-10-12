@@ -25,20 +25,25 @@ export const FilterByDateSwap = (
   filter_keys?: {},
   keyword?: string
 ) => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [dropSearch, setDropSearch] = React.useState(false);
+
+  const [loading, setLoading] = useState<boolean>(false);
   const [swap, setSwap] = useState<boolean>(true);
 
   const [options, setOptions] = useState<IDropDownOption[]>([]);
 
   React.useEffect(() => {
-    if (!swap && options.length === 0) {
+    if (!swap) {
       if (getColumnLookup) {
+        setLoading(true);
         getColumnLookup(dataIndex).then((res) => {
+          setLoading(false);
           setOptions(res);
         });
       } else {
+        setLoading(true);
         commonService
-          .getColumnLookup(tableName, dataIndex,filter_keys , keyword)
+          .getColumnLookup(tableName, dataIndex, filter_keys, keyword)
           .then((res) => {
             return res.body.data;
           })
@@ -55,7 +60,13 @@ export const FilterByDateSwap = (
     if (form.getFieldValue(dataIndex)) {
       form.setFieldsValue({ [dataIndex]: undefined });
     }
-  }, [swap]);
+  }, [dropSearch]);
+
+  const handleDropSearch = (e) => {
+    if (e) {
+      setDropSearch(!dropSearch);
+    }
+  };
   return (
     <>
       <div className="input-filter-group">
@@ -64,7 +75,7 @@ export const FilterByDateSwap = (
             <RangePicker defaultPickerValue={[moment().utc(), moment().utc()]} />
           </Form.Item>
         ) : (
-          FilterByDropdown(dataIndex, options || [], loading)
+          FilterByDropdown(dataIndex, options || [], loading, handleDropSearch)
         )}
         <Button
           onClick={() => {
@@ -98,18 +109,20 @@ export const FilterByInput = (dataIndex: string) => (
 export const FilterByDropdown = (
   dataIndex: string,
   dropdownOptions: IDropDownOption[] = [],
-  loading?: boolean
+  loading?: boolean,
+  setDropSearch?: (e: any) => void
 ) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input">
       <Select
+        onDropdownVisibleChange={setDropSearch}
         showArrow={true}
         mode="multiple"
         dropdownClassName="filter-dropdown-pop"
         placeholder="Select and search"
         maxTagCount="responsive"
         allowClear
-        loading={ loading }
+        loading={loading}
         showSearch
         optionFilterProp="children"
         filterOption={(input, option: any) =>
@@ -122,11 +135,13 @@ export const FilterByDropdown = (
             ?.localeCompare(optionB.children?.toString()?.toLowerCase())
         }
       >
-        {dropdownOptions.map((option: IDropDownOption) => (
-          <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
-            {option.name?.toString()}
-          </Select.Option>
-        ))}
+        {!loading
+          ? dropdownOptions.map((option: IDropDownOption) => (
+              <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
+                {option.name?.toString()}
+              </Select.Option>
+            ))
+          : []}
       </Select>
     </Form.Item>
   </>
@@ -141,19 +156,24 @@ export const FilterWithSwapOption = (
   keyword?: string
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [dropSearch, setDropSearch] = React.useState(false);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [options, setOptions] = useState<IDropDownOption[]>([]);
 
   React.useEffect(() => {
-    if (!swap && options.length === 0) {
+    if (!swap) {
       if (getColumnLookup) {
+        setLoading(true);
         getColumnLookup(dataIndex).then((res) => {
           setOptions(res);
+          setLoading(false);
         });
       } else {
+        setLoading(true);
         commonService
-          .getColumnLookup(tableName, dataIndex, filter_keys , keyword)
+          .getColumnLookup(tableName, dataIndex, filter_keys, keyword)
           .then((res) => {
             return res.body.data;
           })
@@ -166,11 +186,19 @@ export const FilterWithSwapOption = (
     if (form.getFieldValue(dataIndex)) {
       form.setFieldsValue({ [dataIndex]: undefined });
     }
-  }, [swap]);
+  }, [dropSearch]);
+
+  const handleDropSearch = (e) => {
+    if (e) {
+      setDropSearch(!dropSearch);
+    }
+  };
   return (
     <>
       <div className="input-filter-group">
-        {swap ? FilterByInput(dataIndex) : FilterByDropdown(dataIndex, options || [], loading)}
+        {swap
+          ? FilterByInput(dataIndex)
+          : FilterByDropdown(dataIndex, options || [], loading, handleDropSearch)}
         <Button onClick={() => setSwap(!swap)} className={`filter-btn ${swap ? '' : 'active'}`}>
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
           <img
