@@ -135,13 +135,12 @@ export const FilterByDropdown = (
             ?.localeCompare(optionB.children?.toString()?.toLowerCase())
         }
       >
-        {!loading
-          ? dropdownOptions.map((option: IDropDownOption) => (
+        { (loading? [] :dropdownOptions).map((option: IDropDownOption) => (
               <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
                 {option.name?.toString()}
               </Select.Option>
             ))
-          : []}
+         }
       </Select>
     </Form.Item>
   </>
@@ -163,7 +162,13 @@ export const FilterWithSwapOption = (
   const [options, setOptions] = useState<IDropDownOption[]>([]);
 
   React.useEffect(() => {
-    if (!swap) {
+    if (form.getFieldValue(dataIndex)) {
+      form.setFieldsValue({ [dataIndex]: undefined });
+    }
+  }, [swap]);
+
+  React.useEffect(() => {
+    if(!swap){
       if (getColumnLookup) {
         setLoading(true);
         getColumnLookup(dataIndex).then((res) => {
@@ -182,9 +187,6 @@ export const FilterWithSwapOption = (
             setOptions(res);
           });
       }
-    }
-    if (form.getFieldValue(dataIndex)) {
-      form.setFieldsValue({ [dataIndex]: undefined });
     }
   }, [dropSearch]);
 
