@@ -33,6 +33,12 @@ export const FilterByDateSwap = (
   const [options, setOptions] = useState<IDropDownOption[]>([]);
 
   React.useEffect(() => {
+    if (form.getFieldValue(dataIndex)) {
+      form.setFieldsValue({ [dataIndex]: undefined });
+    }
+  }, [swap]);
+
+  React.useEffect(() => {
     if (!swap) {
       if (getColumnLookup) {
         setLoading(true);
@@ -56,9 +62,6 @@ export const FilterByDateSwap = (
             setOptions(updatedRes);
           });
       }
-    }
-    if (form.getFieldValue(dataIndex)) {
-      form.setFieldsValue({ [dataIndex]: undefined });
     }
   }, [dropSearch]);
 
