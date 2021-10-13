@@ -5,7 +5,6 @@ import { DatePicker } from 'antd';
 import React from 'react';
 import commonService from '../../../../services/common/common.service';
 import moment from 'moment';
-import { Common } from '../../../constants/common';
 
 const { RangePicker } = DatePicker;
 
