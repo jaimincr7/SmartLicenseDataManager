@@ -58,8 +58,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       sqlServerPricing.search.tableName,
       form,
       null,
-      ObjectForColumnFilter.filter_keys,
-      ObjectForColumnFilter.keyword
+      ObjectForColumnFilter
     );
   };
 
@@ -69,8 +68,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       tableName,
       form,
       null,
-      ObjectForColumnFilter.filter_keys,
-      ObjectForColumnFilter.keyword
+      ObjectForColumnFilter
     );
   };
 

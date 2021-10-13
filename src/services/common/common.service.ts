@@ -339,18 +339,10 @@ class CommonService {
   }
 
   public async getColumnLookup(
-    tableName: string,
-    columnName: string,
-    filter_keys?: {},
-    keywords?: string
+    obj: {}
   ): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
-    const data = {
-      table_name: tableName,
-      column_name: columnName,
-      filter_keys: filter_keys,
-      keyword: keywords,
-    };
+    const data = obj;
     return request({ url, method: 'POST', data }).then((res) => {
       return res.data;
     });

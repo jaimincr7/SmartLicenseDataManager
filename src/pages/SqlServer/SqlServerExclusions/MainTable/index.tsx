@@ -55,8 +55,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       sqlServerExclusions.search.tableName,
       form,
       null,
-      ObjectForColumnFilter.filter_keys,
-      ObjectForColumnFilter.keyword
+      ObjectForColumnFilter
     );
   };
 

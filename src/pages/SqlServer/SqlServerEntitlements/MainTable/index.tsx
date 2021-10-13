@@ -31,10 +31,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
-  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({
-    filter_keys: {},
-    keyword: '',
-  });
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -58,8 +55,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       sqlServerEntitlements.search.tableName,
       form,
       null,
-      ObjectForColumnFilter.filter_keys,
-      ObjectForColumnFilter.keyword
+      ObjectForColumnFilter
     );
   };
 
@@ -69,8 +65,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       tableName,
       form,
       null,
-      ObjectForColumnFilter.filter_keys,
-      ObjectForColumnFilter.keyword
+      ObjectForColumnFilter
     );
   };
 

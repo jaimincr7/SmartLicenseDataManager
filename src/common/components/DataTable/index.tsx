@@ -134,8 +134,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const searchData = getSearchData(page, false);
     if (setObjectForColumnFilter) {
       setObjectForColumnFilter({
-        filter_keys: tableFilter.filter_keys,
-        keyword: tableFilter.keyword,
+        filter_keys: searchData.filter_keys,
+        keyword: searchData.keyword,
+        limit: searchData.limit,
+        offset: searchData.offset,
+        is_column_selection: searchData.is_column_selection,
+        order_by: tableFilter.order_by,
+        order_direction: tableFilter.order_direction,
       });
     }
     //setCallColumnApi(true);

@@ -22,8 +22,7 @@ export const FilterByDateSwap = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
-  filter_keys?: {},
-  keyword?: string
+  ObjectForColumnFilter?: {},
 ) => {
   const [dropSearch, setDropSearch] = React.useState(false);
 
@@ -31,6 +30,15 @@ export const FilterByDateSwap = (
   const [swap, setSwap] = useState<boolean>(true);
 
   const [options, setOptions] = useState<IDropDownOption[]>([]);
+
+  // const inlineSearchFilter = _.pickBy(filter_keys, function (value) {
+  //   return !(
+  //     value === undefined ||
+  //     value === '' ||
+  //     _.isNull(value) ||
+  //     (Array.isArray(value) && value.length === 0)
+  //   );
+  // });
 
   React.useEffect(() => {
     if (form.getFieldValue(dataIndex)) {
@@ -48,8 +56,13 @@ export const FilterByDateSwap = (
         });
       } else {
         setLoading(true);
+        const obj : any = {
+          ...ObjectForColumnFilter,
+          table_name: tableName,
+          column_name: dataIndex,
+      }
         commonService
-          .getColumnLookup(tableName, dataIndex, filter_keys, keyword)
+          .getColumnLookup(obj)
           .then((res) => {
             return res.body.data;
           })
@@ -154,8 +167,7 @@ export const FilterWithSwapOption = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
-  filter_keys?: {},
-  keyword?: string
+  ObjectForColumnFilter?: {},
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
   const [dropSearch, setDropSearch] = React.useState(false);
@@ -180,8 +192,13 @@ export const FilterWithSwapOption = (
         });
       } else {
         setLoading(true);
+        const obj : any = {
+            ...ObjectForColumnFilter,
+            table_name: tableName,
+            column_name: dataIndex,
+        }
         commonService
-          .getColumnLookup(tableName, dataIndex, filter_keys, keyword)
+          .getColumnLookup(obj)
           .then((res) => {
             return res.body.data;
           })
