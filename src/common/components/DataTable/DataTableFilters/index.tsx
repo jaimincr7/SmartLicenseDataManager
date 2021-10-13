@@ -60,10 +60,10 @@ export const FilterByDateSwap = (
           column_name: dataIndex,
         };
         if (
-          !obj.column_called.includes(dataIndex)
+          !obj?.column_called?.includes(dataIndex)
         ) {
           setLoading(true);
-          obj.column_called.push(dataIndex);
+          obj.column_called?.push(dataIndex);
           commonService
             .getColumnLookup(obj)
             .then((res) => {
@@ -196,10 +196,10 @@ export const FilterWithSwapOption = (
           column_name: dataIndex,
         };
         if (
-          !obj.column_called.includes(dataIndex)
+          !obj.column_called?.includes(dataIndex)
         ) {
           setLoading(true);
-          obj.column_called.push(dataIndex);
+          obj.column_called?.push(dataIndex);
           commonService
             .getColumnLookup(obj)
             .then((res) => {
