@@ -5,6 +5,7 @@ import { DatePicker } from 'antd';
 import React from 'react';
 import commonService from '../../../../services/common/common.service';
 import moment from 'moment';
+import { Common } from '../../../constants/common';
 
 const { RangePicker } = DatePicker;
 
@@ -91,7 +92,7 @@ export const FilterByDateSwap = (
             <RangePicker defaultPickerValue={[moment().utc(), moment().utc()]} />
           </Form.Item>
         ) : (
-          FilterByDropdown(dataIndex, options || [], loading, handleDropSearch)
+          FilterByDropdown(dataIndex, options || [], loading, handleDropSearch , true)
         )}
         <Button
           onClick={() => {
@@ -126,7 +127,8 @@ export const FilterByDropdown = (
   dataIndex: string,
   dropdownOptions: IDropDownOption[] = [],
   loading?: boolean,
-  setDropSearch?: (e: any) => void
+  setDropSearch?: (e: any) => void,
+  isDateDropDown?: boolean,
 ) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input">
@@ -153,7 +155,7 @@ export const FilterByDropdown = (
       >
         {(loading ? [] : dropdownOptions).map((option: IDropDownOption) => (
           <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
-            {option.name?.toString()}
+            {isDateDropDown ? moment(option.name).format(Common.DATEFORMAT)?.toString() : option.name?.toString()}
           </Select.Option>
         ))}
       </Select>
@@ -166,7 +168,7 @@ export const FilterWithSwapOption = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
-  ObjectForColumnFilter?: {}
+  ObjectForColumnFilter?: {},
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
   const [dropSearch, setDropSearch] = React.useState(false);
