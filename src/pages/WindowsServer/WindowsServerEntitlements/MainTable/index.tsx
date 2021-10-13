@@ -31,10 +31,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
-  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({
-    filter_keys: {},
-    keyword: '',
-  });
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
