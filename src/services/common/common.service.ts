@@ -338,9 +338,7 @@ class CommonService {
     });
   }
 
-  public async getColumnLookup(
-    obj: {}
-  ): Promise<IApiResponse<any>> {
+  public async getColumnLookup(obj: {}): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
     const data = obj;
     return request({ url, method: 'POST', data }).then((res) => {

@@ -22,7 +22,7 @@ export const FilterByDateSwap = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
-  ObjectForColumnFilter?: {},
+  ObjectForColumnFilter?: {}
 ) => {
   const [dropSearch, setDropSearch] = React.useState(false);
 
@@ -55,25 +55,26 @@ export const FilterByDateSwap = (
           setOptions(res);
         });
       } else {
-        setLoading(true);
-        const obj : any = {
+        const obj: any = {
           ...ObjectForColumnFilter,
           table_name: tableName,
           column_name: dataIndex,
-      }
-        commonService
-          .getColumnLookup(obj)
-          .then((res) => {
-            return res.body.data;
-          })
-          .then((res) => {
-            const updatedRes = res?.map((element) => ({
-              name: moment(element.name).format(Common.DATEFORMAT),
-              id: element.id,
-            }));
-            setLoading(false);
-            setOptions(updatedRes);
-          });
+        };
+        if (
+          !obj.column_called.includes(dataIndex)
+        ) {
+          setLoading(true);
+          obj.column_called.push(dataIndex);
+          commonService
+            .getColumnLookup(obj)
+            .then((res) => {
+              return res.body.data;
+            })
+            .then((res) => {
+              setLoading(false);
+              setOptions(res);
+            });
+        }
       }
     }
   }, [dropSearch]);
@@ -151,12 +152,11 @@ export const FilterByDropdown = (
             ?.localeCompare(optionB.children?.toString()?.toLowerCase())
         }
       >
-        { (loading? [] :dropdownOptions).map((option: IDropDownOption) => (
-              <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
-                {option.name?.toString()}
-              </Select.Option>
-            ))
-         }
+        {(loading ? [] : dropdownOptions).map((option: IDropDownOption) => (
+          <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
+            {option.name?.toString()}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   </>
@@ -167,7 +167,7 @@ export const FilterWithSwapOption = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
-  ObjectForColumnFilter?: {},
+  ObjectForColumnFilter?: {}
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
   const [dropSearch, setDropSearch] = React.useState(false);
@@ -183,7 +183,7 @@ export const FilterWithSwapOption = (
   }, [swap]);
 
   React.useEffect(() => {
-    if(!swap){
+    if (!swap) {
       if (getColumnLookup) {
         setLoading(true);
         getColumnLookup(dataIndex).then((res) => {
@@ -191,21 +191,26 @@ export const FilterWithSwapOption = (
           setLoading(false);
         });
       } else {
-        setLoading(true);
-        const obj : any = {
-            ...ObjectForColumnFilter,
-            table_name: tableName,
-            column_name: dataIndex,
+        const obj: any = {
+          ...ObjectForColumnFilter,
+          table_name: tableName,
+          column_name: dataIndex,
+        };
+        if (
+          !obj.column_called.includes(dataIndex)
+        ) {
+          setLoading(true);
+          obj.column_called.push(dataIndex);
+          commonService
+            .getColumnLookup(obj)
+            .then((res) => {
+              return res.body.data;
+            })
+            .then((res) => {
+              setLoading(false);
+              setOptions(res);
+            });
         }
-        commonService
-          .getColumnLookup(obj)
-          .then((res) => {
-            return res.body.data;
-          })
-          .then((res) => {
-            setLoading(false);
-            setOptions(res);
-          });
       }
     }
   }, [dropSearch]);

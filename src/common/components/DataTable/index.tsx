@@ -141,6 +141,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         is_column_selection: searchData.is_column_selection,
         order_by: tableFilter.order_by,
         order_direction: tableFilter.order_direction,
+        column_called: [],
       });
     }
     //setCallColumnApi(true);
