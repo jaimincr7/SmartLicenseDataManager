@@ -60,9 +60,7 @@ export const FilterByDateSwap = (
           table_name: tableName,
           column_name: dataIndex,
         };
-        if (
-          !obj?.column_called?.includes(dataIndex)
-        ) {
+        if (!obj?.column_called?.includes(dataIndex)) {
           setLoading(true);
           obj.column_called?.push(dataIndex);
           commonService
@@ -92,7 +90,7 @@ export const FilterByDateSwap = (
             <RangePicker defaultPickerValue={[moment().utc(), moment().utc()]} />
           </Form.Item>
         ) : (
-          FilterByDropdown(dataIndex, options || [], loading, handleDropSearch , true)
+          FilterByDropdown(dataIndex, options || [], loading, handleDropSearch, true)
         )}
         <Button
           onClick={() => {
@@ -128,7 +126,7 @@ export const FilterByDropdown = (
   dropdownOptions: IDropDownOption[] = [],
   loading?: boolean,
   setDropSearch?: (e: any) => void,
-  isDateDropDown?: boolean,
+  isDateDropDown?: boolean
 ) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input">
@@ -155,7 +153,9 @@ export const FilterByDropdown = (
       >
         {(loading ? [] : dropdownOptions).map((option: IDropDownOption) => (
           <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
-            {isDateDropDown ? moment(option.name).format(Common.DATEFORMAT)?.toString() : option.name?.toString()}
+            {isDateDropDown
+              ? moment(option.name).format(Common.DATEFORMAT)?.toString()
+              : option.name?.toString()}
           </Select.Option>
         ))}
       </Select>
@@ -168,7 +168,7 @@ export const FilterWithSwapOption = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
-  ObjectForColumnFilter?: {},
+  ObjectForColumnFilter?: {}
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
   const [dropSearch, setDropSearch] = React.useState(false);
@@ -197,9 +197,7 @@ export const FilterWithSwapOption = (
           table_name: tableName,
           column_name: dataIndex,
         };
-        if (
-          !obj.column_called?.includes(dataIndex)
-        ) {
+        if (!obj.column_called?.includes(dataIndex)) {
           setLoading(true);
           obj.column_called?.push(dataIndex);
           commonService

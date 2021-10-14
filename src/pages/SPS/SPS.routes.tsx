@@ -5,6 +5,7 @@ import { Action, Page } from '../../common/constants/pageAction';
 import SpsApiGroup from './ApiGroup';
 import SpsApiOauth from './ApiOauth';
 import SPSAPI from './APIs/index';
+import SPSAPIsCall from './APIsCall';
 import SpsApiTokenConfigOptions from './ApiTokenConfigOptions';
 import SpsApiType from './ApiType';
 import SpsApiJobs from './SpsApiJobs';
@@ -22,6 +23,11 @@ const SPSRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.SPSApi) && (
           <Route exact path={`${match.path}/sps-api/:id`} component={SPSAPI} />
+        )}
+
+        {/* Call APIs */}
+        {ability.can(Action.View, Page.SPSApi) && (
+          <Route exact path={`${match.path}/schedule-api-data`} component={SPSAPIsCall} />
         )}
 
         {/* SPS API Jobs */}

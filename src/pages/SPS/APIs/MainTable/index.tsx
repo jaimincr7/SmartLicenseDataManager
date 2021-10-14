@@ -1,5 +1,5 @@
-import { Popconfirm, Popover } from 'antd';
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { Popconfirm } from 'antd';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import _ from 'lodash';
 import {
@@ -8,38 +8,19 @@ import {
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
 import { setTableColumnSelection } from '../../../../store/sps/spsAPI/spsApi.reducer';
-import {
-  callAllApi,
-  callApi,
-  deleteSpsApi,
-  searchImportAPIs,
-} from '../../../../store/sps/spsAPI/spsApi.action';
+import { deleteSpsApi, searchImportAPIs } from '../../../../store/sps/spsAPI/spsApi.action';
 import { clearCallApiMessages, spsApiSelector } from '../../../../store/sps/spsAPI/spsApi.reducer';
-import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { toast } from 'react-toastify';
-import { ICallAllApi, ICallAPI } from '../../../../services/sps/spsApi/sps.model';
 import { useHistory } from 'react-router-dom';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { DownloadOutlined, RetweetOutlined } from '@ant-design/icons';
-import CallApiModal from '../CallApiModal';
 import { IMainTable } from '../../../../common/models/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const dispatch = useAppDispatch();
   const spsApis = useAppSelector(spsApiSelector);
-  const globalLookups = useAppSelector(globalSearchSelector);
   const dataTableRef = useRef(null);
   const history = useHistory();
-  const [callApiObj, setCallApiObj] = useState({
-    id: 0,
-    params: null,
-    isAll: false,
-    show: false,
-    filterKeys: null,
-    keyword: null,
-  });
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -56,26 +37,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const FilterBySwap = (dataIndex: string, form) => {
     return FilterWithSwapOption(dataIndex, spsApis.search.tableName, form);
   };
-
-  useEffect(() => {
-    if (spsApis.callApi.messages.length > 0) {
-      if (spsApis.callApi.hasErrors) {
-        toast.error(spsApis.callApi.messages.join(' '));
-      } else {
-        toast.success(spsApis.callApi.messages.join(' '));
-        dataTableRef?.current.refreshData();
-      }
-      dispatch(clearCallApiMessages());
-    } else if (spsApis.callAllApi.messages.length > 0) {
-      if (spsApis.callAllApi.hasErrors) {
-        toast.error(spsApis.callAllApi.messages.join(' '));
-      } else {
-        toast.success(spsApis.callAllApi.messages.join(' '));
-        dataTableRef?.current.refreshData();
-      }
-      dispatch(clearCallApiMessages());
-    }
-  }, [spsApis.callApi.messages, spsApis.callAllApi.messages]);
 
   const getTableColumns = (form) => {
     return [
@@ -176,104 +137,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     ];
   };
 
-  const renderActionButton = (data: any) => {
-    return (
-      <a
-        href="#"
-        title=""
-        className="action-btn"
-        onClick={(e) => {
-          e.preventDefault();
-          if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3)
-            data.is_mapping && data.enabled
-              ? onCallApi(data)
-              : history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`);
-        }}
-      >
-        {data.is_mapping ? (
-          <DownloadOutlined title="Call Api" />
-        ) : (
-          <RetweetOutlined title="Add Api" />
-        )}
-      </a>
-    );
-  };
-
-  const onCallApiById = (id: number, params: any) => {
-    const callApiObj: ICallAPI = {
-      id: id,
-      company_id: globalLookups.search.company_id,
-      bu_id: globalLookups.search.bu_id,
-      tenant_id: globalLookups.search.tenant_id,
-      spsApiQueryParam: params,
-    };
-    dispatch(callApi(callApiObj));
-  };
-
-  const onCallApi = (data: any) => {
-    if (data.url) {
-      const newURL = new URL(data.url);
-      const urlSearchParams = new URLSearchParams(newURL.search);
-      const params = Object.fromEntries(urlSearchParams?.entries());
-      const editableParams = Object.values(params)?.filter(
-        (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
-      );
-      if (editableParams?.length > 0) {
-        setCallApiObj({ ...callApiObj, params: params, show: true, isAll: false, id: data.id });
-      } else {
-        onCallApiById(data.id, params);
-      }
-    } else {
-      toast.error('Selected api does not have url.');
-    }
-  };
-
-  const onCallAllApi = (tableFilter: any) => {
-    if (spsApis.search.data?.length > 0) {
-      const allParams = {};
-      const searchData = spsApis.search.data?.filter((x) => x.url && x.is_mapping && x.enabled);
-      if (searchData?.length > 0) {
-        spsApis.search.data?.forEach((data: any) => {
-          if (data.url && data.is_mapping && data.enabled) {
-            const newURL = new URL(data.url);
-            const urlSearchParams = new URLSearchParams(newURL.search);
-            const params = Object.fromEntries(urlSearchParams?.entries());
-            const editableParams = Object.values(params)?.filter(
-              (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
-            );
-            if (editableParams?.length > 0 && params) {
-              Object.keys(params).forEach((key) => {
-                if (!(key in allParams)) allParams[key] = params[key];
-              });
-            }
-          }
-        });
-        if (Object.keys(allParams)?.length > 0) {
-          setCallApiObj({
-            params: allParams,
-            filterKeys: tableFilter.filter_keys,
-            keyword: tableFilter.keyword,
-            show: true,
-            isAll: true,
-            id: 0,
-          });
-        } else {
-          const cllApiObj: ICallAllApi = {
-            filter_keys: tableFilter.filterKeys,
-            keyword: tableFilter.keyword,
-            company_id: globalLookups.search.company_id,
-            bu_id: globalLookups.search.bu_id,
-            tenant_id: globalLookups.search.tenant_id,
-            sps_api_query_param: {},
-          };
-          dispatch(callAllApi(cllApiObj));
-        }
-      } else {
-        toast.info('No mapping available for searched apis.');
-      }
-    }
-  };
-
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.Update} a={Page.SPSApi}>
@@ -299,31 +162,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           </a>
         </Popconfirm>
       </Can>
-      {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
-        <Popover content={<>Please select global filter first!</>} trigger="click">
-          {renderActionButton(data)}
-        </Popover>
-      ) : (
-        renderActionButton(data)
-      )}
     </div>
   );
-
-  const confirmCallApi = (values: any) => {
-    if (callApiObj.isAll) {
-      const cllApiObj: ICallAllApi = {
-        filter_keys: callApiObj.filterKeys,
-        keyword: callApiObj.keyword,
-        company_id: globalLookups.search.company_id,
-        bu_id: globalLookups.search.bu_id,
-        tenant_id: globalLookups.search.tenant_id,
-        sps_api_query_param: { values },
-      };
-      dispatch(callAllApi(cllApiObj));
-    } else {
-      onCallApiById(callApiObj.id, values);
-    }
-  };
 
   return (
     <>
@@ -337,36 +177,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         hideExportButton={true}
         globalSearchExist={false}
-        showCallApiBtn={true}
         clearTableDataMessages={clearCallApiMessages}
         setSelectedId={(id) => setSelectedId(id)}
-        onCallAllApi={(tableFilter) => onCallAllApi(tableFilter)}
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SPSApi)}
       />
-      {callApiObj.show && (
-        <CallApiModal
-          showModal={callApiObj.show}
-          params={callApiObj.params}
-          handleModalClose={() => {
-            setCallApiObj({
-              filterKeys: null,
-              keyword: null,
-              show: false,
-              isAll: false,
-              id: 0,
-              params: null,
-            });
-          }}
-          refreshDataTable={() => {
-            dataTableRef?.current.refreshData();
-          }}
-          onCallApi={(values) => {
-            confirmCallApi(values);
-          }}
-        />
-      )}
     </>
   );
 };

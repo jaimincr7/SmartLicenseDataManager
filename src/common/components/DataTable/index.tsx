@@ -19,7 +19,7 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
-import { spsApiSelector } from './../../../store/sps/spsAPI/spsApi.reducer';
+import { spsApiCallSelector } from '../../../store/sps/spsAPICall/spsApiCall.reducer';
 
 let pageLoaded = false;
 
@@ -58,7 +58,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const reduxStoreData = useAppSelector(reduxSelector);
   const common = useAppSelector(commonSelector);
   const globalFilters = useAppSelector(globalSearchSelector);
-  const spsApisState = useAppSelector(spsApiSelector);
+  const spsApisState = useAppSelector(spsApiCallSelector);
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
-import { ISearchAPI, ISpsApi } from '../../../services/sps/spsApi/sps.model';
+import { ISearchAPI } from '../../../services/sps/spsApiCall/spsApiCall.model';
 import { RootState } from '../../app.model';
-import { deleteSpsApi, getSpsApiById, saveSpsApi, searchImportAPIs } from './spsApi.action';
-import { ISPSApiState } from './spsApi.model';
+import { callAllApi, callApi, searchImportAPIs } from './spsApiCall.action';
+import { ISPSApiCallState } from './spsApiCall.model';
 
-export const initialState: ISPSApiState = {
+export const initialState: ISPSApiCallState = {
   search: {
     loading: false,
     hasErrors: false,
@@ -19,25 +19,25 @@ export const initialState: ISPSApiState = {
     table_name: null,
     columns: {},
   },
+  callApi: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  callAllApi: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
   getById: {
     loading: false,
     hasErrors: false,
     data: null,
   },
-  save: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
-  delete: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
 };
 
-export const spsApiSlice = createSlice({
-  name: 'spsApi',
+export const spsApiCallSlice = createSlice({
+  name: 'spsApiCall',
   initialState,
   reducers: {
     clearSPS: () => {
@@ -47,8 +47,8 @@ export const spsApiSlice = createSlice({
       state.tableColumnSelection.columns = action.payload;
     },
     clearCallApiMessages: (state) => {
-      state.delete.messages = [];
-      state.save.messages = [];
+      state.callApi.messages = [];
+      state.callAllApi.messages = [];
     },
     clearSpsApiGetById: (state) => {
       state.getById.data = null;
@@ -90,58 +90,42 @@ export const spsApiSlice = createSlice({
       state.search.hasErrors = true;
     },
 
-    // Get by id
-    [getSpsApiById.pending.type]: (state) => {
-      state.getById.loading = true;
+    // Call API
+    [callApi.pending.type]: (state) => {
+      state.callApi.loading = true;
     },
-    [getSpsApiById.fulfilled.type]: (state, action: PayloadAction<ISpsApi>) => {
-      state.getById.data = action.payload;
-      state.getById.loading = false;
-      state.getById.hasErrors = false;
+    [callApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.callApi.loading = false;
+      state.callApi.hasErrors = false;
+      state.callApi.messages = action.payload.messages;
     },
-    [getSpsApiById.rejected.type]: (state) => {
-      state.getById.loading = false;
-      state.getById.hasErrors = true;
-    },
-
-    // Save
-    [saveSpsApi.pending.type]: (state) => {
-      state.save.loading = true;
-      state.save.messages = [];
-    },
-    [saveSpsApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.save.loading = false;
-      state.save.hasErrors = false;
-      state.save.messages = action.payload.messages;
-    },
-    [saveSpsApi.rejected.type]: (state) => {
-      state.save.loading = false;
-      state.save.hasErrors = true;
+    [callApi.rejected.type]: (state) => {
+      state.callApi.loading = false;
+      state.callApi.hasErrors = true;
     },
 
-    // Delete
-    [deleteSpsApi.pending.type]: (state) => {
-      state.delete.loading = true;
-      state.delete.messages = [];
+    // Call All API
+    [callAllApi.pending.type]: (state) => {
+      state.callAllApi.loading = true;
     },
-    [deleteSpsApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.delete.loading = false;
-      state.delete.hasErrors = false;
-      state.delete.messages = action.payload.messages;
+    [callAllApi.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      state.callAllApi.loading = false;
+      state.callAllApi.hasErrors = false;
+      state.callAllApi.messages = action.payload.messages;
     },
-    [deleteSpsApi.rejected.type]: (state) => {
-      state.delete.loading = false;
-      state.delete.hasErrors = true;
+    [callAllApi.rejected.type]: (state) => {
+      state.callAllApi.loading = false;
+      state.callAllApi.hasErrors = true;
     },
   },
 });
 
 // A selector
-export const spsApiSelector = (state: RootState) => state.spsApi;
+export const spsApiCallSelector = (state: RootState) => state.spsApiCall;
 
 // Actions
 export const { clearSPS, setTableColumnSelection, clearCallApiMessages, clearSpsApiGetById } =
-  spsApiSlice.actions;
+  spsApiCallSlice.actions;
 
 // The reducer
-export default spsApiSlice.reducer;
+export default spsApiCallSlice.reducer;
