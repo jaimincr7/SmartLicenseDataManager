@@ -1,5 +1,5 @@
 import { Popconfirm, Popover } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
 import {
@@ -28,6 +28,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const globalLookups = useAppSelector(globalSearchSelector);
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -40,7 +41,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, apiColMapping.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      apiColMapping.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
   };
 
   const getTableColumns = (form) => {
@@ -145,6 +152,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         globalSearchExist={false}
         hideExportButton={true}
         disableRowSelection={true}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );
