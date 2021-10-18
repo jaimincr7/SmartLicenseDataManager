@@ -28,7 +28,7 @@ const SPSRoutes: React.FC = () => {
         {/* Call APIs */}
         {ability.can(Action.View, Page.SPSApiCall) &&  (
           <Route exact path={`${match.path}/sps-config-api`} component={SPSAPIsCall} />
-        )
+        )}
 
         {/* SPS API Jobs */}
         {ability.can(Action.View, Page.SpsApiJobs) && (
