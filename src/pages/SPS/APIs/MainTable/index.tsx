@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import _ from 'lodash';
 import {
@@ -21,6 +21,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const spsApis = useAppSelector(spsApiSelector);
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -35,7 +36,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }, [isMultiple]);
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, spsApis.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      spsApis.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
   };
 
   const getTableColumns = (form) => {
@@ -182,6 +189,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SPSApi)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

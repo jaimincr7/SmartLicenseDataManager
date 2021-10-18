@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import {
   setTableColumnSelection,
   clearSpsApiJobsDataMessages,
@@ -33,6 +33,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const spsApiJobsData = useAppSelector(spsApiJobsDataSelector);
   const dataTableRef = useRef(null);
   const globalLookups = useAppSelector(globalSearchSelector);
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   const extraSearchData = {
     job_id: job_id,
@@ -49,7 +50,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, spsApiJobsData.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      spsApiJobsData.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -103,7 +114,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('api_call_start', spsApiJobsData.search.tableName, form),
+            title: FilterByDateSwapTable('api_call_start', spsApiJobsData.search.tableName, form),
             dataIndex: 'api_call_start',
             key: 'api_call_start',
             ellipsis: true,
@@ -118,7 +129,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('api_call_end', spsApiJobsData.search.tableName, form),
+            title: FilterByDateSwapTable('api_call_end', spsApiJobsData.search.tableName, form),
             dataIndex: 'api_call_end',
             key: 'api_call_end',
             ellipsis: true,
@@ -133,7 +144,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('insert_data_start', spsApiJobsData.search.tableName, form),
+            title: FilterByDateSwapTable('insert_data_start', spsApiJobsData.search.tableName, form),
             dataIndex: 'insert_data_start',
             key: 'insert_data_start',
             ellipsis: true,
@@ -148,7 +159,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('processed', spsApiJobsData.search.tableName, form),
+            title: FilterByDateSwapTable('processed', spsApiJobsData.search.tableName, form),
             dataIndex: 'processed',
             key: 'processed',
             ellipsis: true,
@@ -234,6 +245,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         extraSearchData={extraSearchData}
         disableRowSelection={true}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

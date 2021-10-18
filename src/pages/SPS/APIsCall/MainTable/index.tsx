@@ -39,6 +39,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     filterKeys: null,
     keyword: null,
   });
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -47,7 +48,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }));
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, spsApis.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      spsApis.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
   };
 
   useEffect(() => {
@@ -312,6 +319,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         onCallAllApi={(tableFilter) => onCallAllApi(tableFilter)}
         showBulkUpdate={false}
         disableRowSelection={true}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
       {callApiObj.show && (
         <CallApiModal
