@@ -22,7 +22,7 @@ const SPSAPIsCall: React.FC<ISPSAPIsProps> = () => {
     <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">
-          <BreadCrumbs pageName={Page.SPSApi} />
+          <BreadCrumbs pageName={Page.SPSApiCall} />
         </h4>
         <div className="right-title">
           <GlobalSearch />
