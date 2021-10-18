@@ -2,12 +2,12 @@ import { Button, Col, DatePicker, Form, Input, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { validateMessages } from '../../../../common/constants/common';
 import { useAppSelector } from '../../../../store/app.hooks';
-import { spsApiSelector } from '../../../../store/sps/spsAPI/spsApi.reducer';
+import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
 import { ICallApiModalProps } from './callApiModal.model';
 
 const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
   const { showModal, handleModalClose, params, onCallApi } = props;
-  const spsApis = useAppSelector(spsApiSelector);
+  const spsApis = useAppSelector(spsApiCallSelector);
 
   const [queryParams, setQueryParams] = useState(null);
   const [form] = Form.useForm();

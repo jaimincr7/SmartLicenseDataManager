@@ -2,14 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ISearchAPI, ISpsApi } from '../../../services/sps/spsApi/sps.model';
 import { RootState } from '../../app.model';
-import {
-  callAllApi,
-  callApi,
-  deleteSpsApi,
-  getSpsApiById,
-  saveSpsApi,
-  searchImportAPIs,
-} from './spsApi.action';
+import { deleteSpsApi, getSpsApiById, saveSpsApi, searchImportAPIs } from './spsApi.action';
 import { ISPSApiState } from './spsApi.model';
 
 export const initialState: ISPSApiState = {
@@ -25,16 +18,6 @@ export const initialState: ISPSApiState = {
     id: null,
     table_name: null,
     columns: {},
-  },
-  callApi: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
-  },
-  callAllApi: {
-    loading: false,
-    hasErrors: false,
-    messages: [],
   },
   getById: {
     loading: false,
@@ -64,8 +47,6 @@ export const spsApiSlice = createSlice({
       state.tableColumnSelection.columns = action.payload;
     },
     clearCallApiMessages: (state) => {
-      state.callApi.messages = [];
-      state.callAllApi.messages = [];
       state.delete.messages = [];
       state.save.messages = [];
     },
@@ -107,34 +88,6 @@ export const spsApiSlice = createSlice({
     [searchImportAPIs.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
-    },
-
-    // Call API
-    [callApi.pending.type]: (state) => {
-      state.callApi.loading = true;
-    },
-    [callApi.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
-      state.callApi.loading = false;
-      state.callApi.hasErrors = false;
-      state.callApi.messages = action.payload.messages;
-    },
-    [callApi.rejected.type]: (state) => {
-      state.callApi.loading = false;
-      state.callApi.hasErrors = true;
-    },
-
-    // Call All API
-    [callAllApi.pending.type]: (state) => {
-      state.callAllApi.loading = true;
-    },
-    [callAllApi.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      state.callAllApi.loading = false;
-      state.callAllApi.hasErrors = false;
-      state.callAllApi.messages = action.payload.messages;
-    },
-    [callAllApi.rejected.type]: (state) => {
-      state.callAllApi.loading = false;
-      state.callAllApi.hasErrors = true;
     },
 
     // Get by id

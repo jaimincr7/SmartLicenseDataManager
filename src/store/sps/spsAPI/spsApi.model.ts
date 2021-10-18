@@ -11,16 +11,6 @@ export interface ISPSApiState {
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
   };
-  callApi: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
-  callAllApi: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
   getById: {
     loading: boolean;
     hasErrors: boolean;

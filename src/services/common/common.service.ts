@@ -338,15 +338,9 @@ class CommonService {
     });
   }
 
-  public async getColumnLookup(
-    tableName: string,
-    columnName: string,
-  ): Promise<IApiResponse<any>> {
+  public async getColumnLookup(obj: {}): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
-    const data = {
-      table_name: tableName,
-      column_name: columnName,
-    };
+    const data = obj;
     return request({ url, method: 'POST', data }).then((res) => {
       return res.data;
     });

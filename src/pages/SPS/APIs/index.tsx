@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../../store/app.hooks';
 import { ISPSAPIsProps } from './apis.model';
 import React from 'react';
-import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import MainTable from './MainTable';
 import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
@@ -44,9 +43,6 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = (props) => {
         <h4 className="p-0">
           <BreadCrumbs pageName={Page.SPSApi} />
         </h4>
-        <div className="right-title">
-          <GlobalSearch />
-        </div>
       </div>
       <div className="main-card">
         <MainTable

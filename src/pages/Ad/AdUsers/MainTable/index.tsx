@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
   clearAdUsersMessages,
@@ -28,6 +28,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -46,7 +47,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, adUsers.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      adUsers.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -149,7 +160,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', adUsers.search.tableName, form),
+            title: FilterByDateSwapTable('date_added', adUsers.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -203,7 +214,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('last_logon_date', adUsers.search.tableName, form),
+            title: FilterByDateSwapTable('last_logon_date', adUsers.search.tableName, form),
             dataIndex: 'last_logon_date',
             key: 'last_logon_date',
             ellipsis: true,
@@ -283,7 +294,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('password_last_set', adUsers.search.tableName, form),
+            title: FilterByDateSwapTable('password_last_set', adUsers.search.tableName, form),
             dataIndex: 'password_last_set',
             key: 'password_last_set',
             ellipsis: true,
@@ -353,7 +364,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('whenChanged', adUsers.search.tableName, form),
+            title: FilterByDateSwapTable('whenChanged', adUsers.search.tableName, form),
             dataIndex: 'whenChanged',
             key: 'whenChanged',
             ellipsis: true,
@@ -367,7 +378,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('when_created', adUsers.search.tableName, form),
+            title: FilterByDateSwapTable('when_created', adUsers.search.tableName, form),
             dataIndex: 'when_created',
             key: 'when_created',
             ellipsis: true,
@@ -568,6 +579,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         showBulkUpdate={ability.can(Action.Update, Page.ADUsers)}
         setValuesForSelection={setValuesForSelection}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );
