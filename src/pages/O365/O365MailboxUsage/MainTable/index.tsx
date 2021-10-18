@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
@@ -31,6 +31,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -49,7 +50,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, o365MailboxUsage.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      o365MailboxUsage.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -113,7 +124,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', o365MailboxUsage.search.tableName, form),
+            title: FilterByDateSwapTable('date_added', o365MailboxUsage.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -153,7 +164,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('report_refresh_date', o365MailboxUsage.search.tableName, form),
+            title: FilterByDateSwapTable('report_refresh_date', o365MailboxUsage.search.tableName, form),
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
@@ -167,7 +178,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('created_date', o365MailboxUsage.search.tableName, form),
+            title: FilterByDateSwapTable('created_date', o365MailboxUsage.search.tableName, form),
             dataIndex: 'created_date',
             key: 'created_date',
             ellipsis: true,
@@ -194,7 +205,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('last_activity_date', o365MailboxUsage.search.tableName, form),
+            title: FilterByDateSwapTable('last_activity_date', o365MailboxUsage.search.tableName, form),
             dataIndex: 'last_activity_date',
             key: 'last_activity_date',
             ellipsis: true,
@@ -365,6 +376,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.O365MailboxUsage)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

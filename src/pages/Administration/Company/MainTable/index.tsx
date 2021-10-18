@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
@@ -28,6 +28,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useEffect(() => {
     if (isMultiple) {
@@ -46,7 +47,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, company.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      company.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -113,7 +124,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('joined_date', company.search.tableName, form),
+            title: FilterByDateSwapTable('joined_date', company.search.tableName, form),
             dataIndex: 'joined_date',
             key: 'joined_date',
             ellipsis: true,
@@ -273,6 +284,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.Company)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

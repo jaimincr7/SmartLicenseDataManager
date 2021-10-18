@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
   clearSqlServerExclusionsMessages,
@@ -28,6 +28,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -46,7 +47,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, sqlServerExclusions.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      sqlServerExclusions.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
   };
 
   const getTableColumns = (form) => {
@@ -215,6 +222,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SqlServerExclusions)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

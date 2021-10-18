@@ -19,7 +19,7 @@ import { FileExcelOutlined } from '@ant-design/icons';
 import { saveTableColumnSelection } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
-import { spsApiSelector } from './../../../store/sps/spsAPI/spsApi.reducer';
+import { spsApiCallSelector } from '../../../store/sps/spsAPICall/spsApiCall.reducer';
 
 let pageLoaded = false;
 
@@ -52,12 +52,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setValuesForSelection,
     setNumberOfRecords,
     disableRowSelection,
+    setObjectForColumnFilter,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
   const common = useAppSelector(commonSelector);
   const globalFilters = useAppSelector(globalSearchSelector);
-  const spsApisState = useAppSelector(spsApiSelector);
+  const spsApisState = useAppSelector(spsApiCallSelector);
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
@@ -116,7 +117,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
 
     const searchData: ISearch = {
-      is_lookup: !pageLoaded,
+      is_lookup: true,
       is_column_selection: !pageLoaded,
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
@@ -131,6 +132,19 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const fetchTableData = (page = null) => {
     const searchData = getSearchData(page, false);
+    if (setObjectForColumnFilter) {
+      setObjectForColumnFilter({
+        filter_keys: searchData.filter_keys,
+        keyword: searchData.keyword,
+        limit: searchData.limit,
+        offset: searchData.offset,
+        is_column_selection: searchData.is_column_selection,
+        order_by: tableFilter.order_by,
+        order_direction: tableFilter.order_direction,
+        column_called: [],
+      });
+    }
+    //setCallColumnApi(true);
     dispatch(searchTableData(searchData));
   };
   useImperativeHandle(ref, () => ({

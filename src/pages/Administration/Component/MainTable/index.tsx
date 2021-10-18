@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
 import { IMainTable, ISearch } from '../../../../common/models/common';
@@ -24,6 +24,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useEffect(() => {
     if (isMultiple) {
@@ -42,7 +43,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, configComponent.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      configComponent.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
   };
 
   const getTableColumns = (form) => {
@@ -119,6 +126,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.ConfigComponent)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

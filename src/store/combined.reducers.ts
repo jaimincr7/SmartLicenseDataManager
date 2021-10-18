@@ -109,6 +109,7 @@ import spsApiOauthReducer from './sps/apiOauth/apiOauth.reducer';
 import spsApiTokenConfigOptionsReducer from './sps/apiTokenConfigOptions/apiTokenConfigOptions.reducer';
 import cronReducer from './master/cron/cron.reducer';
 import cronViewLogReducer from './master/cronViewLog/cronViewLog.reducer';
+import spsApiCallReducer from './sps/spsAPICall/spsApiCall.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -248,6 +249,7 @@ export const rootReducer = combineReducers({
 
   //SPS
   spsApi: spsApiReducer,
+  spsApiCall: spsApiCallReducer,
   spsApiJobs: spsApiJobsReducer,
   spsApiJobsData: spsApiJobsDataReducer,
   spsApiGroup: spsApiGroupReducer,
