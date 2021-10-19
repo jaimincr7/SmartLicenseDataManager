@@ -128,8 +128,8 @@ export enum Page {
   SpsApiType = 'sps-api-type',
   SpsApiOauth = 'sps-api-oauth',
   SpsApiTokenConfigOptions = 'sps-api-token-config-options',
-  Cron = 'cron-job-data',
-  CronViewLogData = 'cron-job-log',
+  Cron = 'sps-cron-job-data',
+  CronViewLogData = 'sps-cron-job-log',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }
