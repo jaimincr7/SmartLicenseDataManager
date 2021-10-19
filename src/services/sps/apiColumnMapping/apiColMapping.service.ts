@@ -61,7 +61,7 @@ class ApiColMappingService {
   }
 
   public async apiColLookups(): Promise<any> {
-    const url = `sps-api/lookup`;
+    const url = `sps-config-api/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

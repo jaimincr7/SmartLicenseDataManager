@@ -3,7 +3,7 @@ import request from '../../../utils/request';
 import { ICallAllApi, ICallAPI, ISearchAPI, ISearchImportAPIs } from './spsApiCall.model';
 
 class SPSApiCallService {
-  ENDPOINT = '/sps-config-api';
+  ENDPOINT = '/sps-api';
 
   public async searchImportAPIs(
     searchParams?: ISearchImportAPIs

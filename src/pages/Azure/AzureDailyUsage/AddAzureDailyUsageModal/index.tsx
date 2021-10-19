@@ -2045,7 +2045,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="dev_test_applied" className="m-0" valuePropName="checked">
+                  <Form.Item name="dev_test_applied" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;
