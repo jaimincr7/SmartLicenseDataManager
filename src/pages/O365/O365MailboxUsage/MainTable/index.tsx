@@ -164,7 +164,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('report_refresh_date', o365MailboxUsage.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'report_refresh_date',
+              o365MailboxUsage.search.tableName,
+              form
+            ),
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
@@ -205,7 +209,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('last_activity_date', o365MailboxUsage.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'last_activity_date',
+              o365MailboxUsage.search.tableName,
+              form
+            ),
             dataIndex: 'last_activity_date',
             key: 'last_activity_date',
             ellipsis: true,

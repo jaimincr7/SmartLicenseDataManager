@@ -120,7 +120,7 @@ export enum Page {
   BUDropdown = 'bu-drop-down',
   AgreementTypes = 'agreement-types',
 
-  SPSApiCall = "sps-config-api",
+  SPSApiCall = 'sps-config-api',
   SPSApi = 'sps-api',
   SpsApiJobs = 'sps-api-jobs',
   SpsApiJobsData = 'sps-api-jobs-data',

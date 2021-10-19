@@ -221,12 +221,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     };
     setPagination(paginating);
     fetchTableData(paginating);
-
-    {
-      /*const valuesForSelection = {...tableFilter};
-      valuesForSelection['selectedIds']=selectedRowList
-  setValuesForSelection(valuesForSelection);*/
-    }
   };
 
   React.useEffect(() => {
