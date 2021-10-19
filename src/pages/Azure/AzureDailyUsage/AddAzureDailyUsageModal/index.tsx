@@ -1911,12 +1911,11 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item
                     name="charges_billed_separately"
-                    className="m-0"
+                    className="m-0 mr-1"
                     valuePropName="checked"
                   >
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'charges_billed_separately']}
@@ -1934,12 +1933,11 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item
                     name="is_azure_credit_eligible"
-                    className="m-0"
+                    className="m-0 mr-1"
                     valuePropName="checked"
                   >
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'is_azure_credit_eligible']}
@@ -1955,10 +1953,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="idle" className="m-0" valuePropName="checked">
+                  <Form.Item name="idle" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'idle']} valuePropName="checked" noStyle>
                       <Checkbox>Idle</Checkbox>
@@ -1970,10 +1967,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="placement" className="m-0" valuePropName="checked">
+                  <Form.Item name="placement" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'placement']} valuePropName="checked" noStyle>
                       <Checkbox>Placement</Checkbox>
@@ -1985,10 +1981,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="ri_applied" className="m-0" valuePropName="checked">
+                  <Form.Item name="ri_applied" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'ri_applied']} valuePropName="checked" noStyle>
                       <Checkbox>RI Applied</Checkbox>
@@ -2000,10 +1995,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="ri_suggested" className="m-0" valuePropName="checked">
+                  <Form.Item name="ri_suggested" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'ri_suggested']} valuePropName="checked" noStyle>
                       <Checkbox>RI Suggested</Checkbox>
@@ -2015,10 +2009,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="ahb_applied" className="m-0" valuePropName="checked">
+                  <Form.Item name="ahb_applied" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'ahb_applied']} valuePropName="checked" noStyle>
                       <Checkbox>AHB - Applied</Checkbox>
@@ -2030,10 +2023,9 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="ahb_suggested" className="m-0" valuePropName="checked">
+                  <Form.Item name="ahb_suggested" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'ahb_suggested']} valuePropName="checked" noStyle>
                       <Checkbox>AHB - Suggested</Checkbox>
@@ -2048,7 +2040,6 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   <Form.Item name="dev_test_applied" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'dev_test_applied']}
@@ -2064,17 +2055,16 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="dev_test_suggested" className="m-0" valuePropName="checked">
+                  <Form.Item name="dev_test_suggested" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'dev_test_suggested']}
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>dev_test_suggested</Checkbox>
+                      <Checkbox>Dev-Test Suggested</Checkbox>
                     </Form.Item>
                   ) : (
                     'dev_test_suggested'
