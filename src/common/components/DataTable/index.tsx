@@ -250,7 +250,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       }
       dispatch(clearTableDataMessages());
     }
-  }, [common?.manageCronJob?.messages]);
+  }, [common.manageCronJob.messages]);
   // End: Delete action
 
   // Keyword search

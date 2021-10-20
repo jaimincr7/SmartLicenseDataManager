@@ -277,6 +277,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         reduxSelector={azureRateCardSelector}
         searchTableData={searchAzureRateCard}
         clearTableDataMessages={clearAzureRateCardMessages}
+        globalSearchExist={false}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
         showBulkUpdate={ability.can(Action.Update, Page.AzureRateCard)}
