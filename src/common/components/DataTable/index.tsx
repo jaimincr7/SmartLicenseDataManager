@@ -15,8 +15,12 @@ import {
   orderByType,
 } from '../../../common/models/common';
 import { commonSelector } from '../../../store/common/common.reducer';
-import { FileExcelOutlined } from '@ant-design/icons';
-import { saveTableColumnSelection } from '../../../store/common/common.action';
+import { RedoOutlined, FileExcelOutlined } from '@ant-design/icons';
+import {
+  getCronJobStatus,
+  manageCronJobApi,
+  saveTableColumnSelection,
+} from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
 import { spsApiCallSelector } from '../../../store/sps/spsAPICall/spsApiCall.reducer';
@@ -53,6 +57,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setNumberOfRecords,
     disableRowSelection,
     setObjectForColumnFilter,
+    isCronJobApiButton,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -234,6 +239,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       dispatch(clearTableDataMessages());
     }
   }, [reduxStoreData?.delete?.messages]);
+
+  React.useEffect(() => {
+    if (common.manageCronJob?.messages && common.manageCronJob?.messages.length > 0) {
+      if (common.manageCronJob.hasErrors) {
+        toast.error(common.manageCronJob?.messages.join(' '));
+      } else {
+        toast.success(common.manageCronJob?.messages.join(' '));
+        fetchTableData();
+      }
+      dispatch(clearTableDataMessages());
+    }
+  }, [common?.manageCronJob?.messages]);
   // End: Delete action
 
   // Keyword search
@@ -276,6 +293,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         setLoading(false);
       }
     });
+  };
+
+  const startSchedule = () => {
+    dispatch(manageCronJobApi());
+    dispatch(getCronJobStatus());
+    dispatch(getCronJobStatus());
   };
 
   // Table columns
@@ -537,6 +560,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
+          {isCronJobApiButton && (
+            <Button onClick={startSchedule} icon={<RedoOutlined />} loading={loading}>
+              Start Scheduler
+            </Button>
+          )}
           {!hideExportButton && (
             <Button
               onClick={downloadExcel}

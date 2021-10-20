@@ -17,7 +17,11 @@ import {
   clearAzureAPIVmSizesMessages,
   azureAPIVmSizesSelector,
 } from '../../../../store/azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
-import { getBULookup, getCompanyLookup, updateMultiple } from '../../../../store/common/common.action';
+import {
+  getBULookup,
+  getCompanyLookup,
+  updateMultiple,
+} from '../../../../store/common/common.action';
 import {
   clearMultipleUpdateMessages,
   commonSelector,
@@ -142,8 +146,7 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
       dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
       dispatch(getBULookup(globalSearch.company_id[0]));
     }
-      form.setFieldsValue(globalSearch);
-
+    form.setFieldsValue(globalSearch);
   }, []);
 
   return (

@@ -19,6 +19,20 @@ export const getCompanyLookup = createAsyncThunk('getCompanyLookup', async (tena
   return response.data;
 });
 
+export const getCronJobStatus = createAsyncThunk('getCronJobStatus', async () => {
+  const response = await commonService.getCronJobStatus().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const manageCronJobApi = createAsyncThunk('manageCronJobApi', async () => {
+  const response = await commonService.manageCronJobApi().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getCronFormula = createAsyncThunk('getCronFormula', async () => {
   const response = await commonService.getCronFormula().then((res) => {
     return res.body;

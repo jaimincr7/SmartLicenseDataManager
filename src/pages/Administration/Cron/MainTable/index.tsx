@@ -267,6 +267,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchCron}
         clearTableDataMessages={clearCronMessages}
         setTableColumnSelection={setTableColumnSelection}
+        isCronJobApiButton={true}
       />
       {showStartApi && (
         <StartApiModal

@@ -30,7 +30,11 @@ import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
-import { getBULookup, getCompanyLookup, updateMultiple } from '../../../../store/common/common.action';
+import {
+  getBULookup,
+  getCompanyLookup,
+  updateMultiple,
+} from '../../../../store/common/common.action';
 import {
   clearMultipleUpdateMessages,
   commonSelector,
@@ -165,8 +169,7 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
       dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
       dispatch(getBULookup(globalSearch.company_id[0]));
     }
-      form.setFieldsValue(globalSearch);
-
+    form.setFieldsValue(globalSearch);
   }, []);
 
   return (

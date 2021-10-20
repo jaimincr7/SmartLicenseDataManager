@@ -29,4 +29,5 @@ export interface IDataTable {
   setValuesForSelection?: (val: any) => void;
   disableRowSelection?: boolean;
   setObjectForColumnFilter?: (val: {}) => void;
+  isCronJobApiButton?: boolean;
 }

@@ -927,6 +927,13 @@ textarea.ant-input {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #dddddd;
+    .right-list {
+      display: flex;
+      align-items: center;
+    }
+    .right-list > *:not(:last-child) {
+      margin-right: 4px;
+    }
   }
   .logo {
     display: inline-block;
