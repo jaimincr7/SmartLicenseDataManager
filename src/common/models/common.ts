@@ -66,4 +66,5 @@ export interface IMainTable {
   setShowSelectedListModal?: (show: boolean) => void;
   setValuesForSelection?: (val: any) => void;
   setNumberOfRecords?: (val: any) => void;
+  setFilterKeys?: (val: any) => void;
 }

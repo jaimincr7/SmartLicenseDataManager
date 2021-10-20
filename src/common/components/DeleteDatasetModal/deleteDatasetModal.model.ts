@@ -4,4 +4,5 @@ export interface IDeleteDatasetModalProps {
   refreshDataTable: () => void;
   tableName: string;
   isDateAvailable?: boolean;
+  filterKeys?: any;
 }

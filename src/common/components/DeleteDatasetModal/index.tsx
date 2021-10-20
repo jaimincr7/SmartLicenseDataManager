@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Modal, Row, Select } from 'antd';
+import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -14,25 +14,31 @@ import {
   clearDeleteDatasetMessages,
   commonSelector,
 } from '../../../store/common/common.reducer';
-import { validateMessages } from '../../constants/common';
+import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
+import { Common, validateMessages } from '../../constants/common';
+import { IInlineSearch } from '../../models/common';
 import { IDeleteDatasetModalProps } from './deleteDatasetModal.model';
+import _ from 'lodash';
+import React from 'react';
 
 const { Option } = Select;
 
 const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
   const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const commonLookups = useAppSelector(commonSelector);
 
-  const { showModal, handleModalClose, refreshDataTable, tableName, isDateAvailable } = props;
+  const { showModal, handleModalClose, refreshDataTable, tableName, isDateAvailable , filterKeys } = props;
 
   const [form] = Form.useForm();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
   const showDate = isDateAvailable === undefined ? true : isDateAvailable;
 
-  const initialValues = {
+  let initialValues = {
     company_id: null,
     bu_id: null,
-    date_added: moment(),
+    date_added: null,
   };
   const onFinish = (values: any) => {
     const inputValues = {
@@ -42,10 +48,10 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
     dispatch(deleteDataset(inputValues));
   };
 
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current > moment().endOf('day');
-  };
+  // const disabledDate = (current) => {
+  //   // Can not select days before today and today
+  //   return current && current > moment().endOf('day');
+  // };
 
   useEffect(() => {
     if (common.deleteDataset.messages.length > 0) {
@@ -79,6 +85,27 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
       dispatch(clearBULookUp());
     };
   }, [dispatch]);
+
+  React.useEffect(() => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
+    if (globalSearch.company_id) {
+      dispatch(getBULookup(globalSearch.company_id[0]));
+    }
+      initialValues = {
+        company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id,
+        bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id,
+        date_added:
+          filterKeys?.filter_keys?.date_added?.length == 1
+            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            : null,
+      };
+      form.setFieldsValue(initialValues);
+
+  }, []);
 
   return (
     <>
@@ -168,18 +195,38 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
             </Col>
             {showDate && (
               <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  <label className="label">Dataset Date</label>
-                  <Form.Item
-                    name="date_added"
-                    label="Dataset Date"
-                    className="m-0"
-                    rules={[{ required: true }]}
+              <div className="form-group m-0">
+                <label className="label">Dataset Date</label>
+                <Form.Item
+                  name="date_added"
+                  className="m-0"
+                  label="Dataset Date"
+                  rules={[{ required: true }]}
+                >
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDate.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
                   >
-                    <DatePicker className="w-100" disabledDate={disabledDate} />
-                  </Form.Item>
-                </div>
-              </Col>
+                    {commonLookups.getScheduledDate.data.map((option: any) => (
+                      <Option key={option} value={option}>
+                        {moment(option).format(Common.DATEFORMAT)}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </Col>
             )}
           </Row>
           <div className="btns-block modal-footer">

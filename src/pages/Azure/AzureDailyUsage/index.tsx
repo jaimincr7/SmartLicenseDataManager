@@ -31,6 +31,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -134,6 +135,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -165,6 +167,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          filterKeys={filterKeys}
         />
       )}
       {deleteModalVisible && (
@@ -173,6 +176,7 @@ const AzureDailyUsage: React.FC<IAzureDailyUsageProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={azureDailyUsage.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>
