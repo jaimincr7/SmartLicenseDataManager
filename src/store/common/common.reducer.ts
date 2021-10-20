@@ -337,7 +337,7 @@ export const commonSlice = createSlice({
       state.cronJobStatus.loading = false;
     },
 
-    // Save Table Column Selection
+    // Manage Cron Job Api
     [manageCronJobApi.pending.type]: (state) => {
       state.manageCronJob.loading = true;
       state.manageCronJob.messages = [];

@@ -30,7 +30,7 @@ export const manageCronJobApi = createAsyncThunk('manageCronJobApi', async () =>
   const response = await commonService.manageCronJobApi().then((res) => {
     return res.body;
   });
-  return response.data;
+  return response;
 });
 
 export const getCronFormula = createAsyncThunk('getCronFormula', async () => {
