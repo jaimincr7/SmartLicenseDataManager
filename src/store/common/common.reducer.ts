@@ -308,6 +308,9 @@ export const commonSlice = createSlice({
     clearSaveTableColumnSelection: (state) => {
       state.saveTableColumnSelection.messages = [];
     },
+    clearCronJobSchedularMessages: (state) => {
+      state.manageCronJob.messages = [];
+    },
     clearSpsApiTypesLookup: (state) => {
       state.spsApiTypes.data = [];
     },
@@ -894,6 +897,7 @@ export const {
   clearSpsApiTypesLookup,
   clearMultipleUpdateMessages,
   clearDateLookup,
+  clearCronJobSchedularMessages,
 } = commonSlice.actions;
 
 // The reducer

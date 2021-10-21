@@ -14,7 +14,7 @@ import {
   ITableColumnSelection,
   orderByType,
 } from '../../../common/models/common';
-import { commonSelector } from '../../../store/common/common.reducer';
+import { clearCronJobSchedularMessages, commonSelector } from '../../../store/common/common.reducer';
 import { RedoOutlined, FileExcelOutlined } from '@ant-design/icons';
 import {
   getCronJobStatus,
@@ -250,7 +250,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         toast.success(common.manageCronJob?.messages.join(' '));
         fetchTableData();
       }
-      dispatch(clearTableDataMessages());
+      dispatch(clearCronJobSchedularMessages());
     }
   }, [common.manageCronJob.messages]);
   // End: Delete action
