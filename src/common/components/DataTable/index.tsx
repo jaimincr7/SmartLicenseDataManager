@@ -24,6 +24,8 @@ import {
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
 import { spsApiCallSelector } from '../../../store/sps/spsAPICall/spsApiCall.reducer';
+import { Can } from '../../ability';
+import { Action, Page } from '../../constants/pageAction';
 
 let pageLoaded = false;
 
@@ -561,9 +563,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
           {isCronJobApiButton && (
-            <Button onClick={startSchedule} icon={<RedoOutlined />} loading={loading}>
-              Start Scheduler
-            </Button>
+            <Can I={Action.RunCronJob} a={Page.Cron}>
+              <Button onClick={startSchedule} icon={<RedoOutlined style={{ color: 'blue' }} />}>
+                Start Scheduler
+              </Button>
+            </Can>
           )}
           {!hideExportButton && (
             <Button

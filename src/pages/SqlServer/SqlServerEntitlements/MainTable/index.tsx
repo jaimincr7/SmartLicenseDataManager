@@ -26,7 +26,13 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import ability, { Can } from '../../../../common/ability';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple , setFilterKeys } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+  } = props;
   const sqlServerEntitlements = useAppSelector(sqlServerEntitlementsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

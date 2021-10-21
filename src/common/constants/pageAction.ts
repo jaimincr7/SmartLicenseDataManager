@@ -142,6 +142,7 @@ export enum Action {
   ProcessData = 'process_data',
   DeleteData = 'delete_data',
   RunAllLicenseScenario = 'run_all_license_scenario',
+  RunCronJob = 'run_cron_job',
   Select = 'select',
   Call = 'call',
   Error = 'error_view',

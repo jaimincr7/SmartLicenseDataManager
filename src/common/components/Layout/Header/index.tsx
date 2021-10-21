@@ -3,6 +3,8 @@ import { Menu, Dropdown, Button } from 'antd';
 import { toast } from 'react-toastify';
 import { msalInstance } from '../../../../utils/authConfig';
 // import authService from '../../../../services/auth/auth.service';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 import { userSelector } from '../../../../store/administration/administration.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { SyncOutlined } from '@ant-design/icons';
@@ -69,8 +71,10 @@ function Header() {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(getCronJobStatus());
-    setCronStatus(common.cronJobStatus.data.toString());
+    if (ability.can(Action.RunCronJob, Page.Cron)) {
+      dispatch(getCronJobStatus());
+      setCronStatus(common.cronJobStatus.data.toString());
+    }
   }, [common.cronJobStatus.data]);
 
   return (
@@ -87,34 +91,38 @@ function Header() {
           <span className="line"></span>
         </div>
         <div className="profile-wrapper right-list">
-          {cronStatus === 'stopped' ? (
-            <>
-              {' '}
-              <Button
-                className="btn-icon"
-                onClick={() => history.push(`/administration/schedule-api-data`)}
-              >
-                Click to Start
-              </Button>
-              <SyncOutlined style={{ color: 'red', fontSize: '20px' }} />{' '}
-            </>
-          ) : (
-            ''
-          )}
-          {cronStatus === 'running' ? (
-            <>
-              {' '}
-              <Button
-                className="btn-icon"
-                onClick={() => history.push(`/administration/schedule-api-data`)}
-              >
-                Click to Manage
-              </Button>
-              <SyncOutlined style={{ color: 'green' }} spin />
-            </>
-          ) : (
-            ''
-          )}
+          <Can I={Action.RunCronJob} a={Page.Cron}>
+            <Can I={Action.View} a={Page.Cron}>
+              {cronStatus === 'stopped' ? (
+                <>
+                  {' '}
+                  <Button
+                    className="btn-icon"
+                    onClick={() => history.push(`/administration/schedule-api-data`)}
+                  >
+                    Click to Start
+                  </Button>
+                  <SyncOutlined style={{ color: 'red', fontSize: '20px' }} />{' '}
+                </>
+              ) : (
+                ''
+              )}
+              {cronStatus === 'running' ? (
+                <>
+                  {' '}
+                  <Button
+                    className="btn-icon"
+                    onClick={() => history.push(`/administration/schedule-api-data`)}
+                  >
+                    Click to Manage
+                  </Button>
+                  <SyncOutlined style={{ color: 'green' }} spin />
+                </>
+              ) : (
+                ''
+              )}
+            </Can>
+          </Can>
 
           <Dropdown overlay={profileMenu()} trigger={['click']} overlayClassName="profile-dropdown">
             <a href="#" title="" className="profile-block" onClick={(e) => e.preventDefault()}>

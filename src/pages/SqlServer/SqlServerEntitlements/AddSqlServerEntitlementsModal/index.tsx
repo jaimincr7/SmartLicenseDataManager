@@ -178,17 +178,17 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
   }, [dispatch]);
 
   useEffect(() => {
-    if(!isMultiple) {
+    if (!isMultiple) {
       const globalSearch: IInlineSearch = {};
-    for (const key in globalFilters.search) {
-      const element = globalFilters.search[key];
-      globalSearch[key] = element ? [element] : null;
-    }
-    if (globalSearch.company_id) {
-      dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
-      dispatch(getBULookup(globalSearch.company_id[0]));
-    }
-    form.setFieldsValue(globalSearch);
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
+      if (globalSearch.company_id) {
+        dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+        dispatch(getBULookup(globalSearch.company_id[0]));
+      }
+      form.setFieldsValue(globalSearch);
     }
   }, []);
 

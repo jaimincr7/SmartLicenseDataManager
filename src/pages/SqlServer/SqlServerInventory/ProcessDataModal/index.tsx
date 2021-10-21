@@ -1,5 +1,5 @@
 import { Button, Col, Form, Modal, Row, Select, Switch } from 'antd';
-import React , { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -34,7 +34,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose , filterKeys } = props;
+  const { showModal, handleModalClose, filterKeys } = props;
 
   const [form] = Form.useForm();
 

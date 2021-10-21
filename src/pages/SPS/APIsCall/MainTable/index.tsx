@@ -21,7 +21,7 @@ import { globalSearchSelector } from '../../../../store/globalSearch/globalSearc
 import { toast } from 'react-toastify';
 import { ICallAllApi, ICallAPI } from '../../../../services/sps/spsApiCall/spsApiCall.model';
 import { useHistory } from 'react-router-dom';
-import { DownloadOutlined, RetweetOutlined } from '@ant-design/icons';
+import { DownloadOutlined, ControlTwoTone } from '@ant-design/icons';
 import CallApiModal from '../CallApiModal';
 import { IMainTable } from '../../../../common/models/common';
 
@@ -232,7 +232,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         {data.is_mapping ? (
           <DownloadOutlined title="Call Api" />
         ) : (
-          <RetweetOutlined title="Add Api" />
+          <ControlTwoTone title="Map Api" style={{ color: 'blue' }} />
         )}
       </a>
     );

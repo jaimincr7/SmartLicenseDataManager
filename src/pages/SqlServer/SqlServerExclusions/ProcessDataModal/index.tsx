@@ -1,5 +1,5 @@
 import { Button, Col, Form, Modal, Row, Select } from 'antd';
-import React , { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {

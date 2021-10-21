@@ -63,8 +63,20 @@ export const FilterByDateSwap = (
         if (!obj?.column_called?.includes(dataIndex)) {
           setLoading(true);
           obj.column_called?.push(dataIndex);
+          const filterOBJ: any = {
+            table_name: tableName,
+            column_name: dataIndex,
+            filter_keys: obj.filter_keys,
+            limit: obj.limit,
+            offset: obj.offset,
+            order_by: obj.order_by,
+            order_direction: obj.order_direction,
+            keyword: obj.keyword,
+            is_column_selection: false,
+            current_user: {},
+          };
           commonService
-            .getColumnLookup(obj)
+            .getColumnLookup(filterOBJ)
             .then((res) => {
               return res.body.data;
             })
@@ -200,8 +212,20 @@ export const FilterWithSwapOption = (
         if (!obj.column_called?.includes(dataIndex)) {
           setLoading(true);
           obj.column_called?.push(dataIndex);
+          const filterOBJ: any = {
+            table_name: tableName,
+            column_name: dataIndex,
+            filter_keys: obj.filter_keys,
+            limit: obj.limit,
+            offset: obj.offset,
+            order_by: obj.order_by,
+            order_direction: obj.order_direction,
+            keyword: obj.keyword,
+            is_column_selection: false,
+            current_user: {},
+          };
           commonService
-            .getColumnLookup(obj)
+            .getColumnLookup(filterOBJ)
             .then((res) => {
               return res.body.data;
             })
