@@ -1,5 +1,5 @@
 import { Button, Col, Form, Modal, Row, Select } from 'antd';
-import { useEffect } from 'react';
+import React , { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -22,6 +22,8 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { IInlineSearch } from '../../../../common/models/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
@@ -29,6 +31,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const sqlServerExclusions = useAppSelector(sqlServerExclusionsSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
   const { showModal, handleModalClose } = props;
 
@@ -90,6 +93,18 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearDateLookup());
     };
   }, [dispatch]);
+
+  React.useEffect(() => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
+    if (globalSearch.company_id) {
+      dispatch(getBULookup(globalSearch.company_id[0]));
+    }
+    form.setFieldsValue(globalSearch);
+  }, []);
 
   return (
     <>

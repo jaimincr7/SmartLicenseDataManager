@@ -16,9 +16,7 @@ import {
   clearAzureAPIVmSizesMessages,
   azureAPIVmSizesSelector,
 } from '../../../../store/azure/azureAPIVmSizes/azureAPIVmSizes.reducer';
-import {
-  updateMultiple,
-} from '../../../../store/common/common.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 import {
   clearMultipleUpdateMessages,
   commonSelector,

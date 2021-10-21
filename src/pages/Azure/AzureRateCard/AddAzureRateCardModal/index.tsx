@@ -30,9 +30,7 @@ import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
-import {
-  updateMultiple,
-} from '../../../../store/common/common.action';
+import { updateMultiple } from '../../../../store/common/common.action';
 import {
   clearMultipleUpdateMessages,
   commonSelector,

@@ -30,6 +30,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -64,24 +65,6 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ProcessData} a={Page.SqlServerInventory}>
-              <Col>
-                <Button
-                  className="btn-icon"
-                  onClick={() => setProcessModalVisible(true)}
-                  icon={
-                    <em className="anticon">
-                      <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
-                        alt=""
-                      />
-                    </em>
-                  }
-                >
-                  Process Data
-                </Button>
-              </Col>
-            </Can>
             <Can I={Action.ImportToExcel} a={Page.SqlServerInventory}>
               <Col>
                 <Button
@@ -103,6 +86,24 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
                   }
                 >
                   Import
+                </Button>
+              </Col>
+            </Can>
+            <Can I={Action.ProcessData} a={Page.SqlServerInventory}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setProcessModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Process Data
                 </Button>
               </Col>
             </Can>
@@ -135,6 +136,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -166,6 +168,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          filterKeys={filterKeys}
         />
       )}
       {deleteModalVisible && (
@@ -174,6 +177,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={sqlServerInventory.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

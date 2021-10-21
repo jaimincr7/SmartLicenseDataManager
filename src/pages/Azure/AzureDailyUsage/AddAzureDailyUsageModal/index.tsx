@@ -353,6 +353,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
+    if(!isMultiple) {
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
@@ -363,6 +364,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
       dispatch(getBULookup(globalSearch.company_id[0]));
     }
     form.setFieldsValue(globalSearch);
+  }
   }, []);
 
   return (
