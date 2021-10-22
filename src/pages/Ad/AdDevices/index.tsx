@@ -27,6 +27,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -130,6 +131,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -161,6 +163,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          filterKeys={filterKeys}
         />
       )}
       {deleteModalVisible && (
@@ -169,6 +172,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={adDevices.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

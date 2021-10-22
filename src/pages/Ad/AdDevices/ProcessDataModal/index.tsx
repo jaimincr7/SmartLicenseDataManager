@@ -1,5 +1,5 @@
 import { Button, Col, Form, Modal, Row, Select } from 'antd';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -22,6 +22,9 @@ import {
 import { processData } from '../../../../store/ad/adDevices/adDevices.action';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import _ from 'lodash';
+import { IInlineSearch } from '../../../../common/models/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
@@ -29,8 +32,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const adDevices = useAppSelector(adDevicesSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose } = props;
+  const { showModal, handleModalClose , filterKeys } = props;
 
   const [form] = Form.useForm();
 
@@ -88,6 +92,26 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearDateLookup());
     };
   }, [dispatch]);
+
+  React.useEffect(() => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
+    if (globalSearch.company_id) {
+      dispatch(getBULookup(globalSearch.company_id[0]));
+    }
+    const filterValues = {
+      company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id,
+      bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id,
+      date_added:
+        filterKeys?.filter_keys?.date_added?.length === 1
+          ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+          : null,
+    };
+    form.setFieldsValue(filterValues);
+  }, []);
 
   return (
     <>

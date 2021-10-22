@@ -25,6 +25,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -110,6 +111,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -143,6 +145,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={adUsers.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>
