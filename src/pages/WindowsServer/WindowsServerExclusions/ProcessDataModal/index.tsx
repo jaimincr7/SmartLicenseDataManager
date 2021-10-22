@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getAllCompanyLookup,
   getBULookup,
+  getCompanyLookup,
   getScheduleDate,
 } from '../../../../store/common/common.action';
 import {
@@ -22,6 +23,8 @@ import {
 import { processData } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.action';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { IInlineSearch } from '../../../../common/models/common';
 
 const { Option } = Select;
 
@@ -29,6 +32,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const windowsServerExclusions = useAppSelector(windowsServerExclusionsSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
   const { showModal, handleModalClose } = props;
 
@@ -90,6 +94,19 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearDateLookup());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+        const globalSearch: IInlineSearch = {};
+        for (const key in globalFilters.search) {
+          const element = globalFilters.search[key];
+          globalSearch[key] = element ? [element] : null;
+        }
+        if (globalSearch.company_id) {
+          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+          dispatch(getBULookup(globalSearch.company_id[0]));
+        }
+        form.setFieldsValue(globalSearch);
+      }, []);
 
   return (
     <>

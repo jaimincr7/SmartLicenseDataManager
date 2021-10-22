@@ -31,6 +31,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -63,24 +64,6 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ProcessData} a={Page.SqlServerInventory}>
-              <Col>
-                <Button
-                  className="btn-icon"
-                  onClick={() => setProcessModalVisible(true)}
-                  icon={
-                    <em className="anticon">
-                      <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
-                        alt=""
-                      />
-                    </em>
-                  }
-                >
-                  Process Data
-                </Button>
-              </Col>
-            </Can>
             <Can I={Action.ImportToExcel} a={Page.WindowsServerInventory}>
               <Col>
                 <Button
@@ -100,6 +83,24 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
                   }
                 >
                   Import
+                </Button>
+              </Col>
+            </Can>
+            <Can I={Action.ProcessData} a={Page.SqlServerInventory}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setProcessModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Process Data
                 </Button>
               </Col>
             </Can>
@@ -132,6 +133,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -163,6 +165,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          filterKeys={filterKeys}
         />
       )}
       {deleteModalVisible && (
@@ -171,6 +174,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={inventory.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>
