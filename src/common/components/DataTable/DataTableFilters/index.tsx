@@ -166,7 +166,7 @@ export const FilterByDropdown = (
         {(loading ? [] : dropdownOptions).map((option: IDropDownOption) => (
           <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
             {isDateDropDown
-              ? moment(option.name).format(Common.DATEFORMAT)?.toString()
+              ? (moment(option.name).format(Common.DATEFORMAT)?.toString() == 'Invalid date' ? "NULL" : moment(option.name).format(Common.DATEFORMAT)?.toString() )
               : option.name?.toString()}
           </Select.Option>
         ))}
