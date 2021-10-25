@@ -21,7 +21,7 @@ import { globalSearchSelector } from '../../../../store/globalSearch/globalSearc
 import { toast } from 'react-toastify';
 import { ICallAllApi, ICallAPI } from '../../../../services/sps/spsApiCall/spsApiCall.model';
 import { useHistory } from 'react-router-dom';
-import { PhoneFilled, ControlTwoTone } from '@ant-design/icons';
+import { PhoneOutlined, ControlFilled } from '@ant-design/icons';
 import CallApiModal from '../CallApiModal';
 import { IMainTable } from '../../../../common/models/common';
 
@@ -230,9 +230,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         }}
       >
         {data.is_mapping ? (
-          <PhoneFilled title="Call Api" style={{ color: 'blue' }} spin={spsApis.callApi.loading}/>
+          <PhoneOutlined title="Call Api" spin={spsApis.callApi.loading}/>
         ) : (
-          <ControlTwoTone title="Map Api" style={{ color: 'blue' }} />
+          <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
         )}
       </a>
     );
