@@ -15,6 +15,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import windowsServerInventoryService from '../../../../services/windowsServer/windowsServerInventory/windowsServerInventory.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -68,6 +69,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
     return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
+  };
+
+  const FilterByBoolean = (dataIndex: string) => {
+    return FilterByBooleanDropDown(
+      dataIndex,
+      windowsServerInventory.search.tableName,
+      ObjectForColumnFilter
+    );
   };
 
   const getTableColumns = (form) => {
@@ -435,10 +444,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'azure_hosted',
-              windowsServerInventory.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('azure_hosted'),
             dataIndex: 'azure_hosted',
             key: 'azure_hosted',
             ellipsis: true,
@@ -452,10 +458,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'ha_enabled',
-              windowsServerInventory.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('ha_enabled'),
             dataIndex: 'ha_enabled',
             key: 'ha_enabled',
             ellipsis: true,
@@ -469,10 +472,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'drs_enabled',
-              windowsServerInventory.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('drs_enabled'),
             dataIndex: 'drs_enabled',
             key: 'drs_enabled',
             ellipsis: true,
@@ -486,7 +486,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('exempt', windowsServerInventory.search.lookups?.booleanLookup),
+            title: FilterByBoolean('exempt'),
             dataIndex: 'exempt',
             key: 'exempt',
             ellipsis: true,
@@ -500,10 +500,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'sc_agent',
-              windowsServerInventory.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('sc_agent'),
             dataIndex: 'sc_agent',
             key: 'sc_agent',
             ellipsis: true,
@@ -517,10 +514,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'sc_exempt',
-              windowsServerInventory.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('sc_exempt'),
             dataIndex: 'sc_exempt',
             key: 'sc_exempt',
             ellipsis: true,
@@ -534,10 +528,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'sc_server',
-              windowsServerInventory.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('sc_server'),
             dataIndex: 'sc_server',
             key: 'sc_server',
             ellipsis: true,

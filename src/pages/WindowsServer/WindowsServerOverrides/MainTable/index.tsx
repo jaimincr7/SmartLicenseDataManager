@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import windowsServerOverridesService from '../../../../services/windowsServer/windowsServerOverrides/windowsServerOverrides.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -195,9 +196,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'enabled',
-              windowsServerOverrides.search.lookups?.booleanLookup
+              windowsServerOverrides.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'enabled',
             key: 'enabled',
