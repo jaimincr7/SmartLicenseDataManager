@@ -10,6 +10,7 @@ import { deleteTabVInfo, searchTabVInfo } from '../../../../store/rvTools/tabVIn
 import _ from 'lodash';
 import tabVInfoService from '../../../../services/rvTools/tabVInfo/tabVInfo.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -344,7 +345,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('vmc', tabVInfo.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('vmc', tabVInfo.search.tableName, ObjectForColumnFilter),
             dataIndex: 'vmc',
             key: 'vmc',
             ellipsis: true,
