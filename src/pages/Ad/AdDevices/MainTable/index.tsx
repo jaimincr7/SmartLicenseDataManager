@@ -12,6 +12,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import adDevicesService from '../../../../services/ad/adDevices/adDevices.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -162,7 +163,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('enabled', adDevices.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('enabled', adDevices.search.tableName , ObjectForColumnFilter),
             dataIndex: 'enabled',
             key: 'enabled',
             ellipsis: true,
@@ -269,7 +270,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('password_expired', adDevices.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('password_expired', adDevices.search.tableName , ObjectForColumnFilter),
             dataIndex: 'password_expired',
             key: 'password_expired',
             ellipsis: true,
@@ -311,9 +312,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'password_never_expires',
-              adDevices.search.lookups?.booleanLookup
+              adDevices.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'password_never_expires',
             key: 'password_never_expires',
@@ -420,7 +422,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('inventoried', adDevices.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('inventoried', adDevices.search.tableName , ObjectForColumnFilter),
             dataIndex: 'inventoried',
             key: 'inventoried',
             ellipsis: true,
@@ -434,7 +436,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('active', adDevices.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('active', adDevices.search.tableName , ObjectForColumnFilter),
             dataIndex: 'active',
             key: 'active',
             ellipsis: true,
@@ -448,7 +450,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('qualified', adDevices.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('qualified', adDevices.search.tableName , ObjectForColumnFilter),
             dataIndex: 'qualified',
             key: 'qualified',
             ellipsis: true,

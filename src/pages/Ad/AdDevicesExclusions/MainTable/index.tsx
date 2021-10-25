@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import adDevicesExclusionsService from '../../../../services/ad/adDevicesExclusions/adDevicesExclusions.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -156,7 +157,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('desktop', adDevicesExclusions.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('desktop', adDevicesExclusions.search.tableName , ObjectForColumnFilter),
             dataIndex: 'desktop',
             key: 'desktop',
             ellipsis: true,
@@ -170,7 +171,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('server', adDevicesExclusions.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('server', adDevicesExclusions.search.tableName , ObjectForColumnFilter),
             dataIndex: 'server',
             key: 'server',
             ellipsis: true,
@@ -184,7 +185,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('unknown', adDevicesExclusions.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('unknown', adDevicesExclusions.search.tableName , ObjectForColumnFilter),
             dataIndex: 'unknown',
             key: 'unknown',
             ellipsis: true,
@@ -211,7 +212,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('decom', adDevicesExclusions.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('decom', adDevicesExclusions.search.tableName , ObjectForColumnFilter),
             dataIndex: 'decom',
             key: 'decom',
             ellipsis: true,
