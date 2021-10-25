@@ -16,6 +16,7 @@ export interface IDataTable {
   getTableColumns: (form: FormInstance<any>) => any[];
   reduxSelector: (state: RootState) => any;
   tableAction?: (_: any, data: any) => JSX.Element;
+  tableButtons?: () => JSX.Element;
   searchTableData: (arg: ISearch) => AsyncThunkAction<ISearchResponse<any>, any, {}>;
   clearTableDataMessages?: () => { payload: undefined; type: string };
   exportExcelFile?: (arg: ISearch) => Promise<any>;

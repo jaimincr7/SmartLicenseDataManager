@@ -14,7 +14,10 @@ import {
   ITableColumnSelection,
   orderByType,
 } from '../../../common/models/common';
-import { clearCronJobSchedularMessages, commonSelector } from '../../../store/common/common.reducer';
+import {
+  clearCronJobSchedularMessages,
+  commonSelector,
+} from '../../../store/common/common.reducer';
 import { RedoOutlined, FileExcelOutlined } from '@ant-design/icons';
 import {
   getCronJobStatus,
@@ -48,6 +51,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     getTableColumns,
     reduxSelector,
     tableAction,
+    tableButtons,
     searchTableData,
     clearTableDataMessages,
     exportExcelFile,
@@ -562,6 +566,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
+          {tableButtons ? (tableButtons()) : () => <></>}
           {isCronJobApiButton && (
             <Can I={Action.RunCronJob} a={Page.Cron}>
               <Button onClick={startSchedule} icon={<RedoOutlined style={{ color: 'blue' }} />}>

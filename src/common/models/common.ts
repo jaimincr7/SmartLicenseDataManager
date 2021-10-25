@@ -67,4 +67,5 @@ export interface IMainTable {
   setValuesForSelection?: (val: any) => void;
   setNumberOfRecords?: (val: any) => void;
   setFilterKeys?: (val: any) => void;
+  tableButtons?: () => JSX.Element;
 }
