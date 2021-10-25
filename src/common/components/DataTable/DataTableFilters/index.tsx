@@ -50,7 +50,22 @@ export const FilterByDateSwap = (
     if (!swap) {
       if (getColumnLookup) {
         setLoading(true);
-        getColumnLookup(dataIndex).then((res) => {
+        const obj: any = {
+          ...ObjectForColumnFilter,
+        };
+        const filterOBJ: any = {
+          table_name: tableName,
+          column_name: dataIndex,
+          filter_keys: obj.filter_keys,
+          limit: obj.limit,
+          offset: obj.offset,
+          order_by: obj.order_by,
+          order_direction: obj.order_direction,
+          keyword: obj.keyword,
+          is_column_selection: false,
+          current_user: {},
+        };
+        getColumnLookup(filterOBJ).then((res) => {
           setLoading(false);
           setOptions(res);
         });
@@ -166,7 +181,9 @@ export const FilterByDropdown = (
         {(loading ? [] : dropdownOptions).map((option: IDropDownOption) => (
           <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
             {isDateDropDown
-              ? (moment(option.name).format(Common.DATEFORMAT)?.toString() == 'Invalid date' ? "NULL" : moment(option.name).format(Common.DATEFORMAT)?.toString() )
+              ? moment(option.name).format(Common.DATEFORMAT)?.toString() == 'Invalid date'
+                ? 'NULL'
+                : moment(option.name).format(Common.DATEFORMAT)?.toString()
               : option.name?.toString()}
           </Select.Option>
         ))}
@@ -174,6 +191,88 @@ export const FilterByDropdown = (
     </Form.Item>
   </>
 );
+
+export const FilterByBooleanDropDown = (
+  dataIndex: string,
+  tableName: string,
+  ObjectForColumnFilter?: {},
+) => {
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dropSearch, setDropSearch] = React.useState(false);
+  const [option, setOption] = useState<IDropDownOption[]>([]);
+
+  React.useEffect(() => {
+    const obj: any = {
+    ...ObjectForColumnFilter,
+  };
+  if (obj.column_called && !obj.column_called?.includes(dataIndex)) {
+    setLoading(true);
+    obj.column_called?.push(dataIndex);
+    const filterOBJ: any = {
+      table_name: tableName,
+      column_name: dataIndex,
+      filter_keys: obj.filter_keys,
+      limit: obj.limit,
+      offset: obj.offset,
+      order_by: obj.order_by,
+      order_direction: obj.order_direction,
+      keyword: obj.keyword,
+      is_column_selection: false,
+      current_user: {},
+    };
+    commonService
+      .getColumnLookup(filterOBJ)
+      .then((res) => {
+        return res.body.data;
+      })
+      .then((res) => {
+        setLoading(false);
+        setOption(res);
+      });
+    }
+  }, [dropSearch]);
+
+  const handleDropSearch = (e) => {
+    if (e) {
+      setDropSearch(!dropSearch);
+    }
+  };
+
+  return (
+    <>
+      <Form.Item name={dataIndex} className="m-0 filter-input">
+      <Select
+        onDropdownVisibleChange={handleDropSearch}
+        showArrow={true}
+        mode="multiple"
+        dropdownClassName="filter-dropdown-pop"
+        placeholder="Select and search"
+        maxTagCount="responsive"
+        allowClear
+        loading={loading}
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option: any) =>
+          option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >= 0
+        }
+        filterSort={(optionA: any, optionB: any) =>
+          optionA.children
+            ?.toString()
+            ?.toLowerCase()
+            ?.localeCompare(optionB.children?.toString()?.toLowerCase())
+        }
+      >
+        {(loading ? [] : option).map((option: IDropDownOption) => (
+          <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
+               {option.name?.toString() === 'true' ? 'Yes' : (option.name?.toString() === 'false' ? 'No' : 'NULL') }
+          </Select.Option>
+        ))}
+      </Select>
+    </Form.Item>
+    </>
+  );
+};
 
 export const FilterWithSwapOption = (
   dataIndex: string,
@@ -199,15 +298,28 @@ export const FilterWithSwapOption = (
     if (!swap) {
       if (getColumnLookup) {
         setLoading(true);
-        getColumnLookup(dataIndex).then((res) => {
+        const obj: any = {
+          ...ObjectForColumnFilter,
+        };
+        const filterOBJ: any = {
+          table_name: tableName,
+          column_name: dataIndex,
+          filter_keys: obj.filter_keys,
+          limit: obj.limit,
+          offset: obj.offset,
+          order_by: obj.order_by,
+          order_direction: obj.order_direction,
+          keyword: obj.keyword,
+          is_column_selection: false,
+          current_user: {},
+        };
+        getColumnLookup(filterOBJ).then((res) => {
           setOptions(res);
           setLoading(false);
         });
       } else {
         const obj: any = {
           ...ObjectForColumnFilter,
-          table_name: tableName,
-          column_name: dataIndex,
         };
         if (!obj.column_called?.includes(dataIndex)) {
           setLoading(true);

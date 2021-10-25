@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import sqlServerOverridesService from '../../../../services/sqlServer/sqlServerOverrides/sqlServerOverrides.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -52,6 +53,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       sqlServerOverrides.search.tableName,
       form,
       null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByBoolean = (dataIndex: string) => {
+    return FilterByBooleanDropDown(
+      dataIndex,
+      sqlServerOverrides.search.tableName,
       ObjectForColumnFilter
     );
   };
@@ -156,7 +165,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('enabled', sqlServerOverrides.search.lookups?.booleanLookup),
+            title: FilterByBoolean('enabled'),
             dataIndex: 'enabled',
             key: 'enabled',
             ellipsis: true,

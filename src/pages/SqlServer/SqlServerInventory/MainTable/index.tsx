@@ -15,6 +15,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import sqlServerInventoryService from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -62,6 +63,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       sqlServerInventory.search.tableName,
       form,
       null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByBoolean = (dataIndex: string) => {
+    return FilterByBooleanDropDown(
+      dataIndex,
+      sqlServerInventory.search.tableName,
       ObjectForColumnFilter
     );
   };
@@ -457,10 +466,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'azure_hosted',
-              sqlServerInventory.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('azure_hosted'),
             dataIndex: 'azure_hosted',
             key: 'azure_hosted',
             ellipsis: true,
@@ -474,7 +480,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('ha_enabled', sqlServerInventory.search.lookups?.booleanLookup),
+            title: FilterByBoolean('ha_enabled'),
             dataIndex: 'ha_enabled',
             key: 'ha_enabled',
             ellipsis: true,
