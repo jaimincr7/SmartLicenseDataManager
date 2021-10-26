@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -173,7 +173,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'opt_default_to_data_center_on_hosts',
             key: 'opt_default_to_data_center_on_hosts',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -188,7 +197,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'opt_entitlements',
             key: 'opt_entitlements',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -203,7 +221,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'opt_exclude_non_prod',
             key: 'opt_exclude_non_prod',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },

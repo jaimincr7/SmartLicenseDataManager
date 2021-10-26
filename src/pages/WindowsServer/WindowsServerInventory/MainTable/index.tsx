@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -448,7 +448,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'azure_hosted',
             key: 'azure_hosted',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -462,7 +471,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'ha_enabled',
             key: 'ha_enabled',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -476,7 +494,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'drs_enabled',
             key: 'drs_enabled',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -490,7 +517,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'exempt',
             key: 'exempt',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -504,7 +540,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'sc_agent',
             key: 'sc_agent',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -518,7 +563,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'sc_exempt',
             key: 'sc_exempt',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -532,7 +586,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'sc_server',
             key: 'sc_server',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
