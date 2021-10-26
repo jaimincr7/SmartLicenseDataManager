@@ -11,6 +11,7 @@ import { SyncOutlined } from '@ant-design/icons';
 import { getCronJobStatus } from '../../../../store/common/common.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { useHistory } from 'react-router-dom';
+import { clearGlobalSearch } from '../../../../store/globalSearch/globalSearch.reducer';
 
 function toggleMenu() {
   if (window.innerWidth > 991) {
@@ -34,8 +35,10 @@ window.addEventListener(
 
 const profileMenu = () => {
   const instance = msalInstance;
+  const dispatch = useAppDispatch();
 
   function handleLogout(instance) {
+    dispatch(clearGlobalSearch());
     instance.logoutRedirect().catch((e: Error) => {
       toast.error(e.message);
     });
