@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { IDetailDataTableProps } from './detailDataTable.model';
 import moment from 'moment';
 import _ from 'lodash';
@@ -22,6 +22,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
   const { licenseId } = props;
   const sqlServerLicenseDetail = useAppSelector(sqlServerLicenseDetailSelector);
   const dataTableRef = useRef(null);
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   const extraSearchData = {
     sql_server_license_id: licenseId,
@@ -31,9 +32,9 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     return sqlServerLicenseDetailService.exportExcelFile(searchData);
   };
 
-  const getColumnLookup = (column: string) => {
+  const getColumnLookup = (data: {}) => {
     return sqlServerLicenseDetailService
-      .getLicenseDetailColumnLookup(licenseId, column)
+      .getLicenseDetailColumnLookup(licenseId, data)
       .then((res) => {
         return res.body.data;
       });
@@ -44,7 +45,8 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
       dataIndex,
       sqlServerLicenseDetail.search.tableName,
       form,
-      getColumnLookup
+      getColumnLookup,
+      ObjectForColumnFilter
     );
   };
 
@@ -1173,6 +1175,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         setTableColumnSelection={setTableColumnSelection}
         defaultOrderBy="sql_server_license_detail_id"
         extraSearchData={extraSearchData}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );
