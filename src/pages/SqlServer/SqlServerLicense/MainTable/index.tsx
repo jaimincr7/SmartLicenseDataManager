@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -15,6 +15,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import sqlServerLicenseService from '../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -55,6 +56,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       sqlServerLicense.search.tableName,
       form,
       null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByBoolean = (dataIndex: string) => {
+    return FilterByBooleanDropDown(
+      dataIndex,
+      sqlServerLicense.search.tableName,
       ObjectForColumnFilter
     );
   };
@@ -160,14 +169,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
-              'opt_default_to_enterprise_on_hosts',
-              sqlServerLicense.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('opt_default_to_enterprise_on_hosts'),
             dataIndex: 'opt_default_to_enterprise_on_hosts',
             key: 'opt_default_to_enterprise_on_hosts',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -178,14 +193,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
-              'opt_cluster_logic',
-              sqlServerLicense.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('opt_cluster_logic'),
             dataIndex: 'opt_cluster_logic',
             key: 'opt_cluster_logic',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -196,14 +217,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
-              'opt_entitlements',
-              sqlServerLicense.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('opt_entitlements'),
             dataIndex: 'opt_entitlements',
             key: 'opt_entitlements',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -214,14 +241,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
-              'opt_exclude_non_prod',
-              sqlServerLicense.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('opt_exclude_non_prod'),
             dataIndex: 'opt_exclude_non_prod',
             key: 'opt_exclude_non_prod',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },

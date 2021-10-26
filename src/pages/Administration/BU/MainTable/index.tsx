@@ -45,13 +45,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(
-      dataIndex,
-      bu.search.tableName,
-      form,
-      null,
-      ObjectForColumnFilter
-    );
+    return FilterWithSwapOption(dataIndex, bu.search.tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {

@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import windowsServerExclusionsService from '../../../../services/windowsServer/windowsServerExclusions/windowsServerExclusions.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -52,6 +53,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       windowsServerExclusions.search.tableName,
       form,
       null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByBoolean = (dataIndex: string) => {
+    return FilterByBooleanDropDown(
+      dataIndex,
+      windowsServerExclusions.search.tableName,
       ObjectForColumnFilter
     );
   };
@@ -159,14 +168,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'enabled',
-              windowsServerExclusions.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('enabled'),
             dataIndex: 'enabled',
             key: 'enabled',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },

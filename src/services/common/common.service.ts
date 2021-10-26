@@ -72,6 +72,20 @@ class CommonService {
     });
   }
 
+  public async getCronJobStatus(): Promise<IApiResponse<ILookup>> {
+    const url = `/sps-cron-job-data/sps-cron-job-status`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async manageCronJobApi(): Promise<IApiResponse<ILookup>> {
+    const url = `/sps-cron-job-data/manage-sps-cron-job`;
+    return request({ url, method: 'POST' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getWindowsServerLicenseLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/config-windows-server-license/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

@@ -19,15 +19,15 @@ const SPSRoutes: React.FC = () => {
       <Switch>
         {/* APIs */}
         {ability.can(Action.View, Page.SPSApi) && (
-          <Route exact path={`${match.path}/sps-api`} component={SPSAPI} />
+          <Route exact path={`${match.path}/sps-config-api`} component={SPSAPI} />
         )}
         {ability.can(Action.View, Page.SPSApi) && (
-          <Route exact path={`${match.path}/sps-api/:id`} component={SPSAPI} />
+          <Route exact path={`${match.path}/sps-config-api/:id`} component={SPSAPI} />
         )}
 
         {/* Call APIs */}
-        {ability.can(Action.View, Page.SPSApiCall) &&  (
-          <Route exact path={`${match.path}/sps-config-api`} component={SPSAPIsCall} />
+        {ability.can(Action.View, Page.SPSApiCall) && (
+          <Route exact path={`${match.path}/sps-api`} component={SPSAPIsCall} />
         )}
 
         {/* SPS API Jobs */}

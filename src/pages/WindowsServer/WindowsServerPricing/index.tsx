@@ -29,6 +29,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -114,6 +115,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -147,6 +149,7 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={windowsServerPricing.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

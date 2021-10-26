@@ -26,6 +26,7 @@ const TabVInfo: React.FC<ITabVInfoProps> = (props) => {
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -109,6 +110,7 @@ const TabVInfo: React.FC<ITabVInfoProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -142,6 +144,7 @@ const TabVInfo: React.FC<ITabVInfoProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={tabVInfo.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

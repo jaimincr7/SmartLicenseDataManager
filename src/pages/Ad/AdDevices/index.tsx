@@ -27,6 +27,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -61,24 +62,6 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
       <div className="main-card">
         <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ProcessData} a={Page.ADDevices}>
-              <Col>
-                <Button
-                  className="btn-icon"
-                  onClick={() => setProcessModalVisible(true)}
-                  icon={
-                    <em className="anticon">
-                      <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
-                        alt=""
-                      />
-                    </em>
-                  }
-                >
-                  Process Data
-                </Button>
-              </Col>
-            </Can>
             <Can I={Action.ImportToExcel} a={Page.ADDevices}>
               <Col>
                 <Button
@@ -98,6 +81,24 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
                   }
                 >
                   Import
+                </Button>
+              </Col>
+            </Can>
+            <Can I={Action.ProcessData} a={Page.ADDevices}>
+              <Col>
+                <Button
+                  className="btn-icon"
+                  onClick={() => setProcessModalVisible(true)}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Process Data
                 </Button>
               </Col>
             </Can>
@@ -130,6 +131,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -161,6 +163,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          filterKeys={filterKeys}
         />
       )}
       {deleteModalVisible && (
@@ -169,6 +172,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={adDevices.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

@@ -28,6 +28,7 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -115,6 +116,7 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -148,6 +150,7 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={sqlServerPricing.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

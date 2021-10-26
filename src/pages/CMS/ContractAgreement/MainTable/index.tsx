@@ -1,8 +1,9 @@
 import { Popconfirm } from 'antd';
 import _ from 'lodash';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -30,6 +31,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -48,7 +50,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, cmsContractAgreement.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      cmsContractAgreement.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -173,7 +185,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('start_date', form),
+            title: FilterByDateSwapTable('start_date', cmsContractAgreement.search.tableName, form),
             dataIndex: 'start_date',
             key: 'start_date',
             ellipsis: true,
@@ -187,7 +199,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('end_date', form),
+            title: FilterByDateSwapTable('end_date', cmsContractAgreement.search.tableName, form),
             dataIndex: 'end_date',
             key: 'end_date',
             ellipsis: true,
@@ -201,7 +213,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('transaction_date', form),
+            title: FilterByDateSwapTable(
+              'transaction_date',
+              cmsContractAgreement.search.tableName,
+              form
+            ),
             dataIndex: 'transaction_date',
             key: 'transaction_date',
             ellipsis: true,
@@ -293,6 +309,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.CmsContractAgreement)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

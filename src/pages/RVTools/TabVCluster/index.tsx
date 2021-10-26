@@ -29,6 +29,7 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   useEffect(() => {
     if (+urlId > 0) {
@@ -112,6 +113,7 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -145,6 +147,7 @@ const TabVCluster: React.FC<ITabVClusterProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={tabVCluster.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

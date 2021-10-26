@@ -19,10 +19,10 @@ class SqlServerLicenseDetailService {
 
   public async getLicenseDetailColumnLookup(
     licenseId: number,
-    columnName: string
+    data: {}
   ): Promise<IApiResponse<any>> {
-    const url = `${this.ENDPOINT}/column-lookup/${columnName}/${licenseId}`;
-    return request({ url, method: 'GET' }).then((res) => {
+    const url = `${this.ENDPOINT}/column-lookup/${licenseId}`;
+    return request({ url, method: 'POST', data }).then((res) => {
       return res.data;
     });
   }

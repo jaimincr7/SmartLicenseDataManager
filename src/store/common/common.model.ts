@@ -9,6 +9,15 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  cronJobStatus: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  manageCronJob: {
+    messages: string[];
+    hasErrors: boolean;
+    loading: boolean;
+  };
   cronFormula: {
     data: ILookup[];
     loading: boolean;
