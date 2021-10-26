@@ -7,7 +7,7 @@ import {
   PAUSE,
   PERSIST,
   PURGE,
-  REGISTER
+  REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { rootReducer } from './combined.reducers';
@@ -15,7 +15,7 @@ import { rootReducer } from './combined.reducers';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['globalSearch']
+  whitelist: ['globalSearch'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -26,9 +26,9 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action in the state
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-      }
-    })
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);
