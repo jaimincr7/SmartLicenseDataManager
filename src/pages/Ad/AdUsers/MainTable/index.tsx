@@ -193,7 +193,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -299,7 +299,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -353,7 +353,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -486,7 +486,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -513,7 +513,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -540,7 +540,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -567,7 +567,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -620,7 +620,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
