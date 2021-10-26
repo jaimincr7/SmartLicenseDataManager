@@ -163,7 +163,7 @@ const AddCmsCategoryModal: React.FC<IAddCmsCategoryProps> = (props) => {
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 510 }]}
+                    rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

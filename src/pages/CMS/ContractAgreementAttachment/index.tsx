@@ -14,7 +14,6 @@ import {
   clearCmsContractAgreementAttachment,
   cmsContractAgreementAttachmentSelector,
 } from '../../../store/cms/contractAgreementAttachment/contractAgreementAttachment.reducer';
-import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 
 const CmsContractAgreementAttachment: React.FC<ICmsContractAgreementAttachmentProps> = (props) => {
   const cmsContractAgreementAttachment = useAppSelector(cmsContractAgreementAttachmentSelector);
@@ -55,9 +54,6 @@ const CmsContractAgreementAttachment: React.FC<ICmsContractAgreementAttachmentPr
         <h4 className="p-0">
           <BreadCrumbs pageName={Page.CmsContractAgreementAttachment} />
         </h4>
-        <div className="right-title">
-          <GlobalSearch />
-        </div>
       </div>
       <div className="main-card">
         <div className="input-btns-title">

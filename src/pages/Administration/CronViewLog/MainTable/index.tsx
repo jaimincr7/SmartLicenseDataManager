@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import {
   setTableColumnSelection,
   clearCronViewLogMessages,
@@ -25,6 +25,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const { job_id } = props;
   const cronViewLog = useAppSelector(cronViewLogSelector);
   const dataTableRef = useRef(null);
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   const extraSearchData = {
     crone_job_data_id: job_id,
@@ -37,7 +38,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }));
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, cronViewLog.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      cronViewLog.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -105,7 +116,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('run_date', cronViewLog.search.tableName, form),
+            title: FilterByDateSwapTable('run_date', cronViewLog.search.tableName, form),
             dataIndex: 'run_date',
             key: 'run_date',
             ellipsis: true,
@@ -120,7 +131,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('complete_date', cronViewLog.search.tableName, form),
+            title: FilterByDateSwapTable('complete_date', cronViewLog.search.tableName, form),
             dataIndex: 'complete_date',
             key: 'complete_date',
             ellipsis: true,
@@ -165,6 +176,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearCronViewLogMessages}
         setTableColumnSelection={setTableColumnSelection}
         extraSearchData={extraSearchData}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

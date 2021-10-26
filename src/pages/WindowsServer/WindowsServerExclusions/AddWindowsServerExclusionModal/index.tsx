@@ -43,6 +43,8 @@ import {
 import { Page } from '../../../../common/constants/pageAction';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { IInlineSearch } from '../../../../common/models/common';
 
 const { Option } = Select;
 
@@ -50,6 +52,7 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
   const windowsServerExclusions = useAppSelector(windowsServerExclusionsSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
@@ -188,6 +191,21 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
       dispatch(clearBULookUp());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isMultiple) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
+      if (globalSearch.company_id) {
+        dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+        dispatch(getBULookup(globalSearch.company_id[0]));
+      }
+      form.setFieldsValue(globalSearch);
+    }
+  }, []);
 
   return (
     <>
@@ -392,7 +410,7 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="enabled" className="m-0" valuePropName="checked">
+                  <Form.Item name="enabled" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;

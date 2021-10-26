@@ -22,6 +22,10 @@ import {
 import { processData } from '../../../../store/azure/azureDailyUsage/azureDailyUsage.action';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import React from 'react';
+import { IInlineSearch } from '../../../../common/models/common';
+import _ from 'lodash';
 
 const { Option } = Select;
 
@@ -29,12 +33,13 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const azureDailyUsage = useAppSelector(azureDailyUsageSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose } = props;
+  const { showModal, handleModalClose, filterKeys } = props;
 
   const [form] = Form.useForm();
 
-  const initialValues = {
+  let initialValues = {
     company_id: null,
     bu_id: null,
     date_added: null,
@@ -48,6 +53,26 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   //   // Can not select days before today and today
   //   return current && current > moment().endOf('day');
   // };
+
+  React.useEffect(() => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
+    if (globalSearch.company_id) {
+      dispatch(getBULookup(globalSearch.company_id[0]));
+    }
+    initialValues = {
+      company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id,
+      bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id,
+      date_added:
+        filterKeys?.filter_keys?.date_added?.length == 1
+          ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+          : null,
+    };
+    form.setFieldsValue(initialValues);
+  }, []);
 
   useEffect(() => {
     if (azureDailyUsage.processData.messages.length > 0) {
@@ -197,7 +222,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                     }
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                      <Option key={option} value={option}>
                         {moment(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}

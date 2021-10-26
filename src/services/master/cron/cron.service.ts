@@ -3,7 +3,7 @@ import request from '../../../utils/request';
 import { ICron, ISearchCron, IStartApi } from './cron.model';
 
 class CronService {
-  ENDPOINT = '/cron-job-data';
+  ENDPOINT = '/sps-cron-job-data';
 
   public async searchCron(
     searchParams?: ISearchCron

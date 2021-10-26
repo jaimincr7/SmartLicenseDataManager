@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -15,6 +15,7 @@ import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import sqlServerInventoryService from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -26,7 +27,13 @@ import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+  } = props;
   const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -50,11 +57,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
+    setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       sqlServerInventory.search.tableName,
       form,
       null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByBoolean = (dataIndex: string) => {
+    return FilterByBooleanDropDown(
+      dataIndex,
+      sqlServerInventory.search.tableName,
       ObjectForColumnFilter
     );
   };
@@ -450,14 +466,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'azure_hosted',
-              sqlServerInventory.search.lookups?.booleanLookup
-            ),
+            title: FilterByBoolean('azure_hosted'),
             dataIndex: 'azure_hosted',
             key: 'azure_hosted',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -467,11 +489,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('ha_enabled', sqlServerInventory.search.lookups?.booleanLookup),
+            title: FilterByBoolean('ha_enabled'),
             dataIndex: 'ha_enabled',
             key: 'ha_enabled',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },

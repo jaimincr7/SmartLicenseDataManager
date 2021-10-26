@@ -1,10 +1,17 @@
-import React from 'react';
-import { Menu, Dropdown } from 'antd';
+import { useEffect, useState } from 'react';
+import { Menu, Dropdown, Button } from 'antd';
 import { toast } from 'react-toastify';
 import { msalInstance } from '../../../../utils/authConfig';
 // import authService from '../../../../services/auth/auth.service';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 import { userSelector } from '../../../../store/administration/administration.reducer';
-import { useAppSelector } from '../../../../store/app.hooks';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { SyncOutlined } from '@ant-design/icons';
+import { getCronJobStatus } from '../../../../store/common/common.action';
+import { commonSelector } from '../../../../store/common/common.reducer';
+import { useHistory } from 'react-router-dom';
+import { clearGlobalSearch } from '../../../../store/globalSearch/globalSearch.reducer';
 
 function toggleMenu() {
   if (window.innerWidth > 991) {
@@ -28,8 +35,10 @@ window.addEventListener(
 
 const profileMenu = () => {
   const instance = msalInstance;
+  const dispatch = useAppDispatch();
 
   function handleLogout(instance) {
+    dispatch(clearGlobalSearch());
     instance.logoutRedirect().catch((e: Error) => {
       toast.error(e.message);
     });
@@ -58,7 +67,18 @@ const profileMenu = () => {
 };
 
 function Header() {
+  const common = useAppSelector(commonSelector);
   const userDetails = useAppSelector(userSelector);
+  const [cronStatus, setCronStatus] = useState('');
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (ability.can(Action.RunCronJob, Page.Cron)) {
+      dispatch(getCronJobStatus());
+      setCronStatus(common.cronJobStatus.data.toString());
+    }
+  }, [common.cronJobStatus.data]);
 
   return (
     <header className="header">
@@ -73,7 +93,40 @@ function Header() {
           <span className="line"></span>
           <span className="line"></span>
         </div>
-        <div className="profile-wrapper">
+        <div className="profile-wrapper right-list">
+          <Can I={Action.RunCronJob} a={Page.Cron}>
+            <Can I={Action.View} a={Page.Cron}>
+              {cronStatus === 'stopped' ? (
+                <>
+                  {' '}
+                  <Button
+                    className="btn-icon"
+                    onClick={() => history.push(`/administration/schedule-api-data`)}
+                  >
+                    Click to Start
+                  </Button>
+                  <SyncOutlined style={{ color: 'red', fontSize: '20px' }} />{' '}
+                </>
+              ) : (
+                ''
+              )}
+              {cronStatus === 'running' ? (
+                <>
+                  {' '}
+                  <Button
+                    className="btn-icon"
+                    onClick={() => history.push(`/administration/schedule-api-data`)}
+                  >
+                    Click to Manage
+                  </Button>
+                  <SyncOutlined style={{ color: 'green' }} spin />
+                </>
+              ) : (
+                ''
+              )}
+            </Can>
+          </Can>
+
           <Dropdown overlay={profileMenu()} trigger={['click']} overlayClassName="profile-dropdown">
             <a href="#" title="" className="profile-block" onClick={(e) => e.preventDefault()}>
               <em className="dp">

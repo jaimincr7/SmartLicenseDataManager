@@ -243,6 +243,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.CmdbVirtualization)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        globalSearchExist={false}
       />
     </>
   );

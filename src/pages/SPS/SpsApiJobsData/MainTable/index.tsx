@@ -144,7 +144,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('insert_data_start', spsApiJobsData.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'insert_data_start',
+              spsApiJobsData.search.tableName,
+              form
+            ),
             dataIndex: 'insert_data_start',
             key: 'insert_data_start',
             ellipsis: true,

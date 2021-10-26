@@ -21,7 +21,7 @@ import { globalSearchSelector } from '../../../../store/globalSearch/globalSearc
 import { toast } from 'react-toastify';
 import { ICallAllApi, ICallAPI } from '../../../../services/sps/spsApiCall/spsApiCall.model';
 import { useHistory } from 'react-router-dom';
-import { DownloadOutlined, RetweetOutlined } from '@ant-design/icons';
+import { PhoneOutlined, ControlFilled } from '@ant-design/icons';
 import CallApiModal from '../CallApiModal';
 import { IMainTable } from '../../../../common/models/common';
 
@@ -80,6 +80,59 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('tenant_id', spsApis.search.lookups?.tenants),
+            dataIndex: 'tenant_name',
+            key: 'tenant_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('company_id', spsApis.search.lookups?.companies),
+            dataIndex: 'company_name',
+            key: 'company_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'BU_Id',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('bu_id', spsApis.search.lookups?.bus),
+            dataIndex: 'bu_name',
+            key: 'bu_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Group</span>,
         column: 'Group',
         sorter: true,
@@ -101,20 +154,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDropdown('api_type_id', spsApis.search.lookups?.types),
             dataIndex: 'type_name',
             key: 'type_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">ID</span>,
-        column: 'id',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterBySwap('id', form),
-            dataIndex: 'id',
-            key: 'id',
             ellipsis: true,
           },
         ],
@@ -191,9 +230,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         }}
       >
         {data.is_mapping ? (
-          <DownloadOutlined title="Call Api" />
+          <PhoneOutlined title="Call Api" spin={spsApis.callApi.loading} />
         ) : (
-          <RetweetOutlined title="Add Api" />
+          <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
         )}
       </a>
     );
@@ -313,7 +352,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchImportAPIs}
         setTableColumnSelection={setTableColumnSelection}
         hideExportButton={true}
-        globalSearchExist={false}
         showCallApiBtn={true}
         clearTableDataMessages={clearCallApiMessages}
         onCallAllApi={(tableFilter) => onCallAllApi(tableFilter)}

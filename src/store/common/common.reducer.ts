@@ -55,6 +55,8 @@ import {
   updateMultiple,
   getCronFormula,
   getScheduleDate,
+  getCronJobStatus,
+  manageCronJobApi,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -71,11 +73,20 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  manageCronJob: {
+    messages: [],
+    hasErrors: false,
+    loading: false,
+  },
   allCompanyLookup: {
     data: [],
     loading: false,
   },
   buLookup: {
+    data: [],
+    loading: false,
+  },
+  cronJobStatus: {
     data: [],
     loading: false,
   },
@@ -297,6 +308,9 @@ export const commonSlice = createSlice({
     clearSaveTableColumnSelection: (state) => {
       state.saveTableColumnSelection.messages = [];
     },
+    clearCronJobSchedularMessages: (state) => {
+      state.manageCronJob.messages = [];
+    },
     clearSpsApiTypesLookup: (state) => {
       state.spsApiTypes.data = [];
     },
@@ -317,6 +331,33 @@ export const commonSlice = createSlice({
       state.tenantLookup.loading = false;
     },
 
+    // Cron Job Status
+    [getCronJobStatus.pending.type]: (state) => {
+      state.cronJobStatus.loading = true;
+    },
+    [getCronJobStatus.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.cronJobStatus.data = action.payload;
+      state.cronJobStatus.loading = false;
+    },
+
+    // Manage Cron Job Api
+    [manageCronJobApi.pending.type]: (state) => {
+      state.manageCronJob.loading = true;
+      state.manageCronJob.messages = [];
+    },
+    [manageCronJobApi.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.manageCronJob.loading = false;
+      state.manageCronJob.hasErrors = false;
+      state.manageCronJob.messages = action.payload.messages;
+    },
+    [manageCronJobApi.rejected.type]: (state) => {
+      state.manageCronJob.loading = false;
+      state.manageCronJob.hasErrors = true;
+    },
+
     // Company lookup
     [getCompanyLookup.pending.type]: (state) => {
       state.companyLookup.loading = true;
@@ -326,7 +367,7 @@ export const commonSlice = createSlice({
       state.companyLookup.loading = false;
     },
 
-    // Company lookup
+    // Cron Job Formula
     [getCronFormula.pending.type]: (state) => {
       state.cronFormula.loading = true;
     },
@@ -856,6 +897,7 @@ export const {
   clearSpsApiTypesLookup,
   clearMultipleUpdateMessages,
   clearDateLookup,
+  clearCronJobSchedularMessages,
 } = commonSlice.actions;
 
 // The reducer

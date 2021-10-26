@@ -32,6 +32,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const [id, setId] = useState(0);
   const [frequencyId, setFrequencyId] = useState(0);
   const [query, setQuery] = useState({});
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -44,7 +45,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, cron.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      cron.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -143,7 +154,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('start_time', cron.search.tableName, form),
+            title: FilterByDateSwapTable('start_time', cron.search.tableName, form),
             dataIndex: 'start_time',
             key: 'start_time',
             ellipsis: true,
@@ -158,7 +169,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('end_time', cron.search.tableName, form),
+            title: FilterByDateSwapTable('end_time', cron.search.tableName, form),
             dataIndex: 'end_time',
             key: 'end_time',
             ellipsis: true,
@@ -222,7 +233,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Can I={Action.View} a={Page.SpsApiJobs}>
+      <Can I={Action.View} a={Page.Cron}>
         <a
           title=""
           className="action-btn"
@@ -233,7 +244,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.Update} a={Page.SpsApiJobs}>
+      <Can I={Action.Update} a={Page.Cron}>
         <a
           hidden
           className="action-btn"
@@ -244,13 +255,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
-      {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
-        <Popover content={<>Please select global filter first!</>} trigger="click">
-          {renderActionButton(data)}
-        </Popover>
-      ) : (
-        renderActionButton(data)
-      )}
+      <Can I={Action.RunCronJob} a={Page.Cron}>
+        {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
+          <Popover content={<>Please select global filter first!</>} trigger="click">
+            {renderActionButton(data)}
+          </Popover>
+        ) : (
+          renderActionButton(data)
+        )}
+      </Can>
     </div>
   );
 
@@ -267,6 +280,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         searchTableData={searchCron}
         clearTableDataMessages={clearCronMessages}
         setTableColumnSelection={setTableColumnSelection}
+        isCronJobApiButton={true}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
       {showStartApi && (
         <StartApiModal

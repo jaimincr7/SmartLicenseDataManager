@@ -120,16 +120,16 @@ export enum Page {
   BUDropdown = 'bu-drop-down',
   AgreementTypes = 'agreement-types',
 
-  SPSApiCall = "sps-config-api",
-  SPSApi = 'sps-api',
+  SPSApiCall = 'sps-api',
+  SPSApi = 'sps-config-api',
   SpsApiJobs = 'sps-api-jobs',
   SpsApiJobsData = 'sps-api-jobs-data',
   SpsApiGroup = 'sps-api-group',
   SpsApiType = 'sps-api-type',
   SpsApiOauth = 'sps-api-oauth',
   SpsApiTokenConfigOptions = 'sps-api-token-config-options',
-  Cron = 'cron-job-data',
-  CronViewLogData = 'cron-job-log',
+  Cron = 'sps-cron-job-data',
+  CronViewLogData = 'sps-cron-job-log',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 }
@@ -142,6 +142,7 @@ export enum Action {
   ProcessData = 'process_data',
   DeleteData = 'delete_data',
   RunAllLicenseScenario = 'run_all_license_scenario',
+  RunCronJob = 'run_cron_job',
   Select = 'select',
   Call = 'call',
   Error = 'error_view',
