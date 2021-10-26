@@ -410,7 +410,7 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="enabled" className="m-0" valuePropName="checked">
+                  <Form.Item name="enabled" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;

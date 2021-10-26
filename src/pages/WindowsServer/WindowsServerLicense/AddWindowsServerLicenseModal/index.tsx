@@ -326,7 +326,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="opt_exclude_non_prod" className="m-0" valuePropName="checked">
+                  <Form.Item name="opt_exclude_non_prod" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
@@ -346,7 +346,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item
                     name="opt_default_to_data_center_on_hosts"
-                    className="m-0"
+                    className="m-0 mr-1"
                     valuePropName="checked"
                   >
                     <Switch className="form-control" />
@@ -366,7 +366,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="opt_entitlements" className="m-0" valuePropName="checked">
+                  <Form.Item name="opt_entitlements" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (

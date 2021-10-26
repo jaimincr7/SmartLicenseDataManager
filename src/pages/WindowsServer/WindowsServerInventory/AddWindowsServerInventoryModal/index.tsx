@@ -773,7 +773,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="ha_enabled" className="m-0" valuePropName="checked">
+                  <Form.Item name="ha_enabled" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;
@@ -788,7 +788,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="azure_hosted" className="m-0" valuePropName="checked">
+                  <Form.Item name="azure_hosted" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;
@@ -803,7 +803,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="drs_enabled" className="m-0" valuePropName="checked">
+                  <Form.Item name="drs_enabled" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;
@@ -818,7 +818,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="exempt" className="m-0" valuePropName="checked">
+                  <Form.Item name="exempt" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;
@@ -833,7 +833,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="sc_exempt" className="m-0" valuePropName="checked">
+                  <Form.Item name="sc_exempt" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;
@@ -848,7 +848,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="sc_server" className="m-0" valuePropName="checked">
+                  <Form.Item name="sc_server" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;
@@ -863,7 +863,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="sc_agent" className="m-0" valuePropName="checked">
+                  <Form.Item name="sc_agent" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   &nbsp;
