@@ -52,7 +52,6 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   };
 
   const tableButtons = () => (
-    <div className="mr-1">
     <Row gutter={[10, 4]}>
       <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
         <Col>
@@ -96,7 +95,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
       <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
         <Col>
           <Button
-            className="btn-icon"
+            className="btn-icon mr-1"
             onClick={() => setDeleteModalVisible(true)}
             icon={
               <em className="anticon">
@@ -109,7 +108,6 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
         </Col>
       </Can>
     </Row>
-    </div>
   );
 
   return (

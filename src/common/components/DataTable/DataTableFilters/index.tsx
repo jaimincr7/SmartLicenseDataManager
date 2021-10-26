@@ -195,41 +195,40 @@ export const FilterByDropdown = (
 export const FilterByBooleanDropDown = (
   dataIndex: string,
   tableName: string,
-  ObjectForColumnFilter?: {},
+  ObjectForColumnFilter?: {}
 ) => {
-
   const [loading, setLoading] = useState<boolean>(false);
   const [dropSearch, setDropSearch] = React.useState(false);
   const [option, setOption] = useState<IDropDownOption[]>([]);
 
   React.useEffect(() => {
     const obj: any = {
-    ...ObjectForColumnFilter,
-  };
-  if (obj.column_called && !obj.column_called?.includes(dataIndex)) {
-    setLoading(true);
-    obj.column_called?.push(dataIndex);
-    const filterOBJ: any = {
-      table_name: tableName,
-      column_name: dataIndex,
-      filter_keys: obj.filter_keys,
-      limit: obj.limit,
-      offset: obj.offset,
-      order_by: obj.order_by,
-      order_direction: obj.order_direction,
-      keyword: obj.keyword,
-      is_column_selection: false,
-      current_user: {},
+      ...ObjectForColumnFilter,
     };
-    commonService
-      .getColumnLookup(filterOBJ)
-      .then((res) => {
-        return res.body.data;
-      })
-      .then((res) => {
-        setLoading(false);
-        setOption(res);
-      });
+    if (obj.column_called && !obj.column_called?.includes(dataIndex)) {
+      setLoading(true);
+      obj.column_called?.push(dataIndex);
+      const filterOBJ: any = {
+        table_name: tableName,
+        column_name: dataIndex,
+        filter_keys: obj.filter_keys,
+        limit: obj.limit,
+        offset: obj.offset,
+        order_by: obj.order_by,
+        order_direction: obj.order_direction,
+        keyword: obj.keyword,
+        is_column_selection: false,
+        current_user: {},
+      };
+      commonService
+        .getColumnLookup(filterOBJ)
+        .then((res) => {
+          return res.body.data;
+        })
+        .then((res) => {
+          setLoading(false);
+          setOption(res);
+        });
     }
   }, [dropSearch]);
 
@@ -242,34 +241,39 @@ export const FilterByBooleanDropDown = (
   return (
     <>
       <Form.Item name={dataIndex} className="m-0 filter-input">
-      <Select
-        onDropdownVisibleChange={handleDropSearch}
-        showArrow={true}
-        mode="multiple"
-        dropdownClassName="filter-dropdown-pop"
-        placeholder="Select and search"
-        maxTagCount="responsive"
-        allowClear
-        loading={loading}
-        showSearch
-        optionFilterProp="children"
-        filterOption={(input, option: any) =>
-          option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >= 0
-        }
-        filterSort={(optionA: any, optionB: any) =>
-          optionA.children
-            ?.toString()
-            ?.toLowerCase()
-            ?.localeCompare(optionB.children?.toString()?.toLowerCase())
-        }
-      >
-        {(loading ? [] : option).map((option: IDropDownOption) => (
-          <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
-               {option.name?.toString() === 'true' ? 'Yes' : (option.name?.toString() === 'false' ? 'No' : 'NULL') }
-          </Select.Option>
-        ))}
-      </Select>
-    </Form.Item>
+        <Select
+          onDropdownVisibleChange={handleDropSearch}
+          showArrow={true}
+          mode="multiple"
+          dropdownClassName="filter-dropdown-pop"
+          placeholder="Select and search"
+          maxTagCount="responsive"
+          allowClear
+          loading={loading}
+          showSearch
+          optionFilterProp="children"
+          filterOption={(input, option: any) =>
+            option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >=
+            0
+          }
+          filterSort={(optionA: any, optionB: any) =>
+            optionA.children
+              ?.toString()
+              ?.toLowerCase()
+              ?.localeCompare(optionB.children?.toString()?.toLowerCase())
+          }
+        >
+          {(loading ? [] : option).map((option: IDropDownOption) => (
+            <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
+              {option.name?.toString() === 'true'
+                ? 'Yes'
+                : option.name?.toString() === 'false'
+                ? 'No'
+                : 'NULL'}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
     </>
   );
 };

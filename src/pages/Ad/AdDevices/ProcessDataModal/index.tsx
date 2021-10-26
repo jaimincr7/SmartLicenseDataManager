@@ -34,7 +34,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose , filterKeys } = props;
+  const { showModal, handleModalClose, filterKeys } = props;
 
   const [form] = Form.useForm();
 

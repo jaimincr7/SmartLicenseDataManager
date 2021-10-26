@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -157,11 +157,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('desktop', adDevicesExclusions.search.tableName , ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'desktop',
+              adDevicesExclusions.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'desktop',
             key: 'desktop',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -171,11 +184,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('server', adDevicesExclusions.search.tableName , ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'server',
+              adDevicesExclusions.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'server',
             key: 'server',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -185,11 +211,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('unknown', adDevicesExclusions.search.tableName , ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'unknown',
+              adDevicesExclusions.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'unknown',
             key: 'unknown',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -212,11 +251,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('decom', adDevicesExclusions.search.tableName , ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'decom',
+              adDevicesExclusions.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'decom',
             key: 'decom',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },

@@ -230,7 +230,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         }}
       >
         {data.is_mapping ? (
-          <PhoneOutlined title="Call Api" spin={spsApis.callApi.loading}/>
+          <PhoneOutlined title="Call Api" spin={spsApis.callApi.loading} />
         ) : (
           <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
         )}

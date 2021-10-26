@@ -193,7 +193,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('ahb_applied', azureDailyUsage.search.tableName , ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'ahb_applied',
+              azureDailyUsage.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'ahb_applied',
             key: 'ahb_applied',
             ellipsis: true,
@@ -222,7 +226,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('ahb_suggested', azureDailyUsage.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'ahb_suggested',
+              azureDailyUsage.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'ahb_suggested',
             key: 'ahb_suggested',
             ellipsis: true,
@@ -237,7 +245,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('ri_applied', azureDailyUsage.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'ri_applied',
+              azureDailyUsage.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'ri_applied',
             key: 'ri_applied',
             ellipsis: true,
@@ -266,7 +278,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('ri_suggested', azureDailyUsage.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'ri_suggested',
+              azureDailyUsage.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'ri_suggested',
             key: 'ri_suggested',
             ellipsis: true,
@@ -1166,7 +1182,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('idle', azureDailyUsage.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'idle',
+              azureDailyUsage.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'idle',
             key: 'idle',
             ellipsis: true,
@@ -1195,7 +1215,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('placement', azureDailyUsage.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'placement',
+              azureDailyUsage.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'placement',
             key: 'placement',
             ellipsis: true,
