@@ -50,6 +50,10 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
     );
   };
 
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, getColumnLookup, ObjectForColumnFilter);
+  };
+
   const getTableColumns = (form) => {
     return [
       {
@@ -73,7 +77,11 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', sqlServerLicenseDetail.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'date_added',
+              sqlServerLicenseDetail.search.tableName,
+              form
+            ),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,

@@ -22,7 +22,7 @@ class SqlServerLicenseDetailService {
     data: {}
   ): Promise<IApiResponse<any>> {
     const url = `${this.ENDPOINT}/column-lookup/${licenseId}`;
-    return request({ url, method: 'POST' , data }).then((res) => {
+    return request({ url, method: 'POST', data }).then((res) => {
       return res.data;
     });
   }
