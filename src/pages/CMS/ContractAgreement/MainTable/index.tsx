@@ -185,7 +185,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('start_date', cmsContractAgreement.search.tableName , form),
+            title: FilterByDateSwapTable('start_date', cmsContractAgreement.search.tableName, form),
             dataIndex: 'start_date',
             key: 'start_date',
             ellipsis: true,
@@ -199,7 +199,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('end_date', cmsContractAgreement.search.tableName , form),
+            title: FilterByDateSwapTable('end_date', cmsContractAgreement.search.tableName, form),
             dataIndex: 'end_date',
             key: 'end_date',
             ellipsis: true,
@@ -213,7 +213,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('transaction_date', cmsContractAgreement.search.tableName , form),
+            title: FilterByDateSwapTable(
+              'transaction_date',
+              cmsContractAgreement.search.tableName,
+              form
+            ),
             dataIndex: 'transaction_date',
             key: 'transaction_date',
             ellipsis: true,
