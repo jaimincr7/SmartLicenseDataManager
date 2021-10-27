@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import {  Button } from 'antd';
 import { ISqlServerExclusionsProps } from './sqlServerExclusions.model';
 import {
   sqlServerExclusionsSelector,
@@ -52,9 +52,8 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
   };
 
   const tableButtons = () => (
-    <Row gutter={[10, 4]}>
+      <>
       <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
-        <Col>
           <Button
             className="btn-icon"
             onClick={() =>
@@ -75,10 +74,8 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
           >
             Import
           </Button>
-        </Col>
       </Can>
       <Can I={Action.ProcessData} a={Page.SqlServerExclusions}>
-        <Col>
           <Button
             className="btn-icon"
             onClick={() => setProcessModalVisible(true)}
@@ -90,10 +87,8 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
           >
             Process Data
           </Button>
-        </Col>
       </Can>
       <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
-        <Col>
           <Button
             className="btn-icon mr-1"
             onClick={() => setDeleteModalVisible(true)}
@@ -105,9 +100,8 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
           >
             Delete Dataset
           </Button>
-        </Col>
       </Can>
-    </Row>
+      </>
   );
 
   return (

@@ -23,6 +23,7 @@ import moment from 'moment';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
+import _ from 'lodash';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
@@ -103,7 +104,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (globalSearch.company_id) {
       dispatch(getBULookup(globalSearch.company_id[0]));
     }
-    form.setFieldsValue(globalSearch);
+    const filterValues = {
+      company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
+      bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+    };
+    form.setFieldsValue(filterValues);
   }, []);
 
   return (
