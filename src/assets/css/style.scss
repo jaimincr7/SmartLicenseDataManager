@@ -316,6 +316,20 @@ label {
     }
   }
 }
+.tabel-search{
+  .ant-form-inline{ 
+    .ant-form-item{
+      margin-bottom: 10px;
+    }
+  }
+  .btns-block {
+  flex-wrap: wrap;
+    > * {
+      margin-bottom: 10px;
+    }
+  }
+}
+
 .input-btns-title {
   padding-bottom: 28px;
   margin-bottom: 30px;

@@ -563,7 +563,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
   return (
     <>
-      <div className="title-block search-block">
+      <div className="title-block search-block tabel-search">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
           {tableButtons ? tableButtons() : () => <></>}
