@@ -62,10 +62,13 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     }
     if (globalSearch.company_id) {
       dispatch(getBULookup(globalSearch.company_id[0]));
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form, azureDailyUsage.search.tableName))
+      );
     }
     initialValues = {
-      company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id,
-      bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id,
+      company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
+      bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
       date_added:
         filterKeys?.filter_keys?.date_added?.length == 1
           ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
