@@ -32,6 +32,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     setFilterKeys,
+    tableButtons,
   } = props;
   const sqlServerPricing = useAppSelector(sqlServerPricingSelector);
   const dispatch = useAppDispatch();
@@ -243,6 +244,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SqlServerPricing)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );
