@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import {
   clearSqlServerPricing,
   sqlServerPricingSelector,
