@@ -29,14 +29,19 @@ import {
 } from '../../../services/common/common.model';
 import { validateMessages } from '../../../common/constants/common';
 import { commonSelector } from '../../../store/common/common.reducer';
-import { getTenantLookup } from '../../../store/common/common.action';
+import {
+  getTenantLookup,
+} from '../../../store/common/common.action';
 import moment from 'moment';
 import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
 import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
 import MappingColumn from './../MappingColumn/MappingColumn';
 import { IRenderBIProps } from './renderBI.model';
+import _ from 'lodash';
 import commonService from '../../../services/common/common.service';
 import bulkImportService from '../../../services/bulkImport/bulkImport.service';
+import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
+import { IInlineSearch } from '../../../common/models/common';
 
 const { Option } = Select;
 
@@ -47,6 +52,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const bulkImports = useAppSelector(bulkImportSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
   const [form] = Form.useForm();
   const [innerFormUpload] = Form.useForm();
@@ -180,11 +186,17 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
       removedColumns.some((x) => x.name?.toLowerCase() === 'tenantid') &&
         dispatch(getTenantLookup());
+    
+        const globalSearch: IInlineSearch = {};
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
 
       const initialValuesData: any = {
-        tenant_id: null,
-        bu_id: null,
-        company_id: null,
+        tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+        company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -308,6 +320,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   // End: set tables for import
 
   useEffect(() => {
+    if(globalFilters)
+    {
+      setCompBuLookups({compony: globalFilters.globalCompanyLookup?.data , bu: globalFilters.globalBULookup?.data})
+    }
     return () => {
       setTableColumnState([]);
     };
@@ -701,7 +717,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                                     ?.localeCompare(optionB.children?.toLowerCase())
                                 }
                               >
-                                {compBuLookups.compony?.map((option: ILookup) => (
+                                {compBuLookups.compony.map((option: ILookup) => (
                                   <Option key={option.id} value={option.id}>
                                     {option.name}
                                   </Option>
@@ -743,7 +759,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                                     ?.localeCompare(optionB.children?.toLowerCase())
                                 }
                               >
-                                {compBuLookups.bu?.map((option: ILookup) => (
+                                {compBuLookups.bu.map((option: ILookup) => (
                                   <Option key={option.id} value={option.id}>
                                     {option.name}
                                   </Option>
