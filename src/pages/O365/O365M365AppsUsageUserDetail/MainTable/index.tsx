@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import o365M365AppsUsageUserDetailService from '../../../../services/o365/o365M365AppsUsageUserDetail/o365M365AppsUsageUserDetail.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -228,9 +229,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_windows',
             key: 'is_active_on_windows',
@@ -254,9 +256,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_mac',
             key: 'is_active_on_mac',
@@ -280,9 +283,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_mobile',
             key: 'is_active_on_mobile',
@@ -306,9 +310,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_web',
             key: 'is_active_on_web',
@@ -332,9 +337,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook',
             key: 'is_active_on_outlook',
@@ -358,9 +364,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word',
             key: 'is_active_on_word',
@@ -384,9 +391,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel',
             key: 'is_active_on_excel',
@@ -410,9 +418,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point',
             key: 'is_active_on_power_point',
@@ -436,9 +445,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note',
             key: 'is_active_on_one_note',
@@ -462,9 +472,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams',
             key: 'is_active_on_teams',
@@ -488,9 +499,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook_windows',
             key: 'is_active_on_outlook_windows',
@@ -514,9 +526,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word_windows',
             key: 'is_active_on_word_windows',
@@ -540,9 +553,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel_windows',
             key: 'is_active_on_excel_windows',
@@ -566,9 +580,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point_windows',
             key: 'is_active_on_power_point_windows',
@@ -592,9 +607,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note_windows',
             key: 'is_active_on_one_note_windows',
@@ -618,9 +634,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams_windows',
             key: 'is_active_on_teams_windows',
@@ -644,9 +661,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook_mac',
             key: 'is_active_on_outlook_mac',
@@ -670,9 +688,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word_mac',
             key: 'is_active_on_word_mac',
@@ -696,9 +715,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel_mac',
             key: 'is_active_on_excel_mac',
@@ -722,9 +742,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point_mac',
             key: 'is_active_on_power_point_mac',
@@ -748,9 +769,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note_mac',
             key: 'is_active_on_one_note_mac',
@@ -774,9 +796,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams_mac',
             key: 'is_active_on_teams_mac',
@@ -800,9 +823,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook_mobile',
             key: 'is_active_on_outlook_mobile',
@@ -826,9 +850,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word_mobile',
             key: 'is_active_on_word_mobile',
@@ -852,9 +877,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel_mobile',
             key: 'is_active_on_excel_mobile',
@@ -878,9 +904,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point_mobile',
             key: 'is_active_on_power_point_mobile',
@@ -904,9 +931,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note_mobile',
             key: 'is_active_on_one_note_mobile',
@@ -930,9 +958,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams_mobile',
             key: 'is_active_on_teams_mobile',
@@ -956,9 +985,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook_web',
             key: 'is_active_on_outlook_web',
@@ -982,9 +1012,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word_web',
             key: 'is_active_on_word_web',
@@ -1008,9 +1039,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel_web',
             key: 'is_active_on_excel_web',
@@ -1034,9 +1066,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point_web',
             key: 'is_active_on_power_point_web',
@@ -1060,9 +1093,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note_web',
             key: 'is_active_on_one_note_web',
@@ -1086,9 +1120,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams_web',
             key: 'is_active_on_teams_web',

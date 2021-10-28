@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import o365OneDriveUsageService from '../../../../services/o365/o365OneDriveUsage/o365OneDriveUsage.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -278,7 +279,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('is_deleted', o365OneDriveUsage.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('is_deleted', o365OneDriveUsage.search.tableName, ObjectForColumnFilter),
             dataIndex: 'is_deleted',
             key: 'is_deleted',
             ellipsis: true,

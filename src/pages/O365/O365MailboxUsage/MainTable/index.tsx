@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -331,7 +332,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('is_deleted', o365MailboxUsage.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('is_deleted', o365MailboxUsage.search.tableName, ObjectForColumnFilter),
             dataIndex: 'is_deleted',
             key: 'is_deleted',
             ellipsis: true,

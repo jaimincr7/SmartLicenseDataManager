@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import o365ActivationsUserDetailService from '../../../../services/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -285,9 +286,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'activated_on_shared_computer',
-              o365ActivationsUserDetail.search.lookups?.booleanLookup
+              o365ActivationsUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'activated_on_shared_computer',
             key: 'activated_on_shared_computer',

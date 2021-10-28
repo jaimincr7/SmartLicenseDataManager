@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import o365ActiveUserDetailService from '../../../../services/o365/o365ActiveUserDetail/o365ActiveUserDetail.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -442,9 +443,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_deleted',
-              o365ActiveUserDetail.search.lookups?.booleanLookup
+              o365ActiveUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_deleted',
             key: 'is_deleted',
@@ -469,9 +471,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'has_exchange_license',
-              o365ActiveUserDetail.search.lookups?.booleanLookup
+              o365ActiveUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'has_exchange_license',
             key: 'has_exchange_license',
@@ -496,9 +499,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'has_one_drive_license',
-              o365ActiveUserDetail.search.lookups?.booleanLookup
+              o365ActiveUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'has_one_drive_license',
             key: 'has_one_drive_license',
@@ -523,9 +527,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'has_share_point_license',
-              o365ActiveUserDetail.search.lookups?.booleanLookup
+              o365ActiveUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'has_share_point_license',
             key: 'has_share_point_license',
@@ -550,9 +555,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'has_skype_for_business_license',
-              o365ActiveUserDetail.search.lookups?.booleanLookup
+              o365ActiveUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'has_skype_for_business_license',
             key: 'has_skype_for_business_license',
@@ -577,9 +583,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'has_yammer_license',
-              o365ActiveUserDetail.search.lookups?.booleanLookup
+              o365ActiveUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'has_yammer_license',
             key: 'has_yammer_license',
@@ -604,9 +611,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'has_teams_license',
-              o365ActiveUserDetail.search.lookups?.booleanLookup
+              o365ActiveUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'has_teams_license',
             key: 'has_teams_license',
