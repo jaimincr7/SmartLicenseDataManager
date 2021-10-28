@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import { adUsersSelector, clearAdUsers } from '../../../store/ad/adUsers/adUsers.reducer';
 import { IAdUsersProps } from './adUers.model';
 import AddAdUserModal from './AddAdUsersModal';
@@ -47,6 +47,46 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                adUsers.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="ad">
       <div className="title-block">
@@ -58,7 +98,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.ADUsers}>
               <Col>
@@ -98,7 +138,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -112,6 +152,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
             setAddModalVisible(true);
           }}
           setFilterKeys={setFilterKeys}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (

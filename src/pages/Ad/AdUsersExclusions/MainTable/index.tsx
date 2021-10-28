@@ -24,7 +24,7 @@ import {
 } from '../../../../store/ad/adUsersExclusions/adUsersExclusions.action';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
   const AdUsersExclusions = useAppSelector(adUsersExclusionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -269,6 +269,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.AdUsersExclusions)}
         setValuesForSelection={setValuesForSelection}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );
