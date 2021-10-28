@@ -27,7 +27,7 @@ import {
 import o365MailboxUsageService from '../../../../services/o365/o365MailboxUsage/o365MailboxUsage.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons } = props;
   const o365MailboxUsage = useAppSelector(o365MailboxUsageSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -396,6 +396,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.O365MailboxUsage)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

@@ -27,7 +27,7 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons, } = props;
   const o365ActiveUserDetail = useAppSelector(o365ActiveUserDetailSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -679,6 +679,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.O365ActiveUserDetail)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

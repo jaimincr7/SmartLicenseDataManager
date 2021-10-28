@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import {
@@ -47,6 +47,33 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                o365Subscriptions.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="ad">
       <div className="title-block">
@@ -58,7 +85,7 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.O365Subscriptions}>
               <Col>
@@ -85,7 +112,7 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -98,6 +125,7 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (

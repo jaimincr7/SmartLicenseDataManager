@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import { IO365ActiveUserDetailProps } from './o365ActiveUserDetail.model';
 import {
   o365ActiveUserDetailSelector,
@@ -49,6 +49,46 @@ const O365ActiveUserDetail: React.FC<IO365ActiveUserDetailProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                o365ActiveUserDetail.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="ad">
       <div className="title-block">
@@ -60,7 +100,7 @@ const O365ActiveUserDetail: React.FC<IO365ActiveUserDetailProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.O365ActiveUserDetail}>
               <Col>
@@ -102,7 +142,7 @@ const O365ActiveUserDetail: React.FC<IO365ActiveUserDetailProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -116,6 +156,7 @@ const O365ActiveUserDetail: React.FC<IO365ActiveUserDetailProps> = (props) => {
             setAddModalVisible(true);
           }}
           setFilterKeys={setFilterKeys}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (
