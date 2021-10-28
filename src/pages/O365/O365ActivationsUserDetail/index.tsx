@@ -21,6 +21,7 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const { id: urlId } = props.match?.params;
 
@@ -112,6 +113,7 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -145,6 +147,7 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={o365ActivationsUserDetail.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

@@ -28,6 +28,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -115,6 +116,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -148,6 +150,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={o365OneDriveUsage.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

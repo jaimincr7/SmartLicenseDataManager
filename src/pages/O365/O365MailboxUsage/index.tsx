@@ -28,6 +28,7 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -113,6 +114,7 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
         />
       </div>
       {addModalVisible && (
@@ -146,6 +148,7 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={mailBoxUsage.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>
