@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -235,7 +235,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_windows',
             key: 'is_active_on_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -252,7 +261,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_mac',
             key: 'is_active_on_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -269,7 +287,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_mobile',
             key: 'is_active_on_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -286,7 +313,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_web',
             key: 'is_active_on_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -303,7 +339,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_outlook',
             key: 'is_active_on_outlook',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -320,7 +365,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_word',
             key: 'is_active_on_word',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -337,7 +391,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_excel',
             key: 'is_active_on_excel',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -354,7 +417,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_power_point',
             key: 'is_active_on_power_point',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -371,7 +443,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_one_note',
             key: 'is_active_on_one_note',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -388,7 +469,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_teams',
             key: 'is_active_on_teams',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -405,7 +495,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_outlook_windows',
             key: 'is_active_on_outlook_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -422,7 +521,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_word_windows',
             key: 'is_active_on_word_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -439,7 +547,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_excel_windows',
             key: 'is_active_on_excel_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -456,7 +573,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_power_point_windows',
             key: 'is_active_on_power_point_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -473,7 +599,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_one_note_windows',
             key: 'is_active_on_one_note_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -490,7 +625,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_teams_windows',
             key: 'is_active_on_teams_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -507,7 +651,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_outlook_mac',
             key: 'is_active_on_outlook_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -524,7 +677,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_word_mac',
             key: 'is_active_on_word_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -541,7 +703,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_excel_mac',
             key: 'is_active_on_excel_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -558,7 +729,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_power_point_mac',
             key: 'is_active_on_power_point_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -575,7 +755,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_one_note_mac',
             key: 'is_active_on_one_note_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -592,7 +781,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_teams_mac',
             key: 'is_active_on_teams_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -609,7 +807,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_outlook_mobile',
             key: 'is_active_on_outlook_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -626,7 +833,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_word_mobile',
             key: 'is_active_on_word_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -643,7 +859,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_excel_mobile',
             key: 'is_active_on_excel_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -660,7 +885,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_power_point_mobile',
             key: 'is_active_on_power_point_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -677,7 +911,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_one_note_mobile',
             key: 'is_active_on_one_note_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -694,7 +937,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_teams_mobile',
             key: 'is_active_on_teams_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -711,7 +963,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_outlook_web',
             key: 'is_active_on_outlook_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -728,7 +989,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_word_web',
             key: 'is_active_on_word_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -745,7 +1015,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_excel_web',
             key: 'is_active_on_excel_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -762,7 +1041,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_power_point_web',
             key: 'is_active_on_power_point_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -779,7 +1067,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_one_note_web',
             key: 'is_active_on_one_note_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -796,7 +1093,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'is_active_on_teams_web',
             key: 'is_active_on_teams_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
