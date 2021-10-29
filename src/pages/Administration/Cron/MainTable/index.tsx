@@ -203,7 +203,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         onClick={(e) => {
           e.preventDefault();
           if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3) {
-            if (data.status == 'Stopped') {
+            if (data.status == 'Stopped' || data.status == 'Ready' || data.status == 'Error') {
               setFrequencyId(data.cron_job_frequency_id);
               setShowStartApi(true);
               setId(data.id);
@@ -220,13 +220,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
                 }
               }
             }
-            if (data.status == 'Running') {
+            if (data.status === 'Running' || data.status === 'Success') {
               dispatch(stopApi(data.id));
             }
           }
         }}
       >
-        {data.status == 'Stopped' ? <CaretRightOutlined /> : <PauseOutlined />}
+        {data.status == 'Running' || data.status == 'Success' ? <PauseOutlined /> : <CaretRightOutlined />}
       </a>
     );
   };
