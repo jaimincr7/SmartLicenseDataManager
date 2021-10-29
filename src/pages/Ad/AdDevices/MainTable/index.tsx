@@ -30,6 +30,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     setFilterKeys,
+    tableButtons,
   } = props;
   const adDevices = useAppSelector(adDevicesSelector);
   const dispatch = useAppDispatch();
@@ -610,6 +611,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.ADDevices)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

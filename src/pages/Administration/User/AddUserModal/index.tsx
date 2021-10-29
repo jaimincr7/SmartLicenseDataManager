@@ -56,7 +56,7 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
     username: '',
     display_name: '',
     email: '',
-    source: window.location.hostname,
+    source: isMultiple ? '' : 'web',
     password_hash: '',
     password_salt: '',
     user_image: '',

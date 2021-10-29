@@ -4,7 +4,7 @@ import { IO365ProductListProps } from './o365ProductList.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import AddO365ProductListModal from './AddO365ProductListModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
@@ -47,6 +47,33 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                o365ProductList.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="ad">
       <div className="title-block">
@@ -58,7 +85,7 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.O365ProductList}>
               <Col>
@@ -85,7 +112,7 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -98,6 +125,7 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (

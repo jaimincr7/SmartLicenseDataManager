@@ -26,7 +26,7 @@ import { Common } from '../../../../common/constants/common';
 import moment from 'moment';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
   const o365Subscriptions = useAppSelector(o365SubscriptionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -234,6 +234,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.O365Subscriptions)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

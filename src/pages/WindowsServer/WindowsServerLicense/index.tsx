@@ -3,7 +3,7 @@ import { useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import { IWindowsServerLicenseProps } from './windowsServerLicense.model';
 import { clearWindowsServerLicense } from '../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import AddWindowsServerLicenseModal from './AddWindowsServerLicenseModal';
@@ -45,6 +45,46 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.Add} a={Page.WindowsServerLicense}>
+                <Button
+                  onClick={() => {
+                    setId(0);
+                    setAddModalVisible(true);
+                  }}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-run-license.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Run License Scenario
+                </Button>
+            </Can>
+            <Can I={Action.RunAllLicenseScenario} a={Page.WindowsServerLicense}>
+                <Button
+                  onClick={() => {
+                    setRunAllScenariosModalVisible(true);
+                  }}
+                  icon={
+                    <em className="anticon">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/ic-re-run-license.svg`}
+                        alt=""
+                      />
+                    </em>
+                  }
+                >
+                  Re-Run All License Scenarios
+                </Button>
+            </Can>
+    </>
+);
+
   return (
     <div className="windowsServer">
       <div className="title-block">
@@ -56,7 +96,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.Add} a={Page.WindowsServerLicense}>
               <Col>
@@ -98,7 +138,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -111,6 +151,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (

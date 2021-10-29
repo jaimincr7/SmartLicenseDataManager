@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Menu, Dropdown, Button } from 'antd';
 import { toast } from 'react-toastify';
 import { msalInstance } from '../../../../utils/authConfig';
@@ -69,16 +69,14 @@ const profileMenu = () => {
 function Header() {
   const common = useAppSelector(commonSelector);
   const userDetails = useAppSelector(userSelector);
-  const [cronStatus, setCronStatus] = useState('');
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   useEffect(() => {
     if (ability.can(Action.RunCronJob, Page.Cron)) {
       dispatch(getCronJobStatus());
-      setCronStatus(common.cronJobStatus.data.toString());
     }
-  }, [common.cronJobStatus.data]);
+  }, []);
 
   return (
     <header className="header">
@@ -96,7 +94,7 @@ function Header() {
         <div className="profile-wrapper right-list">
           <Can I={Action.RunCronJob} a={Page.Cron}>
             <Can I={Action.View} a={Page.Cron}>
-              {cronStatus === 'stopped' ? (
+              {common.cronJobStatus.data.toString() === 'stopped' ? (
                 <>
                   {' '}
                   <Button
@@ -110,7 +108,7 @@ function Header() {
               ) : (
                 ''
               )}
-              {cronStatus === 'running' ? (
+              {common.cronJobStatus.data.toString() === 'running' ? (
                 <>
                   {' '}
                   <Button
