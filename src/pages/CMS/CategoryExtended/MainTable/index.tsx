@@ -22,7 +22,7 @@ import {
 import cmsCategoryExtendedService from '../../../../services/cms/categoryExtended/categoryExtended.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
   const cmsCategoryExtended = useAppSelector(cmsCategoryExtendedSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -147,6 +147,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.CmsCategoryExtended)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

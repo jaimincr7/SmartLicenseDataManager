@@ -20,7 +20,7 @@ import { deleteCmsVendor, searchCmsVendor } from '../../../../store/cms/vendor/v
 import cmsVendorService from '../../../../services/cms/vendor/vendor.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
   const cmsVendor = useAppSelector(cmsVendorSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -190,6 +190,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.CmsVendor)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

@@ -4,7 +4,7 @@ import { ICmsPurchaseProps } from './purchase.model';
 import React from 'react';
 import MainTable from './MainTable/index';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
@@ -50,6 +50,46 @@ const CmsPurchase: React.FC<ICmsPurchaseProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.CmsPurchase}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                cmsPurchase.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    <Can I={Action.DeleteData} a={Page.CmsPurchase}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="sqlServer">
       <div className="title-block">
@@ -61,7 +101,7 @@ const CmsPurchase: React.FC<ICmsPurchaseProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.CmsPurchase}>
               <Col>
@@ -101,7 +141,7 @@ const CmsPurchase: React.FC<ICmsPurchaseProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -115,6 +155,7 @@ const CmsPurchase: React.FC<ICmsPurchaseProps> = (props) => {
             setAddModalVisible(true);
           }}
           setFilterKeys={setFilterKeys}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (
