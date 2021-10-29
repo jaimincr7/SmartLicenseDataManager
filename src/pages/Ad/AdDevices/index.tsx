@@ -4,7 +4,7 @@ import { IAdDevicesProps } from './adDevices.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import AddAdDeviceModal from './AddAdDeviceModal';
 import ProcessDataModal from './ProcessDataModal';
 import { adDevicesSelector, clearAdDevices } from '../../../store/ad/adDevices/adDevices.reducer';
@@ -49,6 +49,59 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                adDevices.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    <Can I={Action.ProcessData} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
+        </Button>
+    </Can>
+    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="ad">
       <div className="title-block">
@@ -60,7 +113,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.ADDevices}>
               <Col>
@@ -118,7 +171,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -132,6 +185,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
             setAddModalVisible(true);
           }}
           setFilterKeys={setFilterKeys}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (

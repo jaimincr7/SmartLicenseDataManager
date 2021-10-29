@@ -99,10 +99,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalSearch.company_id) {
+    if (globalSearch.company_id && globalSearch.bu_id) {
       dispatch(getBULookup(globalSearch.company_id[0]));
       dispatch(getScheduleDate(getScheduleDateHelperLookup(form, adDevices.search.tableName)));
-    }
     const filterValues = {
       company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
       bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
@@ -112,6 +111,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
           : null,
     };
     form.setFieldsValue(filterValues);
+    }
   }, []);
 
   return (

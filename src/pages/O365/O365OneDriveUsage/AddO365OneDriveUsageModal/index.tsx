@@ -43,6 +43,8 @@ import { IO365OneDriveUsage } from '../../../../services/o365/o365OneDriveUsage/
 import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { IInlineSearch } from '../../../../common/models/common';
 
 const { Option } = Select;
 
@@ -50,6 +52,7 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
   const o365OneDriveUsage = useAppSelector(o365OneDriveUsageSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
@@ -205,6 +208,21 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
       dispatch(clearBULookUp());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if(!isMultiple) {
+        const globalSearch: IInlineSearch = {};
+        for (const key in globalFilters.search) {
+          const element = globalFilters.search[key];
+          globalSearch[key] = element ? [element] : null;
+        }
+        if (globalSearch.company_id) {
+          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+          dispatch(getBULookup(globalSearch.company_id[0]));
+        }
+        form.setFieldsValue(globalSearch);
+      }
+      }, []);
 
   return (
     <>

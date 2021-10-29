@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import o365M365AppsUsageUserDetailService from '../../../../services/o365/o365M365AppsUsageUserDetail/o365M365AppsUsageUserDetail.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -26,7 +27,7 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons, } = props;
   const o365M365AppsUsageUserDetail = useAppSelector(o365M365AppsUsageUserDetailSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -50,6 +51,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
+    setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       o365M365AppsUsageUserDetail.search.tableName,
@@ -228,14 +230,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_windows',
             key: 'is_active_on_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -245,14 +257,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_mac',
             key: 'is_active_on_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -262,14 +284,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_mobile',
             key: 'is_active_on_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -279,14 +311,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_web',
             key: 'is_active_on_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -296,14 +338,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook',
             key: 'is_active_on_outlook',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -313,14 +365,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word',
             key: 'is_active_on_word',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -330,14 +392,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel',
             key: 'is_active_on_excel',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -347,14 +419,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point',
             key: 'is_active_on_power_point',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -364,14 +446,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note',
             key: 'is_active_on_one_note',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -381,14 +473,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams',
             key: 'is_active_on_teams',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -398,14 +500,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook_windows',
             key: 'is_active_on_outlook_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -415,14 +527,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word_windows',
             key: 'is_active_on_word_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -432,14 +554,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel_windows',
             key: 'is_active_on_excel_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -449,14 +581,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point_windows',
             key: 'is_active_on_power_point_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -466,14 +608,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note_windows',
             key: 'is_active_on_one_note_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -483,14 +635,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams_windows',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams_windows',
             key: 'is_active_on_teams_windows',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -500,14 +662,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook_mac',
             key: 'is_active_on_outlook_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -517,14 +689,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word_mac',
             key: 'is_active_on_word_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -534,14 +716,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel_mac',
             key: 'is_active_on_excel_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -551,14 +743,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point_mac',
             key: 'is_active_on_power_point_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -568,14 +770,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note_mac',
             key: 'is_active_on_one_note_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -585,14 +797,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams_mac',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams_mac',
             key: 'is_active_on_teams_mac',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -602,14 +824,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook_mobile',
             key: 'is_active_on_outlook_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -619,14 +851,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word_mobile',
             key: 'is_active_on_word_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -636,14 +878,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel_mobile',
             key: 'is_active_on_excel_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -653,14 +905,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point_mobile',
             key: 'is_active_on_power_point_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -670,14 +932,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note_mobile',
             key: 'is_active_on_one_note_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -687,14 +959,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams_mobile',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams_mobile',
             key: 'is_active_on_teams_mobile',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -704,14 +986,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_outlook_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_outlook_web',
             key: 'is_active_on_outlook_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -721,14 +1013,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_word_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_word_web',
             key: 'is_active_on_word_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -738,14 +1040,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_excel_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_excel_web',
             key: 'is_active_on_excel_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -755,14 +1067,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_power_point_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_power_point_web',
             key: 'is_active_on_power_point_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -772,14 +1094,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_one_note_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_one_note_web',
             key: 'is_active_on_one_note_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -789,14 +1121,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_active_on_teams_web',
-              o365M365AppsUsageUserDetail.search.lookups?.booleanLookup
+              o365M365AppsUsageUserDetail.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_active_on_teams_web',
             key: 'is_active_on_teams_web',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled/>
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -849,6 +1191,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.O365M365AppsUsageUserDetail)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

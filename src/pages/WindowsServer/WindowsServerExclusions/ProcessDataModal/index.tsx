@@ -104,8 +104,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (globalSearch.company_id) {
       dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
       dispatch(getBULookup(globalSearch.company_id[0]));
+      form.setFieldsValue(globalSearch);
     }
-    form.setFieldsValue(globalSearch);
   }, []);
 
   return (

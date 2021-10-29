@@ -33,6 +33,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     setFilterKeys,
+    tableButtons,
   } = props;
   const azureDailyUsage = useAppSelector(azureDailyUsageSelector);
   const dispatch = useAppDispatch();
@@ -1461,6 +1462,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.AzureDailyUsage)}
         setValuesForSelection={setValuesForSelection}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

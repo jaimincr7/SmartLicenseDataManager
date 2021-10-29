@@ -304,7 +304,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const startSchedule = () => {
     dispatch(manageCronJobApi());
     dispatch(getCronJobStatus());
-    dispatch(getCronJobStatus());
   };
 
   // Table columns

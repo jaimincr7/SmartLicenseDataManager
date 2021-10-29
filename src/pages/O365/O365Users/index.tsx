@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import { IO365UsersProps } from './o365Users.model';
 import { o365UsersSelector, clearO365Users } from '../../../store/o365/o365Users/o365Users.reducer';
 import AddO365UsersModal from './AddO365UsersModal';
@@ -44,6 +44,33 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                o365Users.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="ad">
       <div className="title-block">
@@ -55,7 +82,7 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.O365Users}>
               <Col>
@@ -80,7 +107,7 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -93,6 +120,7 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (

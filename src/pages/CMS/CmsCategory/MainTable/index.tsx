@@ -19,7 +19,7 @@ import {
 import cmsCategoryService from '../../../../services/cms/cmsCategory/cmsCategory.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons } = props;
   const cmsCategory = useAppSelector(cmsCategorySelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -128,6 +128,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.CmsCategory)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );
