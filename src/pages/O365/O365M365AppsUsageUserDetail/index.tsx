@@ -52,7 +52,7 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.O365M365AppsUsageUserDetail}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -73,8 +73,8 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.O365M365AppsUsageUserDetail}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -86,9 +86,9 @@ const O365M365AppsUsageUserDetail: React.FC<IO365M365AppsUsageUserDetailProps> =
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

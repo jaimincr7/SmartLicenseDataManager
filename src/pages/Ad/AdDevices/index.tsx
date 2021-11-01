@@ -51,14 +51,12 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.ADDevices}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                adDevices.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(adDevices.search.tableName)}`
             )
           }
           icon={
@@ -72,8 +70,8 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.ProcessData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.ADDevices}>
         <Button
           className="btn-icon"
           onClick={() => setProcessModalVisible(true)}
@@ -85,8 +83,8 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         >
           Process Data
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.ADDevices}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -98,9 +96,9 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

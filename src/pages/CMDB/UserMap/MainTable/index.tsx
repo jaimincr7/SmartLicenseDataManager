@@ -22,7 +22,13 @@ import {
 import userMapService from '../../../../services/cmdb/userMap/userMap.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmdbUserMap = useAppSelector(cmdbUserMapSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

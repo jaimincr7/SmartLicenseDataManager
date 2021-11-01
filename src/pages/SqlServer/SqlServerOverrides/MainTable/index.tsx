@@ -25,7 +25,13 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple , tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const sqlServerOverrides = useAppSelector(sqlServerOverridesSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -89,9 +95,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', (sqlServerOverrides.search.lookups?.tenants?.length > 0 ?
-              sqlServerOverrides.search.lookups?.tenants :
-              globalFilters?.globalTenantLookup?.data )),
+            title: FilterByDropdown(
+              'tenant_id',
+              sqlServerOverrides.search.lookups?.tenants?.length > 0
+                ? sqlServerOverrides.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -104,9 +113,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('company_id', (sqlServerOverrides.search.lookups?.companies?.length > 0 ?
-              sqlServerOverrides.search.lookups?.companies :
-              globalFilters?.globalCompanyLookup?.data )),
+            title: FilterByDropdown(
+              'company_id',
+              sqlServerOverrides.search.lookups?.companies?.length > 0
+                ? sqlServerOverrides.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -119,9 +131,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', (sqlServerOverrides.search.lookups?.bus?.length > 0 ?
-              sqlServerOverrides.search.lookups?.bus :
-              globalFilters?.globalBULookup?.data )),
+            title: FilterByDropdown(
+              'bu_id',
+              sqlServerOverrides.search.lookups?.bus?.length > 0
+                ? sqlServerOverrides.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,

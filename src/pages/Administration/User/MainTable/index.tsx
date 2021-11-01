@@ -250,14 +250,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_active', users.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_active',
+              users.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_active',
             key: 'is_active',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -287,14 +291,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('mobile_phone_verified', users.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'mobile_phone_verified',
+              users.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'mobile_phone_verified',
             key: 'mobile_phone_verified',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

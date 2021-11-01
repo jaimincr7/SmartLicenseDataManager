@@ -231,14 +231,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('active', company.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'active',
+              company.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'active',
             key: 'active',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

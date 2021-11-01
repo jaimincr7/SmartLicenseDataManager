@@ -170,14 +170,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('consent', spsApiOauth.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'consent',
+              spsApiOauth.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'consent',
             key: 'consent',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -193,14 +197,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title:FilterByBooleanDropDown('active', spsApiOauth.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'active',
+              spsApiOauth.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'active',
             key: 'active',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

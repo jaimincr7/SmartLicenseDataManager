@@ -226,7 +226,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           }
         }}
       >
-        {data.status == 'Running' || data.status == 'Success' ? <PauseOutlined /> : <CaretRightOutlined />}
+        {data.status == 'Running' || data.status == 'Success' ? (
+          <PauseOutlined />
+        ) : (
+          <CaretRightOutlined />
+        )}
       </a>
     );
   };

@@ -48,14 +48,12 @@ const CmdbSoftware: React.FC<ICmdbSoftwareProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.CmdbSoftware}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                CmdbSoftware.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(CmdbSoftware.search.tableName)}`
             )
           }
           icon={
@@ -69,9 +67,9 @@ const CmdbSoftware: React.FC<ICmdbSoftwareProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

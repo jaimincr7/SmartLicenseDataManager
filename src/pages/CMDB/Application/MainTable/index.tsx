@@ -22,7 +22,13 @@ import {
 import applicationService from '../../../../services/cmdb/application/application.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmdbApplication = useAppSelector(cmdbApplicationSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

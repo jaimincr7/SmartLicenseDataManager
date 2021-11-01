@@ -52,14 +52,12 @@ const CmsPurchase: React.FC<ICmsPurchaseProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.CmsPurchase}>
+      <Can I={Action.ImportToExcel} a={Page.CmsPurchase}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                cmsPurchase.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(cmsPurchase.search.tableName)}`
             )
           }
           icon={
@@ -73,8 +71,8 @@ const CmsPurchase: React.FC<ICmsPurchaseProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.CmsPurchase}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.CmsPurchase}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -86,9 +84,9 @@ const CmsPurchase: React.FC<ICmsPurchaseProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

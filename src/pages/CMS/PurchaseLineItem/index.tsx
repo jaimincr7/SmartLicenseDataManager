@@ -50,14 +50,12 @@ const CmsPurchaseLineItem: React.FC<ICmsPurchaseLineItemProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.CmsPurchaseLineItem}>
+      <Can I={Action.ImportToExcel} a={Page.CmsPurchaseLineItem}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                cmsPurchaseLineItem.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(cmsPurchaseLineItem.search.tableName)}`
             )
           }
           icon={
@@ -71,9 +69,9 @@ const CmsPurchaseLineItem: React.FC<ICmsPurchaseLineItemProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

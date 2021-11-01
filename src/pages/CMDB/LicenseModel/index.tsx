@@ -48,14 +48,12 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.CmdbLicenseModel}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                CmdbLicenseModel.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(CmdbLicenseModel.search.tableName)}`
             )
           }
           icon={
@@ -69,9 +67,9 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

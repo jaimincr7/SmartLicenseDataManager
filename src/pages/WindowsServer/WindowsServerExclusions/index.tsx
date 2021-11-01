@@ -53,7 +53,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.WindowsServerExclusions}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -74,8 +74,8 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.ProcessData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.WindowsServerExclusions}>
         <Button
           className="btn-icon"
           onClick={() => setProcessModalVisible(true)}
@@ -87,8 +87,8 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
         >
           Process Data
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.WindowsServerExclusions}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -100,9 +100,9 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

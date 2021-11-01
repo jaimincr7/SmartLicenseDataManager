@@ -48,14 +48,12 @@ const CmsTriggerType: React.FC<ICmsTriggerTypeProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.CmsTriggerType}>
+      <Can I={Action.ImportToExcel} a={Page.CmsTriggerType}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                cmsTriggerType.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(cmsTriggerType.search.tableName)}`
             )
           }
           icon={
@@ -69,9 +67,9 @@ const CmsTriggerType: React.FC<ICmsTriggerTypeProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

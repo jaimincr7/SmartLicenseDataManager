@@ -27,7 +27,14 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+    tableButtons,
+  } = props;
   const o365OneDriveUsage = useAppSelector(o365OneDriveUsageSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -280,14 +287,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_deleted', o365OneDriveUsage.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_deleted',
+              o365OneDriveUsage.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_deleted',
             key: 'is_deleted',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

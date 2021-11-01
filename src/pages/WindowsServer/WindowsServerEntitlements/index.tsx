@@ -51,14 +51,12 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.WindowsServerEntitlement}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                entitlements.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(entitlements.search.tableName)}`
             )
           }
           icon={
@@ -72,8 +70,8 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.WindowsServerEntitlement}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -85,9 +83,9 @@ const WindowsServerEntitlements: React.FC<IWindowsServerEntitlementsProps> = (pr
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="windowsServer">

@@ -34,7 +34,7 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
-    const globalFilters = useAppSelector(globalSearchSelector);
+  const globalFilters = useAppSelector(globalSearchSelector);
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -144,17 +144,20 @@ const AddCmdbUserModal: React.FC<IAddCmdbUserProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(!isMultiple) {
-        const globalSearch: IInlineSearch = {};
-        for (const key in globalFilters.search) {
-          const element = globalFilters.search[key];
-          globalSearch[key] = element ? [element] : null;
-        }
-        if (globalSearch.tenant_id) {
-          form.setFieldsValue(globalSearch);
-        }
+    if (+id === 0 && !isMultiple) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
       }
-      }, []);
+      if (globalSearch.tenant_id) {
+        const initlValues = {
+          tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        };
+        form.setFieldsValue(initlValues);
+      }
+    }
+  }, []);
 
   return (
     <>

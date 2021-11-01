@@ -52,14 +52,12 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.O365OneDriveUsage}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                o365OneDriveUsage.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(o365OneDriveUsage.search.tableName)}`
             )
           }
           icon={
@@ -73,8 +71,8 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.O365OneDriveUsage}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -86,9 +84,9 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

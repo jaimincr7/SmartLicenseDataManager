@@ -51,14 +51,12 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.AdUsersExclusions}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                adUsersExclusions.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(adUsersExclusions.search.tableName)}`
             )
           }
           icon={
@@ -72,8 +70,8 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.AdUsersExclusions}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -85,9 +83,9 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

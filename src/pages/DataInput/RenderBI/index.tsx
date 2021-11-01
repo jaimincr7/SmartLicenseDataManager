@@ -29,9 +29,7 @@ import {
 } from '../../../services/common/common.model';
 import { validateMessages } from '../../../common/constants/common';
 import { commonSelector } from '../../../store/common/common.reducer';
-import {
-  getTenantLookup,
-} from '../../../store/common/common.action';
+import { getTenantLookup } from '../../../store/common/common.action';
 import moment from 'moment';
 import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
 import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
@@ -186,12 +184,12 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
       removedColumns.some((x) => x.name?.toLowerCase() === 'tenantid') &&
         dispatch(getTenantLookup());
-    
-        const globalSearch: IInlineSearch = {};
-    for (const key in globalFilters.search) {
-      const element = globalFilters.search[key];
-      globalSearch[key] = element ? [element] : null;
-    }
+
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
 
       const initialValuesData: any = {
         tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
@@ -320,9 +318,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   // End: set tables for import
 
   useEffect(() => {
-    if(globalFilters)
-    {
-      setCompBuLookups({compony: globalFilters.globalCompanyLookup?.data , bu: globalFilters.globalBULookup?.data})
+    if (globalFilters) {
+      setCompBuLookups({
+        compony: globalFilters.globalCompanyLookup?.data,
+        bu: globalFilters.globalBULookup?.data,
+      });
     }
     return () => {
       setTableColumnState([]);

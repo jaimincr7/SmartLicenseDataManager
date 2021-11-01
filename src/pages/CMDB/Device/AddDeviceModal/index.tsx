@@ -188,17 +188,17 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(!isMultiple) {
-        const globalSearch: IInlineSearch = {};
-        for (const key in globalFilters.search) {
-          const element = globalFilters.search[key];
-          globalSearch[key] = element ? [element] : null;
-        }
-        if (globalSearch.tenant_id) {
-          form.setFieldsValue(globalSearch);
-        }
+    if (+id === 0 && !isMultiple) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
       }
-      }, []);
+      if (globalSearch.tenant_id) {
+        form.setFieldsValue(globalSearch);
+      }
+    }
+  }, []);
 
   return (
     <>

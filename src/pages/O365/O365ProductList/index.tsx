@@ -49,14 +49,12 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.O365ProductList}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                o365ProductList.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(o365ProductList.search.tableName)}`
             )
           }
           icon={
@@ -70,9 +68,9 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

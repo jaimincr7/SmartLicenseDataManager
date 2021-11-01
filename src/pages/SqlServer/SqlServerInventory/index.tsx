@@ -54,14 +54,12 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                sqlServerInventory.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(sqlServerInventory.search.tableName)}`
             )
           }
           icon={
@@ -75,8 +73,8 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.ProcessData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.SqlServerInventory}>
         <Button
           className="btn-icon"
           onClick={() => setProcessModalVisible(true)}
@@ -88,8 +86,8 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
         >
           Process Data
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.SqlServerInventory}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -101,9 +99,9 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

@@ -48,14 +48,12 @@ const CmdbVirtualization: React.FC<ICmdbVirtualizationProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.CmdbVirtualization}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                CmdbVirtualization.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(CmdbVirtualization.search.tableName)}`
             )
           }
           icon={
@@ -69,9 +67,9 @@ const CmdbVirtualization: React.FC<ICmdbVirtualizationProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

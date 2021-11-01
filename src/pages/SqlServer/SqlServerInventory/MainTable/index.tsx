@@ -130,9 +130,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', (sqlServerInventory.search.lookups?.tenants?.length > 0 ?
-              sqlServerInventory.search.lookups?.tenants :
-              globalFilters?.globalTenantLookup?.data )),
+            title: FilterByDropdown(
+              'tenant_id',
+              sqlServerInventory.search.lookups?.tenants?.length > 0
+                ? sqlServerInventory.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -145,9 +148,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('company_id', (sqlServerInventory.search.lookups?.companies?.length > 0 ?
-              sqlServerInventory.search.lookups?.companies :
-              globalFilters?.globalCompanyLookup?.data )),
+            title: FilterByDropdown(
+              'company_id',
+              sqlServerInventory.search.lookups?.companies?.length > 0
+                ? sqlServerInventory.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -160,9 +166,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', (sqlServerInventory.search.lookups?.bus?.length > 0 ?
-              sqlServerInventory.search.lookups?.bus :
-              globalFilters?.globalBULookup?.data )),
+            title: FilterByDropdown(
+              'bu_id',
+              sqlServerInventory.search.lookups?.bus?.length > 0
+                ? sqlServerInventory.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,

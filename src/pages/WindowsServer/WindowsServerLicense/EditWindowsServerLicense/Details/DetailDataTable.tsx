@@ -149,7 +149,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -353,7 +353,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -491,7 +491,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -518,7 +518,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -545,7 +545,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -594,7 +594,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -621,7 +621,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -648,7 +648,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -703,7 +703,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -730,7 +730,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -757,7 +757,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -1385,7 +1385,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -1411,7 +1411,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

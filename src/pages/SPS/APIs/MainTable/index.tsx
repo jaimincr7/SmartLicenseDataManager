@@ -134,14 +134,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('enabled', spsApis.search?.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'enabled',
+              spsApis.search?.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'enabled',
             key: 'enabled',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

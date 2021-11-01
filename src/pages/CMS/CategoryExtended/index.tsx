@@ -48,14 +48,12 @@ const CmsCategoryExtended: React.FC<ICmsCategoryExtendedProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.CmsCategoryExtended}>
+      <Can I={Action.ImportToExcel} a={Page.CmsCategoryExtended}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                cmsCategoryExtended.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(cmsCategoryExtended.search.tableName)}`
             )
           }
           icon={
@@ -69,9 +67,9 @@ const CmsCategoryExtended: React.FC<ICmsCategoryExtendedProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

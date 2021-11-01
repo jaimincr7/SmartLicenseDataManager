@@ -13,6 +13,7 @@ import {
 } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import _ from 'lodash';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
@@ -158,17 +159,20 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
   }, [dispatch]);
 
   useEffect(() => {
-    if(!isMultiple) {
-        const globalSearch: IInlineSearch = {};
-        for (const key in globalFilters.search) {
-          const element = globalFilters.search[key];
-          globalSearch[key] = element ? [element] : null;
-        }
-        if (globalSearch.tenant_id) {
-          form.setFieldsValue(globalSearch);
-        }
+    if (+id === 0 && !isMultiple) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
       }
-      }, []);
+      if (globalSearch.tenant_id) {
+        const initlValues = {
+          tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        };
+        form.setFieldsValue(initlValues);
+      }
+    }
+  }, []);
 
   return (
     <>

@@ -24,7 +24,13 @@ import {
 import exclusionService from '../../../../services/cmdb/exclusion/exclusion.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmdbExclusion = useAppSelector(cmdbExclusionSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -221,14 +227,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_enabled', cmdbExclusion.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_enabled',
+              cmdbExclusion.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_enabled',
             key: 'is_enabled',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

@@ -51,14 +51,12 @@ const Slim360O365UserPlans: React.FC<ISlim360O365UserPlansProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.Slim360O365UserPlans}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                o365UserPlans.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(o365UserPlans.search.tableName)}`
             )
           }
           icon={
@@ -72,9 +70,9 @@ const Slim360O365UserPlans: React.FC<ISlim360O365UserPlansProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

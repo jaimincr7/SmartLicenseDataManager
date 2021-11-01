@@ -50,14 +50,12 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.WindowsServerOverrides}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                overrides.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(overrides.search.tableName)}`
             )
           }
           icon={
@@ -71,8 +69,8 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.WindowsServerOverrides}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -84,9 +82,9 @@ const WindowsServerOverrides: React.FC<IWindowsServerOverridesProps> = (props) =
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="windowsServer">

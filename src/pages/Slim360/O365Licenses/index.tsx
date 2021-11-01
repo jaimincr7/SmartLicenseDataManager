@@ -51,14 +51,12 @@ const Slim360O365License: React.FC<ISlim360O365LicenseProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.Slim360O365Licenses}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                o365Licenses.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(o365Licenses.search.tableName)}`
             )
           }
           icon={
@@ -72,9 +70,9 @@ const Slim360O365License: React.FC<ISlim360O365LicenseProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

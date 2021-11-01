@@ -23,7 +23,13 @@ import {
 import licenseModelService from '../../../../services/cmdb/licenseModel/licenseModel.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmdbLicenseModel = useAppSelector(cmdbLicenseModelSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -154,7 +160,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

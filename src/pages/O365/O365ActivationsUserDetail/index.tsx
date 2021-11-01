@@ -51,7 +51,7 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.O365ActivationsUserDetail}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -72,8 +72,8 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.O365ActivationsUserDetail}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -85,9 +85,9 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">
@@ -156,7 +156,7 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
           setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
-      </div> 
+      </div>
       {addModalVisible && (
         <AddO365ActivationsUserDetailModal
           showModal={addModalVisible}

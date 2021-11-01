@@ -49,15 +49,11 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.ADUsers}>
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                adUsers.search.tableName
-              )}`
-            )
+            history.push(`/data-input/bulk-import/${encodeURIComponent(adUsers.search.tableName)}`)
           }
           icon={
             <em className="anticon">
@@ -70,8 +66,8 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.ADUsers}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -83,9 +79,9 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

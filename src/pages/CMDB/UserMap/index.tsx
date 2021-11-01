@@ -45,14 +45,12 @@ const CmdbUserMap: React.FC<ICmdbUserMapProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.CmdbUserMap}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                CmdbUserMap.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(CmdbUserMap.search.tableName)}`
             )
           }
           icon={
@@ -66,9 +64,9 @@ const CmdbUserMap: React.FC<ICmdbUserMapProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">
