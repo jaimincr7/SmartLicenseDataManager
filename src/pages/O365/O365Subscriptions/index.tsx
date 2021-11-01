@@ -49,14 +49,12 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.O365Subscriptions}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                o365Subscriptions.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(o365Subscriptions.search.tableName)}`
             )
           }
           icon={
@@ -70,9 +68,9 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

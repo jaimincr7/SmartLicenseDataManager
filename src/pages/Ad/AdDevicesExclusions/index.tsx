@@ -51,14 +51,12 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.ADExclusions}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                adDevicesExclusions.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(adDevicesExclusions.search.tableName)}`
             )
           }
           icon={
@@ -72,8 +70,8 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.ADExclusions}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -85,9 +83,9 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

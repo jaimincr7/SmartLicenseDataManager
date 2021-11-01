@@ -45,14 +45,12 @@ const CmsVendor: React.FC<ICmsVendorProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.CmsVendor}>
+      <Can I={Action.ImportToExcel} a={Page.CmsVendor}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                cmsVendor.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(cmsVendor.search.tableName)}`
             )
           }
           icon={
@@ -66,9 +64,9 @@ const CmsVendor: React.FC<ICmsVendorProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

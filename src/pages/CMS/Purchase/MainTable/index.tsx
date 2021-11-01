@@ -26,7 +26,14 @@ import {
 import purchaseService from '../../../../services/cms/purchase/purchase.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+    tableButtons,
+  } = props;
   const cmsPurchase = useAppSelector(cmsPurchaseSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

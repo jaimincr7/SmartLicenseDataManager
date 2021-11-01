@@ -47,43 +47,37 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
 
   const tableButtons = () => (
     <>
-          <Can I={Action.Add} a={Page.SqlServerLicense}>
-                <Button
-                  onClick={() => {
-                    setId(0);
-                    setAddModalVisible(true);
-                  }}
-                  icon={
-                    <em className="anticon">
-                      <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/ic-run-license.svg`}
-                        alt=""
-                      />
-                    </em>
-                  }
-                >
-                  Run License Scenario
-                </Button>
-            </Can>
-            <Can I={Action.RunAllLicenseScenario} a={Page.SqlServerLicense}>
-                <Button
-                  onClick={() => {
-                    setRunAllScenariosModalVisible(true);
-                  }}
-                  icon={
-                    <em className="anticon">
-                      <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/ic-re-run-license.svg`}
-                        alt=""
-                      />
-                    </em>
-                  }
-                >
-                  Re-Run All License Scenarios
-                </Button>
-            </Can>
+      <Can I={Action.Add} a={Page.SqlServerLicense}>
+        <Button
+          onClick={() => {
+            setId(0);
+            setAddModalVisible(true);
+          }}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-run-license.svg`} alt="" />
+            </em>
+          }
+        >
+          Run License Scenario
+        </Button>
+      </Can>
+      <Can I={Action.RunAllLicenseScenario} a={Page.SqlServerLicense}>
+        <Button
+          onClick={() => {
+            setRunAllScenariosModalVisible(true);
+          }}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-re-run-license.svg`} alt="" />
+            </em>
+          }
+        >
+          Re-Run All License Scenarios
+        </Button>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

@@ -26,7 +26,13 @@ import { Common } from '../../../../common/constants/common';
 import moment from 'moment';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const o365Subscriptions = useAppSelector(o365SubscriptionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

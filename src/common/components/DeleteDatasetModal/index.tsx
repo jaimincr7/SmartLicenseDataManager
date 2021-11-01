@@ -8,6 +8,7 @@ import {
   deleteDataset,
   getAllCompanyLookup,
   getBULookup,
+  getScheduleDate,
 } from '../../../store/common/common.action';
 import {
   clearBULookUp,
@@ -20,6 +21,7 @@ import { IInlineSearch } from '../../models/common';
 import { IDeleteDatasetModalProps } from './deleteDatasetModal.model';
 import _ from 'lodash';
 import React from 'react';
+import { getScheduleDateHelperLookup } from '../../helperFunction';
 
 const { Option } = Select;
 
@@ -95,6 +97,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
     }
     if (globalSearch.company_id && globalSearch.bu_id) {
       dispatch(getBULookup(globalSearch?.company_id[0]));
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form, tableName))
+      );
       initialValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch?.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch?.bu_id[0],

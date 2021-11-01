@@ -51,7 +51,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.SqlServerEntitlement}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -72,8 +72,8 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.SqlServerEntitlement}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -85,9 +85,9 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

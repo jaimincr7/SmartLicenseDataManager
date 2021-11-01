@@ -16,7 +16,13 @@ import { deleteCmsContact, searchCmsContact } from '../../../../store/cms/contac
 import cmsContactService from '../../../../services/cms/contact/contact.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmsContact = useAppSelector(cmsContactSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

@@ -51,14 +51,12 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.SqlServerOverrides}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                sqlServerOverrides.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(sqlServerOverrides.search.tableName)}`
             )
           }
           icon={
@@ -72,8 +70,8 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.SqlServerOverrides}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -85,9 +83,9 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">
@@ -157,7 +155,7 @@ const SqlServerOverrides: React.FC<ISqlServerOverridesProps> = (props) => {
           }}
           tableButtons={tableButtons}
         />
-      </div> 
+      </div>
       {addModalVisible && (
         <AddSqlServerOverridesModal
           showModal={addModalVisible}

@@ -48,7 +48,7 @@ const CmsContractAgreementAttachment: React.FC<ICmsContractAgreementAttachmentPr
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.CmsContractAgreementAttachment}>
+      <Can I={Action.ImportToExcel} a={Page.CmsContractAgreementAttachment}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -69,9 +69,9 @@ const CmsContractAgreementAttachment: React.FC<ICmsContractAgreementAttachmentPr
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

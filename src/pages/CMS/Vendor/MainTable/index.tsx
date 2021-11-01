@@ -20,7 +20,13 @@ import { deleteCmsVendor, searchCmsVendor } from '../../../../store/cms/vendor/v
 import cmsVendorService from '../../../../services/cms/vendor/vendor.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmsVendor = useAppSelector(cmsVendorSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -102,14 +108,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('publisher', cmsVendor.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'publisher',
+              cmsVendor.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'publisher',
             key: 'publisher',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -126,14 +136,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('vendor', cmsVendor.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'vendor',
+              cmsVendor.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'vendor',
             key: 'vendor',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )

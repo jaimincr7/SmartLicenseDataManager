@@ -49,14 +49,12 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.O365Reservations}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                o365Reservations.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(o365Reservations.search.tableName)}`
             )
           }
           icon={
@@ -70,9 +68,9 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="ad">

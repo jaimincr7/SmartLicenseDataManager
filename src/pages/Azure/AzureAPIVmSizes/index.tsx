@@ -47,14 +47,12 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                azureAPIVmSizes.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(azureAPIVmSizes.search.tableName)}`
             )
           }
           icon={
@@ -68,9 +66,9 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="azure">
