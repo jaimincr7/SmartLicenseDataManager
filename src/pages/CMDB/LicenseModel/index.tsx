@@ -3,8 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import { ICmdbLicenseModelProps } from './licenseModel.model';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
-import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import { Button } from 'antd';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
@@ -24,7 +23,6 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
@@ -48,6 +46,33 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                CmdbLicenseModel.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="sqlServer">
       <div className="title-block">
@@ -56,7 +81,7 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
         </h4>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.CmdbLicenseModel}>
               <Col>
@@ -94,7 +119,7 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -107,6 +132,7 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (
@@ -131,14 +157,6 @@ const CmdbLicenseModel: React.FC<ICmdbLicenseModelProps> = (props) => {
             history.push('/cmdb/cmdb-license-model');
           }}
           id={id}
-          refreshDataTable={() => refreshDataTable()}
-        />
-      )}
-      {deleteModalVisible && (
-        <DeleteDatasetModal
-          showModal={deleteModalVisible}
-          handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={CmdbLicenseModel.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}

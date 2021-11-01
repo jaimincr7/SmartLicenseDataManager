@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import { ICmdbApplicationProps } from './application.model';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
@@ -48,6 +48,33 @@ const CmdbApplication: React.FC<ICmdbApplicationProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                CmdbApplication.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="sqlServer">
       <div className="title-block">
@@ -56,7 +83,7 @@ const CmdbApplication: React.FC<ICmdbApplicationProps> = (props) => {
         </h4>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.CmdbApplication}>
               <Col>
@@ -79,7 +106,7 @@ const CmdbApplication: React.FC<ICmdbApplicationProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -92,6 +119,7 @@ const CmdbApplication: React.FC<ICmdbApplicationProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (

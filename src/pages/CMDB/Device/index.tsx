@@ -3,8 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import { ICmdbDeviceProps } from './device.model';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
-import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import { Button } from 'antd';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
@@ -21,7 +20,6 @@ const CmdbDevice: React.FC<ICmdbDeviceProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
@@ -45,6 +43,33 @@ const CmdbDevice: React.FC<ICmdbDeviceProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                CmdbDevice.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+    </>
+);
+
   return (
     <div className="sqlServer">
       <div className="title-block">
@@ -53,7 +78,7 @@ const CmdbDevice: React.FC<ICmdbDeviceProps> = (props) => {
         </h4>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.CmdbDevice}>
               <Col>
@@ -75,23 +100,8 @@ const CmdbDevice: React.FC<ICmdbDeviceProps> = (props) => {
                 </Button>
               </Col>
             </Can>
-            <Can I={Action.DeleteData} a={Page.CmdbDevice}>
-              <Col>
-                <Button
-                  className="btn-icon"
-                  onClick={() => setDeleteModalVisible(true)}
-                  icon={
-                    <em className="anticon">
-                      <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-                    </em>
-                  }
-                >
-                  Delete Dataset
-                </Button>
-              </Col>
-            </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -104,6 +114,7 @@ const CmdbDevice: React.FC<ICmdbDeviceProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (
@@ -128,14 +139,6 @@ const CmdbDevice: React.FC<ICmdbDeviceProps> = (props) => {
             history.push('/cmdb/cmdb-device');
           }}
           id={id}
-          refreshDataTable={() => refreshDataTable()}
-        />
-      )}
-      {deleteModalVisible && (
-        <DeleteDatasetModal
-          showModal={deleteModalVisible}
-          handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={CmdbDevice.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}

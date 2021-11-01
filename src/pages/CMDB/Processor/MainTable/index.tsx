@@ -19,7 +19,7 @@ import {
 import processorService from '../../../../services/cmdb/processor/processor.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
   const cmdbProcessor = useAppSelector(cmdbProcessorSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -219,6 +219,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.CmdbProcessor)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );
