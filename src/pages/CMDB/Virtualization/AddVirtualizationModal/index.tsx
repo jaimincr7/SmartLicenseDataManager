@@ -17,6 +17,7 @@ import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { IInlineSearch } from '../../../../common/models/common';
 import { ICmdbVirtualization } from '../../../../services/cmdb/virtualization/virtualization.model';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -36,6 +37,7 @@ import {
   clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IAddCmdbVirtualizationProps } from './addVirtualization.model';
 
 const { Option } = Select;
@@ -44,6 +46,7 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
   const cmdbVirtualization = useAppSelector(cmdbVirtualizationSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
+  const globalFilters = useAppSelector(globalSearchSelector);
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
@@ -153,6 +156,19 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
       dispatch(clearBULookUp());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if(!isMultiple) {
+        const globalSearch: IInlineSearch = {};
+        for (const key in globalFilters.search) {
+          const element = globalFilters.search[key];
+          globalSearch[key] = element ? [element] : null;
+        }
+        if (globalSearch.tenant_id) {
+          form.setFieldsValue(globalSearch);
+        }
+      }
+      }, []);
 
   return (
     <>
