@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -230,7 +231,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('active', company.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('active', company.search.tableName, ObjectForColumnFilter),
             dataIndex: 'active',
             key: 'active',
             ellipsis: true,

@@ -2,7 +2,7 @@ import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
-  FilterByDropdown,
+  FilterByBooleanDropDown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { IMainTable, ISearch } from '../../../../common/models/common';
@@ -117,9 +117,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_enabled',
-              configExclusionOperation.search.lookups?.booleanLookup
+              configExclusionOperation.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_enabled',
             key: 'is_enabled',

@@ -2,6 +2,7 @@ import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
+  FilterByBooleanDropDown,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -94,9 +95,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'is_excludable',
-              configExclusionLocation.search.lookups?.booleanLookup
+              configExclusionLocation.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'is_excludable',
             key: 'is_excludable',

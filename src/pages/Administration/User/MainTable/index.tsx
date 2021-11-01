@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -249,7 +250,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('is_active', users.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('is_active', users.search.tableName, ObjectForColumnFilter),
             dataIndex: 'is_active',
             key: 'is_active',
             ellipsis: true,
@@ -286,7 +287,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('mobile_phone_verified', users.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('mobile_phone_verified', users.search.tableName, ObjectForColumnFilter),
             dataIndex: 'mobile_phone_verified',
             key: 'mobile_phone_verified',
             ellipsis: true,

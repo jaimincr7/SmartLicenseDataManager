@@ -2,6 +2,7 @@ import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
+  FilterByBooleanDropDown,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -178,9 +179,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'includes_system_center',
-              configWindowsServerLicense.search.lookups?.booleanLookup
+              configWindowsServerLicense.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'includes_system_center',
             key: 'includes_system_center',
@@ -204,9 +206,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'alternate_license_type',
-              configWindowsServerLicense.search.lookups?.booleanLookup
+              configWindowsServerLicense.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'alternate_license_type',
             key: 'alternate_license_type',
@@ -230,9 +233,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'includes_sa',
-              configWindowsServerLicense.search.lookups?.booleanLookup
+              configWindowsServerLicense.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'includes_sa',
             key: 'includes_sa',
@@ -256,9 +260,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'includes_windows_server',
-              configWindowsServerLicense.search.lookups?.booleanLookup
+              configWindowsServerLicense.search.tableName,
+              ObjectForColumnFilter
             ),
             dataIndex: 'includes_windows_server',
             key: 'includes_windows_server',

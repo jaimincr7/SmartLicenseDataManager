@@ -3,6 +3,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import _ from 'lodash';
 import {
+  FilterByBooleanDropDown,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -112,7 +113,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('active', bu.search.lookups?.booleanLookup),
+            title: FilterByBooleanDropDown('active', bu.search.tableName, ObjectForColumnFilter),
             dataIndex: 'active',
             key: 'active',
             ellipsis: true,

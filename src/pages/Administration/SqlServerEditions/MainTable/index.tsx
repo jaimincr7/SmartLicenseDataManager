@@ -3,7 +3,7 @@ import _ from 'lodash';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
-  FilterByDropdown,
+  FilterByBooleanDropDown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { IMainTable, ISearch } from '../../../../common/models/common';
@@ -91,9 +91,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
+            title: FilterByBooleanDropDown(
               'licensable',
-              configSqlServerEditions.search.lookups?.booleanLookup
+              configSqlServerEditions.search.tableName,
+              setObjectForColumnFilter
             ),
             dataIndex: 'licensable',
             key: 'licensable',
