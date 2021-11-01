@@ -17,6 +17,7 @@ import {
 } from '../../../../../store/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.reducer';
 import { Common } from '../../../../../common/constants/common';
 import { ISearchWindowsServerLicenseDetail } from '../../../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.model';
+import { Checkbox } from 'antd';
 
 const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
   const { licenseId } = props;
@@ -145,7 +146,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'ha_enabled',
             key: 'ha_enabled',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -340,7 +350,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'drs_enabled',
             key: 'drs_enabled',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -469,7 +488,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'azure_hosted',
             key: 'azure_hosted',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -487,7 +515,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'exempt',
             key: 'exempt',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -505,7 +542,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'sc_exempt',
             key: 'sc_exempt',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -545,7 +591,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'opt_default_to_data_center_on_hosts',
             key: 'opt_default_to_data_center_on_hosts',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -563,7 +618,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'opt_entitlements',
             key: 'opt_entitlements',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -581,7 +645,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'opt_exclude_non_prod',
             key: 'opt_exclude_non_prod',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -627,7 +700,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'orphaned_vm',
             key: 'orphaned_vm',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -645,7 +727,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'licensable',
             key: 'licensable',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -663,7 +754,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'sc_licensable',
             key: 'sc_licensable',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -1282,7 +1382,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'sc_server',
             key: 'sc_server',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },
@@ -1299,7 +1408,16 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'sc_agent',
             key: 'sc_agent',
             ellipsis: true,
-            render: (value: boolean) => (!_.isNull(value) ? (value ? 'Yes' : 'No') : ''),
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
           },
         ],
       },

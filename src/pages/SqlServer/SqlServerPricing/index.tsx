@@ -52,14 +52,12 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.SqlServerPricing}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                sqlServerPricing.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(sqlServerPricing.search.tableName)}`
             )
           }
           icon={
@@ -73,8 +71,8 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.SqlServerPricing}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -86,9 +84,9 @@ const SqlServerPricing: React.FC<ISqlServerPricingProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

@@ -22,7 +22,13 @@ import {
 } from '../../../../store/cms/contractAgreementAttachment/contractAgreementAttachment.action';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmsContractAgreementAttachment = useAppSelector(cmsContractAgreementAttachmentSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

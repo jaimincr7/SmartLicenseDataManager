@@ -28,6 +28,8 @@ import {
 } from '../../../../store/common/common.reducer';
 import { IAddCmdbUserMapProps } from './addUserMap.model';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { IInlineSearch } from '../../../../common/models/common';
 
 const { Option } = Select;
 
@@ -35,6 +37,7 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
   const cmdbUserMap = useAppSelector(cmdbUserMapSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
+  const globalFilters = useAppSelector(globalSearchSelector);
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
@@ -134,6 +137,22 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
       dispatch(clearBULookUp());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (+id === 0 && !isMultiple) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
+      if (globalSearch.tenant_id) {
+        const initlValues = {
+          tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        };
+        form.setFieldsValue(initlValues);
+      }
+    }
+  }, []);
 
   return (
     <>

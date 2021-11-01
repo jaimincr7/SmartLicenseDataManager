@@ -51,14 +51,12 @@ const CmsContractAgreement: React.FC<ICmsContractAgreementProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.CmsContractAgreement}>
+      <Can I={Action.ImportToExcel} a={Page.CmsContractAgreement}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                cmsContractAgreement.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(cmsContractAgreement.search.tableName)}`
             )
           }
           icon={
@@ -72,8 +70,8 @@ const CmsContractAgreement: React.FC<ICmsContractAgreementProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.CmsContractAgreement}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.CmsContractAgreement}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -85,9 +83,9 @@ const CmsContractAgreement: React.FC<ICmsContractAgreementProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

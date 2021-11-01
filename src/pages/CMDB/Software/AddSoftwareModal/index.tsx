@@ -30,6 +30,8 @@ import {
 } from '../../../../store/common/common.reducer';
 import { IAddCmdbSoftwareProps } from './addSoftware.model';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { IInlineSearch } from '../../../../common/models/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
@@ -37,6 +39,7 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
   const cmdbSoftware = useAppSelector(cmdbSoftwareSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
+  const globalFilters = useAppSelector(globalSearchSelector);
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
@@ -152,6 +155,22 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
       dispatch(clearCmdbSoftwareGetById());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (+id === 0 && !isMultiple) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
+      if (globalSearch.tenant_id) {
+        const initlValues = {
+          tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        };
+        form.setFieldsValue(initlValues);
+      }
+    }
+  }, []);
 
   return (
     <>

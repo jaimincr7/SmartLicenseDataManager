@@ -19,7 +19,13 @@ import {
 import cmsTriggerTypeService from '../../../../services/cms/triggerType/triggerType.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmsTriggerType = useAppSelector(cmsTriggerTypeSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

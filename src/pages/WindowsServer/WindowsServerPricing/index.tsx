@@ -51,14 +51,12 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.WindowsServerPricing}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                windowsServerPricing.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(windowsServerPricing.search.tableName)}`
             )
           }
           icon={
@@ -72,8 +70,8 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.SqlServerExclusions}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.WindowsServerPricing}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -85,9 +83,9 @@ const WindowsServerPricing: React.FC<IWindowsServerPricingProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="windowsServer">

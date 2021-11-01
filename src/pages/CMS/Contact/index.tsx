@@ -45,14 +45,12 @@ const CmsContact: React.FC<ICmsContactProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.CmsContact}>
+      <Can I={Action.ImportToExcel} a={Page.CmsContact}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                cmsContact.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(cmsContact.search.tableName)}`
             )
           }
           icon={
@@ -66,9 +64,9 @@ const CmsContact: React.FC<ICmsContactProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

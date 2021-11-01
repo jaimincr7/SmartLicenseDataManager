@@ -24,7 +24,13 @@ import {
 import deviceService from '../../../../services/cmdb/device/device.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmdbDevice = useAppSelector(cmdbDeviceSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -298,14 +304,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_virtual', cmdbDevice.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_virtual',
+              cmdbDevice.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_virtual',
             key: 'is_virtual',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -321,14 +331,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_vdi', cmdbDevice.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_vdi',
+              cmdbDevice.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_vdi',
             key: 'is_vdi',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -344,14 +358,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_server', cmdbDevice.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_server',
+              cmdbDevice.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_server',
             key: 'is_server',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -367,14 +385,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_host', cmdbDevice.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_host',
+              cmdbDevice.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_host',
             key: 'is_host',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -390,14 +412,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_tablet', cmdbDevice.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_tablet',
+              cmdbDevice.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_tablet',
             key: 'is_tablet',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -413,14 +439,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_portable', cmdbDevice.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_portable',
+              cmdbDevice.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_portable',
             key: 'is_portable',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -477,6 +507,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.CmdbDevice)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

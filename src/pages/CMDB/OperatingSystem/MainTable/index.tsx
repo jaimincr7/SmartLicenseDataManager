@@ -23,7 +23,13 @@ import {
 import operatingSystemService from '../../../../services/cmdb/operatingSystem/operatingSystem.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const cmdbOperatingSystem = useAppSelector(cmdbOperatingSystemSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -143,14 +149,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_oem', cmdbOperatingSystem.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_oem',
+              cmdbOperatingSystem.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_oem',
             key: 'is_oem',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -166,14 +176,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_server', cmdbOperatingSystem.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_server',
+              cmdbOperatingSystem.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_server',
             key: 'is_server',
             ellipsis: true,
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled/>
+                  <Checkbox defaultChecked disabled />
                 ) : (
                   <Checkbox defaultChecked={false} disabled />
                 )
@@ -230,6 +244,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.CmdbOperatingSystem)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );
