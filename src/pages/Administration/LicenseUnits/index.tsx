@@ -48,14 +48,12 @@ const ConfigLicenseUnits: React.FC<IConfigLicenseUnitsProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigLicenseUnits}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigLicenseUnits}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                configLicenseUnits.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(configLicenseUnits.search.tableName)}`
             )
           }
           icon={
@@ -69,8 +67,8 @@ const ConfigLicenseUnits: React.FC<IConfigLicenseUnitsProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

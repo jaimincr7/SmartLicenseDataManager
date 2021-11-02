@@ -32,17 +32,12 @@ export const getWindowsServerExclusionsById = createAsyncThunk(
   }
 );
 
-export const getWindowsFieldLookup = createAsyncThunk(
-  'getWindowsFieldLookup',
-  async () => {
-    const response = await windowsServerExclusionsService
-      .getWindowsFieldLookup()
-      .then((res) => {
-        return res.body;
-      });
-    return response.data;
-  }
-);
+export const getWindowsFieldLookup = createAsyncThunk('getWindowsFieldLookup', async () => {
+  const response = await windowsServerExclusionsService.getWindowsFieldLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
 
 export const saveWindowsServerExclusions = createAsyncThunk(
   'saveWindowsServerExclusions',

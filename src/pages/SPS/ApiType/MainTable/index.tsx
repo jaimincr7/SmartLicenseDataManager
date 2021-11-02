@@ -19,7 +19,13 @@ import { deleteSpsApiType, searchSpsApiType } from '../../../../store/sps/apiTyp
 import spsApiTypeService from '../../../../services/sps/apiType/apiType.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const spsApiType = useAppSelector(spsApiTypeSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

@@ -2,10 +2,7 @@ import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import React, { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import {
-  getAllCompanyLookup,
-  getBULookup,
-} from '../../../../store/common/common.action';
+import { getAllCompanyLookup, getBULookup } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearDateLookup,
@@ -73,7 +70,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    
     form.setFieldsValue({ bu_id: buId });
   };
 

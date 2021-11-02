@@ -48,7 +48,7 @@ const ConfigExclusionComponent: React.FC<IConfigExclusionComponentProps> = (prop
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigExclusionComponent}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigExclusionComponent}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -69,8 +69,8 @@ const ConfigExclusionComponent: React.FC<IConfigExclusionComponentProps> = (prop
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

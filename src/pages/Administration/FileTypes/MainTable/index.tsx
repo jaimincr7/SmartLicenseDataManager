@@ -19,7 +19,13 @@ import {
 import configFileTypeService from '../../../../services/master/fileTypes/fileTypes.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configFileType = useAppSelector(configFileTypeSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

@@ -49,15 +49,11 @@ const CiscoIB: React.FC<ICiscoIBProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.HwCiscoIB}>
+      <Can I={Action.ImportToExcel} a={Page.HwCiscoIB}>
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                ciscoIB.search.tableName
-              )}`
-            )
+            history.push(`/data-input/bulk-import/${encodeURIComponent(ciscoIB.search.tableName)}`)
           }
           icon={
             <em className="anticon">
@@ -70,8 +66,8 @@ const CiscoIB: React.FC<ICiscoIBProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.HwCiscoIB}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.HwCiscoIB}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -83,9 +79,9 @@ const CiscoIB: React.FC<ICiscoIBProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

@@ -6,7 +6,7 @@ import AddBUModal from './AddBUModal';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
 import { buSelector, clearBU } from '../../../store/master/bu/bu.reducer';
-import { Button, } from 'antd';
+import { Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
@@ -44,15 +44,11 @@ const BU: React.FC<IBUProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.Bu}>
+      <Can I={Action.ImportToExcel} a={Page.Bu}>
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                bu.search.tableName
-              )}`
-            )
+            history.push(`/data-input/bulk-import/${encodeURIComponent(bu.search.tableName)}`)
           }
           icon={
             <em className="anticon">
@@ -65,8 +61,8 @@ const BU: React.FC<IBUProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

@@ -82,8 +82,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
   const handleBUChange = (buId: number) => {
     if (buId) {
       dispatch(getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName)));
-    }
-    else {
+    } else {
       dispatch(clearDateLookup());
     }
     form.setFieldsValue({ bu_id: buId });
@@ -112,9 +111,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
             ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
             : null,
       };
-      dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName))
-      );
+      dispatch(getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName)));
       form.setFieldsValue(initialValues);
     }
   }, []);

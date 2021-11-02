@@ -44,15 +44,11 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.Currency}>
+      <Can I={Action.ImportToExcel} a={Page.Currency}>
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                currency.search.tableName
-              )}`
-            )
+            history.push(`/data-input/bulk-import/${encodeURIComponent(currency.search.tableName)}`)
           }
           icon={
             <em className="anticon">
@@ -65,8 +61,8 @@ const Currency: React.FC<ICurrencyProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

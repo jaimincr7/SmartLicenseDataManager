@@ -48,14 +48,12 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigComponent}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigComponent}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                configComponent.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(configComponent.search.tableName)}`
             )
           }
           icon={
@@ -69,8 +67,8 @@ const ConfigComponent: React.FC<IConfigComponentProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

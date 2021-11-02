@@ -20,7 +20,7 @@ export interface IAdUsersExclusionsState {
   fieldLookup: {
     data: ILookup[];
     loading: boolean;
-  }
+  };
   save: {
     loading: boolean;
     hasErrors: boolean;

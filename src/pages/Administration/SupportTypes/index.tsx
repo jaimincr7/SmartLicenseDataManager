@@ -48,14 +48,12 @@ const ConfigSupportTypes: React.FC<IConfigSupportTypesProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigSupportTypes}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigSupportTypes}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                configSupportTypes.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(configSupportTypes.search.tableName)}`
             )
           }
           icon={
@@ -69,8 +67,8 @@ const ConfigSupportTypes: React.FC<IConfigSupportTypesProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

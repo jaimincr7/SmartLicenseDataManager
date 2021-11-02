@@ -28,7 +28,14 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+    tableButtons,
+  } = props;
   const ciscoPolicy = useAppSelector(ciscoPolicySelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -89,9 +96,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', (ciscoPolicy.search.lookups?.tenants?.length > 0 ?
-              ciscoPolicy.search.lookups?.tenants :
-              globalFilters?.globalTenantLookup?.data)),
+            title: FilterByDropdown(
+              'tenant_id',
+              ciscoPolicy.search.lookups?.tenants?.length > 0
+                ? ciscoPolicy.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -104,9 +114,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('company_id', (ciscoPolicy.search.lookups?.companies?.length > 0 ?
-              ciscoPolicy.search.lookups?.companies :
-              globalFilters?.globalCompanyLookup?.data)),
+            title: FilterByDropdown(
+              'company_id',
+              ciscoPolicy.search.lookups?.companies?.length > 0
+                ? ciscoPolicy.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -119,9 +132,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', (ciscoPolicy.search.lookups?.bus?.length > 0 ?
-              ciscoPolicy.search.lookups?.bus :
-              globalFilters?.globalBULookup?.data)),
+            title: FilterByDropdown(
+              'bu_id',
+              ciscoPolicy.search.lookups?.bus?.length > 0
+                ? ciscoPolicy.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,
@@ -327,8 +343,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('minor_follow_parent', ciscoPolicy.search.tableName,
-              ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'minor_follow_parent',
+              ciscoPolicy.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'minor_follow_parent',
             key: 'minor_follow_parent',
             ellipsis: true,
@@ -494,8 +513,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('redundant_system', ciscoPolicy.search.tableName,
-              ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'redundant_system',
+              ciscoPolicy.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'redundant_system',
             key: 'redundant_system',
             ellipsis: true,
@@ -596,8 +618,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_device_within_coverage_policy', ciscoPolicy.search.tableName,
-              ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_device_within_coverage_policy',
+              ciscoPolicy.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_device_within_coverage_policy',
             key: 'is_device_within_coverage_policy',
             ellipsis: true,
@@ -633,8 +658,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('ldos', ciscoPolicy.search.tableName,
-              ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'ldos',
+              ciscoPolicy.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'ldos',
             key: 'ldos',
             ellipsis: true,
@@ -657,8 +685,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('valid_through_l_do_s', ciscoPolicy.search.tableName,
-              ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'valid_through_l_do_s',
+              ciscoPolicy.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'valid_through_l_do_s',
             key: 'valid_through_l_do_s',
             ellipsis: true,
@@ -681,8 +712,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('eligible_for_quoting', ciscoPolicy.search.tableName,
-              ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'eligible_for_quoting',
+              ciscoPolicy.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'eligible_for_quoting',
             key: 'eligible_for_quoting',
             ellipsis: true,
@@ -705,8 +739,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown('coverage_required', ciscoPolicy.search.tableName,
-              ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'coverage_required',
+              ciscoPolicy.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'coverage_required',
             key: 'coverage_required',
             ellipsis: true,

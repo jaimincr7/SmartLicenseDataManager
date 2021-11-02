@@ -50,14 +50,12 @@ const SpsApiGroup: React.FC<ISpsApiGroupProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SpsApiGroup}>
+      <Can I={Action.ImportToExcel} a={Page.SpsApiGroup}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                spsApiGroup.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(spsApiGroup.search.tableName)}`
             )
           }
           icon={
@@ -71,9 +69,9 @@ const SpsApiGroup: React.FC<ISpsApiGroupProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

@@ -49,14 +49,12 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.AgreementTypes}>
+      <Can I={Action.ImportToExcel} a={Page.AgreementTypes}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                agreementTypes.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(agreementTypes.search.tableName)}`
             )
           }
           icon={
@@ -70,8 +68,8 @@ const AgreementTypes: React.FC<IAgreementTypesProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

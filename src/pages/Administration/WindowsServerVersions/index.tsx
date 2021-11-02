@@ -48,7 +48,7 @@ const ConfigWindowsServerVersions: React.FC<IConfigWindowsServerVersionsProps> =
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigWindowsServerVersions}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigWindowsServerVersions}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -69,7 +69,7 @@ const ConfigWindowsServerVersions: React.FC<IConfigWindowsServerVersionsProps> =
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
   );
 

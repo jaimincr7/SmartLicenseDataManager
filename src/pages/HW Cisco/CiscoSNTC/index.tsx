@@ -52,14 +52,12 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.HwCiscoSNTC}>
+      <Can I={Action.ImportToExcel} a={Page.HwCiscoSNTC}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                ciscoSNTC.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(ciscoSNTC.search.tableName)}`
             )
           }
           icon={
@@ -73,8 +71,8 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.HwCiscoSNTC}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.HwCiscoSNTC}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -86,9 +84,9 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

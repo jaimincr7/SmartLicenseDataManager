@@ -23,7 +23,13 @@ import {
 import configOnlineProductsService from '../../../../services/master/onlineProducts/onlineProducts.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configOnlineProducts = useAppSelector(configOnlineProductsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

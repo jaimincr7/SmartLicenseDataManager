@@ -24,7 +24,13 @@ import {
 import configWindowsServerLicenseService from '../../../../services/master/windowsServerLicense/windowsServerLicense.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configWindowsServerLicense = useAppSelector(configWindowsServerLicenseSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

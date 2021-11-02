@@ -17,7 +17,7 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { IMainTable } from '../../../../common/models/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple} = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const dispatch = useAppDispatch();
   const spsApis = useAppSelector(spsApiSelector);
   const dataTableRef = useRef(null);
@@ -165,7 +165,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/sps/sps-api/${data.id}`);
+            history.push(`/sps/sps-config-api/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />

@@ -28,7 +28,7 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { job_id, } = props;
+  const { job_id } = props;
   const dispatch = useAppDispatch();
   const spsApiJobsData = useAppSelector(spsApiJobsDataSelector);
   const dataTableRef = useRef(null);

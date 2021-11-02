@@ -25,7 +25,7 @@ export interface IAdDevicesExclusionsState {
   fieldLookup: {
     data: ILookup[];
     loading: boolean;
-  }
+  };
   delete: {
     loading: boolean;
     hasErrors: boolean;

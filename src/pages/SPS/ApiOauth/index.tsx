@@ -51,14 +51,12 @@ const SpsApiOauth: React.FC<ISpsApiOauthProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SpsApiOauth}>
+      <Can I={Action.ImportToExcel} a={Page.SpsApiOauth}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                spsApiOauth.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(spsApiOauth.search.tableName)}`
             )
           }
           icon={
@@ -72,9 +70,9 @@ const SpsApiOauth: React.FC<ISpsApiOauthProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

@@ -27,7 +27,14 @@ import {
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+    tableButtons,
+  } = props;
   const ciscoReady = useAppSelector(ciscoReadySelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -89,9 +96,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id',(ciscoReady.search.lookups?.tenants?.length > 0 ?
-              ciscoReady.search.lookups?.tenants :
-              globalFilters?.globalTenantLookup?.data )),
+            title: FilterByDropdown(
+              'tenant_id',
+              ciscoReady.search.lookups?.tenants?.length > 0
+                ? ciscoReady.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -105,9 +115,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('company_id',(ciscoReady.search.lookups?.companies?.length > 0 ?
-              ciscoReady.search.lookups?.companies :
-              globalFilters?.globalCompanyLookup?.data )),
+            title: FilterByDropdown(
+              'company_id',
+              ciscoReady.search.lookups?.companies?.length > 0
+                ? ciscoReady.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -121,9 +134,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('bu_id',(ciscoReady.search.lookups?.bus?.length > 0 ?
-              ciscoReady.search.lookups?.bus :
-              globalFilters?.globalBULookup?.data )),
+            title: FilterByDropdown(
+              'bu_id',
+              ciscoReady.search.lookups?.bus?.length > 0
+                ? ciscoReady.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,
@@ -152,7 +168,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('covered_line_start_date', ciscoReady.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'covered_line_start_date',
+              ciscoReady.search.tableName,
+              form
+            ),
             dataIndex: 'covered_line_start_date',
             key: 'covered_line_start_date',
             ellipsis: true,
@@ -167,7 +187,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('covered_line_end_date', ciscoReady.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'covered_line_end_date',
+              ciscoReady.search.tableName,
+              form
+            ),
             dataIndex: 'covered_line_end_date',
             key: 'covered_line_end_date',
             ellipsis: true,

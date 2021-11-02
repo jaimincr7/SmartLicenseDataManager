@@ -50,7 +50,7 @@ const SpsApiTokenConfigOptions: React.FC<ISpsApiTokenConfigOptionsProps> = (prop
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.SpsApiTokenConfigOptions}>
+      <Can I={Action.ImportToExcel} a={Page.SpsApiTokenConfigOptions}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -71,9 +71,9 @@ const SpsApiTokenConfigOptions: React.FC<ISpsApiTokenConfigOptionsProps> = (prop
         >
           Import
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

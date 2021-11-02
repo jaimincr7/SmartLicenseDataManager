@@ -48,7 +48,7 @@ const ConfigSqlServerLicense: React.FC<IConfigSqlServerLicenseProps> = (props) =
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigSqlServerLicense}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigSqlServerLicense}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -69,8 +69,8 @@ const ConfigSqlServerLicense: React.FC<IConfigSqlServerLicenseProps> = (props) =
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

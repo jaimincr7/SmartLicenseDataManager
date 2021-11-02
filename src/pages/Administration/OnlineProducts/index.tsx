@@ -48,14 +48,12 @@ const ConfigOnlineProducts: React.FC<IConfigOnlineProductsProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigOnlineProducts}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigOnlineProducts}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                configOnlineProducts.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(configOnlineProducts.search.tableName)}`
             )
           }
           icon={
@@ -69,8 +67,8 @@ const ConfigOnlineProducts: React.FC<IConfigOnlineProductsProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

@@ -348,7 +348,7 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
                   ) : (
                     'Field'
                   )}
-                 <Form.Item name="field" className="m-0" label="Field">
+                  <Form.Item name="field" className="m-0" label="Field">
                     <Select
                       allowClear
                       showSearch

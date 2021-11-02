@@ -19,7 +19,13 @@ import {
 import configProcessorsService from '../../../../services/master/processors/processors.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configProcessors = useAppSelector(configProcessorsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

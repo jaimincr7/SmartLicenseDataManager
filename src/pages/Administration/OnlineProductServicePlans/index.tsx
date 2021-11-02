@@ -50,7 +50,7 @@ const ConfigOnlineProductServicePlans: React.FC<IConfigOnlineProductServicePlans
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigOnlineProductServicePlans}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigOnlineProductServicePlans}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -71,8 +71,8 @@ const ConfigOnlineProductServicePlans: React.FC<IConfigOnlineProductServicePlans
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

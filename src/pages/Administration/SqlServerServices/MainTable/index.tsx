@@ -19,7 +19,13 @@ import {
 import configSqlServerServicesService from '../../../../services/master/sqlServerServices/sqlServerServices.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configSqlServerServices = useAppSelector(configSqlServerServicesSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

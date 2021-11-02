@@ -27,7 +27,14 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+    tableButtons,
+  } = props;
   const ciscoProductAttributes = useAppSelector(ciscoProductAttributesSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -88,9 +95,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', (ciscoProductAttributes.search.lookups?.tenants?.length > 0 ?
-              ciscoProductAttributes.search.lookups?.tenants :
-              globalFilters?.globalTenantLookup?.data )),
+            title: FilterByDropdown(
+              'tenant_id',
+              ciscoProductAttributes.search.lookups?.tenants?.length > 0
+                ? ciscoProductAttributes.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -103,9 +113,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('company_id', (ciscoProductAttributes.search.lookups?.companies?.length > 0 ?
-              ciscoProductAttributes.search.lookups?.companies :
-              globalFilters?.globalCompanyLookup?.data )),
+            title: FilterByDropdown(
+              'company_id',
+              ciscoProductAttributes.search.lookups?.companies?.length > 0
+                ? ciscoProductAttributes.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -118,9 +131,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', (ciscoProductAttributes.search.lookups?.bus?.length > 0 ?
-              ciscoProductAttributes.search.lookups?.bus :
-              globalFilters?.globalBULookup?.data )),
+            title: FilterByDropdown(
+              'bu_id',
+              ciscoProductAttributes.search.lookups?.bus?.length > 0
+                ? ciscoProductAttributes.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,
@@ -133,7 +149,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('date_added', ciscoProductAttributes.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'date_added',
+              ciscoProductAttributes.search.tableName,
+              form
+            ),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -147,7 +167,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('l_do_sales', ciscoProductAttributes.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'l_do_sales',
+              ciscoProductAttributes.search.tableName,
+              form
+            ),
             dataIndex: 'l_do_sales',
             key: 'l_do_sales',
             ellipsis: true,
@@ -161,7 +185,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('l_do_support', ciscoProductAttributes.search.tableName, form),
+            title: FilterByDateSwapTable(
+              'l_do_support',
+              ciscoProductAttributes.search.tableName,
+              form
+            ),
             dataIndex: 'l_do_support',
             key: 'l_do_support',
             ellipsis: true,

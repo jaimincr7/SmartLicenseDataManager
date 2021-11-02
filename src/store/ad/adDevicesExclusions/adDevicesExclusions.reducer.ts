@@ -105,7 +105,10 @@ export const adDevicesExclusionsSlice = createSlice({
     [getAdDevicesExclusionsFieldLookup.pending.type]: (state) => {
       state.fieldLookup.loading = true;
     },
-    [getAdDevicesExclusionsFieldLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+    [getAdDevicesExclusionsFieldLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
       state.fieldLookup.data = action.payload;
       state.fieldLookup.loading = false;
     },

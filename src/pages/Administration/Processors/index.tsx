@@ -48,14 +48,12 @@ const ConfigProcessors: React.FC<IConfigProcessorsProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigProcessors}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigProcessors}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                configProcessors.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(configProcessors.search.tableName)}`
             )
           }
           icon={
@@ -69,8 +67,8 @@ const ConfigProcessors: React.FC<IConfigProcessorsProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

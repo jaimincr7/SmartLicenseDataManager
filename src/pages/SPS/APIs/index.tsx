@@ -65,7 +65,7 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = (props) => {
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/sps/sps-api');
+            history.push('/sps/sps-config-api');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -78,7 +78,7 @@ const SPSAPIs: React.FC<ISPSAPIsProps> = (props) => {
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            history.push('/sps/sps-api');
+            history.push('/sps/sps-config-api');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}

@@ -77,7 +77,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
 
   const handleBUChange = (buId: number) => {
     if (buId) {
-      dispatch(getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), adDevices.search.tableName)));
+      dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), adDevices.search.tableName)
+        )
+      );
     } else {
       dispatch(clearDateLookup());
     }

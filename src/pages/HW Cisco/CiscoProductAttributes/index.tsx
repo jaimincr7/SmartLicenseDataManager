@@ -52,7 +52,7 @@ const CiscoProductAttributes: React.FC<ICiscoProductAttributesProps> = (props) =
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.HwCiscoProductAttributes}>
+      <Can I={Action.ImportToExcel} a={Page.HwCiscoProductAttributes}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -73,8 +73,8 @@ const CiscoProductAttributes: React.FC<ICiscoProductAttributesProps> = (props) =
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.HwCiscoProductAttributes}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.HwCiscoProductAttributes}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -86,9 +86,9 @@ const CiscoProductAttributes: React.FC<ICiscoProductAttributesProps> = (props) =
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

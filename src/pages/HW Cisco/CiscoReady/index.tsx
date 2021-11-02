@@ -52,14 +52,12 @@ const CiscoReady: React.FC<ICiscoReadyProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.HwCiscoReady}>
+      <Can I={Action.ImportToExcel} a={Page.HwCiscoReady}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                ciscoReady.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(ciscoReady.search.tableName)}`
             )
           }
           icon={
@@ -73,8 +71,8 @@ const CiscoReady: React.FC<ICiscoReadyProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.HwCiscoReady}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.HwCiscoReady}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -86,9 +84,9 @@ const CiscoReady: React.FC<ICiscoReadyProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

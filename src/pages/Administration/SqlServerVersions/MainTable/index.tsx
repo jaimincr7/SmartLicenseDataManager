@@ -22,7 +22,13 @@ import {
 import configSqlServerVersionsService from '../../../../services/master/sqlServerVersions/sqlServerVersions.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configSqlServerVersions = useAppSelector(configSqlServerVersionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

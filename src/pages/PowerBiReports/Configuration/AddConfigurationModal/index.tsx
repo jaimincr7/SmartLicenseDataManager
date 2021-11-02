@@ -256,11 +256,11 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                   ) : (
                     'Report Type'
                   )}
-                <Form.Item
+                  <Form.Item
                     name="report_type"
                     label="Report Type"
                     className="m-0"
-                    rules={[{ required: true, max: 500 }]}
+                    rules={[{ required: !isMultiple, max: 500 }]}
                   >
                     <Input disabled={true} className="form-control" />
                   </Form.Item>
@@ -279,7 +279,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                     name="description"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 500 }]}
+                    rules={[{ required: !isMultiple, max: 500 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

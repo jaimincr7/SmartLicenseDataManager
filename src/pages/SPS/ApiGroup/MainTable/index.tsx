@@ -19,7 +19,13 @@ import {
 import spsApiGroupService from '../../../../services/sps/apiGroup/apiGroup.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const spsApiGroup = useAppSelector(spsApiGroupSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

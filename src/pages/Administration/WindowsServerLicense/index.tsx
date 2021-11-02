@@ -48,7 +48,7 @@ const ConfigWindowsServerLicense: React.FC<IConfigWindowsServerLicenseProps> = (
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigWindowsServerLicense}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigWindowsServerLicense}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -69,8 +69,8 @@ const ConfigWindowsServerLicense: React.FC<IConfigWindowsServerLicenseProps> = (
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

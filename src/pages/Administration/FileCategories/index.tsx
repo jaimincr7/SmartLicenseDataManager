@@ -48,14 +48,12 @@ const ConfigFileCategories: React.FC<IConfigFileCategoriesProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigFileCategories}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigFileCategories}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                configFileCategories.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(configFileCategories.search.tableName)}`
             )
           }
           icon={
@@ -69,8 +67,8 @@ const ConfigFileCategories: React.FC<IConfigFileCategoriesProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

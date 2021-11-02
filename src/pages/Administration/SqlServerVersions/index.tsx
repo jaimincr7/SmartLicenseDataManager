@@ -48,7 +48,7 @@ const ConfigSqlServerVersions: React.FC<IConfigSqlServerVersionsProps> = (props)
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigSqlServerVersions}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigSqlServerVersions}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -69,8 +69,8 @@ const ConfigSqlServerVersions: React.FC<IConfigSqlServerVersionsProps> = (props)
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

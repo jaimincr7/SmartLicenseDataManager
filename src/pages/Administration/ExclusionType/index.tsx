@@ -48,14 +48,12 @@ const ConfigExclusionType: React.FC<IConfigExclusionTypeProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigExclusionType}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigExclusionType}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                configExclusionType.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(configExclusionType.search.tableName)}`
             )
           }
           icon={
@@ -69,8 +67,8 @@ const ConfigExclusionType: React.FC<IConfigExclusionTypeProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

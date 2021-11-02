@@ -93,9 +93,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', (o365Reservations.search.lookups?.tenants?.length > 0 ?
-              o365Reservations.search.lookups?.tenants :
-              globalFilters?.globalTenantLookup?.data )),
+            title: FilterByDropdown(
+              'tenant_id',
+              o365Reservations.search.lookups?.tenants?.length > 0
+                ? o365Reservations.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -108,9 +111,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('company_id', (o365Reservations.search.lookups?.companies?.length > 0 ?
-              o365Reservations.search.lookups?.companies :
-              globalFilters?.globalCompanyLookup?.data )),
+            title: FilterByDropdown(
+              'company_id',
+              o365Reservations.search.lookups?.companies?.length > 0
+                ? o365Reservations.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -123,9 +129,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', (o365Reservations.search.lookups?.bus?.length > 0 ?
-              o365Reservations.search.lookups?.bus :
-              globalFilters?.globalBULookup?.data )),
+            title: FilterByDropdown(
+              'bu_id',
+              o365Reservations.search.lookups?.bus?.length > 0
+                ? o365Reservations.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,

@@ -23,7 +23,13 @@ import {
 import configExclusionOperationService from '../../../../services/master/exclusionOperation/exclusionOperation.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configExclusionOperation = useAppSelector(configExclusionOperationSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);

@@ -52,14 +52,12 @@ const CiscoSpectrum: React.FC<ICiscoSpectrumProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.HwCiscoSpectrum}>
+      <Can I={Action.ImportToExcel} a={Page.HwCiscoSpectrum}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                ciscoSpectrum.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(ciscoSpectrum.search.tableName)}`
             )
           }
           icon={
@@ -73,8 +71,8 @@ const CiscoSpectrum: React.FC<ICiscoSpectrumProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-    <Can I={Action.DeleteData} a={Page.HwCiscoSpectrum}>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.HwCiscoSpectrum}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -86,9 +84,9 @@ const CiscoSpectrum: React.FC<ICiscoSpectrumProps> = (props) => {
         >
           Delete Dataset
         </Button>
-    </Can>
+      </Can>
     </>
-);
+  );
 
   return (
     <div className="sqlServer">

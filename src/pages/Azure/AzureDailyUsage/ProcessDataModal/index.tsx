@@ -71,7 +71,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             : null,
       };
       dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(initialValues, azureDailyUsage.search.tableName))
+        getScheduleDate(
+          getScheduleDateHelperLookup(initialValues, azureDailyUsage.search.tableName)
+        )
       );
       form.setFieldsValue(initialValues);
     }
@@ -102,7 +104,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const handleBUChange = (buId: number) => {
     if (buId) {
       dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), azureDailyUsage.search.tableName))
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), azureDailyUsage.search.tableName)
+        )
       );
     } else {
       dispatch(clearDateLookup());

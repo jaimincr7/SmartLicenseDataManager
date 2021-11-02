@@ -44,15 +44,11 @@ const Company: React.FC<ICompanyProps> = (props) => {
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.Company}>
+      <Can I={Action.ImportToExcel} a={Page.Company}>
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                company.search.tableName
-              )}`
-            )
+            history.push(`/data-input/bulk-import/${encodeURIComponent(company.search.tableName)}`)
           }
           icon={
             <em className="anticon">
@@ -65,8 +61,8 @@ const Company: React.FC<ICompanyProps> = (props) => {
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (

@@ -48,7 +48,7 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
 
   const tableButtons = () => (
     <>
-    <Can I={Action.ImportToExcel} a={Page.ConfigComponentTableColumn}>
+      <Can I={Action.ImportToExcel} a={Page.ConfigComponentTableColumn}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -69,8 +69,8 @@ const ConfigComponentTableColumn: React.FC<IConfigComponentTableColumnProps> = (
         >
           Import
         </Button>
-    </Can>
-  </>
+      </Can>
+    </>
   );
 
   return (
