@@ -27,7 +27,7 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys, tableButtons, } = props;
   const ciscoSNTC = useAppSelector(ciscoSNTCSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -52,6 +52,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
+    setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       ciscoSNTC.search.tableName,

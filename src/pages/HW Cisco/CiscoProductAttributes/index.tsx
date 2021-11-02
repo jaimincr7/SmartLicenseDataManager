@@ -28,6 +28,7 @@ const CiscoProductAttributes: React.FC<ICiscoProductAttributesProps> = (props) =
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -153,6 +154,7 @@ const CiscoProductAttributes: React.FC<ICiscoProductAttributesProps> = (props) =
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -187,6 +189,7 @@ const CiscoProductAttributes: React.FC<ICiscoProductAttributesProps> = (props) =
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={ciscoProductAttributes.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

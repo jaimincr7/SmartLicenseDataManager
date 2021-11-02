@@ -28,6 +28,7 @@ const CiscoReady: React.FC<ICiscoReadyProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -153,6 +154,7 @@ const CiscoReady: React.FC<ICiscoReadyProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -187,6 +189,7 @@ const CiscoReady: React.FC<ICiscoReadyProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={ciscoReady.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

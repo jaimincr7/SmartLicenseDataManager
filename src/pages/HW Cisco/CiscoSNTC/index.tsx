@@ -28,6 +28,7 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -153,6 +154,7 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -187,6 +189,7 @@ const CiscoSNTC: React.FC<ICiscoSNTCProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={ciscoSNTC.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

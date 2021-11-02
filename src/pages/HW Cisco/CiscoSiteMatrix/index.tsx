@@ -28,6 +28,7 @@ const CiscoSiteMatrix: React.FC<ICiscoSiteMatrixProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -155,6 +156,7 @@ const CiscoSiteMatrix: React.FC<ICiscoSiteMatrixProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -189,6 +191,7 @@ const CiscoSiteMatrix: React.FC<ICiscoSiteMatrixProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={ciscoSiteMatrix.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>
