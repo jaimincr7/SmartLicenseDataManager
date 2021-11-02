@@ -22,7 +22,7 @@ import {
 import configWindowsServerVersionsService from '../../../../services/master/windowsServerVersions/windowsServerVersions.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
   const configWindowsServerVersions = useAppSelector(configWindowsServerVersionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -150,6 +150,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

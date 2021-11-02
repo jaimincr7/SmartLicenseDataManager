@@ -4,8 +4,7 @@ import { IConfigOnlineProductServicePlansProps } from './onlineProductServicePla
 import React from 'react';
 import MainTable from './MainTable/index';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
-import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import { Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
@@ -26,7 +25,6 @@ const ConfigOnlineProductServicePlans: React.FC<IConfigOnlineProductServicePlans
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
@@ -50,6 +48,33 @@ const ConfigOnlineProductServicePlans: React.FC<IConfigOnlineProductServicePlans
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.ConfigOnlineProductServicePlans}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                configOnlineProductServicePlans.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+  </>
+  );
+
   return (
     <div className="sqlServer">
       <div className="title-block">
@@ -58,7 +83,7 @@ const ConfigOnlineProductServicePlans: React.FC<IConfigOnlineProductServicePlans
         </h4>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.ConfigOnlineProductServicePlans}>
               <Col>
@@ -85,7 +110,7 @@ const ConfigOnlineProductServicePlans: React.FC<IConfigOnlineProductServicePlans
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -98,6 +123,7 @@ const ConfigOnlineProductServicePlans: React.FC<IConfigOnlineProductServicePlans
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (
@@ -122,14 +148,6 @@ const ConfigOnlineProductServicePlans: React.FC<IConfigOnlineProductServicePlans
             history.push('/administration/config-online-product-service-plans');
           }}
           id={id}
-          refreshDataTable={() => refreshDataTable()}
-        />
-      )}
-      {deleteModalVisible && (
-        <DeleteDatasetModal
-          showModal={deleteModalVisible}
-          handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={configOnlineProductServicePlans.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}

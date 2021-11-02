@@ -87,7 +87,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const handleBUChange = (buId: number) => {
     if (buId) {
       dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(form, sqlServerInventory.search.tableName))
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), sqlServerInventory.search.tableName))
       );
     } else {
       dispatch(clearDateLookup());
@@ -111,10 +111,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       globalSearch[key] = element ? [element] : null;
     }
     if (globalSearch.company_id && globalSearch.bu_id) {
-      dispatch(getBULookup(globalSearch.company_id[0]));
-      dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(form, sqlServerInventory.search.tableName))
-      );
+      dispatch(getBULookup(globalSearch.company_id[0]));  
       const filterValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
@@ -123,6 +120,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
             : null,
       };
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, sqlServerInventory.search.tableName))
+      );
       form.setFieldsValue(filterValues);
     }
   }, []);

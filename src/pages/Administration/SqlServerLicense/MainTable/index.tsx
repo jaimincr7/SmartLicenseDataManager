@@ -24,7 +24,7 @@ import {
 import configSqlServerLicenseService from '../../../../services/master/sqlServerLicense/sqlServerLicense.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, tableButtons, } = props;
   const configSqlServerLicense = useAppSelector(configSqlServerLicenseSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -331,6 +331,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.ConfigSqlServerLicense)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

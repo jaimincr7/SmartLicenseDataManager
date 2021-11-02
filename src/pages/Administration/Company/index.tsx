@@ -6,7 +6,7 @@ import AddCompanyModal from './AddCompanyModal';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
 import { clearCompany, companySelector } from '../../../store/master/company/company.reducer';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
@@ -42,6 +42,33 @@ const Company: React.FC<ICompanyProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+    <Can I={Action.ImportToExcel} a={Page.Company}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(
+                company.search.tableName
+              )}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+    </Can>
+  </>
+  );
+
   return (
     <div className="company">
       <div className="title-block">
@@ -50,7 +77,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
         </h4>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.Company}>
               <Col>
@@ -75,7 +102,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -88,6 +115,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (
