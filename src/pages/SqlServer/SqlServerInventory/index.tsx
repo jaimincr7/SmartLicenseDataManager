@@ -54,7 +54,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
 
   const tableButtons = () => (
     <>
-      <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.SqlServerInventory}>
         <Button
           className="btn-icon"
           onClick={() =>
