@@ -21,6 +21,13 @@ class AdDevicesExclusionsService {
     });
   }
 
+  public async getAdDevicesExclusionsFieldLookup(): Promise<any> {
+    const url = `${this.ENDPOINT}/field-lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveAdDevicesExclusions(data: IAdDevicesExclusions): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {

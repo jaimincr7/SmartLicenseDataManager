@@ -21,6 +21,13 @@ class AdUsersExclusionsService {
     });
   }
 
+  public async getAdUsersExclusionFieldLookup(): Promise<any> {
+    const url = `${this.ENDPOINT}/field-lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveAdUsersExclusion(data: IAdUsersExclusions): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {

@@ -29,6 +29,18 @@ export const getAdUsersExclusionById = createAsyncThunk(
   }
 );
 
+export const getAdUsersExclusionsFieldLookup = createAsyncThunk(
+  'getAdUsersExclusionsFieldLookup',
+  async () => {
+    const response = await adUsersExclusionsService
+      .getAdUsersExclusionFieldLookup()
+      .then((res) => {
+        return res.body;
+      });
+    return response.data;
+  }
+);
+
 export const saveAdUsersExclusion = createAsyncThunk(
   'saveAdUsersExclusion',
   async (data: IAdUsersExclusions) => {

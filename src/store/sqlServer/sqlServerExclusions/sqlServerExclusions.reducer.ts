@@ -5,12 +5,14 @@ import { ISqlServerExclusions } from '../../../services/sqlServer/sqlServerExclu
 import { RootState } from '../../app.model';
 import {
   deleteSqlServerExclusions,
+  getFieldLookups,
   getSqlServerExclusionsById,
   processData,
   saveSqlServerExclusions,
   searchSqlServerExclusions,
 } from './sqlServerExclusions.action';
 import { ISqlServerExclusionsState } from './sqlServerExclusions.model';
+import { ILookup } from '../../../services/common/common.model';
 
 export const initialState: ISqlServerExclusionsState = {
   search: {
@@ -20,6 +22,10 @@ export const initialState: ISqlServerExclusionsState = {
     count: 0,
     lookups: {},
     tableName: '',
+  },
+  fieldLookup: {
+    data: [],
+    loading: false,
   },
   tableColumnSelection: {
     id: null,
@@ -99,6 +105,15 @@ export const sqlServerExclusionsSlice = createSlice({
     [searchSqlServerExclusions.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
+    },
+
+    //Field Lookup
+    [getFieldLookups.pending.type]: (state) => {
+      state.fieldLookup.loading = true;
+    },
+    [getFieldLookups.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.fieldLookup.data = action.payload;
+      state.fieldLookup.loading = false;
     },
 
     // Get by id

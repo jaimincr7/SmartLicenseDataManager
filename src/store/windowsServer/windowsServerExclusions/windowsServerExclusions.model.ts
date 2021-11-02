@@ -1,4 +1,5 @@
 import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
+import { ILookup } from '../../../services/common/common.model';
 import { IWindowsServerExclusions } from '../../../services/windowsServer/windowsServerExclusions/windowsServerExclusions.model';
 
 export interface IWindowsServerExclusionsState {
@@ -9,6 +10,10 @@ export interface IWindowsServerExclusionsState {
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
+  };
+  fieldLookup: {
+    data: ILookup[];
+    loading: boolean;
   };
   tableColumnSelection?: ITableColumnSelection;
   getById: {

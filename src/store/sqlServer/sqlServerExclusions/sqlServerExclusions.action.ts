@@ -30,6 +30,16 @@ export const getSqlServerExclusionsById = createAsyncThunk(
   }
 );
 
+export const getFieldLookups = createAsyncThunk(
+  'getFieldLookups',
+  async () => {
+    const response = await sqlServerExclusionsService.getFieldLookups().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const saveSqlServerExclusions = createAsyncThunk(
   'saveSqlServerExclusions',
   async (data: ISqlServerExclusions) => {

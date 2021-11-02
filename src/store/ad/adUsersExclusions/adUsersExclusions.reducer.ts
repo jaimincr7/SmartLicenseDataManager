@@ -5,11 +5,13 @@ import { RootState } from '../../app.model';
 import {
   deleteAdUsersExclusion,
   getAdUsersExclusionById,
+  getAdUsersExclusionsFieldLookup,
   saveAdUsersExclusion,
   searchAdUsersExclusion,
 } from './adUsersExclusions.action';
 import { IAdUsersExclusionsState } from './adUsersExclusions.model';
 import { IAdUsersExclusions } from '../../../services/ad/adUsersExclusions/adUsersExclusions.model';
+import { ILookup } from '../../../services/common/common.model';
 
 export const initialState: IAdUsersExclusionsState = {
   search: {
@@ -29,6 +31,10 @@ export const initialState: IAdUsersExclusionsState = {
     loading: false,
     hasErrors: false,
     data: null,
+  },
+  fieldLookup: {
+    data: [],
+    loading: false,
   },
   save: {
     loading: false,
@@ -93,6 +99,15 @@ export const adUsersExclusionsSlice = createSlice({
     [searchAdUsersExclusion.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
+    },
+
+    //Field Lookoup
+    [getAdUsersExclusionsFieldLookup.pending.type]: (state) => {
+      state.fieldLookup.loading = true;
+    },
+    [getAdUsersExclusionsFieldLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.fieldLookup.data = action.payload;
+      state.fieldLookup.loading = false;
     },
 
     // Get by id

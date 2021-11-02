@@ -29,6 +29,18 @@ export const getAdDevicesExclusionsById = createAsyncThunk(
   }
 );
 
+export const getAdDevicesExclusionsFieldLookup = createAsyncThunk(
+  'getAdDevicesExclusionsFieldLookup',
+  async () => {
+    const response = await adDevicesExclusionsService
+      .getAdDevicesExclusionsFieldLookup()
+      .then((res) => {
+        return res.body;
+      });
+    return response.data;
+  }
+);
+
 export const saveAdDevicesExclusions = createAsyncThunk(
   'saveAdDevicesExclusions',
   async (data: IAdDevicesExclusions) => {
