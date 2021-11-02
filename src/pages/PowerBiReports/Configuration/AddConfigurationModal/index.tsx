@@ -149,6 +149,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
     form.setFieldsValue({
       pb_report_id: reportId,
       description: selectedReport?.name,
+      report_type: selectedReport?.report_type,
       embedded_url: selectedReport?.embed_url,
     });
   };
@@ -241,6 +242,25 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                         </Option>
                       ))}
                     </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'pb_report_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Report Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Report Type'
+                  )}
+                <Form.Item
+                    name="report_type"
+                    label="Report Type"
+                    className="m-0"
+                    rules={[{ required: true, max: 500 }]}
+                  >
+                    <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
