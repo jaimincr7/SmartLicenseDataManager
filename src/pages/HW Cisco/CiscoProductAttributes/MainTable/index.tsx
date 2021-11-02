@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
   clearCiscoProductAttributesMessages,
@@ -33,6 +33,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dataTableRef = useRef(null);
   const globalFilters = useAppSelector(globalSearchSelector);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -51,7 +52,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, ciscoProductAttributes.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      ciscoProductAttributes.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -121,7 +132,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', ciscoProductAttributes.search.tableName, form),
+            title: FilterByDateSwapTable('date_added', ciscoProductAttributes.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -135,7 +146,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('l_do_sales', ciscoProductAttributes.search.tableName, form),
+            title: FilterByDateSwapTable('l_do_sales', ciscoProductAttributes.search.tableName, form),
             dataIndex: 'l_do_sales',
             key: 'l_do_sales',
             ellipsis: true,
@@ -149,7 +160,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('l_do_support', ciscoProductAttributes.search.tableName, form),
+            title: FilterByDateSwapTable('l_do_support', ciscoProductAttributes.search.tableName, form),
             dataIndex: 'l_do_support',
             key: 'l_do_support',
             ellipsis: true,
@@ -163,7 +174,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap(
+            title: FilterByDateSwapTable(
               'date_confirmed',
               ciscoProductAttributes.search.tableName,
               form
@@ -457,6 +468,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.HwCiscoProductAttributes)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

@@ -1,5 +1,5 @@
 import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
   clearCiscoSNTCMessages,
@@ -33,6 +33,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const globalFilters = useAppSelector(globalSearchSelector);
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -51,7 +52,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, ciscoSNTC.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      ciscoSNTC.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -121,7 +132,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', ciscoSNTC.search.tableName, form),
+            title: FilterByDateSwapTable('date_added', ciscoSNTC.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -135,7 +146,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('warranty_start', ciscoSNTC.search.tableName, form),
+            title: FilterByDateSwapTable('warranty_start', ciscoSNTC.search.tableName, form),
             dataIndex: 'warranty_start',
             key: 'warranty_start',
             ellipsis: true,
@@ -149,7 +160,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('warranty_end', ciscoSNTC.search.tableName, form),
+            title: FilterByDateSwapTable('warranty_end', ciscoSNTC.search.tableName, form),
             dataIndex: 'warranty_end',
             key: 'warranty_end',
             ellipsis: true,
@@ -163,7 +174,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('ship_date', ciscoSNTC.search.tableName, form),
+            title: FilterByDateSwapTable('ship_date', ciscoSNTC.search.tableName, form),
             dataIndex: 'ship_date',
             key: 'ship_date',
             ellipsis: true,
@@ -177,7 +188,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('hw_l_do_s', ciscoSNTC.search.tableName, form),
+            title: FilterByDateSwapTable('hw_l_do_s', ciscoSNTC.search.tableName, form),
             dataIndex: 'hw_l_do_s',
             key: 'hw_l_do_s',
             ellipsis: true,
@@ -191,7 +202,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('collection_date', ciscoSNTC.search.tableName, form),
+            title: FilterByDateSwapTable('collection_date', ciscoSNTC.search.tableName, form),
             dataIndex: 'collection_date',
             key: 'collection_date',
             ellipsis: true,
@@ -1070,6 +1081,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.HwCiscoSNTC)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );

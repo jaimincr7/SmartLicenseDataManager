@@ -1,5 +1,5 @@
 import { Checkbox, Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
   clearCiscoPolicyMessages,
@@ -33,6 +33,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dataTableRef = useRef(null);
   const globalFilters = useAppSelector(globalSearchSelector);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -51,7 +52,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, ciscoPolicy.search.tableName, form);
+    return FilterWithSwapOption(
+      dataIndex,
+      ciscoPolicy.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -121,7 +132,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', ciscoPolicy.search.tableName, form),
+            title: FilterByDateSwapTable('date_added', ciscoPolicy.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -135,7 +146,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('quote_begin_date', ciscoPolicy.search.tableName, form),
+            title: FilterByDateSwapTable('quote_begin_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'quote_begin_date',
             key: 'quote_begin_date',
             ellipsis: true,
@@ -149,7 +160,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('quote_end_date', ciscoPolicy.search.tableName, form),
+            title: FilterByDateSwapTable('quote_end_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'quote_end_date',
             key: 'quote_end_date',
             ellipsis: true,
@@ -163,7 +174,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('coverage_expiration', ciscoPolicy.search.tableName, form),
+            title: FilterByDateSwapTable('coverage_expiration', ciscoPolicy.search.tableName, form),
             dataIndex: 'coverage_expiration',
             key: 'coverage_expiration',
             ellipsis: true,
@@ -177,7 +188,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('start_date', ciscoPolicy.search.tableName, form),
+            title: FilterByDateSwapTable('start_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'start_date',
             key: 'start_date',
             ellipsis: true,
@@ -191,7 +202,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('end_date', ciscoPolicy.search.tableName, form),
+            title: FilterByDateSwapTable('end_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'end_date',
             key: 'end_date',
             ellipsis: true,
@@ -205,7 +216,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('second_start_date', ciscoPolicy.search.tableName, form),
+            title: FilterByDateSwapTable('second_start_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'second_start_date',
             key: 'second_start_date',
             ellipsis: true,
@@ -219,7 +230,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('second_end_date', ciscoPolicy.search.tableName, form),
+            title: FilterByDateSwapTable('second_end_date', ciscoPolicy.search.tableName, form),
             dataIndex: 'second_end_date',
             key: 'second_end_date',
             ellipsis: true,
@@ -1086,6 +1097,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.HwCiscoPolicy)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
       />
     </>
   );
