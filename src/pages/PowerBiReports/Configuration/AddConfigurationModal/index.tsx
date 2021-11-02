@@ -59,6 +59,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
     embedded_url: '',
     pb_report_id: '',
     work_space_id: '',
+    report_type: '',
   };
 
   const onFinish = (values: any) => {
@@ -89,6 +90,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
         embedded_url: data.embedded_url,
         pb_report_id: data.pb_report_id,
         work_space_id: data.work_space_id,
+        report_type: data.report_type,
       };
       form.setFieldsValue(initialValues);
     }
@@ -260,7 +262,7 @@ const AddConfigurationModal: React.FC<IAddConfigurationProps> = (props) => {
                     className="m-0"
                     rules={[{ required: true, max: 500 }]}
                   >
-                    <Input className="form-control" />
+                    <Input disabled={true} className="form-control" />
                   </Form.Item>
                 </div>
               </Col>

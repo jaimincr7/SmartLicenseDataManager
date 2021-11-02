@@ -7,6 +7,7 @@ export interface IConfiguration {
   embedded_url: string;
   pb_report_id: string;
   work_space_id: string;
+  report_type: string;
 }
 
 export interface ISearchConfiguration extends ISearch {}
