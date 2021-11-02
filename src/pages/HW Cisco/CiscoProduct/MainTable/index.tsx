@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -491,7 +492,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('minor_follow_parent', form),
+            title: FilterByBooleanDropDown('minor_follow_parent', ciscoProduct.search?.tableName, ObjectForColumnFilter),
             dataIndex: 'minor_follow_parent',
             key: 'minor_follow_parent',
             ellipsis: true,
