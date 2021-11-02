@@ -24,12 +24,14 @@ import {
   deleteCiscoProduct,
   searchCiscoProduct,
 } from '../../../../store/hwCisco/ciscoProduct/ciscoProduct.action';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
   const ciscoProduct = useAppSelector(ciscoProductSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
+  const globalFilters = useAppSelector(globalSearchSelector);
   const history = useHistory();
 
   useImperativeHandle(ref, () => ({
@@ -74,7 +76,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', ciscoProduct.search.lookups?.tenants),
+            title: FilterByDropdown('tenant_id', (ciscoProduct.search.lookups?.tenants?.length > 0 ?
+              ciscoProduct.search.lookups?.tenants :
+              globalFilters?.globalTenantLookup?.data )),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -87,7 +91,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('company_id', ciscoProduct.search.lookups?.companies),
+            title: FilterByDropdown('company_id', (ciscoProduct.search.lookups?.companies?.length > 0 ?
+              ciscoProduct.search.lookups?.companies :
+              globalFilters?.globalCompanyLookup?.data )),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -100,7 +106,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', ciscoProduct.search.lookups?.bus),
+            title: FilterByDropdown('bu_id', (ciscoProduct.search.lookups?.bus?.length > 0 ?
+              ciscoProduct.search.lookups?.bus :
+              globalFilters?.globalBULookup?.data )),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,

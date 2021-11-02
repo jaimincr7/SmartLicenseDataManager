@@ -25,6 +25,7 @@ import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -38,6 +39,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
@@ -92,7 +94,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', o365Users.search.lookups?.tenants),
+            title: FilterByDropdown('tenant_id', (o365Users.search.lookups?.tenants?.length > 0 ?
+              o365Users.search.lookups?.tenants :
+              globalFilters?.globalTenantLookup?.data )),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -105,7 +109,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('company_id', o365Users.search.lookups?.companies),
+            title: FilterByDropdown('company_id', (o365Users.search.lookups?.companies?.length > 0 ?
+              o365Users.search.lookups?.companies :
+              globalFilters?.globalCompanyLookup?.data )),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -118,7 +124,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', o365Users.search.lookups?.bus),
+            title: FilterByDropdown('bu_id', (o365Users.search.lookups?.bus?.length > 0 ?
+              o365Users.search.lookups?.bus :
+              globalFilters?.globalBULookup?.data )),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,
