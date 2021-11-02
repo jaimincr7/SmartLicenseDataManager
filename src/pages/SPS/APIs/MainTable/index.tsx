@@ -17,7 +17,7 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { IMainTable } from '../../../../common/models/common';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple} = props;
   const dispatch = useAppDispatch();
   const spsApis = useAppSelector(spsApiSelector);
   const dataTableRef = useRef(null);

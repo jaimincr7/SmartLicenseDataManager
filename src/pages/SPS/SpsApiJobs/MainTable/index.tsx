@@ -19,12 +19,11 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { IMainTable } from './mainTable.model';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
