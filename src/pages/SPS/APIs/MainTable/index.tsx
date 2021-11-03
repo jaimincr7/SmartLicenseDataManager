@@ -165,7 +165,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/sps/sps-api/${data.id}`);
+            history.push(`/sps/sps-config-api/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />

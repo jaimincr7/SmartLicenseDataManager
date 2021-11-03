@@ -221,7 +221,7 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if ( +id === 0 && !isMultiple) {
+    if (+id === 0 && !isMultiple) {
       const globalSearch: IInlineSearch = {};
       for (const key in globalFilters.search) {
         const element = globalFilters.search[key];

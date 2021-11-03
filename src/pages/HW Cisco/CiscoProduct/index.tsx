@@ -4,7 +4,7 @@ import { ICiscoProductProps } from './ciscoProduct.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
@@ -28,6 +28,7 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
+  const [filterKeys, setFilterKeys] = React.useState({});
 
   const [id, setId] = React.useState(0);
 
@@ -49,6 +50,44 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
     dataTableRef?.current.refreshData();
   };
 
+  const tableButtons = () => (
+    <>
+      <Can I={Action.ImportToExcel} a={Page.HwCiscoProduct}>
+        <Button
+          className="btn-icon"
+          onClick={() =>
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(ciscoProduct.search.tableName)}`
+            )
+          }
+          icon={
+            <em className="anticon">
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
+                alt=""
+              />
+            </em>
+          }
+        >
+          Import
+        </Button>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.HwCiscoProduct}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+      </Can>
+    </>
+  );
+
   return (
     <div className="sqlServer">
       <div className="title-block">
@@ -60,7 +99,7 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <div className="input-btns-title">
+        {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
             <Can I={Action.ImportToExcel} a={Page.HwCiscoProduct}>
               <Col>
@@ -100,7 +139,7 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
               </Col>
             </Can>
           </Row>
-        </div>
+        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
@@ -113,6 +152,8 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (
@@ -145,6 +186,7 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={ciscoProduct.search.tableName}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

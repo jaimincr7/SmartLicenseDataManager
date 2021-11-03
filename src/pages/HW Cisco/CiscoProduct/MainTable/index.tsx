@@ -1,10 +1,11 @@
 import { Checkbox, Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -24,13 +25,23 @@ import {
   deleteCiscoProduct,
   searchCiscoProduct,
 } from '../../../../store/hwCisco/ciscoProduct/ciscoProduct.action';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+    tableButtons,
+  } = props;
   const ciscoProduct = useAppSelector(ciscoProductSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
+  const globalFilters = useAppSelector(globalSearchSelector);
   const history = useHistory();
+  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -49,7 +60,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, ciscoProduct.search.tableName, form);
+    setFilterKeys(ObjectForColumnFilter);
+    return FilterWithSwapOption(
+      dataIndex,
+      ciscoProduct.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -74,7 +96,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', ciscoProduct.search.lookups?.tenants),
+            title: FilterByDropdown(
+              'tenant_id',
+              ciscoProduct.search.lookups?.tenants?.length > 0
+                ? ciscoProduct.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -87,7 +114,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('company_id', ciscoProduct.search.lookups?.companies),
+            title: FilterByDropdown(
+              'company_id',
+              ciscoProduct.search.lookups?.companies?.length > 0
+                ? ciscoProduct.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -100,7 +132,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', ciscoProduct.search.lookups?.bus),
+            title: FilterByDropdown(
+              'bu_id',
+              ciscoProduct.search.lookups?.bus?.length > 0
+                ? ciscoProduct.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,
@@ -113,7 +150,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', ciscoProduct.search.tableName, form),
+            title: FilterByDateSwapTable('date_added', ciscoProduct.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -127,7 +164,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('ship_date', ciscoProduct.search.tableName, form),
+            title: FilterByDateSwapTable('ship_date', ciscoProduct.search.tableName, form),
             dataIndex: 'ship_date',
             key: 'ship_date',
             ellipsis: true,
@@ -141,7 +178,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('date_data_added', ciscoProduct.search.tableName, form),
+            title: FilterByDateSwapTable('date_data_added', ciscoProduct.search.tableName, form),
             dataIndex: 'date_data_added',
             key: 'date_data_added',
             ellipsis: true,
@@ -155,7 +192,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('last_update_date', ciscoProduct.search.tableName, form),
+            title: FilterByDateSwapTable('last_update_date', ciscoProduct.search.tableName, form),
             dataIndex: 'last_update_date',
             key: 'last_update_date',
             ellipsis: true,
@@ -169,7 +206,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('warranty_end_date', ciscoProduct.search.tableName, form),
+            title: FilterByDateSwapTable('warranty_end_date', ciscoProduct.search.tableName, form),
             dataIndex: 'warranty_end_date',
             key: 'warranty_end_date',
             ellipsis: true,
@@ -472,7 +509,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('minor_follow_parent', form),
+            title: FilterByBooleanDropDown(
+              'minor_follow_parent',
+              ciscoProduct.search?.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'minor_follow_parent',
             key: 'minor_follow_parent',
             ellipsis: true,
@@ -677,6 +718,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.HwCiscoProduct)}
+        setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

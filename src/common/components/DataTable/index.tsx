@@ -163,9 +163,17 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       fetchTableData();
     },
     getValuesForSelection() {
+      const inlineSearchFilter = _.pickBy(tableFilter.filter_keys, function (value) {
+        return !(
+          value === undefined ||
+          value === '' ||
+          _.isNull(value) ||
+          (Array.isArray(value) && value.length === 0)
+        );
+      });
       const Obj = {
         isLookup: !pageLoaded,
-        filterKeys: tableFilter.filter_keys,
+        filterKeys: inlineSearchFilter,
         is_export_to_excel: !pageLoaded,
         limit: 10,
         offset: 0,

@@ -27,6 +27,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dataTableRef = useRef(null);
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const globalFilters = useAppSelector(globalSearchSelector);
   const [showStartApi, setShowStartApi] = useState(false);
   const [startTimeDisabled, setStartTimeDisabled] = useState(true);
   const [id, setId] = useState(0);
@@ -95,7 +96,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', cron.search.lookups?.tenants),
+            title: FilterByDropdown(
+              'tenant_id',
+              cron.search.lookups?.tenants?.length > 0
+                ? cron.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -109,7 +115,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('company_id', cron.search.lookups?.companies),
+            title: FilterByDropdown(
+              'company_id',
+              cron.search.lookups?.companies?.length > 0
+                ? cron.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -123,7 +134,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', cron.search.lookups?.bus),
+            title: FilterByDropdown(
+              'bu_id',
+              cron.search.lookups?.bus?.length > 0
+                ? cron.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,

@@ -7,7 +7,7 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import {
@@ -19,10 +19,15 @@ import buService from '../../../../services/master/bu/bu.service';
 import { deleteBU, searchBU } from '../../../../store/master/bu/bu.action';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const bu = useAppSelector(buSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -177,6 +182,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         clearTableDataMessages={clearBUMessages}
         setTableColumnSelection={setTableColumnSelection}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

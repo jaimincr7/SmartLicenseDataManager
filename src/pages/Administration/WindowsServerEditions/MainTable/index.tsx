@@ -19,7 +19,13 @@ import {
 import configWindowsServerEditionsService from '../../../../services/master/windowsServerEditions/windowsServerEditions.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configWindowsServerEditions = useAppSelector(configWindowsServerEditionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -131,6 +137,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

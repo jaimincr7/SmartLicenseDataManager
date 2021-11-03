@@ -201,7 +201,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if ( +id === 0 && !isMultiple) {
+    if (+id === 0 && !isMultiple) {
       const globalSearch: IInlineSearch = {};
       for (const key in globalFilters.search) {
         const element = globalFilters.search[key];
@@ -256,7 +256,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                     name="tenant_id"
                     className="m-0"
                     label="Tenant"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleTenantChange}
@@ -295,7 +295,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                     name="company_id"
                     className="m-0"
                     label="Company"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={handleCompanyChange}
@@ -330,7 +330,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: true }]}>
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
                     <Select
                       onChange={handleBUChange}
                       allowClear
@@ -372,7 +372,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                     name="exclusion_id_component_id"
                     className="m-0"
                     label="Exclusion Component"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -414,7 +414,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                     name="exclusion_id_location_id"
                     className="m-0"
                     label="Exclusion Location"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -456,7 +456,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                     name="exclusion_id_operation_id"
                     className="m-0"
                     label="Exclusion Operation"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -498,7 +498,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                     name="exclusion_type_id"
                     className="m-0"
                     label="Exclusion Type"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -536,7 +536,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ max: 500, required: true }]}
+                    rules={[{ max: 500, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

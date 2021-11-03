@@ -4,6 +4,7 @@ import { IApiResponseBody, ISearchResponse } from '../../../common/models/common
 import { RootState } from '../../app.model';
 import {
   deleteWindowsServerExclusions,
+  getWindowsFieldLookup,
   getWindowsServerExclusionsById,
   processData,
   saveWindowsServerExclusions,
@@ -11,6 +12,7 @@ import {
 } from './windowsServerExclusions.action';
 import { IWindowsServerExclusionsState } from './windowsServerExclusions.model';
 import { IWindowsServerExclusions } from '../../../services/windowsServer/windowsServerExclusions/windowsServerExclusions.model';
+import { ILookup } from '../../../services/common/common.model';
 
 export const initialState: IWindowsServerExclusionsState = {
   search: {
@@ -35,6 +37,10 @@ export const initialState: IWindowsServerExclusionsState = {
     loading: false,
     hasErrors: false,
     messages: [],
+  },
+  fieldLookup: {
+    data: [],
+    loading: false,
   },
   delete: {
     loading: false,
@@ -116,6 +122,15 @@ export const windowsServerExclusionsSlice = createSlice({
     [getWindowsServerExclusionsById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
+    },
+
+    //Field Lookoup
+    [getWindowsFieldLookup.pending.type]: (state) => {
+      state.fieldLookup.loading = true;
+    },
+    [getWindowsFieldLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.fieldLookup.data = action.payload;
+      state.fieldLookup.loading = false;
     },
 
     // Save

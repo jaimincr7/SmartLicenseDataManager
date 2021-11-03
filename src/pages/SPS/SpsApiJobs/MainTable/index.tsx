@@ -19,18 +19,19 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { ISearch } from '../../../../common/models/common';
+import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { IMainTable } from './mainTable.model';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const spsApiJobs = useAppSelector(spsApiJobsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
@@ -80,7 +81,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('tenant_id', spsApiJobs.search.lookups?.tenants),
+            title: FilterByDropdown(
+              'tenant_id',
+              spsApiJobs.search.lookups?.tenants?.length > 0
+                ? spsApiJobs.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -94,7 +100,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('company_id', spsApiJobs.search.lookups?.companies),
+            title: FilterByDropdown(
+              'company_id',
+              spsApiJobs.search.lookups?.companies?.length > 0
+                ? spsApiJobs.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -108,7 +119,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('bu_id', spsApiJobs.search.lookups?.bus),
+            title: FilterByDropdown(
+              'bu_id',
+              spsApiJobs.search.lookups?.bus?.length > 0
+                ? spsApiJobs.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,
