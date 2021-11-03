@@ -226,6 +226,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'cron_frequency_time',
             key: 'cron_frequency_time',
             ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format("HH:MM:SS") : ''),
           },
         ],
       },
