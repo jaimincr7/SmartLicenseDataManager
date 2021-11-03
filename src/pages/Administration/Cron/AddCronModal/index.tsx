@@ -36,6 +36,8 @@ import {
 } from '../../../../store/master/cron/cron.reducer';
 import { IAddCronProps } from './addCron.model';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { IInlineSearch } from '../../../../common/models/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
@@ -43,6 +45,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   const cron = useAppSelector(cronSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
   const [week, setWeek] = useState('');
 
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
@@ -197,6 +200,26 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    if(+id === 0 && !isMultiple) {
+        const globalSearch: IInlineSearch = {};
+        for (const key in globalFilters.search) {
+          const element = globalFilters.search[key];
+          globalSearch[key] = element ? [element] : null;
+        }
+        if (globalSearch.company_id) {
+          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+          dispatch(getBULookup(globalSearch.company_id[0]));
+      const initialValues = {
+          company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
+          bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+          tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        };
+        form.setFieldsValue(initialValues);
+      }
+      }
+      }, []);
+
   return (
     <>
       <Modal
@@ -229,7 +252,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Tenant'
                   )}
-                  <Form.Item name="tenant_id" className="m-0" label="Tenant">
+                  <Form.Item name="tenant_id" className="m-0" label="Tenant" rules={[{ required: !isMultiple }]}>
                     <Select
                       onChange={handleTenantChange}
                       allowClear
@@ -263,7 +286,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Company'
                   )}
-                  <Form.Item name="company_id" className="m-0" label="Company">
+                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -297,7 +320,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU">
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
                     <Select
                       allowClear
                       onChange={handleBUChange}
@@ -331,7 +354,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Api Group'
                   )}
-                  <Form.Item name="api_group_id" className="m-0" label="Api Group">
+                  <Form.Item name="api_group_id" className="m-0" label="Api Group" rules={[{ required: !isMultiple }]}>
                     <Select
                       loading={commonLookups.spsApiGroups.loading}
                       allowClear
@@ -372,6 +395,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     name="cron_frequency_type"
                     label="Frequency Type"
                     className="m-0"
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Radio.Group onChange={onRadioChange} defaultValue={'Weekly'}>
                       <Radio value={'Weekly'} >Weekly</Radio>
@@ -393,7 +417,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Frequency Day'
                   )}
-                  <Form.Item name="cron_frequency_day" className="m-0" label="Frequency Day">
+                  <Form.Item name="cron_frequency_day" className="m-0" label="Frequency Day" rules={[{ required: !isMultiple }]}>
                     <Select
                       allowClear
                       showSearch
@@ -434,7 +458,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Frequency Time'
                   )}
-                  <Form.Item name="cron_frequency_time" label="Frequency Time" className="m-0">
+                  <Form.Item name="cron_frequency_time" label="Frequency Time" className="m-0" rules={[{ required: !isMultiple }]}>
                     <TimePicker defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
                   </Form.Item>
                 </div>
