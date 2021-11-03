@@ -113,7 +113,7 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
       ...values,
       id: id ? +id : null,
     };
-    if (+id === 0 && !isMultiple) {
+    if (!isMultiple) {
       dispatch(saveSqlServerInventory(inputValues));
     } else {
       const result = getObjectForUpdateMultiple(
@@ -243,7 +243,7 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
   }, [dispatch]);
 
   useEffect(() => {
-    if (!isMultiple) {
+    if (+id === 0 && !isMultiple) {
       const globalSearch: IInlineSearch = {};
       for (const key in globalFilters.search) {
         const element = globalFilters.search[key];

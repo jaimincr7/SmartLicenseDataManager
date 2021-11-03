@@ -202,7 +202,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                     name="edition_id"
                     className="m-0"
                     label="Edition"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -242,7 +242,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                     name="version_id"
                     className="m-0"
                     label="Version"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -286,7 +286,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                     name="license_unit_id"
                     className="m-0"
                     label="License Unit"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
@@ -324,7 +324,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                     name="product_name"
                     label="Product Name"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -347,7 +347,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                     name="units_per_license"
                     label="Units Per License"
                     className="m-0"
-                    rules={[{ type: 'integer', required: true }]}
+                    rules={[{ type: 'integer', required: !isMultiple }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -370,7 +370,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                     name="additional_virtual_oes_s"
                     label="Additional Virtual OSEs"
                     className="m-0"
-                    rules={[{ type: 'integer', required: true }]}
+                    rules={[{ type: 'integer', required: !isMultiple }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -393,7 +393,7 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
                     name="license_quantity_minimum"
                     label="License Quantity Minimum"
                     className="m-0"
-                    rules={[{ type: 'integer', required: true }]}
+                    rules={[{ type: 'integer', required: !isMultiple }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>

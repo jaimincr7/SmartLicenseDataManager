@@ -19,7 +19,13 @@ import {
 import agreementTypesService from '../../../../services/master/agreementTypes/agreementTypes.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const agreementTypes = useAppSelector(agreementTypesSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -129,6 +135,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.AgreementTypes)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

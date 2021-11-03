@@ -25,6 +25,13 @@ class SqlServerExclusionsService {
     });
   }
 
+  public async getFieldLookups(): Promise<any> {
+    const url = `${this.ENDPOINT}/field-lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveSqlServerExclusions(data: ISqlServerExclusions): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {

@@ -5,11 +5,13 @@ import { RootState } from '../../app.model';
 import {
   deleteAdDevicesExclusions,
   getAdDevicesExclusionsById,
+  getAdDevicesExclusionsFieldLookup,
   saveAdDevicesExclusions,
   searchAdDevicesExclusions,
 } from './adDevicesExclusions.action';
 import { IAdDevicesExclusionsState } from './adDevicesExclusions.model';
 import { IAdDevicesExclusions } from '../../../services/ad/adDevicesExclusions/adDevicesExclusions.model';
+import { ILookup } from '../../../services/common/common.model';
 
 export const initialState: IAdDevicesExclusionsState = {
   search: {
@@ -29,6 +31,10 @@ export const initialState: IAdDevicesExclusionsState = {
     loading: false,
     hasErrors: false,
     data: null,
+  },
+  fieldLookup: {
+    data: [],
+    loading: false,
   },
   save: {
     loading: false,
@@ -93,6 +99,18 @@ export const adDevicesExclusionsSlice = createSlice({
     [searchAdDevicesExclusions.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
+    },
+
+    //Field Lookoup
+    [getAdDevicesExclusionsFieldLookup.pending.type]: (state) => {
+      state.fieldLookup.loading = true;
+    },
+    [getAdDevicesExclusionsFieldLookup.fulfilled.type]: (
+      state,
+      action: PayloadAction<ILookup[]>
+    ) => {
+      state.fieldLookup.data = action.payload;
+      state.fieldLookup.loading = false;
     },
 
     // Get by id

@@ -24,7 +24,13 @@ import {
 import spsApiTokenConfigOptionsService from '../../../../services/sps/apiTokenConfigOptions/apiTokenConfigOptions.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const spsApiTokenConfigOptions = useAppSelector(spsApiTokenConfigOptionsSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -205,6 +211,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.SpsApiTokenConfigOptions)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );

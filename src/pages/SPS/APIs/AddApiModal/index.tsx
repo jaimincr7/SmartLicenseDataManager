@@ -179,7 +179,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                     name="name"
                     label="Name"
                     className="m-0"
-                    rules={[{ required: true, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -212,7 +212,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                     name="group_id"
                     className="m-0"
                     label="Group"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={(val) => {
@@ -253,7 +253,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                     name="api_type_id"
                     className="m-0"
                     label="Api Type"
-                    rules={[{ required: true }]}
+                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       onChange={(val) => {

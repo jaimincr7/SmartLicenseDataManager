@@ -1,5 +1,6 @@
 import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
 import { IAdDevicesExclusions } from '../../../services/ad/adDevicesExclusions/adDevicesExclusions.model';
+import { ILookup } from '../../../services/common/common.model';
 
 export interface IAdDevicesExclusionsState {
   search: {
@@ -20,6 +21,10 @@ export interface IAdDevicesExclusionsState {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
+  };
+  fieldLookup: {
+    data: ILookup[];
+    loading: boolean;
   };
   delete: {
     loading: boolean;

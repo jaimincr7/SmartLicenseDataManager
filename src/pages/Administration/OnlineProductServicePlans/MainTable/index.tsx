@@ -22,7 +22,13 @@ import {
 import configOnlineProductServicePlansService from '../../../../services/master/onlineProductServicePlans/onlineProductServicePlans.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configOnlineProductServicePlans = useAppSelector(configOnlineProductServicePlansSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -153,6 +159,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

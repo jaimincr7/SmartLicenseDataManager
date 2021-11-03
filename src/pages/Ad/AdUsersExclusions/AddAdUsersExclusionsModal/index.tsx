@@ -23,6 +23,7 @@ import { IAdUsersExclusions } from '../../../../services/ad/adUsersExclusions/ad
 import { ILookup } from '../../../../services/common/common.model';
 import {
   getAdUsersExclusionById,
+  getAdUsersExclusionsFieldLookup,
   saveAdUsersExclusion,
 } from '../../../../store/ad/adUsersExclusions/adUsersExclusions.action';
 import {
@@ -197,6 +198,7 @@ const AddAdUsersExclusionsModal: React.FC<IAddAdUsersExclusionsProps> = (props) 
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch(getAdUsersExclusionsFieldLookup());
     if (+id === 0 && !isMultiple) {
       const globalSearch: IInlineSearch = {};
       for (const key in globalFilters.search) {
@@ -355,13 +357,27 @@ const AddAdUsersExclusionsModal: React.FC<IAddAdUsersExclusionsProps> = (props) 
                   ) : (
                     'Field'
                   )}
-                  <Form.Item
-                    name="field"
-                    label="Field"
-                    className="m-0"
-                    rules={[{ required: !isMultiple, max: 510 }]}
-                  >
-                    <Input className="form-control" />
+                  <Form.Item name="field" className="m-0" label="Field">
+                    <Select
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={adUsersExclusions.fieldLookup.loading}
+                    >
+                      {adUsersExclusions.fieldLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>

@@ -24,7 +24,13 @@ import {
 import configExclusionLocationService from '../../../../services/master/exclusionLocation/exclusionLocation.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    tableButtons,
+  } = props;
   const configExclusionLocation = useAppSelector(configExclusionLocationSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -163,6 +169,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.ConfigExclusionLocation)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        tableButtons={tableButtons}
       />
     </>
   );

@@ -2,11 +2,7 @@ import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import React, { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import {
-  getAllCompanyLookup,
-  getBULookup,
-  getScheduleDate,
-} from '../../../../store/common/common.action';
+import { getAllCompanyLookup, getBULookup } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearDateLookup,
@@ -19,9 +15,7 @@ import {
   sqlServerExclusionsSelector,
 } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.reducer';
 import { toast } from 'react-toastify';
-import moment from 'moment';
-import { Common, validateMessages } from '../../../../common/constants/common';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { validateMessages } from '../../../../common/constants/common';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
@@ -76,14 +70,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    if (buId) {
-      dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(form, sqlServerExclusions.search.tableName))
-      );
-    } else {
-      dispatch(clearDateLookup());
-    }
-
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -186,39 +172,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                     {commonLookups.buLookup.data.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
                         {option.name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Selected Date</label>
-                <Form.Item
-                  name="selected_date"
-                  className="m-0"
-                  label="Selected Date"
-                  rules={[{ required: true }]}
-                >
-                  <Select
-                    placeholder="Select Date"
-                    loading={commonLookups.getScheduledDate.loading}
-                    allowClear
-                    showSearch
-                    optionFilterProp="children"
-                    filterOption={(input, option: any) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                    filterSort={(optionA: any, optionB: any) =>
-                      optionA.children
-                        ?.toLowerCase()
-                        ?.localeCompare(optionB.children?.toLowerCase())
-                    }
-                  >
-                    {commonLookups.getScheduledDate.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}
                   </Select>
