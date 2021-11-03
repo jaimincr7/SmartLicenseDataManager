@@ -202,15 +202,29 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Frequency Type</span>,
+        column: 'Frequency Type',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('cron_frequency_type', form),
+            dataIndex: 'cron_frequency_type',
+            key: 'cron_frequency_type',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Frequency Day</span>,
         column: 'Frequency Day',
         sorter: true,
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('cron_frequency_day', form),
-            dataIndex: 'cron_frequency_day',
-            key: 'cron_frequency_day',
+            title: FilterBySwap('week_day_name', form),
+            dataIndex: 'week_day_name',
+            key: 'week_day_name',
             ellipsis: true,
           },
         ],
@@ -222,25 +236,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('cron_frequency_time', form),
+            title: FilterBySwap('cron_frequency_time', form ),
             dataIndex: 'cron_frequency_time',
             key: 'cron_frequency_time',
             ellipsis: true,
             render: (date: Date) => (!_.isNull(date) ? moment(date).format("HH:MM:SS") : ''),
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Frequency Type</span>,
-        column: 'Frequency Type',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterBySwap('cron_frequency_type', form),
-            dataIndex: 'cron_frequency_type',
-            key: 'cron_frequency_type',
-            ellipsis: true,
           },
         ],
       },
