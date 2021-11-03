@@ -1,5 +1,6 @@
-import { ICron } from '../../../services/master/cron/cron.model';
+import { ICron, ICronData } from '../../../services/master/cron/cron.model';
 import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
+import { ILookup } from '../../../services/common/common.model';
 
 export interface ICronState {
   search: {
@@ -14,12 +15,17 @@ export interface ICronState {
   getById: {
     loading: boolean;
     hasErrors: boolean;
-    data: ICron;
+    data: ICronData;
   };
   startApi: {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
+  };
+  FrequencyDay: {
+    week: ILookup[];
+    month: ILookup[];
+    loading: boolean;
   };
   save: {
     loading: boolean;
