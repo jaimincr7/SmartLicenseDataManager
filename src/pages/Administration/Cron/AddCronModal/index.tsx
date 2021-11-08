@@ -4,7 +4,6 @@ import {
   Col,
   Form,
   Modal,
-  Radio,
   Row,
   Select,
   Spin,
@@ -46,7 +45,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
-  const [week, setWeek] = useState('');
+  const [week, setWeek] = useState('Daily');
 
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
@@ -65,14 +64,11 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  const onRadioChange = e => {
-    if(e.target.value === 'Monthly')
+  const onSelChange = (value: string) => {
+    setWeek(value);
+    if(value === 'Daily')
     {
-      setWeek('Monthly');
-    }
-    else
-    {
-      setWeek('Weekly');
+      form.setFieldsValue({cron_frequency_day: null});
     }
   };
 
@@ -397,10 +393,24 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     className="m-0"
                     rules={[{ required: !isMultiple }]}
                   >
-                    <Radio.Group onChange={onRadioChange} defaultValue={'Weekly'}>
-                      <Radio value={'Weekly'} >Weekly</Radio>
-                      <Radio value={'Monthly'} >Monthly</Radio>
-                    </Radio.Group>
+                    <Select
+                    onChange={onSelChange}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      <Option value="Daily">Daily</Option>
+                      <Option value="Weekly">Weekly</Option>
+                      <Option value="Monthly">Monthly</Option>
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>
@@ -417,10 +427,11 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Frequency Day'
                   )}
-                  <Form.Item name="cron_frequency_day" className="m-0" label="Frequency Day" rules={[{ required: !isMultiple }]}>
+                  <Form.Item name="cron_frequency_day" className="m-0" label="Frequency Day" rules={[{ required: !isMultiple && week !== 'Daily' }]}>
                     <Select
                       allowClear
                       showSearch
+                      disabled = {week == 'Daily'}
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -438,7 +449,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                         </Option>
                       ))) : week == 'Monthly' ? (cron.FrequencyDay.month.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
-                          {option.name}
+                          {option.id}
                         </Option>
                       ))) : <></> }
                     </Select>

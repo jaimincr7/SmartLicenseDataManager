@@ -153,7 +153,8 @@ export const FilterByDropdown = (
   dropdownOptions: IDropDownOption[] = [],
   loading?: boolean,
   setDropSearch?: (e: any) => void,
-  isDateDropDown?: boolean
+  isDateDropDown?: boolean,
+  isTime?: boolean,
 ) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input">
@@ -184,7 +185,7 @@ export const FilterByDropdown = (
               ? moment(option.name).format(Common.DATEFORMAT)?.toString() == 'Invalid date'
                 ? 'NULL'
                 : moment(option.name).format(Common.DATEFORMAT)?.toString()
-              : option.name?.toString()}
+              : (isTime ? moment(option.name).format("HH:MM:SS").toString() : option.name?.toString())}
           </Select.Option>
         ))}
       </Select>
@@ -283,7 +284,8 @@ export const FilterWithSwapOption = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
-  ObjectForColumnFilter?: {}
+  ObjectForColumnFilter?: {},
+  isTime?: boolean,
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
   const [dropSearch, setDropSearch] = React.useState(false);
@@ -364,7 +366,7 @@ export const FilterWithSwapOption = (
       <div className="input-filter-group">
         {swap
           ? FilterByInput(dataIndex)
-          : FilterByDropdown(dataIndex, options || [], loading, handleDropSearch)}
+          : FilterByDropdown(dataIndex, options || [], loading, handleDropSearch, false, isTime)}
         <Button onClick={() => setSwap(!swap)} className={`filter-btn ${swap ? '' : 'active'}`}>
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
           <img

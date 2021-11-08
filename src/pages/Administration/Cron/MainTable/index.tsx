@@ -222,9 +222,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('week_day_name', form),
-            dataIndex: 'week_day_name',
-            key: 'week_day_name',
+            title: FilterBySwap('day_name', form),
+            dataIndex: 'day_name',
+            key: 'day_name',
             ellipsis: true,
           },
         ],
@@ -236,7 +236,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('cron_frequency_time', form ),
+            title: FilterWithSwapOption('cron_frequency_time', cron.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter, true),
             dataIndex: 'cron_frequency_time',
             key: 'cron_frequency_time',
             ellipsis: true,
@@ -344,7 +347,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
         </Popconfirm>
-      </Can>   
+      </Can>
     </div>
   );
 
@@ -365,7 +368,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         isCronJobApiButton={true}
         setObjectForColumnFilter={setObjectForColumnFilter}
         setShowSelectedListModal={setShowSelectedListModal}
-        setValuesForSelection={setValuesForSelection} 
+        setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.Cron)}
       />
       {showStartApi && (
