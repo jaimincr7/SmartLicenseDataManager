@@ -132,6 +132,8 @@ export enum Page {
   CronViewLogData = 'sps-cron-job-log',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
+
+  Inventory = "inventory",
 }
 export enum Action {
   View = 'view',
