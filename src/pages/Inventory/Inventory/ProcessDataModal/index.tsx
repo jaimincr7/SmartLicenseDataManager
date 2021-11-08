@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Select, Switch } from 'antd';
+import { Button, Col, DatePicker, Form, Modal, Row, Select, Switch } from 'antd';
 import React, { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
@@ -13,11 +13,11 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.action';
+import { processData } from '../../../../store/inventory/inventory/inventory.action';
 import {
-  clearSqlServerInventoryMessages,
-  sqlServerInventorySelector,
-} from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
+  clearInventoryMessages,
+  inventorySelector,
+} from '../../../../store/inventory/inventory/inventory.reducer';
 import { toast } from 'react-toastify';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
@@ -29,7 +29,7 @@ import _ from 'lodash';
 const { Option } = Select;
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
-  const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
+  const inventory = useAppSelector(inventorySelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -42,15 +42,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     company_id: null,
     bu_id: null,
     date_added: null,
-    set_device_states: false,
-    set_device_states_inc_non_prod: false,
-    set_device_states_by_keyword: false,
-    x_ref_ad: false,
-    x_ref_azure: false,
-    set_desktop_non_prod: false,
-    update_rv_tools_vm: false,
-    update_rv_tools_host: false,
-    apply_overrides: false,
+    selected_date_ws: null,
+    include_sc: false,
+    selected_date_ss: null,
+    selected_date_device: null,
   };
 
   const onFinish = (values: any) => {
@@ -63,16 +58,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   // };
 
   useEffect(() => {
-    if (sqlServerInventory.processData.messages.length > 0) {
-      if (sqlServerInventory.processData.hasErrors) {
-        toast.error(sqlServerInventory.processData.messages.join(' '));
+    if (inventory.processData.messages.length > 0) {
+      if (inventory.processData.hasErrors) {
+        toast.error(inventory.processData.messages.join(' '));
       } else {
-        toast.success(sqlServerInventory.processData.messages.join(' '));
+        toast.success(inventory.processData.messages.join(' '));
         handleModalClose();
       }
-      dispatch(clearSqlServerInventoryMessages());
+      dispatch(clearInventoryMessages());
     }
-  }, [sqlServerInventory.processData.messages]);
+  }, [inventory.processData.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -88,7 +83,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), sqlServerInventory.search.tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), inventory.search.tableName)
         )
       );
     } else {
@@ -124,7 +119,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       };
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(filterValues, sqlServerInventory.search.tableName)
+          getScheduleDateHelperLookup(filterValues, inventory.search.tableName)
         )
       );
       form.setFieldsValue(filterValues);
@@ -259,83 +254,47 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </div>
             </Col> */}
             <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="set_device_states" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Set Device States</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
+              <div className="form-group m-0">
+                <label className="label">Selected Date WS</label>
                 <Form.Item
-                  name="set_device_states_inc_non_prod"
+                  name="selected_date_ws"
+                  label="Selected Date WS"
                   className="m-0"
-                  valuePropName="checked"
                 >
-                  <Switch className="form-control" />
+                  <DatePicker className="w-100" />
                 </Form.Item>
-                <label className="label">Set Device States Inc Non Prod</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
+              <div className="form-group m-0">
+                <label className="label">Selected Date SS</label>
                 <Form.Item
-                  name="set_device_states_by_keyword"
+                  name="selected_date_ss"
+                  label="Selected Date SS"
                   className="m-0"
-                  valuePropName="checked"
                 >
-                  <Switch className="form-control" />
+                  <DatePicker className="w-100" />
                 </Form.Item>
-                <label className="label">Set Device States By KeyWord</label>
+              </div>
+            </Col>
+            <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
+                <label className="label">Selected Date Device</label>
+                <Form.Item
+                  name="selected_date_device"
+                  label="Selected Date Device"
+                  className="m-0"
+                >
+                  <DatePicker className="w-100" />
+                </Form.Item>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="x_ref_ad" className="m-0" valuePropName="checked">
+                <Form.Item name="include_sc" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">XRefAD</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="x_ref_azure" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">XRefAzure</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="set_desktop_non_prod" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Set Desktops Non Prod</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="update_rv_tools_vm" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Update RVTools_VM</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="update_rv_tools_host" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Update RVTools_Host</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="apply_overrides" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Apply Overrides</label>
+                <label className="label">Include SC</label>
               </div>
             </Col>
           </Row>
@@ -344,7 +303,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               key="submit"
               type="primary"
               htmlType="submit"
-              loading={sqlServerInventory.processData.loading}
+              loading={inventory.processData.loading}
             >
               Process
             </Button>
