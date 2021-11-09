@@ -384,7 +384,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="source"
                     label="Source"
                     className="m-0"
-                    rules={[{ required: !isMultiple, max: 255 }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -399,7 +399,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Publisher'
                   )}
-                  <Form.Item name="publisher" className="m-0" label="Publisher" rules={[{ max: 255 , required: !isMultiple }]}>
+                  <Form.Item name="publisher" className="m-0" label="Publisher" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -417,7 +417,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="software_title"
                     label="Software Title"
                     className="m-0"
-                    rules={[{ max: 255 , required: !isMultiple }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -436,7 +436,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="software_version"
                     label="Software Version"
                     className="m-0"
-                    rules={[{ max: 255 , required: !isMultiple }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -455,7 +455,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="product_id"
                     label="Product ID"
                     className="m-0"
-                    rules={[{ max: 255 , required: !isMultiple }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -474,7 +474,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="device_name"
                     label="Device Name"
                     className="m-0"
-                    rules={[{ max: 255 , required: !isMultiple }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -493,7 +493,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="domain_name"
                     label="Domain Name"
                     className="m-0"
-                    rules={[{ max: 255 , required: !isMultiple }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -508,7 +508,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Operating System'
                   )}
-                  <Form.Item name="operating_system" label="Operating System" className="m-0" rules={[{ max: 255 , required: !isMultiple }]}>
+                  <Form.Item name="operating_system" label="Operating System" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -522,7 +522,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Manufacturer'
                   )}
-                  <Form.Item name="manufacturer" label="Manufacturer" className="m-0" rules={[{ max: 255 , required: !isMultiple }]}>
+                  <Form.Item name="manufacturer" label="Manufacturer" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -536,7 +536,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Device Model'
                   )}
-                  <Form.Item name="device_model" label="Device Model" className="m-0" rules={[{ max: 255 , required: !isMultiple }]}>
+                  <Form.Item name="device_model" label="Device Model" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -554,7 +554,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="device_serial"
                     label="Device Serial"
                     className="m-0"
-                    rules={[{ max: 255 , required: !isMultiple }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -573,7 +573,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="processor_desc"
                     label="Processor Description"
                     className="m-0"
-                    rules={[{ max: 255 , required: !isMultiple }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -588,7 +588,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Processor Count'
                   )}
-                  <Form.Item name="processor_count" label="Processor Count" className="m-0" rules={[{ type: 'integer' , required: !isMultiple }]}>
+                  <Form.Item name="processor_count" label="Processor Count" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -602,7 +602,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Cores Per Processor'
                   )}
-                  <Form.Item name="cores_per_processor" label="Cores Per Processor" className="m-0" rules={[{ type: 'integer' , required: !isMultiple }]}>
+                  <Form.Item name="cores_per_processor" label="Cores Per Processor" className="m-0" rules={[{ type: 'integer' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -616,7 +616,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Core Count'
                   )}
-                  <Form.Item name="core_count" label="Core Count" className="m-0" rules={[{ type: 'integer' , required: !isMultiple }]}>
+                  <Form.Item name="core_count" label="Core Count" className="m-0" rules={[{ type: 'integer' ,  }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -630,7 +630,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Username'
                   )}
-                  <Form.Item name="username" label="Username" className="m-0" rules={[{ max: 255 , required: !isMultiple }]}>
+                  <Form.Item name="username" label="Username" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -652,7 +652,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="last_hw_scan"
                     label="Last HW Scan"
                     className="m-0"
-                    rules={[{ max: 255 , required: !isMultiple }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -667,7 +667,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Last SW Scan'
                   )}
-                  <Form.Item name="last_sw_scan" label="Last SW Scan" className="m-0" rules={[{ max: 255 , required: !isMultiple }]}>
+                  <Form.Item name="last_sw_scan" label="Last SW Scan" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -689,7 +689,6 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     name="date_installed"
                     label="Date Installed"
                     className="m-0"
-                    rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
