@@ -214,7 +214,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   name="date_added"
                   className="m-0"
                   label="Date Added"
-                  rules={[{ required: true }]}
                 >
                   <Select
                     placeholder="Select Date"
