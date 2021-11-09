@@ -91,9 +91,9 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
     processor_count: null,
     cores_per_processor: null,
     core_count: null,
-    username: '',
-    last_hw_scan: '',
-    last_sw_scan: '',
+    username: null,
+    last_hw_scan: null,
+    last_sw_scan: null,
     date_installed: null,
   };
 
