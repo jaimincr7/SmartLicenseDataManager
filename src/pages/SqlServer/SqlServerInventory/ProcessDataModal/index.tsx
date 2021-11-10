@@ -110,7 +110,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         toast.error(commonLookups.setModelPopUpSelection.messages.join(' '));
       } else {
         toast.success(commonLookups.setModelPopUpSelection.messages.join(' '));
-        handleModalClose();
       }
       dispatch(clearConfigModelPopUpDataSelection());
     }

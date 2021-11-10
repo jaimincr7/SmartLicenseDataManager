@@ -155,23 +155,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Schedule Api Frequencies</span>,
-        column: 'CronJobFrequencyId',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterByDropdown(
-              'cron_job_frequency_id',
-              cron.search.lookups?.cron_job_frequencies
-            ),
-            dataIndex: 'cron_job_frequency_description',
-            key: 'cron_job_frequency_description',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
         title: <span className="dragHandler">Start Time</span>,
         column: 'StartTime',
         sorter: true,
