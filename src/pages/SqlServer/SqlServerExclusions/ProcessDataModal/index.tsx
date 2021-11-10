@@ -246,11 +246,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             >
               Process
             </Button>
+            <Button type="dashed" ghost onClick={saveConfig} loading={commonLookups.setModelPopUpSelection.loading}>
+              Save Configuration
+            </Button>
             <Button key="back" onClick={handleModalClose}>
               Cancel
-            </Button>
-            <Button type="dashed" ghost onClick={saveConfig}>
-              Save Configuration
             </Button>
           </div>
         </Form>

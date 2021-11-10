@@ -76,6 +76,13 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (data.company_id) {
       await dispatch(getBULookup(data.company_id));
     }
+    if (data.bu_id) {
+      await dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), sqlServerInventory.search.tableName)
+        )
+      );
+    }
     form.setFieldsValue(data);
   };
   // const disabledDate = (current) => {
@@ -395,11 +402,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             >
               Process
             </Button>
+            <Button type="dashed" ghost onClick={saveConfig} loading={commonLookups.setModelPopUpSelection.loading}>
+              Save Configuration
+            </Button>
             <Button key="back" onClick={handleModalClose}>
               Cancel
-            </Button>
-            <Button type="dashed" ghost onClick={saveConfig}>
-              Save Configuration
             </Button>
           </div>
         </Form>
