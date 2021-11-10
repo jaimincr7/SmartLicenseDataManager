@@ -218,6 +218,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          tableName = {sqlServerExclusions.search.tableName}
         />
       )}
       {deleteModalVisible && (

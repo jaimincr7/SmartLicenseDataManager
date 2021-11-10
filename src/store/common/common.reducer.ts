@@ -57,6 +57,8 @@ import {
   getScheduleDate,
   getCronJobStatus,
   manageCronJobApi,
+  configModelPopUpDataSelection,
+  getConfigModelPopUpDataSelection,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -75,6 +77,17 @@ export const initialState: ICommonState = {
   },
   manageCronJob: {
     messages: [],
+    hasErrors: false,
+    loading: false,
+  },
+  setModelPopUpSelection: {
+    messages: [],
+    hasErrors: false,
+    loading: false,
+  },
+  getModelPopUpSelection: {
+    id: null,
+    data: {},
     hasErrors: false,
     loading: false,
   },
@@ -320,6 +333,15 @@ export const commonSlice = createSlice({
     clearMultipleUpdateMessages: (state) => {
       state.save.messages = [];
     },
+    clearConfigModelPopUpDataSelection: (state) => {
+      state.setModelPopUpSelection.messages = [];
+    },
+    cleargetModelPopUpDataSelection: (state) => {
+      state.getModelPopUpSelection.data = {};
+      state.getModelPopUpSelection.id = null;
+      state.getModelPopUpSelection.hasErrors = false;
+      state.getModelPopUpSelection.loading = false;
+    },
   },
   extraReducers: {
     // Tenant lookup
@@ -356,6 +378,47 @@ export const commonSlice = createSlice({
     [manageCronJobApi.rejected.type]: (state) => {
       state.manageCronJob.loading = false;
       state.manageCronJob.hasErrors = true;
+    },
+
+    // Model Pop Up Selection
+    [configModelPopUpDataSelection.pending.type]: (state) => {
+      state.setModelPopUpSelection.loading = true;
+      state.setModelPopUpSelection.messages = [];
+    },
+    [configModelPopUpDataSelection.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.setModelPopUpSelection.loading = false;
+      state.setModelPopUpSelection.hasErrors = false;
+      state.setModelPopUpSelection.messages = action.payload.messages;
+    },
+    [configModelPopUpDataSelection.rejected.type]: (state) => {
+      state.setModelPopUpSelection.loading = false;
+      state.setModelPopUpSelection.hasErrors = true;
+    },
+
+    // Model Pop Up Selection
+    [getConfigModelPopUpDataSelection.pending.type]: (state) => {
+      state.getModelPopUpSelection.loading = true;
+      state.getModelPopUpSelection.data = {};
+      state.getModelPopUpSelection.id = null;
+    },
+    [getConfigModelPopUpDataSelection.fulfilled.type]: (
+      state,
+      action: PayloadAction<any>
+    ) => {
+      state.getModelPopUpSelection.loading = false;
+      state.getModelPopUpSelection.hasErrors = false;
+      if(action.payload) {
+        const { id , selection } = action.payload;
+      state.getModelPopUpSelection.id = id;
+      state.getModelPopUpSelection.data = JSON.parse(selection);
+      }
+    },
+    [getConfigModelPopUpDataSelection.rejected.type]: (state) => {
+      state.getModelPopUpSelection.loading = false;
+      state.getModelPopUpSelection.hasErrors = true;
     },
 
     // Company lookup
@@ -898,6 +961,8 @@ export const {
   clearMultipleUpdateMessages,
   clearDateLookup,
   clearCronJobSchedularMessages,
+  clearConfigModelPopUpDataSelection,
+  cleargetModelPopUpDataSelection
 } = commonSlice.actions;
 
 // The reducer
