@@ -78,6 +78,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
         <Button
           className="btn-icon"
           onClick={() => setProcessModalVisible(true)}
+          disabled={sqlServerInventory.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
