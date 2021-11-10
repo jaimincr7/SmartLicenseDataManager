@@ -1,12 +1,11 @@
-import { ICron, ICronData } from '../../../services/master/cron/cron.model';
 import { IDropDownOption, ITableColumnSelection } from '../../../common/models/common';
-import { ILookup } from '../../../services/common/common.model';
+import { IInventory } from '../../../services/inventory/inventory/inventory.model';
 
-export interface ICronState {
+export interface IInventoryState {
   search: {
     loading: boolean;
     hasErrors: boolean;
-    data: ICron[];
+    data: IInventory[];
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
@@ -15,17 +14,7 @@ export interface ICronState {
   getById: {
     loading: boolean;
     hasErrors: boolean;
-    data: ICronData;
-  };
-  startApi: {
-    loading: boolean;
-    hasErrors: boolean;
-    messages: string[];
-  };
-  FrequencyDay: {
-    week: ILookup[];
-    month: ILookup[];
-    loading: boolean;
+    data: IInventory;
   };
   save: {
     loading: boolean;
@@ -33,6 +22,11 @@ export interface ICronState {
     messages: string[];
   };
   delete: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
+  processData: {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];

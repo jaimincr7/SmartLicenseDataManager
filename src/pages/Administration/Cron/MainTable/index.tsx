@@ -1,5 +1,5 @@
-import { Popover } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { Popconfirm, Popover } from 'antd';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import _ from 'lodash';
 import {
@@ -9,11 +9,11 @@ import {
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
 import { setTableColumnSelection } from '../../../../store/master/cron/cron.reducer';
-import { searchCron, stopApi } from '../../../../store/master/cron/cron.action';
+import { deleteCron, searchCron, stopApi } from '../../../../store/master/cron/cron.action';
 import { clearCronMessages, cronSelector } from '../../../../store/master/cron/cron.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { useHistory } from 'react-router-dom';
-import { Can } from '../../../../common/ability';
+import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { IMainTable } from '../../../../common/models/common';
 import moment from 'moment';
@@ -35,11 +35,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const [query, setQuery] = useState({});
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
+  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
+
   useImperativeHandle(ref, () => ({
     refreshData() {
       dataTableRef?.current.refreshData();
     },
   }));
+
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
 
   const refreshDataTable = () => {
     dataTableRef?.current.refreshData();
@@ -194,6 +202,52 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Frequency Type</span>,
+        column: 'Frequency Type',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('cron_frequency_type', form),
+            dataIndex: 'cron_frequency_type',
+            key: 'cron_frequency_type',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Frequency Day</span>,
+        column: 'Frequency Day',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('day_name', form),
+            dataIndex: 'day_name',
+            key: 'day_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Frequency Time</span>,
+        column: 'Frequency Time',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterWithSwapOption('cron_frequency_time', cron.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter, true),
+            dataIndex: 'cron_frequency_time',
+            key: 'cron_frequency_time',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format("HH:MM:SS") : ''),
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Status</span>,
         column: 'Status',
         sorter: true,
@@ -251,6 +305,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
+  const removeCron = (id: number) => {
+    dispatch(deleteCron(id));
+  };
+
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.View} a={Page.Cron}>
@@ -264,17 +322,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.Update} a={Page.Cron}>
-        <a
-          hidden
-          className="action-btn"
-          onClick={() => {
-            history.push(`/administration/cron/${data.id}`);
-          }}
-        >
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-        </a>
-      </Can>
       <Can I={Action.RunCronJob} a={Page.Cron}>
         {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
           <Popover content={<>Please select global filter first!</>} trigger="click">
@@ -284,6 +331,23 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           renderActionButton(data)
         )}
       </Can>
+      <Can I={Action.Update} a={Page.Cron}>
+        <a
+          className="action-btn"
+          onClick={() => {
+            history.push(`/administration/schedule-api-data/${data.id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
+        </a>
+      </Can>
+      <Can I={Action.Delete} a={Page.Cron}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeCron(data.id)}>
+          <a href="#" title="" className="action-btn">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+          </a>
+        </Popconfirm>
+      </Can>
     </div>
   );
 
@@ -291,10 +355,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={false}
+        showAddButton={ability.can(Action.Add, Page.Cron)}
+        setSelectedId={setSelectedId}
         tableAction={tableAction}
         hideExportButton={true}
-        globalSearchExist={false}
+        //globalSearchExist={false}
         getTableColumns={getTableColumns}
         reduxSelector={cronSelector}
         searchTableData={searchCron}
@@ -302,6 +367,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         isCronJobApiButton={true}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection}
+        showBulkUpdate={ability.can(Action.Update, Page.Cron)}
       />
       {showStartApi && (
         <StartApiModal

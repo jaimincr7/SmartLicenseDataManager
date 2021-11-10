@@ -1,50 +1,51 @@
-import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
-import { useEffect, useMemo } from 'react';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  TimePicker,
+} from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { ICmdbExclusion } from '../../../../services/cmdb/exclusion/exclusion.model';
 import { ILookup } from '../../../../services/common/common.model';
+import { ICronData } from '../../../../services/master/cron/cron.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import {
-  getCmdbExclusionById,
-  saveCmdbExclusion,
-} from '../../../../store/cmdb/exclusion/exclusion.action';
-import {
-  clearCmdbExclusionGetById,
-  clearCmdbExclusionMessages,
-  cmdbExclusionSelector,
-} from '../../../../store/cmdb/exclusion/exclusion.reducer';
-import {
-  getBULookup,
-  getCmdbExclusionComponentLookup,
-  getCmdbExclusionLocationLookup,
-  getCmdbExclusionOperationLookup,
-  getCmdbExclusionTypeLookup,
-  getCompanyLookup,
-  getTenantLookup,
-  updateMultiple,
-} from '../../../../store/common/common.action';
+import { getBULookup, getCompanyLookup, getSpsApiGroupLookup, getTenantLookup } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
   clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { IAddCmdbExclusionProps } from './addExclusion.model';
+import { updateMultiple } from '../../../../store/common/common.action';
+import { getCronById, getFrequencyDay, saveCron } from '../../../../store/master/cron/cron.action';
+import {
+  clearCronGetById,
+  clearCronMessages,
+  cronSelector,
+} from '../../../../store/master/cron/cron.reducer';
+import { IAddCronProps } from './addCron.model';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
-import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
-const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
-  const cmdbExclusion = useAppSelector(cmdbExclusionSelector);
+const AddCronModal: React.FC<IAddCronProps> = (props) => {
+  const cron = useAppSelector(cronSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
+  const [week, setWeek] = useState('Daily');
 
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
@@ -53,7 +54,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.CmdbExclusion} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Cron} level={1} />
       </>
     );
   }, [isNew]);
@@ -63,32 +64,37 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  let initialValues: ICmdbExclusion = {
-    name: '',
-    exclusion_id_component_id: null,
-    exclusion_id_location_id: null,
-    exclusion_id_operation_id: null,
-    is_enabled: false,
-    value: '',
-    order: '',
-    exclusion_type_id: null,
-    bu_id: null,
+  const onSelChange = (value: string) => {
+    setWeek(value);
+    if(value === 'Daily')
+    {
+      form.setFieldsValue({cron_frequency_day: null});
+    }
+  };
+
+  let initialValues: ICronData = {
+    id: null,
+    api_group_id: null,
     company_id: null,
+    bu_id: null,
     tenant_id: null,
+    cron_frequency_type: '',
+    cron_frequency_day: null,
+    cron_frequency_time: '',
   };
 
   const onFinish = (values: any) => {
-    const inputValues: ICmdbExclusion = {
+    const inputValues: ICronData = {
       ...values,
       id: id ? +id : null,
     };
     if (!isMultiple) {
-      dispatch(saveCmdbExclusion(inputValues));
+      dispatch(saveCron(inputValues));
     } else {
       const result = getObjectForUpdateMultiple(
         valuesForSelection,
         inputValues,
-        cmdbExclusion.search.tableName
+        cron.search.tableName
       );
       if (result) {
         dispatch(updateMultiple(result));
@@ -120,7 +126,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
     form.setFieldsValue({ bu_id: buId });
   };
 
-  const fillValuesOnEdit = async (data: ICmdbExclusion) => {
+  const fillValuesOnEdit = async (data: ICronData) => {
     if (data.tenant_id) {
       await dispatch(getCompanyLookup(data.tenant_id));
     }
@@ -130,39 +136,32 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
     if (data) {
       initialValues = {
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
+        api_group_id: _.isNull(data.api_group_id) ? null : data.api_group_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-        name: data.name,
-        exclusion_id_component_id: _.isNull(data.exclusion_id_component_id)
-          ? null
-          : data.exclusion_id_component_id,
-        exclusion_id_location_id: _.isNull(data.exclusion_id_location_id)
-          ? null
-          : data.exclusion_id_location_id,
-        exclusion_id_operation_id: _.isNull(data.exclusion_id_operation_id)
-          ? null
-          : data.exclusion_id_operation_id,
-        is_enabled: data.is_enabled,
-        value: data.value,
-        order: data.order,
-        exclusion_type_id: _.isNull(data.exclusion_type_id) ? null : data.exclusion_type_id,
+        cron_frequency_type: data.cron_frequency_type,
+        cron_frequency_day: _.isNull(data.cron_frequency_day) ? null : data.cron_frequency_day,
+        cron_frequency_time: _.isNull(data.cron_frequency_time) ? null : moment(data.cron_frequency_time),
       };
+      if(data.cron_frequency_type) {
+        setWeek(data.cron_frequency_type);
+      }
       form.setFieldsValue(initialValues);
     }
   };
 
   useEffect(() => {
-    if (cmdbExclusion.save.messages.length > 0) {
-      if (cmdbExclusion.save.hasErrors) {
-        toast.error(cmdbExclusion.save.messages.join(' '));
+    if (cron.save.messages.length > 0) {
+      if (cron.save.hasErrors) {
+        toast.error(cron.save.messages.join(' '));
       } else {
-        toast.success(cmdbExclusion.save.messages.join(' '));
+        toast.success(cron.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearCmdbExclusionMessages());
+      dispatch(clearCronMessages());
     }
-  }, [cmdbExclusion.save.messages]);
+  }, [cron.save.messages]);
 
   useEffect(() => {
     if (commonLookups.save.messages.length > 0) {
@@ -178,47 +177,44 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
   }, [commonLookups.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && cmdbExclusion.getById.data) {
-      const data = cmdbExclusion.getById.data;
+    if (+id > 0 && cron.getById.data) {
+      const data = cron.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [cmdbExclusion.getById.data]);
+  }, [cron.getById.data]);
 
   useEffect(() => {
     dispatch(getTenantLookup());
-    dispatch(getCmdbExclusionComponentLookup());
-    dispatch(getCmdbExclusionOperationLookup());
-    dispatch(getCmdbExclusionLocationLookup());
-    dispatch(getCmdbExclusionTypeLookup());
+    dispatch(getSpsApiGroupLookup());
+    dispatch(getFrequencyDay());
     if (+id > 0) {
-      dispatch(getCmdbExclusionById(+id));
+      dispatch(getCronById(+id));
     }
     return () => {
-      dispatch(clearCmdbExclusionGetById());
-      dispatch(clearCompanyLookUp());
+      dispatch(clearCronGetById());
       dispatch(clearBULookUp());
     };
   }, [dispatch]);
 
   useEffect(() => {
-    if (+id === 0 && !isMultiple) {
-      const globalSearch: IInlineSearch = {};
-      for (const key in globalFilters.search) {
-        const element = globalFilters.search[key];
-        globalSearch[key] = element ? [element] : null;
-      }
-      if (globalSearch.company_id) {
-        dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
-        dispatch(getBULookup(globalSearch.company_id[0]));
-        const initlValues = {
+    if(+id === 0 && !isMultiple) {
+        const globalSearch: IInlineSearch = {};
+        for (const key in globalFilters.search) {
+          const element = globalFilters.search[key];
+          globalSearch[key] = element ? [element] : null;
+        }
+        if (globalSearch.company_id) {
+          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+          dispatch(getBULookup(globalSearch.company_id[0]));
+      const initialValues = {
           company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
         };
-        form.setFieldsValue(initlValues);
+        form.setFieldsValue(initialValues);
       }
-    }
-  }, []);
+      }
+      }, []);
 
   return (
     <>
@@ -230,14 +226,14 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
         onCancel={handleModalClose}
         footer={false}
       >
-        {cmdbExclusion.getById.loading ? (
+        {cron.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={cmdbExclusion.getById.loading} />
+            <Spin spinning={cron.getById.loading} />
           </div>
         ) : (
           <Form
             form={form}
-            name="cmdbExclusion"
+            name="addCron"
             initialValues={initialValues}
             onFinish={onFinish}
             validateMessages={validateMessages}
@@ -252,12 +248,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                   ) : (
                     'Tenant'
                   )}
-                  <Form.Item
-                    name="tenant_id"
-                    className="m-0"
-                    label="Tenant"
-                    rules={[{ required: !isMultiple }]}
-                  >
+                  <Form.Item name="tenant_id" className="m-0" label="Tenant" rules={[{ required: !isMultiple }]}>
                     <Select
                       onChange={handleTenantChange}
                       allowClear
@@ -291,12 +282,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                   ) : (
                     'Company'
                   )}
-                  <Form.Item
-                    name="company_id"
-                    className="m-0"
-                    label="Company"
-                    rules={[{ required: !isMultiple }]}
-                  >
+                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -330,15 +316,10 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                   ) : (
                     'BU'
                   )}
-                  <Form.Item
-                    name="bu_id"
-                    className="m-0"
-                    label="BU"
-                    rules={[{ required: !isMultiple }]}
-                  >
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
                     <Select
-                      onChange={handleBUChange}
                       allowClear
+                      onChange={handleBUChange}
                       showSearch
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
@@ -363,23 +344,15 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'exclusion_id_component_id']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>Exclusion Component</Checkbox>
+                    <Form.Item name={['checked', 'api_group_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Api Group</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Exclusion Component'
+                    'Api Group'
                   )}
-                  <Form.Item
-                    name="exclusion_id_component_id"
-                    className="m-0"
-                    label="Exclusion Component"
-                    rules={[{ required: !isMultiple }]}
-                  >
+                  <Form.Item name="api_group_id" className="m-0" label="Api Group" rules={[{ required: !isMultiple }]}>
                     <Select
+                      loading={commonLookups.spsApiGroups.loading}
                       allowClear
                       showSearch
                       optionFilterProp="children"
@@ -391,9 +364,8 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
-                      loading={commonLookups.cmdbExclusionComponentLookup.loading}
                     >
-                      {commonLookups.cmdbExclusionComponentLookup.data.map((option: ILookup) => (
+                      {commonLookups.spsApiGroups.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
                         </Option>
@@ -406,22 +378,23 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item
-                      name={['checked', 'exclusion_id_location_id']}
+                      name={['checked', 'cron_frequency_type']}
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>Exclusion Location</Checkbox>
+                      <Checkbox>Frequency Type</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Exclusion Location'
+                    'Frequency Type'
                   )}
                   <Form.Item
-                    name="exclusion_id_location_id"
+                    name="cron_frequency_type"
+                    label="Frequency Type"
                     className="m-0"
-                    label="Exclusion Location"
                     rules={[{ required: !isMultiple }]}
                   >
                     <Select
+                    onChange={onSelChange}
                       allowClear
                       showSearch
                       optionFilterProp="children"
@@ -433,13 +406,10 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
-                      loading={commonLookups.cmdbExclusionLocationLookup.loading}
                     >
-                      {commonLookups.cmdbExclusionLocationLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
+                      <Option value="Daily">Daily</Option>
+                      <Option value="Weekly">Weekly</Option>
+                      <Option value="Monthly">Monthly</Option>
                     </Select>
                   </Form.Item>
                 </div>
@@ -448,24 +418,20 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item
-                      name={['checked', 'exclusion_id_operation_id']}
+                      name={['checked', 'cron_frequency_day']}
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>Exclusion Operation</Checkbox>
+                      <Checkbox>Frequency Day</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Exclusion Operation'
+                    'Frequency Day'
                   )}
-                  <Form.Item
-                    name="exclusion_id_operation_id"
-                    className="m-0"
-                    label="Exclusion Operation"
-                    rules={[{ required: !isMultiple }]}
-                  >
+                  <Form.Item name="cron_frequency_day" className="m-0" label="Frequency Day" rules={[{ required: !isMultiple && week !== 'Daily' }]}>
                     <Select
                       allowClear
                       showSearch
+                      disabled = {week == 'Daily'}
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -475,13 +441,17 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
-                      loading={commonLookups.cmdbExclusionOperationLookup.loading}
+                      loading={cron.FrequencyDay.loading}
                     >
-                      {commonLookups.cmdbExclusionOperationLookup.data.map((option: ILookup) => (
+                      {week == 'Weekly' ? (cron.FrequencyDay.week.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
                         </Option>
-                      ))}
+                      ))) : week == 'Monthly' ? (cron.FrequencyDay.month.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.id}
+                        </Option>
+                      ))) : <></> }
                     </Select>
                   </Form.Item>
                 </div>
@@ -490,104 +460,18 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item
-                      name={['checked', 'exclusion_type_id']}
+                      name={['checked', 'cron_frequency_time']}
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>Exclusion Type</Checkbox>
+                      <Checkbox>Frequency Time</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Exclusion Type'
+                    'Frequency Time'
                   )}
-                  <Form.Item
-                    name="exclusion_type_id"
-                    className="m-0"
-                    label="Exclusion Type"
-                    rules={[{ required: !isMultiple }]}
-                  >
-                    <Select
-                      allowClear
-                      showSearch
-                      optionFilterProp="children"
-                      filterOption={(input, option: any) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }
-                      filterSort={(optionA: any, optionB: any) =>
-                        optionA.children
-                          ?.toLowerCase()
-                          ?.localeCompare(optionB.children?.toLowerCase())
-                      }
-                      loading={commonLookups.cmdbExclusionTypeLookup.loading}
-                    >
-                      {commonLookups.cmdbExclusionTypeLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
-                    </Select>
+                  <Form.Item name="cron_frequency_time" label="Frequency Time" className="m-0" rules={[{ required: !isMultiple }]}>
+                    <TimePicker defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
                   </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
-                      <Checkbox>Name</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Name'
-                  )}
-                  <Form.Item
-                    name="name"
-                    label="Name"
-                    className="m-0"
-                    rules={[{ max: 500, required: !isMultiple }]}
-                  >
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'value']} valuePropName="checked" noStyle>
-                      <Checkbox>Value</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Value'
-                  )}
-                  <Form.Item name="value" className="m-0" label="Value" rules={[{ max: 500 }]}>
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'order']} valuePropName="checked" noStyle>
-                      <Checkbox>Order</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Order'
-                  )}
-                  <Form.Item name="order" className="m-0" label="Order" rules={[{ max: 500 }]}>
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="is_enabled" className="m-0" valuePropName="checked">
-                    <Switch className="form-control" />
-                  </Form.Item>
-                  &nbsp;
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'is_enabled']} valuePropName="checked" noStyle>
-                      <Checkbox>Is Enabled</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Is Enabled'
-                  )}
                 </div>
               </Col>
             </Row>
@@ -596,7 +480,7 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cmdbExclusion.save.loading || commonLookups.save.loading}
+                loading={cron.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
@@ -610,4 +494,4 @@ const AddCmdbExclusionModal: React.FC<IAddCmdbExclusionProps> = (props) => {
     </>
   );
 };
-export default AddCmdbExclusionModal;
+export default AddCronModal;

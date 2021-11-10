@@ -72,3 +72,15 @@ export interface IBulkUpdate {
   current_user: any;
   order_direction: string;
 }
+
+export interface IConfigModelPopUpDataSelection {
+  id: number,
+  selection: any,
+  pop_up_name: string,
+  table_name: string
+}
+
+export interface IGetConfigModelPopUpDataSelection {
+  pop_up_name: string,
+  table_name: string
+}

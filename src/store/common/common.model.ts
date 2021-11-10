@@ -18,6 +18,17 @@ export interface ICommonState {
     hasErrors: boolean;
     loading: boolean;
   };
+  setModelPopUpSelection: {
+    messages: string[];
+    hasErrors: boolean;
+    loading: boolean;
+  };
+  getModelPopUpSelection: {
+    id: any;
+    data: any;
+    hasErrors: boolean;
+    loading: boolean;
+  };
   cronFormula: {
     data: ILookup[];
     loading: boolean;
