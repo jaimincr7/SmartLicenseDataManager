@@ -1,4 +1,4 @@
-import { ISearchCron, IStartApi } from '../../../services/master/cron/cron.model';
+import { ICronData, ISearchCron, IStartApi } from '../../../services/master/cron/cron.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import cronService from '../../../services/master/cron/cron.service';
 
@@ -17,6 +17,34 @@ export const searchCron = createAsyncThunk('searchCron', async (searchParam?: IS
 //   });
 //   return response.data;
 // });
+
+export const getCronById = createAsyncThunk('getCronById', async (id: number) => {
+  const response = await cronService.getCronById(id).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getFrequencyDay = createAsyncThunk('getFrequencyDay', async () => {
+  const response = await cronService.getFrequencyDay().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const saveCron = createAsyncThunk('saveCron', async (data: ICronData) => {
+  const response = await cronService.saveCron(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
+export const deleteCron = createAsyncThunk('deleteCron', async (id: number) => {
+  const response = await cronService.deleteCron(id).then((res) => {
+    return res.body;
+  });
+  return response;
+});
 
 export const startApi = createAsyncThunk('startApi', async (data: IStartApi) => {
   const response = await cronService.startApi(data).then((res) => {

@@ -186,32 +186,32 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         dispatch(getTenantLookup());
 
       const globalSearch: IInlineSearch = {};
-      for (const key in globalFilters.search) {
-        const element = globalFilters.search[key];
-        globalSearch[key] = element ? [element] : null;
-      }
+        for (const key in globalFilters.search) {
+          const element = globalFilters.search[key];
+          globalSearch[key] = element ? [element] : null;
+        }
 
-      const initialValuesData: any = {
-        tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
-        bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
-        company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
-        date_added: moment(),
-      };
-      filterTableColumns.map(function (ele) {
-        initialValuesData[ele.name] =
-          filterExcelColumns?.filter(
-            (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-              ele.name?.toLowerCase()?.replace(/\s/g, '')
-          ).length > 0
-            ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s/g, '')
-              )[0]
-            : '';
-      });
-      form.setFieldsValue(initialValuesData);
+        const initialValuesData: any = {
+          tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id === undefined ? null : globalSearch?.tenant_id[0],
+          bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id === undefined ? null : globalSearch?.bu_id[0],
+          company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id === undefined ? null : globalSearch?.company_id[0],
+          date_added: moment(),
+        };
+        filterTableColumns.map(function (ele) {
+          initialValuesData[ele.name] =
+            filterExcelColumns?.filter(
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            ).length > 0
+              ? filterExcelColumns.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    ele.name?.toLowerCase()?.replace(/\s/g, '')
+                )[0]
+              : '';
+        });
+        form.setFieldsValue(initialValuesData);
     } else {
       form.setFieldsValue({});
       setExcelColumns(null);

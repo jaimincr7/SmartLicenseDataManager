@@ -110,6 +110,7 @@ import spsApiTokenConfigOptionsReducer from './sps/apiTokenConfigOptions/apiToke
 import cronReducer from './master/cron/cron.reducer';
 import cronViewLogReducer from './master/cronViewLog/cronViewLog.reducer';
 import spsApiCallReducer from './sps/spsAPICall/spsApiCall.reducer';
+import inventoryReducer from './inventory/inventory/inventory.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -246,6 +247,9 @@ export const rootReducer = combineReducers({
 
   //Power-BI Report
   configuration: configurationReducer,
+
+  //Inventory
+  inventory: inventoryReducer,
 
   //SPS
   spsApi: spsApiReducer,

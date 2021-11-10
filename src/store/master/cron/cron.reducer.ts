@@ -1,9 +1,9 @@
 import { booleanLookup } from '../../../common/constants/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
-import { ICron } from '../../../services/master/cron/cron.model';
+import { ICron, ICronData } from '../../../services/master/cron/cron.model';
 import { RootState } from '../../app.model';
-import { searchCron, startApi, stopApi } from './cron.action';
+import { deleteCron, getCronById, getFrequencyDay, saveCron, searchCron, startApi, stopApi } from './cron.action';
 import { ICronState } from './cron.model';
 
 export const initialState: ICronState = {
@@ -24,6 +24,11 @@ export const initialState: ICronState = {
     loading: false,
     hasErrors: false,
     data: null,
+  },
+  FrequencyDay: {
+    week: [],
+    month: [],
+    loading: false,
   },
   startApi: {
     loading: false,
@@ -91,6 +96,61 @@ export const cronSlice = createSlice({
     [searchCron.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
+    },
+
+    // Save
+    [saveCron.pending.type]: (state) => {
+      state.save.loading = true;
+      state.save.messages = [];
+    },
+    [saveCron.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.save.loading = false;
+      state.save.hasErrors = false;
+      state.save.messages = action.payload.messages;
+    },
+    [saveCron.rejected.type]: (state) => {
+      state.save.loading = false;
+      state.save.hasErrors = true;
+    },
+
+    // Delete
+    [deleteCron.pending.type]: (state) => {
+      state.delete.loading = true;
+      state.delete.messages = [];
+    },
+    [deleteCron.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.delete.loading = false;
+      state.delete.hasErrors = false;
+      state.delete.messages = action.payload.messages;
+    },
+    [deleteCron.rejected.type]: (state) => {
+      state.delete.loading = false;
+      state.delete.hasErrors = true;
+    },
+
+    //CMS Publisher lookup
+    [getFrequencyDay.pending.type]: (state) => {
+      state.FrequencyDay.loading = true;
+    },
+    [getFrequencyDay.fulfilled.type]: (state, action: any) => {
+      const { week_days , month_days } = action.payload;
+      state.FrequencyDay.week = week_days;
+      state.FrequencyDay.month = month_days;
+      state.FrequencyDay.loading = false;
+    },
+
+    // Get by id
+    [getCronById.pending.type]: (state) => {
+      state.getById.loading = true;
+    },
+    [getCronById.fulfilled.type]: (state, action: PayloadAction<ICronData>) => {
+      state.getById.data = action.payload;
+      state.getById.loading = false;
+      state.getById.hasErrors = false;
+    },
+    [getCronById.rejected.type]: (state) => {
+      state.getById.loading = false;
+      state.getById.hasErrors = true;
     },
 
     // start API

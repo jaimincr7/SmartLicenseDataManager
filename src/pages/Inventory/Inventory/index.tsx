@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
 import {
-  clearSqlServerInventory,
-  sqlServerInventorySelector,
-} from '../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
-import { ISqlServerInventoryProps } from './sqlServerInventory.model';
+  clearInventory,
+  inventorySelector,
+} from '../../../store/inventory/inventory/inventory.reducer';
+import { IInventoryProps } from './inventory.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
-import AddSqlServerInventoryModal from './AddSqlServerInventoryModal';
+import AddInventoryModal from './AddInventoryModal';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import ProcessDataModal from './ProcessDataModal';
@@ -17,8 +17,8 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 
-const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
-  const sqlServerInventory = useAppSelector(sqlServerInventorySelector);
+const Inventory: React.FC<IInventoryProps> = (props) => {
+  const inventory = useAppSelector(inventorySelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -44,7 +44,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   useEffect(() => {
     setShowSelectedListModal(false);
     return () => {
-      dispatch(clearSqlServerInventory());
+      dispatch(clearInventory());
     };
   }, []);
 
@@ -54,12 +54,12 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
 
   const tableButtons = () => (
     <>
-      <Can I={Action.ImportToExcel} a={Page.SqlServerInventory}>
+      <Can I={Action.ImportToExcel} a={Page.Inventory}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(sqlServerInventory.search.tableName)}`
+              `/data-input/bulk-import/${encodeURIComponent(inventory.search.tableName)}`
             )
           }
           icon={
@@ -74,11 +74,10 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
           Import
         </Button>
       </Can>
-      <Can I={Action.ProcessData} a={Page.SqlServerInventory}>
+      <Can I={Action.ProcessData} a={Page.Inventory}>
         <Button
           className="btn-icon"
           onClick={() => setProcessModalVisible(true)}
-          disabled={sqlServerInventory.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
@@ -88,7 +87,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
           Process Data
         </Button>
       </Can>
-      <Can I={Action.DeleteData} a={Page.SqlServerInventory}>
+      <Can I={Action.DeleteData} a={Page.Inventory}>
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
@@ -108,7 +107,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
     <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">
-          <BreadCrumbs pageName={Page.SqlServerInventory} />
+          <BreadCrumbs pageName={Page.Inventory} />
         </h4>
         <div className="right-title">
           <GlobalSearch />
@@ -117,14 +116,14 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
       <div className="main-card">
         {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.SqlServerInventory}>
+            <Can I={Action.ImportToExcel} a={Page.Inventory}>
               <Col>
                 <Button
                   className="btn-icon"
                   onClick={() =>
                     history.push(
                       `/data-input/bulk-import/${encodeURIComponent(
-                        sqlServerInventory.search.tableName
+                        inventory.search.tableName
                       )}`
                     )
                   }
@@ -141,7 +140,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
                 </Button>
               </Col>
             </Can>
-            <Can I={Action.ProcessData} a={Page.SqlServerInventory}>
+            <Can I={Action.ProcessData} a={Page.Inventory}>
               <Col>
                 <Button
                   className="btn-icon"
@@ -159,7 +158,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
                 </Button>
               </Col>
             </Can>
-            <Can I={Action.DeleteData} a={Page.SqlServerInventory}>
+            <Can I={Action.DeleteData} a={Page.Inventory}>
               <Col>
                 <Button
                   className="btn-icon"
@@ -193,25 +192,25 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
         />
       </div>
       {addModalVisible && (
-        <AddSqlServerInventoryModal
+        <AddInventoryModal
           showModal={addModalVisible}
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/sql-server/inventory');
+            history.push('/inventory-module/inventory');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
       {showSelectedListModal && (
-        <AddSqlServerInventoryModal
+        <AddInventoryModal
           showModal={showSelectedListModal}
           valuesForSelection={valuesForSelection}
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            history.push('/sql-server/inventory');
+            history.push('/inventory-module/inventory');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -222,14 +221,13 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           filterKeys={filterKeys}
-          tableName={sqlServerInventory?.search?.tableName}
         />
       )}
       {deleteModalVisible && (
         <DeleteDatasetModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={sqlServerInventory.search.tableName}
+          tableName={inventory.search.tableName}
           refreshDataTable={() => refreshDataTable()}
           filterKeys={filterKeys}
         />
@@ -238,4 +236,4 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
   );
 };
 
-export default SqlServerInventory;
+export default Inventory;

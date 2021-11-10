@@ -304,7 +304,12 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                   ) : (
                     'Company'
                   )}
-                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="company_id"
+                    className="m-0"
+                    label="Company"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -338,7 +343,12 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="bu_id"
+                    className="m-0"
+                    label="BU"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleBUChange}
                       allowClear

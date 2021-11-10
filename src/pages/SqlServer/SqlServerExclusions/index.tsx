@@ -77,6 +77,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
         <Button
           className="btn-icon"
           onClick={() => setProcessModalVisible(true)}
+          disabled={sqlServerExclusions.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
@@ -218,6 +219,7 @@ const SqlServerExclusions: React.FC<ISqlServerExclusionsProps> = (props) => {
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          tableName = {sqlServerExclusions.search.tableName}
         />
       )}
       {deleteModalVisible && (
