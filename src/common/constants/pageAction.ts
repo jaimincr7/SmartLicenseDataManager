@@ -106,6 +106,7 @@ export enum Page {
   ConfigSqlServerLicense = 'config-sql-server-license',
   ConfigWindowsServerVersions = 'config-windows-server-versions',
   ConfigWindowsServerLicense = 'config-windows-server-license',
+  ConfigModelPopUpSelection = 'config-model-pop-up-data-selection',
 
   //Slim360
   Slim360O365Licenses = 'slim360-o365-licenses',
@@ -148,4 +149,5 @@ export enum Action {
   Select = 'select',
   Call = 'call',
   Error = 'error_view',
+  ModelDataSeletion = 'model_popup_data_config',
 }

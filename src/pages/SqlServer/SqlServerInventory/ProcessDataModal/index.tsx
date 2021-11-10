@@ -29,6 +29,8 @@ import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -153,11 +155,13 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [commonLookups.getModelPopUpSelection.data]);
 
   React.useEffect(() => {
-    const modelPopUp: IGetConfigModelPopUpDataSelection = {
-      table_name : tableName,
-      pop_up_name : 'ProcessDataSet'
+    if(ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
+      const modelPopUp: IGetConfigModelPopUpDataSelection = {
+        table_name : tableName,
+        pop_up_name : 'ProcessDataSet'
+      }
+      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
     }
-    dispatch(getConfigModelPopUpDataSelection(modelPopUp));
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
@@ -402,9 +406,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             >
               Process
             </Button>
+            <Can I={Action.ModelDataSeletion} a={Page.ConfigModelPopUpSelection}>
             <Button type="dashed" ghost onClick={saveConfig} loading={commonLookups.setModelPopUpSelection.loading}>
               Save Configuration
             </Button>
+            </Can>
             <Button key="back" onClick={handleModalClose}>
               Cancel
             </Button>
