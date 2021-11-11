@@ -79,6 +79,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
         <Button
           className="btn-icon"
           onClick={() => setProcessModalVisible(true)}
+          disabled={windowsServerExclusions.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
@@ -219,6 +220,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          tableName={windowsServerExclusions.search.tableName}
         />
       )}
       {deleteModalVisible && (
