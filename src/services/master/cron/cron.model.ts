@@ -35,7 +35,6 @@ export interface ISearchAPI extends ICron {
 
 export interface IStartApi {
   id?: number;
-  cron_job_frequency_id: number;
   sps_api_query_param?: {
     [key: string]: any;
   };

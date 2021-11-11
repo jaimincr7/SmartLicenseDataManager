@@ -64,7 +64,6 @@ const StartApiModal: React.FC<IStartApiModalProps> = (props) => {
   const onFinish = (values: any) => {
     const startApiData: IStartApi = {
       id: id,
-      cron_job_frequency_id: values.cron_job_frequency_id,
       sps_api_query_param: !startTime
         ? [
             {
