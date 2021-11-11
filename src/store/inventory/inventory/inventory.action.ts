@@ -18,35 +18,26 @@ export const searchInventory = createAsyncThunk(
   }
 );
 
-export const getInventoryById = createAsyncThunk(
-  'getInventoryById',
-  async (id: number) => {
-    const response = await inventoryService.getInventoryById(id).then((res) => {
-      return res.body;
-    });
-    return response.data;
-  }
-);
+export const getInventoryById = createAsyncThunk('getInventoryById', async (id: number) => {
+  const response = await inventoryService.getInventoryById(id).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
 
-export const saveInventory = createAsyncThunk(
-  'saveInventory',
-  async (data: IInventory) => {
-    const response = await inventoryService.saveInventory(data).then((res) => {
-      return res.body;
-    });
-    return response;
-  }
-);
+export const saveInventory = createAsyncThunk('saveInventory', async (data: IInventory) => {
+  const response = await inventoryService.saveInventory(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
 
-export const deleteInventory = createAsyncThunk(
-  'deleteInventory',
-  async (id: number) => {
-    const response = await inventoryService.deleteInventory(id).then((res) => {
-      return res.body;
-    });
-    return response;
-  }
-);
+export const deleteInventory = createAsyncThunk('deleteInventory', async (id: number) => {
+  const response = await inventoryService.deleteInventory(id).then((res) => {
+    return res.body;
+  });
+  return response;
+});
 
 export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
   const response = await inventoryService.processData(data).then((res) => {

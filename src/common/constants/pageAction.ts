@@ -134,7 +134,7 @@ export enum Page {
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
 
-  Inventory = "inventory",
+  Inventory = 'inventory',
 }
 export enum Action {
   View = 'view',

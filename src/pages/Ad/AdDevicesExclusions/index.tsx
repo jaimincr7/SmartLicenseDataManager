@@ -75,6 +75,7 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
+          disabled={adDevicesExclusions.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />

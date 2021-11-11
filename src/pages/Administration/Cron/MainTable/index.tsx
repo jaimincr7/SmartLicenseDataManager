@@ -219,14 +219,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterWithSwapOption('cron_frequency_time', cron.search.tableName,
+            title: FilterWithSwapOption(
+              'cron_frequency_time',
+              cron.search.tableName,
               form,
               null,
-              ObjectForColumnFilter, true),
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'cron_frequency_time',
             key: 'cron_frequency_time',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format("HH:MM:SS") : ''),
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format('HH:MM:SS') : ''),
           },
         ],
       },

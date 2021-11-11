@@ -154,7 +154,7 @@ export const FilterByDropdown = (
   loading?: boolean,
   setDropSearch?: (e: any) => void,
   isDateDropDown?: boolean,
-  isTime?: boolean,
+  isTime?: boolean
 ) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input">
@@ -185,7 +185,9 @@ export const FilterByDropdown = (
               ? moment(option.name).format(Common.DATEFORMAT)?.toString() == 'Invalid date'
                 ? 'NULL'
                 : moment(option.name).format(Common.DATEFORMAT)?.toString()
-              : (isTime ? moment(option.name).format("HH:MM:SS").toString() : option.name?.toString())}
+              : isTime
+              ? moment(option.name).format('HH:MM:SS').toString()
+              : option.name?.toString()}
           </Select.Option>
         ))}
       </Select>
@@ -285,7 +287,7 @@ export const FilterWithSwapOption = (
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
   ObjectForColumnFilter?: {},
-  isTime?: boolean,
+  isTime?: boolean
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
   const [dropSearch, setDropSearch] = React.useState(false);

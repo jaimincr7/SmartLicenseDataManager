@@ -40,7 +40,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                 name="file_name"
                 label="File Name"
                 className="m-0"
-                rules={[{ required: true, message: 'Please input File Name'  }]}
+                rules={[{ required: true, message: 'Please input File Name' }]}
               >
                 <Input className="form-control" />
               </Form.Item>

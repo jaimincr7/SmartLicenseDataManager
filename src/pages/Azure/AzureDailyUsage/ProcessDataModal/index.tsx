@@ -1,15 +1,23 @@
 import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import { useEffect } from 'react';
-import { ILookup } from '../../../../services/common/common.model';
+import {
+  IConfigModelPopUpDataSelection,
+  IGetConfigModelPopUpDataSelection,
+  ILookup,
+} from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
+  configModelPopUpDataSelection,
   getAllCompanyLookup,
   getBULookup,
+  getConfigModelPopUpDataSelection,
   getScheduleDate,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
+  clearConfigModelPopUpDataSelection,
   clearDateLookup,
+  cleargetModelPopUpDataSelection,
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
@@ -26,6 +34,8 @@ import { globalSearchSelector } from '../../../../store/globalSearch/globalSearc
 import React from 'react';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
+import ability, { Can } from '../../../../common/ability';
+import { Action, Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -35,7 +45,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, filterKeys } = props;
+  const { showModal, handleModalClose, filterKeys, tableName } = props;
 
   const [form] = Form.useForm();
 
@@ -49,12 +59,50 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     dispatch(processData(values));
   };
 
+  const saveConfig = () => {
+    const setModelSelection: IConfigModelPopUpDataSelection = {
+      id:
+        commonLookups.getModelPopUpSelection.id === null
+          ? null
+          : commonLookups.getModelPopUpSelection.id,
+      selection: JSON.stringify(form.getFieldsValue()),
+      table_name: tableName,
+      pop_up_name: 'ProcessDataSet',
+    };
+    dispatch(configModelPopUpDataSelection(setModelSelection));
+  };
+
+  const getConfigData = async (data: any) => {
+    if (data.company_id) {
+      await dispatch(getBULookup(data.company_id));
+    }
+    if (data.bu_id) {
+      await dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+      );
+    }
+    form.setFieldsValue(data);
+  };
+
   // const disabledDate = (current) => {
   //   // Can not select days before today and today
   //   return current && current > moment().endOf('day');
   // };
 
+  useEffect(() => {
+    if (commonLookups.getModelPopUpSelection.data !== {}) {
+      getConfigData(commonLookups.getModelPopUpSelection.data);
+    }
+  }, [commonLookups.getModelPopUpSelection.data]);
+
   React.useEffect(() => {
+    if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
+      const modelPopUp: IGetConfigModelPopUpDataSelection = {
+        table_name: tableName,
+        pop_up_name: 'ProcessDataSet',
+      };
+      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
+    }
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
@@ -77,6 +125,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       );
       form.setFieldsValue(initialValues);
     }
+    return () => {
+      dispatch(cleargetModelPopUpDataSelection());
+    };
   }, []);
 
   useEffect(() => {
@@ -90,6 +141,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearAzureDailyUsageMessages());
     }
   }, [azureDailyUsage.processData.messages]);
+
+  useEffect(() => {
+    if (commonLookups.setModelPopUpSelection.messages.length > 0) {
+      if (commonLookups.setModelPopUpSelection.hasErrors) {
+        toast.error(commonLookups.setModelPopUpSelection.messages.join(' '));
+      } else {
+        toast.success(commonLookups.setModelPopUpSelection.messages.join(' '));
+      }
+      dispatch(clearConfigModelPopUpDataSelection());
+    }
+  }, [commonLookups.setModelPopUpSelection.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -260,6 +322,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             >
               Process
             </Button>
+            <Can I={Action.ModelDataSeletion} a={Page.ConfigModelPopUpSelection}>
+              <Button
+                type="dashed"
+                ghost
+                onClick={saveConfig}
+                loading={commonLookups.setModelPopUpSelection.loading}
+              >
+                Save Configuration
+              </Button>
+            </Can>
             <Button key="back" onClick={handleModalClose}>
               Cancel
             </Button>

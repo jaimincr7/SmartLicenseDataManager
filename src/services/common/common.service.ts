@@ -53,14 +53,18 @@ class CommonService {
     });
   }
 
-  public async configModelPopUpDataSelection(data: IConfigModelPopUpDataSelection): Promise<IApiResponse<any>> {
+  public async configModelPopUpDataSelection(
+    data: IConfigModelPopUpDataSelection
+  ): Promise<IApiResponse<any>> {
     const url = `/config-model-pop-up-data-selection`;
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }
 
-  public async getConfigModelPopUpDataSelection(data: IGetConfigModelPopUpDataSelection): Promise<IApiResponse<any>> {
+  public async getConfigModelPopUpDataSelection(
+    data: IGetConfigModelPopUpDataSelection
+  ): Promise<IApiResponse<any>> {
     const url = `/config-model-pop-up-data-selection/model-pop-up-selection`;
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;

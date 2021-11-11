@@ -107,10 +107,7 @@ export const inventorySlice = createSlice({
     [getInventoryById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getInventoryById.fulfilled.type]: (
-      state,
-      action: PayloadAction<IInventory>
-    ) => {
+    [getInventoryById.fulfilled.type]: (state, action: PayloadAction<IInventory>) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
@@ -125,10 +122,7 @@ export const inventorySlice = createSlice({
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveInventory.fulfilled.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [saveInventory.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
@@ -143,10 +137,7 @@ export const inventorySlice = createSlice({
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteInventory.fulfilled.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [deleteInventory.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
