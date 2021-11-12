@@ -81,7 +81,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           scroll={{ x: true }}
           pagination={{
             ...pagination,
-            pageSizeOptions: ['10', '100', '500', '1000'],
+            pageSizeOptions: [Math.floor(records?.length/5), Math.floor(records?.length/2), records?.length],
             total: records?.length,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
