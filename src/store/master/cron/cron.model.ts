@@ -22,6 +22,11 @@ export interface ICronState {
     hasErrors: boolean;
     messages: string[];
   };
+  startAllApi: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
   FrequencyDay: {
     week: ILookup[];
     month: ILookup[];

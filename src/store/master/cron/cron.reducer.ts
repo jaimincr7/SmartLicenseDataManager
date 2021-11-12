@@ -9,6 +9,7 @@ import {
   getFrequencyDay,
   saveCron,
   searchCron,
+  startAll,
   startApi,
   stopApi,
 } from './cron.action';
@@ -43,6 +44,11 @@ export const initialState: ICronState = {
     hasErrors: false,
     messages: [],
   },
+  startAllApi: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
   save: {
     loading: false,
     hasErrors: false,
@@ -66,6 +72,7 @@ export const cronSlice = createSlice({
       state.startApi.messages = [];
       state.save.messages = [];
       state.delete.messages = [];
+      state.startAllApi.messages = [];
     },
     clearCronGetById: (state) => {
       state.getById.data = null;
@@ -174,6 +181,21 @@ export const cronSlice = createSlice({
     [startApi.rejected.type]: (state) => {
       state.startApi.loading = false;
       state.startApi.hasErrors = true;
+    },
+
+    // start API
+    [startAll.pending.type]: (state) => {
+      state.startAllApi.loading = true;
+      state.startAllApi.messages = [];
+    },
+    [startAll.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.startAllApi.loading = false;
+      state.startAllApi.hasErrors = false;
+      state.startAllApi.messages = action.payload.messages;
+    },
+    [startAll.rejected.type]: (state) => {
+      state.startAllApi.loading = false;
+      state.startAllApi.hasErrors = true;
     },
 
     // Stop

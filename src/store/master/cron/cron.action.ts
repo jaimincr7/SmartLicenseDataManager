@@ -11,6 +11,13 @@ export const searchCron = createAsyncThunk('searchCron', async (searchParam?: IS
   return response.data;
 });
 
+export const startAll = createAsyncThunk('startAll', async (searchParam?: ISearchCron) => {
+  const response = await cronService.startAll(searchParam).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
 // export const startApi = createAsyncThunk('startApi', async (searchParam?: IStartApi) => {
 //   const response = await cronService.startApi(searchParam).then((res) => {
 //     return res.body;

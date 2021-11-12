@@ -273,6 +273,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     }
   }, [cron.startApi.messages]);
 
+   useEffect(() => {
+     if (cron.startAllApi.messages.length > 0) {
+       if (cron.startAllApi.hasErrors) {
+         toast.error(cron.startAllApi.messages.join(' '));
+       } else {
+         toast.success(cron.startAllApi.messages.join(' '));
+         refreshDataTable();
+       }
+       dispatch(clearCronMessages());
+     }
+   }, [cron.startAllApi.messages]);
+
   const renderActionButton = (data: any) => {
     return (
       <a
@@ -356,6 +368,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.Cron)}
+        showCallApiBtn={true}
+        isStartSchedulaAllApi={true}
       />
     </>
   );
