@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin, TimePicker } from 'antd';
+import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin, Switch, TimePicker } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
@@ -75,6 +75,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     cron_frequency_type: '',
     cron_frequency_day: null,
     cron_frequency_time: '',
+    start_schedular: false,
   };
 
   const onFinish = (values: any) => {
@@ -138,6 +139,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         cron_frequency_time: _.isNull(data.cron_frequency_time)
           ? null
           : moment(data.cron_frequency_time),
+        start_schedular: data.status === 'Running' ? true : false,
       };
       if (data.cron_frequency_type) {
         setWeek(data.cron_frequency_type);
@@ -504,6 +506,21 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   >
                     <TimePicker defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
                   </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="start_schedular" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'start_schedular']} valuePropName="checked" noStyle>
+                      <Checkbox>Start Schedular ?</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Start Schedular ?'
+                  )}
                 </div>
               </Col>
             </Row>
