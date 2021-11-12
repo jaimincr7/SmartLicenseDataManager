@@ -46,13 +46,14 @@ const profileMenu = () => {
 
   return (
     <Menu>
-      <Menu.Item
+      {/* <Menu.Item
         key="0"
         icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-user.svg`} alt="" />}
       >
         <a href="#" title="My Profile">
+          My Profile
         </a>
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item
         key="1"
         icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-logout.svg`} alt="" />}
