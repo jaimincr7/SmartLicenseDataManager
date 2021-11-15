@@ -435,6 +435,7 @@ const BulkImport: React.FC = () => {
           <div className="btns-block">
             <Button
               type="primary"
+              disabled={excelColumnState?.length == 0}
               onClick={() => {
                 setCount({ ...count, save: count.save + 1 });
                 valuesArray = [];

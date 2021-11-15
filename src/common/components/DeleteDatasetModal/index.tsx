@@ -267,7 +267,6 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     name="date_added"
                     className="m-0"
                     label="Dataset Date"
-                    rules={[{ required: true }]}
                   >
                     <Select
                       placeholder="Select Date"
@@ -286,7 +285,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     >
                       {commonLookups.getScheduledDate.data.map((option: any) => (
                         <Option key={option} value={option}>
-                          {moment(option).format(Common.DATEFORMAT)}
+                          {moment(option)?.toString() == 'Invalid date' ? 'NULL' : moment(option).format(Common.DATEFORMAT)}
                         </Option>
                       ))}
                     </Select>
