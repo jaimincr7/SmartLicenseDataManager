@@ -260,11 +260,11 @@ const BulkImport: React.FC = () => {
   }, [bulkImports.saveExcelFileMapping.messages]);
 
   const getExcelMappingColumns = () => {
-    if (formUpload?.getFieldValue('table_name') && defaultFile?.name) {
+    if (formUpload?.getFieldValue('table_name') && defaultFile) {
       dispatch(
         getExcelFileMapping({
           table_name: formUpload.getFieldValue('table_name'),
-          key_word: defaultFile?.name?.split('.')[0],
+          key_word: defaultFile[0]?.name?.split('.')[0],
         })
       );
     }

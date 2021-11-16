@@ -906,7 +906,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             setShowMappingModal(false);
           }}
           showModal={showMappingModal}
-          fileName={fileData?.original_filename}
+          fileName={fileData?.original_filename.split('.')[0]}
           saveMapping={(fileName, isPublic) => {
             saveColumnMapping(fileName, isPublic);
           }}
