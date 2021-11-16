@@ -418,8 +418,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       const isAllDeselected = Object.values(tableColumnSelectionObj.columns).every(
         (col) => col === false
       );
-      if (isAllDeselected && tableColumnSelectionObj.id !== null) {
-        toast.info('Please select some columns.');
+      if (isAllDeselected ) {
+        toast.info('Please select any column.');
         return false;
       }
     }
