@@ -80,7 +80,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
     user_principal_name: '',
     display_name: '',
     is_deleted: false,
-    deleted_date: '',
+    deleted_date: null,
     has_exchange_license: false,
     has_one_drive_license: false,
     has_share_point_license: false,

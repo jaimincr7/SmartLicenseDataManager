@@ -81,7 +81,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
     user_principal_name: '',
     display_name: '',
     is_deleted: false,
-    deleted_date: '',
+    deleted_date: null,
     created_date: null,
     last_activity_date: null,
     item_count: null,
