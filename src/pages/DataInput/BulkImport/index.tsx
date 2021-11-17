@@ -252,13 +252,6 @@ const BulkImport: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (bulkImports.saveExcelFileMapping.messages.length > 0) {
-      toast.success(bulkImports.saveExcelFileMapping.messages.join(' '));
-      dispatch(clearBulkImportMessages());
-    }
-  }, [bulkImports.saveExcelFileMapping.messages]);
-
   const getExcelMappingColumns = () => {
     if (formUpload?.getFieldValue('table_name') && defaultFile) {
       dispatch(

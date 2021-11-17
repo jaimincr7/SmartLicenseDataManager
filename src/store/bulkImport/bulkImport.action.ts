@@ -24,6 +24,20 @@ export const getTables = createAsyncThunk('getTables', async () => {
   return response.data;
 });
 
+export const deleteColumnMapping = createAsyncThunk('deleteColumnMapping', async (id: number) => {
+  const response = await bulkImportService.deleteColumnMapping(id).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
+export const deleteFileMapping = createAsyncThunk('deleteFileMapping', async (id: number) => {
+  const response = await bulkImportService.deleteFileMapping(id).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
 export const saveTableForImport = createAsyncThunk(
   'saveTableForImport',
   async (data: IImportDataTable) => {

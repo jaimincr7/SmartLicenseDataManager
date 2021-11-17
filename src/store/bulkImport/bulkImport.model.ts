@@ -12,6 +12,16 @@ export interface IBulkImportState {
     hasErrors: boolean;
     data: IDatabaseTable[];
   };
+  deleteColumnMapping: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
+  deleteFileMapping: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
   saveTableForImport: {
     loading: boolean;
     hasErrors: boolean;
