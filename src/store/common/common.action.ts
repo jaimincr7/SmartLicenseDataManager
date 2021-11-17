@@ -1,6 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITableColumnSelection } from '../../common/models/common';
-import { IBulkUpdate, IConfigModelPopUpDataSelection, IDeleteDataset, IGetConfigModelPopUpDataSelection, IScheduleDate } from '../../services/common/common.model';
+import {
+  IBulkUpdate,
+  IConfigModelPopUpDataSelection,
+  IDeleteDataset,
+  IGetConfigModelPopUpDataSelection,
+  IScheduleDate,
+} from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
 // Asynchronous thunk action
@@ -47,19 +53,25 @@ export const getAllCompanyLookup = createAsyncThunk('getAllCompanyLookup', async
   return response.data;
 });
 
-export const configModelPopUpDataSelection = createAsyncThunk('configModelPopUpDataSelection', async (data: IConfigModelPopUpDataSelection) => {
-  const response = await commonService.configModelPopUpDataSelection(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
+export const configModelPopUpDataSelection = createAsyncThunk(
+  'configModelPopUpDataSelection',
+  async (data: IConfigModelPopUpDataSelection) => {
+    const response = await commonService.configModelPopUpDataSelection(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
 
-export const getConfigModelPopUpDataSelection = createAsyncThunk('getConfigModelPopUpDataSelection', async (data: IGetConfigModelPopUpDataSelection) => {
-  const response = await commonService.getConfigModelPopUpDataSelection(data).then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
+export const getConfigModelPopUpDataSelection = createAsyncThunk(
+  'getConfigModelPopUpDataSelection',
+  async (data: IGetConfigModelPopUpDataSelection) => {
+    const response = await commonService.getConfigModelPopUpDataSelection(data).then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const getBULookup = createAsyncThunk('getBULookup', async (companyId: number) => {
   const response = await commonService.getBULookup(companyId).then((res) => {

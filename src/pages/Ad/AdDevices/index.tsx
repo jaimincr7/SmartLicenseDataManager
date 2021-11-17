@@ -74,6 +74,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
       <Can I={Action.ProcessData} a={Page.ADDevices}>
         <Button
           className="btn-icon"
+          disabled={adDevices.search.loading}
           onClick={() => setProcessModalVisible(true)}
           icon={
             <em className="anticon">
@@ -88,6 +89,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
+          disabled={adDevices.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
@@ -216,6 +218,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           filterKeys={filterKeys}
+          tableName={adDevices.search.tableName}
         />
       )}
       {deleteModalVisible && (

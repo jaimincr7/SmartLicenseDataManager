@@ -26,6 +26,8 @@ export interface ICronData {
   cron_frequency_type: string;
   cron_frequency_day: number;
   cron_frequency_time?: string | Moment;
+  start_schedular?: boolean;
+  status?: string;
 }
 
 export interface ISearchAPI extends ICron {
@@ -35,7 +37,6 @@ export interface ISearchAPI extends ICron {
 
 export interface IStartApi {
   id?: number;
-  cron_job_frequency_id: number;
   sps_api_query_param?: {
     [key: string]: any;
   };

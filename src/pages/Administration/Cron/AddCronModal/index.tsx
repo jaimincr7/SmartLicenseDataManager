@@ -1,14 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  TimePicker,
-} from 'antd';
+import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin, Switch, TimePicker } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
@@ -19,7 +9,12 @@ import { Page } from '../../../../common/constants/pageAction';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICronData } from '../../../../services/master/cron/cron.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getBULookup, getCompanyLookup, getSpsApiGroupLookup, getTenantLookup } from '../../../../store/common/common.action';
+import {
+  getBULookup,
+  getCompanyLookup,
+  getSpsApiGroupLookup,
+  getTenantLookup,
+} from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
@@ -66,9 +61,8 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
 
   const onSelChange = (value: string) => {
     setWeek(value);
-    if(value === 'Daily')
-    {
-      form.setFieldsValue({cron_frequency_day: null});
+    if (value === 'Daily') {
+      form.setFieldsValue({ cron_frequency_day: null });
     }
   };
 
@@ -81,6 +75,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     cron_frequency_type: '',
     cron_frequency_day: null,
     cron_frequency_time: '',
+    start_schedular: false,
   };
 
   const onFinish = (values: any) => {
@@ -141,9 +136,12 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         cron_frequency_type: data.cron_frequency_type,
         cron_frequency_day: _.isNull(data.cron_frequency_day) ? null : data.cron_frequency_day,
-        cron_frequency_time: _.isNull(data.cron_frequency_time) ? null : moment(data.cron_frequency_time),
+        cron_frequency_time: _.isNull(data.cron_frequency_time)
+          ? null
+          : moment(data.cron_frequency_time),
+        start_schedular: data.status === 'Running' ? true : false,
       };
-      if(data.cron_frequency_type) {
+      if (data.cron_frequency_type) {
         setWeek(data.cron_frequency_type);
       }
       form.setFieldsValue(initialValues);
@@ -197,24 +195,24 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(+id === 0 && !isMultiple) {
-        const globalSearch: IInlineSearch = {};
-        for (const key in globalFilters.search) {
-          const element = globalFilters.search[key];
-          globalSearch[key] = element ? [element] : null;
-        }
-        if (globalSearch.company_id) {
-          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
-          dispatch(getBULookup(globalSearch.company_id[0]));
-      const initialValues = {
+    if (+id === 0 && !isMultiple) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
+      if (globalSearch.company_id) {
+        dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+        dispatch(getBULookup(globalSearch.company_id[0]));
+        const initialValues = {
           company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
         };
         form.setFieldsValue(initialValues);
       }
-      }
-      }, []);
+    }
+  }, []);
 
   return (
     <>
@@ -248,7 +246,12 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Tenant'
                   )}
-                  <Form.Item name="tenant_id" className="m-0" label="Tenant" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="tenant_id"
+                    className="m-0"
+                    label="Tenant"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleTenantChange}
                       allowClear
@@ -282,7 +285,12 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Company'
                   )}
-                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="company_id"
+                    className="m-0"
+                    label="Company"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -316,7 +324,12 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="bu_id"
+                    className="m-0"
+                    label="BU"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       allowClear
                       onChange={handleBUChange}
@@ -350,7 +363,12 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Api Group'
                   )}
-                  <Form.Item name="api_group_id" className="m-0" label="Api Group" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="api_group_id"
+                    className="m-0"
+                    label="Api Group"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       loading={commonLookups.spsApiGroups.loading}
                       allowClear
@@ -394,7 +412,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     rules={[{ required: !isMultiple }]}
                   >
                     <Select
-                    onChange={onSelChange}
+                      onChange={onSelChange}
                       allowClear
                       showSearch
                       optionFilterProp="children"
@@ -427,11 +445,16 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Frequency Day'
                   )}
-                  <Form.Item name="cron_frequency_day" className="m-0" label="Frequency Day" rules={[{ required: !isMultiple && week !== 'Daily' }]}>
+                  <Form.Item
+                    name="cron_frequency_day"
+                    className="m-0"
+                    label="Frequency Day"
+                    rules={[{ required: !isMultiple && week !== 'Daily' }]}
+                  >
                     <Select
                       allowClear
                       showSearch
-                      disabled = {week == 'Daily'}
+                      disabled={week == 'Daily'}
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -443,15 +466,21 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                       }
                       loading={cron.FrequencyDay.loading}
                     >
-                      {week == 'Weekly' ? (cron.FrequencyDay.week.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))) : week == 'Monthly' ? (cron.FrequencyDay.month.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.id}
-                        </Option>
-                      ))) : <></> }
+                      {week == 'Weekly' ? (
+                        cron.FrequencyDay.week.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
+                      ) : week == 'Monthly' ? (
+                        cron.FrequencyDay.month.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.id}
+                          </Option>
+                        ))
+                      ) : (
+                        <></>
+                      )}
                     </Select>
                   </Form.Item>
                 </div>
@@ -469,9 +498,29 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Frequency Time'
                   )}
-                  <Form.Item name="cron_frequency_time" label="Frequency Time" className="m-0" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="cron_frequency_time"
+                    label="Frequency Time"
+                    className="m-0"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <TimePicker defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
                   </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="start_schedular" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  &nbsp;
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'start_schedular']} valuePropName="checked" noStyle>
+                      <Checkbox>Start Schedular ?</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Start Schedular ?'
+                  )}
                 </div>
               </Col>
             </Row>

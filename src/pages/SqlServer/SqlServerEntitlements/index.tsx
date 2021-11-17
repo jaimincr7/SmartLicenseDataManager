@@ -77,6 +77,7 @@ const SqlServerEntitlements: React.FC<ISqlServerEntitlementsProps> = (props) => 
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
+          disabled={sqlServerEntitlements.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />

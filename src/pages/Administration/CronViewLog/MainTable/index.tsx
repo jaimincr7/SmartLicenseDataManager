@@ -139,6 +139,21 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      {
+        title: <span className="dragHandler">Log Date</span>,
+        column: 'LogDate',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDateSwapTable('log_date', cronViewLog.search.tableName, form),
+            dataIndex: 'log_date',
+            key: 'log_date',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+          },
+        ],
+      },
     ];
   };
 

@@ -404,16 +404,13 @@ export const commonSlice = createSlice({
       state.getModelPopUpSelection.data = {};
       state.getModelPopUpSelection.id = null;
     },
-    [getConfigModelPopUpDataSelection.fulfilled.type]: (
-      state,
-      action: PayloadAction<any>
-    ) => {
+    [getConfigModelPopUpDataSelection.fulfilled.type]: (state, action: PayloadAction<any>) => {
       state.getModelPopUpSelection.loading = false;
       state.getModelPopUpSelection.hasErrors = false;
-      if(action.payload) {
-        const { id , selection } = action.payload;
-      state.getModelPopUpSelection.id = id;
-      state.getModelPopUpSelection.data = JSON.parse(selection);
+      if (action.payload) {
+        const { id, selection } = action.payload;
+        state.getModelPopUpSelection.id = id;
+        state.getModelPopUpSelection.data = JSON.parse(selection);
       }
     },
     [getConfigModelPopUpDataSelection.rejected.type]: (state) => {
@@ -962,7 +959,7 @@ export const {
   clearDateLookup,
   clearCronJobSchedularMessages,
   clearConfigModelPopUpDataSelection,
-  cleargetModelPopUpDataSelection
+  cleargetModelPopUpDataSelection,
 } = commonSlice.actions;
 
 // The reducer

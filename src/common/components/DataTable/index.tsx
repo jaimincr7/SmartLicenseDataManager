@@ -29,6 +29,7 @@ import ReactDragListView from 'react-drag-listview';
 import { spsApiCallSelector } from '../../../store/sps/spsAPICall/spsApiCall.reducer';
 import { Can } from '../../ability';
 import { Action, Page } from '../../constants/pageAction';
+import { startAll } from '../../../store/master/cron/cron.action';
 
 let pageLoaded = false;
 
@@ -64,6 +65,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     disableRowSelection,
     setObjectForColumnFilter,
     isCronJobApiButton,
+    isStartSchedulaAllApi,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -293,6 +295,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Export Excel
   const downloadExcel = () => {
+
     setLoading(true);
     const searchData = getSearchData(pagination, true);
 
@@ -301,7 +304,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         toast.error('Document not available.');
         return;
       } else {
-        const fileName = `${moment().format('yyyyMMDDHHmmss')}.xlsx`; //res.headers["content-disposition"];
+        const fileName = `${res.headers['content-disposition'].split('filename=')[1]}`; //res.headers["content-disposition"];
         const url = window.URL.createObjectURL(new Blob([res.data]));
         exportExcel(fileName, url);
         setLoading(false);
@@ -416,8 +419,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       const isAllDeselected = Object.values(tableColumnSelectionObj.columns).every(
         (col) => col === false
       );
-      if (isAllDeselected && tableColumnSelectionObj.id !== null) {
-        toast.info('Please select some columns.');
+      if (isAllDeselected ) {
+        toast.info('Please select any column.');
         return false;
       }
     }
@@ -558,12 +561,35 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           loading={spsApisState.callAllApi.loading}
           className="btn-icon"
           onClick={() => {
-            if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
-              onRowSelection();
+            if(isStartSchedulaAllApi) {
+              const inlineSearchFilter = _.pickBy(tableFilter.filter_keys, function (value) {
+                return !(
+                  value === undefined ||
+                  value === '' ||
+                  _.isNull(value) ||
+                  (Array.isArray(value) && value.length === 0)
+                );
+              });
+              const Obj = {
+                isLookup: !pageLoaded,
+                filterKeys: inlineSearchFilter,
+                is_export_to_excel: !pageLoaded,
+                limit: 10,
+                offset: 0,
+                order_by: tableFilter.order_by,
+                order_direction: tableFilter.order_direction,
+                keyword: tableFilter.keyword,
+              };
+              dispatch(startAll(Obj));
             }
+            else {
+              if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3 ) {
+                onRowSelection();
+              }
+            }            
           }}
         >
-          Call All Api
+         {isStartSchedulaAllApi ? <>Schedule All</> : <>Call All Api</>} 
         </Button>
       );
     }
@@ -603,7 +629,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Show/Hide Columns
             </Button>
           </Popover>
-          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 ? (
+          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 && !isStartSchedulaAllApi? (
             <Popover content={<>Please select global filter first!</>} trigger="click">
               {renderCallApiButton()}
             </Popover>

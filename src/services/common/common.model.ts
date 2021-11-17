@@ -74,13 +74,13 @@ export interface IBulkUpdate {
 }
 
 export interface IConfigModelPopUpDataSelection {
-  id: number,
-  selection: any,
-  pop_up_name: string,
-  table_name: string
+  id: number;
+  selection: any;
+  pop_up_name: string;
+  table_name: string;
 }
 
 export interface IGetConfigModelPopUpDataSelection {
-  pop_up_name: string,
-  table_name: string
+  pop_up_name: string;
+  table_name: string;
 }

@@ -354,7 +354,7 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
                   ) : (
                     'Field'
                   )}
-                  <Form.Item name="field" className="m-0" label="Field">
+                  <Form.Item name="field" className="m-0" label="Field" rules={[{ required: !isMultiple }]}>
                     <Select
                       allowClear
                       showSearch
