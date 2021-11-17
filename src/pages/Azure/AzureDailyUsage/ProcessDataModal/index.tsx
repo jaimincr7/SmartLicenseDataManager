@@ -292,7 +292,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={option}>
-                        {moment(option).format(Common.DATEFORMAT)}
+                        {moment(option)?.toString() == 'Invalid date' ? 'NULL' : moment(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}
                   </Select>
