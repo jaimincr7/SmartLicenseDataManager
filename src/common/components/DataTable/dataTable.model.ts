@@ -31,4 +31,5 @@ export interface IDataTable {
   disableRowSelection?: boolean;
   setObjectForColumnFilter?: (val: {}) => void;
   isCronJobApiButton?: boolean;
+  isStartSchedulaAllApi?: boolean;
 }

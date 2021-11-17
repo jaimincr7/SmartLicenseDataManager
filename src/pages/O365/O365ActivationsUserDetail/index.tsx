@@ -77,6 +77,7 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
+          disabled={o365ActivationsUserDetail.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />

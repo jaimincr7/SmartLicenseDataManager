@@ -259,7 +259,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         }}
       >
         {data.is_mapping ? (
-          <PhoneOutlined title="Call Api"/>
+          <PhoneOutlined title="Call Api" />
         ) : (
           <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
         )}

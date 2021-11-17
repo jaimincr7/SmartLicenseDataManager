@@ -90,7 +90,7 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
     baseline: null,
     cost: null,
     item_cost: null,
-    expiration_date: '',
+    expiration_date: null,
     payment_cycle: '',
     plans: '',
     committed_year_1: null,

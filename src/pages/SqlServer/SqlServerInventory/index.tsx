@@ -92,6 +92,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
+          disabled={sqlServerInventory.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />

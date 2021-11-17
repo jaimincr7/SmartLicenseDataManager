@@ -12,6 +12,8 @@ import {
   saveTableForImport,
   getExcelFileMapping,
   saveExcelFileMapping,
+  deleteColumnMapping,
+  deleteFileMapping,
 } from './bulkImport.action';
 import { IBulkImportState } from './bulkImport.model';
 
@@ -25,6 +27,16 @@ export const initialState: IBulkImportState = {
     loading: false,
     hasErrors: false,
     data: [],
+  },
+  deleteColumnMapping: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  deleteFileMapping: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
   },
   saveTableForImport: {
     loading: false,
@@ -69,6 +81,12 @@ export const bulkImportSlice = createSlice({
       state.bulkInsert.messages = [];
       state.saveTableForImport.messages = [];
       state.saveExcelFileMapping.messages = [];
+      state.deleteColumnMapping.messages = [];
+      state.deleteFileMapping.messages = [];
+    },
+    clearDeleteMessages: (state) => {
+      state.deleteColumnMapping.messages = [];
+      state.deleteFileMapping.messages = [];
     },
     clearGetTableColumns: (state) => {
       state.getTableColumns.data = null;
@@ -125,6 +143,42 @@ export const bulkImportSlice = createSlice({
     [saveTableForImport.rejected.type]: (state) => {
       state.saveTableForImport.loading = false;
       state.saveTableForImport.hasErrors = true;
+    },
+
+    // Save Table Column Selection
+    [deleteColumnMapping.pending.type]: (state) => {
+      state.deleteColumnMapping.loading = true;
+      state.deleteColumnMapping.messages = [];
+    },
+    [deleteColumnMapping.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.deleteColumnMapping.loading = false;
+      state.deleteColumnMapping.hasErrors = false;
+      state.deleteColumnMapping.messages = action.payload.messages;
+    },
+    [deleteColumnMapping.rejected.type]: (state) => {
+      state.deleteColumnMapping.loading = false;
+      state.deleteColumnMapping.hasErrors = true;
+    },
+
+    // Save Table Column Selection
+    [deleteFileMapping.pending.type]: (state) => {
+      state.deleteFileMapping.loading = true;
+      state.deleteFileMapping.messages = [];
+    },
+    [deleteFileMapping.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.deleteFileMapping.loading = false;
+      state.deleteFileMapping.hasErrors = false;
+      state.deleteFileMapping.messages = action.payload.messages;
+    },
+    [deleteFileMapping.rejected.type]: (state) => {
+      state.deleteFileMapping.loading = false;
+      state.deleteFileMapping.hasErrors = true;
     },
 
     // Get Table Columns
@@ -217,6 +271,7 @@ export const {
   clearBulkImportMessages,
   clearExcelColumns,
   clearGetTableColumns,
+  clearDeleteMessages,
   setTableForImport,
 } = bulkImportSlice.actions;
 

@@ -342,13 +342,13 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'field']} valuePropName="checked" noStyle>
+                    <Form.Item name={['checked', 'field']} valuePropName="checked" noStyle >
                       <Checkbox>Field</Checkbox>
                     </Form.Item>
                   ) : (
                     'Field'
                   )}
-                  <Form.Item name="field" className="m-0" label="Field">
+                  <Form.Item name="field" className="m-0" label="Field" rules={[{ required: !isMultiple, max: 510 }]}>
                     <Select
                       allowClear
                       showSearch

@@ -3,7 +3,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ICron, ICronData } from '../../../services/master/cron/cron.model';
 import { RootState } from '../../app.model';
-import { deleteCron, getCronById, getFrequencyDay, saveCron, searchCron, startApi, stopApi } from './cron.action';
+import {
+  deleteCron,
+  getCronById,
+  getFrequencyDay,
+  saveCron,
+  searchCron,
+  startAll,
+  startApi,
+  stopApi,
+} from './cron.action';
 import { ICronState } from './cron.model';
 
 export const initialState: ICronState = {
@@ -35,6 +44,11 @@ export const initialState: ICronState = {
     hasErrors: false,
     messages: [],
   },
+  startAllApi: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
   save: {
     loading: false,
     hasErrors: false,
@@ -58,6 +72,7 @@ export const cronSlice = createSlice({
       state.startApi.messages = [];
       state.save.messages = [];
       state.delete.messages = [];
+      state.startAllApi.messages = [];
     },
     clearCronGetById: (state) => {
       state.getById.data = null;
@@ -133,7 +148,7 @@ export const cronSlice = createSlice({
       state.FrequencyDay.loading = true;
     },
     [getFrequencyDay.fulfilled.type]: (state, action: any) => {
-      const { week_days , month_days } = action.payload;
+      const { week_days, month_days } = action.payload;
       state.FrequencyDay.week = week_days;
       state.FrequencyDay.month = month_days;
       state.FrequencyDay.loading = false;
@@ -166,6 +181,21 @@ export const cronSlice = createSlice({
     [startApi.rejected.type]: (state) => {
       state.startApi.loading = false;
       state.startApi.hasErrors = true;
+    },
+
+    // start API
+    [startAll.pending.type]: (state) => {
+      state.startAllApi.loading = true;
+      state.startAllApi.messages = [];
+    },
+    [startAll.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.startAllApi.loading = false;
+      state.startAllApi.hasErrors = false;
+      state.startAllApi.messages = action.payload.messages;
+    },
+    [startAll.rejected.type]: (state) => {
+      state.startAllApi.loading = false;
+      state.startAllApi.hasErrors = true;
     },
 
     // Stop

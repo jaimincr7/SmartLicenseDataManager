@@ -1,6 +1,10 @@
 import { Button, Col, Form, Modal, Row, Select, Switch } from 'antd';
 import React, { useEffect } from 'react';
-import { IConfigModelPopUpDataSelection, IGetConfigModelPopUpDataSelection, ILookup } from '../../../../services/common/common.model';
+import {
+  IConfigModelPopUpDataSelection,
+  IGetConfigModelPopUpDataSelection,
+  ILookup,
+} from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   configModelPopUpDataSelection,
@@ -40,7 +44,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, filterKeys , tableName } = props;
+  const { showModal, handleModalClose, filterKeys, tableName } = props;
 
   const [form] = Form.useForm();
 
@@ -60,20 +64,22 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-     dispatch(processData(values));
+    dispatch(processData(values));
   };
 
   const saveConfig = () => {
     const setModelSelection: IConfigModelPopUpDataSelection = {
-      id: commonLookups.getModelPopUpSelection.id === null ? null : commonLookups.getModelPopUpSelection.id,
+      id:
+        commonLookups.getModelPopUpSelection.id === null
+          ? null
+          : commonLookups.getModelPopUpSelection.id,
       selection: JSON.stringify(form.getFieldsValue()),
       table_name: tableName,
       pop_up_name: 'ProcessDataSet',
-    }
+    };
     dispatch(configModelPopUpDataSelection(setModelSelection));
   };
 
-  
   const getConfigData = async (data: any) => {
     if (data.company_id) {
       await dispatch(getBULookup(data.company_id));
@@ -110,7 +116,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         toast.error(commonLookups.setModelPopUpSelection.messages.join(' '));
       } else {
         toast.success(commonLookups.setModelPopUpSelection.messages.join(' '));
-        handleModalClose();
       }
       dispatch(clearConfigModelPopUpDataSelection());
     }
@@ -149,17 +154,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(commonLookups.getModelPopUpSelection.data !== {}) {
+    if (commonLookups.getModelPopUpSelection.data !== {}) {
       getConfigData(commonLookups.getModelPopUpSelection.data);
     }
   }, [commonLookups.getModelPopUpSelection.data]);
 
   React.useEffect(() => {
-    if(ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
+    if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
       const modelPopUp: IGetConfigModelPopUpDataSelection = {
-        table_name : tableName,
-        pop_up_name : 'ProcessDataSet'
-      }
+        table_name: tableName,
+        pop_up_name: 'ProcessDataSet',
+      };
       dispatch(getConfigModelPopUpDataSelection(modelPopUp));
     }
     const globalSearch: IInlineSearch = {};
@@ -296,7 +301,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option).format(Common.DATEFORMAT)}
+                        {moment(option)?.toString() == 'Invalid date' ? 'NULL' : moment(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}
                   </Select>
@@ -407,9 +412,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               Process
             </Button>
             <Can I={Action.ModelDataSeletion} a={Page.ConfigModelPopUpSelection}>
-            <Button type="dashed" ghost onClick={saveConfig} loading={commonLookups.setModelPopUpSelection.loading}>
-              Save Configuration
-            </Button>
+              <Button
+                type="dashed"
+                ghost
+                onClick={saveConfig}
+                loading={commonLookups.setModelPopUpSelection.loading}
+              >
+                Save Configuration
+              </Button>
             </Can>
             <Button key="back" onClick={handleModalClose}>
               Cancel

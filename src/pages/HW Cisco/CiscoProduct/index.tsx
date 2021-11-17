@@ -76,6 +76,7 @@ const CiscoProduct: React.FC<ICiscoProductProps> = (props) => {
         <Button
           className="btn-icon mr-1"
           onClick={() => setDeleteModalVisible(true)}
+          disabled={ciscoProduct.search.loading}
           icon={
             <em className="anticon">
               <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />

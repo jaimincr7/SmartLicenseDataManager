@@ -380,12 +380,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Source'
                   )}
-                  <Form.Item
-                    name="source"
-                    label="Source"
-                    className="m-0"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -399,7 +394,12 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Publisher'
                   )}
-                  <Form.Item name="publisher" className="m-0" label="Publisher" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="publisher"
+                    className="m-0"
+                    label="Publisher"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -426,7 +426,11 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'software_version']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'software_version']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Software Version</Checkbox>
                     </Form.Item>
                   ) : (
@@ -502,13 +506,22 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'operating_system']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'operating_system']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Operating System</Checkbox>
                     </Form.Item>
                   ) : (
                     'Operating System'
                   )}
-                  <Form.Item name="operating_system" label="Operating System" className="m-0" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="operating_system"
+                    label="Operating System"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -522,7 +535,12 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Manufacturer'
                   )}
-                  <Form.Item name="manufacturer" label="Manufacturer" className="m-0" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="manufacturer"
+                    label="Manufacturer"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -536,7 +554,12 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Device Model'
                   )}
-                  <Form.Item name="device_model" label="Device Model" className="m-0" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="device_model"
+                    label="Device Model"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -582,13 +605,22 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'processor_count']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'processor_count']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Processor Count</Checkbox>
                     </Form.Item>
                   ) : (
                     'Processor Count'
                   )}
-                  <Form.Item name="processor_count" label="Processor Count" className="m-0" rules={[{ type: 'integer' }]}>
+                  <Form.Item
+                    name="processor_count"
+                    label="Processor Count"
+                    className="m-0"
+                    rules={[{ type: 'integer' }]}
+                  >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -596,13 +628,22 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'cores_per_processor']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'cores_per_processor']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Cores Per Processor</Checkbox>
                     </Form.Item>
                   ) : (
                     'Cores Per Processor'
                   )}
-                  <Form.Item name="cores_per_processor" label="Cores Per Processor" className="m-0" rules={[{ type: 'integer' }]}>
+                  <Form.Item
+                    name="cores_per_processor"
+                    label="Cores Per Processor"
+                    className="m-0"
+                    rules={[{ type: 'integer' }]}
+                  >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -616,7 +657,12 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Core Count'
                   )}
-                  <Form.Item name="core_count" label="Core Count" className="m-0" rules={[{ type: 'integer' ,  }]}>
+                  <Form.Item
+                    name="core_count"
+                    label="Core Count"
+                    className="m-0"
+                    rules={[{ type: 'integer' }]}
+                  >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -630,7 +676,12 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Username'
                   )}
-                  <Form.Item name="username" label="Username" className="m-0" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="username"
+                    label="Username"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -638,11 +689,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'last_hw_scan']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'last_hw_scan']} valuePropName="checked" noStyle>
                       <Checkbox>Last HW Scan</Checkbox>
                     </Form.Item>
                   ) : (
@@ -667,7 +714,12 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Last SW Scan'
                   )}
-                  <Form.Item name="last_sw_scan" label="Last SW Scan" className="m-0" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="last_sw_scan"
+                    label="Last SW Scan"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -675,21 +727,13 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'date_installed']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'date_installed']} valuePropName="checked" noStyle>
                       <Checkbox>Date Installed</Checkbox>
                     </Form.Item>
                   ) : (
                     'Date Installed'
                   )}
-                  <Form.Item
-                    name="date_installed"
-                    label="Date Installed"
-                    className="m-0"
-                  >
+                  <Form.Item name="date_installed" label="Date Installed" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>

@@ -199,7 +199,7 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
       <div className="main-card">
         <Form form={form} initialValues={{}} name="menuRights" onFinish={onFinish}>
           <div className="title-block">
-            <Form.Item name="role_id" className="m-0" label="Role" rules={[{ required: true }]}>
+            <Form.Item name="role_id" className="m-0" label="Role" rules={[{ required: true, message: 'Role is required' }]}>
               <Select
                 onChange={handleRoleIdChange}
                 loading={reduxStoreData.roleLookup.loading}

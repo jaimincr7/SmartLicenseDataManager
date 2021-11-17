@@ -264,7 +264,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const removeCompany = (id: number) => {
     dispatch(deleteCompany(id));
   };
-  
+
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.Update} a={Page.Company}>

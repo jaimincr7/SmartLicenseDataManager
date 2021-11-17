@@ -2,18 +2,22 @@ import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { ILookup } from '../../../services/common/common.model';
+import { IConfigModelPopUpDataSelection, IGetConfigModelPopUpDataSelection, ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
+  configModelPopUpDataSelection,
   deleteDataset,
   getAllCompanyLookup,
   getBULookup,
+  getConfigModelPopUpDataSelection,
   getScheduleDate,
 } from '../../../store/common/common.action';
 import {
   clearBULookUp,
+  clearConfigModelPopUpDataSelection,
   clearDateLookup,
   clearDeleteDatasetMessages,
+  cleargetModelPopUpDataSelection,
   commonSelector,
 } from '../../../store/common/common.reducer';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
@@ -23,6 +27,8 @@ import { IDeleteDatasetModalProps } from './deleteDatasetModal.model';
 import _ from 'lodash';
 import React from 'react';
 import { getScheduleDateHelperLookup } from '../../helperFunction';
+import ability, { Can } from '../../ability';
+import { Action, Page } from '../../constants/pageAction';
 
 const { Option } = Select;
 
@@ -52,6 +58,30 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
     dispatch(deleteDataset(inputValues));
   };
 
+  const saveConfig = () => {
+    const setModelSelection: IConfigModelPopUpDataSelection = {
+      id: commonLookups.getModelPopUpSelection.id === null ? null : commonLookups.getModelPopUpSelection.id,
+      selection: JSON.stringify(form.getFieldsValue()),
+      table_name: tableName,
+      pop_up_name: 'DeleteDataSet',
+    }
+    dispatch(configModelPopUpDataSelection(setModelSelection));
+  };
+
+  const getConfigData = async (data: any) => {
+    if (data.company_id) {
+      await dispatch(getBULookup(data.company_id));
+    }
+	if (data.bu_id) {
+      await dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
+        )
+      );
+        }
+    form.setFieldsValue(data);
+  };
+
   // const disabledDate = (current) => {
   //   // Can not select days before today and today
   //   return current && current > moment().endOf('day');
@@ -69,6 +99,23 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
       dispatch(clearDeleteDatasetMessages());
     }
   }, [common.deleteDataset.messages]);
+
+  useEffect(() => {
+    if(commonLookups.getModelPopUpSelection.data !== {}) {
+      getConfigData(commonLookups.getModelPopUpSelection.data);
+    }
+  }, [commonLookups.getModelPopUpSelection.data]);
+
+  useEffect(() => {
+    if (commonLookups.setModelPopUpSelection.messages.length > 0) {
+      if (commonLookups.setModelPopUpSelection.hasErrors) {
+        toast.error(commonLookups.setModelPopUpSelection.messages.join(' '));
+      } else {
+        toast.success(commonLookups.setModelPopUpSelection.messages.join(' '));
+      }
+      dispatch(clearConfigModelPopUpDataSelection());
+    }
+  }, [commonLookups.setModelPopUpSelection.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -96,6 +143,13 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
   }, [dispatch]);
 
   React.useEffect(() => {
+    if(ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
+      const modelPopUp: IGetConfigModelPopUpDataSelection = {
+            table_name : tableName,
+            pop_up_name : 'DeleteDataSet'
+          }
+          dispatch(getConfigModelPopUpDataSelection(modelPopUp));
+        }
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
@@ -114,6 +168,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
       dispatch(getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName)));
       form.setFieldsValue(initialValues);
     }
+    return () => {
+      dispatch(cleargetModelPopUpDataSelection());
+    };
   }, []);
 
   return (
@@ -210,7 +267,6 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     name="date_added"
                     className="m-0"
                     label="Dataset Date"
-                    rules={[{ required: true }]}
                   >
                     <Select
                       placeholder="Select Date"
@@ -229,7 +285,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     >
                       {commonLookups.getScheduledDate.data.map((option: any) => (
                         <Option key={option} value={option}>
-                          {moment(option).format(Common.DATEFORMAT)}
+                          {moment(option)?.toString() == 'Invalid date' ? 'NULL' : moment(option).format(Common.DATEFORMAT)}
                         </Option>
                       ))}
                     </Select>
@@ -247,6 +303,11 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
             >
               Delete
             </Button>
+            <Can I={Action.ModelDataSeletion} a={Page.ConfigModelPopUpSelection}>
+              <Button type="dashed" ghost onClick={saveConfig} loading={commonLookups.setModelPopUpSelection.loading}>
+                Save Configuration
+              </Button>
+            </Can>
             <Button key="back" onClick={handleModalClose}>
               Cancel
             </Button>

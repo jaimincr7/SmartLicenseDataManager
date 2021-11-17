@@ -39,6 +39,20 @@ class BulkImportService {
     });
   }
 
+  public async deleteFileMapping(id: number): Promise<any> {
+    const url = `/config-excel-file-mapping/${id}`;
+    return request({ url, method: 'DELETE' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async deleteColumnMapping(id: number): Promise<any> {
+    const url = `/config-excel-column-mapping/${id}`;
+    return request({ url, method: 'DELETE' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveExcelFileMapping(data: ISaveExcelMapping): Promise<any> {
     const url = `/config-excel-file-mapping`;
     return request({ url, method: 'POST', data: data }).then((res) => {

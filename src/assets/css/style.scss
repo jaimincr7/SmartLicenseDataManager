@@ -646,6 +646,19 @@ textarea.ant-input {
   color: #4f4f4f;
 }
 
+.deleteMap-btn {
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+  background-color: transparent;
+  border-radius: 50%;
+  margin-left: 20px;
+}
+.deleteMap-btn img {
+  max-width: 18px;
+  display: block;
+}
+
 .action-btn {
   width: 30px;
   height: 30px;

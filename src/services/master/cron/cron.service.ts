@@ -14,6 +14,15 @@ class CronService {
     });
   }
 
+  public async startAll(
+    searchParams?: ISearchCron
+  ): Promise<IApiResponse<ISearchResponse<ICron>>> {
+    const url = `${this.ENDPOINT}/start-all`;
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getCronById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {

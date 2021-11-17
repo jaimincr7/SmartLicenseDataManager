@@ -51,7 +51,7 @@ const Cron: React.FC<ICronProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        <MainTable 
+        <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}
           setValuesForSelection={setValuesForSelection}
@@ -62,7 +62,8 @@ const Cron: React.FC<ICronProps> = (props) => {
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
-          }} />
+          }}
+        />
       </div>
       {addModalVisible && (
         <AddCronModal
@@ -88,7 +89,7 @@ const Cron: React.FC<ICronProps> = (props) => {
           id={id}
           refreshDataTable={() => refreshDataTable()}
         />
-)}
+      )}
     </div>
   );
 };
