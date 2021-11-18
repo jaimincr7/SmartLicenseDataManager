@@ -606,7 +606,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             }            
           }}
         >
-         {isStartSchedulaAllApi ? <>Schedule All</> : <>Call All Api</>} 
+         {isStartSchedulaAllApi ? <>Schedule All</> : <>Call All API</>} 
         </Button>
       );
     }
