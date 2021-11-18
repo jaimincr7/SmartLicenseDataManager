@@ -673,6 +673,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             pagination={{
               ...pagination,
               pageSizeOptions: ['10', '100', '500', '1000'],
+              showSizeChanger: true,
               total: reduxStoreData.search.count,
               showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
             }}

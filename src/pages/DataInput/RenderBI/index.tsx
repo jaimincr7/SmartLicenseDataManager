@@ -459,11 +459,7 @@ useEffect(() => {
 
   useEffect(() => {
     getExcelMappingColumns();
-  }, [innerFormUpload?.getFieldValue('table_name')]);
-
-  useEffect(() => {
-    getExcelMappingColumns();
-  }, [fileData?.original_filename]);
+  }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
 
   const onChange = (value) => {
     if (value) {
