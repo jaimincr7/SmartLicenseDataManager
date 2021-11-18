@@ -297,9 +297,11 @@ const BulkImport: React.FC = () => {
     valuesArray = [];
     setDefaultFileList([]);
     setCount({ save: 0, reset: 0 });
+    const tbName = formUpload?.getFieldValue('table_name');
     formUpload.resetFields();
+    formUpload.setFieldsValue({ table_name: tbName});
     setDefaultFileList([]);
-    setTableName('');
+    setTableName(tbName);
   };
   return (
     <>
