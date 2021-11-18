@@ -64,6 +64,7 @@ export const windowsServerExclusionsSlice = createSlice({
     clearWindowsServerExclusionsMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
+      state.processData.messages = [];
     },
     clearWindowsServerExclusionsGetById: (state) => {
       state.getById.data = null;
