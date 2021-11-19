@@ -64,6 +64,7 @@ export const sqlServerExclusionsSlice = createSlice({
     clearSqlServerExclusionsMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
+      state.processData.messages = [];
     },
     clearSqlServerExclusionsGetById: (state) => {
       state.getById.data = null;

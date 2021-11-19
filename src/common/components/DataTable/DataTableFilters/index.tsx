@@ -243,13 +243,13 @@ export const FilterByBooleanDropDown = (
 
   return (
     <>
-      <Form.Item name={dataIndex} className="m-0 filter-input">
+      <Form.Item name={dataIndex} className="m-0 filter-input sm">
         <Select
           onDropdownVisibleChange={handleDropSearch}
           showArrow={true}
           mode="multiple"
           dropdownClassName="filter-dropdown-pop"
-          placeholder="Select and search"
+          placeholder="Select"
           maxTagCount="responsive"
           allowClear
           loading={loading}

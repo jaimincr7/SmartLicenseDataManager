@@ -220,6 +220,7 @@ const WindowsServerExclusions: React.FC<IWindowsServerExclusionsProps> = (props)
         <ProcessDataModal
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
           tableName={windowsServerExclusions.search.tableName}
         />
       )}

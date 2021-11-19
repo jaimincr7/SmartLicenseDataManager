@@ -253,7 +253,7 @@ const AddAPIMapping: React.FC = () => {
               <Row gutter={[30, 20]} className="align-item-start">
                 <Col xs={24} md={6}>
                   <div className="form-group m-0">
-                    <label className="label">SPS Api</label>
+                    <label className="label">SPS API</label>
                     <Form.Item name="sps_api_id" className="m-0" rules={[{ required: true }]}>
                       <Select
                         onChange={(val) => {

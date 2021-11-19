@@ -386,6 +386,9 @@ label {
   &.lg {
     min-width: 208px;
   }
+  &.sm {
+    min-width: 100px;
+  }
 }
 .ovarlap {
   visibility: hidden;

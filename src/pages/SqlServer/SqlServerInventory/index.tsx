@@ -223,6 +223,7 @@ const SqlServerInventory: React.FC<ISqlServerInventoryProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           filterKeys={filterKeys}
+          refreshDataTable={() => refreshDataTable()}
           tableName={sqlServerInventory?.search?.tableName}
         />
       )}

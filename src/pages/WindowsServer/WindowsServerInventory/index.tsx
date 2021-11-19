@@ -220,6 +220,7 @@ const WindowsServerInventory: React.FC<IWindowsServerInventoryProps> = (props) =
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           filterKeys={filterKeys}
+          refreshDataTable={() => refreshDataTable()}
           tableName={inventory.search.tableName}
         />
       )}

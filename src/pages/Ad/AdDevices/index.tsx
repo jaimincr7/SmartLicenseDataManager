@@ -218,6 +218,7 @@ const AdDevices: React.FC<IAdDevicesProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           filterKeys={filterKeys}
+          refreshDataTable={() => refreshDataTable()}
           tableName={adDevices.search.tableName}
         />
       )}
