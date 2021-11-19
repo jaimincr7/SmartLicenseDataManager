@@ -40,7 +40,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, filterKeys, tableName } = props;
+  const { showModal, handleModalClose, filterKeys, tableName, refreshDataTable } = props;
 
   const [form] = Form.useForm();
 
@@ -96,6 +96,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       } else {
         toast.success(adDevices.processData.messages.join(' '));
         handleModalClose();
+        refreshDataTable();
       }
       dispatch(clearAdDeviceMessages());
     }
