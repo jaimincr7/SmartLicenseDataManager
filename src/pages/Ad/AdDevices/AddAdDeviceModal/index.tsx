@@ -224,7 +224,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
   }, [adDevices.getById.data]);
 
   useEffect(() => {
-    if(!globalFilters.search.company_id) {
+    if(globalFilters.search.tenant_id == 0) {
       dispatch(getTenantLookup());
     }
     if (+id > 0) {
@@ -244,13 +244,13 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
       }
-       if (globalSearch.company_id) {
-         if(!globalFilters.search.company_id) {
+      if (globalFilters.search.tenant_id !== 0) {
+        if (!globalFilters.search.company_id) {
           dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
-         }
-         if(!globalFilters.search.bu_id) {
+        }
+        if (!globalFilters.search.bu_id && globalFilters.search.company_id !== 0) {
           dispatch(getBULookup(globalSearch.company_id[0]));
-         }
+        }
         const initlValues = {
           company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
