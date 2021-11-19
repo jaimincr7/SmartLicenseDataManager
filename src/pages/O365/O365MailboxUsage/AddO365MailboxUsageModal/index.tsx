@@ -232,7 +232,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
       }
-      if (globalFilters.search.tenant_id !== 0) {
+      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0 ) {
         if (!globalFilters.search.company_id) {
           dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
         }
