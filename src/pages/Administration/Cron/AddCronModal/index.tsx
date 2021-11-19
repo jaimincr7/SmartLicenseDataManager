@@ -358,15 +358,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'api_group_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Api Group</Checkbox>
+                      <Checkbox>API Group</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Api Group'
+                    'API Group'
                   )}
                   <Form.Item
                     name="api_group_id"
                     className="m-0"
-                    label="Api Group"
+                    label="API Group"
                     rules={[{ required: !isMultiple }]}
                   >
                     <Select
