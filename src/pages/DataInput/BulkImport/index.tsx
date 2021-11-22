@@ -286,7 +286,7 @@ const BulkImport: React.FC = () => {
         }
       });
       if (remainingFiles?.length > 0) {
-        toast.error('Listed filed does not imported ,' + remainingFiles.toString());
+        toast.error('Listed file does not imported ,' + remainingFiles.toString());
       }
     }
   };
