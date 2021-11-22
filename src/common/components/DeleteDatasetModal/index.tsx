@@ -160,7 +160,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalSearch.company_id && globalSearch.bu_id) {
+    if (globalSearch.company_id && globalSearch.bu_id && commonLookups.getModelPopUpSelection.data == {}) {
       dispatch(getBULookup(globalSearch?.company_id[0]));
       initialValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch?.company_id[0],
@@ -170,7 +170,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
             ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
             : null,
       };
-      dispatch(getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName)));
+      if(commonLookups.getModelPopUpSelection.data == {}) {
+        dispatch(getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName)));
+      }
       form.setFieldsValue(initialValues);
     }
     return () => {
