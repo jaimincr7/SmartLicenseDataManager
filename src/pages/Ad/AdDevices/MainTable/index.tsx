@@ -56,14 +56,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     return adDevicesService.exportExcelFile(searchData);
   };
 
-  const FilterBySwap = (dataIndex: string, form) => {
+  const FilterBySwap = (dataIndex: string, form,columnWidthOpt?: boolean) => {
     setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       adDevices.search.tableName,
       form,
       null,
-      ObjectForColumnFilter
+      ObjectForColumnFilter,
+      null,
+      columnWidthOpt === undefined ? false : columnWidthOpt,
     );
   };
 
@@ -80,7 +82,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('id', form),
+            title: FilterBySwap('id', form,true),
             dataIndex: 'id',
             key: 'id',
             ellipsis: true,

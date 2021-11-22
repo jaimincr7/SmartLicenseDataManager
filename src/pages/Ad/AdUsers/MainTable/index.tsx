@@ -56,14 +56,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     return adUsersService.exportExcelFile(searchData);
   };
 
-  const FilterBySwap = (dataIndex: string, form) => {
+  const FilterBySwap = (dataIndex: string, form,columnWidthOpt?: boolean) => {
     setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       adUsers.search.tableName,
       form,
       null,
-      ObjectForColumnFilter
+      ObjectForColumnFilter,
+      null,
+      columnWidthOpt === undefined ? false : columnWidthOpt,
     );
   };
 
@@ -80,7 +82,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('id', form),
+            title: FilterBySwap('id', form,true),
             dataIndex: 'id',
             key: 'id',
             ellipsis: true,
@@ -454,7 +456,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('exclusion_id', form),
+            title: FilterBySwap('exclusion_id', form,true),
             dataIndex: 'exclusion_id',
             key: 'exclusion_id',
             ellipsis: true,
@@ -601,7 +603,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('o365_licenses', form),
+            title: FilterBySwap('o365_licenses', form,true),
             dataIndex: 'o365_licenses',
             key: 'o365_licenses',
             ellipsis: true,
