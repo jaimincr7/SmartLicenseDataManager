@@ -187,7 +187,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
   }, [sqlServerLicense.getById.data]);
 
   useEffect(() => {
-    if(globalFilters.search.tenant_id == 0) {
+    if (globalFilters.search.tenant_id == 0) {
       dispatch(getTenantLookup());
     }
     dispatch(getAgreementTypesLookup());
@@ -208,7 +208,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
       }
-      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0 ) {
+      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
         if (!globalFilters.search.company_id) {
           dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
         }
@@ -278,15 +278,17 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                       }
                       loading={commonLookups.tenantLookup.loading}
                     >
-                      {globalFilters.search.tenant_id ? (globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))): (commonLookups.tenantLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))) }
+                      {globalFilters.search.tenant_id
+                        ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : commonLookups.tenantLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -321,15 +323,17 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                       }
                       loading={commonLookups.companyLookup.loading}
                     >
-                      {globalFilters.search.company_id ? (globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))): (commonLookups.companyLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))) }
+                      {globalFilters.search.company_id
+                        ? globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : commonLookups.companyLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -364,15 +368,17 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                       }
                       loading={commonLookups.buLookup.loading}
                     >
-                      {globalFilters.search.bu_id ? (globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))): (commonLookups.buLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))) }
+                      {globalFilters.search.bu_id
+                        ? globalFilters?.globalBULookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : commonLookups.buLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
