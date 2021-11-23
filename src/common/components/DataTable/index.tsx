@@ -313,9 +313,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Export Excel
   const downloadExcel = () => {
+    const exArr: any[] = getColumns();
     setLoading(true);
     const export_column_details: Array<{key: string;index: any;label: string}> = [];
-    columns.map((column,index) => {
+    exArr.map((column,index) => {
       if(column?.children[0]?.key !== 'Actions' )
       {
         export_column_details.push({key: column?.children[0]?.key,index: index+1,label: column.title.props?.children})
