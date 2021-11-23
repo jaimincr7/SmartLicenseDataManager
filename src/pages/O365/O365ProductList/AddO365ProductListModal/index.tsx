@@ -259,7 +259,7 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
                     >
-                      {globalFilters.search.tenant_id
+                      {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
                             <Option key={option.id} value={option.id}>
                               {option.name}
@@ -299,13 +299,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
                       }
                       loading={commonLookups.companyLookup.loading}
                     >
-                      {globalFilters.search.company_id
-                        ? globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                      {Object.keys(commonLookups.companyLookup.data).length > 0
+                        ? commonLookups.companyLookup.data.map((option: ILookup) => (
                             <Option key={option.id} value={option.id}>
                               {option.name}
                             </Option>
                           ))
-                        : commonLookups.companyLookup.data.map((option: ILookup) => (
+                        : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
                             <Option key={option.id} value={option.id}>
                               {option.name}
                             </Option>
@@ -339,13 +339,13 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
                     >
-                      {globalFilters.search.bu_id
-                        ? globalFilters?.globalBULookup?.data.map((option: ILookup) => (
+                      {Object.keys(commonLookups.buLookup.data).length > 0
+                        ? commonLookups.buLookup.data.map((option: ILookup) => (
                             <Option key={option.id} value={option.id}>
                               {option.name}
                             </Option>
                           ))
-                        : commonLookups.buLookup.data.map((option: ILookup) => (
+                        : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
                             <Option key={option.id} value={option.id}>
                               {option.name}
                             </Option>
