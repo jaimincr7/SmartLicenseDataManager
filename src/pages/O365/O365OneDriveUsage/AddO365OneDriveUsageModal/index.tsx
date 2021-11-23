@@ -198,7 +198,7 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
   }, [o365OneDriveUsage.getById.data]);
 
   useEffect(() => {
-    if (globalFilters.search.tenant_id == 0) {
+    if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
     if (+id > 0) {

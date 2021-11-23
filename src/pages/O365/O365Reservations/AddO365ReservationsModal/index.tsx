@@ -179,7 +179,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
   }, [o365Reservations.getById.data]);
 
   useEffect(() => {
-    if (globalFilters.search.tenant_id == 0) {
+    if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
     if (+id > 0) {

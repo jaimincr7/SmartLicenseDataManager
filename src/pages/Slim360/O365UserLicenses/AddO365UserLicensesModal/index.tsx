@@ -166,7 +166,7 @@ const AddSlim360O365UserLicensesModal: React.FC<IAddSlim360O365UserLicensesProps
   }, [slim360O365UserLicenses.getById.data]);
 
   useEffect(() => {
-    if (globalFilters.search.tenant_id == 0) {
+    if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
     if (+id > 0) {

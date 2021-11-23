@@ -266,7 +266,7 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
   }, [o365M365AppsUsageUserDetail.getById.data]);
 
   useEffect(() => {
-    if (globalFilters.search.tenant_id == 0) {
+    if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
     if (+id > 0) {

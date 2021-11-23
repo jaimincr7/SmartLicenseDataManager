@@ -171,7 +171,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
   }, [o365Subscriptions.getById.data]);
 
   useEffect(() => {
-    if (globalFilters.search.tenant_id == 0) {
+    if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
     dispatch(getCurrencyLookup());

@@ -175,7 +175,7 @@ const AddSqlServerOverridesModal: React.FC<IAddSqlServerOverridesProps> = (props
   }, [sqlServerOverrides.getById.data]);
 
   useEffect(() => {
-    if (globalFilters.search.tenant_id == 0) {
+    if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
     if (+id > 0) {
