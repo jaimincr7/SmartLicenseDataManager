@@ -316,7 +316,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setLoading(true);
     const export_column_details: Array<{key: string;index: any;label: string}> = [];
     columns.map((column,index) => {
-      export_column_details.push({key: column?.children[0]?.key,index: index+1,label: column.title.props?.children})
+      if(column?.children[0]?.key !== 'Actions' )
+      {
+        export_column_details.push({key: column?.children[0]?.key,index: index+1,label: column.title.props?.children})
+      }
     });
     const searchData = getSearchData(pagination, true);
     const exportData = {...searchData,export_column_details};
