@@ -314,13 +314,19 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   // Export Excel
   const downloadExcel = () => {
     setLoading(true);
+    const export_column_details: Array<{key: string;index: any;label: string}> = [];
+    columns.map((column,index) => {
+      export_column_details.push({key: column?.children[0]?.key,index: index+1,label: column.title.props?.children})
+    });
     const searchData = getSearchData(pagination, true);
+    const exportData = {...searchData,export_column_details};
 
-    return exportExcelFile(searchData).then((res) => {
+    return exportExcelFile(exportData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
       } else {
+        
         const fileName = `${res.headers['content-disposition'].split('filename=')[1]}`; //res.headers["content-disposition"];
         const url = window.URL.createObjectURL(new Blob([res.data]));
         exportExcel(fileName, url);
