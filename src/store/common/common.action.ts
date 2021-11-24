@@ -455,6 +455,13 @@ export const saveTableColumnSelection = createAsyncThunk(
   }
 );
 
+export const getSpsApiBaseUrl = createAsyncThunk('getSpsApiBaseUrl', async () => {
+  const response = await commonService.getSpsApiBaseUrl().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getSpsApiGroups = createAsyncThunk('getSpsApiGroups', async () => {
   const response = await commonService.getSpsApiGroups().then((res) => {
     return res.body;

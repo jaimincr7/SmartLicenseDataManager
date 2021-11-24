@@ -59,6 +59,7 @@ import {
   manageCronJobApi,
   configModelPopUpDataSelection,
   getConfigModelPopUpDataSelection,
+  getSpsApiBaseUrl,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -290,6 +291,10 @@ export const initialState: ICommonState = {
     data: [],
     loading: false,
   },
+  spsApiBaseUrl: {
+    data: [],
+    loading: false,
+  },
   spsApiTypes: {
     data: [],
     loading: false,
@@ -329,6 +334,9 @@ export const commonSlice = createSlice({
     },
     clearSpsApiGroupsLookup: (state) => {
       state.spsApiGroups.data = [];
+    },
+    clearSpsApiBaseUrlLookup: (state) => {
+      state.spsApiBaseUrl.data = [];
     },
     clearMultipleUpdateMessages: (state) => {
       state.save.messages = [];
@@ -548,6 +556,15 @@ export const commonSlice = createSlice({
     [getSpsApiGroupLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.spsApiGroups.data = action.payload;
       state.spsApiGroups.loading = false;
+    },
+
+    // SpsApiBaseUrl lookup
+    [getSpsApiBaseUrl.pending.type]: (state) => {
+      state.spsApiBaseUrl.loading = true;
+    },
+    [getSpsApiBaseUrl.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiBaseUrl.data = action.payload;
+      state.spsApiBaseUrl.loading = false;
     },
 
     // SpsApiType lookup
@@ -954,6 +971,7 @@ export const {
   clearDeleteDatasetMessages,
   clearSaveTableColumnSelection,
   clearSpsApiGroupsLookup,
+  clearSpsApiBaseUrlLookup,
   clearSpsApiTypesLookup,
   clearMultipleUpdateMessages,
   clearDateLookup,

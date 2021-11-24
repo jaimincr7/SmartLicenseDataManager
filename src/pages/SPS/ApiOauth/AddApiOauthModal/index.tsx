@@ -4,7 +4,6 @@ import {
   Col,
   Form,
   Input,
-  InputNumber,
   Modal,
   Row,
   Select,
@@ -40,6 +39,7 @@ import {
 import {
   getBULookup,
   getCompanyLookup,
+  getSpsApiBaseUrl,
   getSpsApiTypeLookup,
   getTenantLookup,
   updateMultiple,
@@ -188,6 +188,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
 
   useEffect(() => {
     dispatch(getSpsApiTypeLookup());
+    dispatch(getSpsApiBaseUrl());
     dispatch(getTenantLookup());
     if (+id > 0) {
       dispatch(getSpsApiOauthById(+id));
@@ -407,11 +408,28 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
                   )}
                   <Form.Item
                     name="base_url_id"
-                    label="Base Url Id"
                     className="m-0"
-                    rules={[{ type: 'integer' }]}
+                    label="Base Url Id"
                   >
-                    <InputNumber className="form-control w-100" />
+                    <Select
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={commonLookups.spsApiBaseUrl.loading}
+                    >
+                      {commonLookups.spsApiBaseUrl.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>
@@ -455,7 +473,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="consent" className="m-0" valuePropName="checked">
+                  <Form.Item name="consent" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
@@ -469,7 +487,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="active" className="m-0" valuePropName="checked">
+                  <Form.Item name="active" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (

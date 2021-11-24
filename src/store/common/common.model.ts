@@ -228,6 +228,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  spsApiBaseUrl: {
+    data: ILookup[];
+    loading: boolean;
+  };
   spsApiTypes: {
     data: ILookup[];
     loading: boolean;
