@@ -95,60 +95,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Tenant Name</span>,
-        column: 'TenantId',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDropdown(
-              'tenant_id',
-              spsApis.search.lookups?.tenants?.length > 0
-                ? spsApis.search.lookups?.tenants
-                : globalLookups?.globalTenantLookup?.data
-            ),
-            dataIndex: 'tenant_name',
-            key: 'tenant_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Company Name</span>,
-        column: 'CompanyId',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDropdown(
-              'company_id',
-              spsApis.search.lookups?.companies?.length > 0
-                ? spsApis.search.lookups?.companies
-                : globalLookups?.globalCompanyLookup?.data
-            ),
-            dataIndex: 'company_name',
-            key: 'company_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Bu Name</span>,
-        column: 'BU_Id',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDropdown(
-              'bu_id',
-              spsApis.search.lookups?.bus?.length > 0
-                ? spsApis.search.lookups?.bus
-                : globalLookups?.globalBULookup?.data
-            ),
-            dataIndex: 'bu_name',
-            key: 'bu_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
         title: <span className="dragHandler">Group</span>,
         column: 'GroupId',
         sorter: true,
@@ -183,19 +129,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('name', form),
             dataIndex: 'name',
             key: 'name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">URL</span>,
-        column: 'URL',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('url', form),
-            dataIndex: 'url',
-            key: 'url',
             ellipsis: true,
           },
         ],
@@ -344,8 +277,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
-        <Popover content={<>Please select global filter first!</>} trigger="click">
+      {!data.is_uid_selection ? (
+        <Popover content={<>UID Selection is False!</>} trigger="click">
           {renderActionButton(data)}
         </Popover>
       ) : (
