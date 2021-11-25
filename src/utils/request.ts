@@ -44,6 +44,9 @@ export const setResponseError = (history) => {
       }
     },
     (error) => {
+      if(axios.isCancel(error)){
+        return;
+      }
       if (!error.response) {
         toast.error('Please check your internet connection.');
         history.push('/500');
