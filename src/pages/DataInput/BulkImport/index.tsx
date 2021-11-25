@@ -277,6 +277,10 @@ const BulkImport: React.FC = () => {
       const remainingFiles = [];
       valuesArray?.forEach((val) => {
         try {
+          const orgFileName = excelColumnState?.find(
+            (x) => x.filename === val?.file_name
+          )?.original_filename;
+          val.original_file_name = orgFileName;
           dispatch(bulkInsert(val));
         } catch (e) {
           const orgFileName = excelColumnState?.find(
@@ -286,7 +290,7 @@ const BulkImport: React.FC = () => {
         }
       });
       if (remainingFiles?.length > 0) {
-        toast.error('Listed file does not imported ,' + remainingFiles.toString());
+        toast.error('Listed files does not imported ,' + remainingFiles.toString());
       }
     }
   };
