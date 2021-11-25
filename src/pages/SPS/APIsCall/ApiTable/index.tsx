@@ -1,7 +1,7 @@
 import { Button, Checkbox, Modal } from 'antd';
 import _ from 'lodash';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { useAppSelector } from '../../../../store/app.hooks';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   FilterByBooleanDropDown,
   FilterByDropdown,
@@ -15,9 +15,17 @@ import {
 } from '../../../../store/sps/apiOauth/apiOauth.reducer';
 import { searchSpsApiOauth } from '../../../../store/sps/apiOauth/apiOauth.action';
 import { IApiTableProps } from './apiTable.model';
+import { ICallAPI } from '../../../../services/sps/spsApi/sps.model';
+import { callApi } from '../../../../store/sps/spsAPICall/spsApiCall.action';
+import { clearCallApiMessages, spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
+import { toast } from 'react-toastify';
+import { ISearchAPIColumn } from '../../../../services/sps/apiColumnMapping/apiColMapping.model';
+import { getApiColumn } from '../../../../store/sps/apiColumnMapping/apiColMapping.action';
 
 const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props, ref) => {
-  const { type_id , showModal , handleModalClose } = props;
+  const { type_id , showModal , handleModalClose , callApiObj , isFetchApi } = props;
+  const dispatch = useAppDispatch();
+  const spsApis = useAppSelector(spsApiCallSelector);
   const spsApiOauth = useAppSelector(spsApiOauthSelector);
   const dataTableRef = useRef(null);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
@@ -27,10 +35,6 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       dataTableRef?.current.refreshData();
     },
   }));
-
-  useEffect(() => {
-    console.log(type_id);
-  }, [])
 
   const FilterBySwap = (dataIndex: string, form) => {
     return FilterWithSwapOption(
@@ -44,20 +48,6 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
 
   const getTableColumns = (form) => {
     return [
-      {
-        title: <span className="dragHandler">ID</span>,
-        column: 'id',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterBySwap('id', form),
-            dataIndex: 'id',
-            key: 'id',
-            ellipsis: true,
-          },
-        ],
-      },
       {
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
@@ -130,59 +120,6 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         ],
       },
       {
-        title: <span className="dragHandler">Url Base</span>,
-        column: 'UrlBase',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('url_base', form),
-            dataIndex: 'url_base',
-            key: 'url_base',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Base Url Id</span>,
-        column: 'BaseUrlId',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDropdown('base_url_id', spsApiOauth.search.lookups?.sps_api_base_urls),
-            dataIndex: 'sps_base_url_name',
-            key: 'sps_base_url_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Consent</span>,
-        column: 'Consent',
-        sorter: true,
-        children: [
-          {
-            title: FilterByBooleanDropDown(
-              'consent',
-              spsApiOauth.search.tableName,
-              ObjectForColumnFilter
-            ),
-            dataIndex: 'consent',
-            key: 'consent',
-            ellipsis: true,
-            render: (value: boolean) =>
-              !_.isNull(value) ? (
-                value ? (
-                  <Checkbox defaultChecked disabled />
-                ) : (
-                  <Checkbox defaultChecked={false} disabled />
-                )
-              ) : (
-                ''
-              ),
-          },
-        ],
-      },
-      {
         title: <span className="dragHandler">Active</span>,
         column: 'Active',
         sorter: true,
@@ -212,13 +149,44 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
     ];
   };
 
-  const CallApi = (x) => {
-    console.log(x);
+  useEffect(() => {
+    if (spsApis.callApi.messages.length > 0) {
+      if (spsApis.callApi.hasErrors) {
+        toast.error(spsApis.callApi.messages.join(' '));
+      } else {
+        toast.success(spsApis.callApi.messages.join(' '));
+        dataTableRef?.current.refreshData();
+      }
+      handleModalClose();
+      dispatch(clearCallApiMessages());
+    }    
+  }, [spsApis.callApi.messages])
+
+  const onCallApiById = (data: any) => {
+    const callApiObject: ICallAPI = {
+      id: callApiObj.id,
+      company_id: data.company_id,
+      bu_id: data.bu_id,
+      tenant_id: data.tenant_id,
+      spsApiQueryParam: callApiObj.params,
+    };
+    dispatch(callApi(callApiObject));
+  };
+
+  const onFetchApi = (data: any) => {
+    const fetchApiObject: ISearchAPIColumn = {
+      id: callApiObj.id,
+      company_id: data.company_id,
+      bu_id: data.bu_id,
+      tenant_id: data.tenant_id,
+    };
+    dispatch(getApiColumn(fetchApiObject));
   };
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Button onClick={() => CallApi(data.id)}>Call</Button>
+      {isFetchApi ? <Button loading={spsApis.callApi.loading} onClick={() => onFetchApi(data)}>Fetch</Button>:
+              <Button loading={spsApis.callApi.loading} onClick={() => onCallApiById(data)}>Call</Button>}
     </div>
   );
 
@@ -226,7 +194,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
     <>
     <Modal
         wrapClassName="custom-modal"
-        title={'Add Query Params'}
+        title={'UID Selection'}
         centered
         visible={showModal}
         onCancel={handleModalClose}

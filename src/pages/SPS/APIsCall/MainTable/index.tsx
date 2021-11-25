@@ -188,10 +188,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         className="action-btn"
         onClick={(e) => {
           e.preventDefault();
-          data.is_mapping && data.enabled && data.is_uid_selection ? (
+          data.is_mapping && data.enabled ? (
             onCallApi(data)
           ) : data.is_uid_selection ? (
-            history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`)
+            onFetchCall(data)
           ) : (
             <></>
           );
@@ -206,6 +206,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
+  const onFetchCall = (data: any) => {
+    if (data.url) {
+      const newURL = new URL(data.url);
+      const urlSearchParams = new URLSearchParams(newURL.search);
+      const params = Object.fromEntries(urlSearchParams?.entries());
+      setCallApiObj({ ...callApiObj, params: params, show: false, isAll: false, id: data.id });
+      history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}&api_type_id=${data.api_type_id}&is_uid_selection=${data.is_uid_selection}`);
+    } else {
+      toast.error('Selected api does not have url.');
+    }
+  };
+
   const onCallApiById = (id: number, params: any) => {
     const callApiObj: ICallAPI = {
       id: id,
@@ -218,23 +230,30 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const onCallApi = (data: any) => {
-    //  if (data.url) {
-    //    const newURL = new URL(data.url);
-    //    const urlSearchParams = new URLSearchParams(newURL.search);
-    //    const params = Object.fromEntries(urlSearchParams?.entries());
-    //    const editableParams = Object.values(params)?.filter(
-    //      (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
-    //    );
-    //    if (editableParams?.length > 0) {
-    //      setCallApiObj({ ...callApiObj, params: params, show: true, isAll: false, id: data.id });
-    //    } else {
-    //      onCallApiById(data.id, params);
-    //    }
-    //  } else {
-    //    toast.error('Selected api does not have url.');
-    //  }
-    setTypeId(data.api_type_id);
-    setShowTableMNodal(true);
+    if (data.url) {
+      const newURL = new URL(data.url);
+      const urlSearchParams = new URLSearchParams(newURL.search);
+      const params = Object.fromEntries(urlSearchParams?.entries());
+      const editableParams = Object.values(params)?.filter((x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime');
+      setCallApiObj({ ...callApiObj, params: params, show: false, isAll: false, id: data.id });
+      if (data.is_uid_selection) {
+        setTypeId(data.api_type_id);
+        setShowTableMNodal(true);
+      }
+      else {
+        if (editableParams?.length > 0) {
+          toast.info("Url Doesn't have Start or End Time");
+        } else {
+          const callApiObj: ICallAPI = {
+            id: data.id,
+            spsApiQueryParam: params,
+          };
+          dispatch(callApi(callApiObj));
+        }
+      }
+    } else {
+      toast.error('Selected api does not have url.');
+    }
   };
 
   const onCallAllApi = (tableFilter: any) => {
@@ -351,14 +370,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           }}
         />
       )}
-      {ShowTableMNodal && TypeId && (
+      {ShowTableMNodal && TypeId && callApiObj && (
         <ApiTable
-        type_id={TypeId}
-        showModal={ShowTableMNodal}
-        handleModalClose={() => {
-          setShowTableMNodal(false);
-          history.push('/sps/sps-api');
-        }}/>
+          type_id={TypeId}
+          showModal={ShowTableMNodal}
+          callApiObj={callApiObj}
+          isFetchApi={false}
+          handleModalClose={() => {
+            setShowTableMNodal(false);
+            history.push('/sps/sps-api');
+          }} />
       )}
     </>
   );

@@ -15,6 +15,13 @@ export const searchImportAPIs = createAsyncThunk(
   }
 );
 
+export const checkUID = createAsyncThunk('checkUID', async (id: number) => {
+  const response = await spsApiCallService.checkUID(id).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const callApi = createAsyncThunk('callApi', async (data: ICallAPI) => {
   const response = await spsApiCallService.callApi(data).then((res) => {
     return res.body;

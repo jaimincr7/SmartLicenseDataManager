@@ -24,9 +24,9 @@ export interface ISearchAPI extends ISpsApi {
 
 export interface ICallAPI {
   id: number;
-  company_id: number;
-  bu_id: number;
-  tenant_id: number;
+  company_id?: number;
+  bu_id?: number;
+  tenant_id?: number;
   spsApiQueryParam: {
     [key: string]: any;
   };
