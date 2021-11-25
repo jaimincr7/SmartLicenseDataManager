@@ -1,15 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Switch,
-} from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -406,11 +395,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
                   ) : (
                     'Base Url Id'
                   )}
-                  <Form.Item
-                    name="base_url_id"
-                    className="m-0"
-                    label="Base Url Id"
-                  >
+                  <Form.Item name="base_url_id" className="m-0" label="Base Url Id">
                     <Select
                       showSearch
                       optionFilterProp="children"

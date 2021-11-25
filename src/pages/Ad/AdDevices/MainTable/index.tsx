@@ -56,7 +56,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     return adDevicesService.exportExcelFile(searchData);
   };
 
-  const FilterBySwap = (dataIndex: string, form,columnWidthOpt?: boolean) => {
+  const FilterBySwap = (dataIndex: string, form, columnWidthOpt?: boolean) => {
     setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
@@ -65,7 +65,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       null,
       ObjectForColumnFilter,
       null,
-      columnWidthOpt === undefined ? false : columnWidthOpt,
+      columnWidthOpt === undefined ? false : columnWidthOpt
     );
   };
 
@@ -82,7 +82,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('id', form,true),
+            title: FilterBySwap('id', form, true),
             dataIndex: 'id',
             key: 'id',
             ellipsis: true,
@@ -590,7 +590,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const removeAdDevice = (id: number) => {
     dispatch(deleteAdDevice(id));
   };
-  
+
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.Update} a={Page.ADDevices}>

@@ -140,10 +140,14 @@ export const FilterByDateSwap = (
   );
 };
 
-export const FilterByInput = (dataIndex: string,wantColumnLengthOpt?: boolean) => (
+export const FilterByInput = (dataIndex: string, wantColumnLengthOpt?: boolean) => (
   <>
     <Form.Item name={dataIndex} className={`m-0 filter-input ${wantColumnLengthOpt ? 'sm' : ''}`}>
-      <Input placeholder={wantColumnLengthOpt ? 'Search' :"Search by keyword"} className="form-control" autoComplete="off" />
+      <Input
+        placeholder={wantColumnLengthOpt ? 'Search' : 'Search by keyword'}
+        className="form-control"
+        autoComplete="off"
+      />
     </Form.Item>
   </>
 );
@@ -155,7 +159,7 @@ export const FilterByDropdown = (
   setDropSearch?: (e: any) => void,
   isDateDropDown?: boolean,
   isTime?: boolean,
-  wantColumnLengthOpt?: boolean,
+  wantColumnLengthOpt?: boolean
 ) => (
   <>
     <Form.Item name={dataIndex} className={`m-0 filter-input ${wantColumnLengthOpt ? 'sm' : ''}`}>
@@ -164,7 +168,7 @@ export const FilterByDropdown = (
         showArrow={true}
         mode="multiple"
         dropdownClassName="filter-dropdown-pop"
-        placeholder={wantColumnLengthOpt ? "Select" :"Select and search"}
+        placeholder={wantColumnLengthOpt ? 'Select' : 'Select and search'}
         maxTagCount="responsive"
         allowClear
         loading={loading}
@@ -289,7 +293,7 @@ export const FilterWithSwapOption = (
   getColumnLookup?: (index: string) => Promise<any>,
   ObjectForColumnFilter?: {},
   isTime?: boolean,
-  wantColumnLengthOpt?: boolean,
+  wantColumnLengthOpt?: boolean
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
   const [dropSearch, setDropSearch] = React.useState(false);
@@ -369,8 +373,16 @@ export const FilterWithSwapOption = (
     <>
       <div className="input-filter-group">
         {swap
-          ? FilterByInput(dataIndex,wantColumnLengthOpt)
-          : FilterByDropdown(dataIndex, options || [], loading, handleDropSearch, false, isTime,wantColumnLengthOpt)}
+          ? FilterByInput(dataIndex, wantColumnLengthOpt)
+          : FilterByDropdown(
+              dataIndex,
+              options || [],
+              loading,
+              handleDropSearch,
+              false,
+              isTime,
+              wantColumnLengthOpt
+            )}
         <Button onClick={() => setSwap(!swap)} className={`filter-btn ${swap ? '' : 'active'}`}>
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
           <img

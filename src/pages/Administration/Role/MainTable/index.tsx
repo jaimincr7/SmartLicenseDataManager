@@ -42,7 +42,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     }
   }, [isMultiple]);
 
-  const FilterBySwap = (dataIndex: string, form,columnWidthOpt?: boolean) => {
+  const FilterBySwap = (dataIndex: string, form, columnWidthOpt?: boolean) => {
     return FilterWithSwapOption(
       dataIndex,
       role.search.tableName,
@@ -50,7 +50,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       null,
       ObjectForColumnFilter,
       null,
-      columnWidthOpt === undefined ? false : columnWidthOpt,
+      columnWidthOpt === undefined ? false : columnWidthOpt
     );
   };
 

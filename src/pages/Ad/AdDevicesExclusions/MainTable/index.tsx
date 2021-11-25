@@ -55,7 +55,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     return adDevicesExclusionsService.exportExcelFile(searchData);
   };
 
-  const FilterBySwap = (dataIndex: string, form,columnWidthOpt?: boolean) => {
+  const FilterBySwap = (dataIndex: string, form, columnWidthOpt?: boolean) => {
     return FilterWithSwapOption(
       dataIndex,
       adDevicesExclusions.search.tableName,
@@ -63,7 +63,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       null,
       ObjectForColumnFilter,
       null,
-      columnWidthOpt === undefined ? false : columnWidthOpt,
+      columnWidthOpt === undefined ? false : columnWidthOpt
     );
   };
 
@@ -76,7 +76,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('id', form,true),
+            title: FilterBySwap('id', form, true),
             dataIndex: 'id',
             key: 'id',
             ellipsis: true,
@@ -156,7 +156,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('condition', form,true),
+            title: FilterBySwap('condition', form, true),
             dataIndex: 'condition',
             key: 'condition',
             ellipsis: true,
@@ -263,7 +263,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('instance_count', form,true),
+            title: FilterBySwap('instance_count', form, true),
             dataIndex: 'instance_count',
             key: 'instance_count',
             ellipsis: true,
