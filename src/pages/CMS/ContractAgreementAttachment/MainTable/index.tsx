@@ -95,7 +95,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">User</span>,
-        column: 'User ID',
+        column: 'User Id',
         sorter: true,
         children: [
           {

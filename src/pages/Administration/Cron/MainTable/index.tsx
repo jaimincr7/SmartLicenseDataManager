@@ -9,7 +9,12 @@ import {
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
 import { setTableColumnSelection } from '../../../../store/master/cron/cron.reducer';
-import { deleteCron, searchCron, startApi, stopApi } from '../../../../store/master/cron/cron.action';
+import {
+  deleteCron,
+  searchCron,
+  startApi,
+  stopApi,
+} from '../../../../store/master/cron/cron.action';
 import { clearCronMessages, cronSelector } from '../../../../store/master/cron/cron.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { useHistory } from 'react-router-dom';
@@ -273,17 +278,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     }
   }, [cron.startApi.messages]);
 
-   useEffect(() => {
-     if (cron.startAllApi.messages.length > 0) {
-       if (cron.startAllApi.hasErrors) {
-         toast.error(cron.startAllApi.messages.join(' '));
-       } else {
-         toast.success(cron.startAllApi.messages.join(' '));
-         refreshDataTable();
-       }
-       dispatch(clearCronMessages());
-     }
-   }, [cron.startAllApi.messages]);
+  useEffect(() => {
+    if (cron.startAllApi.messages.length > 0) {
+      if (cron.startAllApi.hasErrors) {
+        toast.error(cron.startAllApi.messages.join(' '));
+      } else {
+        toast.success(cron.startAllApi.messages.join(' '));
+        refreshDataTable();
+      }
+      dispatch(clearCronMessages());
+    }
+  }, [cron.startAllApi.messages]);
 
   const renderActionButton = (data: any) => {
     return (
@@ -293,12 +298,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         className="action-btn"
         onClick={(e) => {
           e.preventDefault();
-            if (data.status == 'Stopped' || data.status == 'Ready' || data.status == 'Error') {
-              onStartApi(data);
-            }
-            if (data.status === 'Running' || data.status === 'Success') {
-              dispatch(stopApi(data.id));
-            }
+          if (data.status == 'Stopped' || data.status == 'Ready' || data.status == 'Error') {
+            onStartApi(data);
+          }
+          if (data.status === 'Running' || data.status === 'Success') {
+            dispatch(stopApi(data.id));
+          }
         }}
       >
         {data.status == 'Running' || data.status == 'Success' ? (
@@ -327,8 +332,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.RunCronJob} a={Page.Cron}>        
-          {renderActionButton(data)}
+      <Can I={Action.RunCronJob} a={Page.Cron}>
+        {renderActionButton(data)}
       </Can>
       <Can I={Action.Update} a={Page.Cron}>
         <a

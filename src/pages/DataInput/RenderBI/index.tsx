@@ -183,8 +183,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       const removedColumns = tableColumnState.filter((x) =>
         columnsArray.includes(x.name?.toLowerCase())
       );
-
-      setExcelColumns(filterExcelColumns);
+      const ExcelColsSorted = [...filterExcelColumns];
+      ExcelColsSorted.sort();
+      setExcelColumns(ExcelColsSorted);
       setTableColumns(filterTableColumns);
       setRemovedColumns(removedColumns);
 
@@ -348,50 +349,57 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   }, []);
 
   const removeColumnMapping = (id: number) => {
-     dispatch(deleteColumnMapping(id));
+    dispatch(deleteColumnMapping(id));
   };
 
   const removeFileMapping = (id: number) => {
     dispatch(deleteFileMapping(id));
- };
+  };
 
- useEffect(() => {
-  if (bulkImports.deleteColumnMapping.messages.length > 0) {
-    if (bulkImports.deleteColumnMapping.hasErrors) {
-      toast.error(bulkImports.deleteColumnMapping.messages.join(' '));
-    } else {
-      toast.success(bulkImports.deleteColumnMapping.messages.join(' '));
-      setSavedExcelMapping([]);
-      getExcelMappingColumns();
+  useEffect(() => {
+    if (bulkImports.deleteColumnMapping.messages.length > 0) {
+      if (bulkImports.deleteColumnMapping.hasErrors) {
+        toast.error(bulkImports.deleteColumnMapping.messages.join(' '));
+      } else {
+        toast.success(bulkImports.deleteColumnMapping.messages.join(' '));
+        setSavedExcelMapping([]);
+        getExcelMappingColumns();
+      }
+      dispatch(clearDeleteMessages());
     }
-    dispatch(clearDeleteMessages());
-  }
-}, [bulkImports.deleteColumnMapping.messages]);
+  }, [bulkImports.deleteColumnMapping.messages]);
 
-useEffect(() => {
-  if (bulkImports.deleteFileMapping.messages.length > 0) {
-    if (bulkImports.deleteFileMapping.hasErrors) {
-      toast.error(bulkImports.deleteFileMapping.messages.join(' '));
-    } else {
-      toast.success(bulkImports.deleteFileMapping.messages.join(' '));
-      setSavedExcelMapping([]);
-      getExcelMappingColumns();
+  useEffect(() => {
+    if (bulkImports.deleteFileMapping.messages.length > 0) {
+      if (bulkImports.deleteFileMapping.hasErrors) {
+        toast.error(bulkImports.deleteFileMapping.messages.join(' '));
+      } else {
+        toast.success(bulkImports.deleteFileMapping.messages.join(' '));
+        setSavedExcelMapping([]);
+        getExcelMappingColumns();
+      }
+      dispatch(clearDeleteMessages());
     }
-    dispatch(clearDeleteMessages());
-  }
-}, [bulkImports.deleteFileMapping.messages]);
+  }, [bulkImports.deleteFileMapping.messages]);
 
   const geChildDropdown = (excelMappings: any) => {
     const chidDropdown = [];
     excelMappings?.map((m: any) => {
       chidDropdown.push({
-        title: <> {m.sheet_name}
-        <Popconfirm title={`Delete ${m.sheet_name} Mapping?`} onConfirm={() => removeColumnMapping(m.id)}>
-        <a href="#" title="" className="deleteMap-btn">
-        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-        </a>
-        </Popconfirm> 
-        </>,
+        title: (
+          <>
+            {' '}
+            {m.sheet_name}
+            <Popconfirm
+              title={`Delete ${m.sheet_name} Mapping?`}
+              onConfirm={() => removeColumnMapping(m.id)}
+            >
+              <a href="#" title="" className="deleteMap-btn">
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+              </a>
+            </Popconfirm>
+          </>
+        ),
         value: m.id,
       });
     });
@@ -406,11 +414,20 @@ useEffect(() => {
     );
     defaultMappingDetail?.map((m: any) => {
       dropdown.push({
-        title: <> {m.key_word} <Popconfirm title={`Delete ${m.key_word} Mapping?`} onConfirm={() => removeFileMapping(m.id)}>
-        <a href="#" title="" className="deleteMap-btn">
-        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-        </a>
-        </Popconfirm></>,
+        title: (
+          <>
+            {' '}
+            {m.key_word}{' '}
+            <Popconfirm
+              title={`Delete ${m.key_word} Mapping?`}
+              onConfirm={() => removeFileMapping(m.id)}
+            >
+              <a href="#" title="" className="deleteMap-btn">
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+              </a>
+            </Popconfirm>
+          </>
+        ),
         disabled: true,
         value: `${m.id}-parent`,
         children: geChildDropdown(m.config_excel_column_mappings),
@@ -435,7 +452,6 @@ useEffect(() => {
     }
   };
 
-  
   useEffect(() => {
     if (bulkImports.saveExcelFileMapping.messages.length > 0) {
       toast.success(bulkImports.saveExcelFileMapping.messages.join(' '));
@@ -444,7 +460,6 @@ useEffect(() => {
       getExcelMappingColumns();
     }
   }, [bulkImports.saveExcelFileMapping.messages]);
-
 
   useEffect(() => {
     if (savedExcelMapping?.length > 0) {
@@ -507,7 +522,7 @@ useEffect(() => {
       innerFormUpload.getFieldValue('mapping_order')
     );
     setSavedExcelMapping([]);
-    getExcelMappingColumns()
+    getExcelMappingColumns();
   };
 
   const saveColumnMapping = (fileName: string, isPublic: boolean, id = 0) => {

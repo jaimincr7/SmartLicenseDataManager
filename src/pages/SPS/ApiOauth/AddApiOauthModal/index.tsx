@@ -1,16 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Switch,
-} from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -40,6 +28,7 @@ import {
 import {
   getBULookup,
   getCompanyLookup,
+  getSpsApiBaseUrl,
   getSpsApiTypeLookup,
   getTenantLookup,
   updateMultiple,
@@ -188,6 +177,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
 
   useEffect(() => {
     dispatch(getSpsApiTypeLookup());
+    dispatch(getSpsApiBaseUrl());
     dispatch(getTenantLookup());
     if (+id > 0) {
       dispatch(getSpsApiOauthById(+id));
@@ -405,13 +395,26 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
                   ) : (
                     'Base Url Id'
                   )}
-                  <Form.Item
-                    name="base_url_id"
-                    label="Base Url Id"
-                    className="m-0"
-                    rules={[{ type: 'integer' }]}
-                  >
-                    <InputNumber className="form-control w-100" />
+                  <Form.Item name="base_url_id" className="m-0" label="Base Url Id">
+                    <Select
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={commonLookups.spsApiBaseUrl.loading}
+                    >
+                      {commonLookups.spsApiBaseUrl.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>
@@ -455,7 +458,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="consent" className="m-0" valuePropName="checked">
+                  <Form.Item name="consent" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
@@ -469,7 +472,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="active" className="m-0" valuePropName="checked">
+                  <Form.Item name="active" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (

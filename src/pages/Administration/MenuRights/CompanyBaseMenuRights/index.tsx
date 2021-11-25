@@ -205,7 +205,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
               name="company_id"
               className="m-0"
               label="Company"
-              rules={[{ required: true,message: 'Company is required' }]}
+              rules={[{ required: true, message: 'Company is required' }]}
             >
               <Select
                 onChange={handleCompanyIdChange}

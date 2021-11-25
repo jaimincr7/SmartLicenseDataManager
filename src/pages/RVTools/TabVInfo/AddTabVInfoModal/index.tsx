@@ -202,7 +202,7 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
   }, [tabVInfo.getById.data]);
 
   useEffect(() => {
-    if(globalFilters.search.tenant_id == 0) {
+    if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
     if (+id > 0) {
@@ -222,7 +222,7 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
       }
-      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0 ) {
+      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
         if (!globalFilters.search.company_id) {
           dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
         }
@@ -292,15 +292,17 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
                       }
                       loading={commonLookups.tenantLookup.loading}
                     >
-                      {globalFilters.search.tenant_id ? (globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))): (commonLookups.tenantLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))) }
+                      {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
+                        ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : commonLookups.tenantLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -330,15 +332,17 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
                       }
                       loading={commonLookups.companyLookup.loading}
                     >
-                      {globalFilters.search.company_id ? (globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))): (commonLookups.companyLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))) }
+                      {Object.keys(commonLookups.companyLookup.data).length > 0
+                        ? commonLookups.companyLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -368,15 +372,17 @@ const AddTabVInfoModal: React.FC<IAddTabVInfoProps> = (props) => {
                       }
                       loading={commonLookups.buLookup.loading}
                     >
-                      {globalFilters.search.bu_id ? (globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))): (commonLookups.buLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))) }
+                      {Object.keys(commonLookups.buLookup.data).length > 0
+                        ? commonLookups.buLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>

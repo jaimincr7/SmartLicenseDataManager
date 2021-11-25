@@ -14,9 +14,9 @@ export interface IAPIColMapping {
 
 export interface ISearchAPIColumn {
   id: number;
-  company_id: number;
-  bu_id: number;
-  tenant_id: number;
+  company_id?: number;
+  bu_id?: number;
+  tenant_id?: number;
 }
 
 export interface ISaveApiColumnMapping {

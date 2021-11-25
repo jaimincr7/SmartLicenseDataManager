@@ -49,8 +49,22 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const getTableColumns = (form) => {
     return [
       {
+        title: <span className="dragHandler">ID</span>,
+        column: 'id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('id', form),
+            dataIndex: 'id',
+            key: 'id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Group</span>,
-        column: 'Group',
+        column: 'GroupId',
         sorter: true,
         children: [
           {
@@ -63,27 +77,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Type</span>,
-        column: 'Type',
+        column: 'API_TypeId',
         sorter: true,
         children: [
           {
             title: FilterByDropdown('api_type_id', spsApis.search.lookups?.types),
             dataIndex: 'type_name',
             key: 'type_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">ID</span>,
-        column: 'id',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterBySwap('id', form),
-            dataIndex: 'id',
-            key: 'id',
             ellipsis: true,
           },
         ],
@@ -116,7 +116,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Stored Procedure</span>,
-        column: 'Stored Procedure',
+        column: 'StoredProcedure',
         sorter: true,
         children: [
           {

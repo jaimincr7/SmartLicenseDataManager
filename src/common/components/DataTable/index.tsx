@@ -66,6 +66,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setObjectForColumnFilter,
     isCronJobApiButton,
     isStartSchedulaAllApi,
+    type_id,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -135,7 +136,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
-      filter_keys: inlineSearchFilterObj,
+      filter_keys: type_id ? {api_type_id: type_id} : inlineSearchFilterObj,
       is_export_to_excel: isExportToExcel,
       ...(extraSearchData || {}),
     };
@@ -145,17 +146,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const fetchTableData = (page = null) => {
     const searchData = getSearchData(page, false);
+    searchData
     if (setObjectForColumnFilter) {
-      setObjectForColumnFilter({
-        filter_keys: searchData.filter_keys,
-        keyword: searchData.keyword,
-        limit: searchData.limit,
-        offset: searchData.offset,
-        is_column_selection: searchData.is_column_selection,
-        order_by: tableFilter.order_by,
-        order_direction: tableFilter.order_direction,
-        column_called: [],
-      });
+        setObjectForColumnFilter({
+          filter_keys: searchData.filter_keys,
+          keyword: searchData.keyword,
+          limit: searchData.limit,
+          offset: searchData.offset,
+          is_column_selection: searchData.is_column_selection,
+          order_by: tableFilter.order_by,
+          order_direction: tableFilter.order_direction,
+          column_called: [],
+        });
     }
     //setCallColumnApi(true);
     dispatch(searchTableData(searchData));
@@ -287,23 +289,23 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
   const onReset = () => {
     const globalSearch: IInlineSearch = {};
-      for (const key in globalFilters.search) {
-        const element = globalFilters.search[key];
-        globalSearch[key] = element ? [element] : null;
-      }
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
+    if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
       const initlValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
         tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
       };
       form.setFieldsValue(initlValues);
-      if(globalFilters.search && !(globalSearchExist == false))
-      {
+      if (globalFilters.search && !(globalSearchExist == false)) {
         onFinish(initlValues);
       }
-      else {
-        onFinish({});
-      }
+    } else {
+      onFinish({});
+    }
   };
   React.useEffect(() => {
     form.resetFields();
@@ -312,11 +314,22 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Export Excel
   const downloadExcel = () => {
-
+    const exArr: any[] = getColumns();
     setLoading(true);
+    const export_column_details: Array<{ key: string; index: any; label: string }> = [];
+    exArr.map((column, index) => {
+      if (column?.children[0]?.key !== 'Actions') {
+        export_column_details.push({
+          key: column?.children[0]?.key,
+          index: index + 1,
+          label: column.title.props?.children,
+        });
+      }
+    });
     const searchData = getSearchData(pagination, true);
+    const exportData = { ...searchData, export_column_details };
 
-    return exportExcelFile(searchData).then((res) => {
+    return exportExcelFile(exportData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
@@ -436,7 +449,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       const isAllDeselected = Object.values(tableColumnSelectionObj.columns).every(
         (col) => col === false
       );
-      if (isAllDeselected ) {
+      if (isAllDeselected) {
         toast.info('Please select any column.');
         return false;
       }
@@ -578,7 +591,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           loading={spsApisState.callAllApi.loading}
           className="btn-icon"
           onClick={() => {
-            if(isStartSchedulaAllApi) {
+            if (isStartSchedulaAllApi) {
               const inlineSearchFilter = _.pickBy(tableFilter.filter_keys, function (value) {
                 return !(
                   value === undefined ||
@@ -598,15 +611,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                 keyword: tableFilter.keyword,
               };
               dispatch(startAll(Obj));
-            }
-            else {
-              if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3 ) {
+            } else {
+              if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
                 onRowSelection();
               }
-            }            
+            }
           }}
         >
-         {isStartSchedulaAllApi ? <>Schedule All</> : <>Call All API</>} 
+          {isStartSchedulaAllApi ? <>Schedule All</> : <>Call All API</>}
         </Button>
       );
     }
@@ -646,7 +658,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Show/Hide Columns
             </Button>
           </Popover>
-          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 && !isStartSchedulaAllApi? (
+          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 &&
+          !isStartSchedulaAllApi ? (
             <Popover content={<>Please select global filter first!</>} trigger="click">
               {renderCallApiButton()}
             </Popover>
