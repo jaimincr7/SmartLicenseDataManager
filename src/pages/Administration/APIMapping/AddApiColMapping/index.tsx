@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
-import GlobalSearch from '../../../../common/components/globalSearch/GlobalSearch';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { IDatabaseTable, ILookup } from '../../../../services/common/common.model';
@@ -30,9 +29,14 @@ import {
   clearApiColMappingGetById,
   clearApiColMappingMessages,
 } from '../../../../store/sps/apiColumnMapping/apiColMapping.reducer';
+import { checkUID } from '../../../../store/sps/spsAPICall/spsApiCall.action';
+import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
+import ApiTable from '../../../SPS/APIsCall/ApiTable';
 
 const { Option } = Select;
 let api_id = 0;
+let api_type_id = 0;
+let is_uid_selection = false;
 const AddAPIMapping: React.FC = () => {
   const history = useHistory();
 
@@ -40,6 +44,11 @@ const AddAPIMapping: React.FC = () => {
   const [tableColumns, setTableColumns] = useState(null);
   const [removedColumns, setRemovedColumns] = useState(null);
   const [error, setError] = useState('');
+  const [ShowTableMNodal, setShowTableMNodal] = useState(false);
+  const [callApiObj, setCallApiObj] = useState({
+    id: 0,
+  });
+  const spsApis = useAppSelector(spsApiCallSelector);
 
   const [formUpload] = Form.useForm();
   const [form] = Form.useForm();
@@ -65,6 +74,8 @@ const AddAPIMapping: React.FC = () => {
     const search = window.location.search;
     const params = new URLSearchParams(search);
     api_id = Number(params.get('api_id'));
+    api_type_id = Number(params.get('api_type_id'));
+    is_uid_selection = Boolean(params.get('is_uid_selection'));
   }, []);
 
   useEffect(() => {
@@ -73,6 +84,7 @@ const AddAPIMapping: React.FC = () => {
       api_id = 0;
     }
   }, [spsAPIColMapping.columnLookups.data]);
+
   useEffect(() => {
     if (Number(id) > 0) {
       dispatch(getApiColMappingById(Number(id)));
@@ -147,10 +159,10 @@ const AddAPIMapping: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterApiColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       }
     });
@@ -163,22 +175,24 @@ const AddAPIMapping: React.FC = () => {
   }, [bulkImports.getTableColumns.data, spsAPIColMapping.apiColumn.data]);
 
   const onFinish = (values: any) => {
-    const searchApiColObj: ISearchAPIColumn = {
-      id: values.sps_api_id,
-      company_id: globalLookups.search.company_id,
-      bu_id: globalLookups.search.bu_id,
-      tenant_id: globalLookups.search.tenant_id,
-    };
-
-    let isError = false;
-    Object.keys(searchApiColObj).forEach(function (key) {
-      if (!searchApiColObj[key]) {
-        isError = true;
-        setError('Please select global filter first!');
-      }
-    });
-    !isError && dispatch(getApiColumn(searchApiColObj));
+    dispatch(checkUID(values.sps_api_id));
+    
+     // dispatch(getApiColumn(searchApiColObj));
   };
+
+  useEffect(() => {
+    if(spsApis.checkUID.data) {
+      if(is_uid_selection) {
+        setCallApiObj({id : spsApis.checkUID.data.api_type_id});
+        setShowTableMNodal(true);
+      } else {
+        const searchApiColObj: ISearchAPIColumn = {
+          id: spsApis.checkUID.data.api_type_id,
+        };
+        dispatch(getApiColumn(searchApiColObj));
+      }
+    }
+  }, [spsApis.checkUID.data])
 
   useEffect(() => {
     Object.keys(globalLookups.search).forEach(function (key) {
@@ -237,9 +251,6 @@ const AddAPIMapping: React.FC = () => {
           <h4 className="p-0">
             <BreadCrumbs pageName={Page.ConfigSPSColMapping} />
           </h4>
-          <div className="right-title">
-            <GlobalSearch />
-          </div>
         </div>
 
         <div className="main-card">
@@ -254,11 +265,7 @@ const AddAPIMapping: React.FC = () => {
                 <Col xs={24} md={6}>
                   <div className="form-group m-0">
                     <label className="label">SPS API</label>
-                    <Form.Item
-                      name="sps_api_id"
-                      className="m-0"
-                      rules={[{ required: true, message: 'SPS API is required' }]}
-                    >
+                    <Form.Item name="sps_api_id" className="m-0" rules={[{ required: true, message : 'API is Required' }]}>
                       <Select
                         onChange={(val) => {
                           if (!val) {
@@ -293,11 +300,7 @@ const AddAPIMapping: React.FC = () => {
                 <Col xs={24} md={6}>
                   <div className="form-group m-0">
                     <label className="label">Table Name</label>
-                    <Form.Item
-                      name={'table_name'}
-                      className="m-0"
-                      rules={[{ required: true, message: 'Table Name is required' }]}
-                    >
+                    <Form.Item name={'table_name'} className="m-0" rules={[{ required: true, message : 'Table is Required' }]}>
                       <Select
                         allowClear
                         onChange={handleTableChange}
@@ -450,6 +453,16 @@ const AddAPIMapping: React.FC = () => {
           </Form>
         </div>
       </div>
+      {ShowTableMNodal && api_type_id &&  (
+        <ApiTable
+          type_id={api_type_id}
+          showModal={ShowTableMNodal}
+          callApiObj={callApiObj}
+          isFetchApi={true}
+          handleModalClose={() => {
+            setShowTableMNodal(false);
+          }} />
+      )}
     </>
   );
 };

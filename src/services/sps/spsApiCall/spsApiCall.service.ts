@@ -16,6 +16,13 @@ class SPSApiCallService {
     });
   }
 
+  public async checkUID(id: number): Promise<any> {
+    const url = `${this.ENDPOINT}/check-uid-selection/${id}`;
+    return request({ url, method: 'POST' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async callApi(data: ICallAPI): Promise<any> {
     const url = `${this.ENDPOINT}/call-api`;
     const cancelTokenSource = axios.CancelToken.source();
