@@ -66,6 +66,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setObjectForColumnFilter,
     isCronJobApiButton,
     isStartSchedulaAllApi,
+    type_id,
   } = props;
 
   const reduxStoreData = useAppSelector(reduxSelector);
@@ -135,7 +136,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
-      filter_keys: inlineSearchFilterObj,
+      filter_keys: type_id ? {api_type_id: type_id} : inlineSearchFilterObj,
       is_export_to_excel: isExportToExcel,
       ...(extraSearchData || {}),
     };
@@ -145,17 +146,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const fetchTableData = (page = null) => {
     const searchData = getSearchData(page, false);
+    searchData
     if (setObjectForColumnFilter) {
-      setObjectForColumnFilter({
-        filter_keys: searchData.filter_keys,
-        keyword: searchData.keyword,
-        limit: searchData.limit,
-        offset: searchData.offset,
-        is_column_selection: searchData.is_column_selection,
-        order_by: tableFilter.order_by,
-        order_direction: tableFilter.order_direction,
-        column_called: [],
-      });
+        setObjectForColumnFilter({
+          filter_keys: searchData.filter_keys,
+          keyword: searchData.keyword,
+          limit: searchData.limit,
+          offset: searchData.offset,
+          is_column_selection: searchData.is_column_selection,
+          order_by: tableFilter.order_by,
+          order_direction: tableFilter.order_direction,
+          column_called: [],
+        });
     }
     //setCallColumnApi(true);
     dispatch(searchTableData(searchData));
@@ -291,7 +293,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if(globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
+    if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
       const initlValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
@@ -301,8 +303,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       if (globalFilters.search && !(globalSearchExist == false)) {
         onFinish(initlValues);
       }
-    }
-     else {
+    } else {
       onFinish({});
     }
   };
@@ -315,22 +316,24 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const downloadExcel = () => {
     const exArr: any[] = getColumns();
     setLoading(true);
-    const export_column_details: Array<{key: string;index: any;label: string}> = [];
-    exArr.map((column,index) => {
-      if(column?.children[0]?.key !== 'Actions' )
-      {
-        export_column_details.push({key: column?.children[0]?.key,index: index+1,label: column.title.props?.children})
+    const export_column_details: Array<{ key: string; index: any; label: string }> = [];
+    exArr.map((column, index) => {
+      if (column?.children[0]?.key !== 'Actions') {
+        export_column_details.push({
+          key: column?.children[0]?.key,
+          index: index + 1,
+          label: column.title.props?.children,
+        });
       }
     });
     const searchData = getSearchData(pagination, true);
-    const exportData = {...searchData,export_column_details};
+    const exportData = { ...searchData, export_column_details };
 
     return exportExcelFile(exportData).then((res) => {
       if (!res) {
         toast.error('Document not available.');
         return;
       } else {
-        
         const fileName = `${res.headers['content-disposition'].split('filename=')[1]}`; //res.headers["content-disposition"];
         const url = window.URL.createObjectURL(new Blob([res.data]));
         exportExcel(fileName, url);
