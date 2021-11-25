@@ -174,7 +174,12 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
                   ) : (
                     'Tenant'
                   )}
-                  <Form.Item name="tenant_id" className="m-0" label="Tenant"  rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="tenant_id"
+                    className="m-0"
+                    label="Tenant"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleTenantChange}
                       allowClear

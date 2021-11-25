@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ISearchAPI } from '../../../services/sps/spsApiCall/spsApiCall.model';
 import { RootState } from '../../app.model';
-import { callAllApi, callApi, searchImportAPIs } from './spsApiCall.action';
+import { callAllApi, callApi, checkUID, searchImportAPIs } from './spsApiCall.action';
 import { ISPSApiCallState } from './spsApiCall.model';
 
 export const initialState: ISPSApiCallState = {
@@ -29,6 +29,11 @@ export const initialState: ISPSApiCallState = {
     hasErrors: false,
     messages: [],
   },
+  checkUID: {
+    loading: false,
+    hasErrors: false,
+    data: null,
+  },
   getById: {
     loading: false,
     hasErrors: false,
@@ -50,8 +55,8 @@ export const spsApiCallSlice = createSlice({
       state.callApi.messages = [];
       state.callAllApi.messages = [];
     },
-    clearSpsApiGetById: (state) => {
-      state.getById.data = null;
+    clearSpsCheckUID: (state) => {
+      state.checkUID.data = null;
     },
   },
 
@@ -104,6 +109,20 @@ export const spsApiCallSlice = createSlice({
       state.callApi.hasErrors = true;
     },
 
+    // Get by id
+    [checkUID.pending.type]: (state) => {
+      state.checkUID.loading = true;
+    },
+    [checkUID.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      state.checkUID.data = action.payload;
+      state.checkUID.loading = false;
+      state.checkUID.hasErrors = false;
+    },
+    [checkUID.rejected.type]: (state) => {
+      state.checkUID.loading = false;
+      state.checkUID.hasErrors = true;
+    },
+
     // Call All API
     [callAllApi.pending.type]: (state) => {
       state.callAllApi.loading = true;
@@ -124,7 +143,7 @@ export const spsApiCallSlice = createSlice({
 export const spsApiCallSelector = (state: RootState) => state.spsApiCall;
 
 // Actions
-export const { clearSPS, setTableColumnSelection, clearCallApiMessages, clearSpsApiGetById } =
+export const { clearSPS, setTableColumnSelection, clearCallApiMessages, clearSpsCheckUID } =
   spsApiCallSlice.actions;
 
 // The reducer

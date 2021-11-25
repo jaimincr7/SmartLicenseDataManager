@@ -56,14 +56,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     return adUsersService.exportExcelFile(searchData);
   };
 
-  const FilterBySwap = (dataIndex: string, form) => {
+  const FilterBySwap = (dataIndex: string, form, columnWidthOpt?: boolean) => {
     setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       adUsers.search.tableName,
       form,
       null,
-      ObjectForColumnFilter
+      ObjectForColumnFilter,
+      null,
+      columnWidthOpt === undefined ? false : columnWidthOpt
     );
   };
 
@@ -80,7 +82,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('id', form),
+            title: FilterBySwap('id', form, true),
             dataIndex: 'id',
             key: 'id',
             ellipsis: true,
@@ -146,7 +148,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Company Name</span>,
-        column: 'CompanyName',
+        column: 'CompanyId',
         sorter: true,
         children: [
           {
@@ -164,7 +166,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Bu Name</span>,
-        column: 'Bu_Id',
+        column: 'BU_Id',
         sorter: true,
         children: [
           {
@@ -289,7 +291,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Object GUId</span>,
-        column: 'ObjectGUId',
+        column: 'ObjectGUID',
         sorter: true,
         children: [
           {
@@ -396,7 +398,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">SId</span>,
-        column: 'SId',
+        column: 'SID',
         sorter: true,
         children: [
           {
@@ -422,7 +424,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">When Changed</span>,
-        column: 'WhenChanged',
+        column: 'whenChanged',
         sorter: true,
         children: [
           {
@@ -436,7 +438,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">When Created</span>,
-        column: 'WhenCreated',
+        column: 'whenCreated',
         sorter: true,
         children: [
           {
@@ -454,7 +456,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('exclusion_id', form),
+            title: FilterBySwap('exclusion_id', form, true),
             dataIndex: 'exclusion_id',
             key: 'exclusion_id',
             ellipsis: true,
@@ -570,7 +572,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">o365 Licensed</span>,
-        column: 'o365 Licensed',
+        column: 'O365 Licensed',
         sorter: true,
         children: [
           {
@@ -597,11 +599,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">o365 Licenses</span>,
-        column: 'o365 Licenses',
+        column: 'O365 Licenses',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('o365_licenses', form),
+            title: FilterBySwap('o365_licenses', form, true),
             dataIndex: 'o365_licenses',
             key: 'o365_licenses',
             ellipsis: true,

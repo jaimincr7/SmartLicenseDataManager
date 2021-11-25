@@ -515,7 +515,11 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   </Form.Item>
                   &nbsp;
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'start_schedular']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'start_schedular']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Start Schedular ?</Checkbox>
                     </Form.Item>
                   ) : (

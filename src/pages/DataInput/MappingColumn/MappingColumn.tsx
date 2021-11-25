@@ -20,7 +20,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const onFinish = (values: any) => {
     const { file_name, isPublic } = values;
     saveMapping(file_name, isPublic);
-    
   };
 
   return (

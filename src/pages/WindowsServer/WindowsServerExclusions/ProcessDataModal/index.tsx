@@ -1,6 +1,10 @@
 import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import { useEffect } from 'react';
-import { IConfigModelPopUpDataSelection, IGetConfigModelPopUpDataSelection, ILookup } from '../../../../services/common/common.model';
+import {
+  IConfigModelPopUpDataSelection,
+  IGetConfigModelPopUpDataSelection,
+  ILookup,
+} from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   configModelPopUpDataSelection,
@@ -38,7 +42,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose , tableName, refreshDataTable } = props;
+  const { showModal, handleModalClose, tableName, refreshDataTable } = props;
 
   const [form] = Form.useForm();
 
@@ -54,11 +58,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
 
   const saveConfig = () => {
     const setModelSelection: IConfigModelPopUpDataSelection = {
-      id: commonLookups.getModelPopUpSelection.id === null ? null : commonLookups.getModelPopUpSelection.id,
+      id:
+        commonLookups.getModelPopUpSelection.id === null
+          ? null
+          : commonLookups.getModelPopUpSelection.id,
       selection: JSON.stringify(form.getFieldsValue()),
       table_name: tableName,
       pop_up_name: 'ProcessDataSet',
-    }
+    };
     dispatch(configModelPopUpDataSelection(setModelSelection));
   };
 
@@ -109,7 +116,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   useEffect(() => {
-    if(commonLookups.getModelPopUpSelection.data !== {}) {
+    if (commonLookups.getModelPopUpSelection.data !== {}) {
       getConfigData(commonLookups.getModelPopUpSelection.data);
     }
   }, [commonLookups.getModelPopUpSelection.data]);
@@ -134,13 +141,13 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
+    if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
       const modelPopUp: IGetConfigModelPopUpDataSelection = {
-            table_name : tableName,
-            pop_up_name : 'ProcessDataSet'
-          }
-          dispatch(getConfigModelPopUpDataSelection(modelPopUp));
-        }
+        table_name: tableName,
+        pop_up_name: 'ProcessDataSet',
+      };
+      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
+    }
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
@@ -245,7 +252,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               Process
             </Button>
             <Can I={Action.ModelDataSeletion} a={Page.ConfigModelPopUpSelection}>
-              <Button type="dashed" ghost onClick={saveConfig} loading={commonLookups.setModelPopUpSelection.loading}>
+              <Button
+                type="dashed"
+                ghost
+                onClick={saveConfig}
+                loading={commonLookups.setModelPopUpSelection.loading}
+              >
                 Save Configuration
               </Button>
             </Can>

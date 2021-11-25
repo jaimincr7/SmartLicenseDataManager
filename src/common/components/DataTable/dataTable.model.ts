@@ -32,4 +32,7 @@ export interface IDataTable {
   setObjectForColumnFilter?: (val: {}) => void;
   isCronJobApiButton?: boolean;
   isStartSchedulaAllApi?: boolean;
+  
+  //For SPS API CALL MODAL[TO PASS TYPE ID FOR SPS API OAUTH]
+  type_id?: number;
 }

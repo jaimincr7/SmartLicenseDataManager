@@ -1,6 +1,10 @@
 import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import React, { useEffect } from 'react';
-import { IConfigModelPopUpDataSelection, IGetConfigModelPopUpDataSelection, ILookup } from '../../../../services/common/common.model';
+import {
+  IConfigModelPopUpDataSelection,
+  IGetConfigModelPopUpDataSelection,
+  ILookup,
+} from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   configModelPopUpDataSelection,
@@ -56,11 +60,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
 
   const saveConfig = () => {
     const setModelSelection: IConfigModelPopUpDataSelection = {
-      id: commonLookups.getModelPopUpSelection.id === null ? null : commonLookups.getModelPopUpSelection.id,
+      id:
+        commonLookups.getModelPopUpSelection.id === null
+          ? null
+          : commonLookups.getModelPopUpSelection.id,
       selection: JSON.stringify(form.getFieldsValue()),
       table_name: tableName,
       pop_up_name: 'ProcessDataSet',
-    }
+    };
     dispatch(configModelPopUpDataSelection(setModelSelection));
   };
 
@@ -68,13 +75,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (data.company_id) {
       await dispatch(getBULookup(data.company_id));
     }
-	if (data.bu_id) {
+    if (data.bu_id) {
       await dispatch(
-        getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
-        )
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
       );
-        }
+    }
     form.setFieldsValue(data);
   };
 
@@ -84,7 +89,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   // };
 
   useEffect(() => {
-    if(commonLookups.getModelPopUpSelection.data !== {}) {
+    if (commonLookups.getModelPopUpSelection.data !== {}) {
       getConfigData(commonLookups.getModelPopUpSelection.data);
     }
   }, [commonLookups.getModelPopUpSelection.data]);
@@ -145,19 +150,23 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [commonLookups.setModelPopUpSelection.messages]);
 
   React.useEffect(() => {
-    if(ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
+    if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
       const modelPopUp: IGetConfigModelPopUpDataSelection = {
-            table_name : tableName,
-            pop_up_name : 'ProcessDataSet'
-          }
-          dispatch(getConfigModelPopUpDataSelection(modelPopUp));
-        }
+        table_name: tableName,
+        pop_up_name: 'ProcessDataSet',
+      };
+      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
+    }
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalSearch.company_id && globalSearch.bu_id) {
+    if (
+      globalSearch.company_id &&
+      globalSearch.bu_id &&
+      commonLookups.getModelPopUpSelection.data == {}
+    ) {
       dispatch(getBULookup(globalSearch.company_id[0]));
       const filterValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
@@ -284,7 +293,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date' ? 'NULL' : moment(option).format(Common.DATEFORMAT)}
+                        {moment(option)?.toString() == 'Invalid date'
+                          ? 'NULL'
+                          : moment(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}
                   </Select>
@@ -315,7 +326,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               Process
             </Button>
             <Can I={Action.ModelDataSeletion} a={Page.ConfigModelPopUpSelection}>
-              <Button type="dashed" ghost onClick={saveConfig} loading={commonLookups.setModelPopUpSelection.loading}>
+              <Button
+                type="dashed"
+                ghost
+                onClick={saveConfig}
+                loading={commonLookups.setModelPopUpSelection.loading}
+              >
                 Save Configuration
               </Button>
             </Can>

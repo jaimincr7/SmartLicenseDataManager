@@ -859,7 +859,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Startup Config </span>,
-        column: 'Startup Config ',
+        column: 'Startup Config',
         sorter: true,
         ellipsis: true,
         children: [

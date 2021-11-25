@@ -41,7 +41,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, tableName, refreshDataTable, } = props;
+  const { showModal, handleModalClose, tableName, refreshDataTable } = props;
 
   const [form] = Form.useForm();
 
@@ -145,7 +145,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalSearch.company_id && globalSearch.bu_id) {
+    if (
+      globalSearch.company_id &&
+      globalSearch.bu_id &&
+      commonLookups.getModelPopUpSelection.data == {}
+    ) {
       dispatch(getBULookup(globalSearch.company_id[0]));
       const filterValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],

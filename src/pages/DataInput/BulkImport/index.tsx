@@ -277,6 +277,10 @@ const BulkImport: React.FC = () => {
       const remainingFiles = [];
       valuesArray?.forEach((val) => {
         try {
+          const orgFileName = excelColumnState?.find(
+            (x) => x.filename === val?.file_name
+          )?.original_filename;
+          val.original_file_name = orgFileName;
           dispatch(bulkInsert(val));
         } catch (e) {
           const orgFileName = excelColumnState?.find(
@@ -286,7 +290,7 @@ const BulkImport: React.FC = () => {
         }
       });
       if (remainingFiles?.length > 0) {
-        toast.error('Listed filed does not imported ,' + remainingFiles.toString());
+        toast.error('Listed files does not imported ,' + remainingFiles.toString());
       }
     }
   };
@@ -299,7 +303,7 @@ const BulkImport: React.FC = () => {
     setCount({ save: 0, reset: 0 });
     const tbName = formUpload?.getFieldValue('table_name');
     formUpload.resetFields();
-    formUpload.setFieldsValue({ table_name: tbName});
+    formUpload.setFieldsValue({ table_name: tbName });
     setDefaultFileList([]);
     setTableName(tbName);
   };

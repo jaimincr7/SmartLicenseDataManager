@@ -25,6 +25,7 @@ import { useHistory } from 'react-router-dom';
 import { PhoneOutlined, ControlFilled } from '@ant-design/icons';
 import CallApiModal from '../CallApiModal';
 import { IMainTable } from '../../../../common/models/common';
+import ApiTable from '../ApiTable';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const dispatch = useAppDispatch();
@@ -32,6 +33,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const globalLookups = useAppSelector(globalSearchSelector);
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const [ShowTableMNodal, setShowTableMNodal] = useState(false);
+  const [TypeId, setTypeId] = useState(null)
   const [callApiObj, setCallApiObj] = useState({
     id: 0,
     params: null,
@@ -95,62 +98,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Tenant Name</span>,
-        column: 'TenantId',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDropdown(
-              'tenant_id',
-              spsApis.search.lookups?.tenants?.length > 0
-                ? spsApis.search.lookups?.tenants
-                : globalLookups?.globalTenantLookup?.data
-            ),
-            dataIndex: 'tenant_name',
-            key: 'tenant_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Company Name</span>,
-        column: 'CompanyId',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDropdown(
-              'company_id',
-              spsApis.search.lookups?.companies?.length > 0
-                ? spsApis.search.lookups?.companies
-                : globalLookups?.globalCompanyLookup?.data
-            ),
-            dataIndex: 'company_name',
-            key: 'company_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Bu Name</span>,
-        column: 'BU_Id',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDropdown(
-              'bu_id',
-              spsApis.search.lookups?.bus?.length > 0
-                ? spsApis.search.lookups?.bus
-                : globalLookups?.globalBULookup?.data
-            ),
-            dataIndex: 'bu_name',
-            key: 'bu_name',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
         title: <span className="dragHandler">Group</span>,
-        column: 'Group',
+        column: 'GroupId',
         sorter: true,
         children: [
           {
@@ -163,7 +112,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Type</span>,
-        column: 'Type',
+        column: 'API_TypeId',
         sorter: true,
         children: [
           {
@@ -188,21 +137,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">URL</span>,
-        column: 'URL',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('url', form),
-            dataIndex: 'url',
-            key: 'url',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
         title: <span className="dragHandler">Stored Procedure</span>,
-        column: 'Stored Procedure',
+        column: 'StoredProcedure',
         sorter: true,
         children: [
           {
@@ -252,10 +188,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         className="action-btn"
         onClick={(e) => {
           e.preventDefault();
-          if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3)
-            data.is_mapping && data.enabled
-              ? onCallApi(data)
-              : history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`);
+          data.is_mapping && data.enabled ? (
+            onCallApi(data)
+          ) : data.is_uid_selection ? (
+            onFetchCall(data)
+          ) : (
+            <></>
+          );
         }}
       >
         {data.is_mapping ? (
@@ -265,6 +204,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         )}
       </a>
     );
+  };
+
+  const onFetchCall = (data: any) => {
+    if (data.url) {
+      const newURL = new URL(data.url);
+      const urlSearchParams = new URLSearchParams(newURL.search);
+      const params = Object.fromEntries(urlSearchParams?.entries());
+      setCallApiObj({ ...callApiObj, params: params, show: false, isAll: false, id: data.id });
+      history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}&api_type_id=${data.api_type_id}&is_uid_selection=${data.is_uid_selection}`);
+    } else {
+      toast.error('Selected api does not have url.');
+    }
   };
 
   const onCallApiById = (id: number, params: any) => {
@@ -283,13 +234,22 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       const newURL = new URL(data.url);
       const urlSearchParams = new URLSearchParams(newURL.search);
       const params = Object.fromEntries(urlSearchParams?.entries());
-      const editableParams = Object.values(params)?.filter(
-        (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
-      );
-      if (editableParams?.length > 0) {
-        setCallApiObj({ ...callApiObj, params: params, show: true, isAll: false, id: data.id });
-      } else {
-        onCallApiById(data.id, params);
+      const editableParams = Object.values(params)?.filter((x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime');
+      setCallApiObj({ ...callApiObj, params: params, show: false, isAll: false, id: data.id });
+      if (data.is_uid_selection) {
+        setTypeId(data.api_type_id);
+        setShowTableMNodal(true);
+      }
+      else {
+        if (editableParams?.length > 0) {
+          toast.info("Url Doesn't have Start or End Time");
+        } else {
+          const callApiObj: ICallAPI = {
+            id: data.id,
+            spsApiQueryParam: params,
+          };
+          dispatch(callApi(callApiObj));
+        }
       }
     } else {
       toast.error('Selected api does not have url.');
@@ -344,8 +304,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
-        <Popover content={<>Please select global filter first!</>} trigger="click">
+      {!data.is_uid_selection ? (
+        <Popover content={<>UID Selection is False!</>} trigger="click">
           {renderActionButton(data)}
         </Popover>
       ) : (
@@ -409,6 +369,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             confirmCallApi(values);
           }}
         />
+      )}
+      {ShowTableMNodal && TypeId && callApiObj && (
+        <ApiTable
+          type_id={TypeId}
+          showModal={ShowTableMNodal}
+          callApiObj={callApiObj}
+          isFetchApi={false}
+          handleModalClose={() => {
+            setShowTableMNodal(false);
+            history.push('/sps/sps-api');
+          }} />
       )}
     </>
   );

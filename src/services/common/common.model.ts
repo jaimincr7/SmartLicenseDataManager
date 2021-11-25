@@ -14,6 +14,7 @@ export interface IBulkInsertDataset {
   table_name: string;
   file_name?: string;
   sheet_name?: string;
+  original_file_name?: string;
   foreign_key_values: {
     tenant_id: number;
     company_id: number;

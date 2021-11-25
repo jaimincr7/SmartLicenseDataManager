@@ -56,14 +56,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     return adDevicesService.exportExcelFile(searchData);
   };
 
-  const FilterBySwap = (dataIndex: string, form) => {
+  const FilterBySwap = (dataIndex: string, form, columnWidthOpt?: boolean) => {
     setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       adDevices.search.tableName,
       form,
       null,
-      ObjectForColumnFilter
+      ObjectForColumnFilter,
+      null,
+      columnWidthOpt === undefined ? false : columnWidthOpt
     );
   };
 
@@ -80,7 +82,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('id', form),
+            title: FilterBySwap('id', form, true),
             dataIndex: 'id',
             key: 'id',
             ellipsis: true,
@@ -151,7 +153,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Bu Name</span>,
-        column: 'Bu_Id',
+        column: 'BU_Id',
         sorter: true,
         children: [
           {
@@ -277,7 +279,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Object GUId</span>,
-        column: 'ObjectGUId',
+        column: 'ObjectGUID',
         sorter: true,
         children: [
           {
@@ -398,7 +400,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">SId</span>,
-        column: 'SId',
+        column: 'SID',
         sorter: true,
         children: [
           {
@@ -424,7 +426,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">When Created</span>,
-        column: 'WhenCreated',
+        column: 'whenCreated',
         sorter: true,
         children: [
           {
@@ -588,6 +590,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const removeAdDevice = (id: number) => {
     dispatch(deleteAdDevice(id));
   };
+
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.Update} a={Page.ADDevices}>

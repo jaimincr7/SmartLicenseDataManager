@@ -16,6 +16,11 @@ export interface ISPSApiCallState {
     hasErrors: boolean;
     messages: string[];
   };
+  checkUID: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: ISpsApi;
+  };
   callAllApi: {
     loading: boolean;
     hasErrors: boolean;

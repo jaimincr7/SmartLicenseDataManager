@@ -151,7 +151,7 @@ const AdministrationRoutes: React.FC = () => {
         {ability.can(Action.View, Page.ConfigSPSColMapping) && (
           <Route
             exact
-            path={`${match.path}/config-sps-api-column-mapping/add/:id`}
+            path={`${match.path}/config-sps-api-column-mapping/add/:id/:typeId/:isUidSelection`}
             component={AddAPIMapping}
           />
         )}

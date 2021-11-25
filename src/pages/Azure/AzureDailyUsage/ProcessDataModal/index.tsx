@@ -45,7 +45,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, filterKeys, tableName, refreshDataTable, } = props;
+  const { showModal, handleModalClose, filterKeys, tableName, refreshDataTable } = props;
 
   const [form] = Form.useForm();
 
@@ -108,7 +108,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalSearch.company_id && globalSearch.bu_id) {
+    if (
+      globalSearch.company_id &&
+      globalSearch.bu_id &&
+      commonLookups.getModelPopUpSelection.data == {}
+    ) {
       dispatch(getBULookup(globalSearch.company_id[0]));
       initialValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
@@ -293,7 +297,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={option}>
-                        {moment(option)?.toString() == 'Invalid date' ? 'NULL' : moment(option).format(Common.DATEFORMAT)}
+                        {moment(option)?.toString() == 'Invalid date'
+                          ? 'NULL'
+                          : moment(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}
                   </Select>

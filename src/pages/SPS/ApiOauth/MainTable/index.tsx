@@ -119,7 +119,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Bu Name</span>,
-        column: 'Bu_Id',
+        column: 'BU_Id',
         sorter: true,
         children: [
           {
@@ -180,9 +180,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('base_url_id', form),
-            dataIndex: 'base_url_id',
-            key: 'base_url_id',
+            title: FilterByDropdown('base_url_id', spsApiOauth.search.lookups?.sps_api_base_urls),
+            dataIndex: 'sps_base_url_name',
+            key: 'sps_base_url_name',
             ellipsis: true,
           },
         ],
