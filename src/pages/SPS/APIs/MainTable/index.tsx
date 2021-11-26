@@ -160,7 +160,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const onFetchCall = (data: any) => {
-    history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`);
+    if(data?.sps_mapping_id > 0) {
+      history.push(`/administration/config-sps-api-column-mapping/add/${data.sps_mapping_id}`);  
+    } else {
+      history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`);
+    }
   };
 
   const tableAction = (_, data: any) => (
@@ -188,7 +192,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           </a>
         </Popconfirm>
       </Can>
-      <a href="#" title="" className="action-btn"
+      <a  title="" className="action-btn"
         onClick={() => {
           onFetchCall(data);
         }}>
