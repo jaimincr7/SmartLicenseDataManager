@@ -1,12 +1,7 @@
 import { Button, Checkbox, Modal } from 'antd';
 import _ from 'lodash';
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import {
-  FilterByBooleanDropDown,
-  FilterByDropdown,
-  FilterWithSwapOption,
-} from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
 import {
   clearSpsApiOauthMessages,
@@ -26,9 +21,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
   const { type_id , showModal , handleModalClose , callApiObj , isFetchApi } = props;
   const dispatch = useAppDispatch();
   const spsApis = useAppSelector(spsApiCallSelector);
-  const spsApiOauth = useAppSelector(spsApiOauthSelector);
   const dataTableRef = useRef(null);
-  const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -36,17 +29,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
     },
   }));
 
-  const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(
-      dataIndex,
-      spsApiOauth.search.tableName,
-      form,
-      null,
-      ObjectForColumnFilter
-    );
-  };
-
-  const getTableColumns = (form) => {
+  const getTableColumns = () => {
     return [
       {
         title: <span className="dragHandler">Tenant Name</span>,
@@ -54,9 +37,9 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'tenant_id', spsApiOauth.search.lookups?.tenants
-            ),
+            // title: FilterByDropdown(
+            //   'tenant_id', spsApiOauth.search.lookups?.tenants
+            // ),
             dataIndex: 'tenant_name',
             key: 'tenant_name',
             ellipsis: true,
@@ -69,9 +52,9 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'company_id', spsApiOauth.search.lookups?.companies
-            ),
+            // title: FilterByDropdown(
+            //   'company_id', spsApiOauth.search.lookups?.companies
+            // ),
             dataIndex: 'company_name',
             key: 'company_name',
             ellipsis: true,
@@ -84,9 +67,9 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'bu_id', spsApiOauth.search.lookups?.bus
-            ),
+            // title: FilterByDropdown(
+            //   'bu_id', spsApiOauth.search.lookups?.bus
+            // ),
             dataIndex: 'bu_name',
             key: 'bu_name',
             ellipsis: true,
@@ -99,7 +82,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('api_type_id', spsApiOauth.search.lookups?.sps_api_types),
+            //title: FilterByDropdown('api_type_id', spsApiOauth.search.lookups?.sps_api_types),
             dataIndex: 'sps_api_type_name',
             key: 'sps_api_type_name',
             ellipsis: true,
@@ -112,7 +95,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         sorter: true,
         children: [
           {
-            title: FilterBySwap('uid', form),
+            //title: FilterBySwap('uid', form),
             dataIndex: 'uid',
             key: 'uid',
             ellipsis: true,
@@ -125,11 +108,11 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown(
-              'active',
-              spsApiOauth.search.tableName,
-              ObjectForColumnFilter
-            ),
+            // title: FilterByBooleanDropDown(
+            //   'active',
+            //   spsApiOauth.search.tableName,
+            //   ObjectForColumnFilter
+            // ),
             dataIndex: 'active',
             key: 'active',
             ellipsis: true,
@@ -181,6 +164,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       tenant_id: data.tenant_id,
     };
     dispatch(getApiColumn(fetchApiObject));
+    handleModalClose();
   };
 
   const tableAction = (_, data: any) => (
@@ -206,13 +190,13 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         disableRowSelection={true}
         showBulkUpdate={false}
         hideExportButton={true}
+        hideShowHideButton={true}
         tableAction={tableAction}
         getTableColumns={getTableColumns}
         reduxSelector={spsApiOauthSelector}
         searchTableData={searchSpsApiOauth}
         clearTableDataMessages={clearSpsApiOauthMessages}
         setTableColumnSelection={setTableColumnSelection}
-        setObjectForColumnFilter={setObjectForColumnFilter}
         type_id={type_id}
       />
     </Modal>  

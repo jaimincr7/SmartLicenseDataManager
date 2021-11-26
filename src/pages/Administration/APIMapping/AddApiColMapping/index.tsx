@@ -36,7 +36,6 @@ import ApiTable from '../../../SPS/APIsCall/ApiTable';
 const { Option } = Select;
 let api_id = 0;
 let api_type_id = 0;
-let is_uid_selection = false;
 const AddAPIMapping: React.FC = () => {
   const history = useHistory();
 
@@ -74,8 +73,6 @@ const AddAPIMapping: React.FC = () => {
     const search = window.location.search;
     const params = new URLSearchParams(search);
     api_id = Number(params.get('api_id'));
-    api_type_id = Number(params.get('api_type_id'));
-    is_uid_selection = Boolean(params.get('is_uid_selection'));
   }, []);
 
   useEffect(() => {
@@ -182,12 +179,13 @@ const AddAPIMapping: React.FC = () => {
 
   useEffect(() => {
     if(spsApis.checkUID.data) {
-      if(is_uid_selection) {
-        setCallApiObj({id : spsApis.checkUID.data.api_type_id});
+      if(spsApis.checkUID.data.is_uid_selection) {
+        api_type_id = spsApis.checkUID.data.api_type_id;
+        setCallApiObj({id : formUpload.getFieldValue('sps_api_id'),});
         setShowTableMNodal(true);
       } else {
         const searchApiColObj: ISearchAPIColumn = {
-          id: spsApis.checkUID.data.api_type_id,
+          id: formUpload.getFieldValue('sps_api_id'),
         };
         dispatch(getApiColumn(searchApiColObj));
       }
