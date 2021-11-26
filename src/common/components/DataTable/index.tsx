@@ -66,6 +66,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setObjectForColumnFilter,
     isCronJobApiButton,
     isStartSchedulaAllApi,
+    hideShowHideButton,
     type_id,
   } = props;
 
@@ -612,9 +613,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               };
               dispatch(startAll(Obj));
             } else {
-              if (Object.values(globalFilters.search)?.filter((x) => x > 0)?.length === 3) {
                 onRowSelection();
-              }
             }
           }}
         >
@@ -646,7 +645,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Export
             </Button>
           )}
-          <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
+          {hideShowHideButton ? <></> : <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
             <Button
               disabled={reduxStoreData.search.count === 0}
               icon={
@@ -657,15 +656,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             >
               Show/Hide Columns
             </Button>
-          </Popover>
-          {Object.values(globalFilters.search)?.filter((x) => x > 0)?.length !== 3 &&
-          !isStartSchedulaAllApi ? (
-            <Popover content={<>Please select global filter first!</>} trigger="click">
-              {renderCallApiButton()}
-            </Popover>
-          ) : (
+          </Popover>}
+          {
             renderCallApiButton()
-          )}
+          }
           {showBulkUpdate && (
             <Button
               type="primary"
@@ -699,7 +693,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
-            loading={reduxStoreData.search.loading || reduxStoreData?.delete?.loading}
+            loading={reduxStoreData.search.loading || reduxStoreData?.delete?.loading || reduxStoreData?.callAllApi?.loading || reduxStoreData?.callApi?.loading}
             pagination={{
               ...pagination,
               pageSizeOptions: ['10', '100', '500', '1000'],

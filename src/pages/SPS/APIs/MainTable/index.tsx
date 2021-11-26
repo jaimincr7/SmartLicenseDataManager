@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { IMainTable } from '../../../../common/models/common';
+import { ControlFilled } from '@ant-design/icons';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
@@ -158,6 +159,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     ];
   };
 
+  const onFetchCall = (data: any) => {
+    if(data?.sps_mapping_id > 0) {
+      history.push(`/administration/config-sps-api-column-mapping/add/${data.sps_mapping_id}`);  
+    } else {
+      history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`);
+    }
+  };
+
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.Update} a={Page.SPSApi}>
@@ -183,6 +192,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           </a>
         </Popconfirm>
       </Can>
+      <a  title="" className="action-btn"
+        onClick={() => {
+          onFetchCall(data);
+        }}>
+        <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
+      </a>
     </div>
   );
 
@@ -192,12 +207,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ref={dataTableRef}
         showAddButton={ability.can(Action.Add, Page.SPSApi)}
         tableAction={tableAction}
+        globalSearchExist={false}
         getTableColumns={getTableColumns}
         reduxSelector={spsApiSelector}
         searchTableData={searchImportAPIs}
         setTableColumnSelection={setTableColumnSelection}
         hideExportButton={true}
-        globalSearchExist={false}
         clearTableDataMessages={clearCallApiMessages}
         setSelectedId={(id) => setSelectedId(id)}
         setShowSelectedListModal={setShowSelectedListModal}
