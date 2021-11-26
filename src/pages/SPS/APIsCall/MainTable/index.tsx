@@ -22,7 +22,7 @@ import { globalSearchSelector } from '../../../../store/globalSearch/globalSearc
 import { toast } from 'react-toastify';
 import { ICallAllApi, ICallAPI } from '../../../../services/sps/spsApiCall/spsApiCall.model';
 import { useHistory } from 'react-router-dom';
-import { PhoneOutlined, ControlFilled } from '@ant-design/icons';
+import { PhoneOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import CallApiModal from '../CallApiModal';
 import { IMainTable } from '../../../../common/models/common';
 import ApiTable from '../ApiTable';
@@ -190,32 +190,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           e.preventDefault();
           data.is_mapping && data.enabled ? (
             onCallApi(data)
-          ) : data.is_uid_selection ? (
-            onFetchCall(data)
-          ) : (
+          ) :
             <></>
-          );
         }}
       >
         {data.is_mapping ? (
-          <PhoneOutlined title="Call Api" />
+          <PhoneOutlined title="Call API" />
         ) : (
-          <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
+          <Popover content={'This API does not have mapping.'} trigger="hover">
+            <InfoCircleOutlined />
+          </Popover>
         )}
       </a>
     );
-  };
-
-  const onFetchCall = (data: any) => {
-    if (data.url) {
-      const newURL = new URL(data.url);
-      const urlSearchParams = new URLSearchParams(newURL.search);
-      const params = Object.fromEntries(urlSearchParams?.entries());
-      setCallApiObj({ ...callApiObj, params: params, show: false, isAll: false, id: data.id });
-      history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}&api_type_id=${data.api_type_id}&is_uid_selection=${data.is_uid_selection}`);
-    } else {
-      toast.error('Selected api does not have url.');
-    }
   };
 
   const onCallApiById = (id: number, params: any) => {
@@ -289,9 +276,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           const cllApiObj: ICallAllApi = {
             filter_keys: tableFilter.filterKeys,
             keyword: tableFilter.keyword,
-            company_id: globalLookups.search.company_id,
-            bu_id: globalLookups.search.bu_id,
-            tenant_id: globalLookups.search.tenant_id,
             sps_api_query_param: {},
           };
           dispatch(callAllApi(cllApiObj));
@@ -304,13 +288,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {!data.is_uid_selection ? (
-        <Popover content={<>UID Selection is False!</>} trigger="click">
-          {renderActionButton(data)}
-        </Popover>
-      ) : (
-        renderActionButton(data)
-      )}
+      {renderActionButton(data)}
     </div>
   );
 
@@ -335,6 +313,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       <DataTable
         ref={dataTableRef}
         showAddButton={false}
+        globalSearchExist={false}
         tableAction={tableAction}
         getTableColumns={getTableColumns}
         reduxSelector={spsApiCallSelector}

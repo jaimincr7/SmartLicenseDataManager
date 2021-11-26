@@ -6,6 +6,7 @@ export interface ISearchImportAPIs extends ISearch {
 }
 
 export interface ISpsApi {
+  is_uid_selection: boolean;
   id?: number;
   name: string;
   url: string;

@@ -28,17 +28,22 @@ class SPSApiCallService {
     const cancelTokenSource = axios.CancelToken.source();
 
     return new Promise((resolve, reject) => {
-      request({ url, method: 'POST', data: data, cancelToken: cancelTokenSource.token }).then((res) => {
-        return res?.data;
-      }).then(data => {
-        resolve(data);
-      })
-      setTimeout(() => {
+      const timmer = setTimeout(() => {
         // Cancel request
         cancelTokenSource.cancel();
         toast.warning('Process is working in background.');
         reject();
       }, (30 * 1000));  // wait till 30 seconds 
+
+      request({ url, method: 'POST', data: data, cancelToken: cancelTokenSource.token }).then((res) => {
+        return res?.data;
+      }).then(data => {        
+        resolve(data);
+      }).catch(data => {
+        reject(data);
+      }).finally(()=>{
+        clearTimeout(timmer);
+      })     
     });
   }
 
@@ -48,17 +53,22 @@ class SPSApiCallService {
     const cancelTokenSource = axios.CancelToken.source();
 
     return new Promise((resolve, reject) => {
-      request({ url, method: 'POST', data: searchParams, cancelToken: cancelTokenSource.token }).then((res) => {
-        return res?.data;
-      }).then(data => {
-        resolve(data);
-      })
-      setTimeout(() => {
+      const timmer = setTimeout(() => {
         // Cancel request
         cancelTokenSource.cancel();
         toast.warning('Process is working in background.');
         reject();
       }, (30 * 1000));  // wait till 30 seconds 
+
+      request({ url, method: 'POST', data: searchParams, cancelToken: cancelTokenSource.token }).then((res) => {
+        return res?.data;
+      }).then(data => {        
+        resolve(data);
+      }).catch(data => {
+        reject(data);
+      }).finally(()=>{
+        clearTimeout(timmer);
+      }) 
     });
   }
 }
