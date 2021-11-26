@@ -163,9 +163,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       globalSearch[key] = element ? [element] : null;
     }
     if (
-      globalSearch.company_id &&
-      globalSearch.bu_id &&
-      commonLookups.getModelPopUpSelection.data == {}
+      globalFilters.search.company_id &&
+      globalFilters.search.bu_id &&
+      Object.keys(commonLookups.getModelPopUpSelection.data).length == 0
     ) {
       dispatch(getBULookup(globalSearch.company_id[0]));
       const filterValues = {
@@ -229,11 +229,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                         ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
-                    {commonLookups.allCompanyLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
+                    {Object.keys(commonLookups.companyLookup.data).length > 0
+                        ? commonLookups.companyLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                   </Select>
                 </Form.Item>
               </div>
@@ -258,11 +264,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                         ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
-                    {commonLookups.buLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
+                    {Object.keys(commonLookups.buLookup.data).length > 0
+                        ? commonLookups.buLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                   </Select>
                 </Form.Item>
               </div>

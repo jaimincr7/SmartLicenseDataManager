@@ -111,7 +111,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (
       globalSearch.company_id &&
       globalSearch.bu_id &&
-      commonLookups.getModelPopUpSelection.data == {}
+      Object.keys(commonLookups.getModelPopUpSelection.data).length == 0
     ) {
       dispatch(getBULookup(globalSearch.company_id[0]));
       initialValues = {
