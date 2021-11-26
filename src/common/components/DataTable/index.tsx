@@ -693,7 +693,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
-            loading={reduxStoreData.search.loading || reduxStoreData?.delete?.loading}
+            loading={reduxStoreData.search.loading || reduxStoreData?.delete?.loading || reduxStoreData.callAllApi.loading || reduxStoreData.callApi.loading}
             pagination={{
               ...pagination,
               pageSizeOptions: ['10', '100', '500', '1000'],
