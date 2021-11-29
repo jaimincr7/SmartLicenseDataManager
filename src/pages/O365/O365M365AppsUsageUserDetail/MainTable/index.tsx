@@ -757,7 +757,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Is Active on PowerPoint (Mac)</span>,
-        column: '',
+        column: 'Is Active on PowerPoint (Mac)',
         sorter: true,
         children: [
           {

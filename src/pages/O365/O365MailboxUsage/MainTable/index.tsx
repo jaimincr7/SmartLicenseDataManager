@@ -301,7 +301,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Prohibit Send/Recieve Quota (Byte)</span>,
-        column: 'Prohibit Send/Recieve Quota (Byte)',
+        column: 'Prohibit Send/Receive Quota (Byte)',
         sorter: true,
         children: [
           {
@@ -313,8 +313,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Delted Item Count</span>,
-        column: 'Delted Item Count',
+        title: <span className="dragHandler">Deleted Item Count</span>,
+        column: 'Deleted Item Count',
         sorter: true,
         children: [
           {
@@ -326,8 +326,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Delted Item Size (Byte)</span>,
-        column: 'Delted Item Size (Byte)',
+        title: <span className="dragHandler">Deleted Item Size (Byte)</span>,
+        column: 'Deleted Item Size (Byte)',
         sorter: true,
         children: [
           {
