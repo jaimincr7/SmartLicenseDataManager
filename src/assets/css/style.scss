@@ -607,6 +607,10 @@ textarea.ant-input {
   width: 250px !important;
 }
 
+.value-box-select {
+  width: 400px !important;
+}
+
 .ant-picker {
   color: #4f4f4f;
   border: 1px solid #dddddd;
@@ -930,8 +934,7 @@ textarea.ant-input {
   border-radius: 30px;
   background-color: #dddddd;
   cursor: pointer;
-  width: 3px !important;
-  right: -3px;
+  width: 15px !important;
 }
 
 /* Header
