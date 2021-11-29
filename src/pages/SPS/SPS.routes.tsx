@@ -5,6 +5,7 @@ import { Action, Page } from '../../common/constants/pageAction';
 import SpsApiBaseUrl from './ApiBaseUrl';
 import SpsApiGroup from './ApiGroup';
 import SpsApiOauth from './ApiOauth';
+import SpsApiOauthUrlInjectionSite from './ApiOauthUrlInjectionSite';
 import SPSAPI from './APIs/index';
 import SPSAPIsCall from './APIsCall';
 import SpsApiTokenConfigOptions from './ApiTokenConfigOptions';
@@ -61,6 +62,14 @@ const SPSRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.SpsApiBaseUrl) && (
           <Route exact path={`${match.path}/sps-api-base-url/:id`} component={SpsApiBaseUrl} />
+        )}
+
+        {/* SPS API Oauth Url */}
+        {ability.can(Action.View, Page.SpsApiOauthUrlInjectionSite) && (
+          <Route exact path={`${match.path}/sps-api-oauth-url-injection-site`} component={SpsApiOauthUrlInjectionSite} />
+        )}
+        {ability.can(Action.View, Page.SpsApiOauthUrlInjectionSite) && (
+          <Route exact path={`${match.path}/sps-api-oauth-url-injection-site/:id`} component={SpsApiOauthUrlInjectionSite} />
         )}
 
         {/* SPS API Oauth */}

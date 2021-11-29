@@ -163,7 +163,6 @@ const AddSpsApiBaseUrlModal: React.FC<IAddSpsApiBaseUrlProps> = (props) => {
                     name="base_url_name"
                     label="Base Url Name"
                     className="m-0"
-                    rules={[{ required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -182,7 +181,6 @@ const AddSpsApiBaseUrlModal: React.FC<IAddSpsApiBaseUrlProps> = (props) => {
                     name="group_id"
                     className="m-0"
                     label="API Group"
-                    rules={[{ required: !isMultiple }]}
                   >
                     <Select
                       allowClear
