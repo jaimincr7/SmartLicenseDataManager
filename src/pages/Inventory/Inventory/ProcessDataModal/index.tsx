@@ -52,10 +52,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     company_id: null,
     bu_id: null,
     date_added: null,
-    selected_date_ws: null,
+    selected_date_ws: moment(),
     include_sc: false,
-    selected_date_ss: null,
-    selected_date_device: null,
+    selected_date_ss: moment(),
+    selected_date_device: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -185,8 +185,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         getScheduleDate(getScheduleDateHelperLookup(filterValues, inventory.search.tableName))
       );
       form.setFieldsValue(filterValues);
-    }
-    form.setFieldsValue({selected_date_ws: moment().format("DD-MM-YYYY")});
+     }
+    // const crrntDate = new Date().toDateString();
+    // form.setFieldsValue({selected_date_ws: moment(crrntDate).format(Common.DATEFORMAT)});
     return () => {
       dispatch(cleargetModelPopUpDataSelection());
     };
