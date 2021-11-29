@@ -44,7 +44,7 @@ export const setResponseError = (history) => {
       }
     },
     (error) => {
-      if(axios.isCancel(error)){
+      if (axios.isCancel(error)) {
         return;
       }
       if (!error.response) {

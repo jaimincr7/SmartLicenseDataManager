@@ -12,13 +12,16 @@ import { searchSpsApiOauth } from '../../../../store/sps/apiOauth/apiOauth.actio
 import { IApiTableProps } from './apiTable.model';
 import { ICallAPI } from '../../../../services/sps/spsApi/sps.model';
 import { callApi } from '../../../../store/sps/spsAPICall/spsApiCall.action';
-import { clearCallApiMessages, spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
+import {
+  clearCallApiMessages,
+  spsApiCallSelector,
+} from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
 import { toast } from 'react-toastify';
 import { ISearchAPIColumn } from '../../../../services/sps/apiColumnMapping/apiColMapping.model';
 import { getApiColumn } from '../../../../store/sps/apiColumnMapping/apiColMapping.action';
 
 const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props, ref) => {
-  const { type_id , showModal , handleModalClose , callApiObj , isFetchApi } = props;
+  const { type_id, showModal, handleModalClose, callApiObj, isFetchApi } = props;
   const dispatch = useAppDispatch();
   const spsApis = useAppSelector(spsApiCallSelector);
   const dataTableRef = useRef(null);
@@ -142,8 +145,8 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       }
       handleModalClose();
       dispatch(clearCallApiMessages());
-    }    
-  }, [spsApis.callApi.messages])
+    }
+  }, [spsApis.callApi.messages]);
 
   const onCallApiById = (data: any) => {
     const callApiObject: ICallAPI = {
@@ -169,14 +172,21 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {isFetchApi ? <Button loading={spsApis.callApi.loading} onClick={() => onFetchApi(data)}>Fetch</Button>:
-              <Button loading={spsApis.callApi.loading} onClick={() => onCallApiById(data)}>Call</Button>}
+      {isFetchApi ? (
+        <Button loading={spsApis.callApi.loading} onClick={() => onFetchApi(data)}>
+          Fetch
+        </Button>
+      ) : (
+        <Button loading={spsApis.callApi.loading} onClick={() => onCallApiById(data)}>
+          Call
+        </Button>
+      )}
     </div>
   );
 
   return (
     <>
-    <Modal
+      <Modal
         wrapClassName="custom-modal"
         title={'UID Selection'}
         centered
@@ -184,22 +194,22 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
         onCancel={handleModalClose}
         footer={false}
       >
-      <DataTable
-        ref={dataTableRef}
-        showAddButton={false}
-        disableRowSelection={true}
-        showBulkUpdate={false}
-        hideExportButton={true}
-        hideShowHideButton={true}
-        tableAction={tableAction}
-        getTableColumns={getTableColumns}
-        reduxSelector={spsApiOauthSelector}
-        searchTableData={searchSpsApiOauth}
-        clearTableDataMessages={clearSpsApiOauthMessages}
-        setTableColumnSelection={setTableColumnSelection}
-        type_id={type_id}
-      />
-    </Modal>  
+        <DataTable
+          ref={dataTableRef}
+          showAddButton={false}
+          disableRowSelection={true}
+          showBulkUpdate={false}
+          hideExportButton={true}
+          hideShowHideButton={true}
+          tableAction={tableAction}
+          getTableColumns={getTableColumns}
+          reduxSelector={spsApiOauthSelector}
+          searchTableData={searchSpsApiOauth}
+          clearTableDataMessages={clearSpsApiOauthMessages}
+          setTableColumnSelection={setTableColumnSelection}
+          type_id={type_id}
+        />
+      </Modal>
     </>
   );
 };

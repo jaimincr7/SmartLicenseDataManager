@@ -185,7 +185,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         getScheduleDate(getScheduleDateHelperLookup(filterValues, inventory.search.tableName))
       );
       form.setFieldsValue(filterValues);
-     }
+    }
     // const crrntDate = new Date().toDateString();
     // form.setFieldsValue({selected_date_ws: moment(crrntDate).format(Common.DATEFORMAT)});
     return () => {

@@ -160,8 +160,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const onFetchCall = (data: any) => {
-    if(data?.sps_mapping_id > 0) {
-      history.push(`/administration/config-sps-api-column-mapping/add/${data.sps_mapping_id}`);  
+    if (data?.sps_mapping_id > 0) {
+      history.push(`/administration/config-sps-api-column-mapping/add/${data.sps_mapping_id}`);
     } else {
       history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`);
     }
@@ -192,11 +192,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           </a>
         </Popconfirm>
       </Can>
-      <a  title="" className="action-btn"
+      <a
+        title=""
+        className="action-btn"
         onClick={() => {
           onFetchCall(data);
-        }}>
-        {data?.sps_mapping_id > 0 ? <ControlOutlined title="Mapped Api" /> : <ControlFilled title="Map Api" style={{ color: '#00274d' }} /> }
+        }}
+      >
+        {data?.sps_mapping_id > 0 ? (
+          <ControlOutlined title="Mapped Api" />
+        ) : (
+          <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
+        )}
       </a>
     </div>
   );
