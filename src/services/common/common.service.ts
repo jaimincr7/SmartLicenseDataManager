@@ -53,6 +53,20 @@ class CommonService {
     });
   }
 
+  public async getScheduleDateforWindowsServer(data: IScheduleDate): Promise<IApiResponse<any>> {
+    const url = `/app/get-date-added`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getScheduleDateforSqlServer(data: IScheduleDate): Promise<IApiResponse<any>> {
+    const url = `/app/get-date-added`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async configModelPopUpDataSelection(
     data: IConfigModelPopUpDataSelection
   ): Promise<IApiResponse<any>> {

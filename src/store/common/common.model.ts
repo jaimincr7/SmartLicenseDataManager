@@ -45,6 +45,14 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  getScheduledDateforWindows: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  getScheduledDateforSql: {
+    data: ILookup[];
+    loading: boolean;
+  };
   sqlServerLicenseLookup: {
     data: ILookup[];
     loading: boolean;

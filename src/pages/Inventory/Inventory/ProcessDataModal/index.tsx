@@ -12,6 +12,8 @@ import {
   getBULookup,
   getConfigModelPopUpDataSelection,
   getScheduleDate,
+  getScheduleDateforSqlServer,
+  getScheduleDateforWindowsServer,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
@@ -38,6 +40,11 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
+const currentDate = new Date();
+const date = currentDate.getDate();
+const month = currentDate.getMonth() + 1;
+const year = currentDate.getFullYear();
+
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const inventory = useAppSelector(inventorySelector);
   const commonLookups = useAppSelector(commonSelector);
@@ -52,9 +59,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     company_id: null,
     bu_id: null,
     date_added: null,
-    selected_date_ws: moment(),
+    selected_date_ws: `${year}-${month}-${date}`,
     include_sc: false,
-    selected_date_ss: moment(),
+    selected_date_ss: `${year}-${month}-${date}`,
     selected_date_device: moment(),
   };
 
@@ -82,6 +89,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (data.bu_id) {
       await dispatch(
         getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+      );
+      await dispatch(
+        getScheduleDateforWindowsServer(
+          getScheduleDateHelperLookup(form.getFieldsValue(), 'Windows Server')
+        )
+      );
+      await dispatch(
+        getScheduleDateforSqlServer(
+          getScheduleDateHelperLookup(form.getFieldsValue(), 'SQL Server')
+        )
       );
     }
     form.setFieldsValue(data);
@@ -139,6 +156,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
           getScheduleDateHelperLookup(form.getFieldsValue(), inventory.search.tableName)
         )
       );
+      dispatch(
+        getScheduleDateforWindowsServer(
+          getScheduleDateHelperLookup(form.getFieldsValue(), 'Windows Server')
+        )
+      );
+      dispatch(
+        getScheduleDateforSqlServer(
+          getScheduleDateHelperLookup(form.getFieldsValue(), 'SQL Server')
+        )
+      );
     } else {
       dispatch(clearDateLookup());
     }
@@ -183,6 +210,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       };
       dispatch(
         getScheduleDate(getScheduleDateHelperLookup(filterValues, inventory.search.tableName))
+      );
+      dispatch(
+        getScheduleDateforWindowsServer(
+          getScheduleDateHelperLookup(form.getFieldsValue(), 'Windows Server')
+        )
+      );
+      dispatch(
+        getScheduleDateforSqlServer(
+          getScheduleDateHelperLookup(form.getFieldsValue(), 'SQL Server')
+        )
       );
       form.setFieldsValue(filterValues);
     }
@@ -317,9 +354,69 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 </Form.Item>
               </div>
             </Col> */}
+                        <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
+                <label className="label">Selected Date Windows Server</label>
+                <Form.Item name="selected_date_ws" className="m-0" label="Selected Date Windows Server">
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDateforWindows.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDateforWindows.data.map((option: any) => (
+                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                        {moment(option)?.toString() == 'Invalid date'
+                          ? 'NULL'
+                          : moment(option).format(Common.DATEFORMAT)}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date WS</label>
+                <label className="label">Selected Date Sql Server</label>
+                <Form.Item name="selected_date_ss" className="m-0" label="Selected Date Sql Server">
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDateforSql.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDateforSql.data.map((option: any) => (
+                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                        {moment(option)?.toString() == 'Invalid date'
+                          ? 'NULL'
+                          : moment(option).format(Common.DATEFORMAT)}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </Col>
+            {/* <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
+                <label className="label">Selected Date Windows Server</label>
                 <Form.Item name="selected_date_ws" label="Selected Date WS" className="m-0">
                   <DatePicker className="w-100" />
                 </Form.Item>
@@ -327,12 +424,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date SS</label>
+                <label className="label">Selected Date Sql Server</label>
                 <Form.Item name="selected_date_ss" label="Selected Date SS" className="m-0">
                   <DatePicker className="w-100" />
                 </Form.Item>
               </div>
-            </Col>
+            </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date Device</label>
@@ -346,7 +443,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 <Form.Item name="include_sc" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">Include SC</label>
+                <label className="label">Include System Center</label>
               </div>
             </Col>
           </Row>

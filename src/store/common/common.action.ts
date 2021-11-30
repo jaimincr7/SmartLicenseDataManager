@@ -87,6 +87,20 @@ export const getScheduleDate = createAsyncThunk('getScheduleDate', async (data: 
   return response.data;
 });
 
+export const getScheduleDateforWindowsServer = createAsyncThunk('getScheduleDateforWindowsServer', async (data: IScheduleDate) => {
+  const response = await commonService.getScheduleDateforWindowsServer(data).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getScheduleDateforSqlServer = createAsyncThunk('getScheduleDateforSqlServer', async (data: IScheduleDate) => {
+  const response = await commonService.getScheduleDateforSqlServer(data).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getSqlServerLicenseLookup = createAsyncThunk('getSqlServerLicenseLookup', async () => {
   const response = await commonService.getSqlServerLicenseLookup().then((res) => {
     return res.body;

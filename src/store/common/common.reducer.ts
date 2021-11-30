@@ -62,6 +62,8 @@ import {
   getSpsApiBaseUrl,
   getSpsApiOAuthLookup,
   getSpsApiUrlInjectionLookup,
+  getScheduleDateforWindowsServer,
+  getScheduleDateforSqlServer,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -107,6 +109,14 @@ export const initialState: ICommonState = {
     loading: false,
   },
   getScheduledDate: {
+    data: [],
+    loading: false,
+  },
+  getScheduledDateforWindows: {
+    data: [],
+    loading: false,
+  },
+  getScheduledDateforSql: {
     data: [],
     loading: false,
   },
@@ -329,6 +339,8 @@ export const commonSlice = createSlice({
     },
     clearDateLookup: (state) => {
       state.getScheduledDate.data = [];
+      state.getScheduledDateforSql.data = [];
+      state.getScheduledDateforWindows.data = [];
     },
     clearCommon: () => {
       return initialState;
@@ -485,6 +497,24 @@ export const commonSlice = createSlice({
     [getScheduleDate.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.getScheduledDate.data = action.payload;
       state.getScheduledDate.loading = false;
+    },
+
+    // Scheduled Date Multiple
+    [getScheduleDateforWindowsServer.pending.type]: (state) => {
+      state.getScheduledDateforWindows.loading = true;
+    },
+    [getScheduleDateforWindowsServer.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.getScheduledDateforWindows.data = action.payload;
+      state.getScheduledDateforWindows.loading = false;
+    },
+
+    // Scheduled Date Multiple
+    [getScheduleDateforSqlServer.pending.type]: (state) => {
+      state.getScheduledDateforSql.loading = true;
+    },
+    [getScheduleDateforSqlServer.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.getScheduledDateforSql.data = action.payload;
+      state.getScheduledDateforSql.loading = false;
     },
 
     // Update Multiple
