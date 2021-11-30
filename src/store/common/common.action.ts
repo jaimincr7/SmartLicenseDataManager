@@ -139,6 +139,20 @@ export const getSpsApiGroupLookup = createAsyncThunk('getSpsApiGroupLookup', asy
   return response.data;
 });
 
+export const getSpsApiOAuthLookup = createAsyncThunk('getSpsApiOAuthLookup', async () => {
+  const response = await commonService.getSpsApiOAuth().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getSpsApiUrlInjectionLookup = createAsyncThunk('getSpsApiUrlInjectionLookup', async () => {
+  const response = await commonService.getSpsApiUrlInjection().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getSpsApiTypeLookup = createAsyncThunk('getSpsApiTypeLookup', async () => {
   const response = await commonService.getSpsApiTypeLookup().then((res) => {
     return res.body;

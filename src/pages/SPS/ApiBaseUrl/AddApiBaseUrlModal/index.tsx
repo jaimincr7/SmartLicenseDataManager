@@ -159,11 +159,7 @@ const AddSpsApiBaseUrlModal: React.FC<IAddSpsApiBaseUrlProps> = (props) => {
                   ) : (
                     'Base Url Name'
                   )}
-                  <Form.Item
-                    name="base_url_name"
-                    label="Base Url Name"
-                    className="m-0"
-                  >
+                  <Form.Item name="base_url_name" label="Base Url Name" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -177,11 +173,7 @@ const AddSpsApiBaseUrlModal: React.FC<IAddSpsApiBaseUrlProps> = (props) => {
                   ) : (
                     'API Group'
                   )}
-                  <Form.Item
-                    name="group_id"
-                    className="m-0"
-                    label="API Group"
-                  >
+                  <Form.Item name="group_id" className="m-0" label="API Group">
                     <Select
                       allowClear
                       loading={commonLookups.spsApiGroups.loading}

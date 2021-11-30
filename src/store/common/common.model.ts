@@ -82,6 +82,14 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  spsApiOAuthLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  spsApiUrlInjectionLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   spsApiTypeLookup: {
     data: ILookup[];
     loading: boolean;

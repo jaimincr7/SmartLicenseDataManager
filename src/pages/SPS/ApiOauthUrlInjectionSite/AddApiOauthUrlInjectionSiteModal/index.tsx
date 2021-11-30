@@ -164,12 +164,7 @@ const AddSpsApiOauthUrlInjectionSiteModal: React.FC<IAddSpsApiOauthUrlInjectionS
                   ) : (
                     'Param'
                   )}
-                  <Form.Item
-                    name="param"
-                    label="Param"
-                    className="m-0"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="param" label="Param" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -221,11 +216,7 @@ const AddSpsApiOauthUrlInjectionSiteModal: React.FC<IAddSpsApiOauthUrlInjectionS
                   ) : (
                     'API Type'
                   )}
-                  <Form.Item
-                    name="api_type_id"
-                    className="m-0"
-                    label="API Type"
-                  >
+                  <Form.Item name="api_type_id" className="m-0" label="API Type">
                     <Select
                       allowClear
                       loading={commonLookups.spsApiTypes.loading}

@@ -60,6 +60,8 @@ import {
   configModelPopUpDataSelection,
   getConfigModelPopUpDataSelection,
   getSpsApiBaseUrl,
+  getSpsApiOAuthLookup,
+  getSpsApiUrlInjectionLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -142,6 +144,14 @@ export const initialState: ICommonState = {
     loading: false,
   },
   spsApiGroupLookup: {
+    data: [],
+    loading: false,
+  },
+  spsApiOAuthLookup: {
+    data: [],
+    loading: false,
+  },
+  spsApiUrlInjectionLookup: {
     data: [],
     loading: false,
   },
@@ -333,6 +343,12 @@ export const commonSlice = createSlice({
       state.spsApiTypes.data = [];
     },
     clearSpsApiGroupsLookup: (state) => {
+      state.spsApiGroups.data = [];
+    },
+    clearSpsApiOAuthLookup: (state) => {
+      state.spsApiGroups.data = [];
+    },
+    clearSpsApiUrlInjectionLookup: (state) => {
       state.spsApiGroups.data = [];
     },
     clearSpsApiBaseUrlLookup: (state) => {
@@ -556,6 +572,24 @@ export const commonSlice = createSlice({
     [getSpsApiGroupLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.spsApiGroups.data = action.payload;
       state.spsApiGroups.loading = false;
+    },
+
+    // SpsApiOAuth lookup
+    [getSpsApiOAuthLookup.pending.type]: (state) => {
+      state.spsApiOAuthLookup.loading = true;
+    },
+    [getSpsApiOAuthLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiOAuthLookup.data = action.payload;
+      state.spsApiOAuthLookup.loading = false;
+    },
+
+    // SpsApi Url Injection lookup
+    [getSpsApiUrlInjectionLookup.pending.type]: (state) => {
+      state.spsApiUrlInjectionLookup.loading = true;
+    },
+    [getSpsApiUrlInjectionLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiUrlInjectionLookup.data = action.payload;
+      state.spsApiUrlInjectionLookup.loading = false;
     },
 
     // SpsApiBaseUrl lookup
@@ -978,6 +1012,8 @@ export const {
   clearCronJobSchedularMessages,
   clearConfigModelPopUpDataSelection,
   cleargetModelPopUpDataSelection,
+  clearSpsApiOAuthLookup,
+  clearSpsApiUrlInjectionLookup,
 } = commonSlice.actions;
 
 // The reducer
