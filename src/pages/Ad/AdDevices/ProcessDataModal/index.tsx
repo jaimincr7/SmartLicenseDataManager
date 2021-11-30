@@ -229,17 +229,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                         ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
-                    {Object.keys(commonLookups.companyLookup.data).length > 0
-                      ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
-                      : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                    {Object.keys(commonLookups.allCompanyLookup.data).length > 0
+                        ? commonLookups.allCompanyLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                   </Select>
                 </Form.Item>
               </div>
