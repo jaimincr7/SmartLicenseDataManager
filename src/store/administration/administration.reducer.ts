@@ -38,37 +38,46 @@ export const userSlice = createSlice({
       state.getMenuRight.loading = false;
       state.getMenuRight.hasErrors = false;
 
-      const setChildMenus = (menu: IMenu, isIterativeCall = false) => {
-        const childMenus = menuArray?.filter((x) => x.parent_menu_id === menu.id && x.is_display);
-        menuArray
-          ?.filter((x) => x.parent_menu_id === menu.id && x.is_display)
-          ?.forEach((childMenu: IMenu) => {
-            const index = childMenus.findIndex((x) => x.id === childMenu.id);
-            const grandChildMenus = menuArray?.filter(
-              (x) => x.parent_menu_id === childMenu.id && x.is_display
-            );
-            if (grandChildMenus.length > 0) {
-              childMenus[index]['childMenus'] = grandChildMenus;
-              grandChildMenus?.forEach((gChildMenu) => {
-                const greatGrandChild = menuArray?.filter(
-                  (x) => x.parent_menu_id === gChildMenu.id && x.is_display
-                );
-                if (greatGrandChild?.length > 0) {
-                  setChildMenus(gChildMenu, true);
-                }
-              });
-            }
-            if (
-              !childMenu?.menu_rights?.some(
-                (x) => x.is_rights && x.access_rights?.name === 'view' && x.access_rights?.status
+      const setChildMenus = (menu: IMenu) => {
+        const childMenus = menuArray?.filter(
+          (x) =>
+            x.parent_menu_id === menu.id && x.is_display
+            && (
+              (x.menu_rights.length === 0 ||
+                x.menu_rights?.find((y) => y.is_rights && y.access_rights?.name === 'view' && y.access_rights?.status)
               )
-            ) {
-              childMenus?.splice(index, 1);
-            }
+            )
+        );
+        if (childMenus.length > 0) {
+          menu['childMenus'] = childMenus;
+          childMenus?.forEach((menu) => {
+            setChildMenus(menu);
           });
-        menu['childMenus'] = childMenus;
-        if (!isIterativeCall) {
-          sideBarMenuDetail.push(menu);
+        }
+      };
+
+      const hasChild = (menu: IMenu) => {
+        let validChild = 0;
+        if (menu['childMenus'] && menu['childMenus'].length > 0) {
+          const childMenus = menu['childMenus'];
+          childMenus?.forEach((m, index) => {
+            if (m.menu_rights.length !== 0) {
+              validChild = validChild + 1;
+            } else if (m.childMenus && m.childMenus.length > 0) {
+              if (hasChild(m)) {
+                validChild = validChild + 1;
+              }else{
+                childMenus.splice(index, 1);
+              }
+            }else{
+              childMenus.splice(index, 1);
+            }
+          })
+        }
+        if(validChild > 0 || menu.menu_rights.length > 0){
+          return true;
+        }else{
+          return false;
         }
       };
 
@@ -76,12 +85,16 @@ export const userSlice = createSlice({
       const parentMenuDetails: IMenu[] = menuArray?.filter(
         (x) => !(x.parent_menu_id > 0) && x.is_display
       );
-      const sideBarMenuDetail: any = [];
-
       parentMenuDetails?.forEach((menu) => {
         setChildMenus(menu);
       });
-      state.getMenuRight.sideBarData = sideBarMenuDetail;
+      parentMenuDetails?.forEach((menu, index) => {
+        if(!hasChild(menu)){
+          parentMenuDetails.splice(index, 1);
+        }
+      });
+
+      state.getMenuRight.sideBarData = parentMenuDetails;
     },
     [getMenuRights.rejected.type]: (state) => {
       state.getMenuRight.loading = false;
