@@ -2,6 +2,7 @@ import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import moment from 'moment';
+import { AlignType } from 'rc-table/lib/interface';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
@@ -375,6 +376,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

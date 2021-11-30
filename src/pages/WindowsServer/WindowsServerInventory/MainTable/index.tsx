@@ -6,6 +6,7 @@ import {
   windowsServerInventorySelector,
 } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { AlignType } from 'rc-table/lib/interface';
 import {
   deleteWindowsServerInventory,
   searchWindowsServerInventory,
@@ -476,6 +477,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -499,6 +501,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -522,6 +525,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -545,6 +549,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -568,6 +573,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -591,6 +597,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -614,6 +621,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

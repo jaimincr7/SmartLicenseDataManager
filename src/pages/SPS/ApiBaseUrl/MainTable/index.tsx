@@ -9,6 +9,7 @@ import {
 import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
+import { AlignType } from 'rc-table/lib/interface';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
@@ -129,6 +130,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

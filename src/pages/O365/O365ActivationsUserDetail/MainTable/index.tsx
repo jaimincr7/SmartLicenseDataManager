@@ -11,6 +11,7 @@ import {
   searchO365ActivationsUserDetail,
 } from '../../../../store/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.action';
 import _ from 'lodash';
+import { AlignType } from 'rc-table/lib/interface';
 import o365ActivationsUserDetailService from '../../../../services/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.service';
 import {
   FilterByBooleanDropDown,
@@ -326,6 +327,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

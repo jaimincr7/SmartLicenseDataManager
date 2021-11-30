@@ -8,6 +8,7 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
+import { AlignType } from 'rc-table/lib/interface';
 import { setTableColumnSelection } from '../../../../store/sps/spsAPI/spsApi.reducer';
 import { deleteSpsApi, searchImportAPIs } from '../../../../store/sps/spsAPI/spsApi.action';
 import { clearCallApiMessages, spsApiSelector } from '../../../../store/sps/spsAPI/spsApi.reducer';
@@ -153,6 +154,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

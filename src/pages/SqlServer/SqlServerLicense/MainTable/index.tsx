@@ -5,6 +5,7 @@ import {
   clearSqlServerLicenseMessages,
   sqlServerLicenseSelector,
 } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
+import { AlignType } from 'rc-table/lib/interface';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   deleteSqlServerLicense,
@@ -207,6 +208,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -231,6 +233,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -255,6 +258,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -279,6 +283,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

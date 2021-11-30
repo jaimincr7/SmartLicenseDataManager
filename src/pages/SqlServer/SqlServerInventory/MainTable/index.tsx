@@ -6,6 +6,7 @@ import {
   sqlServerInventorySelector,
 } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { AlignType } from 'rc-table/lib/interface';
 import {
   deleteSqlServerInventory,
   searchSqlServerInventory,
@@ -498,6 +499,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -521,6 +523,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

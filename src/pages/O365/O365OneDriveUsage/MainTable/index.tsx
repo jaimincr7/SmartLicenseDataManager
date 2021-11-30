@@ -5,6 +5,7 @@ import {
   clearO365OneDriveUsageMessages,
   o365OneDriveUsageSelector,
 } from '../../../../store/o365/o365OneDriveUsage/o365OneDriveUsage.reducer';
+import { AlignType } from 'rc-table/lib/interface';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   deleteO365OneDriveUsage,
@@ -322,6 +323,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

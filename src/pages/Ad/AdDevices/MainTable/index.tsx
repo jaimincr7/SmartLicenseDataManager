@@ -329,7 +329,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
-              align: 'center' as AlignType,
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -385,7 +385,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
-              align: 'center' as AlignType,
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -505,7 +505,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
-              align: 'center' as AlignType,
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -533,7 +533,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
-              align: 'center' as AlignType,
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -561,7 +561,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
-              align: 'center' as AlignType,
+            align: 'center' as AlignType,
           },
         ],
       },

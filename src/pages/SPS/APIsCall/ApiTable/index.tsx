@@ -3,6 +3,7 @@ import _ from 'lodash';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import DataTable from '../../../../common/components/DataTable';
+import { AlignType } from 'rc-table/lib/interface';
 import {
   clearSpsApiOauthMessages,
   spsApiOauthSelector,
@@ -129,6 +130,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
