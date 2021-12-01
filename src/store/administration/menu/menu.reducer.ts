@@ -18,6 +18,7 @@ import {
   getMenuRightsByCompanyId,
   getMenuAccessRights,
   saveAddRemoveMenuAccessRights,
+  addParentMenu,
 } from './menu.action';
 import { IMenuState } from './menu.model';
 import { ILookup } from '../../../services/common/common.model';
@@ -42,6 +43,11 @@ export const initialState: IMenuState = {
     data: null,
   },
   save: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  addParentMenu: {
     loading: false,
     hasErrors: false,
     messages: [],
@@ -107,6 +113,9 @@ export const menuSlice = createSlice({
     },
     clearGetMenuRightsByCompanyId: (state) => {
       state.getMenuRightsByCompanyId.data = null;
+    },
+    clearAddParentMenuMessages: (state) => {
+      state.addParentMenu.messages = [];
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
@@ -206,6 +215,24 @@ export const menuSlice = createSlice({
       state.saveMenuAccessRights.hasErrors = true;
     },
 
+    // Add Parent Menu
+    [addParentMenu.pending.type]: (state) => {
+      state.addParentMenu.loading = true;
+      state.addParentMenu.messages = [];
+    },
+    [addParentMenu.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.addParentMenu.loading = false;
+      state.addParentMenu.hasErrors = false;
+      state.addParentMenu.messages = action.payload.messages;
+    },
+    [addParentMenu.rejected.type]: (state) => {
+      state.addParentMenu.loading = false;
+      state.addParentMenu.hasErrors = true;
+    },
+
     // Get Menu Rights By RoleId
     [getMenuRightsByCompanyId.pending.type]: (state) => {
       state.getMenuRightsByCompanyId.loading = true;
@@ -297,6 +324,7 @@ export const {
   clearMenuAccessRights,
   clearGetMenuRightsByRoleId,
   clearGetMenuRightsByCompanyId,
+  clearAddParentMenuMessages
 } = menuSlice.actions;
 
 // The reducer

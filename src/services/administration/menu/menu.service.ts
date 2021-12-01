@@ -9,6 +9,7 @@ import {
   IAccessCompanyMenuRights,
   IMenuAccessRights,
   IGetMenuAccessRights,
+  IAddParentMenu,
 } from './menu.model';
 
 class MenuService {
@@ -26,6 +27,13 @@ class MenuService {
   public async getMenuById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async addParentMenu(data: IAddParentMenu): Promise<any> {
+    const url = `${this.ENDPOINT}/parent-menu`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }

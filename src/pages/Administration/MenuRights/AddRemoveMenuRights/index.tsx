@@ -21,6 +21,7 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import ReactDragListView from 'react-drag-listview';
 import { getPageHeight } from '../../../../common/helperFunction';
+import AddParentMenuModal from './AddParentMenuModal';
 
 const MenuAccessRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -28,6 +29,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
   const [form] = Form.useForm();
   const [columns, setColumns] = React.useState<any>([]);
   const [editModalVisible, setEditModalVisible] = React.useState(false);
+  const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [selectedMenu, setSelectedMenu] = React.useState<IAccessMenu>(null);
   const [storeMenus, SetStoreMenus] = React.useState<IMenu[]>([]);
   const [height, setHeight] = React.useState<number>(350);
@@ -232,6 +234,16 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
           <div className="title-block">
             <div></div>
             <div className="btns-block">
+            <Can I={Action.Add} a={Page.MenuAccessRights}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setAddModalVisible(true);
+                  }}
+                >
+                  Add Parent Menu
+                </Button>
+              </Can>
               <Can I={Action.Update} a={Page.MenuAccessRights}>
                 <Button
                   type="primary"
@@ -266,6 +278,15 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
           }}
           selectedMenu={selectedMenu}
           parentMenu={getMenuDropdown(selectedMenu.id)}
+          refreshDataTable={() => dispatch(getMenuAccessRights())}
+        />
+      )}
+      {addModalVisible && (
+        <AddParentMenuModal
+          showModal={addModalVisible}
+          handleModalClose={() => {
+            setAddModalVisible(false);
+          }}
           refreshDataTable={() => dispatch(getMenuAccessRights())}
         />
       )}

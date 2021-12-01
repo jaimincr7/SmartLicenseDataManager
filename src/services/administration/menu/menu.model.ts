@@ -74,6 +74,12 @@ export interface IAccessMenuRights {
   menu_access_right_ids: string[];
 }
 
+export interface IAddParentMenu {
+  description: number;
+  status: boolean;
+  icon: string;
+}
+
 export interface IAccessCompanyMenuRights {
   company_id: number;
   menu_access_right_ids: string[];
