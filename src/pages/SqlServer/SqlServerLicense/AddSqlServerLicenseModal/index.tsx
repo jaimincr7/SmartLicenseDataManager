@@ -458,6 +458,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                     name="date_added"
                     label="Date Added"
                     className="m-0"
+                    rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
