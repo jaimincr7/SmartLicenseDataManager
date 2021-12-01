@@ -39,6 +39,13 @@ export const addParentMenu = createAsyncThunk('addParentMenu', async (data: IAdd
   return response;
 });
 
+export const deleteParentMenu = createAsyncThunk('deleteParentMenu', async (id: number) => {
+  const response = await menuService.deleteParentMenu(id).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
 export const saveMenuAccessRights = createAsyncThunk(
   'saveMenuAccessRights',
   async (data: IAccessMenuRights) => {

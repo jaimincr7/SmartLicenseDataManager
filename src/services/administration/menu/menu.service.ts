@@ -38,6 +38,13 @@ class MenuService {
     });
   }
 
+  public async deleteParentMenu(id: number): Promise<any> {
+    const url = `${this.ENDPOINT}/delete-parent/${id}`;
+    return request({ url, method: 'DELETE' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveMenu(data: IMenu): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {

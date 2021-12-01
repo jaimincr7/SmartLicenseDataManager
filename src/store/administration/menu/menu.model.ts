@@ -31,6 +31,11 @@ export interface IMenuState {
     hasErrors: boolean;
     messages: string[];
   };
+  deleteParentMenu: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
   getMenuRightsByRoleId: {
     loading: boolean;
     hasErrors: boolean;

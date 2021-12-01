@@ -45,6 +45,7 @@ export interface IAccessMenu {
   url?: string;
   icon?: string;
   status?: boolean;
+  type?: string;
   is_display?: boolean;
   menu_access_rights?: IAccessMenuRight[];
   level?: number;

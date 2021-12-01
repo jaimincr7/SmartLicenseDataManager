@@ -121,7 +121,7 @@ const AddParentMenuModal: React.FC<IAddParentMenuModalProps> = (props) => {
                   >
                     {options.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
-                        {option.name === 'NULL' ? (<>None</>) :(<><img className="icon-box-select" src={`${process.env.PUBLIC_URL}/assets/images/${option?.name}`} alt="" /></>)}
+                        {option.name === 'NULL' ? (<>None</>) : (<><img className="icon-box-select" src={`${process.env.PUBLIC_URL}/assets/images/${option?.name}`} alt="" /></>)}
                       </Option>
                     ))}
                   </Select>
