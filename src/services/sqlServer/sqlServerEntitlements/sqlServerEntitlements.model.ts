@@ -1,4 +1,5 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface ISqlServerEntitlements {
   id?: number;
@@ -6,7 +7,7 @@ export interface ISqlServerEntitlements {
   company_name?: string;
   bu_id?: number;
   bu_name?: string;
-  date_added?: Date;
+  date_added?: string | Moment;
   license_id?: number;
   qty_01?: number;
   qty_02?: number;

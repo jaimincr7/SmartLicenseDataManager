@@ -2,6 +2,7 @@ import {
   Button,
   Checkbox,
   Col,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -12,6 +13,7 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -79,7 +81,6 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
     data_center: null,
     device_name: null,
     tenant_id: null,
-    date_added: null,
     sql_cluster: null,
     host: null,
     device_type: null,
@@ -106,6 +107,7 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
     vCPU: null,
     ha_enabled: false,
     azure_hosted: false,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -192,6 +194,7 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
         vCPU: data.vCPU,
         ha_enabled: data.ha_enabled,
         azure_hosted: data.azure_hosted,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -869,6 +872,28 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
