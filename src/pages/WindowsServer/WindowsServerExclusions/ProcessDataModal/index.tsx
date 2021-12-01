@@ -26,7 +26,7 @@ import {
   windowsServerExclusionsSelector,
   clearWindowsServerExclusionsMessages,
 } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.reducer';
-import { processData } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.action';
+import { processDataWindowsServerExclusion } from '../../../../store/windowsServer/windowsServerExclusions/windowsServerExclusions.action';
 import { validateMessages } from '../../../../common/constants/common';
 import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
@@ -53,7 +53,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    dispatch(processData(values));
+    dispatch(processDataWindowsServerExclusion(values));
   };
 
   const saveConfig = () => {

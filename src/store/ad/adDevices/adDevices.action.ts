@@ -39,9 +39,12 @@ export const deleteAdDevice = createAsyncThunk('deleteAdDevice', async (id: numb
   return response;
 });
 
-export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
-  const response = await adDevicesService.processData(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
+export const processDataAdDevice = createAsyncThunk(
+  'processDataAdDevice',
+  async (data: IProcessData) => {
+    const response = await adDevicesService.processData(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);

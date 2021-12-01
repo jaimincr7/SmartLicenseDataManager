@@ -27,7 +27,7 @@ import {
   adDevicesSelector,
   clearAdDeviceMessages,
 } from '../../../../store/ad/adDevices/adDevices.reducer';
-import { processData } from '../../../../store/ad/adDevices/adDevices.action';
+import { processDataAdDevice } from '../../../../store/ad/adDevices/adDevices.action';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import _ from 'lodash';
@@ -55,7 +55,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    dispatch(processData(values));
+    dispatch(processDataAdDevice(values));
   };
 
   const saveConfig = () => {
@@ -230,16 +230,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                     }
                   >
                     {Object.keys(commonLookups.allCompanyLookup.data).length > 0
-                        ? commonLookups.allCompanyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
-                        : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                      ? commonLookups.allCompanyLookup.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
+                      : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                   </Select>
                 </Form.Item>
               </div>

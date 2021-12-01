@@ -23,7 +23,7 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/inventory/inventory/inventory.action';
+import { processDataInventory } from '../../../../store/inventory/inventory/inventory.action';
 import {
   clearInventoryMessages,
   inventorySelector,
@@ -66,7 +66,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    dispatch(processData(values));
+    dispatch(processDataInventory(values));
   };
 
   const saveConfig = () => {

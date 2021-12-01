@@ -8,7 +8,7 @@ import {
   getWindowsServerInventoryById,
   saveWindowsServerInventory,
   deleteWindowsServerInventory,
-  processData,
+  processDataWindowsServerInventory,
 } from './windowsServerInventory.action';
 import { IWindowsServerInventoryState } from './windowsServerInventory.model';
 
@@ -156,16 +156,16 @@ export const windowsServerInventorySlice = createSlice({
     },
 
     // Process Data
-    [processData.pending.type]: (state) => {
+    [processDataWindowsServerInventory.pending.type]: (state) => {
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataWindowsServerInventory.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;
     },
-    [processData.rejected.type]: (state) => {
+    [processDataWindowsServerInventory.rejected.type]: (state) => {
       state.processData.loading = false;
       state.processData.hasErrors = true;
     },

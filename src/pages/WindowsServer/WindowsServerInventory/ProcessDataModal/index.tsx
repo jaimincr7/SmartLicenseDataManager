@@ -22,7 +22,7 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.action';
+import { processDataWindowsServerInventory } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.action';
 import {
   clearWindowsServerInventoryMessages,
   windowsServerInventorySelector,
@@ -67,7 +67,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    dispatch(processData(values));
+    dispatch(processDataWindowsServerInventory(values));
   };
 
   const saveConfig = () => {

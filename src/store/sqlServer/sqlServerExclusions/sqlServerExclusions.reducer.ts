@@ -7,7 +7,7 @@ import {
   deleteSqlServerExclusions,
   getFieldLookups,
   getSqlServerExclusionsById,
-  processData,
+  processDataSqlServerExclusion,
   saveSqlServerExclusions,
   searchSqlServerExclusions,
 } from './sqlServerExclusions.action';
@@ -171,16 +171,16 @@ export const sqlServerExclusionsSlice = createSlice({
     },
 
     // Process Data
-    [processData.pending.type]: (state) => {
+    [processDataSqlServerExclusion.pending.type]: (state) => {
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataSqlServerExclusion.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;
     },
-    [processData.rejected.type]: (state) => {
+    [processDataSqlServerExclusion.rejected.type]: (state) => {
       state.processData.loading = false;
       state.processData.hasErrors = true;
     },

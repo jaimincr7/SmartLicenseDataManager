@@ -48,7 +48,7 @@ export const deleteAzureDailyUsage = createAsyncThunk(
   }
 );
 
-export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
+export const processDataAzure = createAsyncThunk('processDataAzure', async (data: IProcessData) => {
   const response = await azureDailyUsageService.processData(data).then((res) => {
     return res.body;
   });

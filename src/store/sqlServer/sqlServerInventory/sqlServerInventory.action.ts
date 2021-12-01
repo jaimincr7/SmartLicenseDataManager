@@ -48,7 +48,7 @@ export const deleteSqlServerInventory = createAsyncThunk(
   }
 );
 
-export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
+export const processDataSqlServerInventory = createAsyncThunk('processDataSqlServerInventory', async (data: IProcessData) => {
   const response = await sqlServerService.processData(data).then((res) => {
     return res.body;
   });
