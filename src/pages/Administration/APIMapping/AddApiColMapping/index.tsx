@@ -349,7 +349,7 @@ const AddAPIMapping: React.FC = () => {
                         key="submit"
                         type="primary"
                         htmlType="submit"
-                        loading={spsAPIColMapping.apiColumn.loading}
+                        loading={spsAPIColMapping.apiColumn.loading || spsApis.checkUID.loading}
                       >
                         Fetch
                       </Button>
