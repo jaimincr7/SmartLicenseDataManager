@@ -10,8 +10,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    
+    env:
+        NODE_PATH: '/src'
+        REACT_APP_BASE_API: 'https://synapse-tatva-api.azurewebsites.net'
+        REACT_APP_MSAL_CLIENT_ID: '${{ secrets.AU_MSAL_CLIENT_ID }}'
+        REACT_APP_MSAL_REDIRECT_URI: 'https://synapse-tatva-react.azurewebsites.net/login'
+        REACT_APP_MSAL_SCOPES: '${{ secrets.AU_REACT_APP_MSAL_SCOPES }}'
+        REACT_APP_NAME: 'Synapse'
 
     steps:
       - uses: actions/checkout@v2
