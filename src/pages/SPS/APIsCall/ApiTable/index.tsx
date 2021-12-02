@@ -17,7 +17,6 @@ import {
   clearCallApiMessages,
   spsApiCallSelector,
 } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
-import { toast } from 'react-toastify';
 import { ISearchAPIColumn } from '../../../../services/sps/apiColumnMapping/apiColMapping.model';
 import { getApiColumn } from '../../../../store/sps/apiColumnMapping/apiColMapping.action';
 
@@ -139,12 +138,6 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
 
   useEffect(() => {
     if (spsApis.callApi.messages.length > 0) {
-      if (spsApis.callApi.hasErrors) {
-        toast.error(spsApis.callApi.messages.join(' '));
-      } else {
-        toast.success(spsApis.callApi.messages.join(' '));
-        dataTableRef?.current.refreshData();
-      }
       handleModalClose();
       dispatch(clearCallApiMessages());
     }
