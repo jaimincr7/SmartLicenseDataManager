@@ -2,6 +2,7 @@ import {
   Button,
   Checkbox,
   Col,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -42,6 +43,7 @@ import { Page } from '../../../../common/constants/pageAction';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -146,6 +148,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
     m365_apps_one_note: false,
     m365_apps_teams: false,
     assigned_plans: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -203,6 +206,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         alternate_email_addresses: data.alternate_email_addresses,
         block_credential: data.block_credential,
         city: data.city,
@@ -723,6 +727,28 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                   )}
                   <Form.Item name="office" className="m-0" label="Office" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

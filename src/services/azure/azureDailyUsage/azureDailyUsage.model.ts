@@ -12,6 +12,7 @@ export interface IAzureDailyUsage {
   subscription_guid?: string;
   subscription_name?: string;
   date?: string | Moment;
+  date_added?: string | Moment;
   month?: number;
   day?: number;
   year?: number;

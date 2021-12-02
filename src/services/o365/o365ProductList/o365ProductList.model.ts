@@ -1,4 +1,5 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface IO365ProductList {
   id?: number;
@@ -10,6 +11,7 @@ export interface IO365ProductList {
   expired_licenses?: number;
   assigned_licenses?: number;
   status_message?: string;
+  date_added?: string | Moment;
 }
 
 export interface ISearchO365ProductList extends ISearch {

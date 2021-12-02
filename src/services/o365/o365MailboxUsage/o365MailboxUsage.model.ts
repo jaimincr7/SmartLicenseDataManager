@@ -13,6 +13,7 @@ export interface IO365MailboxUsage {
   deleted_date?: string;
   created_date?: string | Moment;
   last_activity_date?: string | Moment;
+  date_added?: string | Moment;
   item_count?: number;
   storage_used_byte?: number;
   issue_warning_quota_byte?: number;

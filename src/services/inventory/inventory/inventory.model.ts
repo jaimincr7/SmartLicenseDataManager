@@ -25,6 +25,7 @@ export interface IInventory {
   last_hw_scan?: string;
   last_sw_scan?: string;
   date_installed?: string | Moment;
+  date_added?: string | Moment;
 }
 
 export interface ISearchInventory extends ISearch {

@@ -17,6 +17,7 @@ export interface IO365ActivationsUserDetail {
   android?: number;
   activated_on_shared_computer?: boolean;
   tenant_id: number;
+  date_added?: string | Moment;
 }
 
 export interface ISearchO365ActivationsUserDetail extends ISearch {

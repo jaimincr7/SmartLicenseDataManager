@@ -137,7 +137,7 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
     mapped_to_c1: '',
     auto_renewal_flag: '',
     configuration: null,
-    date_added: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -269,7 +269,7 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
         mapped_to_c1: _.isEqual(data.mapped_to_c1, 'Y') ? true : false,
         auto_renewal_flag: data.auto_renewal_flag,
         configuration: data.configuration,
-        date_added: data.date_added,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -653,6 +653,28 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

@@ -98,6 +98,7 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
     no_coverage_reason: '',
     hardware_list_price: null,
     maintenance_list_price: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -162,6 +163,7 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
         l_do_support: _.isNull(data.l_do_support) ? null : moment(data.l_do_support),
         l_do_s_category: data.l_do_s_category,
         date_confirmed: _.isNull(data.date_confirmed) ? null : moment(data.date_confirmed),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         date_source: data.date_source,
         asset_type: data.asset_type,
         product_type: data.product_type,
@@ -513,6 +515,28 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
                     rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

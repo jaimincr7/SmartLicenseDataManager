@@ -100,6 +100,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
     yammer_license_assign_date: null,
     teams_license_assign_date: null,
     assigned_products: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -202,6 +203,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
         share_point_license_assign_date: _.isNull(data.share_point_license_assign_date)
           ? null
           : moment(data.share_point_license_assign_date),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         skype_for_business_license_assign_date: _.isNull(
           data.skype_for_business_license_assign_date
         )

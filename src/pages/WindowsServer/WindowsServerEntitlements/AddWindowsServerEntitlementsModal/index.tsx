@@ -1,5 +1,6 @@
-import { Button, Checkbox, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -69,6 +70,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
     qty_02: 0,
     qty_03: 0,
     tenant_id: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -130,6 +132,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
         qty_01: data.qty_01,
         qty_02: data.qty_02,
         qty_03: data.qty_03,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -409,6 +412,28 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
                     rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
