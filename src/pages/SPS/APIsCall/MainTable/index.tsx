@@ -98,6 +98,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+
       {
         title: <span className="dragHandler">Group</span>,
         column: 'GroupId',
@@ -224,20 +225,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
       );
       setCallApiObj({ ...callApiObj, params: params, show: false, isAll: false, id: data.id });
-      if (data.is_uid_selection) {
         setTypeId(data.api_type_id);
-        setShowTableMNodal(true);
-      } else {
+        const callApiObject: ICallAPI = {
+          id: data.id,
+          company_id: data.company_id,
+          bu_id: data.bu_id,
+          tenant_id: data.tenant_id,
+          oauth_id: data.oauth_id,
+          spsApiQueryParam: params,
+        };
+        dispatch(callApi(callApiObject));
         if (editableParams?.length > 0) {
           toast.info("Url Doesn't have Start or End Time");
-        } else {
-          const callApiObj: ICallAPI = {
-            id: data.id,
-            spsApiQueryParam: params,
-          };
-          dispatch(callApi(callApiObj));
         }
-      }
+      
     } else {
       toast.error('Selected api does not have url.');
     }
