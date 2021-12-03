@@ -30,7 +30,7 @@ import {
   clearApiColMappingMessages,
 } from '../../../../store/sps/apiColumnMapping/apiColMapping.reducer';
 import { checkUID } from '../../../../store/sps/spsAPICall/spsApiCall.action';
-import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
+import { clearSpsCheckUID, spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
 import ApiTable from '../../../SPS/APIsCall/ApiTable';
 
 const { Option } = Select;
@@ -66,6 +66,7 @@ const AddAPIMapping: React.FC = () => {
   useEffect(() => {
     return () => {
       dispatch(clearApiColMapping());
+      dispatch(clearSpsCheckUID());
     };
   }, []);
 
@@ -92,13 +93,14 @@ const AddAPIMapping: React.FC = () => {
     const data = spsAPIColMapping.getById.data;
     if (data) {
       formUpload.setFieldsValue({ sps_api_id: data.api_id, table_name: data.table_name });
-      const searchApiColObj: ISearchAPIColumn = {
-        id: spsAPIColMapping.getById.data.api_id,
-        company_id: globalLookups.search.company_id,
-        bu_id: globalLookups.search.bu_id,
-        tenant_id: globalLookups.search.tenant_id,
-      };
-      dispatch(getApiColumn(searchApiColObj));
+      // const searchApiColObj: ISearchAPIColumn = {
+      //   id: spsAPIColMapping.getById.data.api_id,
+      //   company_id: globalLookups.search.company_id,
+      //   bu_id: globalLookups.search.bu_id,
+      //   tenant_id: globalLookups.search.tenant_id,
+      // };
+      // dispatch(getApiColumn(searchApiColObj));
+      dispatch(checkUID(data.api_id));
       handleTableChange(data.table_name);
       setFormFields();
     }
@@ -156,10 +158,10 @@ const AddAPIMapping: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterApiColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       }
     });
@@ -173,15 +175,15 @@ const AddAPIMapping: React.FC = () => {
 
   const onFinish = (values: any) => {
     dispatch(checkUID(values.sps_api_id));
-    
-     // dispatch(getApiColumn(searchApiColObj));
+
+    // dispatch(getApiColumn(searchApiColObj));
   };
 
   useEffect(() => {
-    if(spsApis.checkUID.data) {
-      if(spsApis.checkUID.data.is_uid_selection) {
+    if (spsApis.checkUID.data) {
+      if (spsApis.checkUID.data.is_uid_selection) {
         api_type_id = spsApis.checkUID.data.api_type_id;
-        setCallApiObj({id : formUpload.getFieldValue('sps_api_id'),});
+        setCallApiObj({ id: formUpload.getFieldValue('sps_api_id') });
         setShowTableMNodal(true);
       } else {
         const searchApiColObj: ISearchAPIColumn = {
@@ -190,7 +192,7 @@ const AddAPIMapping: React.FC = () => {
         dispatch(getApiColumn(searchApiColObj));
       }
     }
-  }, [spsApis.checkUID.data])
+  }, [spsApis.checkUID.data]);
 
   useEffect(() => {
     Object.keys(globalLookups.search).forEach(function (key) {
@@ -263,7 +265,11 @@ const AddAPIMapping: React.FC = () => {
                 <Col xs={24} md={6}>
                   <div className="form-group m-0">
                     <label className="label">SPS API</label>
-                    <Form.Item name="sps_api_id" className="m-0" rules={[{ required: true, message : 'API is Required' }]}>
+                    <Form.Item
+                      name="sps_api_id"
+                      className="m-0"
+                      rules={[{ required: true, message: 'API is Required' }]}
+                    >
                       <Select
                         onChange={(val) => {
                           if (!val) {
@@ -298,7 +304,11 @@ const AddAPIMapping: React.FC = () => {
                 <Col xs={24} md={6}>
                   <div className="form-group m-0">
                     <label className="label">Table Name</label>
-                    <Form.Item name={'table_name'} className="m-0" rules={[{ required: true, message : 'Table is Required' }]}>
+                    <Form.Item
+                      name={'table_name'}
+                      className="m-0"
+                      rules={[{ required: true, message: 'Table is Required' }]}
+                    >
                       <Select
                         allowClear
                         onChange={handleTableChange}
@@ -341,7 +351,7 @@ const AddAPIMapping: React.FC = () => {
                         key="submit"
                         type="primary"
                         htmlType="submit"
-                        loading={spsAPIColMapping.apiColumn.loading}
+                        loading={spsAPIColMapping.apiColumn.loading || spsApis.checkUID.loading}
                       >
                         Fetch
                       </Button>
@@ -451,7 +461,7 @@ const AddAPIMapping: React.FC = () => {
           </Form>
         </div>
       </div>
-      {ShowTableMNodal && api_type_id &&  (
+      {ShowTableMNodal && api_type_id && (
         <ApiTable
           type_id={api_type_id}
           showModal={ShowTableMNodal}
@@ -459,7 +469,8 @@ const AddAPIMapping: React.FC = () => {
           isFetchApi={true}
           handleModalClose={() => {
             setShowTableMNodal(false);
-          }} />
+          }}
+        />
       )}
     </>
   );

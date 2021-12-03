@@ -6,6 +6,7 @@ import {
   windowsServerOverridesSelector,
 } from '../../../../store/windowsServer/windowsServerOverrides/windowsServerOverrides.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { AlignType } from 'rc-table/lib/interface';
 import {
   deleteWindowsServerOverrides,
   searchWindowsServerOverrides,
@@ -237,6 +238,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

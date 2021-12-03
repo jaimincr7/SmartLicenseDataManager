@@ -8,7 +8,7 @@ import {
   getAdDeviceById,
   searchAdDevices,
   saveAdDevice,
-  processData,
+  processDataAdDevice,
 } from './adDevices.action';
 import { IAdDevicesState } from './adDevices.model';
 
@@ -147,16 +147,19 @@ export const adDevicesSlice = createSlice({
     },
 
     // Process Data
-    [processData.pending.type]: (state) => {
+    [processDataAdDevice.pending.type]: (state) => {
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataAdDevice.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;
     },
-    [processData.rejected.type]: (state) => {
+    [processDataAdDevice.rejected.type]: (state) => {
       state.processData.loading = false;
       state.processData.hasErrors = true;
     },

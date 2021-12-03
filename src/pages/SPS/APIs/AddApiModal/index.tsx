@@ -27,6 +27,7 @@ import {
 import { ISpsApi } from '../../../../services/sps/spsApi/sps.model';
 import { getSpsApiById, saveSpsApi } from './../../../../store/sps/spsAPI/spsApi.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import TextArea from 'antd/lib/input/TextArea';
 
 const { Option } = Select;
 
@@ -60,6 +61,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
     sps_input_type_id: null,
     stored_procedure: '',
     enabled: false,
+    is_system_defined: true,
   };
 
   const onFinish = (values: any) => {
@@ -92,6 +94,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
         sps_input_type_id: _.isNull(data.sps_input_type_id) ? null : data.sps_input_type_id,
         stored_procedure: data.stored_procedure,
         enabled: data.enabled,
+        is_system_defined: data.is_system_defined,
       };
       form.setFieldsValue(initialValues);
     }
@@ -181,20 +184,6 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                     className="m-0"
                     rules={[{ required: !isMultiple, max: 255 }]}
                   >
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'url']} valuePropName="checked" noStyle>
-                      <Checkbox>URL</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'URL'
-                  )}
-                  <Form.Item name="url" label="URL" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -305,10 +294,9 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="enabled" className="m-0" valuePropName="checked">
+                  <Form.Item name="enabled" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
@@ -318,6 +306,34 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                   ) : (
                     'Enabled'
                   )}
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="is_system_defined" className="m-0 mr-1" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_system_defined']} valuePropName="checked" noStyle>
+                      <Checkbox>Is System Defined?</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is System Defined?'
+                  )}
+                </div>
+              </Col>
+              <Col xs={24}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'url']} valuePropName="checked" noStyle>
+                      <Checkbox>URL</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'URL'
+                  )}
+                  <Form.Item name="url" label="URL" className="m-0">
+                    <TextArea className="form-control" />
+                  </Form.Item>
                 </div>
               </Col>
             </Row>

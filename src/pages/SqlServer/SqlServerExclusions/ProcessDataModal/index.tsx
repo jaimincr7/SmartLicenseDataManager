@@ -20,7 +20,7 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
+import { processDataSqlServerExclusion } from '../../../../store/sqlServer/sqlServerExclusions/sqlServerExclusions.action';
 import {
   clearSqlServerExclusionsMessages,
   sqlServerExclusionsSelector,
@@ -52,7 +52,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    dispatch(processData(values));
+    dispatch(processDataSqlServerExclusion(values));
   };
 
   const saveConfig = () => {

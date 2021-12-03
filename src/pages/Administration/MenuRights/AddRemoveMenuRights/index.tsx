@@ -6,21 +6,23 @@ import {
   clearMenuMessages,
   menuSelector,
 } from '../../../../store/administration/menu/menu.reducer';
-import { Button, Checkbox, Form, Switch, Table } from 'antd';
+import { Button, Checkbox, Form, Popconfirm, Switch, Table } from 'antd';
 import {
+  deleteParentMenu,
   getMenuAccessRights,
   saveAddRemoveMenuAccessRights,
 } from '../../../../store/administration/menu/menu.action';
 import { IAccessMenu, IMenu } from '../../../../services/administration/menu/menu.model';
 import _ from 'lodash';
 import EditMenuModal from '../EditMenuModal';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import ReactDragListView from 'react-drag-listview';
 import { getPageHeight } from '../../../../common/helperFunction';
+import AddParentMenuModal from './AddParentMenuModal';
 
 const MenuAccessRights: React.FC<IMenuRights> = () => {
   const reduxStoreData = useAppSelector(menuSelector);
@@ -28,6 +30,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
   const [form] = Form.useForm();
   const [columns, setColumns] = React.useState<any>([]);
   const [editModalVisible, setEditModalVisible] = React.useState(false);
+  const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [selectedMenu, setSelectedMenu] = React.useState<IAccessMenu>(null);
   const [storeMenus, SetStoreMenus] = React.useState<IMenu[]>([]);
   const [height, setHeight] = React.useState<number>(350);
@@ -46,6 +49,10 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
     dispatch(saveAddRemoveMenuAccessRights(accessRightsInputValues));
   };
 
+  const deleteParent = (id: number) => {
+    dispatch(deleteParentMenu(id));
+  };
+
   useEffect(() => {
     if (reduxStoreData.saveAddRemoveMenuAccessRights.messages.length > 0) {
       if (reduxStoreData.saveAddRemoveMenuAccessRights.hasErrors) {
@@ -56,6 +63,18 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
       dispatch(clearMenuMessages());
     }
   }, [reduxStoreData.saveAddRemoveMenuAccessRights.messages]);
+
+  useEffect(() => {
+    if (reduxStoreData.deleteParentMenu.messages.length > 0) {
+      if (reduxStoreData.deleteParentMenu.hasErrors) {
+        toast.error(reduxStoreData.deleteParentMenu.messages.join(' '));
+      } else {
+        toast.success(reduxStoreData.deleteParentMenu.messages.join(' '));
+      }
+      dispatch(clearMenuMessages());
+    }
+    dispatch(getMenuAccessRights());
+  }, [reduxStoreData.deleteParentMenu.messages]);
 
   const editMenu = (menu: IAccessMenu) => {
     setSelectedMenu(menu);
@@ -112,6 +131,15 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
     form.setFieldsValue({ selectAll: checkbox });
   };
 
+  const canDelete = (id: number) => {
+    let result = true;
+    reduxStoreData.getMenuAccessRights.data?.menus.map((data) => {
+      if(data.parent_menu_id == id) {
+        result = false;
+      }});
+    return result;
+  };
+
   React.useEffect(() => {
     const mainColumns = [];
     const maxLevel = reduxStoreData.getMenuAccessRights.data?.maxLevel;
@@ -132,6 +160,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
                 <Can I={Action.Update} a={Page.Menu}>
                   <a
                     title="Edit"
+                    className="mr-1"
                     onClick={() => {
                       editMenu(data);
                     }}
@@ -139,6 +168,15 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
                     <EditOutlined />
                   </a>
                 </Can>
+                {data.type == "ExternalParentMenu" && !(data?.parent_menu_id > 0) ? ( canDelete(data.id) ? 
+                  <Popconfirm title="Delete Parent Menu?" onConfirm={() => deleteParent(data.id)}>
+                    <a
+                      title="Delete"
+                    >
+                      <DeleteOutlined />
+                    </a>
+                  </Popconfirm> : <></>)
+                  : <></>}
               </>
             )}
           </>
@@ -232,6 +270,16 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
           <div className="title-block">
             <div></div>
             <div className="btns-block">
+              <Can I={Action.Add} a={Page.MenuAccessRights}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setAddModalVisible(true);
+                  }}
+                >
+                  Add Parent Menu
+                </Button>
+              </Can>
               <Can I={Action.Update} a={Page.MenuAccessRights}>
                 <Button
                   type="primary"
@@ -266,6 +314,15 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
           }}
           selectedMenu={selectedMenu}
           parentMenu={getMenuDropdown(selectedMenu.id)}
+          refreshDataTable={() => dispatch(getMenuAccessRights())}
+        />
+      )}
+      {addModalVisible && (
+        <AddParentMenuModal
+          showModal={addModalVisible}
+          handleModalClose={() => {
+            setAddModalVisible(false);
+          }}
           refreshDataTable={() => dispatch(getMenuAccessRights())}
         />
       )}

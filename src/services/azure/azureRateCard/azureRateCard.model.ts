@@ -4,6 +4,7 @@ import { Moment } from 'moment';
 export interface IAzureRateCard {
   id?: number;
   effective_date?: string | Moment;
+  date_added?: string | Moment;
   included_quantity?: number;
   meter_category?: string;
   meter_id?: string;

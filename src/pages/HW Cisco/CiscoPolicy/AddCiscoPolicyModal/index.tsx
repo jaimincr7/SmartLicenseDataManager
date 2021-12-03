@@ -140,6 +140,7 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
     service_billing_frequency: '',
     service_monthly_cost: null,
     sample: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -263,6 +264,7 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
         service_billing_frequency: data.service_billing_frequency,
         service_monthly_cost: data.service_monthly_cost,
         sample: data.sample,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -697,6 +699,28 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
                     rules={[{ max: 100 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

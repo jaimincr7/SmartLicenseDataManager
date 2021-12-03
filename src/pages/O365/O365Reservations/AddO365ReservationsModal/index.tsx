@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -33,6 +33,7 @@ import { Page } from '../../../../common/constants/pageAction';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -73,6 +74,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
     usage_date: '',
     usage_country: '',
     status: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -130,6 +132,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         reservation_id: data.reservation_id,
         license_id: data.license_id,
         organization: data.organization,
@@ -418,6 +421,28 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

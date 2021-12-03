@@ -8,6 +8,7 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
+import { AlignType } from 'rc-table/lib/interface';
 import { setTableColumnSelection } from '../../../../store/sps/spsAPI/spsApi.reducer';
 import { deleteSpsApi, searchImportAPIs } from '../../../../store/sps/spsAPI/spsApi.action';
 import { clearCallApiMessages, spsApiSelector } from '../../../../store/sps/spsAPI/spsApi.reducer';
@@ -15,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { IMainTable } from '../../../../common/models/common';
-import { ControlFilled } from '@ant-design/icons';
+import { ControlFilled, ControlOutlined } from '@ant-design/icons';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple } = props;
@@ -153,6 +154,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -160,8 +162,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const onFetchCall = (data: any) => {
-    if(data?.sps_mapping_id > 0) {
-      history.push(`/administration/config-sps-api-column-mapping/add/${data.sps_mapping_id}`);  
+    if (data?.sps_mapping_id > 0) {
+      history.push(`/administration/config-sps-api-column-mapping/add/${data.sps_mapping_id}`);
     } else {
       history.push(`/administration/config-sps-api-column-mapping/add?api_id=${data.id}`);
     }
@@ -192,11 +194,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           </a>
         </Popconfirm>
       </Can>
-      <a  title="" className="action-btn"
+      <a
+        title=""
+        className="action-btn"
         onClick={() => {
           onFetchCall(data);
-        }}>
-        <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
+        }}
+      >
+        {data?.sps_mapping_id > 0 ? (
+          <ControlOutlined title="Mapped Api" />
+        ) : (
+          <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
+        )}
       </a>
     </div>
   );

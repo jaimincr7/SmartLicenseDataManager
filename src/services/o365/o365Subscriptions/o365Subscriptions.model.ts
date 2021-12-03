@@ -1,4 +1,5 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface IO365Subscriptions {
   id?: number;
@@ -9,6 +10,7 @@ export interface IO365Subscriptions {
   price?: number;
   currency_id?: number;
   valid_qty?: number;
+  date_added?: string | Moment;
 }
 
 export interface ISearchO365Subscriptions extends ISearch {

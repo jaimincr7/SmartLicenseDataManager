@@ -10,6 +10,7 @@ export interface IO365M365AppsUsageUserDetail {
   user_principal_name?: string;
   last_activation_date?: string | Moment;
   last_activity_date?: string | Moment;
+  date_added?: string | Moment;
   report_period?: number;
   is_active_on_windows?: boolean;
   is_active_on_mac?: boolean;

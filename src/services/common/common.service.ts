@@ -53,6 +53,20 @@ class CommonService {
     });
   }
 
+  public async getScheduleDateforWindowsServer(data: IScheduleDate): Promise<IApiResponse<any>> {
+    const url = `/app/get-date-added`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getScheduleDateforSqlServer(data: IScheduleDate): Promise<IApiResponse<any>> {
+    const url = `/app/get-date-added`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async configModelPopUpDataSelection(
     data: IConfigModelPopUpDataSelection
   ): Promise<IApiResponse<any>> {
@@ -449,6 +463,20 @@ class CommonService {
 
   public async getSpsApiBaseUrl(): Promise<IApiResponse<ILookup[]>> {
     const url = `/sps-api-base-url/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getSpsApiOAuth(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-oauth/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getSpsApiUrlInjection(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-oauth-url-injection-site/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

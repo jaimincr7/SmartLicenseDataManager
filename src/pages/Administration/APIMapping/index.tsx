@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import React from 'react';
-import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { IApiColMappingProps } from './apiColMapping.model';
 import { Button, Col, Row } from 'antd';
@@ -39,9 +38,9 @@ const APIColumnMappings: React.FC<IApiColMappingProps> = () => {
         <h4 className="p-0">
           <BreadCrumbs pageName={Page.ConfigSPSColMapping} />
         </h4>
-        <div className="right-title">
+        {/* <div className="right-title">
           <GlobalSearch />
-        </div>
+        </div> */}
       </div>
       <div className="main-card">
         <div className="input-btns-title">

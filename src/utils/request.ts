@@ -7,7 +7,7 @@ import config from './config';
 
 const request = axios.create({
   baseURL: config.baseApi, // url = base url + request url
-  timeout: 3 * 60 * 1000, // 3 minutes
+  timeout: 4 * 60 * 1000, // 4 minutes
   headers: {
     Accept: 'application/json',
   },
@@ -44,7 +44,7 @@ export const setResponseError = (history) => {
       }
     },
     (error) => {
-      if(axios.isCancel(error)){
+      if (axios.isCancel(error)) {
         return;
       }
       if (!error.response) {

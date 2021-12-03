@@ -1,5 +1,6 @@
-import { Button, Checkbox, Col, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, InputNumber, Modal, Row, Select, Spin } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -70,6 +71,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
     price: null,
     currency_id: null,
     agreement_type_id: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -130,6 +132,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
         agreement_type_id: _.isNull(data.agreement_type_id) ? null : data.agreement_type_id,
         currency_id: _.isNull(data.currency_id) ? null : data.currency_id,
         license_id: _.isNull(data.license_id) ? null : data.license_id,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         price: data.price,
       };
       form.setFieldsValue(initialValues);
@@ -458,6 +461,28 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                         </Option>
                       ))}
                     </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

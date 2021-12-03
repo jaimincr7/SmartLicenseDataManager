@@ -70,6 +70,7 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
     meter_sub_category: '',
     meter_tags: '',
     unit: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: IAzureRateCard) => {
@@ -100,6 +101,7 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
         meter_region: data.meter_region,
         meter_name: data.meter_name,
         effective_date: _.isNull(data.effective_date) ? null : moment(data.effective_date),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         included_quantity: data.included_quantity,
         meter_rates: data.meter_rates,
         meter_status: data.meter_status,
@@ -365,6 +367,28 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

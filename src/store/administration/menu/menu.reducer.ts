@@ -18,6 +18,8 @@ import {
   getMenuRightsByCompanyId,
   getMenuAccessRights,
   saveAddRemoveMenuAccessRights,
+  addParentMenu,
+  deleteParentMenu,
 } from './menu.action';
 import { IMenuState } from './menu.model';
 import { ILookup } from '../../../services/common/common.model';
@@ -42,6 +44,16 @@ export const initialState: IMenuState = {
     data: null,
   },
   save: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  addParentMenu: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
+  deleteParentMenu: {
     loading: false,
     hasErrors: false,
     messages: [],
@@ -107,6 +119,12 @@ export const menuSlice = createSlice({
     },
     clearGetMenuRightsByCompanyId: (state) => {
       state.getMenuRightsByCompanyId.data = null;
+    },
+    clearAddParentMenuMessages: (state) => {
+      state.addParentMenu.messages = [];
+    },
+    clearDeleteParentMenuMessages: (state) => {
+      state.deleteParentMenu.messages = [];
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
@@ -206,6 +224,42 @@ export const menuSlice = createSlice({
       state.saveMenuAccessRights.hasErrors = true;
     },
 
+    // Add Parent Menu
+    [addParentMenu.pending.type]: (state) => {
+      state.addParentMenu.loading = true;
+      state.addParentMenu.messages = [];
+    },
+    [addParentMenu.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.addParentMenu.loading = false;
+      state.addParentMenu.hasErrors = false;
+      state.addParentMenu.messages = action.payload.messages;
+    },
+    [addParentMenu.rejected.type]: (state) => {
+      state.addParentMenu.loading = false;
+      state.addParentMenu.hasErrors = true;
+    },
+
+    // Delete Parent Menu
+    [deleteParentMenu.pending.type]: (state) => {
+      state.deleteParentMenu.loading = true;
+      state.deleteParentMenu.messages = [];
+    },
+    [deleteParentMenu.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.deleteParentMenu.loading = false;
+      state.deleteParentMenu.hasErrors = false;
+      state.deleteParentMenu.messages = action.payload.messages;
+    },
+    [deleteParentMenu.rejected.type]: (state) => {
+      state.deleteParentMenu.loading = false;
+      state.deleteParentMenu.hasErrors = true;
+    },
+
     // Get Menu Rights By RoleId
     [getMenuRightsByCompanyId.pending.type]: (state) => {
       state.getMenuRightsByCompanyId.loading = true;
@@ -297,6 +351,7 @@ export const {
   clearMenuAccessRights,
   clearGetMenuRightsByRoleId,
   clearGetMenuRightsByCompanyId,
+  clearAddParentMenuMessages
 } = menuSlice.actions;
 
 // The reducer

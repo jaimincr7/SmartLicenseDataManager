@@ -10,6 +10,7 @@ export interface IO365OneDriveUsage {
   owner_display_name?: string;
   is_deleted?: boolean;
   last_activity_date?: string | Moment;
+  date_added?: string | Moment;
   file_count?: number;
   active_file_count?: number;
   storage_used_byte?: number;

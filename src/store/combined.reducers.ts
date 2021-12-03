@@ -111,6 +111,9 @@ import cronReducer from './master/cron/cron.reducer';
 import cronViewLogReducer from './master/cronViewLog/cronViewLog.reducer';
 import spsApiCallReducer from './sps/spsAPICall/spsApiCall.reducer';
 import inventoryReducer from './inventory/inventory/inventory.reducer';
+import spsApiBaseUrlReducer from './sps/apiBaseUrl/apiBaseUrl.reducer';
+import spsApiOauthUrlInjectionSiteReducer from './sps/apiOauthUrlInjectionSite/apiOauthUrlInjectionSite.reducer';
+import spsApiOauthIdUrlInjectionSiteReducer from './sps/apiOauthIdUrlInjectionSite/apiOauthIdUrlInjectionSite.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -260,6 +263,9 @@ export const rootReducer = combineReducers({
   spsApiType: spsApiTypeReducer,
   spsApiOauth: spsApiOauthReducer,
   spsApiTokenConfigOptions: spsApiTokenConfigOptionsReducer,
+  spsApiBaseUrl: spsApiBaseUrlReducer,
+  spsApiOauthUrlInjectionSite: spsApiOauthUrlInjectionSiteReducer,
+  spsApiOauthIdUrlInjectionSite: spsApiOauthIdUrlInjectionSiteReducer,
 
   apiColumnMapping: apiColMappingReducer,
 });

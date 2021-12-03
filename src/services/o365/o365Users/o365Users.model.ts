@@ -1,10 +1,12 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface IO365Users {
   id?: number;
   company_id?: number;
   bu_id?: number;
   tenant_id?: number;
+  date_added?: string | Moment;
   alternate_email_addresses?: string;
   block_credential?: boolean;
   city?: string;

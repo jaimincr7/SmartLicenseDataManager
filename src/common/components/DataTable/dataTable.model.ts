@@ -33,7 +33,7 @@ export interface IDataTable {
   isCronJobApiButton?: boolean;
   isStartSchedulaAllApi?: boolean;
   hideShowHideButton?: boolean;
-  
+
   //For SPS API CALL MODAL[TO PASS TYPE ID FOR SPS API OAUTH]
   type_id?: number;
 }

@@ -8,6 +8,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { deleteTabVInfo, searchTabVInfo } from '../../../../store/rvTools/tabVInfo/tabVInfo.action';
 import _ from 'lodash';
+import { AlignType } from 'rc-table/lib/interface';
 import tabVInfoService from '../../../../services/rvTools/tabVInfo/tabVInfo.service';
 import {
   FilterByBooleanDropDown,
@@ -383,6 +384,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

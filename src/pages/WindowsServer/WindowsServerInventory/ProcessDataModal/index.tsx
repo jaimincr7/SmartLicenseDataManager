@@ -1,4 +1,4 @@
-import { Button, Col, Form, InputNumber, Modal, Row, Select, Switch } from 'antd';
+import { Button, Col, Form, Modal, Row, Select, Switch } from 'antd';
 import React, { useEffect } from 'react';
 import {
   IConfigModelPopUpDataSelection,
@@ -11,6 +11,7 @@ import {
   getAllCompanyLookup,
   getBULookup,
   getConfigModelPopUpDataSelection,
+  getConfigWindowsServerVersionsLookup,
   getScheduleDate,
 } from '../../../../store/common/common.action';
 import {
@@ -21,7 +22,7 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.action';
+import { processDataWindowsServerInventory } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.action';
 import {
   clearWindowsServerInventoryMessages,
   windowsServerInventorySelector,
@@ -35,6 +36,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import { clearConfigWindowsServerVersions } from '../../../../store/master/windowsServerVersions/windowsServerVersions.reducer';
 
 const { Option } = Select;
 
@@ -65,7 +67,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    dispatch(processData(values));
+    dispatch(processDataWindowsServerInventory(values));
   };
 
   const saveConfig = () => {
@@ -163,6 +165,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [commonLookups.setModelPopUpSelection.messages]);
 
   React.useEffect(() => {
+    dispatch(getConfigWindowsServerVersionsLookup());
     if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
       const modelPopUp: IGetConfigModelPopUpDataSelection = {
         table_name: tableName,
@@ -198,6 +201,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     }
     return () => {
       dispatch(cleargetModelPopUpDataSelection());
+      dispatch(clearWindowsServerInventoryMessages());
+      dispatch(clearConfigWindowsServerVersions());
     };
   }, []);
 
@@ -331,6 +336,33 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </div>
             </Col> */}
             <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                <label className="label">SC Version</label>
+                  <Form.Item name="sc_version_id" className="m-0" label="SC Version" >
+                    <Select
+                      allowClear
+                      loading={commonLookups.configWindowsServerVersionsLookup.loading}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.configWindowsServerVersionsLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+            {/* <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">SC Version</label>
                 <Form.Item
@@ -342,7 +374,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   <InputNumber className="form-control w-100" />
                 </Form.Item>
               </div>
-            </Col>
+            </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
                 <Form.Item name="set_device_states" className="m-0" valuePropName="checked">

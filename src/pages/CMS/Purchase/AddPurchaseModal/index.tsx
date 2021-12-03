@@ -73,6 +73,7 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
     purchase_order_number: '',
     spend_type_id: null,
     purchase_contact_id: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -576,6 +577,29 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
                     rules={[{ required: !isMultiple, max: 510 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                    rules={[{ required: !isMultiple }]}
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

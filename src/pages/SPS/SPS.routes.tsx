@@ -2,8 +2,11 @@ import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
+import SpsApiBaseUrl from './ApiBaseUrl';
 import SpsApiGroup from './ApiGroup';
 import SpsApiOauth from './ApiOauth';
+import SpsApiOauthIdUrlInjectionSite from './ApiOauthIdUrlInjectionSite';
+import SpsApiOauthUrlInjectionSite from './ApiOauthUrlInjectionSite';
 import SPSAPI from './APIs/index';
 import SPSAPIsCall from './APIsCall';
 import SpsApiTokenConfigOptions from './ApiTokenConfigOptions';
@@ -52,6 +55,46 @@ const SPSRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.SpsApiType) && (
           <Route exact path={`${match.path}/sps-api-type/:id`} component={SpsApiType} />
+        )}
+
+        {/* SPS API Base Url */}
+        {ability.can(Action.View, Page.SpsApiBaseUrl) && (
+          <Route exact path={`${match.path}/sps-api-base-url`} component={SpsApiBaseUrl} />
+        )}
+        {ability.can(Action.View, Page.SpsApiBaseUrl) && (
+          <Route exact path={`${match.path}/sps-api-base-url/:id`} component={SpsApiBaseUrl} />
+        )}
+
+        {/* SPS API Oauth Url */}
+        {ability.can(Action.View, Page.SpsApiOauthUrlInjectionSite) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-oauth-url-injection-site`}
+            component={SpsApiOauthUrlInjectionSite}
+          />
+        )}
+        {ability.can(Action.View, Page.SpsApiOauthUrlInjectionSite) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-oauth-url-injection-site/:id`}
+            component={SpsApiOauthUrlInjectionSite}
+          />
+        )}
+
+        {/* SPS API Oauth ID Url Injection Site */}
+        {ability.can(Action.View, Page.SpsApiOauthIdUrlInjectionSite) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-oauth-id-url-injection-site`}
+            component={SpsApiOauthIdUrlInjectionSite}
+          />
+        )}
+        {ability.can(Action.View, Page.SpsApiOauthIdUrlInjectionSite) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-oauth-id-url-injection-site/:id`}
+            component={SpsApiOauthIdUrlInjectionSite}
+          />
         )}
 
         {/* SPS API Oauth */}

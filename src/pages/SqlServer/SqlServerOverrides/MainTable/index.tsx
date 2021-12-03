@@ -6,6 +6,7 @@ import {
   sqlServerOverridesSelector,
 } from '../../../../store/sqlServer/sqlServerOverrides/sqlServerOverrides.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { AlignType } from 'rc-table/lib/interface';
 import {
   deleteSqlServerOverrides,
   searchSqlServerOverrides,
@@ -202,6 +203,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

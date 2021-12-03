@@ -1,4 +1,4 @@
-import { IMenuAccessRights, IAccessMenu } from '../../../services/administration/menu/menu.model';
+import { IMenuAccessRights, IAccessMenu, IAddParentMenu } from '../../../services/administration/menu/menu.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   ISearchMenu,
@@ -27,6 +27,20 @@ export const getMenuById = createAsyncThunk('getMenuById', async (id: number) =>
 
 export const saveMenu = createAsyncThunk('saveMenu', async (data: IMenu) => {
   const response = await menuService.saveMenu(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
+export const addParentMenu = createAsyncThunk('addParentMenu', async (data: IAddParentMenu) => {
+  const response = await menuService.addParentMenu(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
+export const deleteParentMenu = createAsyncThunk('deleteParentMenu', async (id: number) => {
+  const response = await menuService.deleteParentMenu(id).then((res) => {
     return res.body;
   });
   return response;

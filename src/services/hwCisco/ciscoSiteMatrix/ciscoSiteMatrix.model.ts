@@ -1,4 +1,5 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface ICiscoSiteMatrix {
   id?: number;
@@ -19,7 +20,7 @@ export interface ICiscoSiteMatrix {
   installed_at_cr_party_name?: string;
   installed_at_gu_id?: string;
   installed_at_gu_name?: string;
-  date_added?: Date;
+  date_added?: string | Moment;
 }
 
 export interface ISearchCiscoSiteMatrix extends ISearch {

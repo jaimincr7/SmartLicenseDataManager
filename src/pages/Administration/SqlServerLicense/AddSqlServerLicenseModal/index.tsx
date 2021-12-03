@@ -412,10 +412,9 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="server_cal_eligible" className="m-0" valuePropName="checked">
+                  <Form.Item name="server_cal_eligible" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'server_cal_eligible']}
@@ -431,10 +430,9 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="alternate_license_type" className="m-0" valuePropName="checked">
+                  <Form.Item name="alternate_license_type" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'alternate_license_type']}
@@ -450,10 +448,9 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="includes_sa" className="m-0" valuePropName="checked">
+                  <Form.Item name="includes_sa" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item name={['checked', 'includes_sa']} valuePropName="checked" noStyle>
                       <Checkbox>Includes SA</Checkbox>
@@ -465,10 +462,9 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="server_mobility_rights" className="m-0" valuePropName="checked">
+                  <Form.Item name="server_mobility_rights" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'server_mobility_rights']}
