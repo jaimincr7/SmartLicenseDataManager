@@ -1,4 +1,4 @@
-import { Popconfirm, Popover } from 'antd';
+import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { IMainTable } from './mainTable.model';
@@ -20,14 +20,12 @@ import {
   searchApiColMapping,
 } from '../../../../store/sps/apiColumnMapping/apiColMapping.action';
 import apiColMappingService from '../../../../services/sps/apiColumnMapping/apiColMapping.service';
-import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { setSelectedId } = props;
   const apiColMapping = useAppSelector(apiColumnMappingSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
-  const globalLookups = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
@@ -111,20 +109,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const deleteApiColumnMapping = (id: number) => {
     dispatch(deleteApiColMapping(id));
   };
+  
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.Update} a={Page.ConfigSPSColMapping}>
-        <Popover content={<>Please select global filter first!</>} trigger="click">
           <a
             className="action-btn"
             onClick={() => {
-              if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3)
                 setSelectedId(data.id);
             }}
           >
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
           </a>
-        </Popover>
       </Can>
       <Can I={Action.Delete} a={Page.ConfigSPSColMapping}>
         <Popconfirm title="Delete Record?" onConfirm={() => deleteApiColumnMapping(data.id)}>

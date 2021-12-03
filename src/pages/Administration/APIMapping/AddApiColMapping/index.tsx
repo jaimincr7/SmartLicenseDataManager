@@ -93,13 +93,14 @@ const AddAPIMapping: React.FC = () => {
     const data = spsAPIColMapping.getById.data;
     if (data) {
       formUpload.setFieldsValue({ sps_api_id: data.api_id, table_name: data.table_name });
-      const searchApiColObj: ISearchAPIColumn = {
-        id: spsAPIColMapping.getById.data.api_id,
-        company_id: globalLookups.search.company_id,
-        bu_id: globalLookups.search.bu_id,
-        tenant_id: globalLookups.search.tenant_id,
-      };
-      dispatch(getApiColumn(searchApiColObj));
+      // const searchApiColObj: ISearchAPIColumn = {
+      //   id: spsAPIColMapping.getById.data.api_id,
+      //   company_id: globalLookups.search.company_id,
+      //   bu_id: globalLookups.search.bu_id,
+      //   tenant_id: globalLookups.search.tenant_id,
+      // };
+      // dispatch(getApiColumn(searchApiColObj));
+      dispatch(checkUID(data.api_id));
       handleTableChange(data.table_name);
       setFormFields();
     }

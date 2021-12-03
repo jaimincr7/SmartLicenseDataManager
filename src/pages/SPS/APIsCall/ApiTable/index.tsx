@@ -14,7 +14,6 @@ import { IApiTableProps } from './apiTable.model';
 import { ICallAPI } from '../../../../services/sps/spsApi/sps.model';
 import { callApi } from '../../../../store/sps/spsAPICall/spsApiCall.action';
 import {
-  clearCallApiMessages,
   spsApiCallSelector,
 } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
 import { ISearchAPIColumn } from '../../../../services/sps/apiColumnMapping/apiColMapping.model';
@@ -137,11 +136,10 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
   };
 
   useEffect(() => {
-    if (spsApis.callApi.messages.length > 0) {
+    if (spsApis.callApi.loading) {
       handleModalClose();
-      dispatch(clearCallApiMessages());
     }
-  }, [spsApis.callApi.messages]);
+  }, [spsApis.callApi.loading]);
 
   const onCallApiById = (data: any) => {
     const callApiObject: ICallAPI = {
@@ -168,11 +166,11 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       {isFetchApi ? (
-        <Button loading={spsApis.callApi.loading} onClick={() => onFetchApi(data)}>
+        <Button onClick={() => onFetchApi(data)}>
           Fetch
         </Button>
       ) : (
-        <Button loading={spsApis.callApi.loading} onClick={() => onCallApiById(data)}>
+        <Button onClick={() => onCallApiById(data)}>
           Call
         </Button>
       )}
