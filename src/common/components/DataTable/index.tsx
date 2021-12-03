@@ -692,7 +692,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           <Table
             rowSelection={!disableRowSelection ? rowSelection : null}
             scroll={{ x: true }}
-            rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
+            rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id'] + (record['oauth_id']?record['oauth_id']:'')}
             dataSource={reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
             loading={
