@@ -158,6 +158,35 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      {
+        title: <span className="dragHandler">Is System Defined?</span>,
+        column: 'Is System Defined?',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByBooleanDropDown(
+              'is_system_defined',
+              spsApis.search?.tableName,
+              ObjectForColumnFilter
+            ),
+            dataIndex: 'is_system_defined',
+            key: 'is_system_defined',
+            ellipsis: true,
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
+            align: 'center' as AlignType,
+          },
+        ],
+      },
     ];
   };
 
