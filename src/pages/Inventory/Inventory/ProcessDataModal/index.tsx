@@ -40,10 +40,10 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
-const currentDate = new Date();
-const date = currentDate.getDate();
-const month = currentDate.getMonth() + 1;
-const year = currentDate.getFullYear();
+// const currentDate = new Date();
+// const date = currentDate.getDate();
+// const month = currentDate.getMonth() + 1;
+// const year = currentDate.getFullYear();
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const inventory = useAppSelector(inventorySelector);
@@ -59,9 +59,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     company_id: null,
     bu_id: null,
     date_added: null,
-    selected_date_ws: `${year}-${month}-${date}`,
+    selected_date_ws: moment().format(Common.DATEFORMAT)?.toString(),
     include_sc: false,
-    selected_date_ss: `${year}-${month}-${date}`,
+    selected_date_ss: moment().format(Common.DATEFORMAT)?.toString(),
     selected_date_device: moment(),
   };
 
