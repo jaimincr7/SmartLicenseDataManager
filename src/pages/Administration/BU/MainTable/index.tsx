@@ -9,6 +9,7 @@ import {
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
+import { AlignType } from 'rc-table/lib/interface';
 import DataTable from '../../../../common/components/DataTable';
 import {
   clearBUMessages,
@@ -132,6 +133,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

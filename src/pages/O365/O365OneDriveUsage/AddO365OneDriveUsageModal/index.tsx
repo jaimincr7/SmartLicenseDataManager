@@ -82,6 +82,7 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
     owner_principal_name: '',
     report_period: null,
     tenant_id: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -152,6 +153,7 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
           : moment(data.last_activity_date),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         site_url: data.site_url,
         is_deleted: data.is_deleted,
         file_count: data.file_count,
@@ -444,6 +446,28 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

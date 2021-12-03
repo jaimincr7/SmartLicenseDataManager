@@ -8,6 +8,7 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
+import { AlignType } from 'rc-table/lib/interface';
 import {
   setTableColumnSelection,
   spsApiCallSelector,
@@ -34,7 +35,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dataTableRef = useRef(null);
   const history = useHistory();
   const [ShowTableMNodal, setShowTableMNodal] = useState(false);
-  const [TypeId, setTypeId] = useState(null)
+  const [TypeId, setTypeId] = useState(null);
   const [callApiObj, setCallApiObj] = useState({
     id: 0,
     params: null,
@@ -174,6 +175,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -188,10 +190,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         className="action-btn"
         onClick={(e) => {
           e.preventDefault();
-          data.is_mapping && data.enabled ? (
-            onCallApi(data)
-          ) :
-            <></>
+          data.is_mapping && data.enabled ? onCallApi(data) : <></>;
         }}
       >
         {data.is_mapping ? (
@@ -221,13 +220,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       const newURL = new URL(data.url);
       const urlSearchParams = new URLSearchParams(newURL.search);
       const params = Object.fromEntries(urlSearchParams?.entries());
-      const editableParams = Object.values(params)?.filter((x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime');
+      const editableParams = Object.values(params)?.filter(
+        (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
+      );
       setCallApiObj({ ...callApiObj, params: params, show: false, isAll: false, id: data.id });
       if (data.is_uid_selection) {
         setTypeId(data.api_type_id);
         setShowTableMNodal(true);
-      }
-      else {
+      } else {
         if (editableParams?.length > 0) {
           toast.info("Url Doesn't have Start or End Time");
         } else {
@@ -287,9 +287,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const tableAction = (_, data: any) => (
-    <div className="btns-block">
-      {renderActionButton(data)}
-    </div>
+    <div className="btns-block">{renderActionButton(data)}</div>
   );
 
   const confirmCallApi = (values: any) => {
@@ -358,7 +356,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           handleModalClose={() => {
             setShowTableMNodal(false);
             history.push('/sps/sps-api');
-          }} />
+          }}
+        />
       )}
     </>
   );

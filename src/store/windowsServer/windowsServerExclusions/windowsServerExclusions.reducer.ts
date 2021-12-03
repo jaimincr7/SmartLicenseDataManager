@@ -6,7 +6,7 @@ import {
   deleteWindowsServerExclusions,
   getWindowsFieldLookup,
   getWindowsServerExclusionsById,
-  processData,
+  processDataWindowsServerExclusion,
   saveWindowsServerExclusions,
   searchWindowsServerExclusions,
 } from './windowsServerExclusions.action';
@@ -171,16 +171,16 @@ export const windowsServerExclusionsSlice = createSlice({
     },
 
     // Process Data
-    [processData.pending.type]: (state) => {
+    [processDataWindowsServerExclusion.pending.type]: (state) => {
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processData.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataWindowsServerExclusion.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;
     },
-    [processData.rejected.type]: (state) => {
+    [processDataWindowsServerExclusion.rejected.type]: (state) => {
       state.processData.loading = false;
       state.processData.hasErrors = true;
     },

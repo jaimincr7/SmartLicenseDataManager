@@ -6,6 +6,7 @@ import {
   windowsServerLicenseSelector,
 } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { AlignType } from 'rc-table/lib/interface';
 import {
   deleteWindowsServerLicense,
   searchWindowsServerLicense,
@@ -206,6 +207,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -230,6 +232,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -254,6 +257,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

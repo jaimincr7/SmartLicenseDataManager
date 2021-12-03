@@ -11,6 +11,7 @@ import {
   searchAdDevicesExclusions,
 } from '../../../../store/ad/adDevicesExclusions/adDevicesExclusions.action';
 import _ from 'lodash';
+import { AlignType } from 'rc-table/lib/interface';
 import adDevicesExclusionsService from '../../../../services/ad/adDevicesExclusions/adDevicesExclusions.service';
 import {
   FilterByBooleanDropDown,
@@ -200,6 +201,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -227,6 +229,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -254,6 +257,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -294,6 +298,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

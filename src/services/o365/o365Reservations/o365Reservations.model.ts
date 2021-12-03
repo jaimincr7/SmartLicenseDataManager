@@ -1,10 +1,12 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface IO365Reservations {
   id?: number;
   company_id?: number;
   bu_id?: number;
   reservation_id?: string;
+  date_added?: string | Moment;
   license_id?: number;
   organization?: string;
   service?: string;

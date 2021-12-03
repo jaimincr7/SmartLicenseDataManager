@@ -27,7 +27,6 @@ import {
   azureDailyUsageSelector,
   clearAzureDailyUsageMessages,
 } from '../../../../store/azure/azureDailyUsage/azureDailyUsage.reducer';
-import { processData } from '../../../../store/azure/azureDailyUsage/azureDailyUsage.action';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
@@ -36,6 +35,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import { processDataAzure } from '../../../../store/azure/azureDailyUsage/azureDailyUsage.action';
 
 const { Option } = Select;
 
@@ -56,7 +56,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    dispatch(processData(values));
+    dispatch(processDataAzure(values));
   };
 
   const saveConfig = () => {

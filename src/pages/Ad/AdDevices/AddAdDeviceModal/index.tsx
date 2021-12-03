@@ -101,6 +101,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
     qualified: false,
     domain: '',
     description: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -185,6 +186,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
         qualified: data.qualified,
         domain: data.domain,
         description: data.description,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -690,6 +692,28 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                   )}
                   <Form.Item name="sid" label="sId" className="m-0" rules={[{ max: 510 }]}>
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

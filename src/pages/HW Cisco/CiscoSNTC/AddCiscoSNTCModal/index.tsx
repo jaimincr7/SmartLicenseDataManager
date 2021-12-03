@@ -140,7 +140,7 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
     sn_recognized: '',
     device_diagnostics_supported: '',
     relationship: '',
-    date_added: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -262,7 +262,7 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
         sn_recognized: data.sn_recognized,
         device_diagnostics_supported: data.device_diagnostics_supported,
         relationship: data.relationship,
-        date_added: data.date_added,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -804,6 +804,28 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

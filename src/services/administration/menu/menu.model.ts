@@ -45,6 +45,7 @@ export interface IAccessMenu {
   url?: string;
   icon?: string;
   status?: boolean;
+  type?: string;
   is_display?: boolean;
   menu_access_rights?: IAccessMenuRight[];
   level?: number;
@@ -72,6 +73,12 @@ export interface IGetMenuAccessRights {
 export interface IAccessMenuRights {
   role_id: number;
   menu_access_right_ids: string[];
+}
+
+export interface IAddParentMenu {
+  description: number;
+  status: boolean;
+  icon: string;
 }
 
 export interface IAccessCompanyMenuRights {

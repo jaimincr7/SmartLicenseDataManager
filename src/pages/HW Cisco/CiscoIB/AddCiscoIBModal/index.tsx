@@ -145,6 +145,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
     end_of_software_availability_date: '',
     end_of_software_license_availability_date: '',
     end_of_software_date: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -738,6 +739,28 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

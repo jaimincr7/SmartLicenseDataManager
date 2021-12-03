@@ -33,6 +33,7 @@ export interface IAdDevices {
   qualified?: boolean;
   domain?: string;
   description?: string;
+  date_added?: string | Moment;
 }
 
 export interface ISearchAdDevices extends ISearch {

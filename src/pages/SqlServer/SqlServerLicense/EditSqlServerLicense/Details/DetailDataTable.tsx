@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { IDetailDataTableProps } from './detailDataTable.model';
 import moment from 'moment';
 import _ from 'lodash';
+import { AlignType } from 'rc-table/lib/interface';
 import DataTable from '../../../../../common/components/DataTable';
 import {
   FilterWithSwapOption,
@@ -156,6 +157,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -515,6 +517,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -570,6 +573,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -597,6 +601,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -624,6 +629,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -651,6 +657,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -692,6 +699,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -719,6 +727,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

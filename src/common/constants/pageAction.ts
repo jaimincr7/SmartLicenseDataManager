@@ -129,6 +129,10 @@ export enum Page {
   SpsApiType = 'sps-api-type',
   SpsApiOauth = 'sps-api-oauth',
   SpsApiTokenConfigOptions = 'sps-api-token-config-options',
+  SpsApiBaseUrl = 'sps-api-base-url',
+  SpsApiOauthUrlInjectionSite = 'sps-api-oauth-url-injection-site',
+  SpsApiOauthIdUrlInjectionSite = 'sps-api-oauth-id-url-injection-site',
+
   Cron = 'sps-cron-job-data',
   CronViewLogData = 'sps-cron-job-log',
 

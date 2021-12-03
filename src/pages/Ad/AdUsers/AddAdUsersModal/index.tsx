@@ -104,6 +104,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
     o365_licenses: '',
     domain: '',
     exchangeActiveMailbox: false,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -182,6 +183,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
         user_principal_name: data.user_principal_name,
         whenChanged: _.isNull(data.whenChanged) ? null : moment(data.whenChanged),
         when_created: _.isNull(data.when_created) ? null : moment(data.when_created),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         exclusion: data.exclusion,
         exclusion_id: data.exclusion_id,
         last_logon_timestamp: data.last_logon_timestamp,
@@ -566,6 +568,28 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

@@ -46,7 +46,7 @@ function Sidebar() {
     } else if (childMenu.parent_menu_id) {
       return (
         <Menu.Item key={`${childMenu.url ? childMenu.url : key}`}>
-          <Link to={`${childMenu.url}`} title={childMenu?.description}>
+          <Link to={`${childMenu.url ? childMenu.url : ''}`} title={childMenu?.description}>
             {childMenu?.description}
           </Link>
         </Menu.Item>

@@ -26,6 +26,7 @@ export interface IAdUser {
   user_principal_name?: string;
   whenChanged?: string | Moment;
   when_created?: string | Moment;
+  date_added?: string | Moment;
   exclusion?: string;
   tenant_id?: number;
   exclusion_id?: number;

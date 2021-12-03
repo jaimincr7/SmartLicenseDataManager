@@ -1,4 +1,5 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface ISqlServerInventory {
   id?: number;
@@ -6,7 +7,7 @@ export interface ISqlServerInventory {
   company_name?: string;
   bu_id?: number;
   bu_name?: string;
-  date_added?: Date;
+  date_added?: string | Moment;
   sql_cluster?: string;
   host?: string;
   device_name?: string;

@@ -87,6 +87,20 @@ export const getScheduleDate = createAsyncThunk('getScheduleDate', async (data: 
   return response.data;
 });
 
+export const getScheduleDateforWindowsServer = createAsyncThunk('getScheduleDateforWindowsServer', async (data: IScheduleDate) => {
+  const response = await commonService.getScheduleDateforWindowsServer(data).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getScheduleDateforSqlServer = createAsyncThunk('getScheduleDateforSqlServer', async (data: IScheduleDate) => {
+  const response = await commonService.getScheduleDateforSqlServer(data).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getSqlServerLicenseLookup = createAsyncThunk('getSqlServerLicenseLookup', async () => {
   const response = await commonService.getSqlServerLicenseLookup().then((res) => {
     return res.body;
@@ -134,6 +148,20 @@ export const getO365ProductsLookup = createAsyncThunk('getO365ProductsLookup', a
 
 export const getSpsApiGroupLookup = createAsyncThunk('getSpsApiGroupLookup', async () => {
   const response = await commonService.getSpsApiGroupLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getSpsApiOAuthLookup = createAsyncThunk('getSpsApiOAuthLookup', async () => {
+  const response = await commonService.getSpsApiOAuth().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getSpsApiUrlInjectionLookup = createAsyncThunk('getSpsApiUrlInjectionLookup', async () => {
+  const response = await commonService.getSpsApiUrlInjection().then((res) => {
     return res.body;
   });
   return response.data;

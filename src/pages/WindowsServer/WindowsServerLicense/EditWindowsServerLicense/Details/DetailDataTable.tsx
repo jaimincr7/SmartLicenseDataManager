@@ -8,6 +8,7 @@ import {
   FilterByDropdown,
   FilterByDateSwap,
 } from '../../../../../common/components/DataTable/DataTableFilters';
+import { AlignType } from 'rc-table/lib/interface';
 import windowsServerLicenseDetailService from '../../../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.service';
 import { useAppSelector } from '../../../../../store/app.hooks';
 import { searchWindowsServerLicenseDetail } from '../../../../../store/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.action';
@@ -156,6 +157,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -360,6 +362,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -498,6 +501,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -525,6 +529,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -552,6 +557,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -601,6 +607,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -628,6 +635,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -655,6 +663,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -710,6 +719,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -737,6 +747,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -764,6 +775,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -1392,6 +1404,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -1418,6 +1431,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

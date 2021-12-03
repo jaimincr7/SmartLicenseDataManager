@@ -63,7 +63,7 @@ export const deleteWindowsServerExclusions = createAsyncThunk(
   }
 );
 
-export const processData = createAsyncThunk('processData', async (data: IProcessData) => {
+export const processDataWindowsServerExclusion = createAsyncThunk('processDataWindowsServerExclusion', async (data: IProcessData) => {
   const response = await windowsServerExclusionsService.processData(data).then((res) => {
     return res.body;
   });

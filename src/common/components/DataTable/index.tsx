@@ -137,7 +137,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       limit: page.pageSize,
       offset: (page.current - 1) * page.pageSize,
       ...(rest || {}),
-      filter_keys: type_id ? {api_type_id: type_id} : inlineSearchFilterObj,
+      filter_keys: type_id ? { api_type_id: type_id } : inlineSearchFilterObj,
       is_export_to_excel: isExportToExcel,
       ...(extraSearchData || {}),
     };
@@ -147,18 +147,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const fetchTableData = (page = null) => {
     const searchData = getSearchData(page, false);
-    searchData
+    searchData;
     if (setObjectForColumnFilter) {
-        setObjectForColumnFilter({
-          filter_keys: searchData.filter_keys,
-          keyword: searchData.keyword,
-          limit: searchData.limit,
-          offset: searchData.offset,
-          is_column_selection: searchData.is_column_selection,
-          order_by: tableFilter.order_by,
-          order_direction: tableFilter.order_direction,
-          column_called: [],
-        });
+      setObjectForColumnFilter({
+        filter_keys: searchData.filter_keys,
+        keyword: searchData.keyword,
+        limit: searchData.limit,
+        offset: searchData.offset,
+        is_column_selection: searchData.is_column_selection,
+        order_by: tableFilter.order_by,
+        order_direction: tableFilter.order_direction,
+        column_called: [],
+      });
     }
     //setCallColumnApi(true);
     dispatch(searchTableData(searchData));
@@ -613,7 +613,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               };
               dispatch(startAll(Obj));
             } else {
-                onRowSelection();
+              onRowSelection();
             }
           }}
         >
@@ -645,21 +645,23 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               Export
             </Button>
           )}
-          {hideShowHideButton ? <></> : <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
-            <Button
-              disabled={reduxStoreData.search.count === 0}
-              icon={
-                <em className="anticon">
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-lines.svg`} alt="" />
-                </em>
-              }
-            >
-              Show/Hide Columns
-            </Button>
-          </Popover>}
-          {
-            renderCallApiButton()
-          }
+          {hideShowHideButton ? (
+            <></>
+          ) : (
+            <Popover content={dropdownMenu} trigger="click" overlayClassName="custom-popover">
+              <Button
+                disabled={reduxStoreData.search.count === 0}
+                icon={
+                  <em className="anticon">
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/ic-lines.svg`} alt="" />
+                  </em>
+                }
+              >
+                Show/Hide Columns
+              </Button>
+            </Popover>
+          )}
+          {renderCallApiButton()}
           {showBulkUpdate && (
             <Button
               type="primary"
@@ -693,7 +695,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id']}
             dataSource={reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
-            loading={reduxStoreData.search.loading || reduxStoreData?.delete?.loading || reduxStoreData?.callAllApi?.loading || reduxStoreData?.callApi?.loading}
+            loading={
+              reduxStoreData.search.loading ||
+              reduxStoreData?.delete?.loading ||
+              reduxStoreData?.callAllApi?.loading ||
+              reduxStoreData?.callApi?.loading
+            }
             pagination={{
               ...pagination,
               pageSizeOptions: ['10', '100', '500', '1000'],

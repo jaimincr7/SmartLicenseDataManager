@@ -105,7 +105,7 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
     current_year_committed: null,
     current_avg_price: null,
     current_purchase_cost: null,
-    date_added: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -192,6 +192,7 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
         current_year_committed: data.current_year_committed,
         current_avg_price: data.current_avg_price,
         current_purchase_cost: data.current_purchase_cost,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -474,6 +475,29 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
                   )}
                   <Form.Item name="sku_id" className="m-0" label="Sku Id" rules={[{ max: 36 }]}>
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                    rules={[{ required: !isMultiple }]}
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

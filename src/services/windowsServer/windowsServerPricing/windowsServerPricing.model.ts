@@ -1,4 +1,5 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface IWindowsServerPricing {
   id?: number;
@@ -9,6 +10,7 @@ export interface IWindowsServerPricing {
   currency_id?: number;
   agreement_type_id?: number;
   tenant_id: number;
+  date_added?: string | Moment;
 }
 
 export interface ISearchWindowsServerPricing extends ISearch {

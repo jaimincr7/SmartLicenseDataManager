@@ -89,6 +89,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
     android: null,
     activated_on_shared_computer: false,
     tenant_id: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -157,6 +158,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
         user_principal_name: data.user_principal_name,
         display_name: data.display_name,
         product_type: data.product_type,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         last_activated_date: _.isNull(data.last_activated_date)
           ? null
           : moment(data.last_activated_date),
@@ -387,6 +389,28 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
                             </Option>
                           ))}
                     </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

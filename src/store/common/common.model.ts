@@ -45,6 +45,14 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  getScheduledDateforWindows: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  getScheduledDateforSql: {
+    data: ILookup[];
+    loading: boolean;
+  };
   sqlServerLicenseLookup: {
     data: ILookup[];
     loading: boolean;
@@ -79,6 +87,14 @@ export interface ICommonState {
     loading: boolean;
   };
   spsApiGroupLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  spsApiOAuthLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  spsApiUrlInjectionLookup: {
     data: ILookup[];
     loading: boolean;
   };

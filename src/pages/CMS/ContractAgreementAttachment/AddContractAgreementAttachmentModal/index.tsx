@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -65,6 +65,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
     file_path: '',
     file_name: '',
     user_id: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -306,6 +307,29 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
                     rules={[{ max: 510, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                    rules={[{ required: !isMultiple }]}
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

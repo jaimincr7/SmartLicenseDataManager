@@ -6,6 +6,7 @@ export interface IO365ActiveUserDetail {
   company_id?: number;
   bu_id?: number;
   report_refresh_date?: string | Moment;
+  date_added?: string | Moment;
   user_principal_name?: string;
   display_name?: string;
   is_deleted?: boolean;

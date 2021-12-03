@@ -7,6 +7,7 @@ import {
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
+import { AlignType } from 'rc-table/lib/interface';
 import _ from 'lodash';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
@@ -115,6 +116,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

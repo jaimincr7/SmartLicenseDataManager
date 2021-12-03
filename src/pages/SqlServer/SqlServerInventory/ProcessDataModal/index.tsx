@@ -21,7 +21,7 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processData } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.action';
+import { processDataSqlServerInventory } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.action';
 import {
   clearSqlServerInventoryMessages,
   sqlServerInventorySelector,
@@ -64,7 +64,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    dispatch(processData(values));
+    dispatch(processDataSqlServerInventory(values));
   };
 
   const saveConfig = () => {

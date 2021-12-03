@@ -158,6 +158,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
     growth: null,
     month_name: '',
     tenant_id: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: IAzureDailyUsage) => {
@@ -260,6 +261,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         billing_period_end_date: _.isNull(data.billing_period_end_date)
           ? null
           : moment(data.billing_period_end_date),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         billing_profile_id: data.billing_profile_id,
         billing_profile_name: data.billing_profile_name,
         part_number: data.part_number,
@@ -968,6 +970,28 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     rules={[{ max: 510 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

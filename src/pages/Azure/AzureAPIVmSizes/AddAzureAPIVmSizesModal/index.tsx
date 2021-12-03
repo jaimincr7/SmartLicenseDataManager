@@ -1,6 +1,8 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import _ from 'lodash';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
@@ -52,6 +54,7 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
     resource_disk_size_in_gb: null,
     memory_in_gb: null,
     max_data_disk_count: null,
+    date_added: moment(),
   };
 
   const onFinish = (values: IAzureAPIVmSizes) => {
@@ -82,6 +85,7 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
         resource_disk_size_in_gb: data.resource_disk_size_in_gb,
         memory_in_gb: data.memory_in_gb,
         max_data_disk_count: data.max_data_disk_count,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -251,6 +255,28 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
                     rules={[{ type: 'number' }]}
                   >
                     <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

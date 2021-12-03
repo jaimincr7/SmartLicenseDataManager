@@ -16,6 +16,7 @@ import {
   deleteCmdbVirtualization,
   searchCmdbVirtualization,
 } from '../../../../store/cmdb/virtualization/virtualization.action';
+import { AlignType } from 'rc-table/lib/interface';
 import {
   clearCmdbVirtualizationMessages,
   cmdbVirtualizationSelector,
@@ -194,6 +195,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },
@@ -221,6 +223,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               ) : (
                 ''
               ),
+            align: 'center' as AlignType,
           },
         ],
       },

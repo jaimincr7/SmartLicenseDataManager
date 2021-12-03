@@ -33,17 +33,21 @@ class SPSApiCallService {
         cancelTokenSource.cancel();
         toast.warning('Process is working in background.');
         reject();
-      }, (30 * 1000));  // wait till 30 seconds 
+      }, 30 * 1000); // wait till 30 seconds
 
-      request({ url, method: 'POST', data: data, cancelToken: cancelTokenSource.token }).then((res) => {
-        return res?.data;
-      }).then(data => {        
-        resolve(data);
-      }).catch(data => {
-        reject(data);
-      }).finally(()=>{
-        clearTimeout(timmer);
-      })     
+      request({ url, method: 'POST', data: data, cancelToken: cancelTokenSource.token })
+        .then((res) => {
+          return res?.data;
+        })
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((data) => {
+          reject(data);
+        })
+        .finally(() => {
+          clearTimeout(timmer);
+        });
     });
   }
 
@@ -58,17 +62,21 @@ class SPSApiCallService {
         cancelTokenSource.cancel();
         toast.warning('Process is working in background.');
         reject();
-      }, (30 * 1000));  // wait till 30 seconds 
+      }, 30 * 1000); // wait till 30 seconds
 
-      request({ url, method: 'POST', data: searchParams, cancelToken: cancelTokenSource.token }).then((res) => {
-        return res?.data;
-      }).then(data => {        
-        resolve(data);
-      }).catch(data => {
-        reject(data);
-      }).finally(()=>{
-        clearTimeout(timmer);
-      }) 
+      request({ url, method: 'POST', data: searchParams, cancelToken: cancelTokenSource.token })
+        .then((res) => {
+          return res?.data;
+        })
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((data) => {
+          reject(data);
+        })
+        .finally(() => {
+          clearTimeout(timmer);
+        });
     });
   }
 }
