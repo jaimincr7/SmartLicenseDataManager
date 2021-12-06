@@ -631,7 +631,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           {isCronJobApiButton && (
             <Can I={Action.RunCronJob} a={Page.Cron}>
               <Button onClick={startSchedule} icon={<RedoOutlined style={{ color: 'blue' }} />}>
-                Start Scheduler
+                Enable Scheduler
               </Button>
             </Can>
           )}

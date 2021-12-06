@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin, Switch, TimePicker } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Modal, Row, Select, Spin, Switch, TimePicker } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
@@ -504,26 +504,48 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     className="m-0"
                     rules={[{ required: !isMultiple }]}
                   >
-                    <TimePicker defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
+                    <TimePicker className="form-control w-100" defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'date_added']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item
+                    name="date_added"
+                    label="Date Added"
+                    className="m-0"
+                    rules={[{ required: !isMultiple }]}
+                  >
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="start_schedular" className="m-0" valuePropName="checked">
+                  <Form.Item name="start_schedular" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
-                  &nbsp;
                   {isMultiple ? (
                     <Form.Item
                       name={['checked', 'start_schedular']}
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>Start Schedular ?</Checkbox>
+                      <Checkbox>Enable</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Start Schedular ?'
+                    'Enable'
                   )}
                 </div>
               </Col>
