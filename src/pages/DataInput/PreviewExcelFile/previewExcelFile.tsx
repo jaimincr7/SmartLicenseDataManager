@@ -1,4 +1,4 @@
-import { Button, Col, Form, InputNumber, Modal, Table } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
 import { IPreviewExcel } from './PreviewExcel.model';
@@ -61,7 +61,8 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       footer={false}
     >
       <Form form={form} name="formUpload" initialValues={initialValues}>
-        <Col xs={24} md={8}>
+        <Row gutter={[30, 15]} className="form-label-hide">
+        <Col xs={24} sm={12} md={8}>
           <div className="form-group ">
             <label className="label">Header Row</label>
             <Form.Item name="header_row" className="m-0" rules={[{ type: 'integer' }]}>
@@ -76,6 +77,22 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
             </Form.Item>
           </div>
         </Col>
+        <Col xs={24} sm={12} md={8}>
+          <div className="form-group ">
+            <label className="label">Deli Meter</label>
+            <Form.Item name="deli_meter" className="m-0" rules={[{ type: 'integer' }]}>
+              <InputNumber
+                min={1}
+                max={maxCount}
+                className="form-control w-100"
+                onChange={(value) => {
+                  previewData(value);
+                }}
+              />
+            </Form.Item>
+          </div>
+        </Col>
+        </Row>
         <Table
           showHeader={false}
           scroll={{ x: true }}

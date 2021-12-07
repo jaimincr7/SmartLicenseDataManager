@@ -94,6 +94,9 @@ export const bulkImportSlice = createSlice({
     clearExcelColumns: (state) => {
       state.getExcelColumns.data = null;
     },
+    clearExcelFileMappingMessages: (state) => {
+      state.getExcelMappingColumns.messages = [];
+    },
     setTableForImport: (state, action: PayloadAction<IDataTableForImport[]>) => {
       state.getTablesForImport.data = action.payload;
     },
@@ -272,6 +275,7 @@ export const {
   clearExcelColumns,
   clearGetTableColumns,
   clearDeleteMessages,
+  clearExcelFileMappingMessages,
   setTableForImport,
 } = bulkImportSlice.actions;
 

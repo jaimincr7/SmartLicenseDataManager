@@ -1,54 +1,44 @@
-import { Button, Checkbox, Col, Form, Popover, Row, Select, Spin, Upload } from 'antd';
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
-import {
-  bulkInsert,
-  getTables,
-  getExcelColumns,
-  getTableColumns,
-  getTablesForImport,
-  saveTableForImport,
-  getExcelFileMapping,
-} from '../../../store/bulkImport/bulkImport.action';
-import {
-  clearExcelColumns,
-  clearBulkImportMessages,
-  bulkImportSelector,
-  clearGetTableColumns,
-  setTableForImport,
-} from '../../../store/bulkImport/bulkImport.reducer';
-import { useHistory, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { Page } from '../../../common/constants/pageAction';
-import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import { SettingOutlined } from '@ant-design/icons';
-import { UploadOutlined } from '@ant-design/icons';
-import RenderBI from '../RenderBI';
-import { UploadFile } from 'antd/lib/upload/interface';
-import { IDatabaseTable } from '../../../services/common/common.model';
+import { Button, Checkbox, Col, Form, Popover, Row, Select, Spin } from "antd";
+import { useHistory, useParams } from "react-router-dom";
+import BreadCrumbs from "../../../common/components/Breadcrumbs";
+import { Page } from "../../../common/constants/pageAction";
+import { SettingOutlined , UploadOutlined } from '@ant-design/icons';
+import { useAppDispatch, useAppSelector } from "../../../store/app.hooks";
+import { bulkImportSelector, clearBulkImportMessages, clearExcelColumns, clearGetTableColumns, setTableForImport } from "../../../store/bulkImport/bulkImport.reducer";
+import { useEffect , useState } from "react";
+import { bulkInsert, getExcelColumns, getExcelFileMapping, getTableColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
+import { toast } from "react-toastify";
+import Dragger from "antd/lib/upload/Dragger";
+import { IDatabaseTable } from "../../../services/common/common.model";
+import { UploadFile } from "antd/lib/upload/interface";
+import RenderBI from "../RenderBI";
 
 let valuesArray = [];
-
 const { Option } = Select;
+let getFileMappingTimeOut = null;
 
 const BulkImport: React.FC = () => {
+
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const { Dragger } = Upload;
-  const [formUpload] = Form.useForm();
-
-  const [count, setCount] = useState({ save: 0, reset: 0 });
-  const [defaultFile, setDefaultFile] = useState(null);
-  const [indeterminate, setIndeterminate] = useState(false);
   const [checkAll, setCheckAll] = useState(false);
-  const [excelColumnState, setExcelColumnState] = useState([]);
-  const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
+  const [indeterminate, setIndeterminate] = useState(false);
+  const [formUpload] = Form.useForm();
 
   let { table } = useParams<{ table: string }>();
   table && (table = decodeURIComponent(table));
+  const [count, setCount] = useState({ save: 0, reset: 0 });
   const [tableName, setTableName] = useState<string>(table);
+  const [defaultFile, setDefaultFile] = useState(null);
+  const [excelColumnState, setExcelColumnState] = useState([]);
+  const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
+  const [ records,setRecords ] = useState<Array<{index: number,original_filename: string,table_name: string,header_row: number,sheet: string}>>([]);
+
+  const formUploadInitialValues = {
+    header_row: 1,
+  };
 
   const uploadFile = async (options) => {
     const { onSuccess, file } = options;
@@ -60,8 +50,100 @@ const BulkImport: React.FC = () => {
   useEffect(() => {
     if (bulkImports.getExcelColumns.data) {
       setExcelColumnState(bulkImports.getExcelColumns.data);
+      bulkImports.getExcelColumns.data?.map((x: any,index: number) => 
+        {
+          setRecords((records) => [...records,{
+           index: index + 1,
+           original_filename: x.original_filename,
+           table_name: tableName,
+           header_row: 1,
+           sheet: x?.excel_sheet_columns[0]?.sheet
+          }]);}
+        );
     }
   }, [bulkImports.getExcelColumns.data]);
+  
+  useEffect(() => {
+    if (bulkImports.bulkInsert.messages.length > 0 && (count.save > 0 || count.reset > 0)) {
+      if (bulkImports.bulkInsert.hasErrors) {
+        toast.error(bulkImports.bulkInsert.messages.join(' '));
+      } else {
+        toast.success(bulkImports.bulkInsert.messages.join(' '));
+        dispatch(clearExcelColumns());
+        dispatch(clearBulkImportMessages());
+        onCancel();
+        if (table) {
+          history.goBack();
+        }
+      }
+    }
+  }, [bulkImports.bulkInsert.messages]);
+
+  useEffect(() => {
+    if (table) {
+      const currentTable = bulkImports.getTables.data.filter(
+        (t) => t.name.toLowerCase() === (table || '').toLowerCase()
+      );
+      if (currentTable.length > 0) {
+        formUpload.setFieldsValue({ table_name: currentTable[0].name });
+        dispatch(getTableColumns(currentTable[0].name));
+      }
+    }
+  }, [bulkImports.getTables.data]);
+
+  useEffect(() => {
+    if (bulkImports.saveTableForImport.messages.length > 0) {
+      if (bulkImports.saveTableForImport.hasErrors) {
+        toast.error(bulkImports.saveTableForImport.messages.join(' '));
+      } else {
+        toast.success(bulkImports.saveTableForImport.messages.join(' '));
+        dispatch(getTables());
+      }
+      dispatch(clearBulkImportMessages());
+    }
+  }, [bulkImports.saveTableForImport.messages]);
+
+  useEffect(() => {
+    handleIndeterminate();
+  }, [bulkImports.getTablesForImport.data]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearGetTableColumns());
+    };
+  }, []);
+
+  useEffect(() => {
+    getExcelMappingColumns();
+  }, [formUpload?.getFieldValue('table_name')]);
+
+  useEffect(() => {
+    if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
+      dispatch(getTables());
+    }
+    if (!table) {
+      dispatch(getTablesForImport());
+      handleIndeterminate();
+    }
+    return () => {
+      dispatch(clearExcelColumns());
+    };
+  }, [dispatch]);
+
+  const getExcelMappingColumns = () => {
+    if (formUpload?.getFieldValue('table_name') && defaultFile) {
+      dispatch(
+        getExcelFileMapping({
+          table_name: formUpload.getFieldValue('table_name'),
+          key_word: defaultFile[0]?.name?.split('.')[0],
+        })
+      );
+    }
+  };
+
+  const getFileMappingCall = (formData: any) => {
+    dispatch(getExcelColumns(formData));
+  };
 
   const handleOnChange = (info) => {
     const { file, fileList } = info;
@@ -88,7 +170,12 @@ const BulkImport: React.FC = () => {
         formData.append('file', ele.originFileObj ? ele.originFileObj : ele);
       });
       try {
-        dispatch(getExcelColumns(formData));
+        if(getFileMappingTimeOut) {
+          clearTimeout(getFileMappingTimeOut);
+        }
+        getFileMappingTimeOut = setTimeout(() => {
+          getFileMappingCall(formData);
+        }, 1000);
       } catch (err) {
         toast.error(err?.toString());
       }
@@ -96,68 +183,31 @@ const BulkImport: React.FC = () => {
     }
     formUpload.setFieldsValue({ sheet_name: '' });
   };
-
-  const formUploadInitialValues = {
-    header_row: 1,
+  
+  const saveTables = () => {
+    const selectedTables = bulkImports.getTablesForImport.data
+      .filter((table) => table.is_available)
+      .map((table) => table.name);
+    if (selectedTables.length > 0) {
+      const inputValues = {
+        table_names: selectedTables,
+      };
+      dispatch(saveTableForImport(inputValues));
+    } else {
+      toast.info('Please select some tables.');
+      return false;
+    }
   };
-
-  useEffect(() => {
-    if (bulkImports.bulkInsert.messages.length > 0 && (count.save > 0 || count.reset > 0)) {
-      if (bulkImports.bulkInsert.hasErrors) {
-        toast.error(bulkImports.bulkInsert.messages.join(' '));
-      } else {
-        toast.success(bulkImports.bulkInsert.messages.join(' '));
-        dispatch(clearExcelColumns());
-        dispatch(clearBulkImportMessages());
-        onCancel();
-        if (table) {
-          history.goBack();
-        }
-      }
-    }
-  }, [bulkImports.bulkInsert.messages]);
-
-  useEffect(() => {
-    if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
-      dispatch(getTables());
-    }
-    if (!table) {
-      dispatch(getTablesForImport());
-      handleIndeterminate();
-    }
-    return () => {
-      dispatch(clearExcelColumns());
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (table) {
-      const currentTable = bulkImports.getTables.data.filter(
-        (t) => t.name.toLowerCase() === (table || '').toLowerCase()
-      );
-      if (currentTable.length > 0) {
-        formUpload.setFieldsValue({ table_name: currentTable[0].name });
-        dispatch(getTableColumns(currentTable[0].name));
-      }
-    }
-  }, [bulkImports.getTables.data]);
-
-  // Start: Set tables for import
-  useEffect(() => {
-    if (bulkImports.saveTableForImport.messages.length > 0) {
-      if (bulkImports.saveTableForImport.hasErrors) {
-        toast.error(bulkImports.saveTableForImport.messages.join(' '));
-      } else {
-        toast.success(bulkImports.saveTableForImport.messages.join(' '));
-        dispatch(getTables());
-      }
-      dispatch(clearBulkImportMessages());
-    }
-  }, [bulkImports.saveTableForImport.messages]);
-
-  useEffect(() => {
-    handleIndeterminate();
-  }, [bulkImports.getTablesForImport.data]);
+  
+  const handleIndeterminate = () => {
+    const selectedTables = bulkImports.getTablesForImport.data.filter(
+      (table) => table.is_available
+    );
+    setIndeterminate(
+      !!selectedTables.length && selectedTables.length < bulkImports.getTablesForImport.data.length
+    );
+    setCheckAll(selectedTables.length === bulkImports.getTablesForImport.data.length);
+  };
 
   const handleCheckChange = (e, tableName) => {
     dispatch(
@@ -168,16 +218,6 @@ const BulkImport: React.FC = () => {
       )
     );
     handleIndeterminate();
-  };
-
-  const handleIndeterminate = () => {
-    const selectedTables = bulkImports.getTablesForImport.data.filter(
-      (table) => table.is_available
-    );
-    setIndeterminate(
-      !!selectedTables.length && selectedTables.length < bulkImports.getTablesForImport.data.length
-    );
-    setCheckAll(selectedTables.length === bulkImports.getTablesForImport.data.length);
   };
 
   const handleSelectAllChange = (e) => {
@@ -193,19 +233,41 @@ const BulkImport: React.FC = () => {
     );
   };
 
-  const saveTables = () => {
-    const selectedTables = bulkImports.getTablesForImport.data
-      .filter((table) => table.is_available)
-      .map((table) => table.name);
-    if (selectedTables.length > 0) {
-      const inputValues = {
-        table_names: selectedTables,
-      };
-      dispatch(saveTableForImport(inputValues));
-    } else {
-      toast.info('Please select some tables.');
-      return false;
+  const handleSave = (data) => {
+    valuesArray.push(data);
+    if (valuesArray?.length > 0 && valuesArray?.length === excelColumnState?.length) {
+      const remainingFiles = [];
+      valuesArray?.forEach((val) => {
+        try {
+          const orgFileName = excelColumnState?.find(
+            (x) => x.filename === val?.file_name
+          )?.original_filename;
+          val.original_file_name = orgFileName;
+          dispatch(bulkInsert(val));
+        } catch (e) {
+          const orgFileName = excelColumnState?.find(
+            (x) => x.filename === val?.file_name
+          )?.original_filename;
+          remainingFiles.push(orgFileName);
+        }
+      });
+      if (remainingFiles?.length > 0) {
+        toast.error('Listed files does not imported ,' + remainingFiles.toString());
+      }
     }
+  };
+
+  const onCancel = () => {
+    dispatch(clearExcelColumns());
+    setExcelColumnState([]);
+    valuesArray = [];
+    setDefaultFileList([]);
+    setCount({ save: 0, reset: 0 });
+    const tbName = formUpload?.getFieldValue('table_name');
+    formUpload.resetFields();
+    formUpload.setFieldsValue({ table_name: tbName });
+    setDefaultFileList([]);
+    setTableName(tbName);
   };
 
   const dropdownMenu = (
@@ -246,67 +308,6 @@ const BulkImport: React.FC = () => {
   );
   // End: set tables for import
 
-  useEffect(() => {
-    return () => {
-      dispatch(clearGetTableColumns());
-    };
-  }, []);
-
-  const getExcelMappingColumns = () => {
-    if (formUpload?.getFieldValue('table_name') && defaultFile) {
-      dispatch(
-        getExcelFileMapping({
-          table_name: formUpload.getFieldValue('table_name'),
-          key_word: defaultFile[0]?.name?.split('.')[0],
-        })
-      );
-    }
-  };
-
-  useEffect(() => {
-    getExcelMappingColumns();
-  }, [formUpload?.getFieldValue('table_name')]);
-
-  useEffect(() => {
-    getExcelMappingColumns();
-  }, [defaultFile]);
-
-  const handleSave = (data) => {
-    valuesArray.push(data);
-    if (valuesArray?.length > 0 && valuesArray?.length === excelColumnState?.length) {
-      const remainingFiles = [];
-      valuesArray?.forEach((val) => {
-        try {
-          const orgFileName = excelColumnState?.find(
-            (x) => x.filename === val?.file_name
-          )?.original_filename;
-          val.original_file_name = orgFileName;
-          dispatch(bulkInsert(val));
-        } catch (e) {
-          const orgFileName = excelColumnState?.find(
-            (x) => x.filename === val?.file_name
-          )?.original_filename;
-          remainingFiles.push(orgFileName);
-        }
-      });
-      if (remainingFiles?.length > 0) {
-        toast.error('Listed files does not imported ,' + remainingFiles.toString());
-      }
-    }
-  };
-
-  const onCancel = () => {
-    dispatch(clearExcelColumns());
-    setExcelColumnState([]);
-    valuesArray = [];
-    setDefaultFileList([]);
-    setCount({ save: 0, reset: 0 });
-    const tbName = formUpload?.getFieldValue('table_name');
-    formUpload.resetFields();
-    formUpload.setFieldsValue({ table_name: tbName });
-    setDefaultFileList([]);
-    setTableName(tbName);
-  };
   return (
     <>
       <div className="update-excel-page">
@@ -405,31 +406,40 @@ const BulkImport: React.FC = () => {
                 </Row>
               </Form>
             </div>
-          </div>
-          <br />
+            </div>
+            <br />
           <br />
           {bulkImports.getExcelColumns.loading ? (
             <div className="spin-loader">
               <Spin spinning={true} />
             </div>
           ) : (
-            excelColumnState?.length > 0 &&
-            bulkImports.getExcelColumns.data?.map(
+            excelColumnState?.length > 0 ? 
+            (<>
+              <table className="bulk-import-table">
+                  <tr>
+                    <th>File Name</th>
+                    <th>Table Name</th>
+                    <th>Sheet Name</th>
+                    <th>Header Row</th>
+                    <th>Manage Header</th>
+                    <th>Manage Mapping</th>
+                  </tr>
+            {bulkImports.getExcelColumns.data?.map(
               (data: any, index) =>
                 excelColumnState?.find((x) => x.original_filename === data.original_filename) && (
-                  <div key={'render-bi-' + index}>
-                    <RenderBI
+                    <><RenderBI
                       handleSave={(data: any) => handleSave(data)}
                       count={count}
                       fileData={data}
+                      records={records}
                       seqNumber={index + 1}
                       table={tableName}
                     ></RenderBI>
-                    <br />
-                    <br />
-                  </div>
+                    <hr className="bulk-import-table"/></>
                 )
-            )
+            )}
+            </table></>):<></>
           )}
           <div className="btns-block">
             <Button
@@ -458,4 +468,5 @@ const BulkImport: React.FC = () => {
     </>
   );
 };
+
 export default BulkImport;

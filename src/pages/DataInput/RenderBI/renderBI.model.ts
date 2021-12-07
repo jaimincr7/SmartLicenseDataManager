@@ -4,4 +4,5 @@ export interface IRenderBIProps {
   count: { [key: string]: number };
   handleSave: (data: any) => void;
   table: string;
+  records?: any[];
 }

@@ -1,25 +1,30 @@
-import { Button, Col, Form, Input, Modal, Row, Switch } from 'antd';
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Switch } from 'antd';
 import React, { useEffect } from 'react';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import { IMappingColumnProps } from './MappingColumn.model';
 
+const { Option } = Select;
+
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { saveMapping, fileName, showModal, handleModalClose } = props;
+  const { saveMapping, fileName, fileType , showModal, handleModalClose , tableColumns , excelColumns , onExcelMapping} = props;
 
   const [form] = Form.useForm();
   const initialValues = {
     file_name: fileName,
+    file_type: fileType,
     isPublic: false,
   };
 
   useEffect(() => {
     form.setFieldsValue({ file_name: fileName });
+    form.setFieldsValue({ file_type: fileType});
   }, [fileName]);
 
   const onFinish = (values: any) => {
-    const { file_name, isPublic } = values;
+    const { file_name, isPublic, ...rest } = values;
     saveMapping(file_name, isPublic);
+    onExcelMapping(rest);
   };
 
   return (
@@ -46,6 +51,18 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               </Form.Item>
             </div>
           </Col>
+          <Col xs={24} sm={12} md={8}>
+            <div className="form-group m-0">
+              <label className="label">File Type</label>
+              <Form.Item
+                name="file_type"
+                label="File Type"
+                className="m-0"
+              >
+                <Input className="form-control" disabled={true}/>
+              </Form.Item>
+            </div>
+          </Col>
           <Can I={Action.Select} a={Page.ConfigExcelFileMapping}>
             {}
             <Col xs={24} sm={12} md={8}>
@@ -57,6 +74,47 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               </div>
             </Col>
           </Can>
+        </Row>
+        <Row gutter={[30, 15]} className="form-label-hide">
+        {tableColumns.map((col, index: number) => (
+                      <Col xs={24} md={12} lg={12} xl={8} key={index}>
+                        <div className="form-group form-inline">
+                          <label className="label">{col.name}</label>
+                          <Form.Item
+                            name={col.name}
+                            className="m-0 w-100"
+                            label={col.name}
+                            rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
+                          >
+                            <Select
+                              showSearch
+                              allowClear
+                              suffixIcon={
+                                <img
+                                  src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
+                                  alt=""
+                                />
+                              }
+                              optionFilterProp="children"
+                              filterOption={(input, option: any) =>
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                              }
+                              filterSort={(optionA: any, optionB: any) =>
+                                optionA.children
+                                  ?.toLowerCase()
+                                  ?.localeCompare(optionB.children?.toLowerCase())
+                              }
+                            >
+                              {excelColumns.map((option: string, index: number) => (
+                                <Option key={index} value={option}>
+                                  {option}
+                                </Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </div>
+                      </Col>
+                    ))}
         </Row>
       </Form>
 

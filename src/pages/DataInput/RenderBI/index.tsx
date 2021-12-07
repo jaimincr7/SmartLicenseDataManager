@@ -95,12 +95,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   };
 
   useEffect(() => {
-    if (fileData?.original_filename) {
-      innerFormUpload?.setFieldsValue({ original_filename: fileData?.original_filename });
-    }
-  }, [fileData?.original_filename]);
-
-  useEffect(() => {
     if (count.save > 0) {
       form.submit();
     }
@@ -142,12 +136,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         date_added: date_added,
       },
     };
+    console.log(inputValues);
     handleSave(inputValues);
-  };
-
-  const formUploadInitialValues = {
-    header_row: 1,
-    original_filename: fileData?.original_filename,
   };
 
   const setFormFields = async () => {
@@ -202,18 +192,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-          ? null
-          : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-          ? null
-          : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-          ? null
-          : globalSearch?.company_id[0],
+            ? null
+            : globalSearch?.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -224,10 +214,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -236,37 +226,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       setExcelColumns(null);
       setTableColumns(null);
     }
-  };
-
-  const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
-    if (tenantId) {
-      commonService.getCompanyLookup(tenantId).then((res) => {
-        setCompBuLookups({ compony: res.body?.data, bu: [] });
-      });
-    } else {
-      setCompBuLookups({ compony: [], bu: [] });
-    }
-  };
-
-  const handleCompanyChange = (companyId: number) => {
-    form.setFieldsValue({ company_id: companyId, bu_id: null });
-    if (companyId) {
-      commonService.getBULookup(companyId).then((res) => {
-        setCompBuLookups({ ...compBuLookups, bu: res.body?.data });
-      });
-    } else {
-      setCompBuLookups({ ...compBuLookups, bu: [] });
-    }
-  };
-
-  const handleBUChange = (buId: number) => {
-    form.setFieldsValue({ bu_id: buId });
-  };
-
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current > moment().endOf('day');
   };
 
   const resetPage = () => {
@@ -515,11 +474,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  const forSaveMapping = () => {
+  const forSaveMapping = (mappingOrder: any) => {
     saveColumnMapping(
       fileData?.original_filename,
       false,
-      innerFormUpload.getFieldValue('mapping_order')
+      mappingOrder
     );
     setSavedExcelMapping([]);
     getExcelMappingColumns();
@@ -568,13 +527,41 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   return (
     <>
+    <tr>
+            <td>{fileData.original_filename}</td>
+            <td>{innerFormUpload.getFieldValue('table_name')}</td>
+            <td>{innerFormUpload.getFieldValue('sheet_name')}</td>
+            <td>{innerFormUpload.getFieldValue('header_row')}</td>
+            <td>{<Button
+                            type="primary"
+                            className="w-100"
+                            onClick={() => {
+                              setShowManageExcel(true);
+                            }}
+                          >
+                            Manage Excel
+                          </Button>}
+            </td>
+            <td>{<Button
+                            type="primary"
+                            className="w-100"
+                            onClick={() => {
+                                setShowMappingModal(true);
+                            }}
+                          >
+                            Manage Mapping
+                          </Button>}
+            </td>
+          </tr>
+    
       <div className="update-excel-page">
-        <div className="main-card">
-          <div className="input-btns-title">
-            <Form
+          
+        {/*<div className="main-card">
+          
+           <div className="input-btns-title">
+            <Form 
               form={innerFormUpload}
               name="innerFormUpload"
-              initialValues={formUploadInitialValues}
             >
               <Row gutter={[30, 20]} className="align-item-start">
                 <Col xs={24} md={6}>
@@ -692,7 +679,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                       </div>
                     </Col>
                   )}
-                {bulkImports.getExcelColumns.data?.length > 0 &&
+                 {bulkImports.getExcelColumns.data?.length > 0 &&
                   bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns && (
                     <Col xs={24} md={6}>
                       <div className="form-group m-0">
@@ -710,15 +697,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                         </div>
                       </div>
                     </Col>
-                  )}
+                  )} 
               </Row>
             </Form>
-          </div>
-          {loadingTableColumns && (
+          </div> */}
+          {/* {loadingTableColumns && (
             <div className="spin-loader">
               <Spin spinning={true} />
             </div>
-          )}
+          )} 
           <Form
             form={form}
             name="uploadExcelSheet"
@@ -963,7 +950,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                 </>
               )}
           </Form>
-        </div>
+        </div> */}
       </div>
       <PreviewExcel
         showModal={showManageExcel}
@@ -985,9 +972,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           }}
           showModal={showMappingModal}
           fileName={fileData?.original_filename.split('.')[0]}
+          fileType={fileData?.original_filename.split('.')[1]}
           saveMapping={(fileName, isPublic) => {
             saveColumnMapping(fileName, isPublic);
           }}
+          tableColumns={tableColumns}
+          excelColumns={excelColumns}
+          onExcelMapping={forSaveMapping}
         ></MappingColumn>
       )}
     </>
