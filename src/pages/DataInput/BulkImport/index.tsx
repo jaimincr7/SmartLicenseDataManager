@@ -433,9 +433,7 @@ const BulkImport: React.FC = () => {
                       //seqNumber={index + 1}
                       table={tableName}
                     ></RenderBI>
-                    <hr className="bulk-import-table"/></>
-                )
-            {/*)}*/}
+                    </>
            </>):<></>
           )}
           <div className="btns-block">

@@ -526,11 +526,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     setShowMappingModal(false);
   };
 
-  const expandedRowRender = () => {
-    
-    return ;
-  };
-
   const columns = [
     {
       title: 'Index',
@@ -647,7 +642,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           saveMapping={(fileName, isPublic) => {
             saveColumnMapping(fileName, isPublic);
           }}
-          tableName={record.table_name}
+          tableName={record?.table_name}
           excelColumns={excelColumns}
           onExcelMapping={forSaveMapping}
         ></MappingColumn>),
