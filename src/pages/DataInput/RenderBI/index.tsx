@@ -528,20 +528,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const expandedRowRender = () => {
     
-    return <MappingColumn
-    handleModalClose={() => {
-      setShowMappingModal(false);
-    }}
-    showModal={showMappingModal}
-    fileName={fileData?.original_filename.split('.')[0]}
-    fileType={fileData?.original_filename.split('.')[1]}
-    saveMapping={(fileName, isPublic) => {
-      saveColumnMapping(fileName, isPublic);
-    }}
-    tableColumns={tableColumns}
-    excelColumns={excelColumns}
-    onExcelMapping={forSaveMapping}
-  ></MappingColumn>;
+    return ;
   };
 
   const columns = [
@@ -650,7 +637,21 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         dataSource={records}
         rowKey={(record) => record['index']}
         columns={columns}
-        expandable={{ expandedRowRender }}
+        expandable={{ expandedRowRender: (record) => (<MappingColumn
+          handleModalClose={() => {
+            setShowMappingModal(false);
+          }}
+          showModal={showMappingModal}
+          fileName={record?.original_filename.split('.')[0]}
+          fileType={record?.original_filename.split('.')[1]}
+          saveMapping={(fileName, isPublic) => {
+            saveColumnMapping(fileName, isPublic);
+          }}
+          tableName={record.table_name}
+          excelColumns={excelColumns}
+          onExcelMapping={forSaveMapping}
+        ></MappingColumn>),
+         }}
       />
       {/* <tr>
         <td>{fileData.original_filename}</td>
@@ -1112,19 +1113,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         records={excelPreviewData}
         headerRowCount={innerFormUpload.getFieldValue('header_row')}
       ></PreviewExcel>
-      {showMappingModal && (
-        <MappingColumn
-          showModal={showMappingModal}
-          fileName={fileData?.original_filename.split('.')[0]}
-          fileType={fileData?.original_filename.split('.')[1]}
-          saveMapping={(fileName, isPublic) => {
-            saveColumnMapping(fileName, isPublic);
-          }}
-          tableColumns={tableColumns}
-          excelColumns={excelColumns}
-          onExcelMapping={forSaveMapping}
-        ></MappingColumn>
-      )}
     </>
   );
 };

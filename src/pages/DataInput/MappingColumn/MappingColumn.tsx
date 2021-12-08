@@ -1,13 +1,15 @@
 import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Switch } from 'antd';
 import React, { useEffect } from 'react';
+import { useState } from 'react';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import commonService from '../../../services/common/common.service';
 import { IMappingColumnProps } from './MappingColumn.model';
 
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { saveMapping, fileName, fileType , showModal, tableColumns , excelColumns , onExcelMapping} = props;
+  const { saveMapping, fileName, fileType , showModal, tableName , excelColumns , onExcelMapping} = props;
 
   const [form] = Form.useForm();
   const initialValues = {
@@ -15,6 +17,25 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     file_type: fileType,
     isPublic: false,
   };
+
+  const [tableColumnState, setTableColumnState] = useState<any>([]);
+  const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (tableName) {
+      setLoadingTableColumns(true);
+      commonService.getTableColumns(tableName).then((res) => {
+        if (res) {
+          setTableColumnState(res);
+        }
+        setLoadingTableColumns(false);
+      });
+    }
+    else {
+      setTableColumnState([]);
+      setTableColumnState([]);
+    }
+  }, [tableName]);
 
   useEffect(() => {
     form.setFieldsValue({ file_name: fileName });
@@ -41,7 +62,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         <Row gutter={[30, 15]} className="form-label-hide">
           <Col xs={24} sm={12} md={8}>
             <div className="form-group m-0">
-              <label className="label">File Name</label>
+              <label className="label">Mapping Pattern</label>
               <Form.Item
                 name="file_name"
                 label="File Name"
@@ -76,8 +97,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             </Col>
           </Can>
         </Row>
-        <Row gutter={[30, 15]} className="form-label-hide">
-        {/* {tableColumns.map((col, index: number) => (
+        {/*<Row gutter={[30, 15]} className="form-label-hide">
+        {tableColumnState.map((col, index: number) => (
                       <Col xs={24} md={12} lg={12} xl={8} key={index}>
                         <div className="form-group form-inline">
                           <label className="label">{col.name}</label>
@@ -115,10 +136,10 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                           </Form.Item>
                         </div>
                       </Col>
-                    ))} */}
-        </Row>
+                              ))} 
+        </Row>*/}
       </Form>
-
+        <br/>
       <div className="btns-block modal-footer">
         <Button
           key="submit"
