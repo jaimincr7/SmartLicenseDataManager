@@ -354,36 +354,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 </Form.Item>
               </div>
             </Col> */}
-                        <Col xs={24} sm={12} md={8}>
+                 <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date Windows Server</label>
-                <Form.Item name="selected_date_ws" className="m-0" label="Selected Date Windows Server">
-                  <Select
-                    placeholder="Select Date"
-                    loading={commonLookups.getScheduledDateforWindows.loading}
-                    allowClear
-                    showSearch
-                    optionFilterProp="children"
-                    filterOption={(input, option: any) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                    filterSort={(optionA: any, optionB: any) =>
-                      optionA.children
-                        ?.toLowerCase()
-                        ?.localeCompare(optionB.children?.toLowerCase())
-                    }
-                  >
-                    {commonLookups.getScheduledDateforWindows.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
-                          ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
-                      </Option>
-                    ))}
-                  </Select>
+                <label className="label">Selected Date Device</label>
+                <Form.Item name="selected_date_device" label="Selected Date Device" className="m-0">
+                  <DatePicker className="w-100" />
                 </Form.Item>
               </div>
-            </Col>
+            </Col>       
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date Sql Server</label>
@@ -432,9 +410,31 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date Device</label>
-                <Form.Item name="selected_date_device" label="Selected Date Device" className="m-0">
-                  <DatePicker className="w-100" />
+                <label className="label">Selected Date Windows Server</label>
+                <Form.Item name="selected_date_ws" className="m-0" label="Selected Date Windows Server">
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDateforWindows.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDateforWindows.data.map((option: any) => (
+                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                        {moment(option)?.toString() == 'Invalid date'
+                          ? 'NULL'
+                          : moment(option).format(Common.DATEFORMAT)}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </div>
             </Col>
