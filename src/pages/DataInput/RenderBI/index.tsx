@@ -9,6 +9,7 @@ import {
   Row,
   Select,
   Spin,
+  Table,
   TreeSelect,
 } from 'antd';
 import { useEffect, useState } from 'react';
@@ -49,19 +50,17 @@ import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
-let maxHeaderRow = 1;
-
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { seqNumber, fileData, count, handleSave, table } = props;
+  const { seqNumber, fileData, count, handleSave, table, form, records } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const [form] = Form.useForm();
   const [innerFormUpload] = Form.useForm();
 
   const [excelColumns, setExcelColumns] = useState(null);
+  const [maxHeaderRow, setMaxHeaderRow ] = useState(1);
   const [tableColumns, setTableColumns] = useState(null);
   const [removedColumns, setRemovedColumns] = useState(null);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
@@ -69,6 +68,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [showMappingModal, setShowMappingModal] = useState<boolean>(false);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
+  const [selectedRowId, setSelectedRowId] = useState<any>();
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
   const [compBuLookups, setCompBuLookups] = useState<{ [key: string]: any }>({
     compony: [],
@@ -126,7 +126,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     const inputValues: IBulkInsertDataset = {
       excel_to_sql_mapping: sqlToExcelMapping,
       header_row: Number(innerFormUpload.getFieldValue('header_row')) - 1 ?? 0,
-      file_name: bulkImports.getExcelColumns.data[seqNumber - 1].filename,
+      file_name: bulkImports.getExcelColumns.data[selectedRowId - 1].filename,
       table_name: uploadValue?.table_name,
       sheet_name: uploadValue?.sheet_name,
       foreign_key_values: {
@@ -136,7 +136,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         date_added: date_added,
       },
     };
-    console.log(inputValues);
     handleSave(inputValues);
   };
 
@@ -149,20 +148,20 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (
       !currentSheetName &&
       bulkImports.getExcelColumns.data?.length > 0 &&
-      bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns
+      bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns
     ) {
       currentSheetName =
-        bulkImports.getExcelColumns.data[seqNumber - 1].excel_sheet_columns[0].sheet;
+        bulkImports.getExcelColumns.data[selectedRowId - 1].excel_sheet_columns[0].sheet;
       innerFormUpload.setFieldsValue({ sheet_name: currentSheetName });
     }
     if (
       tableColumnState &&
       bulkImports.getExcelColumns.data?.length > 0 &&
-      bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns
+      bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns
     ) {
       const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
       let filterExcelColumns: any = bulkImports.getExcelColumns.data[
-        seqNumber - 1
+        selectedRowId - 1
       ]?.excel_sheet_columns.find((e) => e.sheet === currentSheetName).columns;
       const filterTableColumns = tableColumnState.filter(
         (x) => !columnsArray.includes(x.name?.toLowerCase())
@@ -178,9 +177,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       setExcelColumns(ExcelColsSorted);
       setTableColumns(filterTableColumns);
       setRemovedColumns(removedColumns);
-
-      removedColumns.some((x) => x.name?.toLowerCase() === 'tenantid') &&
-        dispatch(getTenantLookup());
 
       const globalSearch: IInlineSearch = {};
       for (const key in globalFilters.search) {
@@ -239,9 +235,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   useEffect(() => {
     if (bulkImports.getExcelColumns.data?.length > 0) {
       setFormFields();
-      maxHeaderRow = bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns?.find(
-        (e) => e.sheet === innerFormUpload.getFieldValue('sheet_name')
-      )?.columns?.length;
+      // const sheet_name = bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns[0]?.sheet;
+      // maxHeaderRow = bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
+      //   (e) => e.sheet === sheet_name
+      // )?.columns?.length;
     }
   }, [tableColumnState, bulkImports.getExcelColumns.data]);
 
@@ -283,13 +280,17 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   }, [table]);
 
   const previewData = (headerValue = 0) => {
+    const sheet_name = bulkImports.getExcelColumns.data[selectedRowId - 1].excel_sheet_columns[0].sheet;
     const currentExcelData = [
-      ...bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns?.find(
-        (x) => x.sheet === innerFormUpload?.getFieldValue('sheet_name')
+      ...bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
+        (x) => x.sheet === sheet_name
       )?.columns,
     ];
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
+    setMaxHeaderRow(bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
+      (e) => e.sheet === sheet_name
+    )?.columns?.length);
     innerFormUpload.setFieldsValue({ header_row: headerValue });
     setFormFields();
   };
@@ -454,7 +455,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
       if (bulkImports.getExcelColumns.data?.length > 0) {
         let filterExcelColumns: any = bulkImports.getExcelColumns.data[
-          seqNumber - 1
+          selectedRowId - 1
         ]?.excel_sheet_columns?.find(
           (e) => e.sheet === innerFormUpload?.getFieldValue('sheet_name')
         ).columns;
@@ -510,7 +511,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     const excelMappingObj: ISaveExcelMapping = {
       id: parentId,
       table_name: uploadValue?.table_name,
-      key_word: fileName ? fileName : bulkImports.getExcelColumns.data[seqNumber - 1].filename,
+      key_word: fileName ? fileName : bulkImports.getExcelColumns.data[selectedRowId - 1].filename,
       is_public: isPublic,
       config_excel_column_mappings: [
         {
@@ -525,37 +526,183 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     setShowMappingModal(false);
   };
 
+  const expandedRowRender = () => {
+    
+    return <MappingColumn
+    handleModalClose={() => {
+      setShowMappingModal(false);
+    }}
+    showModal={showMappingModal}
+    fileName={fileData?.original_filename.split('.')[0]}
+    fileType={fileData?.original_filename.split('.')[1]}
+    saveMapping={(fileName, isPublic) => {
+      saveColumnMapping(fileName, isPublic);
+    }}
+    tableColumns={tableColumns}
+    excelColumns={excelColumns}
+    onExcelMapping={forSaveMapping}
+  ></MappingColumn>;
+  };
+
+  const columns = [
+    {
+      title: 'Index',
+      dataIndex: 'index',
+      key: 'index',
+    },
+    {
+      title: 'File Name',
+      dataIndex: 'original_filename',
+      key: 'original_filename',
+    },
+    {
+      title: 'Table Name',
+      dataIndex: 'table_name',
+      key: 'table_name',
+      render: () => (
+        <>
+          <Select
+            onChange={handleTableChange}
+            loading={bulkImports.getTables.loading}
+            showSearch
+            defaultValue={table}
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children
+                ?.toLowerCase()
+                ?.localeCompare(optionB.children?.toLowerCase())
+            }
+          >
+            {bulkImports.getTables.data?.map(
+              (option: IDatabaseTable, index: number) => (
+                <Option key={index} value={option.name}>
+                  {option.name}
+                </Option>
+              )
+            )}
+          </Select>
+        </>
+      )
+    },
+    {
+      title: 'Sheet Name',
+      dataIndex: 'sheet',
+      key: 'sheet',
+      render: (record,selectedRecord) => (<>
+        <Select
+          defaultValue={selectedRecord.sheet}
+          suffixIcon={
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
+              alt=""
+            />
+          }
+          onChange={handleSheetChange}
+          loading={false}
+        >
+          {bulkImports.getExcelColumns.data?.length > 0 &&
+            bulkImports.getExcelColumns.data[
+              seqNumber - 1
+            ]?.excel_sheet_columns.map(
+              (option: IExcelSheetColumn, index: number) => (
+                <Option key={index} value={option.sheet}>
+                  {option.sheet}
+                </Option>
+              )
+            )}
+        </Select>
+      </>)
+    },
+    {
+      title: 'Header Row',
+      dataIndex: 'header_row',
+      key: 'header_row',
+    },
+    {
+      title: 'Manage Header',
+      dataIndex: 'key',
+      key: 'key',
+      render: (record, selectedRecord) => (
+        <>
+          <Button
+            type="primary"
+            onClick={() => {
+              setSelectedRowId(selectedRecord.index);
+              setShowManageExcel(true);
+            }}
+          >
+            Manage Header
+          </Button>
+        </>
+      )
+    },
+  ];
+
   return (
     <>
-    <tr>
-            <td>{fileData.original_filename}</td>
-            <td>{innerFormUpload.getFieldValue('table_name')}</td>
-            <td>{innerFormUpload.getFieldValue('sheet_name')}</td>
-            <td>{innerFormUpload.getFieldValue('header_row')}</td>
-            <td>{<Button
-                            type="primary"
-                            className="w-100"
-                            onClick={() => {
-                              setShowManageExcel(true);
-                            }}
-                          >
-                            Manage Excel
-                          </Button>}
-            </td>
-            <td>{<Button
-                            type="primary"
-                            className="w-100"
-                            onClick={() => {
-                                setShowMappingModal(true);
-                            }}
-                          >
-                            Manage Mapping
-                          </Button>}
-            </td>
-          </tr>
-    
+      <Table
+        showHeader={true}
+        pagination={false}
+        scroll={{ x: true }}
+        dataSource={records}
+        rowKey={(record) => record['index']}
+        columns={columns}
+        expandable={{ expandedRowRender }}
+      />
+      {/* <tr>
+        <td>{fileData.original_filename}</td>
+        <td>
+          <Select
+            onChange={handleTableChange}
+            loading={bulkImports.getTables.loading}
+            showSearch
+            defaultValue={table}
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children
+                ?.toLowerCase()
+                ?.localeCompare(optionB.children?.toLowerCase())
+            }
+          >
+            {bulkImports.getTables.data?.map(
+              (option: IDatabaseTable, index: number) => (
+                <Option key={index} value={option.name}>
+                  {option.name}
+                </Option>
+              )
+            )}
+          </Select>
+        </td>
+        <td>{innerFormUpload.getFieldValue('sheet_name')}</td>
+        <td>{innerFormUpload.getFieldValue('header_row') == null ? 1 : innerFormUpload.getFieldValue('header_row')}  </td>
+        <td>{<Button
+          type="primary"
+          onClick={() => {
+            setShowManageExcel(true);
+          }}
+        >
+          Manage Excel
+        </Button>}
+        </td>
+        <td>{<Button
+          type="primary"
+          onClick={() => {
+            setShowMappingModal(true);
+          }}
+        >
+          Manage Mapping
+        </Button>}
+        </td>
+      </tr> */}
+
       <div className="update-excel-page">
-          
+
         {/*<div className="main-card">
           
            <div className="input-btns-title">
@@ -602,7 +749,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                   </div>
                 </Col>
                 {bulkImports.getExcelColumns.data?.length > 0 &&
-                  bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns && (
+                  bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns && (
                     <Col xs={24} md={6}>
                       <div className="form-group m-0">
                         <label className="label">Sheet Name</label>
@@ -701,7 +848,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               </Row>
             </Form>
           </div> */}
-          {/* {loadingTableColumns && (
+        {/* {loadingTableColumns && (
             <div className="spin-loader">
               <Spin spinning={true} />
             </div>
@@ -967,9 +1114,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       ></PreviewExcel>
       {showMappingModal && (
         <MappingColumn
-          handleModalClose={() => {
-            setShowMappingModal(false);
-          }}
           showModal={showMappingModal}
           fileName={fileData?.original_filename.split('.')[0]}
           fileType={fileData?.original_filename.split('.')[1]}

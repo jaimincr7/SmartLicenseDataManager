@@ -1,4 +1,5 @@
-import { Form, Select } from 'antd';
+import { DatePicker, Form, Select } from 'antd';
+import moment from 'moment';
 import { useEffect } from 'react';
 import { ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
@@ -13,8 +14,10 @@ import {
   globalSearchSelector,
   setGlobalSearch,
 } from '../../../store/globalSearch/globalSearch.reducer';
+import { IGlobalSearchProps } from './globalSearch.model';
 
-const GlobalSearch: React.FC = () => {
+const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
+  const { isDateAdded } = props;
   const globalLookups = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
 
@@ -38,6 +41,11 @@ const GlobalSearch: React.FC = () => {
     }
   };
 
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current > moment().endOf('day');
+  };
+
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: 0 });
     setGlobalSearchValues();
@@ -57,11 +65,13 @@ const GlobalSearch: React.FC = () => {
     const tenantId = form.getFieldValue('tenant_id');
     const companyId = form.getFieldValue('company_id');
     const buId = form.getFieldValue('bu_id');
+    const date_added = form.getFieldValue('date_added');
 
     const searchValues = {
       tenant_id: tenantId ? tenantId : 0,
       company_id: companyId ? companyId : 0,
       bu_id: buId ? buId : 0,
+      date_added: isDateAdded ? (date_added ? date_added : null) : null,
     };
     dispatch(setGlobalSearch(searchValues));
   };
@@ -124,7 +134,7 @@ const GlobalSearch: React.FC = () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="bu_id" className="m-0">
+        <Form.Item name="bu_id" className="mr-1">
           <Select
             placeholder="Filter by BU"
             onChange={handleBUChange}
@@ -149,7 +159,14 @@ const GlobalSearch: React.FC = () => {
             ))}
           </Select>
         </Form.Item>
-      </Form>
+        {isDateAdded ? <Form.Item
+          name="date_added"
+          className="m-0"
+        >
+          <DatePicker placeholder="Seledt Date Added" className="w-100" disabledDate={disabledDate} />
+        </Form.Item>
+       : <></>}
+       </Form>
     </>
   );
 };

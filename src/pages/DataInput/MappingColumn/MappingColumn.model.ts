@@ -3,7 +3,7 @@ export interface IMappingColumnProps {
   fileName: string;
   fileType: string;
   showModal: boolean;
-  handleModalClose: () => void;
+  handleModalClose?: () => void;
   tableColumns?:  any[];
   excelColumns?:  any[];
   onExcelMapping?: (values: any) => void;

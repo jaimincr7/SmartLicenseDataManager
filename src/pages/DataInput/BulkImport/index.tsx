@@ -12,6 +12,7 @@ import Dragger from "antd/lib/upload/Dragger";
 import { IDatabaseTable } from "../../../services/common/common.model";
 import { UploadFile } from "antd/lib/upload/interface";
 import RenderBI from "../RenderBI";
+import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
 
 let valuesArray = [];
 const { Option } = Select;
@@ -26,6 +27,7 @@ const BulkImport: React.FC = () => {
   const [checkAll, setCheckAll] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
   const [formUpload] = Form.useForm();
+  const [form] = Form.useForm();
 
   let { table } = useParams<{ table: string }>();
   table && (table = decodeURIComponent(table));
@@ -57,7 +59,7 @@ const BulkImport: React.FC = () => {
            original_filename: x.original_filename,
            table_name: tableName,
            header_row: 1,
-           sheet: x?.excel_sheet_columns[0]?.sheet
+           sheet: x?.excel_sheet_columns[0]?.sheet,
           }]);}
         );
     }
@@ -315,6 +317,9 @@ const BulkImport: React.FC = () => {
           <h4 className="p-0">
             <BreadCrumbs pageName={Page.BulkImport} />
           </h4>
+          <div className="right-title">
+            <GlobalSearch isDateAdded={true}/>
+          </div>
           <div className="btns-block">
             {table ? (
               <Button
@@ -416,30 +421,22 @@ const BulkImport: React.FC = () => {
           ) : (
             excelColumnState?.length > 0 ? 
             (<>
-              <table className="bulk-import-table">
-                  <tr>
-                    <th>File Name</th>
-                    <th>Table Name</th>
-                    <th>Sheet Name</th>
-                    <th>Header Row</th>
-                    <th>Manage Header</th>
-                    <th>Manage Mapping</th>
-                  </tr>
-            {bulkImports.getExcelColumns.data?.map(
+            {/* {bulkImports.getExcelColumns.data?.map(
               (data: any, index) =>
-                excelColumnState?.find((x) => x.original_filename === data.original_filename) && (
+                excelColumnState?.find((x) => x.original_filename === data.original_filename) && ( */}
                     <><RenderBI
-                      handleSave={(data: any) => handleSave(data)}
+                      //handleSave={(data: any) => handleSave(data)}
                       count={count}
-                      fileData={data}
+                      form={form}
+                      fileData={null}
                       records={records}
-                      seqNumber={index + 1}
+                      //seqNumber={index + 1}
                       table={tableName}
                     ></RenderBI>
                     <hr className="bulk-import-table"/></>
                 )
-            )}
-            </table></>):<></>
+            {/*)}*/}
+           </>):<></>
           )}
           <div className="btns-block">
             <Button

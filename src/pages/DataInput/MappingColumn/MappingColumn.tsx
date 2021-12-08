@@ -7,7 +7,7 @@ import { IMappingColumnProps } from './MappingColumn.model';
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { saveMapping, fileName, fileType , showModal, handleModalClose , tableColumns , excelColumns , onExcelMapping} = props;
+  const { saveMapping, fileName, fileType , showModal, tableColumns , excelColumns , onExcelMapping} = props;
 
   const [form] = Form.useForm();
   const initialValues = {
@@ -28,14 +28,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   };
 
   return (
-    <Modal
-      wrapClassName="custom-modal"
-      title={'Mapping Columns'}
-      centered
-      visible={showModal}
-      onCancel={handleModalClose}
-      footer={false}
-    >
+    // <Modal
+    //   wrapClassName="custom-modal"
+    //   title={'Mapping Columns'}
+    //   centered
+    //   visible={showModal}
+    //   onCancel={handleModalClose}
+    //   footer={false}
+    // >
+    <>
       <Form form={form} name="saveMapping" initialValues={initialValues}>
         <Row gutter={[30, 15]} className="form-label-hide">
           <Col xs={24} sm={12} md={8}>
@@ -76,7 +77,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
           </Can>
         </Row>
         <Row gutter={[30, 15]} className="form-label-hide">
-        {tableColumns.map((col, index: number) => (
+        {/* {tableColumns.map((col, index: number) => (
                       <Col xs={24} md={12} lg={12} xl={8} key={index}>
                         <div className="form-group form-inline">
                           <label className="label">{col.name}</label>
@@ -114,7 +115,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                           </Form.Item>
                         </div>
                       </Col>
-                    ))}
+                    ))} */}
         </Row>
       </Form>
 
@@ -126,13 +127,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             onFinish(form.getFieldsValue());
           }}
         >
-          Save
-        </Button>
-        <Button type="primary" onClick={handleModalClose}>
-          Cancel
+          Save Mapping
         </Button>
       </div>
-    </Modal>
+      </>
+    //</Modal>
   );
 };
 
