@@ -14,6 +14,7 @@ export interface IDataTableForImport {
 export interface IGetExcelMapping {
   table_name: string;
   key_word: string;
+  file_type: string;
 }
 
 export interface IConfigColMapping {

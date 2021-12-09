@@ -18,7 +18,7 @@ import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { saveMapping, skipRows, fileName, fileType, sheetName, tableName, seqNumber, onExcelMapping } = props;
+  const { record , skipRows, fileName, fileType, seqNumber } = props;
 
   const [form] = Form.useForm();
   const initialValues = {
@@ -36,15 +36,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
 
   useEffect(() => {
-    if (tableName) {
+    if (record.table_name) {
       setLoadingTableColumns(true);
-      commonService.getTableColumns(tableName).then((res) => {
+      commonService.getTableColumns(record.table_name).then((res) => {
         if (res) {
           const response: any = res;
           const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
           let filterExcelColumns: any = bulkImports.getExcelColumns.data[
             seqNumber - 1
-          ]?.excel_sheet_columns.find((e) => e.sheet === sheetName).columns;
+          ]?.excel_sheet_columns.find((e) => e.sheet === record.sheet).columns;
           const filterTableColumns = response?.filter(
             (x) => !columnsArray.includes(x.name?.toLowerCase())
           );
@@ -97,7 +97,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
           form.setFieldsValue(initialValuesData);
         }
       setLoadingTableColumns(false);   
-      getExcelMappingColumns();
       });        
     }else {
         setTableColumnState([]);
@@ -105,24 +104,13 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       }
   }, []);
 
-  const getExcelMappingColumns = () => {
-      bulkImportService
-        .getExcelFileMapping({
-          table_name: tableName,
-          key_word: fileName + "." + fileType,
-        })
-        .then((res) => {
-          setSavedExcelMapping(res?.body?.data);
-        });
-    };
-
   useEffect(() => {
     form.setFieldsValue({ file_name: fileName });
     form.setFieldsValue({ file_type: fileType });
   }, [fileName]);
 
   const saveColumnMapping = (filename: string, filetype ,isPublic: boolean, id = 0) => {
-    const parentId = savedExcelMapping?.find((x) =>
+    const parentId = record.show_mapping?.find((x) =>
       x.config_excel_column_mappings?.find((y) => y.id === id)
     )?.id;
     const fieldValues = { ...form.getFieldsValue() };
@@ -145,12 +133,12 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     const uploadValue = form.getFieldsValue();
     const excelMappingObj: ISaveExcelMapping = {
       id: parentId,
-      table_name: tableName,
+      table_name: record.table_name,
       key_word: filename + "." + filetype ? filename + "." + filetype : bulkImports.getExcelColumns.data[seqNumber - 1].filename,
       is_public: isPublic,
       config_excel_column_mappings: [
         {
-          sheet_name: sheetName,
+          sheet_name: record.sheet,
           header_row: skipRows,
           mapping: JSON.stringify(sqlToExcelMapping),
         },

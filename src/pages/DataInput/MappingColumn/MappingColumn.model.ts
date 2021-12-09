@@ -3,9 +3,9 @@ export interface IMappingColumnProps {
   fileName: string;
   fileType: string;
   skipRows: number;
-  sheetName: string;
   tableName?:  string;
   seqNumber?:  number;
+  record?: any;
   setRecords?: (data: any) => void;
   onExcelMapping?: (values: any) => void;
 }

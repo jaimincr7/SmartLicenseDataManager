@@ -58,7 +58,8 @@ const BulkImport: React.FC = () => {
         await bulkImportService
         .getExcelFileMapping({
           table_name: tableName,
-          key_word:  x.original_filename,
+          key_word:  x.original_filename?.split('.')[0],
+          file_type: x.original_filename?.split('.')[1]
         })
         .then((res) => {
           response = res?.body?.data;
@@ -151,6 +152,7 @@ const BulkImport: React.FC = () => {
         getExcelFileMapping({
           table_name: formUpload.getFieldValue('table_name'),
           key_word: defaultFile[0]?.name?.split('.')[0],
+          file_type: null
         })
       );
     }

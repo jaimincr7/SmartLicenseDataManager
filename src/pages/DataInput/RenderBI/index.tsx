@@ -402,6 +402,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         .getExcelFileMapping({
           table_name: innerFormUpload.getFieldValue('table_name'),
           key_word: fileData?.original_filename,
+          file_type: null
         })
         .then((res) => {
           setSavedExcelMapping(res?.body?.data);
@@ -651,7 +652,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         expandable={{
           expandedRowRender: (record) => (<MappingColumn
             setRecords={setRecords}
-            sheetName={record?.sheet}
+            record = {record}
             skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
             fileName={record?.original_filename.split('.')[0]}
             fileType={record?.original_filename.split('.')[1]}
