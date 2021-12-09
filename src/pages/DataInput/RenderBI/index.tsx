@@ -368,7 +368,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   };
 
   const getMenuDropdown = (recordsDefault: any) => {
-    debugger;
     const dropdown = [];
     recordsDefault?.map((m: any) => {
       dropdown.push({
