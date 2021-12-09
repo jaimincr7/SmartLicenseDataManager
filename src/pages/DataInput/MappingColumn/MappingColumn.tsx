@@ -1,15 +1,24 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
+import { IInlineSearch } from '../../../common/models/common';
 import commonService from '../../../services/common/common.service';
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
+import { bulkImportSelector } from '../../../store/bulkImport/bulkImport.reducer';
+import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import { IMappingColumnProps } from './MappingColumn.model';
+import _ from 'lodash';
+import moment from 'moment';
+import bulkImportService from '../../../services/bulkImport/bulkImport.service';
+import { saveExcelFileMapping } from '../../../store/bulkImport/bulkImport.action';
+import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
 
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { saveMapping, fileName, fileType, showModal, tableName, excelColumns, onExcelMapping } = props;
+  const { saveMapping, skipRows, fileName, fileType, sheetName, tableName, seqNumber, onExcelMapping } = props;
 
   const [form] = Form.useForm();
   const initialValues = {
@@ -17,8 +26,13 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     file_type: fileType,
     isPublic: false,
   };
+  const globalFilters = useAppSelector(globalSearchSelector);
+  const bulkImports = useAppSelector(bulkImportSelector);
+  const dispatch = useAppDispatch();
 
   const [tableColumnState, setTableColumnState] = useState<any>([]);
+  const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
+  const [excelColumns, setExcelColumns] = useState(null);
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
 
   useEffect(() => {
@@ -26,30 +40,131 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       setLoadingTableColumns(true);
       commonService.getTableColumns(tableName).then((res) => {
         if (res) {
-          setTableColumnState(res);
-        }
-        setLoadingTableColumns(false);
-      });
-    }
-    else {
-      setTableColumnState([]);
-      setTableColumnState([]);
-    }
-  }, [tableName]);
+          const response: any = res;
+          const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+          let filterExcelColumns: any = bulkImports.getExcelColumns.data[
+            seqNumber - 1
+          ]?.excel_sheet_columns.find((e) => e.sheet === sheetName).columns;
+          const filterTableColumns = response?.filter(
+            (x) => !columnsArray.includes(x.name?.toLowerCase())
+          );
+          if (filterExcelColumns?.length >= skipRows) {
+            filterExcelColumns = filterExcelColumns[skipRows];
+          }
+          const ExcelColsSorted = [...filterExcelColumns];
+          ExcelColsSorted.sort();
+          setExcelColumns(ExcelColsSorted);
+          setTableColumnState(filterTableColumns);
 
-  useEffect(() => {
-    console.log(tableColumnState);
-  }, [tableColumnState]);
+          const globalSearch: IInlineSearch = {};
+          for (const key in globalFilters.search) {
+            const element = globalFilters.search[key];
+            globalSearch[key] = element ? [element] : null;
+          }
+
+          const initialValuesData: any = {
+            tenant_id: _.isNull(globalSearch.tenant_id)
+              ? null
+              : globalSearch.tenant_id === undefined
+              ? null
+              : globalSearch?.tenant_id[0],
+            bu_id: _.isNull(globalSearch.bu_id)
+              ? null
+              : globalSearch.bu_id === undefined
+              ? null
+              : globalSearch?.bu_id[0],
+            company_id: _.isNull(globalSearch.company_id)
+              ? null
+              : globalSearch.company_id === undefined
+              ? null
+              : globalSearch?.company_id[0],
+            date_added: moment(),
+          };
+          filterTableColumns.map(function (ele) {
+            initialValuesData[ele.name] =
+              filterExcelColumns?.filter(
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s/g, '')
+              ).length > 0
+                ? filterExcelColumns.filter(
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                      ele.name?.toLowerCase()?.replace(/\s/g, '')
+                  )[0]
+                : '';
+          });
+          form.setFieldsValue(initialValuesData);
+        }
+      setLoadingTableColumns(false);   
+      getExcelMappingColumns();
+      });        
+    }else {
+        setTableColumnState([]);
+        setTableColumnState([]);
+      }
+  }, []);
+
+  const getExcelMappingColumns = () => {
+      bulkImportService
+        .getExcelFileMapping({
+          table_name: tableName,
+          key_word: fileName + "." + fileType,
+        })
+        .then((res) => {
+          setSavedExcelMapping(res?.body?.data);
+        });
+    };
 
   useEffect(() => {
     form.setFieldsValue({ file_name: fileName });
     form.setFieldsValue({ file_type: fileType });
   }, [fileName]);
 
+  const saveColumnMapping = (filename: string, filetype ,isPublic: boolean, id = 0) => {
+    const parentId = savedExcelMapping?.find((x) =>
+      x.config_excel_column_mappings?.find((y) => y.id === id)
+    )?.id;
+    const fieldValues = { ...form.getFieldsValue() };
+    delete fieldValues.file_name;
+    delete fieldValues.file_type;
+    delete fieldValues.is_public;
+    const sqlToExcelMapping = [];
+    Object.entries(fieldValues).forEach(([key, value]) => {
+      if (key && value) {
+          sqlToExcelMapping.push({
+            key: `${key}`,
+            value: `${value}`,
+          });
+        }
+    });
+
+    if (sqlToExcelMapping.length === 0) {
+      return false;
+    }
+    const uploadValue = form.getFieldsValue();
+    const excelMappingObj: ISaveExcelMapping = {
+      id: parentId,
+      table_name: tableName,
+      key_word: filename + "." + filetype ? filename + "." + filetype : bulkImports.getExcelColumns.data[seqNumber - 1].filename,
+      is_public: isPublic,
+      config_excel_column_mappings: [
+        {
+          sheet_name: sheetName,
+          header_row: skipRows,
+          mapping: JSON.stringify(sqlToExcelMapping),
+        },
+      ],
+    };
+
+    dispatch(saveExcelFileMapping(excelMappingObj));
+  };
+
   const onFinish = (values: any) => {
-    const { file_name, isPublic, ...rest } = values;
-    saveMapping(file_name, isPublic);
-    onExcelMapping(rest);
+    const { file_name, file_type , isPublic, ...rest } = values;
+
+    saveColumnMapping(file_name, file_type , isPublic);
+    //onExcelMapping(rest);
   };
 
   return (
@@ -101,6 +216,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             </Col>
           </Can>
         </Row>
+        <br/>
+        <hr/>
         {loadingTableColumns ? (
           <div className="spin-loader">
             <Spin spinning={true} />
@@ -135,11 +252,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                               ?.localeCompare(optionB.children?.toLowerCase())
                           }
                         >
-                          {/* {excelColumns.map((option: string, index: number) => (
+                          {excelColumns.map((option: string, index: number) => (
                             <Option key={index} value={option}>
                               {option}
                             </Option>
-                          ))} */}
+                          ))} 
                         </Select> 
                       </Form.Item>
                     </div>

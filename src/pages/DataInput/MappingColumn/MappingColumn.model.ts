@@ -2,9 +2,9 @@ export interface IMappingColumnProps {
   saveMapping: (fileName: string, isPublic: boolean) => void;
   fileName: string;
   fileType: string;
-  showModal: boolean;
-  handleModalClose?: () => void;
+  skipRows: number;
+  sheetName: string;
   tableName?:  string;
-  excelColumns?:  any[];
+  seqNumber?:  number;
   onExcelMapping?: (values: any) => void;
 }

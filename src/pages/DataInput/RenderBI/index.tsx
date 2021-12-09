@@ -96,7 +96,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   useEffect(() => {
     if (count.save > 0) {
-      form.submit();
+      console.log("clicked",records);
     }
   }, [count.save]);
 
@@ -632,18 +632,17 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         dataSource={records}
         rowKey={(record) => record['index']}
         columns={columns}
+        loading={records.length == 0}
         expandable={{ expandedRowRender: (record) => (<MappingColumn
-          handleModalClose={() => {
-            setShowMappingModal(false);
-          }}
-          showModal={showMappingModal}
+          sheetName = {record?.sheet}
+          skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
           fileName={record?.original_filename.split('.')[0]}
           fileType={record?.original_filename.split('.')[1]}
           saveMapping={(fileName, isPublic) => {
             saveColumnMapping(fileName, isPublic);
           }}
           tableName={record?.table_name}
-          excelColumns={excelColumns}
+          seqNumber={record?.index}
           onExcelMapping={forSaveMapping}
         ></MappingColumn>),
          }}

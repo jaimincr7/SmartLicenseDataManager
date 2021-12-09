@@ -2,10 +2,10 @@ import { Button, Checkbox, Col, Form, Popover, Row, Select, Spin } from "antd";
 import { useHistory, useParams } from "react-router-dom";
 import BreadCrumbs from "../../../common/components/Breadcrumbs";
 import { Page } from "../../../common/constants/pageAction";
-import { SettingOutlined , UploadOutlined } from '@ant-design/icons';
+import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from "../../../store/app.hooks";
 import { bulkImportSelector, clearBulkImportMessages, clearExcelColumns, clearGetTableColumns, setTableForImport } from "../../../store/bulkImport/bulkImport.reducer";
-import { useEffect , useState } from "react";
+import { useEffect, useState } from "react";
 import { bulkInsert, getExcelColumns, getExcelFileMapping, getTableColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
 import { toast } from "react-toastify";
 import Dragger from "antd/lib/upload/Dragger";
@@ -13,6 +13,7 @@ import { IDatabaseTable } from "../../../services/common/common.model";
 import { UploadFile } from "antd/lib/upload/interface";
 import RenderBI from "../RenderBI";
 import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
+import bulkImportService from "../../../services/bulkImport/bulkImport.service";
 
 let valuesArray = [];
 const { Option } = Select;
@@ -36,7 +37,7 @@ const BulkImport: React.FC = () => {
   const [defaultFile, setDefaultFile] = useState(null);
   const [excelColumnState, setExcelColumnState] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
-  const [ records,setRecords ] = useState<Array<{index: number,original_filename: string,table_name: string,header_row: number,sheet: string}>>([]);
+  const [records, setRecords] = useState<Array<{ index: number, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -52,19 +53,30 @@ const BulkImport: React.FC = () => {
   useEffect(() => {
     if (bulkImports.getExcelColumns.data) {
       setExcelColumnState(bulkImports.getExcelColumns.data);
-      bulkImports.getExcelColumns.data?.map((x: any,index: number) => 
-        {
-          setRecords((records) => [...records,{
-           index: index + 1,
-           original_filename: x.original_filename,
-           table_name: tableName,
-           header_row: 1,
-           sheet: x?.excel_sheet_columns[0]?.sheet,
-          }]);}
-        );
+      bulkImports.getExcelColumns.data?.map(async (x: any, index: number) => {
+        let response = null;
+        await bulkImportService
+        .getExcelFileMapping({
+          table_name: tableName,
+          key_word:  x.original_filename,
+        })
+        .then((res) => {
+          response = res?.body?.data[0];
+        });
+        setRecords((records) => [...records, {
+          index: index + 1,
+          filename: x.filename,
+          original_filename: x.original_filename,
+          table_name: tableName,
+          header_row: 1,
+          sheet: x?.excel_sheet_columns[0]?.sheet,
+          excel_to_sql_mapping: response?.config_excel_column_mappings[0]?.mapping,
+        }]);
+      }
+      );
     }
   }, [bulkImports.getExcelColumns.data]);
-  
+
   useEffect(() => {
     if (bulkImports.bulkInsert.messages.length > 0 && (count.save > 0 || count.reset > 0)) {
       if (bulkImports.bulkInsert.hasErrors) {
@@ -172,7 +184,7 @@ const BulkImport: React.FC = () => {
         formData.append('file', ele.originFileObj ? ele.originFileObj : ele);
       });
       try {
-        if(getFileMappingTimeOut) {
+        if (getFileMappingTimeOut) {
           clearTimeout(getFileMappingTimeOut);
         }
         getFileMappingTimeOut = setTimeout(() => {
@@ -185,7 +197,7 @@ const BulkImport: React.FC = () => {
     }
     formUpload.setFieldsValue({ sheet_name: '' });
   };
-  
+
   const saveTables = () => {
     const selectedTables = bulkImports.getTablesForImport.data
       .filter((table) => table.is_available)
@@ -200,7 +212,7 @@ const BulkImport: React.FC = () => {
       return false;
     }
   };
-  
+
   const handleIndeterminate = () => {
     const selectedTables = bulkImports.getTablesForImport.data.filter(
       (table) => table.is_available
@@ -318,7 +330,7 @@ const BulkImport: React.FC = () => {
             <BreadCrumbs pageName={Page.BulkImport} />
           </h4>
           <div className="right-title">
-            <GlobalSearch isDateAdded={true}/>
+            <GlobalSearch isDateAdded={true} />
           </div>
           <div className="btns-block">
             {table ? (
@@ -411,30 +423,32 @@ const BulkImport: React.FC = () => {
                 </Row>
               </Form>
             </div>
-            </div>
-            <br />
+          </div>
+          <br />
           <br />
           {bulkImports.getExcelColumns.loading ? (
             <div className="spin-loader">
               <Spin spinning={true} />
             </div>
           ) : (
-            excelColumnState?.length > 0 ? 
-            (<>
-            {/* {bulkImports.getExcelColumns.data?.map(
+            excelColumnState?.length > 0 ?
+              (<>
+                {/* {bulkImports.getExcelColumns.data?.map(
               (data: any, index) =>
                 excelColumnState?.find((x) => x.original_filename === data.original_filename) && ( */}
-                    <><RenderBI
-                      //handleSave={(data: any) => handleSave(data)}
-                      count={count}
-                      form={form}
-                      fileData={null}
-                      records={records}
-                      //seqNumber={index + 1}
-                      table={tableName}
-                    ></RenderBI>
-                    </>
-           </>):<></>
+                <><RenderBI
+                  //handleSave={(data: any) => handleSave(data)}
+                  count={count}
+                  form={form}
+                  fileData={null}
+                  records={records}
+                  //seqNumber={index + 1}
+                  table={tableName}
+                ></RenderBI>
+                  <br />
+                  <hr />
+                </>
+              </>) : <></>
           )}
           <div className="btns-block">
             <Button

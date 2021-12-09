@@ -19,7 +19,7 @@ export interface IGetExcelMapping {
 export interface IConfigColMapping {
   id?: number;
   sheet_name: string;
-  header_row: string;
+  header_row: number;
   mapping: string;
   excel_file_mapping_id?: number;
 }
