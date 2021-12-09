@@ -51,7 +51,7 @@ import { toast } from 'react-toastify';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { seqNumber, fileData, count, handleSave, table, form, records } = props;
+  const { seqNumber, fileData, count, handleSave, table, form, records, setRecords } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
@@ -60,7 +60,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [innerFormUpload] = Form.useForm();
 
   const [excelColumns, setExcelColumns] = useState(null);
-  const [maxHeaderRow, setMaxHeaderRow ] = useState(1);
+  const [maxHeaderRow, setMaxHeaderRow] = useState(1);
   const [tableColumns, setTableColumns] = useState(null);
   const [removedColumns, setRemovedColumns] = useState(null);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
@@ -96,7 +96,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   useEffect(() => {
     if (count.save > 0) {
-      console.log("clicked",records);
+      console.log("clicked", records);
     }
   }, [count.save]);
 
@@ -367,12 +367,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     return chidDropdown;
   };
 
-  const getMenuDropdown = () => {
+  const getMenuDropdown = (recordsDefault: any) => {
+    debugger;
     const dropdown = [];
-    const defaultMappingDetail = savedExcelMapping?.filter(
-      (x) => x.table_name === innerFormUpload?.getFieldValue('table_name')
-    );
-    defaultMappingDetail?.map((m: any) => {
+    recordsDefault?.map((m: any) => {
       dropdown.push({
         title: (
           <>
@@ -573,7 +571,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       title: 'Sheet Name',
       dataIndex: 'sheet',
       key: 'sheet',
-      render: (record,selectedRecord) => (<>
+      render: (record, selectedRecord) => (<>
         <Select
           defaultValue={selectedRecord.sheet}
           suffixIcon={
@@ -602,6 +600,24 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       title: 'Header Row',
       dataIndex: 'header_row',
       key: 'header_row',
+    },
+    {
+      title: 'Saved Mapping',
+      dataIndex: '',
+      key: '',
+      render: (record,selectedRecord) => (
+        <>
+          <TreeSelect
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            treeData={getMenuDropdown(selectedRecord.show_mapping)}
+            placeholder="Default: Select"
+            onChange={onChange}
+            treeDefaultExpandAll
+            allowClear
+          />
+        </>
+      )
     },
     {
       title: 'Manage Header',
@@ -633,19 +649,21 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         rowKey={(record) => record['index']}
         columns={columns}
         loading={records.length == 0}
-        expandable={{ expandedRowRender: (record) => (<MappingColumn
-          sheetName = {record?.sheet}
-          skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
-          fileName={record?.original_filename.split('.')[0]}
-          fileType={record?.original_filename.split('.')[1]}
-          saveMapping={(fileName, isPublic) => {
-            saveColumnMapping(fileName, isPublic);
-          }}
-          tableName={record?.table_name}
-          seqNumber={record?.index}
-          onExcelMapping={forSaveMapping}
-        ></MappingColumn>),
-         }}
+        expandable={{
+          expandedRowRender: (record) => (<MappingColumn
+            setRecords={setRecords}
+            sheetName={record?.sheet}
+            skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
+            fileName={record?.original_filename.split('.')[0]}
+            fileType={record?.original_filename.split('.')[1]}
+            saveMapping={(fileName, isPublic) => {
+              saveColumnMapping(fileName, isPublic);
+            }}
+            tableName={record?.table_name}
+            seqNumber={record?.index}
+            onExcelMapping={forSaveMapping}
+          ></MappingColumn>),
+        }}
       />
       {/* <tr>
         <td>{fileData.original_filename}</td>

@@ -61,7 +61,7 @@ const BulkImport: React.FC = () => {
           key_word:  x.original_filename,
         })
         .then((res) => {
-          response = res?.body?.data[0];
+          response = res?.body?.data;
         });
         setRecords((records) => [...records, {
           index: index + 1,
@@ -70,7 +70,8 @@ const BulkImport: React.FC = () => {
           table_name: tableName,
           header_row: 1,
           sheet: x?.excel_sheet_columns[0]?.sheet,
-          excel_to_sql_mapping: response?.config_excel_column_mappings[0]?.mapping,
+          excel_to_sql_mapping: response[0]?.config_excel_column_mappings[0]?.mapping,
+          show_mapping: response,
         }]);
       }
       );
@@ -442,6 +443,7 @@ const BulkImport: React.FC = () => {
                   form={form}
                   fileData={null}
                   records={records}
+                  setRecords={setRecords}
                   //seqNumber={index + 1}
                   table={tableName}
                 ></RenderBI>

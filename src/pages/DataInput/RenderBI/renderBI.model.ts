@@ -7,5 +7,6 @@ export interface IRenderBIProps {
   handleSave?: (data: any) => void;
   table: string;
   records?: any[];
+  setRecords?: (data: any) => void;
   form?: FormInstance<any>;
 }
