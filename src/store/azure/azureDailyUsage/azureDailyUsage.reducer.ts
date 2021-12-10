@@ -157,7 +157,10 @@ export const azureDailyUsageSlice = createSlice({
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processDataAzure.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataAzure.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;

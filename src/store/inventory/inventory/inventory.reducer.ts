@@ -152,7 +152,10 @@ export const inventorySlice = createSlice({
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processDataInventory.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataInventory.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;

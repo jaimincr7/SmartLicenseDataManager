@@ -39,9 +39,12 @@ export const deleteInventory = createAsyncThunk('deleteInventory', async (id: nu
   return response;
 });
 
-export const processDataInventory = createAsyncThunk('processDataInventory', async (data: IProcessData) => {
-  const response = await inventoryService.processData(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
+export const processDataInventory = createAsyncThunk(
+  'processDataInventory',
+  async (data: IProcessData) => {
+    const response = await inventoryService.processData(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);

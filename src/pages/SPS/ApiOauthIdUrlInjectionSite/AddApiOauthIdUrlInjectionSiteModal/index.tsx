@@ -24,7 +24,11 @@ import {
   clearSpsApiUrlInjectionLookup,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { getSpsApiOAuthLookup, getSpsApiUrlInjectionLookup, updateMultiple } from '../../../../store/common/common.action';
+import {
+  getSpsApiOAuthLookup,
+  getSpsApiUrlInjectionLookup,
+  updateMultiple,
+} from '../../../../store/common/common.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
@@ -165,7 +169,12 @@ const AddSpsApiOauthIdUrlInjectionSiteModal: React.FC<IAddSpsApiOauthIdUrlInject
                   ) : (
                     'Injection URL'
                   )}
-                  <Form.Item name="inj_id" className="m-0" label="Injection URL" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="inj_id"
+                    className="m-0"
+                    label="Injection URL"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       allowClear
                       loading={commonLookups.spsApiUrlInjectionLookup.loading}
@@ -198,7 +207,12 @@ const AddSpsApiOauthIdUrlInjectionSiteModal: React.FC<IAddSpsApiOauthIdUrlInject
                   ) : (
                     'OAuth'
                   )}
-                  <Form.Item name="oauth_id" className="m-0" label="OAuth" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="oauth_id"
+                    className="m-0"
+                    label="OAuth"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       allowClear
                       loading={commonLookups.spsApiOAuthLookup.loading}

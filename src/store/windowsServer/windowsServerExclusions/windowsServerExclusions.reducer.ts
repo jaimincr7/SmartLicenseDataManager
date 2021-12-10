@@ -175,7 +175,10 @@ export const windowsServerExclusionsSlice = createSlice({
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processDataWindowsServerExclusion.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataWindowsServerExclusion.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;

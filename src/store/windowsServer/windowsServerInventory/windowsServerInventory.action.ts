@@ -56,9 +56,12 @@ export const deleteWindowsServerInventory = createAsyncThunk(
   }
 );
 
-export const processDataWindowsServerInventory = createAsyncThunk('processDataWindowsServerInventory', async (data: IProcessData) => {
-  const response = await windowsServerInventoryService.processData(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
+export const processDataWindowsServerInventory = createAsyncThunk(
+  'processDataWindowsServerInventory',
+  async (data: IProcessData) => {
+    const response = await windowsServerInventoryService.processData(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);

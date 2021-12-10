@@ -444,11 +444,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'date_added']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
                       <Checkbox>Date Added</Checkbox>
                     </Form.Item>
                   ) : (

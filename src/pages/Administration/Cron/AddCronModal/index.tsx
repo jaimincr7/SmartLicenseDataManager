@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, DatePicker, Form, Modal, Row, Select, Spin, Switch, TimePicker } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Switch,
+  TimePicker,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
@@ -504,18 +516,17 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     className="m-0"
                     rules={[{ required: !isMultiple }]}
                   >
-                    <TimePicker className="form-control w-100" defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
+                    <TimePicker
+                      className="form-control w-100"
+                      defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}
+                    />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'date_added']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
                       <Checkbox>Date Added</Checkbox>
                     </Form.Item>
                   ) : (

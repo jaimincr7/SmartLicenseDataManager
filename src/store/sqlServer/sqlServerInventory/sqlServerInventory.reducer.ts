@@ -161,7 +161,10 @@ export const sqlServerInventorySlice = createSlice({
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processDataSqlServerInventory.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataSqlServerInventory.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;
