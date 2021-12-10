@@ -1,7 +1,5 @@
 import {
   Button,
-  Col,
-  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -15,6 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
+  bulkInsert,
   deleteColumnMapping,
   deleteFileMapping,
   getTables,
@@ -96,7 +95,46 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   useEffect(() => {
     if (count.save > 0) {
-      console.log("clicked", records);
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
+      records.map((data) => {
+        const val = {
+          excel_sheet_with_mapping_details: [
+            {
+              excel_to_sql_mapping: data.excel_to_sql_mapping,
+              table_name: data.table_name,
+              file_name: data.filename,
+              original_file_name: data.original_filename,
+              sheet_name: data.sheet,
+              header_row: data.header_row,
+              delimiter: ";",
+            },
+          ],
+
+          foreign_key_values: {
+            tenant_id: _.isNull(globalSearch.tenant_id)
+              ? null
+              : globalSearch.tenant_id === undefined
+                ? null
+                : globalSearch?.tenant_id[0],
+            bu_id: _.isNull(globalSearch.bu_id)
+              ? null
+              : globalSearch.bu_id === undefined
+                ? null
+                : globalSearch?.bu_id[0],
+            company_id: _.isNull(globalSearch.company_id)
+              ? null
+              : globalSearch.company_id === undefined
+                ? null
+                : globalSearch?.company_id[0],
+            date_added: moment(),
+          }
+        }
+        dispatch(bulkInsert(val));
+      })
     }
   }, [count.save]);
 
@@ -308,6 +346,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(records);
+  }, [records]);
+
   const removeColumnMapping = (id: number) => {
     dispatch(deleteColumnMapping(id));
   };
@@ -316,31 +358,31 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     dispatch(deleteFileMapping(id));
   };
 
-  useEffect(() => {
-    if (bulkImports.deleteColumnMapping.messages.length > 0) {
-      if (bulkImports.deleteColumnMapping.hasErrors) {
-        toast.error(bulkImports.deleteColumnMapping.messages.join(' '));
-      } else {
-        toast.success(bulkImports.deleteColumnMapping.messages.join(' '));
-        setSavedExcelMapping([]);
-        getExcelMappingColumns();
-      }
-      dispatch(clearDeleteMessages());
-    }
-  }, [bulkImports.deleteColumnMapping.messages]);
+  // useEffect(() => {
+  //   if (bulkImports.deleteColumnMapping.messages.length > 0) {
+  //     if (bulkImports.deleteColumnMapping.hasErrors) {
+  //       toast.error(bulkImports.deleteColumnMapping.messages.join(' '));
+  //     } else {
+  //       toast.success(bulkImports.deleteColumnMapping.messages.join(' '));
+  //       setSavedExcelMapping([]);
+  //       getExcelMappingColumns();
+  //     }
+  //     dispatch(clearDeleteMessages());
+  //   }
+  // }, [bulkImports.deleteColumnMapping.messages]);
 
-  useEffect(() => {
-    if (bulkImports.deleteFileMapping.messages.length > 0) {
-      if (bulkImports.deleteFileMapping.hasErrors) {
-        toast.error(bulkImports.deleteFileMapping.messages.join(' '));
-      } else {
-        toast.success(bulkImports.deleteFileMapping.messages.join(' '));
-        setSavedExcelMapping([]);
-        getExcelMappingColumns();
-      }
-      dispatch(clearDeleteMessages());
-    }
-  }, [bulkImports.deleteFileMapping.messages]);
+  // useEffect(() => {
+  //   if (bulkImports.deleteFileMapping.messages.length > 0) {
+  //     if (bulkImports.deleteFileMapping.hasErrors) {
+  //       toast.error(bulkImports.deleteFileMapping.messages.join(' '));
+  //     } else {
+  //       toast.success(bulkImports.deleteFileMapping.messages.join(' '));
+  //       setSavedExcelMapping([]);
+  //       getExcelMappingColumns();
+  //     }
+  //     dispatch(clearDeleteMessages());
+  //   }
+  // }, [bulkImports.deleteFileMapping.messages]);
 
   const geChildDropdown = (excelMappings: any) => {
     const chidDropdown = [];
@@ -396,26 +438,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     return dropdown;
   };
 
-  const getExcelMappingColumns = () => {
-    if (innerFormUpload?.getFieldValue('table_name') && fileData?.original_filename) {
-      bulkImportService
-        .getExcelFileMapping({
-          table_name: innerFormUpload.getFieldValue('table_name'),
-          key_word: fileData?.original_filename,
-          file_type: null
-        })
-        .then((res) => {
-          setSavedExcelMapping(res?.body?.data);
-        });
-    }
-  };
-
   useEffect(() => {
     if (bulkImports.saveExcelFileMapping.messages.length > 0) {
       toast.success(bulkImports.saveExcelFileMapping.messages.join(' '));
       dispatch(clearBulkImportMessages());
       setSavedExcelMapping([]);
-      getExcelMappingColumns();
     }
   }, [bulkImports.saveExcelFileMapping.messages]);
 
@@ -430,9 +457,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   }, [savedExcelMapping]);
 
-  useEffect(() => {
-    getExcelMappingColumns();
-  }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
+  // useEffect(() => {
+  //   getExcelMappingColumns();
+  // }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
 
   const onChange = (value) => {
     if (value) {
@@ -480,7 +507,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       mappingOrder
     );
     setSavedExcelMapping([]);
-    getExcelMappingColumns();
   };
 
   const saveColumnMapping = (fileName: string, isPublic: boolean, id = 0) => {
@@ -505,22 +531,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (sqlToExcelMapping.length === 0) {
       return false;
     }
-    const uploadValue = innerFormUpload.getFieldsValue();
-    const excelMappingObj: ISaveExcelMapping = {
-      id: parentId,
-      table_name: uploadValue?.table_name,
-      key_word: fileName ? fileName : bulkImports.getExcelColumns.data[selectedRowId - 1].filename,
-      is_public: isPublic,
-      config_excel_column_mappings: [
-        {
-          sheet_name: uploadValue?.sheet_name,
-          header_row: uploadValue?.header_row,
-          mapping: JSON.stringify(sqlToExcelMapping),
-        },
-      ],
-    };
 
-    dispatch(saveExcelFileMapping(excelMappingObj));
     setShowMappingModal(false);
   };
 
@@ -539,13 +550,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       title: 'Table Name',
       dataIndex: 'table_name',
       key: 'table_name',
-      render: () => (
+      render: (records,recordCurr) => (
         <>
           <Select
             onChange={handleTableChange}
             loading={bulkImports.getTables.loading}
             showSearch
-            defaultValue={table}
+            value={recordCurr.table_name}
             optionFilterProp="children"
             filterOption={(input, option: any) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -605,7 +616,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       title: 'Saved Mapping',
       dataIndex: '',
       key: '',
-      render: (record,selectedRecord) => (
+      render: (record, selectedRecord) => (
         <>
           <TreeSelect
             style={{ width: '100%' }}
@@ -652,7 +663,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         expandable={{
           expandedRowRender: (record) => (<MappingColumn
             setRecords={setRecords}
-            record = {record}
+            record={record}
+            records={records}
             skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
             fileName={record?.original_filename.split('.')[0]}
             fileType={record?.original_filename.split('.')[1]}

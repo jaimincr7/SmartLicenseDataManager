@@ -163,7 +163,7 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
           name="date_added"
           className="m-0"
         >
-          <DatePicker placeholder="Seledt Date Added" className="w-100" disabledDate={disabledDate} />
+          <DatePicker placeholder="Select Date Added" disabledDate={disabledDate} />
         </Form.Item>
        : <></>}
        </Form>

@@ -6,6 +6,7 @@ export interface IMappingColumnProps {
   tableName?:  string;
   seqNumber?:  number;
   record?: any;
+  records?: any;
   setRecords?: (data: any) => void;
   onExcelMapping?: (values: any) => void;
 }

@@ -14,6 +14,7 @@ import { UploadFile } from "antd/lib/upload/interface";
 import RenderBI from "../RenderBI";
 import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
 import bulkImportService from "../../../services/bulkImport/bulkImport.service";
+import { globalSearchSelector } from "../../../store/globalSearch/globalSearch.reducer";
 
 let valuesArray = [];
 const { Option } = Select;
@@ -22,6 +23,7 @@ let getFileMappingTimeOut = null;
 const BulkImport: React.FC = () => {
 
   const bulkImports = useAppSelector(bulkImportSelector);
+  const globalLookups = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -55,15 +57,17 @@ const BulkImport: React.FC = () => {
       setExcelColumnState(bulkImports.getExcelColumns.data);
       bulkImports.getExcelColumns.data?.map(async (x: any, index: number) => {
         let response = null;
-        await bulkImportService
-        .getExcelFileMapping({
-          table_name: tableName,
-          key_word:  x.original_filename?.split('.')[0],
-          file_type: x.original_filename?.split('.')[1]
-        })
-        .then((res) => {
-          response = res?.body?.data;
-        });
+        if(tableName) {
+          await bulkImportService
+          .getExcelFileMapping({
+            table_name: tableName,
+            key_word: x.original_filename?.split('.')[0],
+            file_type: x.original_filename?.split('.')[1]
+          })
+          .then((res) => {
+            response = res?.body?.data;
+          });
+        }
         setRecords((records) => [...records, {
           index: index + 1,
           filename: x.filename,
@@ -71,8 +75,8 @@ const BulkImport: React.FC = () => {
           table_name: tableName,
           header_row: 1,
           sheet: x?.excel_sheet_columns[0]?.sheet,
-          excel_to_sql_mapping: response[0]?.config_excel_column_mappings[0]?.mapping,
-          show_mapping: response,
+          excel_to_sql_mapping: response ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+          show_mapping: response ? response : null,
         }]);
       }
       );
@@ -130,7 +134,11 @@ const BulkImport: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    getExcelMappingColumns();
+    const dummyRecords = [...records];
+    dummyRecords.map((data) => {
+      data.table_name = formUpload?.getFieldValue('table_name')
+    });
+    setRecords(dummyRecords);
   }, [formUpload?.getFieldValue('table_name')]);
 
   useEffect(() => {
@@ -145,18 +153,6 @@ const BulkImport: React.FC = () => {
       dispatch(clearExcelColumns());
     };
   }, [dispatch]);
-
-  const getExcelMappingColumns = () => {
-    if (formUpload?.getFieldValue('table_name') && defaultFile) {
-      dispatch(
-        getExcelFileMapping({
-          table_name: formUpload.getFieldValue('table_name'),
-          key_word: defaultFile[0]?.name?.split('.')[0],
-          file_type: null
-        })
-      );
-    }
-  };
 
   const getFileMappingCall = (formData: any) => {
     dispatch(getExcelColumns(formData));
@@ -333,7 +329,7 @@ const BulkImport: React.FC = () => {
             <BreadCrumbs pageName={Page.BulkImport} />
           </h4>
           <div className="right-title">
-            <GlobalSearch isDateAdded={true} />
+            <GlobalSearch />
           </div>
           <div className="btns-block">
             {table ? (
@@ -455,17 +451,17 @@ const BulkImport: React.FC = () => {
               </>) : <></>
           )}
           <div className="btns-block">
-            <Button
-              type="primary"
-              disabled={excelColumnState?.length == 0}
-              onClick={() => {
-                setCount({ ...count, save: count.save + 1 });
-                valuesArray = [];
-              }}
-              loading={bulkImports.bulkInsert.loading}
-            >
-              Save
-            </Button>
+              <Button
+                type="primary"
+                disabled={excelColumnState?.length == 0}
+                onClick={() => {
+                  setCount({ ...count, save: count.save + 1 });
+                  valuesArray = [];
+                }}
+                loading={bulkImports.bulkInsert.loading}
+              >
+                Save
+              </Button>
             <Button
               type="primary"
               onClick={() => {

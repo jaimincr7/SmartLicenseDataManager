@@ -28,6 +28,7 @@ export interface IConfigColMapping {
 export interface ISaveExcelMapping {
   id?: number;
   table_name: string;
+  file_type: string;
   key_word: string;
   is_public: boolean;
   config_excel_column_mappings: IConfigColMapping[];

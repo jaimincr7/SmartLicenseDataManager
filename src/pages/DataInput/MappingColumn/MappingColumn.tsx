@@ -18,7 +18,7 @@ import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record , skipRows, fileName, fileType, seqNumber } = props;
+  const { record , skipRows, fileName, fileType, seqNumber , records , setRecords } = props;
 
   const [form] = Form.useForm();
   const initialValues = {
@@ -130,11 +130,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     if (sqlToExcelMapping.length === 0) {
       return false;
     }
-    const uploadValue = form.getFieldsValue();
     const excelMappingObj: ISaveExcelMapping = {
       id: parentId,
       table_name: record.table_name,
-      key_word: filename + "." + filetype ? filename + "." + filetype : bulkImports.getExcelColumns.data[seqNumber - 1].filename,
+      file_type: form.getFieldValue('file_type'),
+      key_word: form.getFieldValue('file_name'),
       is_public: isPublic,
       config_excel_column_mappings: [
         {
@@ -153,6 +153,26 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
 
     saveColumnMapping(file_name, file_type , isPublic);
     //onExcelMapping(rest);
+  };
+
+  const setMappingRecords = () => {
+    console.log('Called');
+    const fieldValues = { ...form.getFieldsValue() };
+    delete fieldValues.file_name;
+    delete fieldValues.file_type;
+    delete fieldValues.is_public;
+    const sqlToExcelMapping = [];
+    Object.entries(fieldValues).forEach(([key, value]) => {
+      if (key && value) {
+          sqlToExcelMapping.push({
+            key: `${key}`,
+            value: `${value}`,
+          });
+        }
+    });
+    const dummyrecords = [...records];
+    dummyrecords[seqNumber-1].excel_to_sql_mapping = sqlToExcelMapping;
+    setRecords(dummyrecords);
   };
 
   return (
@@ -224,6 +244,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                         <Select
                           showSearch
                           allowClear
+                          onChange={setMappingRecords}
                           suffixIcon={
                             <img
                               src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
