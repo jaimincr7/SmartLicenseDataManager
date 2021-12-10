@@ -1,5 +1,4 @@
 export interface IMappingColumnProps {
-  saveMapping: (fileName: string, isPublic: boolean) => void;
   fileName: string;
   fileType: string;
   skipRows: number;

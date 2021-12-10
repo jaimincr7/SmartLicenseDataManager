@@ -6,7 +6,7 @@ import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from "../../../store/app.hooks";
 import { bulkImportSelector, clearBulkImportMessages, clearExcelColumns, clearGetTableColumns, setTableForImport } from "../../../store/bulkImport/bulkImport.reducer";
 import { useEffect, useState } from "react";
-import { bulkInsert, getExcelColumns, getExcelFileMapping, getTableColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
+import { getExcelColumns, getExcelFileMapping, getTableColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
 import { toast } from "react-toastify";
 import Dragger from "antd/lib/upload/Dragger";
 import { IDatabaseTable } from "../../../services/common/common.model";
@@ -23,7 +23,6 @@ let getFileMappingTimeOut = null;
 const BulkImport: React.FC = () => {
 
   const bulkImports = useAppSelector(bulkImportSelector);
-  const globalLookups = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -39,7 +38,7 @@ const BulkImport: React.FC = () => {
   const [defaultFile, setDefaultFile] = useState(null);
   const [excelColumnState, setExcelColumnState] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
-  const [records, setRecords] = useState<Array<{ index: number, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
+  const [records, setRecords] = useState<Array<{ index: number,filename: string,excel_to_sql_mapping: any,show_mapping: any , original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -244,30 +243,6 @@ const BulkImport: React.FC = () => {
         }))
       )
     );
-  };
-
-  const handleSave = (data) => {
-    valuesArray.push(data);
-    if (valuesArray?.length > 0 && valuesArray?.length === excelColumnState?.length) {
-      const remainingFiles = [];
-      valuesArray?.forEach((val) => {
-        try {
-          const orgFileName = excelColumnState?.find(
-            (x) => x.filename === val?.file_name
-          )?.original_filename;
-          val.original_file_name = orgFileName;
-          dispatch(bulkInsert(val));
-        } catch (e) {
-          const orgFileName = excelColumnState?.find(
-            (x) => x.filename === val?.file_name
-          )?.original_filename;
-          remainingFiles.push(orgFileName);
-        }
-      });
-      if (remainingFiles?.length > 0) {
-        toast.error('Listed files does not imported ,' + remainingFiles.toString());
-      }
-    }
   };
 
   const onCancel = () => {

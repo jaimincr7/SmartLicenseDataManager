@@ -1,12 +1,8 @@
 import {
   Button,
   Form,
-  Input,
-  InputNumber,
   Popconfirm,
-  Row,
   Select,
-  Spin,
   Table,
   TreeSelect,
 } from 'antd';
@@ -18,31 +14,22 @@ import {
   deleteFileMapping,
   getTables,
   getTablesForImport,
-  saveExcelFileMapping,
 } from '../../../store/bulkImport/bulkImport.action';
 import {
   clearExcelColumns,
   bulkImportSelector,
-  clearDeleteMessages,
   clearBulkImportMessages,
 } from '../../../store/bulkImport/bulkImport.reducer';
 import {
-  IBulkInsertDataset,
   IDatabaseTable,
   IExcelSheetColumn,
-  ILookup,
 } from '../../../services/common/common.model';
-import { validateMessages } from '../../../common/constants/common';
-import { commonSelector } from '../../../store/common/common.reducer';
-import { getTenantLookup } from '../../../store/common/common.action';
 import moment from 'moment';
 import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
-import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
 import MappingColumn from './../MappingColumn/MappingColumn';
 import { IRenderBIProps } from './renderBI.model';
 import _ from 'lodash';
 import commonService from '../../../services/common/common.service';
-import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../common/models/common';
 import { toast } from 'react-toastify';
@@ -52,7 +39,6 @@ const { Option } = Select;
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const { seqNumber, fileData, count, handleSave, table, form, records, setRecords } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
-  const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
@@ -143,39 +129,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       resetPage();
     }
   }, [count.reset]);
-
-  const onFinish = (values: any) => {
-    const { tenant_id, company_id, bu_id, date_added, ...rest } = values;
-
-    const sqlToExcelMapping = [];
-    Object.entries(rest).forEach(([key, value]) => {
-      if (key && value) {
-        sqlToExcelMapping.push({
-          key: `${key}`,
-          value: `${value}`,
-        });
-      }
-    });
-
-    if (sqlToExcelMapping.length === 0) {
-      return false;
-    }
-    const uploadValue = innerFormUpload.getFieldsValue();
-    const inputValues: IBulkInsertDataset = {
-      excel_to_sql_mapping: sqlToExcelMapping,
-      header_row: Number(innerFormUpload.getFieldValue('header_row')) - 1 ?? 0,
-      file_name: bulkImports.getExcelColumns.data[selectedRowId - 1].filename,
-      table_name: uploadValue?.table_name,
-      sheet_name: uploadValue?.sheet_name,
-      foreign_key_values: {
-        tenant_id: tenant_id,
-        bu_id: bu_id,
-        company_id: company_id,
-        date_added: date_added,
-      },
-    };
-    handleSave(inputValues);
-  };
 
   const setFormFields = async () => {
     const skipRows =
@@ -346,10 +299,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(records);
-  }, [records]);
-
   const removeColumnMapping = (id: number) => {
     dispatch(deleteColumnMapping(id));
   };
@@ -500,40 +449,14 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  const forSaveMapping = (mappingOrder: any) => {
-    saveColumnMapping(
-      fileData?.original_filename,
-      false,
-      mappingOrder
-    );
-    setSavedExcelMapping([]);
-  };
-
-  const saveColumnMapping = (fileName: string, isPublic: boolean, id = 0) => {
-    const parentId = savedExcelMapping?.find((x) =>
-      x.config_excel_column_mappings?.find((y) => y.id === id)
-    )?.id;
-    const fieldValues = { ...form.getFieldsValue() };
-    delete fieldValues.tenant_id;
-    delete fieldValues.company_id;
-    delete fieldValues.bu_id;
-    delete fieldValues.date_added;
-    const sqlToExcelMapping = [];
-    Object.entries(fieldValues).forEach(([key, value]) => {
-      if (key && value) {
-        sqlToExcelMapping.push({
-          key: `${key}`,
-          value: `${value}`,
-        });
-      }
-    });
-
-    if (sqlToExcelMapping.length === 0) {
-      return false;
-    }
-
-    setShowMappingModal(false);
-  };
+  // const forSaveMapping = (mappingOrder: any) => {
+  //   saveColumnMapping(
+  //     fileData?.original_filename,
+  //     false,
+  //     mappingOrder
+  //   );
+  //   setSavedExcelMapping([]);
+  // };
 
   const columns = [
     {
@@ -668,12 +591,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
             fileName={record?.original_filename.split('.')[0]}
             fileType={record?.original_filename.split('.')[1]}
-            saveMapping={(fileName, isPublic) => {
-              saveColumnMapping(fileName, isPublic);
-            }}
             tableName={record?.table_name}
             seqNumber={record?.index}
-            onExcelMapping={forSaveMapping}
           ></MappingColumn>),
         }}
       />

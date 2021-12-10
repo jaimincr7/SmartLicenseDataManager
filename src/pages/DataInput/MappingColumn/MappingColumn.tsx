@@ -11,7 +11,6 @@ import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.r
 import { IMappingColumnProps } from './MappingColumn.model';
 import _ from 'lodash';
 import moment from 'moment';
-import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 import { saveExcelFileMapping } from '../../../store/bulkImport/bulkImport.action';
 import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
 
@@ -31,7 +30,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const dispatch = useAppDispatch();
 
   const [tableColumnState, setTableColumnState] = useState<any>([]);
-  const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [excelColumns, setExcelColumns] = useState(null);
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
 
@@ -133,8 +131,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     const excelMappingObj: ISaveExcelMapping = {
       id: parentId,
       table_name: record.table_name,
-      file_type: form.getFieldValue('file_type'),
-      key_word: form.getFieldValue('file_name'),
+      file_type: filetype,
+      key_word: filename,
       is_public: isPublic,
       config_excel_column_mappings: [
         {
@@ -152,11 +150,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     const { file_name, file_type , isPublic, ...rest } = values;
 
     saveColumnMapping(file_name, file_type , isPublic);
-    //onExcelMapping(rest);
   };
 
   const setMappingRecords = () => {
-    console.log('Called');
     const fieldValues = { ...form.getFieldsValue() };
     delete fieldValues.file_name;
     delete fieldValues.file_type;
@@ -176,14 +172,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   };
 
   return (
-    // <Modal
-    //   wrapClassName="custom-modal"
-    //   title={'Mapping Columns'}
-    //   centered
-    //   visible={showModal}
-    //   onCancel={handleModalClose}
-    //   footer={false}
-    // >
     <>
       <Form form={form} name="saveMapping" initialValues={initialValues}>
         <Row gutter={[30, 15]} className="form-label-hide">
