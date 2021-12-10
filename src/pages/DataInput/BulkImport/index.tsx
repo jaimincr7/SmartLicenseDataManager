@@ -14,7 +14,7 @@ import { UploadFile } from "antd/lib/upload/interface";
 import RenderBI from "../RenderBI";
 import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
 import bulkImportService from "../../../services/bulkImport/bulkImport.service";
-import { globalSearchSelector } from "../../../store/globalSearch/globalSearch.reducer";
+import { IGetExcelMapping } from "../../../services/bulkImport/bulkImport.model";
 
 let valuesArray = [];
 const { Option } = Select;
@@ -38,7 +38,7 @@ const BulkImport: React.FC = () => {
   const [defaultFile, setDefaultFile] = useState(null);
   const [excelColumnState, setExcelColumnState] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
-  const [records, setRecords] = useState<Array<{ index: number,filename: string,excel_to_sql_mapping: any,show_mapping: any , original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
+  const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -56,16 +56,16 @@ const BulkImport: React.FC = () => {
       setExcelColumnState(bulkImports.getExcelColumns.data);
       bulkImports.getExcelColumns.data?.map(async (x: any, index: number) => {
         let response = null;
-        if(tableName) {
+        if (tableName) {
           await bulkImportService
-          .getExcelFileMapping({
-            table_name: tableName,
-            key_word: x.original_filename?.split('.')[0],
-            file_type: x.original_filename?.split('.')[1]
-          })
-          .then((res) => {
-            response = res?.body?.data;
-          });
+            .getExcelFileMapping({
+              table_name: tableName,
+              key_word: x.original_filename?.split('.')[0],
+              file_type: x.original_filename?.split('.')[1]
+            })
+            .then((res) => {
+              response = res?.body?.data;
+            });
         }
         setRecords((records) => [...records, {
           index: index + 1,
@@ -81,6 +81,28 @@ const BulkImport: React.FC = () => {
       );
     }
   }, [bulkImports.getExcelColumns.data]);
+
+  useEffect(() => {
+    const dummyRecords = [...records];
+    dummyRecords.map(async (data) => {
+      let response = null;
+        if (formUpload?.getFieldValue('table_name')) {
+          await bulkImportService
+            .getExcelFileMapping({
+              table_name: formUpload?.getFieldValue('table_name'),
+              key_word: data.original_filename?.split('.')[0],
+              file_type: data.original_filename?.split('.')[1]
+            })
+            .then((res) => {
+              response = res?.body?.data;
+            });
+        }
+          data.table_name= formUpload?.getFieldValue('table_name');
+          data.show_mapping= response ? response : null;
+          data.excel_to_sql_mapping= response ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
+    });
+    setRecords(dummyRecords);
+  }, [formUpload?.getFieldValue('table_name')]);
 
   useEffect(() => {
     if (bulkImports.bulkInsert.messages.length > 0 && (count.save > 0 || count.reset > 0)) {
@@ -131,14 +153,6 @@ const BulkImport: React.FC = () => {
       dispatch(clearGetTableColumns());
     };
   }, []);
-
-  useEffect(() => {
-    const dummyRecords = [...records];
-    dummyRecords.map((data) => {
-      data.table_name = formUpload?.getFieldValue('table_name')
-    });
-    setRecords(dummyRecords);
-  }, [formUpload?.getFieldValue('table_name')]);
 
   useEffect(() => {
     if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
@@ -426,17 +440,17 @@ const BulkImport: React.FC = () => {
               </>) : <></>
           )}
           <div className="btns-block">
-              <Button
-                type="primary"
-                disabled={excelColumnState?.length == 0}
-                onClick={() => {
-                  setCount({ ...count, save: count.save + 1 });
-                  valuesArray = [];
-                }}
-                loading={bulkImports.bulkInsert.loading}
-              >
-                Save
-              </Button>
+            <Button
+              type="primary"
+              disabled={excelColumnState?.length == 0}
+              onClick={() => {
+                setCount({ ...count, save: count.save + 1 });
+                valuesArray = [];
+              }}
+              loading={bulkImports.bulkInsert.loading}
+            >
+              Save
+            </Button>
             <Button
               type="primary"
               onClick={() => {
