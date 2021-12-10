@@ -37,37 +37,36 @@ import { toast } from 'react-toastify';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { seqNumber, fileData, count, handleSave, table, form, records, setRecords } = props;
+  const { seqNumber, count, table, form, records, setRecords } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
   const [innerFormUpload] = Form.useForm();
 
-  const [excelColumns, setExcelColumns] = useState(null);
+  //const [excelColumns, setExcelColumns] = useState(null);
   const [maxHeaderRow, setMaxHeaderRow] = useState(1);
   const [tableColumns, setTableColumns] = useState(null);
-  const [removedColumns, setRemovedColumns] = useState(null);
+  //const [removedColumns, setRemovedColumns] = useState(null);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
-  const [showMappingModal, setShowMappingModal] = useState<boolean>(false);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
-  const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
-  const [compBuLookups, setCompBuLookups] = useState<{ [key: string]: any }>({
-    compony: [],
-    bu: [],
-  });
+  //const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
+  // const [compBuLookups, setCompBuLookups] = useState<{ [key: string]: any }>({
+  //   compony: [],
+  //   bu: [],
+  // });
 
   const handleTableChange = (tableName: string) => {
     if (tableName) {
-      setLoadingTableColumns(true);
+      //setLoadingTableColumns(true);
       commonService.getTableColumns(tableName).then((res) => {
         if (res) {
           setTableColumnState(res);
         }
-        setLoadingTableColumns(false);
+        //setLoadingTableColumns(false);
       });
     } else {
       setTableColumnState([]);
@@ -160,14 +159,14 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (filterExcelColumns?.length >= skipRows) {
         filterExcelColumns = filterExcelColumns[skipRows];
       }
-      const removedColumns = tableColumnState.filter((x) =>
-        columnsArray.includes(x.name?.toLowerCase())
-      );
+      // const removedColumns = tableColumnState.filter((x) =>
+      //   columnsArray.includes(x.name?.toLowerCase())
+      // );
       const ExcelColsSorted = [...filterExcelColumns];
       ExcelColsSorted.sort();
-      setExcelColumns(ExcelColsSorted);
+      //setExcelColumns(ExcelColsSorted);
       setTableColumns(filterTableColumns);
-      setRemovedColumns(removedColumns);
+      //setRemovedColumns(removedColumns);
 
       const globalSearch: IInlineSearch = {};
       for (const key in globalFilters.search) {
@@ -210,7 +209,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       form.setFieldsValue(initialValuesData);
     } else {
       form.setFieldsValue({});
-      setExcelColumns(null);
+      //setExcelColumns(null);
       setTableColumns(null);
     }
   };
@@ -219,7 +218,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     setTableColumnState([]);
     dispatch(clearExcelColumns());
     innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
-    setExcelColumns(null);
+    //setExcelColumns(null);
     setTableColumns(null);
   };
 
@@ -249,12 +248,12 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       );
       if (currentTable.length > 0) {
         innerFormUpload.setFieldsValue({ table_name: currentTable[0].name });
-        setLoadingTableColumns(true);
+        //setLoadingTableColumns(true);
         commonService.getTableColumns(currentTable[0].name).then((res) => {
           if (res) {
             setTableColumnState(res);
           }
-          setLoadingTableColumns(false);
+          //setLoadingTableColumns(false);
         });
       }
     }
@@ -265,7 +264,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       innerFormUpload?.setFieldsValue({ table_name: undefined });
       setTableColumnState([]);
       innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
-      setExcelColumns(null);
+      //setExcelColumns(null);
       setTableColumns(null);
     }
   }, [table]);
@@ -289,10 +288,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   useEffect(() => {
     if (globalFilters) {
-      setCompBuLookups({
-        compony: globalFilters.globalCompanyLookup?.data,
-        bu: globalFilters.globalBULookup?.data,
-      });
+      // setCompBuLookups({
+      //   compony: globalFilters.globalCompanyLookup?.data,
+      //   bu: globalFilters.globalBULookup?.data,
+      // });
     }
     return () => {
       setTableColumnState([]);

@@ -147,7 +147,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    const { file_name, file_type, isPublic, ...rest } = values;
+    const { file_name, file_type, isPublic } = values;
 
     saveColumnMapping(file_name, file_type, isPublic);
   };

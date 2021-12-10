@@ -5,7 +5,7 @@ import {
 } from './../../services/bulkImport/bulkImport.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import bulkImportService from '../../services/bulkImport/bulkImport.service';
-import { IBulkInsertDataset } from '../../services/common/common.model';
+//import { IBulkInsertDataset } from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
 // Asynchronous thunk action

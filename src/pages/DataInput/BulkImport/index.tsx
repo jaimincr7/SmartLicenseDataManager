@@ -6,7 +6,7 @@ import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from "../../../store/app.hooks";
 import { bulkImportSelector, clearBulkImportMessages, clearExcelColumns, clearGetTableColumns, setTableForImport } from "../../../store/bulkImport/bulkImport.reducer";
 import { useEffect, useState } from "react";
-import { getExcelColumns, getExcelFileMapping, getTableColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
+import { getExcelColumns, getTableColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
 import { toast } from "react-toastify";
 import Dragger from "antd/lib/upload/Dragger";
 import { IDatabaseTable } from "../../../services/common/common.model";
@@ -14,9 +14,7 @@ import { UploadFile } from "antd/lib/upload/interface";
 import RenderBI from "../RenderBI";
 import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
 import bulkImportService from "../../../services/bulkImport/bulkImport.service";
-import { IGetExcelMapping } from "../../../services/bulkImport/bulkImport.model";
 
-let valuesArray = [];
 const { Option } = Select;
 let getFileMappingTimeOut = null;
 
@@ -35,7 +33,7 @@ const BulkImport: React.FC = () => {
   table && (table = decodeURIComponent(table));
   const [count, setCount] = useState({ save: 0, reset: 0 });
   const [tableName, setTableName] = useState<string>(table);
-  const [defaultFile, setDefaultFile] = useState(null);
+  //const [defaultFile, setDefaultFile] = useState(null);
   const [excelColumnState, setExcelColumnState] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
   const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
@@ -86,22 +84,22 @@ const BulkImport: React.FC = () => {
     const dummyRecords = [...records];
     dummyRecords.map(async (data) => {
       let response = null;
-        if (formUpload?.getFieldValue('table_name')) {
-          await bulkImportService
-            .getExcelFileMapping({
-              table_name: formUpload?.getFieldValue('table_name'),
-              key_word: data.original_filename?.split('.')[0],
-              file_type: data.original_filename?.split('.')[1]
-            })
-            .then((res) => {
-              response = res?.body?.data;
-            });
-        }
-          data.table_name= formUpload?.getFieldValue('table_name');
-          data.show_mapping= response ? response : null;
-          data.excel_to_sql_mapping= response ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
+      if (formUpload?.getFieldValue('table_name')) {
+        await bulkImportService
+          .getExcelFileMapping({
+            table_name: formUpload?.getFieldValue('table_name'),
+            key_word: data.original_filename?.split('.')[0],
+            file_type: data.original_filename?.split('.')[1],
+          })
+          .then((res) => {
+            response = res?.body?.data;
+            data.table_name = formUpload?.getFieldValue('table_name');
+            data.show_mapping = response ? response : null;
+            data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
+            setRecords(dummyRecords);
+          });
+      }
     });
-    setRecords(dummyRecords);
   }, [formUpload?.getFieldValue('table_name')]);
 
   useEffect(() => {
@@ -183,7 +181,7 @@ const BulkImport: React.FC = () => {
       if (fileList?.length === 0) {
         dispatch(clearExcelColumns());
         setExcelColumnState([]);
-        setDefaultFile(null);
+        //setDefaultFile(null);
       } else {
         const result = excelColumnState.filter((o) =>
           fileList.some(({ name }) => o.original_filename === name)
@@ -205,7 +203,7 @@ const BulkImport: React.FC = () => {
       } catch (err) {
         toast.error(err?.toString());
       }
-      setDefaultFile(fileList);
+      //setDefaultFile(fileList);
     }
     formUpload.setFieldsValue({ sheet_name: '' });
   };
@@ -262,7 +260,6 @@ const BulkImport: React.FC = () => {
   const onCancel = () => {
     dispatch(clearExcelColumns());
     setExcelColumnState([]);
-    valuesArray = [];
     setDefaultFileList([]);
     setCount({ save: 0, reset: 0 });
     const tbName = formUpload?.getFieldValue('table_name');
@@ -445,7 +442,6 @@ const BulkImport: React.FC = () => {
               disabled={excelColumnState?.length == 0}
               onClick={() => {
                 setCount({ ...count, save: count.save + 1 });
-                valuesArray = [];
               }}
               loading={bulkImports.bulkInsert.loading}
             >
