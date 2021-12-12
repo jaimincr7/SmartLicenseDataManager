@@ -14,12 +14,14 @@ import { UploadFile } from "antd/lib/upload/interface";
 import RenderBI from "../RenderBI";
 import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
 import bulkImportService from "../../../services/bulkImport/bulkImport.service";
+import { globalSearchSelector } from "../../../store/globalSearch/globalSearch.reducer";
 
 const { Option } = Select;
 let getFileMappingTimeOut = null;
 
 const BulkImport: React.FC = () => {
 
+  const globalLookups = useAppSelector(globalSearchSelector);
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -92,6 +94,7 @@ const BulkImport: React.FC = () => {
             file_type: data.original_filename?.split('.')[1],
           })
           .then((res) => {
+            debugger;
             response = res?.body?.data;
             data.table_name = formUpload?.getFieldValue('table_name');
             data.show_mapping = response ? response : null;
@@ -376,7 +379,7 @@ const BulkImport: React.FC = () => {
                   <Col xs={24} md={8}>
                     <div className="form-group m-0">
                       <label className="label">Table Name</label>
-                      <Form.Item name={'table_name'} className="m-0">
+                      <Form.Item name={'table_name'} className="m-0" rules={[{ required: true, message: 'Table Name is required' }]}>
                         <Select
                           loading={bulkImports.getTables.loading}
                           onChange={(name: string) => {
@@ -437,16 +440,28 @@ const BulkImport: React.FC = () => {
               </>) : <></>
           )}
           <div className="btns-block">
-            <Button
-              type="primary"
-              disabled={excelColumnState?.length == 0}
-              onClick={() => {
-                setCount({ ...count, save: count.save + 1 });
-              }}
-              loading={bulkImports.bulkInsert.loading}
-            >
-              Save
-            </Button>
+            {(Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
+              <Popover content={<>Please select global filter first!</>} trigger="click">
+                <Button
+                  type="primary"
+                  disabled={excelColumnState?.length == 0}
+                  loading={bulkImports.bulkInsert.loading}
+                >
+                  Save
+                </Button>
+              </Popover>
+            ) : (
+              <Button
+                type="primary"
+                disabled={excelColumnState?.length == 0}
+                loading={bulkImports.bulkInsert.loading}
+                onClick={() => {
+                  setCount({ ...count, save: count.save + 1 });
+                }}
+              >
+                Save
+              </Button>
+            ))}
             <Button
               type="primary"
               onClick={() => {

@@ -98,7 +98,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               delimiter: ";",
             },
           ],
-
           foreign_key_values: {
             tenant_id: _.isNull(globalSearch.tenant_id)
               ? null
