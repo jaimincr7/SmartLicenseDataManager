@@ -94,7 +94,6 @@ const BulkImport: React.FC = () => {
             file_type: data.original_filename?.split('.')[1],
           })
           .then((res) => {
-            debugger;
             response = res?.body?.data;
             data.table_name = formUpload?.getFieldValue('table_name');
             data.show_mapping = response ? response : null;
