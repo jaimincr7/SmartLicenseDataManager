@@ -112,6 +112,7 @@ import cronViewLogReducer from './master/cronViewLog/cronViewLog.reducer';
 import spsApiCallReducer from './sps/spsAPICall/spsApiCall.reducer';
 import inventoryReducer from './inventory/inventory/inventory.reducer';
 import deviceReducer from './inventory/device/device.reducer';
+import deviceStateReducer from './inventory/deviceState/deviceState.reducer';
 import spsApiBaseUrlReducer from './sps/apiBaseUrl/apiBaseUrl.reducer';
 import spsApiOauthUrlInjectionSiteReducer from './sps/apiOauthUrlInjectionSite/apiOauthUrlInjectionSite.reducer';
 import spsApiOauthIdUrlInjectionSiteReducer from './sps/apiOauthIdUrlInjectionSite/apiOauthIdUrlInjectionSite.reducer';
@@ -255,6 +256,7 @@ export const rootReducer = combineReducers({
   //Inventory
   inventory: inventoryReducer,
   device: deviceReducer,
+  deviceState: deviceStateReducer,
 
   //SPS
   spsApi: spsApiReducer,

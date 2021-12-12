@@ -140,6 +140,7 @@ export enum Page {
 
   Inventory = 'inventory',
   Device = 'device',
+  DeviceState = "device-state"
 }
 export enum Action {
   View = 'view',
