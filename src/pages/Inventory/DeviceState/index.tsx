@@ -119,7 +119,7 @@ const DeviceState: React.FC<IDeviceStateProps> = (props) => {
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/inventory-module/device-state');
+            history.push('/inventory-module/device-states');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -132,7 +132,7 @@ const DeviceState: React.FC<IDeviceStateProps> = (props) => {
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            history.push('/inventory-module/device-state');
+            history.push('/inventory-module/device-states');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
