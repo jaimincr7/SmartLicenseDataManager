@@ -94,13 +94,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               (x: any) =>
                 x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                 ele.name?.toLowerCase()?.replace(/\s/g, '')
-            ).length > 0 && mapRecord.excel_to_sql_mapping == null
+            ).length > 0 && mapRecord[0].excel_to_sql_mapping == null
               ? filterExcelColumns.filter(
                 (x: any) =>
                   x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
               )[0]
-              : records.filter((x) => x.index == seqNumber).excel_to_sql_mapping;
+              : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                return data.key == ele.name
+              })[0]?.value;
           });
           form.setFieldsValue(initialValuesData);
         }
