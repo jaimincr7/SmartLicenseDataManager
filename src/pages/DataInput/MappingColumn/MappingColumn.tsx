@@ -112,6 +112,87 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       setTableColumnState([]);
       setTableColumnState([]);
     }
+  }, [record.table_name]);
+
+  useEffect(() => {
+    if (record.table_name) {
+      setLoadingTableColumns(true);
+      // const dummyRecords = _.cloneDeep(records);
+      // dummyRecords.map((data) => {
+      //   if (data.index == seqNumber) {
+      //     filterTableColumns.map(function (ele) {
+      //       initial[ele.name] 
+      //     });
+      //     form.setFieldsValue(data.excel_to_sql_mapping);
+      //   }
+      // });
+      commonService.getTableColumns(record.table_name).then((res) => {
+        if (res) {
+          const response: any = res;
+          const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+          let filterExcelColumns: any = bulkImports.getExcelColumns.data[
+            seqNumber - 1
+          ]?.excel_sheet_columns.find((e) => e.sheet === record.sheet).columns;
+          const filterTableColumns = response?.filter(
+            (x) => !columnsArray.includes(x.name?.toLowerCase())
+          );
+          if (filterExcelColumns?.length >= skipRows) {
+            filterExcelColumns = filterExcelColumns[skipRows];
+          }
+          const ExcelColsSorted = [...filterExcelColumns];
+          ExcelColsSorted.sort();
+          setExcelColumns(ExcelColsSorted);
+          setTableColumnState(filterTableColumns);
+
+          const globalSearch: IInlineSearch = {};
+          for (const key in globalFilters.search) {
+            const element = globalFilters.search[key];
+            globalSearch[key] = element ? [element] : null;
+          }
+
+          const initialValuesData: any = {
+            tenant_id: _.isNull(globalSearch.tenant_id)
+              ? null
+              : globalSearch.tenant_id === undefined
+                ? null
+                : globalSearch?.tenant_id[0],
+            bu_id: _.isNull(globalSearch.bu_id)
+              ? null
+              : globalSearch.bu_id === undefined
+                ? null
+                : globalSearch?.bu_id[0],
+            company_id: _.isNull(globalSearch.company_id)
+              ? null
+              : globalSearch.company_id === undefined
+                ? null
+                : globalSearch?.company_id[0],
+            date_added: moment(),
+          };
+          filterTableColumns.map(function (ele) {
+            const mapRecord = records.filter((x) => x.index == seqNumber);
+            initialValuesData[ele.name] =
+            filterExcelColumns?.filter(
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            ).length > 0 && mapRecord[0].excel_to_sql_mapping == null
+              ? filterExcelColumns.filter(
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s/g, '')
+              )[0]
+              : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                return data.key == ele.name
+              })[0]?.value;
+          });
+          form.setFieldsValue(initialValuesData);
+        }
+        setLoadingTableColumns(false);
+      });
+    } else {
+      setTableColumnState([]);
+      setTableColumnState([]);
+    }
   }, []);
 
   useEffect(() => {
