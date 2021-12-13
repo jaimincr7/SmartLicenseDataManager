@@ -19,8 +19,16 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
 
   const [form] = Form.useForm();
   const initialValues = {
-    header_row: headerRowCount,
+    header_row: dataRecords.filter(data => data.index == seqNumber).header_row,
   };
+
+  useEffect(() => {
+    debugger;
+    const initialValues = {
+      header_row: dataRecords.filter(data => data.index == seqNumber).header_row,
+    };
+    form.setFieldsValue(initialValues);
+  }, [dataRecords]);
 
   useEffect(() => {
     const mainColumns = [];
@@ -55,7 +63,9 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const submitHeaderRow = (values: any) => {
     const dummyRecords = _.cloneDeep(dataRecords);
     dummyRecords.map((data) => {
-      if(data.index == seqNumber) {
+      debugger;
+      if(data.index == seqNumber) 
+      {
         data.header_row = values.header_row;
         data.delimeter = values.deli_meter;
       }

@@ -85,7 +85,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     const filterTableColumns = tableColumnState.filter(
       (x) => !columnsArray.includes(x.name?.toLowerCase())
     );
-    const initialValuesData : any = {};
+    const initialValuesData: any = {};
     const sqlToExcelMapping: any = [];
     filterTableColumns.map(function (ele) {
       initialValuesData[ele.name] =
@@ -100,10 +100,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s/g, '')
           )[0]
           : '';
-          sqlToExcelMapping.push({
-            key: `${ele.name}`,
-            value: `${initialValuesData[ele.name]}`,
-          });
+      sqlToExcelMapping.push({
+        key: `${ele.name}`,
+        value: `${initialValuesData[ele.name]}`,
+      });
     });
     for (const x in initialValuesData) {
       if (initialValuesData[x] !== "") {
@@ -152,7 +152,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             date_added: moment(),
           }
         }
-        if(emptyMappingFlag == true) {
+        if (emptyMappingFlag == true) {
           toast.info('Some File may not have any mapping.Please check!');
         } else {
           dispatch(bulkInsert(val));
@@ -433,7 +433,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (defaultSelected && defaultSelected.config_excel_column_mappings?.length > 0) {
         const selectedMappingOrder = defaultSelected.config_excel_column_mappings[0]?.id;
         innerFormUpload.setFieldsValue({ mapping_order: selectedMappingOrder });
-        onChange(null,selectedMappingOrder);
+        onChange(null, selectedMappingOrder);
       }
     }
   }, [savedExcelMapping]);
@@ -442,15 +442,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   getExcelMappingColumns();
   // }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
 
-  const onChange = (selectedRecord: any,value: any) => {
+  const onChange = (selectedRecord: any, value: any) => {
     // console.log('record',selectedRecord);
     // console.log(value);
     const dummyRecord = _.cloneDeep(records);
     dummyRecord.map((data) => {
-      if(data.index == selectedRecord.index) {
+      if (data.index == selectedRecord.index) {
         selectedRecord.show_mapping.map((data1) => {
           data1.config_excel_column_mappings.map((data2) => {
-            if(data2.id == value) {
+            if (data2.id == value) {
               data.excel_to_sql_mapping = JSON.parse(data2.mapping);
             }
           })
@@ -523,6 +523,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (records, recordCurr) => (
         <>
           <Select
+            style={{ width: '130px' }}
             onChange={(tbName) => { handleTableChange(recordCurr, tbName) }}
             loading={bulkImports.getTables.loading}
             showSearch
@@ -565,11 +566,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (record, selectedRecord) => (
         <>
           <TreeSelect
-            style={{ width: '100%' }}
+            style={{ width: '130px' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
             value={selectedRecord.show_mapping !== null ? selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name : null}
-            onChange={(e) => onChange(selectedRecord,e)}
+            onChange={(e) => onChange(selectedRecord, e)}
             treeDefaultExpandAll
             allowClear
           />
