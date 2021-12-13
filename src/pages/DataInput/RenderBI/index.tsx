@@ -63,7 +63,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       const dummyRecords = _.cloneDeep(records);
       dummyRecords.map((data) => {
         if (data.index == currRecord.index) {
-          debugger;
           data.table_name = tableName;
         }
       });
@@ -286,12 +285,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   // End: set tables for import
 
   useEffect(() => {
-    if (globalFilters) {
-      // setCompBuLookups({
-      //   compony: globalFilters.globalCompanyLookup?.data,
-      //   bu: globalFilters.globalBULookup?.data,
-      // });
-    }
     return () => {
       setTableColumnState([]);
     };
@@ -511,15 +504,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     },
     {
       title: 'Saved Mapping',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'show_mapping',
+      key: 'show_mapping',
       render: (record, selectedRecord) => (
         <>
           <TreeSelect
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
-            defaultValue={selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name}
+            value={selectedRecord.show_mapping !== null ? selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name : null}
             onChange={onChange}
             treeDefaultExpandAll
             allowClear
