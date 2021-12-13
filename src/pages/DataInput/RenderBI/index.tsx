@@ -1,154 +1,132 @@
 import {
   Button,
-  Col,
-  DatePicker,
   Form,
-  Input,
-  InputNumber,
   Popconfirm,
-  Row,
   Select,
-  Spin,
+  Table,
   TreeSelect,
 } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
+  bulkInsert,
   deleteColumnMapping,
   deleteFileMapping,
   getTables,
   getTablesForImport,
-  saveExcelFileMapping,
 } from '../../../store/bulkImport/bulkImport.action';
 import {
   clearExcelColumns,
   bulkImportSelector,
-  clearDeleteMessages,
   clearBulkImportMessages,
 } from '../../../store/bulkImport/bulkImport.reducer';
 import {
-  IBulkInsertDataset,
   IDatabaseTable,
-  IExcelSheetColumn,
-  ILookup,
 } from '../../../services/common/common.model';
-import { validateMessages } from '../../../common/constants/common';
-import { commonSelector } from '../../../store/common/common.reducer';
-import { getTenantLookup } from '../../../store/common/common.action';
 import moment from 'moment';
 import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
-import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
 import MappingColumn from './../MappingColumn/MappingColumn';
 import { IRenderBIProps } from './renderBI.model';
 import _ from 'lodash';
 import commonService from '../../../services/common/common.service';
-import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../common/models/common';
 import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
-let maxHeaderRow = 1;
-
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { seqNumber, fileData, count, handleSave, table } = props;
+  const { count, table, form, records, setRecords } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
-  const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const [form] = Form.useForm();
   const [innerFormUpload] = Form.useForm();
 
-  const [excelColumns, setExcelColumns] = useState(null);
+  //const [excelColumns, setExcelColumns] = useState(null);
+  const [maxHeaderRow, setMaxHeaderRow] = useState(1);
   const [tableColumns, setTableColumns] = useState(null);
-  const [removedColumns, setRemovedColumns] = useState(null);
+  const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
-  const [showMappingModal, setShowMappingModal] = useState<boolean>(false);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
-  const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
-  const [compBuLookups, setCompBuLookups] = useState<{ [key: string]: any }>({
-    compony: [],
-    bu: [],
-  });
+  const [selectedRowId, setSelectedRowId] = useState<any>();
+  //const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
+  // const [compBuLookups, setCompBuLookups] = useState<{ [key: string]: any }>({
+  //   compony: [],
+  //   bu: [],
+  // });
 
-  const handleTableChange = (tableName: string) => {
-    if (tableName) {
-      setLoadingTableColumns(true);
-      commonService.getTableColumns(tableName).then((res) => {
-        if (res) {
-          setTableColumnState(res);
+  const handleTableChange = (currRecord: any, tableName: string) => {
+    if (currRecord.table_name) {
+      const dummyRecords = _.cloneDeep(records);
+      dummyRecords.map((data) => {
+        if (data.index == currRecord.index) {
+          data.table_name = tableName;
         }
-        setLoadingTableColumns(false);
       });
+      setRecords(dummyRecords);
     } else {
       setTableColumnState([]);
       setTableColumnState([]);
     }
   };
 
-  const handleSheetChange = () => {
-    setFormFields();
-  };
-
-  useEffect(() => {
-    if (fileData?.original_filename) {
-      innerFormUpload?.setFieldsValue({ original_filename: fileData?.original_filename });
-    }
-  }, [fileData?.original_filename]);
+  //const handleSheetChange = () => {
+  //   setFormFields();
+  // };
 
   useEffect(() => {
     if (count.save > 0) {
-      form.submit();
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
+      records.map((data) => {
+        const val = {
+          excel_sheet_with_mapping_details: [
+            {
+              excel_to_sql_mapping: data.excel_to_sql_mapping,
+              table_name: data.table_name,
+              file_name: data.filename,
+              original_file_name: data.original_filename,
+              sheet_name: data.sheet,
+              header_row: data.header_row - 1,
+              delimiter: ";",
+            },
+          ],
+          foreign_key_values: {
+            tenant_id: _.isNull(globalSearch.tenant_id)
+              ? null
+              : globalSearch.tenant_id === undefined
+                ? null
+                : globalSearch?.tenant_id[0],
+            bu_id: _.isNull(globalSearch.bu_id)
+              ? null
+              : globalSearch.bu_id === undefined
+                ? null
+                : globalSearch?.bu_id[0],
+            company_id: _.isNull(globalSearch.company_id)
+              ? null
+              : globalSearch.company_id === undefined
+                ? null
+                : globalSearch?.company_id[0],
+            date_added: moment(),
+          }
+        }
+        dispatch(bulkInsert(val));
+      })
     }
   }, [count.save]);
 
   useEffect(() => {
     if (count.reset > 0) {
       resetPage();
+      setRecords([]);
     }
   }, [count.reset]);
-
-  const onFinish = (values: any) => {
-    const { tenant_id, company_id, bu_id, date_added, ...rest } = values;
-
-    const sqlToExcelMapping = [];
-    Object.entries(rest).forEach(([key, value]) => {
-      if (key && value) {
-        sqlToExcelMapping.push({
-          key: `${key}`,
-          value: `${value}`,
-        });
-      }
-    });
-
-    if (sqlToExcelMapping.length === 0) {
-      return false;
-    }
-    const uploadValue = innerFormUpload.getFieldsValue();
-    const inputValues: IBulkInsertDataset = {
-      excel_to_sql_mapping: sqlToExcelMapping,
-      header_row: Number(innerFormUpload.getFieldValue('header_row')) - 1 ?? 0,
-      file_name: bulkImports.getExcelColumns.data[seqNumber - 1].filename,
-      table_name: uploadValue?.table_name,
-      sheet_name: uploadValue?.sheet_name,
-      foreign_key_values: {
-        tenant_id: tenant_id,
-        bu_id: bu_id,
-        company_id: company_id,
-        date_added: date_added,
-      },
-    };
-    handleSave(inputValues);
-  };
-
-  const formUploadInitialValues = {
-    header_row: 1,
-    original_filename: fileData?.original_filename,
-  };
 
   const setFormFields = async () => {
     const skipRows =
@@ -159,20 +137,20 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (
       !currentSheetName &&
       bulkImports.getExcelColumns.data?.length > 0 &&
-      bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns
+      bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns
     ) {
       currentSheetName =
-        bulkImports.getExcelColumns.data[seqNumber - 1].excel_sheet_columns[0].sheet;
+        bulkImports.getExcelColumns.data[selectedRowId - 1].excel_sheet_columns[0].sheet;
       innerFormUpload.setFieldsValue({ sheet_name: currentSheetName });
     }
     if (
       tableColumnState &&
       bulkImports.getExcelColumns.data?.length > 0 &&
-      bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns
+      bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns
     ) {
       const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
       let filterExcelColumns: any = bulkImports.getExcelColumns.data[
-        seqNumber - 1
+        selectedRowId - 1
       ]?.excel_sheet_columns.find((e) => e.sheet === currentSheetName).columns;
       const filterTableColumns = tableColumnState.filter(
         (x) => !columnsArray.includes(x.name?.toLowerCase())
@@ -180,17 +158,14 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (filterExcelColumns?.length >= skipRows) {
         filterExcelColumns = filterExcelColumns[skipRows];
       }
-      const removedColumns = tableColumnState.filter((x) =>
-        columnsArray.includes(x.name?.toLowerCase())
-      );
+      // const removedColumns = tableColumnState.filter((x) =>
+      //   columnsArray.includes(x.name?.toLowerCase())
+      // );
       const ExcelColsSorted = [...filterExcelColumns];
       ExcelColsSorted.sort();
-      setExcelColumns(ExcelColsSorted);
+      //setExcelColumns(ExcelColsSorted);
       setTableColumns(filterTableColumns);
-      setRemovedColumns(removedColumns);
-
-      removedColumns.some((x) => x.name?.toLowerCase() === 'tenantid') &&
-        dispatch(getTenantLookup());
+      //setRemovedColumns(removedColumns);
 
       const globalSearch: IInlineSearch = {};
       for (const key in globalFilters.search) {
@@ -202,18 +177,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-          ? null
-          : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-          ? null
-          : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-          ? null
-          : globalSearch?.company_id[0],
+            ? null
+            : globalSearch?.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -224,65 +199,35 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
     } else {
       form.setFieldsValue({});
-      setExcelColumns(null);
+      //setExcelColumns(null);
       setTableColumns(null);
     }
-  };
-
-  const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
-    if (tenantId) {
-      commonService.getCompanyLookup(tenantId).then((res) => {
-        setCompBuLookups({ compony: res.body?.data, bu: [] });
-      });
-    } else {
-      setCompBuLookups({ compony: [], bu: [] });
-    }
-  };
-
-  const handleCompanyChange = (companyId: number) => {
-    form.setFieldsValue({ company_id: companyId, bu_id: null });
-    if (companyId) {
-      commonService.getBULookup(companyId).then((res) => {
-        setCompBuLookups({ ...compBuLookups, bu: res.body?.data });
-      });
-    } else {
-      setCompBuLookups({ ...compBuLookups, bu: [] });
-    }
-  };
-
-  const handleBUChange = (buId: number) => {
-    form.setFieldsValue({ bu_id: buId });
-  };
-
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current > moment().endOf('day');
   };
 
   const resetPage = () => {
     setTableColumnState([]);
     dispatch(clearExcelColumns());
     innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
-    setExcelColumns(null);
+    //setExcelColumns(null);
     setTableColumns(null);
   };
 
   useEffect(() => {
     if (bulkImports.getExcelColumns.data?.length > 0) {
       setFormFields();
-      maxHeaderRow = bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns?.find(
-        (e) => e.sheet === innerFormUpload.getFieldValue('sheet_name')
-      )?.columns?.length;
+      // const sheet_name = bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns[0]?.sheet;
+      // maxHeaderRow = bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
+      //   (e) => e.sheet === sheet_name
+      // )?.columns?.length;
     }
   }, [tableColumnState, bulkImports.getExcelColumns.data]);
 
@@ -302,12 +247,12 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       );
       if (currentTable.length > 0) {
         innerFormUpload.setFieldsValue({ table_name: currentTable[0].name });
-        setLoadingTableColumns(true);
+        //setLoadingTableColumns(true);
         commonService.getTableColumns(currentTable[0].name).then((res) => {
           if (res) {
             setTableColumnState(res);
           }
-          setLoadingTableColumns(false);
+          //setLoadingTableColumns(false);
         });
       }
     }
@@ -318,31 +263,29 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       innerFormUpload?.setFieldsValue({ table_name: undefined });
       setTableColumnState([]);
       innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
-      setExcelColumns(null);
+      //setExcelColumns(null);
       setTableColumns(null);
     }
   }, [table]);
 
   const previewData = (headerValue = 0) => {
+    const sheet_name = bulkImports.getExcelColumns.data[selectedRowId - 1].excel_sheet_columns[0].sheet;
     const currentExcelData = [
-      ...bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns?.find(
-        (x) => x.sheet === innerFormUpload?.getFieldValue('sheet_name')
+      ...bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
+        (x) => x.sheet === sheet_name
       )?.columns,
     ];
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
+    setMaxHeaderRow(bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
+      (e) => e.sheet === sheet_name
+    )?.columns?.length);
     innerFormUpload.setFieldsValue({ header_row: headerValue });
     setFormFields();
   };
   // End: set tables for import
 
   useEffect(() => {
-    if (globalFilters) {
-      setCompBuLookups({
-        compony: globalFilters.globalCompanyLookup?.data,
-        bu: globalFilters.globalBULookup?.data,
-      });
-    }
     return () => {
       setTableColumnState([]);
     };
@@ -356,31 +299,31 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     dispatch(deleteFileMapping(id));
   };
 
-  useEffect(() => {
-    if (bulkImports.deleteColumnMapping.messages.length > 0) {
-      if (bulkImports.deleteColumnMapping.hasErrors) {
-        toast.error(bulkImports.deleteColumnMapping.messages.join(' '));
-      } else {
-        toast.success(bulkImports.deleteColumnMapping.messages.join(' '));
-        setSavedExcelMapping([]);
-        getExcelMappingColumns();
-      }
-      dispatch(clearDeleteMessages());
-    }
-  }, [bulkImports.deleteColumnMapping.messages]);
+  // useEffect(() => {
+  //   if (bulkImports.deleteColumnMapping.messages.length > 0) {
+  //     if (bulkImports.deleteColumnMapping.hasErrors) {
+  //       toast.error(bulkImports.deleteColumnMapping.messages.join(' '));
+  //     } else {
+  //       toast.success(bulkImports.deleteColumnMapping.messages.join(' '));
+  //       setSavedExcelMapping([]);
+  //       getExcelMappingColumns();
+  //     }
+  //     dispatch(clearDeleteMessages());
+  //   }
+  // }, [bulkImports.deleteColumnMapping.messages]);
 
-  useEffect(() => {
-    if (bulkImports.deleteFileMapping.messages.length > 0) {
-      if (bulkImports.deleteFileMapping.hasErrors) {
-        toast.error(bulkImports.deleteFileMapping.messages.join(' '));
-      } else {
-        toast.success(bulkImports.deleteFileMapping.messages.join(' '));
-        setSavedExcelMapping([]);
-        getExcelMappingColumns();
-      }
-      dispatch(clearDeleteMessages());
-    }
-  }, [bulkImports.deleteFileMapping.messages]);
+  // useEffect(() => {
+  //   if (bulkImports.deleteFileMapping.messages.length > 0) {
+  //     if (bulkImports.deleteFileMapping.hasErrors) {
+  //       toast.error(bulkImports.deleteFileMapping.messages.join(' '));
+  //     } else {
+  //       toast.success(bulkImports.deleteFileMapping.messages.join(' '));
+  //       setSavedExcelMapping([]);
+  //       getExcelMappingColumns();
+  //     }
+  //     dispatch(clearDeleteMessages());
+  //   }
+  // }, [bulkImports.deleteFileMapping.messages]);
 
   const geChildDropdown = (excelMappings: any) => {
     const chidDropdown = [];
@@ -407,12 +350,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     return chidDropdown;
   };
 
-  const getMenuDropdown = () => {
+  const getMenuDropdown = (recordsDefault: any) => {
     const dropdown = [];
-    const defaultMappingDetail = savedExcelMapping?.filter(
-      (x) => x.table_name === innerFormUpload?.getFieldValue('table_name')
-    );
-    defaultMappingDetail?.map((m: any) => {
+    recordsDefault?.map((m: any) => {
       dropdown.push({
         title: (
           <>
@@ -439,25 +379,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     return dropdown;
   };
 
-  const getExcelMappingColumns = () => {
-    if (innerFormUpload?.getFieldValue('table_name') && fileData?.original_filename) {
-      bulkImportService
-        .getExcelFileMapping({
-          table_name: innerFormUpload.getFieldValue('table_name'),
-          key_word: fileData?.original_filename,
-        })
-        .then((res) => {
-          setSavedExcelMapping(res?.body?.data);
-        });
-    }
-  };
-
   useEffect(() => {
     if (bulkImports.saveExcelFileMapping.messages.length > 0) {
       toast.success(bulkImports.saveExcelFileMapping.messages.join(' '));
       dispatch(clearBulkImportMessages());
       setSavedExcelMapping([]);
-      getExcelMappingColumns();
     }
   }, [bulkImports.saveExcelFileMapping.messages]);
 
@@ -472,9 +398,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   }, [savedExcelMapping]);
 
-  useEffect(() => {
-    getExcelMappingColumns();
-  }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
+  // useEffect(() => {
+  //   getExcelMappingColumns();
+  // }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
 
   const onChange = (value) => {
     if (value) {
@@ -495,7 +421,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
       if (bulkImports.getExcelColumns.data?.length > 0) {
         let filterExcelColumns: any = bulkImports.getExcelColumns.data[
-          seqNumber - 1
+          selectedRowId - 1
         ]?.excel_sheet_columns?.find(
           (e) => e.sheet === innerFormUpload?.getFieldValue('sheet_name')
         ).columns;
@@ -515,66 +441,187 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  const forSaveMapping = () => {
-    saveColumnMapping(
-      fileData?.original_filename,
-      false,
-      innerFormUpload.getFieldValue('mapping_order')
-    );
-    setSavedExcelMapping([]);
-    getExcelMappingColumns();
-  };
+  // const forSaveMapping = (mappingOrder: any) => {
+  //   saveColumnMapping(
+  //     fileData?.original_filename,
+  //     false,
+  //     mappingOrder
+  //   );
+  //   setSavedExcelMapping([]);
+  // };
 
-  const saveColumnMapping = (fileName: string, isPublic: boolean, id = 0) => {
-    const parentId = savedExcelMapping?.find((x) =>
-      x.config_excel_column_mappings?.find((y) => y.id === id)
-    )?.id;
-    const fieldValues = { ...form.getFieldsValue() };
-    delete fieldValues.tenant_id;
-    delete fieldValues.company_id;
-    delete fieldValues.bu_id;
-    delete fieldValues.date_added;
-    const sqlToExcelMapping = [];
-    Object.entries(fieldValues).forEach(([key, value]) => {
-      if (key && value) {
-        sqlToExcelMapping.push({
-          key: `${key}`,
-          value: `${value}`,
-        });
-      }
-    });
-
-    if (sqlToExcelMapping.length === 0) {
-      return false;
-    }
-    const uploadValue = innerFormUpload.getFieldsValue();
-    const excelMappingObj: ISaveExcelMapping = {
-      id: parentId,
-      table_name: uploadValue?.table_name,
-      key_word: fileName ? fileName : bulkImports.getExcelColumns.data[seqNumber - 1].filename,
-      is_public: isPublic,
-      config_excel_column_mappings: [
-        {
-          sheet_name: uploadValue?.sheet_name,
-          header_row: uploadValue?.header_row,
-          mapping: JSON.stringify(sqlToExcelMapping),
-        },
-      ],
-    };
-
-    dispatch(saveExcelFileMapping(excelMappingObj));
-    setShowMappingModal(false);
-  };
+  const columns = [
+    {
+      title: 'Index',
+      dataIndex: 'index',
+      key: 'index',
+    },
+    {
+      title: 'File Name',
+      dataIndex: 'original_filename',
+      key: 'original_filename',
+    },
+    {
+      title: 'Table Name',
+      dataIndex: 'table_name',
+      key: 'table_name',
+      render: (records, recordCurr) => (
+        <>
+          <Select
+            onChange={(tbName) => { handleTableChange(recordCurr, tbName) }}
+            loading={bulkImports.getTables.loading}
+            showSearch
+            value={recordCurr.table_name}
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children
+                ?.toLowerCase()
+                ?.localeCompare(optionB.children?.toLowerCase())
+            }
+          >
+            {bulkImports.getTables.data?.map(
+              (option: IDatabaseTable, index: number) => (
+                <Option key={index} value={option.name}>
+                  {option.name}
+                </Option>
+              )
+            )}
+          </Select>
+        </>
+      )
+    },
+    {
+      title: 'Sheet Name',
+      dataIndex: 'sheet',
+      key: 'sheet',
+    },
+    {
+      title: 'Header Row',
+      dataIndex: 'header_row',
+      key: 'header_row',
+    },
+    {
+      title: 'Saved Mapping',
+      dataIndex: 'show_mapping',
+      key: 'show_mapping',
+      render: (record, selectedRecord) => (
+        <>
+          <TreeSelect
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            treeData={getMenuDropdown(selectedRecord.show_mapping)}
+            value={selectedRecord.show_mapping !== null ? selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name : null}
+            onChange={onChange}
+            treeDefaultExpandAll
+            allowClear
+          />
+        </>
+      )
+    },
+    {
+      title: 'Manage Header',
+      dataIndex: 'key',
+      key: 'key',
+      render: (record, selectedRecord) => (
+        <>
+          <Button
+            type="primary"
+            onClick={() => {
+              setSelectedRowId(selectedRecord.index);
+              setHeaderRowCount(selectedRecord.header_count);
+              setShowManageExcel(true);
+            }}
+          >
+            Manage Header
+          </Button>
+        </>
+      )
+    },
+  ];
 
   return (
     <>
+      <Table
+        showHeader={true}
+        pagination={false}
+        scroll={{ x: true }}
+        dataSource={records}
+        rowKey={(record) => record['index']}
+        columns={columns}
+        loading={records.length == 0}
+        expandable={{
+          expandedRowRender: (record) => (<MappingColumn
+            setRecords={setRecords}
+            record={record}
+            records={records}
+            skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
+            fileName={record?.original_filename.split('.')[0]}
+            fileType={record?.original_filename.split('.')[1]}
+            tableName={record?.table_name}
+            seqNumber={record?.index}
+          ></MappingColumn>),
+        }}
+      />
+      {/* <tr>
+        <td>{fileData.original_filename}</td>
+        <td>
+          <Select
+            onChange={handleTableChange}
+            loading={bulkImports.getTables.loading}
+            showSearch
+            defaultValue={table}
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children
+                ?.toLowerCase()
+                ?.localeCompare(optionB.children?.toLowerCase())
+            }
+          >
+            {bulkImports.getTables.data?.map(
+              (option: IDatabaseTable, index: number) => (
+                <Option key={index} value={option.name}>
+                  {option.name}
+                </Option>
+              )
+            )}
+          </Select>
+        </td>
+        <td>{innerFormUpload.getFieldValue('sheet_name')}</td>
+        <td>{innerFormUpload.getFieldValue('header_row') == null ? 1 : innerFormUpload.getFieldValue('header_row')}  </td>
+        <td>{<Button
+          type="primary"
+          onClick={() => {
+            setShowManageExcel(true);
+          }}
+        >
+          Manage Excel
+        </Button>}
+        </td>
+        <td>{<Button
+          type="primary"
+          onClick={() => {
+            setShowMappingModal(true);
+          }}
+        >
+          Manage Mapping
+        </Button>}
+        </td>
+      </tr> */}
+
       <div className="update-excel-page">
-        <div className="main-card">
-          <div className="input-btns-title">
-            <Form
+
+        {/*<div className="main-card">
+          
+           <div className="input-btns-title">
+            <Form 
               form={innerFormUpload}
               name="innerFormUpload"
-              initialValues={formUploadInitialValues}
             >
               <Row gutter={[30, 20]} className="align-item-start">
                 <Col xs={24} md={6}>
@@ -615,7 +662,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                   </div>
                 </Col>
                 {bulkImports.getExcelColumns.data?.length > 0 &&
-                  bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns && (
+                  bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns && (
                     <Col xs={24} md={6}>
                       <div className="form-group m-0">
                         <label className="label">Sheet Name</label>
@@ -692,7 +739,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                       </div>
                     </Col>
                   )}
-                {bulkImports.getExcelColumns.data?.length > 0 &&
+                 {bulkImports.getExcelColumns.data?.length > 0 &&
                   bulkImports.getExcelColumns.data[seqNumber - 1]?.excel_sheet_columns && (
                     <Col xs={24} md={6}>
                       <div className="form-group m-0">
@@ -710,15 +757,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                         </div>
                       </div>
                     </Col>
-                  )}
+                  )} 
               </Row>
             </Form>
-          </div>
-          {loadingTableColumns && (
+          </div> */}
+        {/* {loadingTableColumns && (
             <div className="spin-loader">
               <Spin spinning={true} />
             </div>
-          )}
+          )} 
           <Form
             form={form}
             name="uploadExcelSheet"
@@ -963,33 +1010,21 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                 </>
               )}
           </Form>
-        </div>
+        </div> */}
       </div>
       <PreviewExcel
         showModal={showManageExcel}
         maxCount={maxHeaderRow}
         handleModalClose={() => {
           setShowManageExcel(false);
-          if (!innerFormUpload.getFieldValue('header_row')) {
-            innerFormUpload.setFieldsValue({ header_row: 1 });
-          }
         }}
+        dataRecords={records}
+        setRecords={setRecords}
+        seqNumber={selectedRowId}
         previewData={previewData}
         records={excelPreviewData}
-        headerRowCount={innerFormUpload.getFieldValue('header_row')}
+        headerRowCount={headerRowCount}
       ></PreviewExcel>
-      {showMappingModal && (
-        <MappingColumn
-          handleModalClose={() => {
-            setShowMappingModal(false);
-          }}
-          showModal={showMappingModal}
-          fileName={fileData?.original_filename.split('.')[0]}
-          saveMapping={(fileName, isPublic) => {
-            saveColumnMapping(fileName, isPublic);
-          }}
-        ></MappingColumn>
-      )}
     </>
   );
 };

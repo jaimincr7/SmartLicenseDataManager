@@ -5,7 +5,7 @@ import {
 } from './../../services/bulkImport/bulkImport.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import bulkImportService from '../../services/bulkImport/bulkImport.service';
-import { IBulkInsertDataset } from '../../services/common/common.model';
+//import { IBulkInsertDataset } from '../../services/common/common.model';
 import commonService from '../../services/common/common.service';
 
 // Asynchronous thunk action
@@ -62,7 +62,7 @@ export const getExcelColumns = createAsyncThunk('getExcelColumns', async (file: 
   return response.data;
 });
 
-export const bulkInsert = createAsyncThunk('bulkInsert', async (data: IBulkInsertDataset) => {
+export const bulkInsert = createAsyncThunk('bulkInsert', async (data: any) => {
   const response = await commonService.bulkInsert(data).then((res) => {
     return res.body;
   });
