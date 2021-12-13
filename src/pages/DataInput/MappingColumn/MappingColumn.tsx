@@ -307,11 +307,30 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         </Row>
         <br />
         <hr />
+        <br />
         {loadingTableColumns ? (
           <div className="spin-loader">
             <Spin spinning={true} />
           </div>
         ) : (<Row gutter={[30, 15]} className="form-label-hide">
+           <Col xs={24} md={12} lg={12} xl={8}>
+              <div className="form-group form-inline">
+                <label className="label strong">Database Column</label>
+                <label className="strong">Excel Column</label>
+              </div>
+            </Col>
+            <Col xs={24} md={12} lg={12} xl={8} className="sm-none">
+              <div className="form-group form-inline">
+                <label className="label strong">Database Column</label>
+                <label className="strong">Excel Column</label>
+              </div>
+            </Col>
+            <Col xs={24} md={12} lg={12} xl={8} className="lg-none">
+              <div className="form-group form-inline">
+                <label className="label strong">Database Column</label>
+                <label className="strong">Excel Column</label>
+              </div>
+            </Col>
           {(tableColumnState || []).map((col, index: number) => (
             <Col xs={24} md={12} lg={12} xl={8} key={index}>
               <div className="form-group form-inline">
