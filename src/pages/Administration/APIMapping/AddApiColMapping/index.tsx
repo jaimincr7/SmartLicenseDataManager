@@ -30,7 +30,10 @@ import {
   clearApiColMappingMessages,
 } from '../../../../store/sps/apiColumnMapping/apiColMapping.reducer';
 import { checkUID } from '../../../../store/sps/spsAPICall/spsApiCall.action';
-import { clearSpsCheckUID, spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
+import {
+  clearSpsCheckUID,
+  spsApiCallSelector,
+} from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
 import ApiTable from '../../../SPS/APIsCall/ApiTable';
 
 const { Option } = Select;

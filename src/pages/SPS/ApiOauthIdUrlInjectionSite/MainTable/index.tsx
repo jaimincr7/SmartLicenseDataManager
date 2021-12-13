@@ -99,8 +99,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('inj_id',
-            spsApiOauthIdUrlInjectionSite.search.lookups?.sps_api_injection_sites
+            title: FilterByDropdown(
+              'inj_id',
+              spsApiOauthIdUrlInjectionSite.search.lookups?.sps_api_injection_sites
             ),
             dataIndex: 'sps_api_injection_site_name',
             key: 'sps_api_injection_site_name',

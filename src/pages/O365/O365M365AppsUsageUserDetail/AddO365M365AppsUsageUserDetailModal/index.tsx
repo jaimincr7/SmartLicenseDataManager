@@ -193,7 +193,7 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
           : moment(data.last_activity_date),
-          date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         report_period: data.report_period,
         is_active_on_windows: data.is_active_on_windows,
         is_active_on_mac: data.is_active_on_mac,
@@ -557,21 +557,13 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'date_added']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
                       <Checkbox>Date Added</Checkbox>
                     </Form.Item>
                   ) : (
                     'Date Added'
                   )}
-                  <Form.Item
-                    name="date_added"
-                    label="Date Added"
-                    className="m-0"
-                  >
+                  <Form.Item name="date_added" label="Date Added" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>

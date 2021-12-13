@@ -41,12 +41,12 @@ export const userSlice = createSlice({
       const setChildMenus = (menu: IMenu) => {
         const childMenus = menuArray?.filter(
           (x) =>
-            x.parent_menu_id === menu.id && x.is_display
-            && (
-              (x.menu_rights.length === 0 ||
-                x.menu_rights?.find((y) => y.is_rights && y.access_rights?.name === 'view' && y.access_rights?.status)
-              )
-            )
+            x.parent_menu_id === menu.id &&
+            x.is_display &&
+            (x.menu_rights.length === 0 ||
+              x.menu_rights?.find(
+                (y) => y.is_rights && y.access_rights?.name === 'view' && y.access_rights?.status
+              ))
         );
         if (childMenus.length > 0) {
           menu['childMenus'] = childMenus;
@@ -66,17 +66,17 @@ export const userSlice = createSlice({
             } else if (m.childMenus && m.childMenus.length > 0) {
               if (hasChild(m)) {
                 validChild = validChild + 1;
-              }else{
+              } else {
                 childMenus.splice(index, 1);
               }
-            }else{
+            } else {
               childMenus.splice(index, 1);
             }
-          })
+          });
         }
-        if(validChild > 0 || menu.menu_rights.length > 0){
+        if (validChild > 0 || menu.menu_rights.length > 0) {
           return true;
-        }else{
+        } else {
           return false;
         }
       };
@@ -89,7 +89,7 @@ export const userSlice = createSlice({
         setChildMenus(menu);
       });
       parentMenuDetails?.forEach((menu, index) => {
-        if(!hasChild(menu)){
+        if (!hasChild(menu)) {
           parentMenuDetails.splice(index, 1);
         }
       });

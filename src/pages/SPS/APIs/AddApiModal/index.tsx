@@ -314,7 +314,11 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_system_defined']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_system_defined']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is System Defined?</Checkbox>
                     </Form.Item>
                   ) : (

@@ -155,6 +155,36 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Date Modified</span>,
+        column: 'Date Modified',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDateSwapTable('date_modified', cron.search.tableName, form),
+            dataIndex: 'date_modified',
+            key: 'date_modified',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDateSwapTable('date_added', cron.search.tableName, form),
+            dataIndex: 'date_added',
+            key: 'date_added',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Start Time</span>,
         column: 'StartTime',
         sorter: true,

@@ -229,10 +229,7 @@ export const menuSlice = createSlice({
       state.addParentMenu.loading = true;
       state.addParentMenu.messages = [];
     },
-    [addParentMenu.fulfilled.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [addParentMenu.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.addParentMenu.loading = false;
       state.addParentMenu.hasErrors = false;
       state.addParentMenu.messages = action.payload.messages;
@@ -351,7 +348,7 @@ export const {
   clearMenuAccessRights,
   clearGetMenuRightsByRoleId,
   clearGetMenuRightsByCompanyId,
-  clearAddParentMenuMessages
+  clearAddParentMenuMessages,
 } = menuSlice.actions;
 
 // The reducer

@@ -160,7 +160,10 @@ export const windowsServerInventorySlice = createSlice({
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processDataWindowsServerInventory.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataWindowsServerInventory.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;

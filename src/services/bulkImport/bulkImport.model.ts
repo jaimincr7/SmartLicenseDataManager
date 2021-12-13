@@ -14,12 +14,13 @@ export interface IDataTableForImport {
 export interface IGetExcelMapping {
   table_name: string;
   key_word: string;
+  file_type: string;
 }
 
 export interface IConfigColMapping {
   id?: number;
   sheet_name: string;
-  header_row: string;
+  header_row: number;
   mapping: string;
   excel_file_mapping_id?: number;
 }
@@ -27,6 +28,7 @@ export interface IConfigColMapping {
 export interface ISaveExcelMapping {
   id?: number;
   table_name: string;
+  file_type: string;
   key_word: string;
   is_public: boolean;
   config_excel_column_mappings: IConfigColMapping[];

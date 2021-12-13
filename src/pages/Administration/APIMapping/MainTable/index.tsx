@@ -109,18 +109,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const deleteApiColumnMapping = (id: number) => {
     dispatch(deleteApiColMapping(id));
   };
-  
+
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.Update} a={Page.ConfigSPSColMapping}>
-          <a
-            className="action-btn"
-            onClick={() => {
-                setSelectedId(data.id);
-            }}
-          >
-            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
-          </a>
+        <a
+          className="action-btn"
+          onClick={() => {
+            setSelectedId(data.id);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
+        </a>
       </Can>
       <Can I={Action.Delete} a={Page.ConfigSPSColMapping}>
         <Popconfirm title="Delete Record?" onConfirm={() => deleteApiColumnMapping(data.id)}>

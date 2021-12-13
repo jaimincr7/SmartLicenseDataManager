@@ -17,9 +17,7 @@ const PowerBiReportsRoutes: React.FC = () => {
         {ability.can(Action.View, Page.PowerBIConfig) && (
           <Route exact path={`${match.path}/config/:id`} component={Configuration} />
         )}
-        {ability.can(Action.View, Page.PowerBIConfig) && (
-          <Route exact path={`${match.path}/:name`} component={RenderReport} />
-        )}
+        <Route exact path={`${match.path}/:name`} component={RenderReport} />
 
         {/* keep least always */}
         <Route path={`${match.path}/*`}>

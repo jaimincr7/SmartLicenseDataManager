@@ -134,9 +134,10 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
   const canDelete = (id: number) => {
     let result = true;
     reduxStoreData.getMenuAccessRights.data?.menus.map((data) => {
-      if(data.parent_menu_id == id) {
+      if (data.parent_menu_id == id) {
         result = false;
-      }});
+      }
+    });
     return result;
   };
 
@@ -168,15 +169,19 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
                     <EditOutlined />
                   </a>
                 </Can>
-                {data.type == "ExternalParentMenu" && !(data?.parent_menu_id > 0) ? ( canDelete(data.id) ? 
-                  <Popconfirm title="Delete Parent Menu?" onConfirm={() => deleteParent(data.id)}>
-                    <a
-                      title="Delete"
-                    >
-                      <DeleteOutlined />
-                    </a>
-                  </Popconfirm> : <></>)
-                  : <></>}
+                {data.type == 'ExternalParentMenu' && !(data?.parent_menu_id > 0) ? (
+                  canDelete(data.id) ? (
+                    <Popconfirm title="Delete Parent Menu?" onConfirm={() => deleteParent(data.id)}>
+                      <a title="Delete">
+                        <DeleteOutlined />
+                      </a>
+                    </Popconfirm>
+                  ) : (
+                    <></>
+                  )
+                ) : (
+                  <></>
+                )}
               </>
             )}
           </>

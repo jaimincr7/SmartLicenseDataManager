@@ -1,4 +1,16 @@
-import { Button, Checkbox, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Spin,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -498,21 +510,13 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'date_added']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
                       <Checkbox>Date Added</Checkbox>
                     </Form.Item>
                   ) : (
                     'Date Added'
                   )}
-                  <Form.Item
-                    name="date_added"
-                    label="Date Added"
-                    className="m-0"
-                  >
+                  <Form.Item name="date_added" label="Date Added" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
