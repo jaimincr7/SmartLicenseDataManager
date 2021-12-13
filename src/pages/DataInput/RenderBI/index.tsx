@@ -124,6 +124,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   useEffect(() => {
     if (count.reset > 0) {
       resetPage();
+      setRecords([]);
     }
   }, [count.reset]);
 

@@ -266,12 +266,12 @@ const BulkImport: React.FC = () => {
   const onCancel = () => {
     dispatch(clearExcelColumns());
     setExcelColumnState([]);
-    setDefaultFileList([]);
     setCount({ save: 0, reset: 0 });
     const tbName = formUpload?.getFieldValue('table_name');
     formUpload.resetFields();
     formUpload.setFieldsValue({ table_name: tbName });
     setDefaultFileList([]);
+    setRecords([]);
     setTableName(tbName);
   };
 
