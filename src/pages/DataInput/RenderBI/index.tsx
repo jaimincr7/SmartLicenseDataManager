@@ -519,7 +519,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
-            placeholder="Default: Select"
+            value={selectedRecord.sheet}
             onChange={onChange}
             treeDefaultExpandAll
             allowClear
