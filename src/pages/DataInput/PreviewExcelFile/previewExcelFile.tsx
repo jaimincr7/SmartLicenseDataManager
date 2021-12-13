@@ -20,7 +20,15 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [form] = Form.useForm();
   const initialValues = {
     header_row: headerRowCount,
+    deli_meter: ','
   };
+
+  useEffect(() => {
+    const initialValues = {
+      header_row: dataRecords.filter(data => data.index == seqNumber).header_row,
+    };
+    form.setFieldsValue(initialValues);
+  }, [dataRecords]);
 
   useEffect(() => {
     const mainColumns = [];
@@ -55,8 +63,10 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const submitHeaderRow = (values: any) => {
     const dummyRecords = _.cloneDeep(dataRecords);
     dummyRecords.map((data) => {
-      if(data.index == seqNumber) {
+      if(data.index == seqNumber) 
+      {
         data.header_row = values.header_row;
+        data.delimeter = values.deli_meter;
       }
     });
     setRecords(dummyRecords);
@@ -89,21 +99,16 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
             </Form.Item>
           </div>
         </Col>
-        <Col xs={24} sm={12} md={8}>
+        {/* <Col xs={24} sm={12} md={8}>
           <div className="form-group ">
-            <label className="label">Deli Meter</label>
-            <Form.Item name="deli_meter" className="m-0" rules={[{ type: 'integer' }]}>
-              <InputNumber
-                min={1}
-                max={maxCount}
+            <label className="label">Delimiter</label>
+            <Form.Item name="deli_meter" className="m-0" rules={[{ required: true }]}>
+              <Input
                 className="form-control w-100"
-                onChange={(value) => {
-                  previewData(value);
-                }}
               />
             </Form.Item>
           </div>
-        </Col>
+        </Col> */}
         </Row>
         <Table
           showHeader={false}

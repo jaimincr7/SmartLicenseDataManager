@@ -49,6 +49,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
+  const [emptyMappingFlag, setEmptyMappingFlag] = useState<boolean>(false);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
@@ -77,6 +78,41 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   setFormFields();
   // };
 
+  const getDummyMapping = (currentSheetName: string) => {
+    setEmptyMappingFlag(true);
+    const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+    const filterExcelColumns: any = bulkImports.getExcelColumns.data[0]?.excel_sheet_columns.find((e) => e.sheet === currentSheetName).columns[0];
+    const filterTableColumns = tableColumnState.filter(
+      (x) => !columnsArray.includes(x.name?.toLowerCase())
+    );
+    const initialValuesData: any = {};
+    const sqlToExcelMapping: any = [];
+    filterTableColumns.map(function (ele) {
+      initialValuesData[ele.name] =
+        filterExcelColumns?.filter(
+          (x: any) =>
+            x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+            ele.name?.toLowerCase()?.replace(/\s/g, '')
+        ).length > 0
+          ? filterExcelColumns.filter(
+            (x: any) =>
+              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+              ele.name?.toLowerCase()?.replace(/\s/g, '')
+          )[0]
+          : '';
+      sqlToExcelMapping.push({
+        key: `${ele.name}`,
+        value: `${initialValuesData[ele.name]}`,
+      });
+    });
+    for (const x in initialValuesData) {
+      if (initialValuesData[x] !== "") {
+        setEmptyMappingFlag(false);
+      }
+    }
+    return sqlToExcelMapping;
+  };
+
   useEffect(() => {
     if (count.save > 0) {
       const globalSearch: IInlineSearch = {};
@@ -88,13 +124,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         const val = {
           excel_sheet_with_mapping_details: [
             {
-              excel_to_sql_mapping: data.excel_to_sql_mapping,
+              excel_to_sql_mapping: data.excel_to_sql_mapping ? data.excel_to_sql_mapping : getDummyMapping(data.sheet),
               table_name: data.table_name,
               file_name: data.filename,
               original_file_name: data.original_filename,
               sheet_name: data.sheet,
               header_row: data.header_row - 1,
-              delimiter: ";",
+              delimiter: data.delimeter ? data.delimiter : ";",
             },
           ],
           foreign_key_values: {
@@ -116,7 +152,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             date_added: moment(),
           }
         }
-        dispatch(bulkInsert(val));
+        if (emptyMappingFlag == true) {
+          toast.info('Some File may not have any mapping.Please check!');
+        } else {
+          dispatch(bulkInsert(val));
+        }
       })
     }
   }, [count.save]);
@@ -393,7 +433,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (defaultSelected && defaultSelected.config_excel_column_mappings?.length > 0) {
         const selectedMappingOrder = defaultSelected.config_excel_column_mappings[0]?.id;
         innerFormUpload.setFieldsValue({ mapping_order: selectedMappingOrder });
-        onChange(selectedMappingOrder);
+        onChange(null, selectedMappingOrder);
       }
     }
   }, [savedExcelMapping]);
@@ -402,7 +442,22 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   getExcelMappingColumns();
   // }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
 
-  const onChange = (value) => {
+  const onChange = (selectedRecord: any, value: any) => {
+    // console.log('record',selectedRecord);
+    // console.log(value);
+    const dummyRecord = _.cloneDeep(records);
+    dummyRecord.map((data) => {
+      if (data.index == selectedRecord.index) {
+        selectedRecord.show_mapping.map((data1) => {
+          data1.config_excel_column_mappings.map((data2) => {
+            if (data2.id == value) {
+              data.excel_to_sql_mapping = JSON.parse(data2.mapping);
+            }
+          })
+        });
+      }
+    });
+    setRecords(dummyRecord);
     if (value) {
       const defaultMappingDetail = savedExcelMapping?.filter(
         (x) => x.table_name === innerFormUpload.getFieldValue('table_name')
@@ -468,6 +523,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (records, recordCurr) => (
         <>
           <Select
+            style={{ width: '180px' }}
             onChange={(tbName) => { handleTableChange(recordCurr, tbName) }}
             loading={bulkImports.getTables.loading}
             showSearch
@@ -510,11 +566,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (record, selectedRecord) => (
         <>
           <TreeSelect
-            style={{ width: '100%' }}
+            style={{ width: '180px' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
             value={selectedRecord.show_mapping !== null ? selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name : null}
-            onChange={onChange}
+            onChange={(e) => onChange(selectedRecord, e)}
             treeDefaultExpandAll
             allowClear
           />
