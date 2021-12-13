@@ -519,7 +519,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
-            value={selectedRecord.sheet}
+            defaultValue={selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name}
             onChange={onChange}
             treeDefaultExpandAll
             allowClear
