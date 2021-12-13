@@ -3,7 +3,7 @@ import request from '../../../utils/request';
 import { ISearchDeviceState, IDeviceState, IProcessData } from './deviceState.model';
 
 class DeviceStateService {
-  ENDPOINT = '/device';
+  ENDPOINT = '/device-states';
 
   public async searchDeviceState(
     searchParams?: ISearchDeviceState
@@ -51,7 +51,7 @@ class DeviceStateService {
   }
 
   public async exportExcelFile(searchParams?: ISearchDeviceState): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `device/search`;
     return request({
       url,
       method: 'POST',

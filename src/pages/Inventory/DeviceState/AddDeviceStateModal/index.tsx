@@ -294,7 +294,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                   ) : (
                     'Company'
                   )}
-                  <Form.Item name="company_id" className="m-0" label="Company">
+                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -334,7 +334,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU">
+                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
                     <Select
                       onChange={handleBUChange}
                       allowClear
