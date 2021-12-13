@@ -75,7 +75,7 @@ const BulkImport: React.FC = () => {
           table_name: tableName,
           header_row: 1,
           sheet: x?.excel_sheet_columns[0]?.sheet,
-          excel_to_sql_mapping: response ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+          excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
           show_mapping: response ? response : null,
         }]);
       }
