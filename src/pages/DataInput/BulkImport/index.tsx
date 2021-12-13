@@ -40,6 +40,7 @@ const BulkImport: React.FC = () => {
   const [excelColumnState, setExcelColumnState] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
   const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
+  const [loading, setLoading] = useState(false)
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -75,7 +76,7 @@ const BulkImport: React.FC = () => {
           table_name: tableName,
           header_row: 1,
           sheet: x?.excel_sheet_columns[0]?.sheet,
-          excel_to_sql_mapping: response ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+          excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
           show_mapping: response ? response : null,
         }]);
       }
@@ -83,11 +84,13 @@ const BulkImport: React.FC = () => {
     }
   }, [bulkImports.getExcelColumns.data]);
 
-  useEffect(() => {
-    const dummyRecords = _.cloneDeep(records);
-    dummyRecords.map(async (data) => {
-      let response = null;
-      if (formUpload?.getFieldValue('table_name')) {
+  const updateRecords = async () => {
+    if (formUpload?.getFieldValue('table_name')) {
+      const dummyRecords = _.cloneDeep(records);
+      setLoading(true);
+      for (let index = 0; index < dummyRecords.length; index++) {
+        const data = dummyRecords[index];
+        let response = null;
         await bulkImportService
           .getExcelFileMapping({
             table_name: formUpload?.getFieldValue('table_name'),
@@ -101,8 +104,13 @@ const BulkImport: React.FC = () => {
             data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
           });
       }
-    });
-    setRecords(dummyRecords);
+      setRecords(dummyRecords);
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    updateRecords();
   }, [formUpload?.getFieldValue('table_name')]);
 
   useEffect(() => {
@@ -384,7 +392,7 @@ const BulkImport: React.FC = () => {
                       <label className="label">Table Name</label>
                       <Form.Item name={'table_name'} className="m-0" rules={[{ required: true, message: 'Table Name is required' }]}>
                         <Select
-                          loading={bulkImports.getTables.loading}
+                          loading={bulkImports.getTables.loading || loading}
                           onChange={(name: string) => {
                             setTableName(name);
                           }}
