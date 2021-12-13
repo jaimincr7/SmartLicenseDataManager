@@ -113,6 +113,9 @@ const BulkImport: React.FC = () => {
         toast.success(bulkImports.bulkInsert.messages.join(' '));
         dispatch(clearExcelColumns());
         dispatch(clearBulkImportMessages());
+        setRecords([]);
+        setExcelColumnState([]);
+        setDefaultFileList([]);
         onCancel();
         if (table) {
           history.goBack();
