@@ -631,7 +631,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           {isCronJobApiButton && (
             <Can I={Action.RunCronJob} a={Page.Cron}>
               <Button onClick={startSchedule} icon={<RedoOutlined style={{ color: 'blue' }} />}>
-                Start Scheduler
+                Enable Scheduler
               </Button>
             </Can>
           )}
@@ -692,7 +692,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           <Table
             rowSelection={!disableRowSelection ? rowSelection : null}
             scroll={{ x: true }}
-            rowKey={(record) => record[defaultOrderBy ? defaultOrderBy : 'id'] + (record['oauth_id']?record['oauth_id']:'')}
+            rowKey={(record) =>
+              record[defaultOrderBy ? defaultOrderBy : 'id'] +
+              (record['oauth_id'] ? record['oauth_id'] : '')
+            }
             dataSource={reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
             loading={

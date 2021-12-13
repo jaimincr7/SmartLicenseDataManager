@@ -4,5 +4,8 @@ export interface IPreviewExcel {
   records: any;
   handleModalClose: () => void;
   showModal: boolean;
+  dataRecords?: any;
+  setRecords?: (data: any) => void;
   maxCount: number;
+  seqNumber?: number;
 }

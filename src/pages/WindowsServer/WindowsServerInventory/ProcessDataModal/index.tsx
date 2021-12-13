@@ -336,32 +336,32 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </div>
             </Col> */}
             <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
+              <div className="form-group m-0">
                 <label className="label">SC Version</label>
-                  <Form.Item name="sc_version_id" className="m-0" label="SC Version" >
-                    <Select
-                      allowClear
-                      loading={commonLookups.configWindowsServerVersionsLookup.loading}
-                      showSearch
-                      optionFilterProp="children"
-                      filterOption={(input, option: any) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }
-                      filterSort={(optionA: any, optionB: any) =>
-                        optionA.children
-                          ?.toLowerCase()
-                          ?.localeCompare(optionB.children?.toLowerCase())
-                      }
-                    >
-                      {commonLookups.configWindowsServerVersionsLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </div>
-              </Col>
+                <Form.Item name="sc_version_id" className="m-0" label="SC Version">
+                  <Select
+                    allowClear
+                    loading={commonLookups.configWindowsServerVersionsLookup.loading}
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.configWindowsServerVersionsLookup.data.map((option: ILookup) => (
+                      <Option key={option.id} value={option.id}>
+                        {option.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </Col>
             {/* <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">SC Version</label>

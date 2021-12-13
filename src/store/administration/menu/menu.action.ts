@@ -1,4 +1,8 @@
-import { IMenuAccessRights, IAccessMenu, IAddParentMenu } from '../../../services/administration/menu/menu.model';
+import {
+  IMenuAccessRights,
+  IAccessMenu,
+  IAddParentMenu,
+} from '../../../services/administration/menu/menu.model';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   ISearchMenu,

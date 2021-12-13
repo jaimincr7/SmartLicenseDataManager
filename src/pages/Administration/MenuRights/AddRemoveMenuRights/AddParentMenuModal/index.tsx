@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../../../store/app.hooks';
 import { IAddParentMenuModalProps } from './addData.model';
-import { clearAddParentMenuMessages, menuSelector } from '../../../../../store/administration/menu/menu.reducer';
+import {
+  clearAddParentMenuMessages,
+  menuSelector,
+} from '../../../../../store/administration/menu/menu.reducer';
 import { addParentMenu } from '../../../../../store/administration/menu/menu.action';
 import { validateMessages } from '../../../../../common/constants/common';
 import { ILookup } from '../../../../../services/common/common.model';
@@ -13,15 +16,15 @@ import commonService from '../../../../../services/common/common.service';
 const { Option } = Select;
 
 const filterObj = {
-  table_name: "Menu",
-  column_name: "icon",
+  table_name: 'Menu',
+  column_name: 'icon',
   filter_keys: {},
   limit: 0,
   offset: 0,
-  order_by: "icon",
-  order_direction: "ASC",
-  keyword: "",
-  is_column_selection: false
+  order_by: 'icon',
+  order_direction: 'ASC',
+  keyword: '',
+  is_column_selection: false,
 };
 
 const AddParentMenuModal: React.FC<IAddParentMenuModalProps> = (props) => {
@@ -59,14 +62,14 @@ const AddParentMenuModal: React.FC<IAddParentMenuModalProps> = (props) => {
 
   useEffect(() => {
     commonService
-        .getColumnLookup(filterObj)
-        .then((res) => {
-          return res.body.data;
-        })
-        .then((res) => {
-          setLoading(false);
-          setOptions(res);
-        });
+      .getColumnLookup(filterObj)
+      .then((res) => {
+        return res.body.data;
+      })
+      .then((res) => {
+        setLoading(false);
+        setOptions(res);
+      });
   }, [dispatch]);
 
   return (
@@ -91,13 +94,13 @@ const AddParentMenuModal: React.FC<IAddParentMenuModalProps> = (props) => {
               <div className="form-group m-0">
                 <label className="label">Description</label>
                 <Form.Item
-                    name="description"
-                    label="Description"
-                    className="m-0"
-                    rules={[{ required: true }]}
-                  >
-                    <Input className="form-control" />
-                  </Form.Item>
+                  name="description"
+                  label="Description"
+                  className="m-0"
+                  rules={[{ required: true }]}
+                >
+                  <Input className="form-control" />
+                </Form.Item>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
@@ -121,7 +124,17 @@ const AddParentMenuModal: React.FC<IAddParentMenuModalProps> = (props) => {
                   >
                     {options.map((option: ILookup) => (
                       <Option key={option.id} value={option.id}>
-                        {option.name === 'NULL' ? (<>None</>) : (<><img className="icon-box-select" src={`${process.env.PUBLIC_URL}/assets/images/${option?.name}`} alt="" /></>)}
+                        {option.name === 'NULL' ? (
+                          <>None</>
+                        ) : (
+                          <>
+                            <img
+                              className="icon-box-select"
+                              src={`${process.env.PUBLIC_URL}/assets/images/${option?.name}`}
+                              alt=""
+                            />
+                          </>
+                        )}
                       </Option>
                     ))}
                   </Select>
@@ -132,8 +145,8 @@ const AddParentMenuModal: React.FC<IAddParentMenuModalProps> = (props) => {
               <div className="form-group m-0">
                 <label className="label">Status</label>
                 <Form.Item name="status" className="m-0 mr-1" valuePropName="checked">
-                    <Switch className="form-control" />
-                  </Form.Item>
+                  <Switch className="form-control" />
+                </Form.Item>
               </div>
             </Col>
           </Row>

@@ -13,9 +13,7 @@ import { searchSpsApiOauth } from '../../../../store/sps/apiOauth/apiOauth.actio
 import { IApiTableProps } from './apiTable.model';
 import { ICallAPI } from '../../../../services/sps/spsApi/sps.model';
 import { callApi } from '../../../../store/sps/spsAPICall/spsApiCall.action';
-import {
-  spsApiCallSelector,
-} from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
+import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
 import { ISearchAPIColumn } from '../../../../services/sps/apiColumnMapping/apiColMapping.model';
 import { getApiColumn } from '../../../../store/sps/apiColumnMapping/apiColMapping.action';
 
@@ -166,13 +164,9 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       {isFetchApi ? (
-        <Button onClick={() => onFetchApi(data)}>
-          Fetch
-        </Button>
+        <Button onClick={() => onFetchApi(data)}>Fetch</Button>
       ) : (
-        <Button onClick={() => onCallApiById(data)}>
-          Call
-        </Button>
+        <Button onClick={() => onCallApiById(data)}>Call</Button>
       )}
     </div>
   );

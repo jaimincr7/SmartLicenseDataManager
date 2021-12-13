@@ -57,9 +57,12 @@ export const deleteSqlServerExclusions = createAsyncThunk(
   }
 );
 
-export const processDataSqlServerExclusion = createAsyncThunk('processDataSqlServerExclusion', async (data: IProcessData) => {
-  const response = await sqlServerExclusionsService.processData(data).then((res) => {
-    return res.body;
-  });
-  return response;
-});
+export const processDataSqlServerExclusion = createAsyncThunk(
+  'processDataSqlServerExclusion',
+  async (data: IProcessData) => {
+    const response = await sqlServerExclusionsService.processData(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);

@@ -166,7 +166,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
           : moment(data.last_activity_date),
-          date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         item_count: data.item_count,
         storage_used_byte: data.storage_used_byte,
         issue_warning_quota_byte: data.issue_warning_quota_byte,
@@ -601,21 +601,13 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'date_added']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
                       <Checkbox>Date Added</Checkbox>
                     </Form.Item>
                   ) : (
                     'Date Added'
                   )}
-                  <Form.Item
-                    name="date_added"
-                    label="Date Added"
-                    className="m-0"
-                  >
+                  <Form.Item name="date_added" label="Date Added" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>

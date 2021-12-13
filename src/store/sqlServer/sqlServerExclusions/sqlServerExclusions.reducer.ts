@@ -175,7 +175,10 @@ export const sqlServerExclusionsSlice = createSlice({
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processDataSqlServerExclusion.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [processDataSqlServerExclusion.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;
