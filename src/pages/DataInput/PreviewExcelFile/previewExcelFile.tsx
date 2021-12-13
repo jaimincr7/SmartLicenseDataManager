@@ -1,4 +1,4 @@
-import { Button, Col, Form, InputNumber, Modal, Row, Table } from 'antd';
+import { Button, Col, Form, Input, InputNumber, Modal, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
@@ -57,6 +57,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     dummyRecords.map((data) => {
       if(data.index == seqNumber) {
         data.header_row = values.header_row;
+        data.delimeter = values.deli_meter;
       }
     });
     setRecords(dummyRecords);
@@ -93,13 +94,10 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           <div className="form-group ">
             <label className="label">Deli Meter</label>
             <Form.Item name="deli_meter" className="m-0" rules={[{ type: 'integer' }]}>
-              <InputNumber
+              <Input
                 min={1}
                 max={maxCount}
                 className="form-control w-100"
-                onChange={(value) => {
-                  previewData(value);
-                }}
               />
             </Form.Item>
           </div>

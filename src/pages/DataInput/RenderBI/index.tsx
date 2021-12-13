@@ -94,7 +94,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               original_file_name: data.original_filename,
               sheet_name: data.sheet,
               header_row: data.header_row - 1,
-              delimiter: ";",
+              delimiter: data.delimeter ? data.delimiter : ";",
             },
           ],
           foreign_key_values: {
@@ -393,7 +393,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (defaultSelected && defaultSelected.config_excel_column_mappings?.length > 0) {
         const selectedMappingOrder = defaultSelected.config_excel_column_mappings[0]?.id;
         innerFormUpload.setFieldsValue({ mapping_order: selectedMappingOrder });
-        onChange(selectedMappingOrder);
+        onChange(null,selectedMappingOrder);
       }
     }
   }, [savedExcelMapping]);
@@ -402,7 +402,22 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   getExcelMappingColumns();
   // }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
 
-  const onChange = (value) => {
+  const onChange = (selectedRecord: any,value: any) => {
+    // console.log('record',selectedRecord);
+    // console.log(value);
+    const dummyRecord = _.cloneDeep(records);
+    dummyRecord.map((data) => {
+      if(data.index == selectedRecord.index) {
+        selectedRecord.show_mapping.map((data1) => {
+          data1.config_excel_column_mappings.map((data2) => {
+            if(data2.id == value) {
+              data.excel_to_sql_mapping = JSON.parse(data2.mapping);
+            }
+          })
+        });
+      }
+    });
+    setRecords(dummyRecord);
     if (value) {
       const defaultMappingDetail = savedExcelMapping?.filter(
         (x) => x.table_name === innerFormUpload.getFieldValue('table_name')
@@ -514,7 +529,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
             value={selectedRecord.show_mapping !== null ? selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name : null}
-            onChange={onChange}
+            onChange={(e) => onChange(selectedRecord,e)}
             treeDefaultExpandAll
             allowClear
           />

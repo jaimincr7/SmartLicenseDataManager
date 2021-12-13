@@ -112,7 +112,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       setTableColumnState([]);
       setTableColumnState([]);
     }
-  }, [record.table_name]);
+  }, [record.table_name,record.excel_to_sql_mapping]);
 
   useEffect(() => {
     if (record.table_name) {
