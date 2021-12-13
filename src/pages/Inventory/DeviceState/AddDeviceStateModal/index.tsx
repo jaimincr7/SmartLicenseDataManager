@@ -4,6 +4,7 @@ import {
   Col,
   Form,
   Input,
+  InputNumber,
   Modal,
   Row,
   Select,
@@ -392,7 +393,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                     name="state_name"
                     className="m-0"
                     label="State Name"
-                    rules={[{ max: 255 }]}
+                    rules={[{ max: 255 , required: !isMultiple}]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -411,9 +412,9 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                     name="start_position"
                     label="Start Position"
                     className="m-0"
-                    rules={[{ max: 255 }]}
+                    rules={[{ type: 'integer' }]}
                   >
-                    <Input className="form-control" />
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

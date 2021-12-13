@@ -11,9 +11,6 @@ import {
   getAllCompanyLookup,
   getBULookup,
   getConfigModelPopUpDataSelection,
-  getScheduleDate,
-  getScheduleDateforSqlServer,
-  getScheduleDateforWindowsServer,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
@@ -31,7 +28,6 @@ import {
 import { toast } from 'react-toastify';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
@@ -53,7 +49,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: moment().format(Common.DATEFORMAT)?.toString(),
+    selected_date: moment(),
     update_device_states_inc_non_prod: false,
     update_device_states_by_keyword: false,
     x_ref_ad: false,
@@ -81,21 +77,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const getConfigData = async (data: any) => {
     if (data.company_id) {
       await dispatch(getBULookup(data.company_id));
-    }
-    if (data.bu_id) {
-      await dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
-      );
-      await dispatch(
-        getScheduleDateforWindowsServer(
-          getScheduleDateHelperLookup(form.getFieldsValue(), 'Windows Server')
-        )
-      );
-      await dispatch(
-        getScheduleDateforSqlServer(
-          getScheduleDateHelperLookup(form.getFieldsValue(), 'SQL Server')
-        )
-      );
     }
     form.setFieldsValue(data);
   };
@@ -146,23 +127,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    if (buId) {
-      dispatch(
-        getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), inventory.search.tableName)
-        )
-      );
-      dispatch(
-        getScheduleDateforWindowsServer(
-          getScheduleDateHelperLookup(form.getFieldsValue(), 'Windows Server')
-        )
-      );
-      dispatch(
-        getScheduleDateforSqlServer(
-          getScheduleDateHelperLookup(form.getFieldsValue(), 'SQL Server')
-        )
-      );
-    } else {
+    if (!buId) {
       dispatch(clearDateLookup());
     }
 
@@ -204,19 +169,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
             : null,
       };
-      dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(filterValues, inventory.search.tableName))
-      );
-      dispatch(
-        getScheduleDateforWindowsServer(
-          getScheduleDateHelperLookup(form.getFieldsValue(), 'Windows Server')
-        )
-      );
-      dispatch(
-        getScheduleDateforSqlServer(
-          getScheduleDateHelperLookup(form.getFieldsValue(), 'SQL Server')
-        )
-      );
       form.setFieldsValue(filterValues);
     }
     // const crrntDate = new Date().toDateString();
