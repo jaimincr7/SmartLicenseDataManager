@@ -22,7 +22,6 @@ import {
 } from '../../../store/bulkImport/bulkImport.reducer';
 import {
   IDatabaseTable,
-  IExcelSheetColumn,
 } from '../../../services/common/common.model';
 import moment from 'moment';
 import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
@@ -37,7 +36,7 @@ import { toast } from 'react-toastify';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { seqNumber, count, table, form, records, setRecords } = props;
+  const { count, table, form, records, setRecords } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -59,24 +58,25 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   bu: [],
   // });
 
-  const handleTableChange = (tableName: string) => {
-    if (tableName) {
+  const handleTableChange = (currRecord: any) => {
+    if (currRecord.table_name) {
       //setLoadingTableColumns(true);
-      commonService.getTableColumns(tableName).then((res) => {
-        if (res) {
-          setTableColumnState(res);
+      const dummyRecords = _.cloneDeep(records);
+      dummyRecords.map((data) => {
+        if(data.index == currRecord.index) {
+          data.table_name == currRecord.table_name;
         }
-        //setLoadingTableColumns(false);
       });
+      setRecords(dummyRecords);
     } else {
       setTableColumnState([]);
       setTableColumnState([]);
     }
   };
 
-  const handleSheetChange = () => {
-    setFormFields();
-  };
+  // const handleSheetChange = () => {
+  //   setFormFields();
+  // };
 
   useEffect(() => {
     if (count.save > 0) {
@@ -94,7 +94,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               file_name: data.filename,
               original_file_name: data.original_filename,
               sheet_name: data.sheet,
-              header_row: data.header_row,
+              header_row: data.header_row - 1,
               delimiter: ";",
             },
           ],
@@ -474,7 +474,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (records,recordCurr) => (
         <>
           <Select
-            onChange={handleTableChange}
+            onChange={() => handleTableChange(recordCurr)}
             loading={bulkImports.getTables.loading}
             showSearch
             value={recordCurr.table_name}
@@ -503,30 +503,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       title: 'Sheet Name',
       dataIndex: 'sheet',
       key: 'sheet',
-      render: (record, selectedRecord) => (<>
-        <Select
-          defaultValue={selectedRecord.sheet}
-          suffixIcon={
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
-              alt=""
-            />
-          }
-          onChange={handleSheetChange}
-          loading={false}
-        >
-          {bulkImports.getExcelColumns.data?.length > 0 &&
-            bulkImports.getExcelColumns.data[
-              seqNumber - 1
-            ]?.excel_sheet_columns.map(
-              (option: IExcelSheetColumn, index: number) => (
-                <Option key={index} value={option.sheet}>
-                  {option.sheet}
-                </Option>
-              )
-            )}
-        </Select>
-      </>)
     },
     {
       title: 'Header Row',

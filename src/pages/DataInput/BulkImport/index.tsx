@@ -2,6 +2,7 @@ import { Button, Checkbox, Col, Form, Popover, Row, Select, Spin } from "antd";
 import { useHistory, useParams } from "react-router-dom";
 import BreadCrumbs from "../../../common/components/Breadcrumbs";
 import { Page } from "../../../common/constants/pageAction";
+import _ from 'lodash';
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from "../../../store/app.hooks";
 import { bulkImportSelector, clearBulkImportMessages, clearExcelColumns, clearGetTableColumns, setTableForImport } from "../../../store/bulkImport/bulkImport.reducer";
@@ -83,7 +84,7 @@ const BulkImport: React.FC = () => {
   }, [bulkImports.getExcelColumns.data]);
 
   useEffect(() => {
-    const dummyRecords = [...records];
+    const dummyRecords = _.cloneDeep(records);
     dummyRecords.map(async (data) => {
       let response = null;
       if (formUpload?.getFieldValue('table_name')) {
@@ -98,10 +99,10 @@ const BulkImport: React.FC = () => {
             data.table_name = formUpload?.getFieldValue('table_name');
             data.show_mapping = response ? response : null;
             data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
-            setRecords(dummyRecords);
           });
       }
     });
+    setRecords(dummyRecords);
   }, [formUpload?.getFieldValue('table_name')]);
 
   useEffect(() => {
