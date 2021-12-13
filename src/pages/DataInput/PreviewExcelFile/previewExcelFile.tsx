@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Table } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
@@ -20,6 +20,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [form] = Form.useForm();
   const initialValues = {
     header_row: headerRowCount,
+    deli_meter: ','
   };
 
   useEffect(() => {
@@ -90,18 +91,16 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
             </Form.Item>
           </div>
         </Col>
-        <Col xs={24} sm={12} md={8}>
+        {/* <Col xs={24} sm={12} md={8}>
           <div className="form-group ">
-            <label className="label">Deli Meter</label>
-            <Form.Item name="deli_meter" className="m-0" rules={[{ type: 'integer' }]}>
+            <label className="label">Delimiter</label>
+            <Form.Item name="deli_meter" className="m-0" rules={[{ required: true }]}>
               <Input
-                min={1}
-                max={maxCount}
                 className="form-control w-100"
               />
             </Form.Item>
           </div>
-        </Col>
+        </Col> */}
         </Row>
         <Table
           showHeader={false}
