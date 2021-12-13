@@ -523,7 +523,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (records, recordCurr) => (
         <>
           <Select
-            style={{ width: '130px' }}
+            style={{ width: '180px' }}
             onChange={(tbName) => { handleTableChange(recordCurr, tbName) }}
             loading={bulkImports.getTables.loading}
             showSearch
@@ -566,7 +566,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (record, selectedRecord) => (
         <>
           <TreeSelect
-            style={{ width: '130px' }}
+            style={{ width: '180px' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
             value={selectedRecord.show_mapping !== null ? selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name : null}
