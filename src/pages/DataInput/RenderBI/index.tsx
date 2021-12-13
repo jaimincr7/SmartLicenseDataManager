@@ -49,6 +49,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
+  const [emptyMappingFlag, setEmptyMappingFlag] = useState<boolean>(false);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
@@ -77,6 +78,41 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   setFormFields();
   // };
 
+  const getDummyMapping = (currentSheetName: string) => {
+    setEmptyMappingFlag(true);
+    const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+    const filterExcelColumns: any = bulkImports.getExcelColumns.data[0]?.excel_sheet_columns.find((e) => e.sheet === currentSheetName).columns[0];
+    const filterTableColumns = tableColumnState.filter(
+      (x) => !columnsArray.includes(x.name?.toLowerCase())
+    );
+    const initialValuesData : any = {};
+    const sqlToExcelMapping: any = [];
+    filterTableColumns.map(function (ele) {
+      initialValuesData[ele.name] =
+        filterExcelColumns?.filter(
+          (x: any) =>
+            x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+            ele.name?.toLowerCase()?.replace(/\s/g, '')
+        ).length > 0
+          ? filterExcelColumns.filter(
+            (x: any) =>
+              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+              ele.name?.toLowerCase()?.replace(/\s/g, '')
+          )[0]
+          : '';
+          sqlToExcelMapping.push({
+            key: `${ele.name}`,
+            value: `${initialValuesData[ele.name]}`,
+          });
+    });
+    for (const x in initialValuesData) {
+      if (initialValuesData[x] !== "") {
+        setEmptyMappingFlag(false);
+      }
+    }
+    return sqlToExcelMapping;
+  };
+
   useEffect(() => {
     if (count.save > 0) {
       const globalSearch: IInlineSearch = {};
@@ -88,7 +124,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         const val = {
           excel_sheet_with_mapping_details: [
             {
-              excel_to_sql_mapping: data.excel_to_sql_mapping,
+              excel_to_sql_mapping: data.excel_to_sql_mapping ? data.excel_to_sql_mapping : getDummyMapping(data.sheet),
               table_name: data.table_name,
               file_name: data.filename,
               original_file_name: data.original_filename,
@@ -116,7 +152,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             date_added: moment(),
           }
         }
-        dispatch(bulkInsert(val));
+        if(emptyMappingFlag == true) {
+          toast.info('Some File may not have any mapping.Please check!');
+        } else {
+          dispatch(bulkInsert(val));
+        }
       })
     }
   }, [count.save]);
