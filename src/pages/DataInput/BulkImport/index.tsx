@@ -7,7 +7,7 @@ import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from "../../../store/app.hooks";
 import { bulkImportSelector, clearBulkImportMessages, clearExcelColumns, clearGetTableColumns, setTableForImport } from "../../../store/bulkImport/bulkImport.reducer";
 import { useEffect, useState } from "react";
-import { getExcelColumns, getTableColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
+import { getExcelColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
 import { toast } from "react-toastify";
 import Dragger from "antd/lib/upload/Dragger";
 import { IDatabaseTable } from "../../../services/common/common.model";
@@ -131,18 +131,6 @@ const BulkImport: React.FC = () => {
       }
     }
   }, [bulkImports.bulkInsert.messages]);
-
-  useEffect(() => {
-    if (table) {
-      const currentTable = bulkImports.getTables.data.filter(
-        (t) => t.name.toLowerCase() === (table || '').toLowerCase()
-      );
-      if (currentTable.length > 0) {
-        formUpload.setFieldsValue({ table_name: currentTable[0].name });
-        dispatch(getTableColumns(currentTable[0].name));
-      }
-    }
-  }, [bulkImports.getTables.data]);
 
   useEffect(() => {
     if (bulkImports.saveTableForImport.messages.length > 0) {
