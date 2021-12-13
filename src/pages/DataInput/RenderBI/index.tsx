@@ -46,7 +46,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //const [excelColumns, setExcelColumns] = useState(null);
   const [maxHeaderRow, setMaxHeaderRow] = useState(1);
   const [tableColumns, setTableColumns] = useState(null);
-  //const [removedColumns, setRemovedColumns] = useState(null);
+  const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
@@ -530,6 +530,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             type="primary"
             onClick={() => {
               setSelectedRowId(selectedRecord.index);
+              setHeaderRowCount(selectedRecord.header_count);
               setShowManageExcel(true);
             }}
           >
@@ -1015,13 +1016,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         maxCount={maxHeaderRow}
         handleModalClose={() => {
           setShowManageExcel(false);
-          if (!innerFormUpload.getFieldValue('header_row')) {
-            innerFormUpload.setFieldsValue({ header_row: 1 });
-          }
         }}
+        dataRecords={records}
+        setRecords={setRecords}
+        seqNumber={selectedRowId}
         previewData={previewData}
         records={excelPreviewData}
-        headerRowCount={innerFormUpload.getFieldValue('header_row')}
+        headerRowCount={headerRowCount}
       ></PreviewExcel>
     </>
   );
