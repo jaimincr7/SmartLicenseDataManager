@@ -58,13 +58,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   bu: [],
   // });
 
-  const handleTableChange = (currRecord: any) => {
+  const handleTableChange = (currRecord: any, tableName: string) => {
     if (currRecord.table_name) {
-      //setLoadingTableColumns(true);
       const dummyRecords = _.cloneDeep(records);
       dummyRecords.map((data) => {
-        if(data.index == currRecord.index) {
-          data.table_name == currRecord.table_name;
+        if (data.index == currRecord.index) {
+          debugger;
+          data.table_name = tableName;
         }
       });
       setRecords(dummyRecords);
@@ -74,7 +74,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  // const handleSheetChange = () => {
+  //const handleSheetChange = () => {
   //   setFormFields();
   // };
 
@@ -471,10 +471,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       title: 'Table Name',
       dataIndex: 'table_name',
       key: 'table_name',
-      render: (records,recordCurr) => (
+      render: (records, recordCurr) => (
         <>
           <Select
-            onChange={() => handleTableChange(recordCurr)}
+            onChange={(tbName) => { handleTableChange(recordCurr, tbName) }}
             loading={bulkImports.getTables.loading}
             showSearch
             value={recordCurr.table_name}
