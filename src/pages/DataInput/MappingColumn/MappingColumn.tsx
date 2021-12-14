@@ -73,7 +73,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                 (x: any) =>
                   x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
-              ).length > 0 && mapRecord == null
+              ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                 ? filterExcelColumns.filter(
                   (x: any) =>
                     x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
@@ -98,15 +98,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   useEffect(() => {
     if (record.table_name) {
       setLoadingTableColumns(true);
-      // const dummyRecords = _.cloneDeep(records);
-      // dummyRecords.map((data) => {
-      //   if (data.index == seqNumber) {
-      //     filterTableColumns.map(function (ele) {
-      //       initial[ele.name] 
-      //     });
-      //     form.setFieldsValue(data.excel_to_sql_mapping);
-      //   }
-      // });
       commonService.getTableColumns(record.table_name).then((res) => {
         if (res) {
           const response: any = res;
@@ -150,13 +141,13 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             date_added: moment(),
           };
           filterTableColumns.map(function (ele) {
-            const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
+          const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
             initialValuesData[ele.name] =
               filterExcelColumns?.filter(
                 (x: any) =>
                   x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
-              ).length > 0 && mapRecord == null
+              ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                 ? filterExcelColumns.filter(
                   (x: any) =>
                     x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
