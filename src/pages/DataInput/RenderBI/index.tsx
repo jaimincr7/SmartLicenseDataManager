@@ -32,6 +32,7 @@ import commonService from '../../../services/common/common.service';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../common/models/common';
 import { toast } from 'react-toastify';
+import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 
 const { Option } = Select;
 
@@ -58,18 +59,29 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   compony: [],
   //   bu: [],
   // });
-
-  const handleTableChange = (currRecord: any, tableName: string) => {
-    if (currRecord.table_name) {
-      const dummyRecords = _.cloneDeep(records);
-      dummyRecords.map((data) => {
-        if (data.index == currRecord.index) {
-          data.table_name = tableName;
-        }
+  const changedTableData = async (currRecord: any,tableName: string) => {
+    const dummyRecords = _.cloneDeep(records);
+    const data = dummyRecords[currRecord.index - 1];
+    let response = null;
+    await bulkImportService
+      .getExcelFileMapping({
+        table_name: tableName,
+        key_word: data.original_filename?.split('.')[0],
+        file_type: data.original_filename?.split('.')[1],
+      })
+      .then((res) => {
+        response = res?.body?.data;
+        data.table_name = tableName;
+        data.show_mapping = response ? response : null;
+        data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
       });
-      setRecords(dummyRecords);
+    setRecords(dummyRecords);
+  }
+
+  const handleTableChange = async (currRecord: any, tableName: string) => {
+      if (tableName) {
+     changedTableData(currRecord,tableName);
     } else {
-      setTableColumnState([]);
       setTableColumnState([]);
     }
   };
