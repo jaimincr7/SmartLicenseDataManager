@@ -1059,7 +1059,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           </Form>
         </div> */}
       </div>
-      <PreviewExcel
+      {showManageExcel && <PreviewExcel
         showModal={showManageExcel}
         maxCount={maxHeaderRow}
         handleModalClose={() => {
@@ -1071,7 +1071,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         previewData={previewData}
         records={excelPreviewData}
         headerRowCount={headerRowCount}
-      ></PreviewExcel>
+      />}
     </>
   );
 };

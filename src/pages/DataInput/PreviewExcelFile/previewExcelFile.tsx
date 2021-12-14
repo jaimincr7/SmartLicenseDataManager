@@ -25,10 +25,10 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
 
   useEffect(() => {
     const initialValues = {
-      header_row: dataRecords.filter(data => data.index == seqNumber).header_row,
+      header_row: dataRecords[seqNumber-1].header_row,
     };
     form.setFieldsValue(initialValues);
-  }, [dataRecords]);
+  }, []);
 
   useEffect(() => {
     const mainColumns = [];
