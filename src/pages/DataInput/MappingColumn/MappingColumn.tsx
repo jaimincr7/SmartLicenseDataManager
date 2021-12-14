@@ -65,46 +65,23 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
           setExcelColumns(ExcelColsSorted);
           setTableColumnState(filterTableColumns);
 
-          const globalSearch: IInlineSearch = {};
-          for (const key in globalFilters.search) {
-            const element = globalFilters.search[key];
-            globalSearch[key] = element ? [element] : null;
-          }
-
-          const initialValuesData: any = {
-            tenant_id: _.isNull(globalSearch.tenant_id)
-              ? null
-              : globalSearch.tenant_id === undefined
-                ? null
-                : globalSearch?.tenant_id[0],
-            bu_id: _.isNull(globalSearch.bu_id)
-              ? null
-              : globalSearch.bu_id === undefined
-                ? null
-                : globalSearch?.bu_id[0],
-            company_id: _.isNull(globalSearch.company_id)
-              ? null
-              : globalSearch.company_id === undefined
-                ? null
-                : globalSearch?.company_id[0],
-            date_added: moment(),
-          };
+          const initialValuesData: any = {};
           filterTableColumns.map(function (ele) {
-            const mapRecord = records.filter((x) => x.index == seqNumber);
+            const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
             initialValuesData[ele.name] =
               filterExcelColumns?.filter(
                 (x: any) =>
                   x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
-              ).length > 0 && mapRecord[0].excel_to_sql_mapping == null
+              ).length > 0 && mapRecord == null
                 ? filterExcelColumns.filter(
                   (x: any) =>
                     x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
                 )[0]
-                : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                : (skipRows == 0 ?(mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
                   return data.key == ele.name
-                })[0]?.value;
+                })[0]?.value : '');
           });
           form.setFieldsValue(initialValuesData);
         }
@@ -173,21 +150,21 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             date_added: moment(),
           };
           filterTableColumns.map(function (ele) {
-            const mapRecord = records.filter((x) => x.index == seqNumber);
+            const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
             initialValuesData[ele.name] =
               filterExcelColumns?.filter(
                 (x: any) =>
                   x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
-              ).length > 0 && mapRecord[0].excel_to_sql_mapping == null
+              ).length > 0 && mapRecord == null
                 ? filterExcelColumns.filter(
                   (x: any) =>
                     x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
                 )[0]
-                : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                : (skipRows == 0 ?(mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
                   return data.key == ele.name
-                })[0]?.value;
+                })[0]?.value : '');
           });
           form.setFieldsValue(initialValuesData);
         }
