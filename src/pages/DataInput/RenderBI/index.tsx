@@ -506,7 +506,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const columns = [
     {
-      title: 'Index',
+      title: '#',
       dataIndex: 'index',
       key: 'index',
     },

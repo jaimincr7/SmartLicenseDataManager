@@ -131,6 +131,7 @@ const BulkImport: React.FC = () => {
         dispatch(clearExcelColumns());
         dispatch(clearBulkImportMessages());
         setRecords([]);
+        currentIndex = 1;
         setExcelColumnState([]);
         setDefaultFileList([]);
         onCancel();
@@ -160,6 +161,7 @@ const BulkImport: React.FC = () => {
   useEffect(() => {
     return () => {
       dispatch(clearGetTableColumns());
+      currentIndex = 1;
     };
   }, []);
 
@@ -277,6 +279,7 @@ const BulkImport: React.FC = () => {
     formUpload.setFieldsValue({ table_name: tbName });
     setDefaultFileList([]);
     setRecords([]);
+    currentIndex = 1;
     setTableName(tbName);
   };
 
