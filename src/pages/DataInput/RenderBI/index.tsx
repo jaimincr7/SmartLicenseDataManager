@@ -256,7 +256,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const resetPage = () => {
     setTableColumnState([]);
     dispatch(clearExcelColumns());
-    innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
+    innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);    
     //setExcelColumns(null);
     setTableColumns(null);
   };
@@ -496,6 +496,14 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
+  const deleteSelected =(index:number)=>{
+    if (index >= 0) {
+      const dummyRecords = _.cloneDeep(records);
+      const filteredRecords = dummyRecords.filter((data) => data.index !== index);
+      setRecords(filteredRecords);
+    }
+  }
+
   const columns = [
     {
       title: 'Index',
@@ -569,13 +577,14 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       )
     },
     {
-      title: 'Manage Header',
+      title: 'Action',
       dataIndex: 'key',
       key: 'key',
       render: (record, selectedRecord) => (
         <>
           <Button
             type="primary"
+            style={{ margin: '0 5px 5px 0px' }}
             onClick={() => {
               setSelectedRowId(selectedRecord.index);
               setHeaderRowCount(selectedRecord.header_row);
@@ -583,6 +592,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             }}
           >
             Manage Header
+          </Button>
+
+          <Button
+            type="primary"
+            onClick={() => {
+              deleteSelected(selectedRecord.index)
+            }}
+          >
+            Delete
           </Button>
         </>
       )
