@@ -25,14 +25,13 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
 
   useEffect(() => {
     const initialValues = {
-      header_row: dataRecords.filter(data => data.index == seqNumber).header_row,
+      header_row: dataRecords[seqNumber-1].header_row,
     };
     form.setFieldsValue(initialValues);
-  }, [dataRecords]);
+  }, []);
 
   useEffect(() => {
     const mainColumns = [];
-    headerRowCount > 0 && form.setFieldsValue({ header_row: headerRowCount });
     if (records?.length > 0) {
       for (let index = 0; index <= maxCount; index++) {
         mainColumns.push({
@@ -45,7 +44,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
                 {index === 0
                   ? headerRowCount === 0
                     ? 1
-                    : i + (headerRowCount ?? 1)
+                    : i + (form.getFieldValue('header_row') ?? 1)
                   : data[index - 1]}
               </>
             );
@@ -87,7 +86,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         <Col xs={24} sm={12} md={8}>
           <div className="form-group ">
             <label className="label">Header Row</label>
-            <Form.Item name="header_row" className="m-0" rules={[{ required: true, type: 'integer' }]}>
+            <Form.Item name="header_row" className="m-0" rules={[{ required: true, type: 'integer' , message: 'Header Row is Required and Integral' }]}>
               <InputNumber
                 min={1}
                 max={maxCount}
@@ -113,6 +112,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         <Table
           showHeader={false}
           scroll={{ x: true }}
+          rowKey={(record) => JSON.stringify(record)}
           pagination={{
             ...pagination,
             pageSizeOptions: [

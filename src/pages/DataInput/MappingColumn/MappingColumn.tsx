@@ -32,9 +32,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [excelColumns, setExcelColumns] = useState(null);
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
+  const [localMapping, setLocalMapping] = useState<boolean>(true);
 
   useEffect(() => {
-    if (record.table_name) {
+    if(localMapping) {
+    if (record.table_name ) {
       setLoadingTableColumns(true);
       // const dummyRecords = _.cloneDeep(records);
       // dummyRecords.map((data) => {
@@ -63,46 +65,23 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
           setExcelColumns(ExcelColsSorted);
           setTableColumnState(filterTableColumns);
 
-          const globalSearch: IInlineSearch = {};
-          for (const key in globalFilters.search) {
-            const element = globalFilters.search[key];
-            globalSearch[key] = element ? [element] : null;
-          }
-
-          const initialValuesData: any = {
-            tenant_id: _.isNull(globalSearch.tenant_id)
-              ? null
-              : globalSearch.tenant_id === undefined
-                ? null
-                : globalSearch?.tenant_id[0],
-            bu_id: _.isNull(globalSearch.bu_id)
-              ? null
-              : globalSearch.bu_id === undefined
-                ? null
-                : globalSearch?.bu_id[0],
-            company_id: _.isNull(globalSearch.company_id)
-              ? null
-              : globalSearch.company_id === undefined
-                ? null
-                : globalSearch?.company_id[0],
-            date_added: moment(),
-          };
+          const initialValuesData: any = {};
           filterTableColumns.map(function (ele) {
-            const mapRecord = records.filter((x) => x.index == seqNumber);
+            const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
             initialValuesData[ele.name] =
-            filterExcelColumns?.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s/g, '')
-            ).length > 0 && mapRecord[0].excel_to_sql_mapping == null
-              ? filterExcelColumns.filter(
+              filterExcelColumns?.filter(
                 (x: any) =>
                   x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
-              )[0]
-              : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                return data.key == ele.name
-              })[0]?.value;
+              ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
+                ? filterExcelColumns.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    ele.name?.toLowerCase()?.replace(/\s/g, '')
+                )[0]
+                : (skipRows == 0 ?(mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                  return data.key == ele.name
+                })[0]?.value : '');
           });
           form.setFieldsValue(initialValuesData);
         }
@@ -112,20 +91,13 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       setTableColumnState([]);
       setTableColumnState([]);
     }
-  }, [record.table_name,record.excel_to_sql_mapping]);
+  }
+      setLocalMapping(true);
+    }, [record.table_name,record.header_row, record.excel_to_sql_mapping]);
 
   useEffect(() => {
     if (record.table_name) {
       setLoadingTableColumns(true);
-      // const dummyRecords = _.cloneDeep(records);
-      // dummyRecords.map((data) => {
-      //   if (data.index == seqNumber) {
-      //     filterTableColumns.map(function (ele) {
-      //       initial[ele.name] 
-      //     });
-      //     form.setFieldsValue(data.excel_to_sql_mapping);
-      //   }
-      // });
       commonService.getTableColumns(record.table_name).then((res) => {
         if (res) {
           const response: any = res;
@@ -169,21 +141,21 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             date_added: moment(),
           };
           filterTableColumns.map(function (ele) {
-            const mapRecord = records.filter((x) => x.index == seqNumber);
+          const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
             initialValuesData[ele.name] =
-            filterExcelColumns?.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s/g, '')
-            ).length > 0 && mapRecord[0].excel_to_sql_mapping == null
-              ? filterExcelColumns.filter(
+              filterExcelColumns?.filter(
                 (x: any) =>
                   x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
-              )[0]
-              : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                return data.key == ele.name
-              })[0]?.value;
+              ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
+                ? filterExcelColumns.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    ele.name?.toLowerCase()?.replace(/\s/g, '')
+                )[0]
+                : (skipRows == 0 ?(mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                  return data.key == ele.name
+                })[0]?.value : '');
           });
           form.setFieldsValue(initialValuesData);
         }
@@ -246,6 +218,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   };
 
   const setMappingRecords = () => {
+    setLocalMapping(false);
     const fieldValues = { ...form.getFieldsValue() };
     delete fieldValues.file_name;
     delete fieldValues.file_type;
@@ -313,24 +286,24 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             <Spin spinning={true} />
           </div>
         ) : (<Row gutter={[30, 15]} className="form-label-hide">
-           <Col xs={24} md={12} lg={12} xl={8}>
-              <div className="form-group form-inline">
-                <label className="label strong">Database Column</label>
-                <label className="strong">Excel Column</label>
-              </div>
-            </Col>
-            <Col xs={24} md={12} lg={12} xl={8} className="sm-none">
-              <div className="form-group form-inline">
-                <label className="label strong">Database Column</label>
-                <label className="strong">Excel Column</label>
-              </div>
-            </Col>
-            <Col xs={24} md={12} lg={12} xl={8} className="lg-none">
-              <div className="form-group form-inline">
-                <label className="label strong">Database Column</label>
-                <label className="strong">Excel Column</label>
-              </div>
-            </Col>
+          <Col xs={24} md={12} lg={12} xl={8}>
+            <div className="form-group form-inline">
+              <label className="label strong">Database Column</label>
+              <label className="strong">Excel Column</label>
+            </div>
+          </Col>
+          <Col xs={24} md={12} lg={12} xl={8} className="sm-none">
+            <div className="form-group form-inline">
+              <label className="label strong">Database Column</label>
+              <label className="strong">Excel Column</label>
+            </div>
+          </Col>
+          <Col xs={24} md={12} lg={12} xl={8} className="lg-none">
+            <div className="form-group form-inline">
+              <label className="label strong">Database Column</label>
+              <label className="strong">Excel Column</label>
+            </div>
+          </Col>
           {(tableColumnState || []).map((col, index: number) => (
             <Col xs={24} md={12} lg={12} xl={8} key={index}>
               <div className="form-group form-inline">
