@@ -73,18 +73,29 @@ const BulkImport: React.FC = () => {
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
           let filteredRecords = dummyRecords.filter((data) => data.filename !== x.filename && data.original_filename !== x.original_filename);
-          (x?.excel_sheet_columns || []).map((sheet)=>{
-            filteredRecords = [...filteredRecords, {
-              index: currentIndex++,
-              filename: x.filename,
-              original_filename: x.original_filename,
-              table_name: tableName,
-              header_row: 1,
-              sheet: sheet.sheet,
-              excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
-              show_mapping: response ? response : null,
-            }]
-          })
+          filteredRecords = [...filteredRecords, {
+            index: currentIndex++,
+            filename: x.filename,
+            original_filename: x.original_filename,
+            table_name: tableName,
+            header_row: 1,
+            sheet: x?.excel_sheet_columns[0].sheet,
+            excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+            show_mapping: response ? response : null,
+          }];
+
+          // (x?.excel_sheet_columns || []).map((sheet)=>{
+          //   filteredRecords = [...filteredRecords, {
+          //     index: currentIndex++,
+          //     filename: x.filename,
+          //     original_filename: x.original_filename,
+          //     table_name: tableName,
+          //     header_row: 1,
+          //     sheet: sheet.sheet,
+          //     excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+          //     show_mapping: response ? response : null,
+          //   }]
+          // })
           return filteredRecords;
         });
       }
