@@ -93,7 +93,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     }
   }
       setLocalMapping(true);
-    }, [record.table_name, record.excel_to_sql_mapping]);
+    }, [record.table_name,record.header_row, record.excel_to_sql_mapping]);
 
   useEffect(() => {
     if (record.table_name) {
