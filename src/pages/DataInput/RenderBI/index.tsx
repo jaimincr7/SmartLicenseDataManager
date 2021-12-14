@@ -32,6 +32,7 @@ import commonService from '../../../services/common/common.service';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../common/models/common';
 import { toast } from 'react-toastify';
+import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 
 const { Option } = Select;
 
@@ -58,18 +59,29 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   compony: [],
   //   bu: [],
   // });
-
-  const handleTableChange = (currRecord: any, tableName: string) => {
-    if (currRecord.table_name) {
-      const dummyRecords = _.cloneDeep(records);
-      dummyRecords.map((data) => {
-        if (data.index == currRecord.index) {
-          data.table_name = tableName;
-        }
+  const changedTableData = async (currRecord: any,tableName: string) => {
+    const dummyRecords = _.cloneDeep(records);
+    const data = dummyRecords[currRecord.index - 1];
+    let response = null;
+    await bulkImportService
+      .getExcelFileMapping({
+        table_name: tableName,
+        key_word: data.original_filename?.split('.')[0],
+        file_type: data.original_filename?.split('.')[1],
+      })
+      .then((res) => {
+        response = res?.body?.data;
+        data.table_name = tableName;
+        data.show_mapping = response ? response : null;
+        data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
       });
-      setRecords(dummyRecords);
+    setRecords(dummyRecords);
+  }
+
+  const handleTableChange = async (currRecord: any, tableName: string) => {
+      if (tableName) {
+     changedTableData(currRecord,tableName);
     } else {
-      setTableColumnState([]);
       setTableColumnState([]);
     }
   };
@@ -256,7 +268,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const resetPage = () => {
     setTableColumnState([]);
     dispatch(clearExcelColumns());
-    innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
+    innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);    
     //setExcelColumns(null);
     setTableColumns(null);
   };
@@ -496,18 +508,17 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  // const forSaveMapping = (mappingOrder: any) => {
-  //   saveColumnMapping(
-  //     fileData?.original_filename,
-  //     false,
-  //     mappingOrder
-  //   );
-  //   setSavedExcelMapping([]);
-  // };
+  const deleteSelected =(index:number)=>{
+    if (index >= 0) {
+      const dummyRecords = _.cloneDeep(records);
+      const filteredRecords = dummyRecords.filter((data) => data.index !== index);
+      setRecords(filteredRecords);
+    }
+  }
 
   const columns = [
     {
-      title: 'Index',
+      title: '#',
       dataIndex: 'index',
       key: 'index',
     },
@@ -578,20 +589,30 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       )
     },
     {
-      title: 'Manage Header',
+      title: 'Action',
       dataIndex: 'key',
       key: 'key',
       render: (record, selectedRecord) => (
         <>
           <Button
             type="primary"
+            style={{ margin: '0 5px 5px 0px' }}
             onClick={() => {
               setSelectedRowId(selectedRecord.index);
-              setHeaderRowCount(selectedRecord.header_count);
+              setHeaderRowCount(selectedRecord.header_row);
               setShowManageExcel(true);
             }}
           >
             Manage Header
+          </Button>
+
+          <Button
+            type="primary"
+            onClick={() => {
+              deleteSelected(selectedRecord.index)
+            }}
+          >
+            Delete
           </Button>
         </>
       )
@@ -1068,7 +1089,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           </Form>
         </div> */}
       </div>
-      <PreviewExcel
+      {showManageExcel && <PreviewExcel
         showModal={showManageExcel}
         maxCount={maxHeaderRow}
         handleModalClose={() => {
@@ -1080,7 +1101,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         previewData={previewData}
         records={excelPreviewData}
         headerRowCount={headerRowCount}
-      ></PreviewExcel>
+      />}
     </>
   );
 };

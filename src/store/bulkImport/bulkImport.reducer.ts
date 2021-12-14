@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody } from '../../common/models/common';
 import { IDataTableForImport } from '../../services/bulkImport/bulkImport.model';
-import { IDatabaseTable, IGetExcelColumns, ITableColumn } from '../../services/common/common.model';
+import { IDatabaseTable, ITableColumn } from '../../services/common/common.model';
 import { RootState } from '../app.model';
 import {
   getTablesForImport,
@@ -52,6 +52,7 @@ export const initialState: IBulkImportState = {
     loading: false,
     hasErrors: false,
     data: null,
+    csvFiles: null
   },
   bulkInsert: {
     loading: false,
@@ -202,8 +203,10 @@ export const bulkImportSlice = createSlice({
     [getExcelColumns.pending.type]: (state) => {
       state.getExcelColumns.loading = true;
     },
-    [getExcelColumns.fulfilled.type]: (state, action: PayloadAction<IGetExcelColumns[]>) => {
-      state.getExcelColumns.data = action.payload;
+    [getExcelColumns.fulfilled.type]: (state, action: any) => {
+      const { file_details , cvs_files_with_name } = action.payload
+      state.getExcelColumns.data = file_details;
+      state.getExcelColumns.csvFiles = cvs_files_with_name;
       state.getExcelColumns.loading = false;
       state.getExcelColumns.hasErrors = false;
     },

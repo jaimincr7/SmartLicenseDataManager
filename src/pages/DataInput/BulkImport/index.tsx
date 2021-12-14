@@ -19,6 +19,7 @@ import { globalSearchSelector } from "../../../store/globalSearch/globalSearch.r
 
 const { Option } = Select;
 let getFileMappingTimeOut = null;
+let currentIndex = 1;
 
 const BulkImport: React.FC = () => {
 
@@ -40,7 +41,7 @@ const BulkImport: React.FC = () => {
   const [excelColumnState, setExcelColumnState] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
   const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -56,7 +57,7 @@ const BulkImport: React.FC = () => {
   useEffect(() => {
     if (bulkImports.getExcelColumns.data) {
       setExcelColumnState(bulkImports.getExcelColumns.data);
-      bulkImports.getExcelColumns.data?.map(async (x: any, index: number) => {
+      bulkImports.getExcelColumns.data?.map(async (x: any) => {
         let response = null;
         if (tableName) {
           await bulkImportService
@@ -69,18 +70,37 @@ const BulkImport: React.FC = () => {
               response = res?.body?.data;
             });
         }
-        setRecords((records) => [...records, {
-          index: index + 1,
-          filename: x.filename,
-          original_filename: x.original_filename,
-          table_name: tableName,
-          header_row: 1,
-          sheet: x?.excel_sheet_columns[0]?.sheet,
-          excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
-          show_mapping: response ? response : null,
-        }]);
+        setRecords((records) => {
+          const dummyRecords = _.cloneDeep(records);
+          let filteredRecords = dummyRecords.filter((data) => data.filename !== x.filename && data.original_filename !== x.original_filename);
+          filteredRecords = [...filteredRecords, {
+            index: currentIndex++,
+            filename: x.filename,
+            original_filename: x.original_filename,
+            table_name: tableName,
+            header_row: 1,
+            sheet: x?.excel_sheet_columns[0].sheet,
+            excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+            show_mapping: response ? response : null,
+          }];
+
+          // (x?.excel_sheet_columns || []).map((sheet)=>{
+          //   filteredRecords = [...filteredRecords, {
+          //     index: currentIndex++,
+          //     filename: x.filename,
+          //     original_filename: x.original_filename,
+          //     table_name: tableName,
+          //     header_row: 1,
+          //     sheet: sheet.sheet,
+          //     excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+          //     show_mapping: response ? response : null,
+          //   }]
+          // })
+          return filteredRecords;
+        });
       }
       );
+      setDefaultFileList([]);
     }
   }, [bulkImports.getExcelColumns.data]);
 
@@ -122,6 +142,7 @@ const BulkImport: React.FC = () => {
         dispatch(clearExcelColumns());
         dispatch(clearBulkImportMessages());
         setRecords([]);
+        currentIndex = 1;
         setExcelColumnState([]);
         setDefaultFileList([]);
         onCancel();
@@ -151,6 +172,7 @@ const BulkImport: React.FC = () => {
   useEffect(() => {
     return () => {
       dispatch(clearGetTableColumns());
+      currentIndex = 1;
     };
   }, []);
 
@@ -268,6 +290,7 @@ const BulkImport: React.FC = () => {
     formUpload.setFieldsValue({ table_name: tbName });
     setDefaultFileList([]);
     setRecords([]);
+    currentIndex = 1;
     setTableName(tbName);
   };
 
@@ -355,19 +378,11 @@ const BulkImport: React.FC = () => {
                         <Dragger
                           accept=".xls,.xlsx,.csv,.txt"
                           customRequest={uploadFile}
-                          multiple={true}
+                          multiple={true}                          
                           onChange={handleOnChange}
                           fileList={defaultFileList}
                           className="py-sm"
-                          showUploadList={{
-                            showRemoveIcon: true,
-                            removeIcon: (
-                              <img
-                                src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`}
-                                alt=""
-                              />
-                            ),
-                          }}
+                          showUploadList={false}
                         >
                           <UploadOutlined />
                           <span className="ant-upload-text"> Click or drag file </span>
