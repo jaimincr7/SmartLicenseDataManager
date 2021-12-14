@@ -112,6 +112,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         <Table
           showHeader={false}
           scroll={{ x: true }}
+          rowKey={(record) => JSON.stringify(record)}
           pagination={{
             ...pagination,
             pageSizeOptions: [
