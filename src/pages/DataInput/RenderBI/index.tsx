@@ -578,7 +578,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             type="primary"
             onClick={() => {
               setSelectedRowId(selectedRecord.index);
-              setHeaderRowCount(selectedRecord.header_count);
+              setHeaderRowCount(selectedRecord.header_row);
               setShowManageExcel(true);
             }}
           >
