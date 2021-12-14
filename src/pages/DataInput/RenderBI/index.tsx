@@ -496,15 +496,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  // const forSaveMapping = (mappingOrder: any) => {
-  //   saveColumnMapping(
-  //     fileData?.original_filename,
-  //     false,
-  //     mappingOrder
-  //   );
-  //   setSavedExcelMapping([]);
-  // };
-
   const columns = [
     {
       title: 'Index',
