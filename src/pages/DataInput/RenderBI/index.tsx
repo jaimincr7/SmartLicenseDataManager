@@ -510,7 +510,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (index >= 0) {
       const dummyRecords = _.cloneDeep(records);
       let flag = false;
-      debugger;
       const filteredRecords = dummyRecords.filter((data) => data.index !== index);
       filteredRecords.map((data) => {
         if(data.filename === fileName) {

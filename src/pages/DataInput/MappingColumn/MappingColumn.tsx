@@ -42,7 +42,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         if (res) {
           const response: any = res;
           const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-          debugger;
           let filterExcelColumns: any = record.columns;
           const filterTableColumns = response?.filter(
             (x) => !columnsArray.includes(x.name?.toLowerCase())
