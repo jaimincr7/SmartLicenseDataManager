@@ -37,7 +37,7 @@ import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { count, table, form, records, setRecords } = props;
+  const { count, table, form, records, setRecords, date } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -161,10 +161,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               : globalSearch.company_id === undefined
                 ? null
                 : globalSearch?.company_id[0],
-            date_added: moment(),
+            date_added: date ? date : moment(),
           }
         }
-        if (emptyMappingFlag == true) {
+          if (emptyMappingFlag == true) {
           toast.info('Some File may not have any mapping.Please check!');
         } else {
           dispatch(bulkInsert(val));

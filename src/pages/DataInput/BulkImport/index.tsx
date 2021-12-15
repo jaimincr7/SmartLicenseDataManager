@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Popover, Row, Select, Spin } from "antd";
+import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin } from "antd";
 import { useHistory, useParams } from "react-router-dom";
 import BreadCrumbs from "../../../common/components/Breadcrumbs";
 import { Page } from "../../../common/constants/pageAction";
@@ -16,6 +16,8 @@ import RenderBI from "../RenderBI";
 import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
 import bulkImportService from "../../../services/bulkImport/bulkImport.service";
 import { globalSearchSelector } from "../../../store/globalSearch/globalSearch.reducer";
+import moment from "moment";
+import { Common } from "../../../common/constants/common";
 
 const { Option } = Select;
 let getFileMappingTimeOut = null;
@@ -42,6 +44,7 @@ const BulkImport: React.FC = () => {
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
   const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
   const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState(null);
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -281,6 +284,10 @@ const BulkImport: React.FC = () => {
     );
   };
 
+  const dateChange = (e) => {
+    setDate(moment(e).format(Common.DATEFORMAT));
+  };
+
   const onCancel = () => {
     dispatch(clearExcelColumns());
     setExcelColumnState([]);
@@ -378,7 +385,7 @@ const BulkImport: React.FC = () => {
                         <Dragger
                           accept=".xls,.xlsx,.csv,.txt"
                           customRequest={uploadFile}
-                          multiple={true}                          
+                          multiple={true}
                           onChange={handleOnChange}
                           fileList={defaultFileList}
                           className="py-sm"
@@ -422,6 +429,18 @@ const BulkImport: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Col>
+                  <Col xs={24} md={8}>
+                    <div className="form-group m-0">
+                      <label className="label">Date Added</label>
+                      <Form.Item
+                        name="date_added"
+                        className="m-0"
+                        rules={[{ required: true, message: 'Date Is Required' }]}
+                      >
+                        <DatePicker defaultValue={moment()} onChange={dateChange} placeholder="Select Date Added" />
+                      </Form.Item>
+                    </div>
+                  </Col>
                 </Row>
               </Form>
             </div>
@@ -442,6 +461,7 @@ const BulkImport: React.FC = () => {
                   //handleSave={(data: any) => handleSave(data)}
                   count={count}
                   form={form}
+                  date={date}
                   fileData={null}
                   records={records}
                   setRecords={setRecords}
@@ -454,8 +474,8 @@ const BulkImport: React.FC = () => {
               </>) : <></>
           )}
           <div className="btns-block">
-            {(Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
-              <Popover content={<>Please select global filter first!</>} trigger="click">
+            {(Object.values(globalLookups.search)?.filter((x) => x > 0)?.length < 3 ? (
+              <Popover content={<>Please select global filter and Date Added first!</>} trigger="click">
                 <Button
                   type="primary"
                   disabled={excelColumnState?.length == 0}

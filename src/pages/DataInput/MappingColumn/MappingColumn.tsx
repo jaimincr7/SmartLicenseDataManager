@@ -163,7 +163,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       });
     } else {
       setTableColumnState([]);
-      setTableColumnState([]);
     }
   }, []);
 
