@@ -1,6 +1,7 @@
 import { DatePicker, Form, Select } from 'antd';
 import moment from 'moment';
 import { useEffect } from 'react';
+import _ from 'lodash';
 import { ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
@@ -14,7 +15,8 @@ import {
   globalSearchSelector,
   setGlobalSearch,
 } from '../../../store/globalSearch/globalSearch.reducer';
-import { IGlobalSearchProps } from './globalSearch.model';
+import { IGlobalSearchProps , IGlobalSearchInitialValues } from './globalSearch.model';
+import { Common } from '../../constants/common';
 
 const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
   const { isDateAdded } = props;
@@ -23,10 +25,11 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  const initialValues = {
+  const initialValues : IGlobalSearchInitialValues = {
     tenant_id: 0,
     company_id: 0,
     bu_id: 0,
+    date_added: null,
   };
 
   const handleTenantChange = (tenantId: number) => {
@@ -39,11 +42,6 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
       dispatch(clearGlobalCompanyLookUp());
       dispatch(clearGlobalBULookUp());
     }
-  };
-
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current > moment().endOf('day');
   };
 
   const handleCompanyChange = (companyId: number) => {
@@ -61,6 +59,10 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
     setGlobalSearchValues();
   };
 
+  const handleDateAddedChange = () => {
+    setGlobalSearchValues();
+  };
+
   const setGlobalSearchValues = () => {
     const tenantId = form.getFieldValue('tenant_id');
     const companyId = form.getFieldValue('company_id');
@@ -71,14 +73,19 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
       tenant_id: tenantId ? tenantId : 0,
       company_id: companyId ? companyId : 0,
       bu_id: buId ? buId : 0,
-      date_added: isDateAdded ? (date_added ? date_added : null) : null,
+      date_added: isDateAdded ? (_.isNull(date_added) ? null : moment(date_added)) : null,
     };
     dispatch(setGlobalSearch(searchValues));
   };
 
   useEffect(() => {
     dispatch(getGlobalTenantLookup());
-    form.setFieldsValue(globalLookups.search);
+    if(isDateAdded) {
+    const dummySearch = {...globalLookups.search, date_added : (_.isNull(globalLookups.search.date_added) ? null : moment(globalLookups.search.date_added))};
+    form.setFieldsValue(dummySearch);
+    } else {
+      form.setFieldsValue(globalLookups.search);
+    }
   }, [dispatch]);
 
   return (
@@ -159,13 +166,13 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
             ))}
           </Select>
         </Form.Item>
-        {isDateAdded ? <Form.Item
+         {isDateAdded && <Form.Item
           name="date_added"
           className="m-0"
         >
-          <DatePicker placeholder="Select Date Added" disabledDate={disabledDate} />
-        </Form.Item>
-       : <></>}
+          <DatePicker format={Common.DATEFORMAT} onChange={handleDateAddedChange} placeholder="Select Date Added" />
+        </Form.Item> 
+       }
        </Form>
     </>
   );

@@ -404,6 +404,13 @@ class CommonService {
     });
   }
 
+  public async deleteFileForBulkImport(fileName: string): Promise<IApiResponse<any>> {
+    const url = `/app/delete-file/${fileName}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   // Bulk import
   public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
     const url = `/app/table-column/${
