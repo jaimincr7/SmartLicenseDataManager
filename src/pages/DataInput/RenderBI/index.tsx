@@ -37,7 +37,7 @@ import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { count, table, form, records, setRecords, date } = props;
+  const { count, table, form, records, setRecords, date, loading, setLoading } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -54,12 +54,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
-  //const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
-  // const [compBuLookups, setCompBuLookups] = useState<{ [key: string]: any }>({
-  //   compony: [],
-  //   bu: [],
-  // });
-  const changedTableData = async (currRecord: any,tableName: string) => {
+  
+  const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
     const data = dummyRecords[currRecord.index - 1];
     let response = null;
@@ -76,11 +72,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
       });
     setRecords(dummyRecords);
+    setLoading(false);
   }
 
   const handleTableChange = async (currRecord: any, tableName: string) => {
-      if (tableName) {
-     changedTableData(currRecord,tableName);
+    setLoading(true);
+    if (tableName) {
+      changedTableData(currRecord, tableName);
     } else {
       setTableColumnState([]);
     }
@@ -90,10 +88,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   setFormFields();
   // };
 
-  const getDummyMapping = (currentSheetName: string) => {
+  const getDummyMapping = (currentSheetName: string, columns: any) => {
     setEmptyMappingFlag(true);
     const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-    const filterExcelColumns: any = bulkImports.getExcelColumns.data[0]?.excel_sheet_columns.find((e) => e.sheet === currentSheetName).columns[0];
+    const filterExcelColumns: any = columns[0];
     const filterTableColumns = tableColumnState.filter(
       (x) => !columnsArray.includes(x.name?.toLowerCase())
     );
@@ -136,7 +134,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         const val = {
           excel_sheet_with_mapping_details: [
             {
-              excel_to_sql_mapping: data.excel_to_sql_mapping ? data.excel_to_sql_mapping : getDummyMapping(data.sheet),
+              excel_to_sql_mapping: data.excel_to_sql_mapping ? data.excel_to_sql_mapping : getDummyMapping(data.sheet, data.columns),
               table_name: data.table_name,
               file_name: data.filename,
               original_file_name: data.original_filename,
@@ -164,7 +162,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             date_added: date ? date : moment(),
           }
         }
-          if (emptyMappingFlag == true) {
+        if (emptyMappingFlag == true) {
           toast.info('Some File may not have any mapping.Please check!');
         } else {
           dispatch(bulkInsert(val));
@@ -268,7 +266,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const resetPage = () => {
     setTableColumnState([]);
     dispatch(clearExcelColumns());
-    innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);    
+    innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
     //setExcelColumns(null);
     setTableColumns(null);
   };
@@ -508,7 +506,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  const deleteSelected =(index:number)=>{
+  const deleteSelected = (index: number) => {
     if (index >= 0) {
       const dummyRecords = _.cloneDeep(records);
       const filteredRecords = dummyRecords.filter((data) => data.index !== index);
@@ -536,7 +534,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <Select
             style={{ width: '180px' }}
             onChange={(tbName) => { handleTableChange(recordCurr, tbName) }}
-            loading={bulkImports.getTables.loading}
+            loading={bulkImports.getTables.loading || loading}
             showSearch
             value={recordCurr.table_name}
             optionFilterProp="children"

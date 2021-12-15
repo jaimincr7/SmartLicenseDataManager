@@ -6,13 +6,13 @@ import { Action, Page } from '../../../common/constants/pageAction';
 import { IInlineSearch } from '../../../common/models/common';
 import commonService from '../../../services/common/common.service';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
-import { bulkImportSelector } from '../../../store/bulkImport/bulkImport.reducer';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import { IMappingColumnProps } from './MappingColumn.model';
 import _ from 'lodash';
 import moment from 'moment';
 import { saveExcelFileMapping } from '../../../store/bulkImport/bulkImport.action';
 import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
+import { bulkImportSelector } from '../../../store/bulkImport/bulkImport.reducer';
 
 const { Option } = Select;
 
@@ -26,8 +26,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     isPublic: false,
   };
   const globalFilters = useAppSelector(globalSearchSelector);
-  const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
+  const bulkImport = useAppSelector(bulkImportSelector);
 
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [excelColumns, setExcelColumns] = useState(null);
@@ -38,22 +38,12 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     if(localMapping) {
     if (record.table_name ) {
       setLoadingTableColumns(true);
-      // const dummyRecords = _.cloneDeep(records);
-      // dummyRecords.map((data) => {
-      //   if (data.index == seqNumber) {
-      //     filterTableColumns.map(function (ele) {
-      //       initial[ele.name] 
-      //     });
-      //     form.setFieldsValue(data.excel_to_sql_mapping);
-      //   }
-      // });
       commonService.getTableColumns(record.table_name).then((res) => {
         if (res) {
           const response: any = res;
           const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-          let filterExcelColumns: any = bulkImports.getExcelColumns.data[
-            seqNumber - 1
-          ]?.excel_sheet_columns.find((e) => e.sheet === record.sheet).columns;
+          debugger;
+          let filterExcelColumns: any = record.columns;
           const filterTableColumns = response?.filter(
             (x) => !columnsArray.includes(x.name?.toLowerCase())
           );
@@ -89,7 +79,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       });
     } else {
       setTableColumnState([]);
-      setTableColumnState([]);
     }
   }
       setLocalMapping(true);
@@ -102,9 +91,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         if (res) {
           const response: any = res;
           const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-          let filterExcelColumns: any = bulkImports.getExcelColumns.data[
-            seqNumber - 1
-          ]?.excel_sheet_columns.find((e) => e.sheet === record.sheet).columns;
+          let filterExcelColumns: any = record.columns;
           const filterTableColumns = response?.filter(
             (x) => !columnsArray.includes(x.name?.toLowerCase())
           );
@@ -350,6 +337,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         <Button
           key="submit"
           type="primary"
+          loading={bulkImport.saveExcelFileMapping.loading}
           onClick={() => {
             onFinish(form.getFieldsValue());
           }}

@@ -10,4 +10,6 @@ export interface IRenderBIProps {
   records?: any[];
   setRecords?: (data: any) => void;
   form?: FormInstance<any>;
+  loading?: boolean;
+  setLoading?: (data: boolean) => void;
 }

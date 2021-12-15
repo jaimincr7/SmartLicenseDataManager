@@ -76,16 +76,19 @@ const BulkImport: React.FC = () => {
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
           let filteredRecords = dummyRecords.filter((data) => data.filename !== x.filename && data.original_filename !== x.original_filename);
-          filteredRecords = [...filteredRecords, {
-            index: currentIndex++,
-            filename: x.filename,
-            original_filename: x.original_filename,
-            table_name: tableName,
-            header_row: 1,
-            sheet: x?.excel_sheet_columns[0].sheet,
-            excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
-            show_mapping: response ? response : null,
-          }];
+          (x?.excel_sheet_columns || []).map((sheet) => {
+            filteredRecords = [...filteredRecords, {
+              index: currentIndex++,
+              filename: x.filename,
+              original_filename: x.original_filename,
+              table_name: tableName,
+              header_row: 1,
+              sheet: sheet.sheet,
+              columns: sheet.columns,
+              excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+              show_mapping: response ? response : null,
+            }]
+          })
 
           // (x?.excel_sheet_columns || []).map((sheet)=>{
           //   filteredRecords = [...filteredRecords, {
@@ -377,8 +380,8 @@ const BulkImport: React.FC = () => {
           <div className="main-card">
             <div>
               <Form form={formUpload} name="formUpload" initialValues={formUploadInitialValues}>
-                <Row gutter={[30, 20]} className="align-item-start">
-                  <Col xs={24} md={12}>
+                <Row gutter={[30, 30]} className="align-item-start">
+                  <Col xs={24} md={8}>
                     <label className="label w-100"></label>
                     <Form.Item name={'upload_file'} className="m-0">
                       <div className="upload-file">
@@ -437,7 +440,7 @@ const BulkImport: React.FC = () => {
                         className="m-0"
                         rules={[{ required: true, message: 'Date Is Required' }]}
                       >
-                        <DatePicker defaultValue={moment()} onChange={dateChange} placeholder="Select Date Added" />
+                        <DatePicker className="w-100" defaultValue={moment()} onChange={dateChange} placeholder="Select Date Added" />
                       </Form.Item>
                     </div>
                   </Col>
@@ -464,6 +467,8 @@ const BulkImport: React.FC = () => {
                   date={date}
                   fileData={null}
                   records={records}
+                  loading={loading}
+                  setLoading={setLoading}
                   setRecords={setRecords}
                   //seqNumber={index + 1}
                   table={tableName}
