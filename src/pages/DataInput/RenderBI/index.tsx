@@ -54,7 +54,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
-  
+
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
     const data = dummyRecords[currRecord.index - 1];
@@ -506,10 +506,20 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  const deleteSelected = (index: number) => {
+  const deleteSelected = (index: number,fileName: string) => {
     if (index >= 0) {
       const dummyRecords = _.cloneDeep(records);
+      let flag = false;
+      debugger;
       const filteredRecords = dummyRecords.filter((data) => data.index !== index);
+      filteredRecords.map((data) => {
+        if(data.filename === fileName) {
+          flag = true;
+        }
+      });
+      if(!flag) {
+        commonService.deleteFileForBulkImport(fileName);
+      }
       setRecords(filteredRecords);
     }
   }
@@ -607,7 +617,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <Button
             type="primary"
             onClick={() => {
-              deleteSelected(selectedRecord.index)
+              deleteSelected(selectedRecord.index,selectedRecord.filename)
             }}
           >
             Delete
