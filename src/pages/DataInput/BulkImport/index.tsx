@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Popover, Row, Select, Spin } from "antd";
+import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin } from "antd";
 import { useHistory, useParams } from "react-router-dom";
 import BreadCrumbs from "../../../common/components/Breadcrumbs";
 import { Page } from "../../../common/constants/pageAction";
@@ -16,6 +16,8 @@ import RenderBI from "../RenderBI";
 import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
 import bulkImportService from "../../../services/bulkImport/bulkImport.service";
 import { globalSearchSelector } from "../../../store/globalSearch/globalSearch.reducer";
+import moment from "moment";
+import { Common } from "../../../common/constants/common";
 
 const { Option } = Select;
 let getFileMappingTimeOut = null;
@@ -42,6 +44,7 @@ const BulkImport: React.FC = () => {
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
   const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
   const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState(null);
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -73,16 +76,19 @@ const BulkImport: React.FC = () => {
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
           let filteredRecords = dummyRecords.filter((data) => data.filename !== x.filename && data.original_filename !== x.original_filename);
-          filteredRecords = [...filteredRecords, {
-            index: currentIndex++,
-            filename: x.filename,
-            original_filename: x.original_filename,
-            table_name: tableName,
-            header_row: 1,
-            sheet: x?.excel_sheet_columns[0].sheet,
-            excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
-            show_mapping: response ? response : null,
-          }];
+          (x?.excel_sheet_columns || []).map((sheet) => {
+            filteredRecords = [...filteredRecords, {
+              index: currentIndex++,
+              filename: x.filename,
+              original_filename: x.original_filename,
+              table_name: tableName,
+              header_row: 1,
+              sheet: sheet.sheet,
+              columns: sheet.columns,
+              excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+              show_mapping: response ? response : null,
+            }]
+          })
 
           // (x?.excel_sheet_columns || []).map((sheet)=>{
           //   filteredRecords = [...filteredRecords, {
@@ -281,6 +287,10 @@ const BulkImport: React.FC = () => {
     );
   };
 
+  const dateChange = (e) => {
+    setDate(moment(e).format(Common.DATEFORMAT));
+  };
+
   const onCancel = () => {
     dispatch(clearExcelColumns());
     setExcelColumnState([]);
@@ -370,15 +380,15 @@ const BulkImport: React.FC = () => {
           <div className="main-card">
             <div>
               <Form form={formUpload} name="formUpload" initialValues={formUploadInitialValues}>
-                <Row gutter={[30, 20]} className="align-item-start">
-                  <Col xs={24} md={12}>
+                <Row gutter={[30, 30]} className="align-item-start">
+                  <Col xs={24} md={8}>
                     <label className="label w-100"></label>
                     <Form.Item name={'upload_file'} className="m-0">
                       <div className="upload-file">
                         <Dragger
                           accept=".xls,.xlsx,.csv,.txt"
                           customRequest={uploadFile}
-                          multiple={true}                          
+                          multiple={true}
                           onChange={handleOnChange}
                           fileList={defaultFileList}
                           className="py-sm"
@@ -422,6 +432,18 @@ const BulkImport: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Col>
+                  <Col xs={24} md={8}>
+                    <div className="form-group m-0">
+                      <label className="label">Date Added</label>
+                      <Form.Item
+                        name="date_added"
+                        className="m-0"
+                        rules={[{ required: true, message: 'Date Is Required' }]}
+                      >
+                        <DatePicker className="w-100" defaultValue={moment()} onChange={dateChange} placeholder="Select Date Added" />
+                      </Form.Item>
+                    </div>
+                  </Col>
                 </Row>
               </Form>
             </div>
@@ -442,8 +464,11 @@ const BulkImport: React.FC = () => {
                   //handleSave={(data: any) => handleSave(data)}
                   count={count}
                   form={form}
+                  date={date}
                   fileData={null}
                   records={records}
+                  loading={loading}
+                  setLoading={setLoading}
                   setRecords={setRecords}
                   //seqNumber={index + 1}
                   table={tableName}
@@ -454,8 +479,8 @@ const BulkImport: React.FC = () => {
               </>) : <></>
           )}
           <div className="btns-block">
-            {(Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
-              <Popover content={<>Please select global filter first!</>} trigger="click">
+            {(Object.values(globalLookups.search)?.filter((x) => x > 0)?.length < 3 ? (
+              <Popover content={<>Please select global filter and Date Added first!</>} trigger="click">
                 <Button
                   type="primary"
                   disabled={excelColumnState?.length == 0}

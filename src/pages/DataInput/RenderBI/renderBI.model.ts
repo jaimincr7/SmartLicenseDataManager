@@ -6,7 +6,10 @@ export interface IRenderBIProps {
   count: { [key: string]: number };
   handleSave?: (data: any) => void;
   table: string;
+  date: any;
   records?: any[];
   setRecords?: (data: any) => void;
   form?: FormInstance<any>;
+  loading?: boolean;
+  setLoading?: (data: boolean) => void;
 }

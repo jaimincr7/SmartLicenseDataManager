@@ -37,7 +37,7 @@ import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { count, table, form, records, setRecords } = props;
+  const { count, table, form, records, setRecords, date, loading, setLoading } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -54,12 +54,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
-  //const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
-  // const [compBuLookups, setCompBuLookups] = useState<{ [key: string]: any }>({
-  //   compony: [],
-  //   bu: [],
-  // });
-  const changedTableData = async (currRecord: any,tableName: string) => {
+
+  const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
     const data = dummyRecords[currRecord.index - 1];
     let response = null;
@@ -76,11 +72,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
       });
     setRecords(dummyRecords);
+    setLoading(false);
   }
 
   const handleTableChange = async (currRecord: any, tableName: string) => {
-      if (tableName) {
-     changedTableData(currRecord,tableName);
+    setLoading(true);
+    if (tableName) {
+      changedTableData(currRecord, tableName);
     } else {
       setTableColumnState([]);
     }
@@ -90,10 +88,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   setFormFields();
   // };
 
-  const getDummyMapping = (currentSheetName: string) => {
+  const getDummyMapping = (currentSheetName: string, columns: any) => {
     setEmptyMappingFlag(true);
     const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-    const filterExcelColumns: any = bulkImports.getExcelColumns.data[0]?.excel_sheet_columns.find((e) => e.sheet === currentSheetName).columns[0];
+    const filterExcelColumns: any = columns[0];
     const filterTableColumns = tableColumnState.filter(
       (x) => !columnsArray.includes(x.name?.toLowerCase())
     );
@@ -136,7 +134,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         const val = {
           excel_sheet_with_mapping_details: [
             {
-              excel_to_sql_mapping: data.excel_to_sql_mapping ? data.excel_to_sql_mapping : getDummyMapping(data.sheet),
+              excel_to_sql_mapping: data.excel_to_sql_mapping ? data.excel_to_sql_mapping : getDummyMapping(data.sheet, data.columns),
               table_name: data.table_name,
               file_name: data.filename,
               original_file_name: data.original_filename,
@@ -161,7 +159,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               : globalSearch.company_id === undefined
                 ? null
                 : globalSearch?.company_id[0],
-            date_added: moment(),
+            date_added: date ? date : moment(),
           }
         }
         if (emptyMappingFlag == true) {
@@ -268,7 +266,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const resetPage = () => {
     setTableColumnState([]);
     dispatch(clearExcelColumns());
-    innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);    
+    innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
     //setExcelColumns(null);
     setTableColumns(null);
   };
@@ -321,17 +319,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   }, [table]);
 
   const previewData = (headerValue = 0) => {
-    const sheet_name = bulkImports.getExcelColumns.data[selectedRowId - 1].excel_sheet_columns[0].sheet;
-    const currentExcelData = [
-      ...bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
-        (x) => x.sheet === sheet_name
-      )?.columns,
-    ];
+    const dummyRecords = records.filter(data => data.index == selectedRowId);
+    const currentExcelData = [...dummyRecords[0]?.columns];
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
-    setMaxHeaderRow(bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
-      (e) => e.sheet === sheet_name
-    )?.columns?.length);
+    setMaxHeaderRow(dummyRecords[0].columns?.length);
     innerFormUpload.setFieldsValue({ header_row: headerValue });
     setFormFields();
   };
@@ -508,10 +500,20 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  const deleteSelected =(index:number)=>{
+  const deleteSelected = (index: number,fileName: string) => {
     if (index >= 0) {
       const dummyRecords = _.cloneDeep(records);
+      let flag = false;
       const filteredRecords = dummyRecords.filter((data) => data.index !== index);
+      filteredRecords.map((data) => {
+        if(data.filename === fileName) {
+          flag = true;
+        }
+      });
+      if(!flag) {
+        commonService.deleteFileForBulkImport(fileName);
+      }
+      
       setRecords(filteredRecords);
     }
   }
@@ -536,7 +538,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <Select
             style={{ width: '180px' }}
             onChange={(tbName) => { handleTableChange(recordCurr, tbName) }}
-            loading={bulkImports.getTables.loading}
+            loading={bulkImports.getTables.loading || loading}
             showSearch
             value={recordCurr.table_name}
             optionFilterProp="children"
@@ -609,7 +611,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <Button
             type="primary"
             onClick={() => {
-              deleteSelected(selectedRecord.index)
+              deleteSelected(selectedRecord.index,selectedRecord.filename)
             }}
           >
             Delete
