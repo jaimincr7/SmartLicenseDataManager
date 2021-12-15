@@ -218,7 +218,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       }
     });
     const dummyrecords = [...records];
-    dummyrecords[seqNumber - 1].excel_to_sql_mapping = sqlToExcelMapping;
+    dummyrecords.map((data) => {
+      if(data.index == seqNumber) {
+        data.excel_to_sql_mapping = sqlToExcelMapping;
+      }
+    });
     setRecords(dummyrecords);
   };
 

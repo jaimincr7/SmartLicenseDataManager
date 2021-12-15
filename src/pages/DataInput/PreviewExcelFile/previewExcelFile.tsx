@@ -25,7 +25,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
 
   useEffect(() => {
     const initialValues = {
-      header_row: dataRecords[seqNumber-1].header_row,
+      header_row: headerRowCount,
     };
     form.setFieldsValue(initialValues);
   }, []);

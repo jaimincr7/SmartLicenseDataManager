@@ -319,17 +319,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   }, [table]);
 
   const previewData = (headerValue = 0) => {
-    const sheet_name = bulkImports.getExcelColumns.data[selectedRowId - 1].excel_sheet_columns[0].sheet;
-    const currentExcelData = [
-      ...bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
-        (x) => x.sheet === sheet_name
-      )?.columns,
-    ];
+    const dummyRecords = records.filter(data => data.index == selectedRowId);
+    const currentExcelData = [...dummyRecords[0]?.columns];
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
-    setMaxHeaderRow(bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
-      (e) => e.sheet === sheet_name
-    )?.columns?.length);
+    setMaxHeaderRow(dummyRecords[0].columns?.length);
     innerFormUpload.setFieldsValue({ header_row: headerValue });
     setFormFields();
   };
@@ -519,6 +513,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if(!flag) {
         commonService.deleteFileForBulkImport(fileName);
       }
+      
       setRecords(filteredRecords);
     }
   }
