@@ -80,32 +80,6 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        {/* <div className="input-btns-title">
-          <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.O365Users}>
-              <Col>
-                <Button
-                  className="btn-icon"
-                  onClick={() =>
-                    history.push(
-                      `/data-input/bulk-import/${encodeURIComponent(o365Users.search.tableName)}`
-                    )
-                  }
-                  icon={
-                    <em className="anticon">
-                      <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/ic-file-excel-outlined.svg`}
-                        alt=""
-                      />
-                    </em>
-                  }
-                >
-                  Import
-                </Button>
-              </Col>
-            </Can>
-          </Row>
-        </div> */}
         <MainTable
           ref={dataTableRef}
           isMultiple={showSelectedListModal}

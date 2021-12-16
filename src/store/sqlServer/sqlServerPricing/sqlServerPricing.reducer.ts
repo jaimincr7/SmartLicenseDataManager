@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
+import { IApiResponseBody } from '../../../common/models/common';
 import { ISqlServerPricing } from '../../../services/sqlServer/sqlServerPricing/sqlServerPricing.model';
 import { RootState } from '../../app.model';
 import {
@@ -18,6 +18,7 @@ export const initialState: ISqlServerPricingState = {
     count: 0,
     lookups: {},
     tableName: '',
+    currency_id: null,
   },
   tableColumnSelection: {
     id: null,
@@ -66,13 +67,14 @@ export const sqlServerPricingSlice = createSlice({
     },
     [searchSqlServerPricing.fulfilled.type]: (
       state,
-      action: PayloadAction<ISearchResponse<ISqlServerPricing>>
+      action: PayloadAction<any>
     ) => {
-      const { search_result, ...rest } = action.payload;
+      const { search_result, current_user_currency_id ,...rest } = action.payload;
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
       if (JSON.stringify(rest) !== '{}') {
         state.search.lookups = { ...rest };
+        state.search.currency_id = current_user_currency_id;
       }
       state.search.loading = false;
       state.search.hasErrors = false;

@@ -14,6 +14,7 @@ import {
   saveExcelFileMapping,
   deleteColumnMapping,
   deleteFileMapping,
+  getCSVExcelColumns,
 } from './bulkImport.action';
 import { IBulkImportState } from './bulkImport.model';
 
@@ -49,6 +50,12 @@ export const initialState: IBulkImportState = {
     data: [],
   },
   getExcelColumns: {
+    loading: false,
+    hasErrors: false,
+    data: null,
+    csvFiles: null
+  },
+  getCSVExcelColumns: {
     loading: false,
     hasErrors: false,
     data: null,
@@ -213,6 +220,22 @@ export const bulkImportSlice = createSlice({
     [getExcelColumns.rejected.type]: (state) => {
       state.getExcelColumns.loading = false;
       state.getExcelColumns.hasErrors = true;
+    },
+
+    // Get CSV File Columns
+    [getCSVExcelColumns.pending.type]: (state) => {
+      state.getCSVExcelColumns.loading = true;
+    },
+    [getCSVExcelColumns.fulfilled.type]: (state, action: any) => {
+      const { file_details , cvs_files_with_name } = action.payload
+      state.getCSVExcelColumns.data = file_details;
+      state.getCSVExcelColumns.csvFiles = cvs_files_with_name;
+      state.getCSVExcelColumns.loading = false;
+      state.getCSVExcelColumns.hasErrors = false;
+    },
+    [getCSVExcelColumns.rejected.type]: (state) => {
+      state.getCSVExcelColumns.loading = false;
+      state.getCSVExcelColumns.hasErrors = true;
     },
 
     // Bulk Insert

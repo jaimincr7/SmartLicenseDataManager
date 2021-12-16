@@ -38,6 +38,12 @@ export interface IBulkImportState {
     data?: IGetExcelColumns[];
     csvFiles?: any;
   };
+  getCSVExcelColumns: {
+    loading: boolean;
+    hasErrors: boolean;
+    data?: IGetExcelColumns[];
+    csvFiles?: any;
+  };
   bulkInsert: {
     loading: boolean;
     hasErrors: boolean;

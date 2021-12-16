@@ -404,6 +404,14 @@ class CommonService {
     });
   }
 
+  public async getCSVExcelColumns(file: any): Promise<IApiResponse<any>> {
+    const url = `/app/read-csv-file-delimiter`;
+    
+    return request({ url, method: 'POST', data: file }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async deleteFileForBulkImport(fileName: string): Promise<IApiResponse<any>> {
     const url = `/app/delete-file/${fileName}`;
     return request({ url, method: 'GET' }).then((res) => {

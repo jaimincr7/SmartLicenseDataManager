@@ -62,6 +62,13 @@ export const getExcelColumns = createAsyncThunk('getExcelColumns', async (file: 
   return response.data;
 });
 
+export const getCSVExcelColumns = createAsyncThunk('getCSVExcelColumns', async (file: any) => {
+  const response = await commonService.getCSVExcelColumns(file).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const bulkInsert = createAsyncThunk('bulkInsert', async (data: any) => {
   const response = await commonService.bulkInsert(data).then((res) => {
     return res.body;
