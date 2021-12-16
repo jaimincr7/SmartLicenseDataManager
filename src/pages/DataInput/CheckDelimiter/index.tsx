@@ -77,8 +77,8 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
                   >
                     <Option value=";">;</Option>
                     <Option value=",">,</Option>
-                    <Option value="    ">TAB</Option>
-                    <Option value=" ">SPACE</Option>
+                    {/* <Option value="    ">TAB</Option> */}
+                    {/* <Option value=" ">SPACE</Option> */}
                   </Select>
                 </Form.Item>
               </div>

@@ -22,12 +22,12 @@ export interface IConfigColMapping {
   sheet_name: string;
   header_row: number;
   mapping: string;
+  table_name?: string;
   excel_file_mapping_id?: number;
 }
 
 export interface ISaveExcelMapping {
   id?: number;
-  table_name: string;
   file_type: string;
   key_word: string;
   is_public: boolean;
