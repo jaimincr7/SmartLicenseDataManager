@@ -41,7 +41,7 @@ const BulkImport: React.FC = () => {
   const [count, setCount] = useState({ save: 0, reset: 0 });
   const [tableName, setTableName] = useState<string>(table);
   //const [defaultFile, setDefaultFile] = useState(null);
-  const [excelColumnState, setExcelColumnState] = useState([]);
+  //const [excelColumnState, setExcelColumnState] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
   const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,8 @@ const BulkImport: React.FC = () => {
       setDelimitModalShow(true);
     }
     if (bulkImports.getExcelColumns.data || bulkImports.getExcelColumns.csvFiles?.length > 0) {
-      setExcelColumnState(bulkImports.getExcelColumns.data);
+      //if(bulkImports.getExcelColumns.csvFiles?.length == 0)
+      //setExcelColumnState(bulkImports.getExcelColumns.data);
       bulkImports.getExcelColumns.data?.map(async (x: any) => {
         let response = null;
         if (tableName) {
@@ -186,7 +187,7 @@ const BulkImport: React.FC = () => {
         dispatch(clearBulkImportMessages());
         setRecords([]);
         currentIndex = 1;
-        setExcelColumnState([]);
+        //setExcelColumnState([]);
         setDefaultFileList([]);
         onCancel();
         if (table) {
@@ -248,14 +249,14 @@ const BulkImport: React.FC = () => {
     if (file.status === 'removed') {
       if (fileList?.length === 0) {
         dispatch(clearExcelColumns());
-        setExcelColumnState([]);
+        //setExcelColumnState([]);
         //setDefaultFile(null);
-      } else {
-        const result = excelColumnState.filter((o) =>
-          fileList.some(({ name }) => o.original_filename === name)
-        );
-        setExcelColumnState(result);
-      }
+      } //else {
+        // const result = excelColumnState.filter((o) =>
+        //   fileList.some(({ name }) => o.original_filename === name)
+        // );
+        // setExcelColumnState(result);
+      //}
     } else if (file.status === 'done') {
       const formData = new FormData();
       fileList?.forEach((ele) => {
@@ -331,7 +332,7 @@ const BulkImport: React.FC = () => {
 
   const onCancel = () => {
     dispatch(clearExcelColumns());
-    setExcelColumnState([]);
+    //setExcelColumnState([]);
     setCount({ save: 0, reset: 0 });
     const tbName = formUpload?.getFieldValue('table_name');
     formUpload.resetFields();
@@ -493,7 +494,7 @@ const BulkImport: React.FC = () => {
               <Spin spinning={true} />
             </div>
           ) : (
-            excelColumnState?.length > 0 ?
+            records?.length > 0 ?
               (<>
                 {/* {bulkImports.getExcelColumns.data?.map(
               (data: any, index) =>
@@ -536,7 +537,7 @@ const BulkImport: React.FC = () => {
               <Popover content={<>Please select global filter and Date Added first!</>} trigger="click">
                 <Button
                   type="primary"
-                  disabled={excelColumnState?.length == 0}
+                  disabled={records?.length == 0}
                   loading={bulkImports.bulkInsert.loading}
                 >
                   Save
@@ -545,7 +546,7 @@ const BulkImport: React.FC = () => {
             ) : (
               <Button
                 type="primary"
-                disabled={excelColumnState?.length == 0}
+                disabled={records?.length == 0}
                 loading={bulkImports.bulkInsert.loading}
                 onClick={() => {
                   setCount({ ...count, save: count.save + 1 });
