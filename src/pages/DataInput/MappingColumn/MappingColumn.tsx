@@ -180,7 +180,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     }
     const excelMappingObj: ISaveExcelMapping = {
       id: parentId,
-      table_name: record.table_name,
       file_type: filetype,
       key_word: filename,
       is_public: isPublic,
@@ -188,6 +187,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         {
           sheet_name: record.sheet,
           header_row: skipRows,
+          table_name: record.table_name,
           mapping: JSON.stringify(sqlToExcelMapping),
         },
       ],

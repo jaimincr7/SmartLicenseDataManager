@@ -13,6 +13,7 @@ import {
 } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import moment from 'moment';
 import { validateMessages } from '../../../../common/constants/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
@@ -20,14 +21,15 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
   const windowsServersLicense = useAppSelector(windowsServerLicenseSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
+  const globalFilters = useAppSelector(globalSearchSelector);
 
   const { showModal, handleModalClose } = props;
 
   const [form] = Form.useForm();
 
   const initialValues = {
-    company_id: null,
-    bu_id: null,
+    company_id: globalFilters.search.company_id !== 0 ? globalFilters.search.company_id : null,
+    bu_id: globalFilters.search.bu_id !== 0 ? globalFilters.search.bu_id : null,
     selected_date: moment(),
   };
 
@@ -62,6 +64,8 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
 
   useEffect(() => {
     dispatch(getAllCompanyLookup());
+    if(globalFilters.search.company_id !== 0)
+    dispatch(getBULookup(globalFilters.search.company_id));
     return () => {
       dispatch(clearBULookUp());
     };

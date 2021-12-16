@@ -248,7 +248,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={ability.can(Action.Add, Page.SqlServerPricing)}
+        showAddButton={ability.can(Action.Add, Page.SqlServerPricing) && !sqlServerPricing.search.loading}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}

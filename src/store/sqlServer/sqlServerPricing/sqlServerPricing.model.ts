@@ -9,6 +9,7 @@ export interface ISqlServerPricingState {
     count: number;
     lookups?: { [key: string]: IDropDownOption[] };
     tableName: string;
+    currency_id: number;
   };
   tableColumnSelection?: ITableColumnSelection;
   getById: {
