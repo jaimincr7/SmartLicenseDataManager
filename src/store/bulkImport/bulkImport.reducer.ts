@@ -102,6 +102,10 @@ export const bulkImportSlice = createSlice({
     clearExcelColumns: (state) => {
       state.getExcelColumns.data = null;
     },
+    clearCSVExcelColumns: (state) => {
+      state.getCSVExcelColumns.data = null;
+      state.getCSVExcelColumns.csvFiles = null;
+    },
     clearExcelFileMappingMessages: (state) => {
       state.getExcelMappingColumns.messages = [];
     },
@@ -299,6 +303,7 @@ export const {
   clearBulkImport,
   clearBulkImportMessages,
   clearExcelColumns,
+  clearCSVExcelColumns,
   clearGetTableColumns,
   clearDeleteMessages,
   clearExcelFileMappingMessages,

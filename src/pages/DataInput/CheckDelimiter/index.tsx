@@ -68,15 +68,14 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
                   rules={[{ required: true }]}
                 >
                   <Select
-                    showSearch
                     placeholder="Select a Delimit"
                     optionFilterProp="children"
                     filterOption={(input, option) =>
                       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                   >
-                    <Option value=";">;</Option>
-                    <Option value=",">,</Option>
+                  <Option value=";">Semi Colon(;)</Option>
+                  <Option value=",">Comma(,)</Option>
                     {/* <Option value="    ">TAB</Option> */}
                     {/* <Option value=" ">SPACE</Option> */}
                   </Select>

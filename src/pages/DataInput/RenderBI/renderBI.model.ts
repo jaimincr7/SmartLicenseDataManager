@@ -12,4 +12,5 @@ export interface IRenderBIProps {
   form?: FormInstance<any>;
   loading?: boolean;
   setLoading?: (data: boolean) => void;
+  setDelimitFlag?: (data: any) => void;
 }
