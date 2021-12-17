@@ -37,7 +37,7 @@ import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { count, table, form, records, setRecords, date, loading, setLoading } = props;
+  const { count, table, form, records, setRecords, date, loading, setLoading, setDelimitFlag } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -57,19 +57,19 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
-    const data = dummyRecords[currRecord.index - 1];
+    const data = dummyRecords.filter(data => data.index == currRecord.index);
     let response = null;
     await bulkImportService
       .getExcelFileMapping({
         table_name: tableName,
-        key_word: data.original_filename?.split('.')[0],
-        file_type: data.original_filename?.split('.')[1],
+        key_word: data[0].original_filename?.split('.')[0],
+        file_type: data[0]?.original_filename.slice((data[0]?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
       })
       .then((res) => {
         response = res?.body?.data;
-        data.table_name = tableName;
-        data.show_mapping = response ? response : null;
-        data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
+        data[0].table_name = tableName;
+        data[0].show_mapping = response ? response : null;
+        data[0].excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
       });
     setRecords(dummyRecords);
     setLoading(false);
@@ -638,7 +638,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             records={records}
             skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
             fileName={record?.original_filename.split('.')[0]}
-            fileType={record?.original_filename.split('.')[1]}
+            fileType={record?.original_filename.slice((record?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2)}
             tableName={record?.table_name}
             seqNumber={record?.index}
           ></MappingColumn>),
@@ -1099,9 +1099,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         }}
         dataRecords={records}
         setRecords={setRecords}
+        setDelimitFlag={setDelimitFlag}
         seqNumber={selectedRowId}
         previewData={previewData}
         records={excelPreviewData}
+        setExcelPreviewData={setExcelPreviewData}
         headerRowCount={headerRowCount}
       />}
     </>

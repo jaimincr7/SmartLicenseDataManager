@@ -46,6 +46,8 @@ const BulkImport: React.FC = () => {
   const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
   const [loading, setLoading] = useState(false);
   const [delimitModalShow, setDelimitModalShow] = useState(false);
+  const [delimitFlag, setDelimitFlag] = useState(true);
+  
   const [date, setDate] = useState(null);
 
   const formUploadInitialValues = {
@@ -60,7 +62,7 @@ const BulkImport: React.FC = () => {
   };
 
   useEffect(() => {
-    if (bulkImports?.getExcelColumns?.csvFiles?.length > 0 && bulkImports.getExcelColumns.csvFiles !== null) {
+    if (bulkImports?.getExcelColumns?.csvFiles?.length > 0 && bulkImports.getExcelColumns.csvFiles !== null && delimitFlag) {
       setDelimitModalShow(true);
     }
     if (bulkImports.getExcelColumns.data || bulkImports.getExcelColumns.csvFiles?.length > 0) {
@@ -73,7 +75,7 @@ const BulkImport: React.FC = () => {
             .getExcelFileMapping({
               table_name: tableName,
               key_word: x.original_filename?.split('.')[0],
-              file_type: x.original_filename?.split('.')[1]
+              file_type: x?.original_filename.slice((x?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
             })
             .then((res) => {
               response = res?.body?.data;
@@ -113,7 +115,7 @@ const BulkImport: React.FC = () => {
               .getExcelFileMapping({
                 table_name: tableName,
                 key_word: x.original_filename?.split('.')[0],
-                file_type: x.original_filename?.split('.')[1]
+                file_type: x?.original_filename.slice((x?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
               })
               .then((res) => {
                 response = res?.body?.data;
@@ -141,7 +143,7 @@ const BulkImport: React.FC = () => {
         }
         );
       } if (bulkImports.getCSVExcelColumns.csvFiles !== null && bulkImports.getCSVExcelColumns.csvFiles?.length > 0) {
-        if ((bulkImports.getCSVExcelColumns.csvFiles !== null && bulkImports.getCSVExcelColumns.csvFiles?.length > 0)) {
+        if ((bulkImports.getCSVExcelColumns.csvFiles !== null && delimitFlag && bulkImports.getCSVExcelColumns.csvFiles?.length > 0)) {
           toast.info('Please Select Proper Delimiters');
           setDelimitModalShow(true);
         }
@@ -159,7 +161,7 @@ const BulkImport: React.FC = () => {
           .getExcelFileMapping({
             table_name: formUpload?.getFieldValue('table_name'),
             key_word: data.original_filename?.split('.')[0],
-            file_type: data.original_filename?.split('.')[1],
+            file_type: data?.original_filename.slice((data?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
           })
           .then((res) => {
             response = res?.body?.data;
@@ -508,6 +510,7 @@ const BulkImport: React.FC = () => {
                   records={records}
                   loading={loading}
                   setLoading={setLoading}
+                  setDelimitFlag={setDelimitFlag}
                   setRecords={setRecords}
                   //seqNumber={index + 1}
                   table={tableName}
