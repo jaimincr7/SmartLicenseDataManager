@@ -52,6 +52,7 @@ const BulkImport: React.FC = () => {
 
   const formUploadInitialValues = {
     header_row: 1,
+    table_name: table,
   };
 
   const uploadFile = async (options) => {
@@ -93,6 +94,7 @@ const BulkImport: React.FC = () => {
               header_row: 1,
               sheet: sheet.sheet,
               columns: sheet.columns,
+              currentMapping: response && response.length > 0 ? response[0].config_excel_column_mappings[0]?.sheet_name : null,
               excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
               show_mapping: response ? response : null,
             }]
@@ -444,7 +446,7 @@ const BulkImport: React.FC = () => {
                   <Col xs={24} md={8}>
                     <div className="form-group m-0">
                       <label className="label">Table Name</label>
-                      <Form.Item name={'table_name'} className="m-0" rules={[{ required: true, message: 'Table Name is required' }]}>
+                      <Form.Item name={'table_name'} className="m-0" >
                         <Select
                           loading={bulkImports.getTables.loading || loading}
                           onChange={(name: string) => {
