@@ -523,7 +523,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       dummyRecords.map((data) => {
         if(data.index == curR.index) {
           data.excel_to_sql_mapping= null;
-          data.show_mapping= null;
         }
       });
       
