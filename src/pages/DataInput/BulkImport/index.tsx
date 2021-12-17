@@ -52,6 +52,7 @@ const BulkImport: React.FC = () => {
 
   const formUploadInitialValues = {
     header_row: 1,
+    table_name: table,
   };
 
   const uploadFile = async (options) => {
