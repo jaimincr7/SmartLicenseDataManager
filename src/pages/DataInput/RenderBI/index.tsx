@@ -417,9 +417,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         children: geChildDropdown(m.config_excel_column_mappings),
       });
     });
-    if (dropdown?.length === 0) {
-      innerFormUpload.setFieldsValue({ mapping_order: undefined });
-    }
+
     return dropdown;
   };
 
@@ -452,13 +450,16 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     const dummyRecord = _.cloneDeep(records);
     dummyRecord.map((data) => {
       if (data.index == selectedRecord.index) {
+        let flagMapping = null;
+        data.currentMapping = value;
         selectedRecord.show_mapping.map((data1) => {
           data1.config_excel_column_mappings.map((data2) => {
             if (data2.id == value) {
-              data.excel_to_sql_mapping = JSON.parse(data2.mapping);
+              flagMapping = JSON.parse(data2.mapping);
             }
           })
         });
+        data.excel_to_sql_mapping = flagMapping;
       }
     });
     setRecords(dummyRecord);
@@ -500,34 +501,35 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  const deleteSelected = (index: number,fileName: string) => {
+  const deleteSelected = (index: number, fileName: string) => {
     if (index >= 0) {
       const dummyRecords = _.cloneDeep(records);
       let flag = false;
       const filteredRecords = dummyRecords.filter((data) => data.index !== index);
       filteredRecords.map((data) => {
-        if(data.filename === fileName) {
+        if (data.filename === fileName) {
           flag = true;
         }
       });
-      if(!flag) {
+      if (!flag) {
         commonService.deleteFileForBulkImport(fileName);
       }
-      
+
       setRecords(filteredRecords);
     }
   }
 
-  const clearMapping = (curR) => {
-    const dummyRecords = _.cloneDeep(records);
-      dummyRecords.map((data) => {
-        if(data.index == curR.index) {
-          data.excel_to_sql_mapping= null;
-        }
-      });
-      
-      setRecords(dummyRecords);
-  }
+  // const clearMapping = (curR,e) => {
+  //   const dummyRecords = _.cloneDeep(records);
+  //     dummyRecords.map((data) => {
+  //       if(data.index == curR.index) {
+  //         data.excel_to_sql_mapping= null;
+  //         data.show_mapping
+  //       }
+  //     });
+
+  //     setRecords(dummyRecords);
+  // }
 
   const columns = [
     {
@@ -592,9 +594,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <TreeSelect
             style={{ width: '180px' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            onClear={() => clearMapping(selectedRecord)}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
-            value={selectedRecord.show_mapping !== null ? selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name : null}
+            value={selectedRecord.currentMapping}
             onChange={(e) => onChange(selectedRecord, e)}
             treeDefaultExpandAll
             allowClear
@@ -623,7 +624,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <Button
             type="primary"
             onClick={() => {
-              deleteSelected(selectedRecord.index,selectedRecord.filename)
+              deleteSelected(selectedRecord.index, selectedRecord.filename)
             }}
           >
             Delete
