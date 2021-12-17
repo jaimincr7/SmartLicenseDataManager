@@ -13,6 +13,7 @@ const { Option } = Select;
 const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const { headerRowCount, dataRecords, setRecords, previewData, setDelimitFlag, records, showModal, handleModalClose, maxCount, seqNumber } = props;
   const [columns, setColumns] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const [firstFlag, setFirstFlag] = useState(false);
   const dispatch = useAppDispatch();
   const [showDelimiter, setShowDelimiter] = useState(false);
@@ -45,6 +46,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       }
       if (bulkImport.getCSVExcelColumns.csvFiles !== null && bulkImport.getCSVExcelColumns.csvFiles?.length == 0) {
         toast.success('Your DeLimiter is On Mark!');
+        setTableData(bulkImport.getCSVExcelColumns.data[0].excel_sheet_columns[0].columns);
       }
     }
   }, [bulkImport.getCSVExcelColumns.csvFiles]);
@@ -78,7 +80,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
 
   useEffect(() => {
     const mainColumns = [];
-    if (records?.length > 0) {
+    if (!firstFlag ? records?.length > 0 : tableData?.length > 0) {
       for (let index = 0; index <= maxCount; index++) {
         mainColumns.push({
           dataIndex: 'description' + index,
@@ -99,7 +101,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       }
       setColumns(mainColumns);
     }
-  }, [records]);
+  }, [tableData,records]);
 
   const handleTableChange = (paginating) => {
     setPagination(paginating);
@@ -168,6 +170,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
                 <label className="label">Click to check Delimiter</label>
                 <Button
                   type="primary"
+                  loading={bulkImport.getCSVExcelColumns.loading}
                   onClick={() => {
                     checkDelimiter();
                   }}
@@ -181,19 +184,20 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           showHeader={false}
           scroll={{ x: true }}
           rowKey={(record) => JSON.stringify(record)}
+          loading={bulkImport.getCSVExcelColumns.loading}
           pagination={{
             ...pagination,
             pageSizeOptions: [
               '10',
-              records?.length > 10 ? '50' : '-',
-              records?.length > 50 ? '100' : '-',
-              records?.length > 100 ? '500' : '-',
+              tableData?.length > 10 ? '50' : '-',
+              tableData?.length > 50 ? '100' : '-',
+              tableData?.length > 100 ? '500' : '-',
             ],
-            total: records?.length,
+            total: tableData?.length,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
-          dataSource={records}
+          dataSource={!firstFlag ? records : tableData}
           columns={columns}
           className="custom-table first-row-header"
         />

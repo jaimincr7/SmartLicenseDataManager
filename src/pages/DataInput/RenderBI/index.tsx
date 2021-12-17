@@ -1103,6 +1103,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         seqNumber={selectedRowId}
         previewData={previewData}
         records={excelPreviewData}
+        setExcelPreviewData={setExcelPreviewData}
         headerRowCount={headerRowCount}
       />}
     </>
