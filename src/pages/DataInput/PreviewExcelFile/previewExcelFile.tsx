@@ -150,15 +150,14 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
               <label className="label">Delimiter</label>
               <Form.Item name="deli_meter" className="m-0" rules={[{ required: true, message: 'Delimiter is Required' }]}>
                 <Select
-                  showSearch
                   placeholder="Select a Delimit"
                   optionFilterProp="children"
                   filterOption={(input, option) =>
                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                   }
                 >
-                  <Option value=";">;(Semi Colon)</Option>
-                  <Option value=",">,(Comma)</Option>
+                  <Option value=";">Semi Colon(;)</Option>
+                  <Option value=",">Comma(,)</Option>
                   {/* <Option value="    ">TAB</Option> */}
                   {/* <Option value=" ">SPACE</Option> */}
                 </Select>

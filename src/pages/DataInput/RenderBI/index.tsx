@@ -57,19 +57,19 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
-    const data = dummyRecords[currRecord.index - 1];
+    const data = dummyRecords.filter(data => data.index == currRecord.index);
     let response = null;
     await bulkImportService
       .getExcelFileMapping({
         table_name: tableName,
-        key_word: data.original_filename?.split('.')[0],
-        file_type: data?.original_filename.slice((data?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
+        key_word: data[0].original_filename?.split('.')[0],
+        file_type: data[0]?.original_filename.slice((data[0]?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
       })
       .then((res) => {
         response = res?.body?.data;
-        data.table_name = tableName;
-        data.show_mapping = response ? response : null;
-        data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
+        data[0].table_name = tableName;
+        data[0].show_mapping = response ? response : null;
+        data[0].excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
       });
     setRecords(dummyRecords);
     setLoading(false);
