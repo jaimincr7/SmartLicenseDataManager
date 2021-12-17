@@ -6,6 +6,7 @@ export interface IPreviewExcel {
   showModal: boolean;
   dataRecords?: any;
   setRecords?: (data: any) => void;
+  setDelimitFlag?: (data: any) => void;
   maxCount: number;
   seqNumber?: number;
 }

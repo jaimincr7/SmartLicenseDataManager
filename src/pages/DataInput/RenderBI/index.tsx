@@ -37,7 +37,7 @@ import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { count, table, form, records, setRecords, date, loading, setLoading } = props;
+  const { count, table, form, records, setRecords, date, loading, setLoading, setDelimitFlag } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -63,7 +63,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       .getExcelFileMapping({
         table_name: tableName,
         key_word: data.original_filename?.split('.')[0],
-        file_type: data.original_filename?.split('.')[1],
+        file_type: data?.original_filename.slice((data?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
       })
       .then((res) => {
         response = res?.body?.data;
@@ -638,7 +638,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             records={records}
             skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
             fileName={record?.original_filename.split('.')[0]}
-            fileType={record?.original_filename.split('.')[1]}
+            fileType={record?.original_filename.slice((record?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2)}
             tableName={record?.table_name}
             seqNumber={record?.index}
           ></MappingColumn>),
@@ -1099,6 +1099,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         }}
         dataRecords={records}
         setRecords={setRecords}
+        setDelimitFlag={setDelimitFlag}
         seqNumber={selectedRowId}
         previewData={previewData}
         records={excelPreviewData}
