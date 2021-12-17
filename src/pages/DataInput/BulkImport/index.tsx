@@ -445,7 +445,7 @@ const BulkImport: React.FC = () => {
                   <Col xs={24} md={8}>
                     <div className="form-group m-0">
                       <label className="label">Table Name</label>
-                      <Form.Item name={'table_name'} className="m-0" rules={[{ required: true, message: 'Table Name is required' }]}>
+                      <Form.Item name={'table_name'} className="m-0" >
                         <Select
                           loading={bulkImports.getTables.loading || loading}
                           onChange={(name: string) => {
