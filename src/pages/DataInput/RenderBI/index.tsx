@@ -518,6 +518,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   }
 
+  const clearMapping = (curR) => {
+    const dummyRecords = _.cloneDeep(records);
+      dummyRecords.map((data) => {
+        if(data.index == curR.index) {
+          data.excel_to_sql_mapping= null;
+          data.show_mapping= null;
+        }
+      });
+      
+      setRecords(dummyRecords);
+  }
+
   const columns = [
     {
       title: '#',
@@ -581,6 +593,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <TreeSelect
             style={{ width: '180px' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            onClear={() => clearMapping(selectedRecord)}
             treeData={getMenuDropdown(selectedRecord.show_mapping)}
             value={selectedRecord.show_mapping !== null ? selectedRecord?.show_mapping[0]?.config_excel_column_mappings[0]?.sheet_name : null}
             onChange={(e) => onChange(selectedRecord, e)}
