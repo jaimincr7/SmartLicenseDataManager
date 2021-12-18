@@ -1,11 +1,4 @@
-import {
-  Button,
-  Form,
-  Popconfirm,
-  Select,
-  Table,
-  TreeSelect,
-} from 'antd';
+import { Button, Form, Popconfirm, Select, Table, TreeSelect } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
@@ -20,9 +13,7 @@ import {
   bulkImportSelector,
   clearBulkImportMessages,
 } from '../../../store/bulkImport/bulkImport.reducer';
-import {
-  IDatabaseTable,
-} from '../../../services/common/common.model';
+import { IDatabaseTable } from '../../../services/common/common.model';
 import moment from 'moment';
 import PreviewExcel from '../PreviewExcelFile/previewExcelFile';
 import MappingColumn from './../MappingColumn/MappingColumn';
@@ -37,7 +28,8 @@ import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { count, table, form, records, setRecords, date, loading, setLoading, setDelimitFlag } = props;
+  const { count, table, form, records, setRecords, date, loading, setLoading, setDelimitFlag } =
+    props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -57,23 +49,28 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
-    const data = dummyRecords.filter(data => data.index == currRecord.index);
+    const data = dummyRecords.filter((data) => data.index == currRecord.index);
     let response = null;
     await bulkImportService
       .getExcelFileMapping({
         table_name: tableName,
         key_word: data[0].original_filename?.split('.')[0],
-        file_type: data[0]?.original_filename.slice((data[0]?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
+        file_type: data[0]?.original_filename.slice(
+          ((data[0]?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
+        ),
       })
       .then((res) => {
         response = res?.body?.data;
         data[0].table_name = tableName;
         data[0].show_mapping = response ? response : null;
-        data[0].excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
+        data[0].excel_to_sql_mapping =
+          response?.length > 0
+            ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
+            : null;
       });
     setRecords(dummyRecords);
     setLoading(false);
-  }
+  };
 
   const handleTableChange = async (currRecord: any, tableName: string) => {
     setLoading(true);
@@ -105,10 +102,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             ele.name?.toLowerCase()?.replace(/\s/g, '')
         ).length > 0
           ? filterExcelColumns.filter(
-            (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-              ele.name?.toLowerCase()?.replace(/\s/g, '')
-          )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            )[0]
           : '';
       sqlToExcelMapping.push({
         key: `${ele.name}`,
@@ -116,7 +113,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       });
     });
     for (const x in initialValuesData) {
-      if (initialValuesData[x] !== "") {
+      if (initialValuesData[x] !== '') {
         setEmptyMappingFlag(false);
       }
     }
@@ -134,40 +131,42 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         const val = {
           excel_sheet_with_mapping_details: [
             {
-              excel_to_sql_mapping: data.excel_to_sql_mapping ? data.excel_to_sql_mapping : getDummyMapping(data.sheet, data.columns),
+              excel_to_sql_mapping: data.excel_to_sql_mapping
+                ? data.excel_to_sql_mapping
+                : getDummyMapping(data.sheet, data.columns),
               table_name: data.table_name,
               file_name: data.filename,
               original_file_name: data.original_filename,
               sheet_name: data.sheet,
               header_row: data.header_row - 1,
-              delimiter: data.delimeter ? data.delimiter : ";",
+              delimiter: data.delimeter ? data.delimiter : ';',
             },
           ],
           foreign_key_values: {
             tenant_id: _.isNull(globalSearch.tenant_id)
               ? null
               : globalSearch.tenant_id === undefined
-                ? null
-                : globalSearch?.tenant_id[0],
+              ? null
+              : globalSearch?.tenant_id[0],
             bu_id: _.isNull(globalSearch.bu_id)
               ? null
               : globalSearch.bu_id === undefined
-                ? null
-                : globalSearch?.bu_id[0],
+              ? null
+              : globalSearch?.bu_id[0],
             company_id: _.isNull(globalSearch.company_id)
               ? null
               : globalSearch.company_id === undefined
-                ? null
-                : globalSearch?.company_id[0],
+              ? null
+              : globalSearch?.company_id[0],
             date_added: date ? date : moment(),
-          }
-        }
+          },
+        };
         if (emptyMappingFlag == true) {
           toast.info('Some File may not have any mapping.Please check!');
         } else {
           dispatch(bulkInsert(val));
         }
-      })
+      });
     }
   }, [count.save]);
 
@@ -227,18 +226,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-            ? null
-            : globalSearch?.tenant_id[0],
+          ? null
+          : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-            ? null
-            : globalSearch?.bu_id[0],
+          ? null
+          : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-            ? null
-            : globalSearch?.company_id[0],
+          ? null
+          : globalSearch?.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -249,10 +248,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -319,7 +318,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   }, [table]);
 
   const previewData = (headerValue = 0) => {
-    const dummyRecords = records.filter(data => data.index == selectedRowId);
+    const dummyRecords = records.filter((data) => data.index == selectedRowId);
     const currentExcelData = [...dummyRecords[0]?.columns];
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
@@ -457,7 +456,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             if (data2.id == value) {
               flagMapping = JSON.parse(data2.mapping);
             }
-          })
+          });
         });
         data.excel_to_sql_mapping = flagMapping;
       }
@@ -517,7 +516,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
       setRecords(filteredRecords);
     }
-  }
+  };
 
   // const clearMapping = (curR,e) => {
   //   const dummyRecords = _.cloneDeep(records);
@@ -550,7 +549,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         <>
           <Select
             style={{ width: '180px' }}
-            onChange={(tbName) => { handleTableChange(recordCurr, tbName) }}
+            onChange={(tbName) => {
+              handleTableChange(recordCurr, tbName);
+            }}
             loading={bulkImports.getTables.loading || loading}
             showSearch
             value={recordCurr.table_name}
@@ -559,21 +560,17 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
             filterSort={(optionA: any, optionB: any) =>
-              optionA.children
-                ?.toLowerCase()
-                ?.localeCompare(optionB.children?.toLowerCase())
+              optionA.children?.toLowerCase()?.localeCompare(optionB.children?.toLowerCase())
             }
           >
-            {bulkImports.getTables.data?.map(
-              (option: IDatabaseTable, index: number) => (
-                <Option key={index} value={option.name}>
-                  {option.name}
-                </Option>
-              )
-            )}
+            {bulkImports.getTables.data?.map((option: IDatabaseTable, index: number) => (
+              <Option key={index} value={option.name}>
+                {option.name}
+              </Option>
+            ))}
           </Select>
         </>
-      )
+      ),
     },
     {
       title: 'Sheet Name',
@@ -601,7 +598,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             allowClear
           />
         </>
-      )
+      ),
     },
     {
       title: 'Action',
@@ -624,13 +621,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <Button
             type="primary"
             onClick={() => {
-              deleteSelected(selectedRecord.index, selectedRecord.filename)
+              deleteSelected(selectedRecord.index, selectedRecord.filename);
             }}
           >
             Delete
           </Button>
         </>
-      )
+      ),
     },
   ];
 
@@ -645,16 +642,20 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         columns={columns}
         loading={records.length == 0}
         expandable={{
-          expandedRowRender: (record) => (<MappingColumn
-            setRecords={setRecords}
-            record={record}
-            records={records}
-            skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
-            fileName={record?.original_filename.split('.')[0]}
-            fileType={record?.original_filename.slice((record?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2)}
-            tableName={record?.table_name}
-            seqNumber={record?.index}
-          ></MappingColumn>),
+          expandedRowRender: (record) => (
+            <MappingColumn
+              setRecords={setRecords}
+              record={record}
+              records={records}
+              skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
+              fileName={record?.original_filename.split('.')[0]}
+              fileType={record?.original_filename.slice(
+                ((record?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
+              )}
+              tableName={record?.table_name}
+              seqNumber={record?.index}
+            ></MappingColumn>
+          ),
         }}
       />
       {/* <tr>
@@ -707,7 +708,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       </tr> */}
 
       <div className="update-excel-page">
-
         {/*<div className="main-card">
           
            <div className="input-btns-title">
@@ -1104,21 +1104,23 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           </Form>
         </div> */}
       </div>
-      {showManageExcel && <PreviewExcel
-        showModal={showManageExcel}
-        maxCount={maxHeaderRow}
-        handleModalClose={() => {
-          setShowManageExcel(false);
-        }}
-        dataRecords={records}
-        setRecords={setRecords}
-        setDelimitFlag={setDelimitFlag}
-        seqNumber={selectedRowId}
-        previewData={previewData}
-        records={excelPreviewData}
-        setExcelPreviewData={setExcelPreviewData}
-        headerRowCount={headerRowCount}
-      />}
+      {showManageExcel && (
+        <PreviewExcel
+          showModal={showManageExcel}
+          maxCount={maxHeaderRow}
+          handleModalClose={() => {
+            setShowManageExcel(false);
+          }}
+          dataRecords={records}
+          setRecords={setRecords}
+          setDelimitFlag={setDelimitFlag}
+          seqNumber={selectedRowId}
+          previewData={previewData}
+          records={excelPreviewData}
+          setExcelPreviewData={setExcelPreviewData}
+          headerRowCount={headerRowCount}
+        />
+      )}
     </>
   );
 };

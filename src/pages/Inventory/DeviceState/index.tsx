@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import { clearDeviceState, deviceStateSelector } from '../../../store/inventory/deviceState/deviceState.reducer';
+import {
+  clearDeviceState,
+  deviceStateSelector,
+} from '../../../store/inventory/deviceState/deviceState.reducer';
 import { IDeviceStateProps } from './deviceState.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
@@ -55,7 +58,9 @@ const DeviceState: React.FC<IDeviceStateProps> = (props) => {
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(`/data-input/bulk-import/${encodeURIComponent(deviceState.search.tableName)}`)
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(deviceState.search.tableName)}`
+            )
           }
           icon={
             <em className="anticon">

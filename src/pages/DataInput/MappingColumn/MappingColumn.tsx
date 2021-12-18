@@ -35,53 +35,55 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [localMapping, setLocalMapping] = useState<boolean>(true);
 
   useEffect(() => {
-    if(localMapping) {
-    if (record.table_name ) {
-      setLoadingTableColumns(true);
-      commonService.getTableColumns(record.table_name).then((res) => {
-        if (res) {
-          const response: any = res;
-          const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-          let filterExcelColumns: any = record.columns;
-          const filterTableColumns = response?.filter(
-            (x) => !columnsArray.includes(x.name?.toLowerCase())
-          );
-          if (filterExcelColumns?.length >= skipRows) {
-            filterExcelColumns = filterExcelColumns[skipRows];
-          }
-          const ExcelColsSorted = [...filterExcelColumns];
-          ExcelColsSorted.sort();
-          setExcelColumns(ExcelColsSorted);
-          setTableColumnState(filterTableColumns);
+    if (localMapping) {
+      if (record.table_name) {
+        setLoadingTableColumns(true);
+        commonService.getTableColumns(record.table_name).then((res) => {
+          if (res) {
+            const response: any = res;
+            const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+            let filterExcelColumns: any = record.columns;
+            const filterTableColumns = response?.filter(
+              (x) => !columnsArray.includes(x.name?.toLowerCase())
+            );
+            if (filterExcelColumns?.length >= skipRows) {
+              filterExcelColumns = filterExcelColumns[skipRows];
+            }
+            const ExcelColsSorted = [...filterExcelColumns];
+            ExcelColsSorted.sort();
+            setExcelColumns(ExcelColsSorted);
+            setTableColumnState(filterTableColumns);
 
-          const initialValuesData: any = {};
-          filterTableColumns.map(function (ele) {
-            const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
-            initialValuesData[ele.name] =
-              filterExcelColumns?.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s/g, '')
-              ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
-                ? filterExcelColumns.filter(
+            const initialValuesData: any = {};
+            filterTableColumns.map(function (ele) {
+              const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
+              initialValuesData[ele.name] =
+                filterExcelColumns?.filter(
                   (x: any) =>
                     x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
-                )[0]
-                : (skipRows == 0 ?(mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                  return data.key == ele.name
-                })[0]?.value : '');
-          });
-          form.setFieldsValue(initialValuesData);
-        }
-        setLoadingTableColumns(false);
-      });
-    } else {
-      setTableColumnState([]);
+                ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
+                  ? filterExcelColumns.filter(
+                      (x: any) =>
+                        x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                        ele.name?.toLowerCase()?.replace(/\s/g, '')
+                    )[0]
+                  : skipRows == 0
+                  ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                      return data.key == ele.name;
+                    })[0]?.value
+                  : '';
+            });
+            form.setFieldsValue(initialValuesData);
+          }
+          setLoadingTableColumns(false);
+        });
+      } else {
+        setTableColumnState([]);
+      }
     }
-  }
-      setLocalMapping(true);
-    }, [record.table_name,record.header_row, record.excel_to_sql_mapping]);
+    setLocalMapping(true);
+  }, [record.table_name, record.header_row, record.excel_to_sql_mapping]);
 
   useEffect(() => {
     if (record.table_name) {
@@ -112,22 +114,22 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             tenant_id: _.isNull(globalSearch.tenant_id)
               ? null
               : globalSearch.tenant_id === undefined
-                ? null
-                : globalSearch?.tenant_id[0],
+              ? null
+              : globalSearch?.tenant_id[0],
             bu_id: _.isNull(globalSearch.bu_id)
               ? null
               : globalSearch.bu_id === undefined
-                ? null
-                : globalSearch?.bu_id[0],
+              ? null
+              : globalSearch?.bu_id[0],
             company_id: _.isNull(globalSearch.company_id)
               ? null
               : globalSearch.company_id === undefined
-                ? null
-                : globalSearch?.company_id[0],
+              ? null
+              : globalSearch?.company_id[0],
             date_added: moment(),
           };
           filterTableColumns.map(function (ele) {
-          const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
+            const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
             initialValuesData[ele.name] =
               filterExcelColumns?.filter(
                 (x: any) =>
@@ -135,13 +137,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
               ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                 ? filterExcelColumns.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                    ele.name?.toLowerCase()?.replace(/\s/g, '')
-                )[0]
-                : (skipRows == 0 ?(mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                  return data.key == ele.name
-                })[0]?.value : '');
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                      ele.name?.toLowerCase()?.replace(/\s/g, '')
+                  )[0]
+                : skipRows == 0
+                ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                    return data.key == ele.name;
+                  })[0]?.value
+                : '';
           });
           form.setFieldsValue(initialValuesData);
         }
@@ -219,7 +223,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     });
     const dummyrecords = [...records];
     dummyrecords.map((data) => {
-      if(data.index == seqNumber) {
+      if (data.index == seqNumber) {
         data.excel_to_sql_mapping = sqlToExcelMapping;
       }
     });
@@ -246,11 +250,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
           <Col xs={24} sm={12} md={8}>
             <div className="form-group m-0">
               <label className="label">File Type</label>
-              <Form.Item
-                name="file_type"
-                label="File Type"
-                className="m-0"
-              >
+              <Form.Item name="file_type" label="File Type" className="m-0">
                 <Input className="form-control" disabled={true} />
               </Form.Item>
             </div>
@@ -274,66 +274,65 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
           <div className="spin-loader">
             <Spin spinning={true} />
           </div>
-        ) : (<Row gutter={[30, 15]} className="form-label-hide">
-          <Col xs={24} md={12} lg={12} xl={8}>
-            <div className="form-group form-inline">
-              <label className="label strong">Database Column</label>
-              <label className="strong">Excel Column</label>
-            </div>
-          </Col>
-          <Col xs={24} md={12} lg={12} xl={8} className="sm-none">
-            <div className="form-group form-inline">
-              <label className="label strong">Database Column</label>
-              <label className="strong">Excel Column</label>
-            </div>
-          </Col>
-          <Col xs={24} md={12} lg={12} xl={8} className="lg-none">
-            <div className="form-group form-inline">
-              <label className="label strong">Database Column</label>
-              <label className="strong">Excel Column</label>
-            </div>
-          </Col>
-          {(tableColumnState || []).map((col, index: number) => (
-            <Col xs={24} md={12} lg={12} xl={8} key={index}>
+        ) : (
+          <Row gutter={[30, 15]} className="form-label-hide">
+            <Col xs={24} md={12} lg={12} xl={8}>
               <div className="form-group form-inline">
-                <label className="label">{col.name}</label>
-                <Form.Item
-                  name={col.name}
-                  className="m-0 w-100"
-                  label={col.name}
-                  rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
-                >
-                  <Select
-                    showSearch
-                    allowClear
-                    onChange={setMappingRecords}
-                    suffixIcon={
-                      <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`}
-                        alt=""
-                      />
-                    }
-                    optionFilterProp="children"
-                    filterOption={(input, option: any) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                    filterSort={(optionA: any, optionB: any) =>
-                      optionA.children
-                        ?.toLowerCase()
-                        ?.localeCompare(optionB.children?.toLowerCase())
-                    }
-                  >
-                    {excelColumns.map((option: string, index: number) => (
-                      <Option key={index} value={option}>
-                        {option}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
+                <label className="label strong">Database Column</label>
+                <label className="strong">Excel Column</label>
               </div>
             </Col>
-          ))}
-        </Row>)}
+            <Col xs={24} md={12} lg={12} xl={8} className="sm-none">
+              <div className="form-group form-inline">
+                <label className="label strong">Database Column</label>
+                <label className="strong">Excel Column</label>
+              </div>
+            </Col>
+            <Col xs={24} md={12} lg={12} xl={8} className="lg-none">
+              <div className="form-group form-inline">
+                <label className="label strong">Database Column</label>
+                <label className="strong">Excel Column</label>
+              </div>
+            </Col>
+            {(tableColumnState || []).map((col, index: number) => (
+              <Col xs={24} md={12} lg={12} xl={8} key={index}>
+                <div className="form-group form-inline">
+                  <label className="label">{col.name}</label>
+                  <Form.Item
+                    name={col.name}
+                    className="m-0 w-100"
+                    label={col.name}
+                    rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
+                  >
+                    <Select
+                      showSearch
+                      allowClear
+                      onChange={setMappingRecords}
+                      suffixIcon={
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-down.svg`} alt="" />
+                      }
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {excelColumns.map((option: string, index: number) => (
+                        <Option key={index} value={option}>
+                          {option}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        )}
       </Form>
       <br />
       <div className="btns-block modal-footer">

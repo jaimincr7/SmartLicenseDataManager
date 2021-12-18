@@ -5,8 +5,8 @@ export interface IGlobalSearchProps {
 }
 
 export interface IGlobalSearchInitialValues {
-  tenant_id: number,
-  company_id: number,
-  bu_id: number,
-  date_added: Moment | string,
+  tenant_id: number;
+  company_id: number;
+  bu_id: number;
+  date_added: Moment | string;
 }

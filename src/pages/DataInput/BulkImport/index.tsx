@@ -1,31 +1,42 @@
-import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin } from "antd";
-import { useHistory, useParams } from "react-router-dom";
-import BreadCrumbs from "../../../common/components/Breadcrumbs";
-import { Page } from "../../../common/constants/pageAction";
+import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin } from 'antd';
+import { useHistory, useParams } from 'react-router-dom';
+import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import { Page } from '../../../common/constants/pageAction';
 import _ from 'lodash';
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from "../../../store/app.hooks";
-import { bulkImportSelector, clearBulkImport, clearBulkImportMessages, clearExcelColumns, clearGetTableColumns, setTableForImport } from "../../../store/bulkImport/bulkImport.reducer";
-import { useEffect, useState } from "react";
-import { getExcelColumns, getTables, getTablesForImport, saveTableForImport } from "../../../store/bulkImport/bulkImport.action";
-import { toast } from "react-toastify";
-import Dragger from "antd/lib/upload/Dragger";
-import { IDatabaseTable } from "../../../services/common/common.model";
-import { UploadFile } from "antd/lib/upload/interface";
-import RenderBI from "../RenderBI";
-import GlobalSearch from "../../../common/components/globalSearch/GlobalSearch";
-import bulkImportService from "../../../services/bulkImport/bulkImport.service";
-import { globalSearchSelector } from "../../../store/globalSearch/globalSearch.reducer";
-import moment from "moment";
-import { Common } from "../../../common/constants/common";
-import CkeckDelimiterModal from "../CheckDelimiter";
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
+import {
+  bulkImportSelector,
+  clearBulkImport,
+  clearBulkImportMessages,
+  clearExcelColumns,
+  clearGetTableColumns,
+  setTableForImport,
+} from '../../../store/bulkImport/bulkImport.reducer';
+import { useEffect, useState } from 'react';
+import {
+  getExcelColumns,
+  getTables,
+  getTablesForImport,
+  saveTableForImport,
+} from '../../../store/bulkImport/bulkImport.action';
+import { toast } from 'react-toastify';
+import Dragger from 'antd/lib/upload/Dragger';
+import { IDatabaseTable } from '../../../services/common/common.model';
+import { UploadFile } from 'antd/lib/upload/interface';
+import RenderBI from '../RenderBI';
+import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
+import bulkImportService from '../../../services/bulkImport/bulkImport.service';
+import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
+import moment from 'moment';
+import { Common } from '../../../common/constants/common';
+import CkeckDelimiterModal from '../CheckDelimiter';
 
 const { Option } = Select;
 let getFileMappingTimeOut = null;
 let currentIndex = 1;
 
 const BulkImport: React.FC = () => {
-
   const globalLookups = useAppSelector(globalSearchSelector);
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -43,11 +54,22 @@ const BulkImport: React.FC = () => {
   //const [defaultFile, setDefaultFile] = useState(null);
   //const [excelColumnState, setExcelColumnState] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
-  const [records, setRecords] = useState<Array<{ index: number, filename: string, excel_to_sql_mapping: any, show_mapping: any, original_filename: string, table_name: string, header_row: number, sheet: string }>>([]);
+  const [records, setRecords] = useState<
+    Array<{
+      index: number;
+      filename: string;
+      excel_to_sql_mapping: any;
+      show_mapping: any;
+      original_filename: string;
+      table_name: string;
+      header_row: number;
+      sheet: string;
+    }>
+  >([]);
   const [loading, setLoading] = useState(false);
   const [delimitModalShow, setDelimitModalShow] = useState(false);
   const [delimitFlag, setDelimitFlag] = useState(true);
-  
+
   const [date, setDate] = useState(null);
 
   const formUploadInitialValues = {
@@ -63,7 +85,11 @@ const BulkImport: React.FC = () => {
   };
 
   useEffect(() => {
-    if (bulkImports?.getExcelColumns?.csvFiles?.length > 0 && bulkImports.getExcelColumns.csvFiles !== null && delimitFlag) {
+    if (
+      bulkImports?.getExcelColumns?.csvFiles?.length > 0 &&
+      bulkImports.getExcelColumns.csvFiles !== null &&
+      delimitFlag
+    ) {
       setDelimitModalShow(true);
     }
     if (bulkImports.getExcelColumns.data || bulkImports.getExcelColumns.csvFiles?.length > 0) {
@@ -76,7 +102,9 @@ const BulkImport: React.FC = () => {
             .getExcelFileMapping({
               table_name: tableName,
               key_word: x.original_filename?.split('.')[0],
-              file_type: x?.original_filename.slice((x?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
+              file_type: x?.original_filename.slice(
+                ((x?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
+              ),
             })
             .then((res) => {
               response = res?.body?.data;
@@ -84,50 +112,13 @@ const BulkImport: React.FC = () => {
         }
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
-          let filteredRecords = dummyRecords.filter((data) => data.filename !== x.filename && data.original_filename !== x.original_filename);
+          let filteredRecords = dummyRecords.filter(
+            (data) => data.filename !== x.filename && data.original_filename !== x.original_filename
+          );
           (x?.excel_sheet_columns || []).map((sheet) => {
-            filteredRecords = [...filteredRecords, {
-              index: currentIndex++,
-              filename: x.filename,
-              original_filename: x.original_filename,
-              table_name: tableName,
-              header_row: 1,
-              sheet: sheet.sheet,
-              columns: sheet.columns,
-              currentMapping: response && response.length > 0 ? response[0].config_excel_column_mappings[0]?.sheet_name : null,
-              excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
-              show_mapping: response ? response : null,
-            }]
-          })
-
-          return filteredRecords;
-        });
-      }
-      );
-      setDefaultFileList([]);
-    }
-  }, [bulkImports.getExcelColumns.data, bulkImports.getExcelColumns.csvFiles]);
-
-  useEffect(() => {
-      if (bulkImports.getCSVExcelColumns.data !== null && bulkImports.getCSVExcelColumns.data?.length > 0) {
-        bulkImports.getCSVExcelColumns.data?.map(async (x: any) => {
-          let response = null;
-          if (tableName) {
-            await bulkImportService
-              .getExcelFileMapping({
-                table_name: tableName,
-                key_word: x.original_filename?.split('.')[0],
-                file_type: x?.original_filename.slice((x?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
-              })
-              .then((res) => {
-                response = res?.body?.data;
-              });
-          }
-          setRecords((records) => {
-            const dummyRecords = _.cloneDeep(records);
-            let filteredRecords = dummyRecords.filter((data) => data.filename !== x.filename && data.original_filename !== x.original_filename);
-            (x?.excel_sheet_columns || []).map((sheet) => {
-              filteredRecords = [...filteredRecords, {
+            filteredRecords = [
+              ...filteredRecords,
+              {
                 index: currentIndex++,
                 filename: x.filename,
                 original_filename: x.original_filename,
@@ -135,21 +126,88 @@ const BulkImport: React.FC = () => {
                 header_row: 1,
                 sheet: sheet.sheet,
                 columns: sheet.columns,
-                excel_to_sql_mapping: response && response.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null,
+                currentMapping:
+                  response && response.length > 0
+                    ? response[0].config_excel_column_mappings[0]?.sheet_name
+                    : null,
+                excel_to_sql_mapping:
+                  response && response.length > 0
+                    ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
+                    : null,
                 show_mapping: response ? response : null,
-              }]
-            })
-
-            return filteredRecords;
+              },
+            ];
           });
+
+          return filteredRecords;
+        });
+      });
+      setDefaultFileList([]);
+    }
+  }, [bulkImports.getExcelColumns.data, bulkImports.getExcelColumns.csvFiles]);
+
+  useEffect(() => {
+    if (
+      bulkImports.getCSVExcelColumns.data !== null &&
+      bulkImports.getCSVExcelColumns.data?.length > 0
+    ) {
+      bulkImports.getCSVExcelColumns.data?.map(async (x: any) => {
+        let response = null;
+        if (tableName) {
+          await bulkImportService
+            .getExcelFileMapping({
+              table_name: tableName,
+              key_word: x.original_filename?.split('.')[0],
+              file_type: x?.original_filename.slice(
+                ((x?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
+              ),
+            })
+            .then((res) => {
+              response = res?.body?.data;
+            });
         }
-        );
-      } if (bulkImports.getCSVExcelColumns.csvFiles !== null && bulkImports.getCSVExcelColumns.csvFiles?.length > 0) {
-        if ((bulkImports.getCSVExcelColumns.csvFiles !== null && delimitFlag && bulkImports.getCSVExcelColumns.csvFiles?.length > 0)) {
-          toast.info('Please Select Proper Delimiters');
-          setDelimitModalShow(true);
-        }
+        setRecords((records) => {
+          const dummyRecords = _.cloneDeep(records);
+          let filteredRecords = dummyRecords.filter(
+            (data) => data.filename !== x.filename && data.original_filename !== x.original_filename
+          );
+          (x?.excel_sheet_columns || []).map((sheet) => {
+            filteredRecords = [
+              ...filteredRecords,
+              {
+                index: currentIndex++,
+                filename: x.filename,
+                original_filename: x.original_filename,
+                table_name: tableName,
+                header_row: 1,
+                sheet: sheet.sheet,
+                columns: sheet.columns,
+                excel_to_sql_mapping:
+                  response && response.length > 0
+                    ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
+                    : null,
+                show_mapping: response ? response : null,
+              },
+            ];
+          });
+
+          return filteredRecords;
+        });
+      });
+    }
+    if (
+      bulkImports.getCSVExcelColumns.csvFiles !== null &&
+      bulkImports.getCSVExcelColumns.csvFiles?.length > 0
+    ) {
+      if (
+        bulkImports.getCSVExcelColumns.csvFiles !== null &&
+        delimitFlag &&
+        bulkImports.getCSVExcelColumns.csvFiles?.length > 0
+      ) {
+        toast.info('Please Select Proper Delimiters');
+        setDelimitModalShow(true);
       }
+    }
   }, [bulkImports.getCSVExcelColumns.data, bulkImports.getCSVExcelColumns.csvFiles]);
 
   const updateRecords = async () => {
@@ -163,19 +221,24 @@ const BulkImport: React.FC = () => {
           .getExcelFileMapping({
             table_name: formUpload?.getFieldValue('table_name'),
             key_word: data.original_filename?.split('.')[0],
-            file_type: data?.original_filename.slice((data?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2),
+            file_type: data?.original_filename.slice(
+              ((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
+            ),
           })
           .then((res) => {
             response = res?.body?.data;
             data.table_name = formUpload?.getFieldValue('table_name');
             data.show_mapping = response ? response : null;
-            data.excel_to_sql_mapping = response?.length > 0 ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping) : null;
+            data.excel_to_sql_mapping =
+              response?.length > 0
+                ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
+                : null;
           });
       }
       setRecords(dummyRecords);
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     updateRecords();
@@ -256,10 +319,10 @@ const BulkImport: React.FC = () => {
         //setExcelColumnState([]);
         //setDefaultFile(null);
       } //else {
-        // const result = excelColumnState.filter((o) =>
-        //   fileList.some(({ name }) => o.original_filename === name)
-        // );
-        // setExcelColumnState(result);
+      // const result = excelColumnState.filter((o) =>
+      //   fileList.some(({ name }) => o.original_filename === name)
+      // );
+      // setExcelColumnState(result);
       //}
     } else if (file.status === 'done') {
       const formData = new FormData();
@@ -446,7 +509,7 @@ const BulkImport: React.FC = () => {
                   <Col xs={24} md={8}>
                     <div className="form-group m-0">
                       <label className="label">Table Name</label>
-                      <Form.Item name={'table_name'} className="m-0" >
+                      <Form.Item name={'table_name'} className="m-0">
                         <Select
                           loading={bulkImports.getTables.loading || loading}
                           onChange={(name: string) => {
@@ -483,7 +546,12 @@ const BulkImport: React.FC = () => {
                         className="m-0"
                         rules={[{ required: true, message: 'Date Is Required' }]}
                       >
-                        <DatePicker className="w-100" defaultValue={moment()} onChange={dateChange} placeholder="Select Date Added" />
+                        <DatePicker
+                          className="w-100"
+                          defaultValue={moment()}
+                          onChange={dateChange}
+                          placeholder="Select Date Added"
+                        />
                       </Form.Item>
                     </div>
                   </Col>
@@ -497,13 +565,13 @@ const BulkImport: React.FC = () => {
             <div className="spin-loader">
               <Spin spinning={true} />
             </div>
-          ) : (
-            records?.length > 0 ?
-              (<>
-                {/* {bulkImports.getExcelColumns.data?.map(
+          ) : records?.length > 0 ? (
+            <>
+              {/* {bulkImports.getExcelColumns.data?.map(
               (data: any, index) =>
                 excelColumnState?.find((x) => x.original_filename === data.original_filename) && ( */}
-                <><RenderBI
+              <>
+                <RenderBI
                   //handleSave={(data: any) => handleSave(data)}
                   count={count}
                   form={form}
@@ -517,29 +585,32 @@ const BulkImport: React.FC = () => {
                   //seqNumber={index + 1}
                   table={tableName}
                 ></RenderBI>
-                  <br />
-                  <hr />
-                </>
-              </>) : <></>
-          )}
-          {
-            delimitModalShow && (
-              <>
-                <CkeckDelimiterModal
-                  setRecords={setRecords}
-                  records={records}
-                  tableName={tableName}
-                  showModal={delimitModalShow}
-                  handleModalClose={() => {
-                    setDelimitModalShow(false);
-                  }}
-                />
+                <br />
+                <hr />
               </>
-            )
-          }
+            </>
+          ) : (
+            <></>
+          )}
+          {delimitModalShow && (
+            <>
+              <CkeckDelimiterModal
+                setRecords={setRecords}
+                records={records}
+                tableName={tableName}
+                showModal={delimitModalShow}
+                handleModalClose={() => {
+                  setDelimitModalShow(false);
+                }}
+              />
+            </>
+          )}
           <div className="btns-block">
-            {(Object.values(globalLookups.search)?.filter((x) => x > 0)?.length < 3 ? (
-              <Popover content={<>Please select global filter and Date Added first!</>} trigger="click">
+            {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length < 3 ? (
+              <Popover
+                content={<>Please select global filter and Date Added first!</>}
+                trigger="click"
+              >
                 <Button
                   type="primary"
                   disabled={records?.length == 0}
@@ -559,7 +630,7 @@ const BulkImport: React.FC = () => {
               >
                 Save
               </Button>
-            ))}
+            )}
             <Button
               type="primary"
               onClick={() => {

@@ -5,13 +5,27 @@ import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
 import { IPreviewExcel } from './PreviewExcel.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { getCSVExcelColumns } from '../../../store/bulkImport/bulkImport.action';
-import { bulkImportSelector, clearCSVExcelColumns } from '../../../store/bulkImport/bulkImport.reducer';
+import {
+  bulkImportSelector,
+  clearCSVExcelColumns,
+} from '../../../store/bulkImport/bulkImport.reducer';
 import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
 const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
-  const { headerRowCount, dataRecords, setRecords, previewData, setDelimitFlag, records, showModal, handleModalClose, maxCount, seqNumber } = props;
+  const {
+    headerRowCount,
+    dataRecords,
+    setRecords,
+    previewData,
+    setDelimitFlag,
+    records,
+    showModal,
+    handleModalClose,
+    maxCount,
+    seqNumber,
+  } = props;
   const [columns, setColumns] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [firstFlag, setFirstFlag] = useState(false);
@@ -27,13 +41,13 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const checkDelimiter = () => {
     setDelimitFlag(false);
     setFirstFlag(true);
-    const dummyRecord = dataRecords.filter(data => data.index == seqNumber)[0];
+    const dummyRecord = dataRecords.filter((data) => data.index == seqNumber)[0];
     const arr = [
       {
         original_filename: dummyRecord.original_filename,
         filename: dummyRecord.filename,
         delimiter: form.getFieldValue('deli_meter'),
-      }
+      },
     ];
     const Obj = { csv_file_info: arr };
     dispatch(getCSVExcelColumns(Obj));
@@ -41,10 +55,16 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
 
   useEffect(() => {
     if (firstFlag) {
-      if (bulkImport.getCSVExcelColumns.csvFiles !== null && bulkImport.getCSVExcelColumns.csvFiles?.length > 0) {
+      if (
+        bulkImport.getCSVExcelColumns.csvFiles !== null &&
+        bulkImport.getCSVExcelColumns.csvFiles?.length > 0
+      ) {
         toast.warn('Please re-check your De-limiter');
       }
-      if (bulkImport.getCSVExcelColumns.csvFiles !== null && bulkImport.getCSVExcelColumns.csvFiles?.length == 0) {
+      if (
+        bulkImport.getCSVExcelColumns.csvFiles !== null &&
+        bulkImport.getCSVExcelColumns.csvFiles?.length == 0
+      ) {
         toast.success('Your DeLimiter is On Mark!');
         setTableData(bulkImport.getCSVExcelColumns.data[0].excel_sheet_columns[0].columns);
       }
@@ -58,13 +78,16 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [form] = Form.useForm();
   const initialValues = {
     header_row: headerRowCount,
-    deli_meter: ','
+    deli_meter: ',',
   };
 
   useEffect(() => {
     dataRecords.map((data) => {
       if (data.index == seqNumber) {
-        data.original_filename.slice((data?.original_filename.lastIndexOf(".") - 1 >>> 0) + 2) == 'csv' ? setShowDelimiter(true) : setShowDelimiter(false);
+        data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
+        'csv'
+          ? setShowDelimiter(true)
+          : setShowDelimiter(false);
       }
     });
     const initialValues = {
@@ -75,7 +98,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       dispatch(clearCSVExcelColumns());
       setDelimitFlag(true);
       setFirstFlag(false);
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -101,7 +124,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       }
       setColumns(mainColumns);
     }
-  }, [tableData,records]);
+  }, [tableData, records]);
 
   const handleTableChange = (paginating) => {
     setPagination(paginating);
@@ -117,7 +140,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     });
     setRecords(dummyRecords);
     handleModalClose();
-  }
+  };
 
   return (
     <Modal
@@ -133,7 +156,17 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           <Col xs={24} sm={12} md={8}>
             <div className="form-group ">
               <label className="label">Header Row</label>
-              <Form.Item name="header_row" className="m-0" rules={[{ required: true, type: 'integer', message: 'Header Row is Required and Integral' }]}>
+              <Form.Item
+                name="header_row"
+                className="m-0"
+                rules={[
+                  {
+                    required: true,
+                    type: 'integer',
+                    message: 'Header Row is Required and Integral',
+                  },
+                ]}
+              >
                 <InputNumber
                   min={1}
                   max={maxCount}
@@ -145,39 +178,49 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
               </Form.Item>
             </div>
           </Col>
-          {showDelimiter ? (<><Col xs={24} sm={12} md={8}>
-            <div className="form-group ">
-              <label className="label">Delimiter</label>
-              <Form.Item name="deli_meter" className="m-0" rules={[{ required: true, message: 'Delimiter is Required' }]}>
-                <Select
-                  placeholder="Select a Delimit"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  <Option value=";">Semi Colon(;)</Option>
-                  <Option value=",">Comma(,)</Option>
-                  {/* <Option value="    ">TAB</Option> */}
-                  {/* <Option value=" ">SPACE</Option> */}
-                </Select>
-              </Form.Item>
-            </div>
-          </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group ">
-                <label className="label">Click to check Delimiter</label>
-                <Button
-                  type="primary"
-                  loading={bulkImport.getCSVExcelColumns.loading}
-                  onClick={() => {
-                    checkDelimiter();
-                  }}
-                >
-                  Check Delimiter
-                </Button>
-              </div>
-            </Col></>) : <></>}
+          {showDelimiter ? (
+            <>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group ">
+                  <label className="label">Delimiter</label>
+                  <Form.Item
+                    name="deli_meter"
+                    className="m-0"
+                    rules={[{ required: true, message: 'Delimiter is Required' }]}
+                  >
+                    <Select
+                      placeholder="Select a Delimit"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      <Option value=";">Semi Colon(;)</Option>
+                      <Option value=",">Comma(,)</Option>
+                      {/* <Option value="    ">TAB</Option> */}
+                      {/* <Option value=" ">SPACE</Option> */}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group ">
+                  <label className="label">Click to check Delimiter</label>
+                  <Button
+                    type="primary"
+                    loading={bulkImport.getCSVExcelColumns.loading}
+                    onClick={() => {
+                      checkDelimiter();
+                    }}
+                  >
+                    Check Delimiter
+                  </Button>
+                </div>
+              </Col>
+            </>
+          ) : (
+            <></>
+          )}
         </Row>
         <Table
           showHeader={false}
@@ -202,7 +245,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         />
 
         <div className="btns-block modal-footer">
-          <Button key="submit" type="primary" htmlType="submit" >
+          <Button key="submit" type="primary" htmlType="submit">
             Ok
           </Button>
         </div>
