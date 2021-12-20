@@ -12,6 +12,7 @@ import {
   clearExcelColumns,
   bulkImportSelector,
   clearBulkImportMessages,
+  clearDeleteMessages,
 } from '../../../store/bulkImport/bulkImport.reducer';
 import { IDatabaseTable } from '../../../services/common/common.model';
 import moment from 'moment';
@@ -46,6 +47,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
+  const [curRecordMap, setCurRecordMap] = useState(null);
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
@@ -102,10 +104,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             ele.name?.toLowerCase()?.replace(/\s/g, '')
         ).length > 0
           ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+            (x: any) =>
+              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+              ele.name?.toLowerCase()?.replace(/\s/g, '')
+          )[0]
           : '';
       sqlToExcelMapping.push({
         key: `${ele.name}`,
@@ -146,18 +148,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             tenant_id: _.isNull(globalSearch.tenant_id)
               ? null
               : globalSearch.tenant_id === undefined
-              ? null
-              : globalSearch?.tenant_id[0],
+                ? null
+                : globalSearch?.tenant_id[0],
             bu_id: _.isNull(globalSearch.bu_id)
               ? null
               : globalSearch.bu_id === undefined
-              ? null
-              : globalSearch?.bu_id[0],
+                ? null
+                : globalSearch?.bu_id[0],
             company_id: _.isNull(globalSearch.company_id)
               ? null
               : globalSearch.company_id === undefined
-              ? null
-              : globalSearch?.company_id[0],
+                ? null
+                : globalSearch?.company_id[0],
             date_added: date ? date : moment(),
           },
         };
@@ -226,18 +228,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-          ? null
-          : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-          ? null
-          : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-          ? null
-          : globalSearch?.company_id[0],
+            ? null
+            : globalSearch?.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -248,10 +250,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -368,7 +370,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   }
   // }, [bulkImports.deleteFileMapping.messages]);
 
-  const geChildDropdown = (excelMappings: any) => {
+  const geChildDropdown = (excelMappings: any, currentRecord: any) => {
     const chidDropdown = [];
     excelMappings?.map((m: any) => {
       chidDropdown.push({
@@ -378,7 +380,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             {m.sheet_name}
             <Popconfirm
               title={`Delete ${m.sheet_name} Mapping?`}
-              onConfirm={() => removeColumnMapping(m.id)}
+              onConfirm={() => {
+                removeColumnMapping(m.id);
+                setCurRecordMap(currentRecord);
+              }}
             >
               <a href="#" title="" className="deleteMap-btn">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
@@ -393,7 +398,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     return chidDropdown;
   };
 
-  const getMenuDropdown = (recordsDefault: any) => {
+  const getMenuDropdown = (recordsDefault: any, curRecord: any) => {
     const dropdown = [];
     recordsDefault?.map((m: any) => {
       dropdown.push({
@@ -403,7 +408,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             {m.key_word}{' '}
             <Popconfirm
               title={`Delete ${m.key_word} Mapping?`}
-              onConfirm={() => removeFileMapping(m.id)}
+              onConfirm={() => {
+                removeFileMapping(m.id);
+                setCurRecordMap(curRecord);
+              }}
             >
               <a href="#" title="" className="deleteMap-btn">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
@@ -413,7 +421,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         ),
         disabled: true,
         value: `${m.id}-parent`,
-        children: geChildDropdown(m.config_excel_column_mappings),
+        children: geChildDropdown(m.config_excel_column_mappings, curRecord),
       });
     });
 
@@ -427,6 +435,73 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       setSavedExcelMapping([]);
     }
   }, [bulkImports.saveExcelFileMapping.messages]);
+
+  const getExcelMappingColumns = async () => {
+    debugger;
+    const dummyRecord = _.cloneDeep(records);
+    for (let index = 0; index < dummyRecord.length; index++) {
+      const data = dummyRecord[index];
+      if (data.index == curRecordMap.index) {
+        let response = null;
+        await bulkImportService
+          .getExcelFileMapping({
+            table_name: curRecordMap.table_name,
+            key_word: curRecordMap.original_filename?.split('.')[0],
+            file_type: curRecordMap?.original_filename.slice(
+              ((curRecordMap?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
+            ),
+          })
+          .then((res) => {
+            response = res?.body?.data;
+          });
+        data.currentMapping=
+        response && response.length > 0
+          ? response[0].config_excel_column_mappings[0]?.sheet_name
+          : null;
+          data.excel_to_sql_mapping=
+        response && response.length > 0
+          ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
+          : null;
+          data.show_mapping= response ? response : null;
+      }
+    }
+    setRecords(dummyRecord);
+    //if (innerFormUpload?.getFieldValue('table_name') && fileData?.original_filename) {
+    // bulkImportService
+    //   .getExcelFileMapping({
+    //     table_name: innerFormUpload.getFieldValue('table_name'),
+    //     key_word: fileData?.original_filename,
+    //     file_type: 
+    //   })
+    //   .then((res) => {
+    //     setSavedExcelMapping(res?.body?.data);
+    //   });
+    //}
+  };
+
+  useEffect(() => {
+    if (bulkImports.deleteColumnMapping.messages.length > 0) {
+      if (bulkImports.deleteColumnMapping.hasErrors) {
+        toast.error(bulkImports.deleteColumnMapping.messages.join(' '));
+      } else {
+        toast.success(bulkImports.deleteColumnMapping.messages.join(' '));
+        getExcelMappingColumns();
+      }
+      dispatch(clearDeleteMessages());
+    }
+  }, [bulkImports.deleteColumnMapping.messages]);
+
+  useEffect(() => {
+    if (bulkImports.deleteFileMapping.messages.length > 0) {
+      if (bulkImports.deleteFileMapping.hasErrors) {
+        toast.error(bulkImports.deleteFileMapping.messages.join(' '));
+      } else {
+        toast.success(bulkImports.deleteFileMapping.messages.join(' '));
+        getExcelMappingColumns();
+      }
+      dispatch(clearDeleteMessages());
+    }
+  }, [bulkImports.deleteFileMapping.messages]);
 
   useEffect(() => {
     if (savedExcelMapping?.length > 0) {
@@ -591,7 +666,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <TreeSelect
             style={{ width: '180px' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            treeData={getMenuDropdown(selectedRecord.show_mapping)}
+            treeData={getMenuDropdown(selectedRecord.show_mapping, selectedRecord)}
             value={selectedRecord.currentMapping}
             onChange={(e) => onChange(selectedRecord, e)}
             treeDefaultExpandAll
