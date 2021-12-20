@@ -26,7 +26,6 @@ import { IDatabaseTable } from '../../../services/common/common.model';
 import { UploadFile } from 'antd/lib/upload/interface';
 import RenderBI from '../RenderBI';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
-import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import moment from 'moment';
 import { Common } from '../../../common/constants/common';
@@ -96,20 +95,8 @@ const BulkImport: React.FC = () => {
       //if(bulkImports.getExcelColumns.csvFiles?.length == 0)
       //setExcelColumnState(bulkImports.getExcelColumns.data);
       bulkImports.getExcelColumns.data?.map(async (x: any) => {
-        let response = null;
-        if (tableName) {
-          await bulkImportService
-            .getExcelFileMapping({
-              table_name: tableName,
-              key_word: x.original_filename?.split('.')[0],
-              file_type: x?.original_filename.slice(
-                ((x?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
-              ),
-            })
-            .then((res) => {
-              response = res?.body?.data;
-            });
-        }
+        const orgName = x.original_filename.split('.')[0];
+        const mappingData = x.file_mapping.length > 0 ? x.file_mapping.filter(data1 => data1.key_word == orgName) : [];
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
           let filteredRecords = dummyRecords.filter(
@@ -127,14 +114,14 @@ const BulkImport: React.FC = () => {
                 sheet: sheet.sheet,
                 columns: sheet.columns,
                 currentMapping:
-                  response && response.length > 0
-                    ? response[0].config_excel_column_mappings[0]?.sheet_name
+                  mappingData && mappingData.length > 0
+                    ? sheet.sheet
                     : null,
                 excel_to_sql_mapping:
-                  response && response.length > 0
-                    ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
+                  mappingData && mappingData.length > 0
+                    ? JSON.parse(mappingData[0]?.config_excel_column_mappings[0]?.mapping)
                     : null,
-                show_mapping: response ? response : null,
+                show_mapping: mappingData  ? mappingData : null,
               },
             ];
           });
@@ -152,20 +139,6 @@ const BulkImport: React.FC = () => {
       bulkImports.getCSVExcelColumns.data?.length > 0
     ) {
       bulkImports.getCSVExcelColumns.data?.map(async (x: any) => {
-        let response = null;
-        if (tableName) {
-          await bulkImportService
-            .getExcelFileMapping({
-              table_name: tableName,
-              key_word: x.original_filename?.split('.')[0],
-              file_type: x?.original_filename.slice(
-                ((x?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
-              ),
-            })
-            .then((res) => {
-              response = res?.body?.data;
-            });
-        }
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
           let filteredRecords = dummyRecords.filter(
@@ -182,11 +155,15 @@ const BulkImport: React.FC = () => {
                 header_row: 1,
                 sheet: sheet.sheet,
                 columns: sheet.columns,
-                excel_to_sql_mapping:
-                  response && response.length > 0
-                    ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
+                currentMapping:
+                  x.file_mapping && x.file_mapping.length > 0
+                    ? x.file_mapping[0].config_excel_column_mappings[0]?.sheet_name
                     : null,
-                show_mapping: response ? response : null,
+                excel_to_sql_mapping:
+                  x.file_mapping && x.file_mapping.length > 0
+                    ? JSON.parse(x.file_mapping[0]?.config_excel_column_mappings[0]?.mapping)
+                    : null,
+                show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
           });
@@ -210,31 +187,15 @@ const BulkImport: React.FC = () => {
     }
   }, [bulkImports.getCSVExcelColumns.data, bulkImports.getCSVExcelColumns.csvFiles]);
 
-  const updateRecords = async () => {
+  const updateRecords = () => {
     if (formUpload?.getFieldValue('table_name')) {
       const dummyRecords = _.cloneDeep(records);
       setLoading(true);
       for (let index = 0; index < dummyRecords.length; index++) {
         const data = dummyRecords[index];
-        let response = null;
-        await bulkImportService
-          .getExcelFileMapping({
-            table_name: formUpload?.getFieldValue('table_name'),
-            key_word: data.original_filename?.split('.')[0],
-            file_type: data?.original_filename.slice(
-              ((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
-            ),
-          })
-          .then((res) => {
-            response = res?.body?.data;
             data.table_name = formUpload?.getFieldValue('table_name');
-            data.show_mapping = response ? response : null;
-            data.excel_to_sql_mapping =
-              response?.length > 0
-                ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
-                : null;
-          });
-      }
+            data.excel_to_sql_mapping = null;
+          }
       setRecords(dummyRecords);
       setLoading(false);
     }
