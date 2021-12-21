@@ -92,8 +92,7 @@ const BulkImport: React.FC = () => {
       setDelimitModalShow(true);
     }
     if (bulkImports.getExcelColumns.data || bulkImports.getExcelColumns.csvFiles?.length > 0) {
-      //if(bulkImports.getExcelColumns.csvFiles?.length == 0)
-      //setExcelColumnState(bulkImports.getExcelColumns.data);
+    
       bulkImports.getExcelColumns.data?.map(async (x: any) => {
         const mappingData = x.file_mapping.length > 0 ? x.file_mapping.filter(data => data.is_select == true) : [];
         setRecords((records) => {
@@ -108,17 +107,17 @@ const BulkImport: React.FC = () => {
                 index: currentIndex++,
                 filename: x.filename,
                 original_filename: x.original_filename,
-                table_name: mappingData.length > 0 ? mappingData[0].config_excel_column_mappings[0].table_name : tableName,
+                table_name: mappingData.length > 0 && sheet.sheet == mappingData[0].config_excel_column_mappings[0].sheet_name ? mappingData[0].config_excel_column_mappings[0].table_name : tableName,
                 header_row: 1,
                 sheet: sheet.sheet,
                 columns: sheet.columns,
                 currentMapping:
                   x.file_mapping && x.file_mapping.length > 0
-                    ? (mappingData.length > 0 ? mappingData[0].config_excel_column_mappings[0].sheet_name : x.file_mapping[0]?.config_excel_column_mappings[0]?.sheet_name )
+                    ? (mappingData.length > 0 && sheet.sheet == mappingData[0].config_excel_column_mappings[0].sheet_name ? mappingData[0].config_excel_column_mappings[0].sheet_name : '' )
                     : null,
                 excel_to_sql_mapping:
                   x.file_mapping && x.file_mapping.length > 0
-                    ? (mappingData.length > 0 ? JSON.parse(mappingData[0].config_excel_column_mappings[0].mapping) : JSON.parse(x.file_mapping[0]?.config_excel_column_mappings[0]?.mapping))
+                    ? (mappingData.length > 0 && sheet.sheet == mappingData[0].config_excel_column_mappings[0].sheet_name ? JSON.parse(mappingData[0].config_excel_column_mappings[0].mapping) : null)
                     : null,
                 show_mapping: x.file_mapping  ? x.file_mapping : null,
               },
