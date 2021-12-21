@@ -269,7 +269,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="update_device_states_inc_non_prod" className="m-0" valuePropName="checked">
+                <Form.Item
+                  name="update_device_states_inc_non_prod"
+                  className="m-0"
+                  valuePropName="checked"
+                >
                   <Switch className="form-control" />
                 </Form.Item>
                 <label className="label">Update Device States INC Non-Prod</label>
@@ -277,7 +281,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="update_device_states_by_keyword" className="m-0" valuePropName="checked">
+                <Form.Item
+                  name="update_device_states_by_keyword"
+                  className="m-0"
+                  valuePropName="checked"
+                >
                   <Switch className="form-control" />
                 </Form.Item>
                 <label className="label">Update Device States By Keyword</label>

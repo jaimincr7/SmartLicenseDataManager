@@ -65,11 +65,8 @@ export const sqlServerPricingSlice = createSlice({
     [searchSqlServerPricing.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchSqlServerPricing.fulfilled.type]: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      const { search_result, current_user_currency_id ,...rest } = action.payload;
+    [searchSqlServerPricing.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      const { search_result, current_user_currency_id, ...rest } = action.payload;
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
       if (JSON.stringify(rest) !== '{}') {

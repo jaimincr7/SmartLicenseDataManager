@@ -82,6 +82,13 @@ export interface IO365Users {
   assigned_plans?: string;
 }
 
+export interface IProcessData {
+  company_id?: number;
+  bu_id?: number;
+  selected_date?: any;
+  table_name?: string;
+}
+
 export interface ISearchO365Users extends ISearch {
   is_lookup?: boolean;
 }

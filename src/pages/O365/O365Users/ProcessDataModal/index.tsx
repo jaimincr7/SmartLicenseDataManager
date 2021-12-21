@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Modal, Row, Select, Switch } from 'antd';
+import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import React, { useEffect } from 'react';
 import {
   IConfigModelPopUpDataSelection,
@@ -11,6 +11,7 @@ import {
   getAllCompanyLookup,
   getBULookup,
   getConfigModelPopUpDataSelection,
+  getScheduleDate,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
@@ -20,45 +21,49 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processDataInventory } from '../../../../store/inventory/inventory/inventory.action';
-import {
-  clearInventoryMessages,
-  inventorySelector,
-} from '../../../../store/inventory/inventory/inventory.reducer';
 import { toast } from 'react-toastify';
-import { Common, validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
-import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { IInlineSearch } from '../../../../common/models/common';
+import {
+  o365UsersSelector,
+  clearO365ProcessDataMessages,
+} from '../../../../store/o365/o365Users/o365Users.reducer';
+import { processDataO365 } from '../../../../store/o365/o365Users/o365Users.action';
+import { Common, validateMessages } from '../../../../common/constants/common';
+import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import _ from 'lodash';
+import { IInlineSearch } from '../../../../common/models/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import { IProcessData } from '../../../../services/o365/o365Users/o365Users.model';
 
 const { Option } = Select;
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
-  const inventory = useAppSelector(inventorySelector);
+  const o365Users = useAppSelector(o365UsersSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, filterKeys, tableName, refreshDataTable } = props;
+  const { showModal, handleModalClose, tableName, refreshDataTable } = props;
 
   const [form] = Form.useForm();
 
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: moment(),
-    update_device_states_inc_non_prod: false,
-    update_device_states_by_keyword: false,
-    x_ref_ad: false,
-    ad_missing_assume_prod: false,
-    table_name: tableName,
+    selected_date: null,
   };
 
   const onFinish = (values: any) => {
-    dispatch(processDataInventory(values));
+    const finalProcessData: IProcessData = {
+      company_id: values.company_id,
+      bu_id: values.bu_id,
+      selected_date: values.selected_date,
+      table_name: tableName,
+    };
+    debugger;
+    dispatch(processDataO365(finalProcessData));
   };
 
   const saveConfig = () => {
@@ -78,8 +83,18 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (data.company_id) {
       await dispatch(getBULookup(data.company_id));
     }
+    if (data.bu_id) {
+      await dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+      );
+    }
     form.setFieldsValue(data);
   };
+
+  // const disabledDate = (current) => {
+  //   // Can not select days before today and today
+  //   return current && current > moment().endOf('day');
+  // };
 
   useEffect(() => {
     if (commonLookups.getModelPopUpSelection.data !== {}) {
@@ -88,33 +103,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [commonLookups.getModelPopUpSelection.data]);
 
   useEffect(() => {
-    if (commonLookups.setModelPopUpSelection.messages.length > 0) {
-      if (commonLookups.setModelPopUpSelection.hasErrors) {
-        toast.error(commonLookups.setModelPopUpSelection.messages.join(' '));
+    if (o365Users.processData.messages.length > 0) {
+      if (o365Users.processData.hasErrors) {
+        toast.error(o365Users.processData.messages.join(' '));
       } else {
-        toast.success(commonLookups.setModelPopUpSelection.messages.join(' '));
-      }
-      dispatch(clearConfigModelPopUpDataSelection());
-    }
-  }, [commonLookups.setModelPopUpSelection.messages]);
-
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current && current > moment().endOf('day');
-  // };
-
-  useEffect(() => {
-    if (inventory.processData.messages.length > 0) {
-      if (inventory.processData.hasErrors) {
-        toast.error(inventory.processData.messages.join(' '));
-      } else {
-        toast.success(inventory.processData.messages.join(' '));
+        toast.success(o365Users.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearInventoryMessages());
+      dispatch(clearO365ProcessDataMessages());
     }
-  }, [inventory.processData.messages]);
+  }, [o365Users.processData.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -127,10 +126,15 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    if (!buId) {
+    if (buId) {
+      dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
+        )
+      );
+    } else {
       dispatch(clearDateLookup());
     }
-
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -141,6 +145,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearDateLookup());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (commonLookups.setModelPopUpSelection.messages.length > 0) {
+      if (commonLookups.setModelPopUpSelection.hasErrors) {
+        toast.error(commonLookups.setModelPopUpSelection.messages.join(' '));
+      } else {
+        toast.success(commonLookups.setModelPopUpSelection.messages.join(' '));
+      }
+      dispatch(clearConfigModelPopUpDataSelection());
+    }
+  }, [commonLookups.setModelPopUpSelection.messages]);
 
   React.useEffect(() => {
     if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
@@ -156,23 +171,20 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       globalSearch[key] = element ? [element] : null;
     }
     if (
-      globalSearch.company_id &&
-      globalSearch.bu_id &&
+      globalFilters.search.company_id &&
+      globalFilters.search.bu_id &&
       Object.keys(commonLookups.getModelPopUpSelection.data).length == 0
     ) {
       dispatch(getBULookup(globalSearch.company_id[0]));
       const filterValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
-        date_added:
-          filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
-            : null,
       };
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
+      );
       form.setFieldsValue(filterValues);
     }
-    // const crrntDate = new Date().toDateString();
-    // form.setFieldsValue({selected_date_ws: moment(crrntDate).format(Common.DATEFORMAT)});
     return () => {
       dispatch(cleargetModelPopUpDataSelection());
     };
@@ -221,11 +233,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                         ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
-                    {commonLookups.allCompanyLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
+                    {Object.keys(commonLookups.allCompanyLookup.data).length > 0
+                      ? commonLookups.allCompanyLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))
+                      : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
                   </Select>
                 </Form.Item>
               </div>
@@ -250,61 +268,53 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                         ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
-                    {commonLookups.buLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
+                    {Object.keys(commonLookups.buLookup.data).length > 0
+                      ? commonLookups.buLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))
+                      : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
                   </Select>
                 </Form.Item>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date </label>
-                <Form.Item name="selected_date" label="Selected Date " className="m-0">
-                  <DatePicker className="w-100" />
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
+                <label className="label">Selected Added</label>
                 <Form.Item
-                  name="update_device_states_inc_non_prod"
+                  name="selected_date"
                   className="m-0"
-                  valuePropName="checked"
+                  label="Selected Added"
                 >
-                  <Switch className="form-control" />
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDate.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDate.data.map((option: any) => (
+                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                        {moment(option)?.toString() == 'Invalid date'
+                          ? 'NULL'
+                          : moment(option).format(Common.DATEFORMAT)}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
-                <label className="label">Update Device States INC Non-Prod</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item
-                  name="update_device_states_by_keyword"
-                  className="m-0"
-                  valuePropName="checked"
-                >
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Update Device States By Keyword</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="x_ref_ad" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">X Ref AD</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="ad_missing_assume_prod" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">AD Missing Assume Prod</label>
               </div>
             </Col>
           </Row>
@@ -313,7 +323,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               key="submit"
               type="primary"
               htmlType="submit"
-              loading={inventory.processData.loading}
+              loading={o365Users.processData.loading}
             >
               Process
             </Button>

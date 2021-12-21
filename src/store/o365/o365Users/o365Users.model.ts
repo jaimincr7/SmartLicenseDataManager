@@ -26,4 +26,9 @@ export interface IO365UsersState {
     hasErrors: boolean;
     messages: string[];
   };
+  processData: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

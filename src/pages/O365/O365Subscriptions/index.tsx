@@ -14,6 +14,7 @@ import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { IO365SubscriptionsProps } from './o365Subscriptions.model';
 import AddO365SubscriptionsModal from './AddO365SubscriptionsModal';
 import MainTable from './MainTable';
+import ProcessDataModal from '../O365Users/ProcessDataModal';
 
 const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
   const o365Subscriptions = useAppSelector(o365SubscriptionsSelector);
@@ -27,6 +28,7 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
 
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
@@ -67,6 +69,20 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.O365Subscriptions}>
+        <Button
+          className="btn-icon"
+          disabled={o365Subscriptions.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
     </>
@@ -149,6 +165,14 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={o365Subscriptions.search.tableName}
         />
       )}
     </div>

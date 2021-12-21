@@ -80,7 +80,9 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
     tenant_id: null,
     license_id: null,
     price: null,
-    currency_id: windowsServerPricing.search.currency_id ? windowsServerPricing.search.currency_id : null,
+    currency_id: windowsServerPricing.search.currency_id
+      ? windowsServerPricing.search.currency_id
+      : null,
     agreement_type_id: null,
     date_added: moment(),
   };

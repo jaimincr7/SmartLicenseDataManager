@@ -3,7 +3,7 @@ import { IAdUsersState } from './adUsers.model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { RootState } from '../../app.model';
-import { searchAdUsers, getAdUserById, saveAdUser, deleteAdUser } from './adUsers.action';
+import { searchAdUsers, getAdUserById, saveAdUser, deleteAdUser, processDataAdUsers } from './adUsers.action';
 import { IAdUser } from '../../../services/ad/adUsers/adUsers.model';
 
 export const initialState: IAdUsersState = {
@@ -35,6 +35,11 @@ export const initialState: IAdUsersState = {
     hasErrors: false,
     messages: [],
   },
+  processData: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const adUsersSlice = createSlice({
@@ -47,6 +52,7 @@ export const adUsersSlice = createSlice({
     clearAdUsersMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
+      state.processData.messages = [];
     },
     clearAdUsersGetById: (state) => {
       state.getById.data = null;
@@ -85,6 +91,24 @@ export const adUsersSlice = createSlice({
     [searchAdUsers.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
+    },
+
+    // Process Data
+    [processDataAdUsers.pending.type]: (state) => {
+      state.processData.loading = true;
+      state.processData.messages = [];
+    },
+    [processDataAdUsers.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = false;
+      state.processData.messages = action.payload.messages;
+    },
+    [processDataAdUsers.rejected.type]: (state) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = true;
     },
 
     // Get by id

@@ -15,7 +15,7 @@ import {
   globalSearchSelector,
   setGlobalSearch,
 } from '../../../store/globalSearch/globalSearch.reducer';
-import { IGlobalSearchProps , IGlobalSearchInitialValues } from './globalSearch.model';
+import { IGlobalSearchProps, IGlobalSearchInitialValues } from './globalSearch.model';
 import { Common } from '../../constants/common';
 
 const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
@@ -25,7 +25,7 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  const initialValues : IGlobalSearchInitialValues = {
+  const initialValues: IGlobalSearchInitialValues = {
     tenant_id: 0,
     company_id: 0,
     bu_id: 0,
@@ -80,9 +80,14 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
 
   useEffect(() => {
     dispatch(getGlobalTenantLookup());
-    if(isDateAdded) {
-    const dummySearch = {...globalLookups.search, date_added : (_.isNull(globalLookups.search.date_added) ? null : moment(globalLookups.search.date_added))};
-    form.setFieldsValue(dummySearch);
+    if (isDateAdded) {
+      const dummySearch = {
+        ...globalLookups.search,
+        date_added: _.isNull(globalLookups.search.date_added)
+          ? null
+          : moment(globalLookups.search.date_added),
+      };
+      form.setFieldsValue(dummySearch);
     } else {
       form.setFieldsValue(globalLookups.search);
     }
@@ -166,14 +171,16 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
             ))}
           </Select>
         </Form.Item>
-         {isDateAdded && <Form.Item
-          name="date_added"
-          className="m-0"
-        >
-          <DatePicker format={Common.DATEFORMAT} onChange={handleDateAddedChange} placeholder="Select Date Added" />
-        </Form.Item> 
-       }
-       </Form>
+        {isDateAdded && (
+          <Form.Item name="date_added" className="m-0">
+            <DatePicker
+              format={Common.DATEFORMAT}
+              onChange={handleDateAddedChange}
+              placeholder="Select Date Added"
+            />
+          </Form.Item>
+        )}
+      </Form>
     </>
   );
 };

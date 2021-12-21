@@ -11,35 +11,40 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
   const bulkImport = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const [files, setFiles] = useState([]);
-  const { showModal, handleModalClose } =
-    props;
+  const { showModal, handleModalClose } = props;
 
   const [form] = Form.useForm();
 
   const onFinish = (values: any) => {
-    const arr: Array<{ original_filename: any, filename: any, delimiter: string }> = [];
+    const arr: Array<{ original_filename: any; filename: any; delimiter: string }> = [];
     Object.keys(values).map((data) => {
-      const fltrObj = files.filter(dataDM => dataDM.original_filename == data)[0];
+      const fltrObj = files.filter((dataDM) => dataDM.original_filename == data)[0];
       const Obj = {
         original_filename: fltrObj.original_filename,
         filename: fltrObj.filename,
         delimiter: values[data],
       };
       arr.push(Obj);
-    }
-    );
+    });
     const valueFinal = { csv_file_info: arr };
     dispatch(getCSVExcelColumns(valueFinal));
     handleModalClose();
   };
 
   useEffect(() => {
-    if (bulkImport?.getExcelColumns?.csvFiles?.length > 0 && bulkImport.getExcelColumns.csvFiles !== null) {
+    if (
+      bulkImport?.getExcelColumns?.csvFiles?.length > 0 &&
+      bulkImport.getExcelColumns.csvFiles !== null
+    ) {
       setFiles(bulkImport.getExcelColumns.csvFiles);
-    } if(bulkImport.getCSVExcelColumns.csvFiles !== null && bulkImport.getCSVExcelColumns.csvFiles?.length > 0) {
+    }
+    if (
+      bulkImport.getCSVExcelColumns.csvFiles !== null &&
+      bulkImport.getCSVExcelColumns.csvFiles?.length > 0
+    ) {
       setFiles(bulkImport.getCSVExcelColumns.csvFiles);
     }
-  }, [bulkImport.getExcelColumns.data,bulkImport.getCSVExcelColumns.csvFiles]);
+  }, [bulkImport.getExcelColumns.data, bulkImport.getCSVExcelColumns.csvFiles]);
 
   return (
     <>
@@ -51,44 +56,38 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
         onCancel={handleModalClose}
         footer={false}
       >
-
-        <Form
-          form={form}
-          name="CkeckDelimiter"
-          onFinish={onFinish}
-        >
+        <Form form={form} name="CkeckDelimiter" onFinish={onFinish}>
           <Row gutter={[30, 15]} className="form-label-hide">
-            {files && files.map((data, index) => (<Col xs={24} sm={12} md={8} key={index}>
-              <div className="form-group m-0">
-                <label className="label">{data.original_filename}</label>
-                <Form.Item
-                  name={data.original_filename}
-                  label={data.original_filename}
-                  className="m-0"
-                  rules={[{ required: true }]}
-                >
-                  <Select
-                    placeholder="Select a Delimit"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                  <Option value=";">Semi Colon(;)</Option>
-                  <Option value=",">Comma(,)</Option>
-                    {/* <Option value="    ">TAB</Option> */}
-                    {/* <Option value=" ">SPACE</Option> */}
-                  </Select>
-                </Form.Item>
-              </div>
-            </Col>))}
+            {files &&
+              files.map((data, index) => (
+                <Col xs={24} sm={12} md={8} key={index}>
+                  <div className="form-group m-0">
+                    <label className="label">{data.original_filename}</label>
+                    <Form.Item
+                      name={data.original_filename}
+                      label={data.original_filename}
+                      className="m-0"
+                      rules={[{ required: true }]}
+                    >
+                      <Select
+                        placeholder="Select a Delimit"
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        <Option value=";">Semi Colon(;)</Option>
+                        <Option value=",">Comma(,)</Option>
+                        {/* <Option value="    ">TAB</Option> */}
+                        {/* <Option value=" ">SPACE</Option> */}
+                      </Select>
+                    </Form.Item>
+                  </div>
+                </Col>
+              ))}
           </Row>
           <div className="btns-block modal-footer">
-            <Button
-              key="submit"
-              type="primary"
-              htmlType="submit"
-            >
+            <Button key="submit" type="primary" htmlType="submit">
               Check Delimit
             </Button>
           </div>
@@ -98,4 +97,3 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
   );
 };
 export default CkeckDelimiterModal;
-

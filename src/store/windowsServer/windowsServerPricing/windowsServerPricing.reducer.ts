@@ -65,11 +65,8 @@ export const windowsServerPricingSlice = createSlice({
     [searchWindowsServerPricing.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchWindowsServerPricing.fulfilled.type]: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      const { search_result, current_user_currency_id ,...rest } = action.payload;
+    [searchWindowsServerPricing.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      const { search_result, current_user_currency_id, ...rest } = action.payload;
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
       if (JSON.stringify(rest) !== '{}') {

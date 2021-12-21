@@ -1,4 +1,4 @@
-import { ISearchO365Users, IO365Users } from '../../../services/o365/o365Users/o365Users.model';
+import { ISearchO365Users, IO365Users, IProcessData } from '../../../services/o365/o365Users/o365Users.model';
 import o365UsersService from '../../../services/o365/o365Users/o365Users.service';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -34,3 +34,13 @@ export const deleteO365Users = createAsyncThunk('deleteO365Users', async (id: nu
   });
   return response;
 });
+
+export const processDataO365 = createAsyncThunk(
+  'processDataO365',
+  async (data: IProcessData) => {
+    const response = await o365UsersService.processData(data).then((res) => {
+      return res.body;
+    });
+    return response;
+  }
+);
