@@ -108,8 +108,9 @@ const BulkImport: React.FC = () => {
                 index: currentIndex++,
                 filename: x.filename,
                 original_filename: x.original_filename,
+                delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
                 table_name: mappingData.length > 0 ? (mappingSheet.length > 0 ? mappingSheet[0]?.table_name : tableName) : tableName,
-                header_row: 1,
+                header_row: mappingData.length > 0 ? (mappingData[0].header_row + 1) : 1,
                 sheet: sheet.sheet,
                 columns: sheet.columns,
                 currentMapping:
