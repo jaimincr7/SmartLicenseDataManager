@@ -101,23 +101,24 @@ const BulkImport: React.FC = () => {
             (data) => data.filename !== x.filename && data.original_filename !== x.original_filename
           );
           (x?.excel_sheet_columns || []).map((sheet) => {
+            const mappingSheet = mappingData.length > 0 ? mappingData[0]?.config_excel_column_mappings?.filter(data => data.sheet_name == sheet.sheet) : [];
             filteredRecords = [
               ...filteredRecords,
               {
                 index: currentIndex++,
                 filename: x.filename,
                 original_filename: x.original_filename,
-                table_name: mappingData.length > 0 && sheet.sheet == mappingData[0].config_excel_column_mappings[0].sheet_name ? mappingData[0].config_excel_column_mappings[0].table_name : tableName,
+                table_name: mappingData.length > 0 ? (mappingSheet.length > 0 ? mappingSheet[0]?.table_name : tableName) : tableName,
                 header_row: 1,
                 sheet: sheet.sheet,
                 columns: sheet.columns,
                 currentMapping:
                   x.file_mapping && x.file_mapping.length > 0
-                    ? (mappingData.length > 0 && sheet.sheet == mappingData[0].config_excel_column_mappings[0].sheet_name ? mappingData[0].config_excel_column_mappings[0].sheet_name : '' )
+                    ? (mappingData.length > 0 ? ((mappingSheet.length > 0 ? mappingSheet[0]?.sheet_name : '')) : '' )
                     : null,
                 excel_to_sql_mapping:
                   x.file_mapping && x.file_mapping.length > 0
-                    ? (mappingData.length > 0 && sheet.sheet == mappingData[0].config_excel_column_mappings[0].sheet_name ? JSON.parse(mappingData[0].config_excel_column_mappings[0].mapping) : null)
+                    ? (mappingData.length > 0 ? (mappingSheet.length > 0 ? JSON.parse(mappingSheet[0]?.mapping) : null) : null)
                     : null,
                 show_mapping: x.file_mapping  ? x.file_mapping : null,
               },

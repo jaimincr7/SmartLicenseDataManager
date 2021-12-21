@@ -515,6 +515,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.currentMapping = value;
         selectedRecord.show_mapping.map((data1) => {
           data1.config_excel_column_mappings.map((data2) => {
+            data.table_name = data2.table_name;
             if (data2.id == value) {
               flagMapping = JSON.parse(data2.mapping);
             }
