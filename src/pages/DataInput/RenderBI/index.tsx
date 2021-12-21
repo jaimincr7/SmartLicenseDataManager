@@ -129,7 +129,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               original_file_name: data.original_filename,
               sheet_name: data.sheet,
               header_row: data.header_row - 1,
-              delimiter: data.delimeter ? data.delimiter : ';',
+              delimiter: data.delimeter ? data.delimiter : ',',
             },
           ],
           foreign_key_values: {
@@ -388,7 +388,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const getMenuDropdown = (recordsDefault: any, curRecord: any) => {
     const dropdown = [];
-    recordsDefault?.map((m: any) => {
+      recordsDefault?.map((m: any) => {
       dropdown.push({
         title: (
           <>

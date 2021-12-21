@@ -12,7 +12,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { saveExcelFileMapping } from '../../../store/bulkImport/bulkImport.action';
 import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
-import { bulkImportSelector } from '../../../store/bulkImport/bulkImport.reducer';
+import { bulkImportSelector, clearSaveExcelData } from '../../../store/bulkImport/bulkImport.reducer';
 
 const { Option } = Select;
 
@@ -33,6 +33,22 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [excelColumns, setExcelColumns] = useState(null);
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
   const [localMapping, setLocalMapping] = useState<boolean>(true);
+
+  useEffect(() => {
+      if (!bulkImport.saveExcelFileMapping.hasErrors && bulkImport.saveExcelFileMapping.data !== null ) {
+      const dummyrecords = _.cloneDeep(records);
+      dummyrecords.map((data) => {
+        if(data.index == record.index) {
+        data.currentMapping =
+          bulkImport.saveExcelFileMapping.data && bulkImport.saveExcelFileMapping.data !== null
+            ? bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.sheet_name
+            : null;
+        data.show_mapping = [...data.show_mapping,bulkImport.saveExcelFileMapping.data] ;}
+      });
+      setRecords(dummyrecords);
+    }
+    dispatch(clearSaveExcelData());
+  }, [bulkImport.saveExcelFileMapping.data]);
 
   useEffect(() => {
     if (localMapping) {
@@ -64,15 +80,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
                 ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                   ? filterExcelColumns.filter(
-                      (x: any) =>
-                        x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                        ele.name?.toLowerCase()?.replace(/\s/g, '')
-                    )[0]
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                      ele.name?.toLowerCase()?.replace(/\s/g, '')
+                  )[0]
                   : skipRows == 0
-                  ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                    ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
                       return data.key == ele.name;
                     })[0]?.value
-                  : '';
+                    : '';
             });
             form.setFieldsValue(initialValuesData);
           }
@@ -114,18 +130,18 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             tenant_id: _.isNull(globalSearch.tenant_id)
               ? null
               : globalSearch.tenant_id === undefined
-              ? null
-              : globalSearch?.tenant_id[0],
+                ? null
+                : globalSearch?.tenant_id[0],
             bu_id: _.isNull(globalSearch.bu_id)
               ? null
               : globalSearch.bu_id === undefined
-              ? null
-              : globalSearch?.bu_id[0],
+                ? null
+                : globalSearch?.bu_id[0],
             company_id: _.isNull(globalSearch.company_id)
               ? null
               : globalSearch.company_id === undefined
-              ? null
-              : globalSearch?.company_id[0],
+                ? null
+                : globalSearch?.company_id[0],
             date_added: moment(),
           };
           filterTableColumns.map(function (ele) {
@@ -137,15 +153,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
               ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                 ? filterExcelColumns.filter(
-                    (x: any) =>
-                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                      ele.name?.toLowerCase()?.replace(/\s/g, '')
-                  )[0]
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    ele.name?.toLowerCase()?.replace(/\s/g, '')
+                )[0]
                 : skipRows == 0
-                ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                  ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
                     return data.key == ele.name;
                   })[0]?.value
-                : '';
+                  : '';
           });
           form.setFieldsValue(initialValuesData);
         }
