@@ -12,6 +12,7 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import ProcessDataModal from './ProcessDataModal';
 
 const AdUsers: React.FC<IAdUsersProps> = (props) => {
   const adUsers = useAppSelector(adUsersSelector);
@@ -24,6 +25,7 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
   const [filterKeys, setFilterKeys] = React.useState({});
 
@@ -65,6 +67,20 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.ADUsers}>
+        <Button
+          className="btn-icon"
+          disabled={adUsers.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
       <Can I={Action.DeleteData} a={Page.ADUsers}>
@@ -184,6 +200,15 @@ const AdUsers: React.FC<IAdUsersProps> = (props) => {
           tableName={adUsers.search.tableName}
           refreshDataTable={() => refreshDataTable()}
           filterKeys={filterKeys}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          filterKeys={filterKeys}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={adUsers.search.tableName}
         />
       )}
     </div>

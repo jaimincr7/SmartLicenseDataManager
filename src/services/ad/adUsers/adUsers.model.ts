@@ -42,3 +42,10 @@ export interface IAdUser {
 export interface ISearchAdUsers extends ISearch {
   is_lookup?: boolean;
 }
+
+export interface IProcessData {
+  company_id?: number;
+  bu_id?: number;
+  date_added?: Date;
+  user_id?: number;
+}
