@@ -65,7 +65,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         bulkImport.getCSVExcelColumns.csvFiles !== null &&
         bulkImport.getCSVExcelColumns.csvFiles?.length == 0
       ) {
-        toast.success('Your DeLimiter is On Mark!');
+        toast.success('Your Delimiter is On Mark!');
         setTableData(bulkImport.getCSVExcelColumns.data[0].excel_sheet_columns[0].columns);
       }
     }
