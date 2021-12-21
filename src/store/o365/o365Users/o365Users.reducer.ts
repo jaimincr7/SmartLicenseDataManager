@@ -6,6 +6,7 @@ import { RootState } from '../../app.model';
 import {
   deleteO365Users,
   getO365UsersById,
+  processDataO365,
   saveO365Users,
   searchO365Users,
 } from './o365Users.action';
@@ -40,6 +41,11 @@ export const initialState: IO365UsersState = {
     hasErrors: false,
     messages: [],
   },
+  processData: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const o365UsersSlice = createSlice({
@@ -52,6 +58,9 @@ export const o365UsersSlice = createSlice({
     clearO365UsersMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
+    },
+    clearO365ProcessDataMessages: (state) => {
+      state.processData.messages = [];
     },
     clearO365UsersGetById: (state) => {
       state.getById.data = null;
@@ -138,6 +147,24 @@ export const o365UsersSlice = createSlice({
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },
+
+    // Process Data
+    [processDataO365.pending.type]: (state) => {
+      state.processData.loading = true;
+      state.processData.messages = [];
+    },
+    [processDataO365.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = false;
+      state.processData.messages = action.payload.messages;
+    },
+    [processDataO365.rejected.type]: (state) => {
+      state.processData.loading = false;
+      state.processData.hasErrors = true;
+    },
   },
 });
 
@@ -150,6 +177,7 @@ export const {
   clearO365UsersMessages,
   clearO365UsersGetById,
   setTableColumnSelection,
+  clearO365ProcessDataMessages,
 } = o365UsersSlice.actions;
 
 // The reducer

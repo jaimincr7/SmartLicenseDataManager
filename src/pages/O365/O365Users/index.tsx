@@ -11,6 +11,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import ProcessDataModal from './ProcessDataModal';
 
 const O365Users: React.FC<IO365UsersProps> = (props) => {
   const o365Users = useAppSelector(o365UsersSelector);
@@ -24,6 +25,7 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
 
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
@@ -64,6 +66,20 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.O365Users}>
+        <Button
+          className="btn-icon"
+          disabled={o365Users.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
     </>
@@ -118,6 +134,14 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={o365Users.search.tableName}
         />
       )}
     </div>
