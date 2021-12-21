@@ -15,6 +15,7 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import ProcessDataModal from '../O365Users/ProcessDataModal';
 
 const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (props) => {
   const o365ActivationsUserDetail = useAppSelector(o365ActivationsUserDetailSelector);
@@ -26,6 +27,7 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
@@ -71,6 +73,20 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.O365ActivationsUserDetail}>
+        <Button
+          className="btn-icon"
+          disabled={o365ActivationsUserDetail.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
       <Can I={Action.DeleteData} a={Page.O365ActivationsUserDetail}>
@@ -181,6 +197,14 @@ const O365ActivationsUserDetail: React.FC<IO365ActivationsUserDetailProps> = (pr
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={o365ActivationsUserDetail.search.tableName}
         />
       )}
       {deleteModalVisible && (

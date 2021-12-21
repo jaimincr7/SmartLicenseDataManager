@@ -14,6 +14,7 @@ import {
   o365ProductListSelector,
 } from '../../../store/o365/o365ProductList/o365ProductList.reducer';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import ProcessDataModal from '../O365Users/ProcessDataModal';
 
 const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
   const o365ProductList = useAppSelector(o365ProductListSelector);
@@ -26,6 +27,7 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
@@ -67,6 +69,20 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.O365ProductList}>
+        <Button
+          className="btn-icon"
+          disabled={o365ProductList.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
     </>
@@ -149,6 +165,14 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={o365ProductList.search.tableName}
         />
       )}
     </div>

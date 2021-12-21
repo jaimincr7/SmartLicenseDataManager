@@ -1,6 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import { ISearchO365Users, IO365Users } from './o365Users.model';
+import { ISearchO365Users, IO365Users, IProcessData } from './o365Users.model';
 
 class O365UsersService {
   ENDPOINT = '/o365-users';
@@ -39,6 +39,16 @@ class O365UsersService {
   public async deleteO365Users(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'DELETE' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async processData(data: IProcessData): Promise<any> {
+    const inputValues = {
+      ...data,
+    };
+    const url = `${this.ENDPOINT}/process-data`;
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }

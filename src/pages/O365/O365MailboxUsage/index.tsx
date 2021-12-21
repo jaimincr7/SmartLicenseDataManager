@@ -15,6 +15,7 @@ import { IO365MailboxUsageProps } from './o365MailboxUsage.model';
 import AddO365MailboxUsageModal from './AddO365MailboxUsageModal';
 import MainTable from './MainTable';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import ProcessDataModal from '../O365Users/ProcessDataModal';
 
 const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
   const mailBoxUsage = useAppSelector(o365MailboxUsageSelector);
@@ -24,6 +25,7 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
 
   const { id: urlId } = props.match?.params;
 
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
@@ -70,6 +72,20 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.O365MailboxUsage}>
+        <Button
+          className="btn-icon"
+          disabled={mailBoxUsage.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
       <Can I={Action.DeleteData} a={Page.O365MailboxUsage}>
@@ -189,6 +205,14 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
           tableName={mailBoxUsage.search.tableName}
           refreshDataTable={() => refreshDataTable()}
           filterKeys={filterKeys}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={mailBoxUsage.search.tableName}
         />
       )}
     </div>

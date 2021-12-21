@@ -15,6 +15,7 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import ProcessDataModal from '../O365Users/ProcessDataModal';
 
 const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
   const o365OneDriveUsage = useAppSelector(o365OneDriveUsageSelector);
@@ -26,6 +27,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
   const [filterKeys, setFilterKeys] = React.useState({});
@@ -70,6 +72,20 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.O365OneDriveUsage}>
+        <Button
+          className="btn-icon"
+          disabled={o365OneDriveUsage.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
       <Can I={Action.DeleteData} a={Page.O365OneDriveUsage}>
@@ -191,6 +207,14 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
           tableName={o365OneDriveUsage.search.tableName}
           refreshDataTable={() => refreshDataTable()}
           filterKeys={filterKeys}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={o365OneDriveUsage.search.tableName}
         />
       )}
     </div>

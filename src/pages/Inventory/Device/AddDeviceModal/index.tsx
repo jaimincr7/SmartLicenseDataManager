@@ -410,12 +410,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                   ) : (
                     'Name'
                   )}
-                  <Form.Item
-                    name="name"
-                    className="m-0"
-                    label="Name"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="name" className="m-0" label="Name" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -448,12 +443,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                   ) : (
                     'Model'
                   )}
-                  <Form.Item
-                    name="model"
-                    label="Model"
-                    className="m-0"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="model" label="Model" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -461,11 +451,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'serial_number']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'serial_number']} valuePropName="checked" noStyle>
                       <Checkbox>Serial Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -561,7 +547,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-              
+
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
@@ -623,12 +609,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                   ) : (
                     'Domain'
                   )}
-                  <Form.Item
-                    name="domain"
-                    label="Domain"
-                    className="m-0"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="domain" label="Domain" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -653,7 +634,11 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'qualified_in_ad']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'qualified_in_ad']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Qualified in AD</Checkbox>
                     </Form.Item>
                   ) : (

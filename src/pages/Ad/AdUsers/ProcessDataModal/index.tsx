@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Modal, Row, Select, Switch } from 'antd';
+import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import React, { useEffect } from 'react';
 import {
   IConfigModelPopUpDataSelection,
@@ -11,6 +11,7 @@ import {
   getAllCompanyLookup,
   getBULookup,
   getConfigModelPopUpDataSelection,
+  getScheduleDate,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
@@ -20,24 +21,25 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
-import { processDataInventory } from '../../../../store/inventory/inventory/inventory.action';
-import {
-  clearInventoryMessages,
-  inventorySelector,
-} from '../../../../store/inventory/inventory/inventory.reducer';
 import { toast } from 'react-toastify';
-import { Common, validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
-import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { IInlineSearch } from '../../../../common/models/common';
+import {
+  adUsersSelector,
+  clearAdUsersMessages,
+} from '../../../../store/ad/adUsers/adUsers.reducer';
+import { processDataAdUsers } from '../../../../store/ad/adUsers/adUsers.action';
+import { Common, validateMessages } from '../../../../common/constants/common';
+import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import _ from 'lodash';
+import { IInlineSearch } from '../../../../common/models/common';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
-  const inventory = useAppSelector(inventorySelector);
+  const adUsers = useAppSelector(adUsersSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -49,16 +51,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: moment(),
-    update_device_states_inc_non_prod: false,
-    update_device_states_by_keyword: false,
-    x_ref_ad: false,
-    ad_missing_assume_prod: false,
-    table_name: tableName,
+    user_id: null,
+    date_added: null,
   };
 
   const onFinish = (values: any) => {
-    dispatch(processDataInventory(values));
+    dispatch(processDataAdUsers(values));
   };
 
   const saveConfig = () => {
@@ -78,8 +76,18 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (data.company_id) {
       await dispatch(getBULookup(data.company_id));
     }
+    if (data.bu_id) {
+      await dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+      );
+    }
     form.setFieldsValue(data);
   };
+
+  // const disabledDate = (current) => {
+  //   // Can not select days before today and today
+  //   return current && current > moment().endOf('day');
+  // };
 
   useEffect(() => {
     if (commonLookups.getModelPopUpSelection.data !== {}) {
@@ -88,33 +96,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [commonLookups.getModelPopUpSelection.data]);
 
   useEffect(() => {
-    if (commonLookups.setModelPopUpSelection.messages.length > 0) {
-      if (commonLookups.setModelPopUpSelection.hasErrors) {
-        toast.error(commonLookups.setModelPopUpSelection.messages.join(' '));
+    if (adUsers.processData.messages.length > 0) {
+      if (adUsers.processData.hasErrors) {
+        toast.error(adUsers.processData.messages.join(' '));
       } else {
-        toast.success(commonLookups.setModelPopUpSelection.messages.join(' '));
-      }
-      dispatch(clearConfigModelPopUpDataSelection());
-    }
-  }, [commonLookups.setModelPopUpSelection.messages]);
-
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current && current > moment().endOf('day');
-  // };
-
-  useEffect(() => {
-    if (inventory.processData.messages.length > 0) {
-      if (inventory.processData.hasErrors) {
-        toast.error(inventory.processData.messages.join(' '));
-      } else {
-        toast.success(inventory.processData.messages.join(' '));
+        toast.success(adUsers.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearInventoryMessages());
+      dispatch(clearAdUsersMessages());
     }
-  }, [inventory.processData.messages]);
+  }, [adUsers.processData.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -127,10 +119,15 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const handleBUChange = (buId: number) => {
-    if (!buId) {
+    if (buId) {
+      dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), adUsers.search.tableName)
+        )
+      );
+    } else {
       dispatch(clearDateLookup());
     }
-
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -141,6 +138,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearDateLookup());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (commonLookups.setModelPopUpSelection.messages.length > 0) {
+      if (commonLookups.setModelPopUpSelection.hasErrors) {
+        toast.error(commonLookups.setModelPopUpSelection.messages.join(' '));
+      } else {
+        toast.success(commonLookups.setModelPopUpSelection.messages.join(' '));
+      }
+      dispatch(clearConfigModelPopUpDataSelection());
+    }
+  }, [commonLookups.setModelPopUpSelection.messages]);
 
   React.useEffect(() => {
     if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
@@ -156,8 +164,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       globalSearch[key] = element ? [element] : null;
     }
     if (
-      globalSearch.company_id &&
-      globalSearch.bu_id &&
+      globalFilters.search.company_id &&
+      globalFilters.search.bu_id &&
       Object.keys(commonLookups.getModelPopUpSelection.data).length == 0
     ) {
       dispatch(getBULookup(globalSearch.company_id[0]));
@@ -169,10 +177,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
             : null,
       };
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, adUsers.search.tableName))
+      );
       form.setFieldsValue(filterValues);
     }
-    // const crrntDate = new Date().toDateString();
-    // form.setFieldsValue({selected_date_ws: moment(crrntDate).format(Common.DATEFORMAT)});
     return () => {
       dispatch(cleargetModelPopUpDataSelection());
     };
@@ -221,11 +230,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                         ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
-                    {commonLookups.allCompanyLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
+                    {Object.keys(commonLookups.allCompanyLookup.data).length > 0
+                      ? commonLookups.allCompanyLookup.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
+                      : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                   </Select>
                 </Form.Item>
               </div>
@@ -250,70 +265,76 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                         ?.localeCompare(optionB.children?.toLowerCase())
                     }
                   >
-                    {commonLookups.buLookup.data.map((option: ILookup) => (
-                      <Option key={option.id} value={option.id}>
-                        {option.name}
-                      </Option>
-                    ))}
+                    {Object.keys(commonLookups.buLookup.data).length > 0
+                      ? commonLookups.buLookup.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
+                      : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                   </Select>
                 </Form.Item>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date </label>
-                <Form.Item name="selected_date" label="Selected Date " className="m-0">
-                  <DatePicker className="w-100" />
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
+                <label className="label">Date Added</label>
                 <Form.Item
-                  name="update_device_states_inc_non_prod"
+                  name="date_added"
                   className="m-0"
-                  valuePropName="checked"
+                  label="Date Added"
+                  rules={[{ required: true }]}
                 >
-                  <Switch className="form-control" />
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDate.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDate.data.map((option: any) => (
+                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                        {moment(option)?.toString() == 'Invalid date'
+                          ? 'NULL'
+                          : moment(option).format(Common.DATEFORMAT)}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
-                <label className="label">Update Device States INC Non-Prod</label>
               </div>
             </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
+            {/* <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
+                <label className="label">Date Added</label>
                 <Form.Item
-                  name="update_device_states_by_keyword"
+                  name="date_added"
+                  label="Date Added"
                   className="m-0"
-                  valuePropName="checked"
+                  rules={[{ required: true }]}
                 >
-                  <Switch className="form-control" />
+                  <DatePicker className="w-100" disabledDate={disabledDate} />
                 </Form.Item>
-                <label className="label">Update Device States By Keyword</label>
               </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="x_ref_ad" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">X Ref AD</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="ad_missing_assume_prod" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">AD Missing Assume Prod</label>
-              </div>
-            </Col>
+            </Col> */}
           </Row>
           <div className="btns-block modal-footer pt-lg">
             <Button
               key="submit"
               type="primary"
               htmlType="submit"
-              loading={inventory.processData.loading}
+              loading={adUsers.processData.loading}
             >
               Process
             </Button>

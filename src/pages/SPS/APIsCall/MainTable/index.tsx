@@ -365,7 +365,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       <DataTable
         ref={dataTableRef}
         showAddButton={false}
-        globalSearchExist={false}
         tableAction={tableAction}
         getTableColumns={getTableColumns}
         reduxSelector={spsApiCallSelector}

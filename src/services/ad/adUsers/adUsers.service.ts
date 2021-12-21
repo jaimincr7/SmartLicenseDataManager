@@ -1,4 +1,4 @@
-import { IAdUser, ISearchAdUsers } from './adUsers.model';
+import { IAdUser, IProcessData, ISearchAdUsers } from './adUsers.model';
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
 
@@ -17,6 +17,17 @@ class AdUsersService {
   public async getAdUserById(id: number): Promise<any> {
     const url = `${this.ENDPOINT}/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async processData(data: IProcessData): Promise<any> {
+    const inputValues = {
+      ...data,
+      debug: false,
+    };
+    const url = `${this.ENDPOINT}/process-data`;
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }

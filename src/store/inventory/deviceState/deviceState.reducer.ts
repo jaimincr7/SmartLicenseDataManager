@@ -72,7 +72,10 @@ export const deviceStateSlice = createSlice({
     [searchDeviceState.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchDeviceState.fulfilled.type]: (state, action: PayloadAction<ISearchResponse<IDeviceState>>) => {
+    [searchDeviceState.fulfilled.type]: (
+      state,
+      action: PayloadAction<ISearchResponse<IDeviceState>>
+    ) => {
       const { search_result, ...rest } = action.payload;
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
@@ -133,7 +136,10 @@ export const deviceStateSlice = createSlice({
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteDeviceState.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteDeviceState.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
@@ -167,8 +173,12 @@ export const deviceStateSlice = createSlice({
 export const deviceStateSelector = (state: RootState) => state.deviceState;
 
 // Actions
-export const { clearDeviceState, clearDeviceStateMessages, clearDeviceStateGetById, setTableColumnSelection } =
-  deviceStateSlice.actions;
+export const {
+  clearDeviceState,
+  clearDeviceStateMessages,
+  clearDeviceStateGetById,
+  setTableColumnSelection,
+} = deviceStateSlice.actions;
 
 // The reducer
 export default deviceStateSlice.reducer;

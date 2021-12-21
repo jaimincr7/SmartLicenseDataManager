@@ -27,8 +27,8 @@ import {
 import { ISpsApi } from '../../../../services/sps/spsApi/sps.model';
 import { getSpsApiById, saveSpsApi } from './../../../../store/sps/spsAPI/spsApi.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
-import TextArea from 'antd/lib/input/TextArea';
 
+const { TextArea } = Input;
 const { Option } = Select;
 
 const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
@@ -336,7 +336,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                     'URL'
                   )}
                   <Form.Item name="url" label="URL" className="m-0">
-                    <TextArea className="form-control" />
+                    <TextArea rows={4} />
                   </Form.Item>
                 </div>
               </Col>

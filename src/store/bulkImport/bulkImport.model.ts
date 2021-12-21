@@ -58,5 +58,6 @@ export interface IBulkImportState {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
+    data: any;
   };
 }

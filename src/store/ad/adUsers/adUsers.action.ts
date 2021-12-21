@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ISearchAdUsers, IAdUser } from '../../../services/ad/adUsers/adUsers.model';
+import { ISearchAdUsers, IAdUser, IProcessData } from '../../../services/ad/adUsers/adUsers.model';
 import adUsersService from '../../../services/ad/adUsers/adUsers.service';
 
 // Asynchronous thunk action
@@ -11,6 +11,16 @@ export const searchAdUsers = createAsyncThunk(
       return res.body;
     });
     return response.data;
+  }
+);
+
+export const processDataAdUsers = createAsyncThunk(
+  'processDataAdUsers',
+  async (data: IProcessData) => {
+    const response = await adUsersService.processData(data).then((res) => {
+      return res.body;
+    });
+    return response;
   }
 );
 

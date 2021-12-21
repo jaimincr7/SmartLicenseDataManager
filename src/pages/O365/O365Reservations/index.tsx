@@ -14,6 +14,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import ProcessDataModal from '../O365Users/ProcessDataModal';
 
 const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
   const o365Reservations = useAppSelector(o365ReservationsSelector);
@@ -26,6 +27,7 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
@@ -67,6 +69,20 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.O365Reservations}>
+        <Button
+          className="btn-icon"
+          disabled={o365Reservations.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
     </>
@@ -149,6 +165,14 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={o365Reservations.search.tableName}
         />
       )}
     </div>

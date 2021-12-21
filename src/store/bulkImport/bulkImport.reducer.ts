@@ -53,13 +53,13 @@ export const initialState: IBulkImportState = {
     loading: false,
     hasErrors: false,
     data: null,
-    csvFiles: null
+    csvFiles: null,
   },
   getCSVExcelColumns: {
     loading: false,
     hasErrors: false,
     data: null,
-    csvFiles: null
+    csvFiles: null,
   },
   bulkInsert: {
     loading: false,
@@ -75,6 +75,7 @@ export const initialState: IBulkImportState = {
     loading: false,
     hasErrors: false,
     messages: [],
+    data: null,
   },
 };
 
@@ -101,6 +102,9 @@ export const bulkImportSlice = createSlice({
     },
     clearExcelColumns: (state) => {
       state.getExcelColumns.data = null;
+    },
+    clearSaveExcelData: (state) => {
+      state.saveExcelFileMapping.data = null;
     },
     clearCSVExcelColumns: (state) => {
       state.getCSVExcelColumns.data = null;
@@ -215,7 +219,7 @@ export const bulkImportSlice = createSlice({
       state.getExcelColumns.loading = true;
     },
     [getExcelColumns.fulfilled.type]: (state, action: any) => {
-      const { file_details , cvs_files_with_name } = action.payload
+      const { file_details, cvs_files_with_name } = action.payload;
       state.getExcelColumns.data = file_details;
       state.getExcelColumns.csvFiles = cvs_files_with_name;
       state.getExcelColumns.loading = false;
@@ -231,7 +235,7 @@ export const bulkImportSlice = createSlice({
       state.getCSVExcelColumns.loading = true;
     },
     [getCSVExcelColumns.fulfilled.type]: (state, action: any) => {
-      const { file_details , cvs_files_with_name } = action.payload
+      const { file_details, cvs_files_with_name } = action.payload;
       state.getCSVExcelColumns.data = file_details;
       state.getCSVExcelColumns.csvFiles = cvs_files_with_name;
       state.getCSVExcelColumns.loading = false;
@@ -279,14 +283,17 @@ export const bulkImportSlice = createSlice({
     [saveExcelFileMapping.pending.type]: (state) => {
       state.saveExcelFileMapping.loading = true;
       state.saveExcelFileMapping.messages = [];
+      state.saveExcelFileMapping.data = null;
     },
     [saveExcelFileMapping.fulfilled.type]: (
       state,
-      action: PayloadAction<IApiResponseBody<unknown>>
+      action: PayloadAction<any>
     ) => {
+      const { data , messages } = action.payload;
       state.saveExcelFileMapping.loading = false;
       state.saveExcelFileMapping.hasErrors = false;
-      state.saveExcelFileMapping.messages = action.payload.messages;
+      state.saveExcelFileMapping.messages = messages;
+      state.saveExcelFileMapping.data = data;
     },
     [saveExcelFileMapping.rejected.type]: (state) => {
       state.saveExcelFileMapping.loading = false;
@@ -306,6 +313,7 @@ export const {
   clearCSVExcelColumns,
   clearGetTableColumns,
   clearDeleteMessages,
+  clearSaveExcelData,
   clearExcelFileMappingMessages,
   setTableForImport,
 } = bulkImportSlice.actions;

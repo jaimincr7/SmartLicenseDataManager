@@ -7,10 +7,7 @@ import {
 } from '../../../../store/inventory/device/device.reducer';
 import { AlignType } from 'rc-table/lib/interface';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import {
-  deleteDevice,
-  searchDevice,
-} from '../../../../store/inventory/device/device.action';
+import { deleteDevice, searchDevice } from '../../../../store/inventory/device/device.action';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
@@ -377,11 +374,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByBooleanDropDown(
-              'in_ad',
-              device.search.tableName,
-              ObjectForColumnFilter
-            ),
+            title: FilterByBooleanDropDown('in_ad', device.search.tableName, ObjectForColumnFilter),
             dataIndex: 'in_ad',
             key: 'in_ad',
             ellipsis: true,

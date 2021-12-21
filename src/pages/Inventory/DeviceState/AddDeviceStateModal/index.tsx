@@ -36,7 +36,10 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { saveDeviceState, getDeviceStateById } from '../../../../store/inventory/deviceState/deviceState.action';
+import {
+  saveDeviceState,
+  getDeviceStateById,
+} from '../../../../store/inventory/deviceState/deviceState.action';
 import {
   deviceStateSelector,
   clearDeviceStateMessages,
@@ -273,15 +276,15 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -295,7 +298,12 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                   ) : (
                     'Company'
                   )}
-                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="company_id"
+                    className="m-0"
+                    label="Company"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -313,15 +321,15 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -335,7 +343,12 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="bu_id"
+                    className="m-0"
+                    label="BU"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleBUChange}
                       allowClear
@@ -353,15 +366,15 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -393,7 +406,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
                     name="state_name"
                     className="m-0"
                     label="State Name"
-                    rules={[{ max: 255 , required: !isMultiple}]}
+                    rules={[{ max: 255, required: !isMultiple }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>

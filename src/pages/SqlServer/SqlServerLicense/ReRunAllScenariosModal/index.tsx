@@ -64,8 +64,8 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
 
   useEffect(() => {
     dispatch(getAllCompanyLookup());
-    if(globalFilters.search.company_id !== 0)
-    dispatch(getBULookup(globalFilters.search.company_id));
+    if (globalFilters.search.company_id !== 0)
+      dispatch(getBULookup(globalFilters.search.company_id));
     return () => {
       dispatch(clearBULookUp());
     };
