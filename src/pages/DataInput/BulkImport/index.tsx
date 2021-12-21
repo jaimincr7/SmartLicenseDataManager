@@ -95,8 +95,7 @@ const BulkImport: React.FC = () => {
       //if(bulkImports.getExcelColumns.csvFiles?.length == 0)
       //setExcelColumnState(bulkImports.getExcelColumns.data);
       bulkImports.getExcelColumns.data?.map(async (x: any) => {
-        const orgName = x.original_filename.split('.')[0];
-        const mappingData = x.file_mapping.length > 0 ? x.file_mapping.filter(data1 => data1.key_word == orgName) : [];
+        const mappingData = x.file_mapping.length > 0 ? x.file_mapping.filter(data => data.is_select == true) : [];
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
           let filteredRecords = dummyRecords.filter(
@@ -109,19 +108,19 @@ const BulkImport: React.FC = () => {
                 index: currentIndex++,
                 filename: x.filename,
                 original_filename: x.original_filename,
-                table_name: tableName,
+                table_name: mappingData.length > 0 ? mappingData[0].config_excel_column_mappings[0].table_name : tableName,
                 header_row: 1,
                 sheet: sheet.sheet,
                 columns: sheet.columns,
                 currentMapping:
-                  mappingData && mappingData.length > 0
-                    ? sheet.sheet
+                  x.file_mapping && x.file_mapping.length > 0
+                    ? (mappingData.length > 0 ? mappingData[0].config_excel_column_mappings[0].sheet_name : x.file_mapping[0]?.config_excel_column_mappings[0]?.sheet_name )
                     : null,
                 excel_to_sql_mapping:
-                  mappingData && mappingData.length > 0
-                    ? JSON.parse(mappingData[0]?.config_excel_column_mappings[0]?.mapping)
+                  x.file_mapping && x.file_mapping.length > 0
+                    ? (mappingData.length > 0 ? JSON.parse(mappingData[0].config_excel_column_mappings[0].mapping) : JSON.parse(x.file_mapping[0]?.config_excel_column_mappings[0]?.mapping))
                     : null,
-                show_mapping: mappingData  ? mappingData : null,
+                show_mapping: x.file_mapping  ? x.file_mapping : null,
               },
             ];
           });

@@ -361,7 +361,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const geChildDropdown = (excelMappings: any, currentRecord: any) => {
     const chidDropdown = [];
     excelMappings?.map((m: any) => {
-      if(currentRecord.sheet == m.sheet_name) {
       chidDropdown.push({
         title: (
           <>
@@ -382,7 +381,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         ),
         value: m.id,
       });
-    }
     });
 
     return chidDropdown;
