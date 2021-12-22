@@ -10,6 +10,7 @@ import { Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const Company: React.FC<ICompanyProps> = (props) => {
   const company = useAppSelector(companySelector);
@@ -21,7 +22,9 @@ const Company: React.FC<ICompanyProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [filterKeys, setFilterKeys] = React.useState({});
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
@@ -60,6 +63,20 @@ const Company: React.FC<ICompanyProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.Company}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={company.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
         </Button>
       </Can>
     </>
@@ -111,6 +128,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -137,6 +155,15 @@ const Company: React.FC<ICompanyProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={company.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

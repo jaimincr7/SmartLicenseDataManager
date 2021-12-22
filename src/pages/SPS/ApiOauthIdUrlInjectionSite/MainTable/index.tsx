@@ -20,6 +20,7 @@ import {
   searchSpsApiOauthIdUrlInjectionSite,
 } from '../../../../store/sps/apiOauthIdUrlInjectionSite/apiOauthIdUrlInjectionSite.action';
 import spsApiOauthIdUrlInjectionSiteService from '../../../../services/sps/apiOauthIdUrlInjectionSite/apiOauthIdUrlInjectionSite.service';
+import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -33,6 +34,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
+  const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   useImperativeHandle(ref, () => ({
@@ -78,6 +80,63 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Tenant Name</span>,
+        column: 'TenantId',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'tenant_id',
+              spsApiOauthIdUrlInjectionSite.search.lookups?.tenants?.length > 0
+                ? spsApiOauthIdUrlInjectionSite.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
+            dataIndex: 'tenant_name',
+            key: 'tenant_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Company Name</span>,
+        column: 'CompanyId',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'company_id',
+              spsApiOauthIdUrlInjectionSite.search.lookups?.companies?.length > 0
+                ? spsApiOauthIdUrlInjectionSite.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
+            dataIndex: 'company_name',
+            key: 'company_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Bu Name</span>,
+        column: 'BU_Id',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'bu_id',
+              spsApiOauthIdUrlInjectionSite.search.lookups?.bus?.length > 0
+                ? spsApiOauthIdUrlInjectionSite.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
+            dataIndex: 'bu_name',
+            key: 'bu_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">OAuth Id</span>,
         column: 'OAuthId',
         sorter: true,
@@ -89,6 +148,22 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             ),
             dataIndex: 'sps_api_oauth_name',
             key: 'sps_api_oauth_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Api Types</span>,
+        column: 'Api Types',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'api_type_id',
+              spsApiOauthIdUrlInjectionSite.search.lookups?.types
+            ),
+            dataIndex: 'sps_api_type_name',
+            key: 'sps_api_type_name',
             ellipsis: true,
           },
         ],

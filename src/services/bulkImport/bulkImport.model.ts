@@ -31,5 +31,6 @@ export interface ISaveExcelMapping {
   file_type: string;
   key_word: string;
   is_public: boolean;
+  delimiter?: string;
   config_excel_column_mappings: IConfigColMapping[];
 }

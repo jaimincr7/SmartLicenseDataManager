@@ -29,7 +29,7 @@ import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { count, table, form, records, setRecords, date, loading, setLoading, setDelimitFlag } =
+  const { count, table, form, records, setRecords, date, loading, setLoading, setDelimitFlag, firstFlag, setFirstFlag } =
     props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -1182,6 +1182,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           records={excelPreviewData}
           setExcelPreviewData={setExcelPreviewData}
           headerRowCount={headerRowCount}
+          firstFlag={firstFlag}
+          setFirstFlag={setFirstFlag}
         />
       )}
     </>
