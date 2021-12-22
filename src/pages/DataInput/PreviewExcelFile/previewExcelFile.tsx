@@ -25,10 +25,11 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     handleModalClose,
     maxCount,
     seqNumber,
+    firstFlag,
+    setFirstFlag,
   } = props;
   const [columns, setColumns] = useState([]);
   const [tableData, setTableData] = useState([]);
-  const [firstFlag, setFirstFlag] = useState(false);
   const dispatch = useAppDispatch();
   const [showDelimiter, setShowDelimiter] = useState(false);
   const bulkImport = useAppSelector(bulkImportSelector);
@@ -78,14 +79,14 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [form] = Form.useForm();
   const initialValues = {
     header_row: headerRowCount,
-    deli_meter: ',',
+    deli_meter: dataRecords.filter(data => data.index == seqNumber).length > 0 && dataRecords.filter(data => data.index == seqNumber)[0].delimiter !== null? dataRecords.filter(data => data.index == seqNumber)[0].delimiter : ',',
   };
 
   useEffect(() => {
     dataRecords.map((data) => {
       if (data.index == seqNumber) {
         data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
-        'csv'
+          'csv'
           ? setShowDelimiter(true)
           : setShowDelimiter(false);
       }
@@ -133,9 +134,10 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const submitHeaderRow = (values: any) => {
     const dummyRecords = _.cloneDeep(dataRecords);
     dummyRecords.map((data) => {
-      if (data.index == seqNumber) {
+        if (data.index == seqNumber) {
         data.header_row = values.header_row;
-        data.delimeter = values.deli_meter;
+        data.delimiter = values.deli_meter;
+        data.excel_to_sql_mapping = null;
       }
     });
     setRecords(dummyRecords);

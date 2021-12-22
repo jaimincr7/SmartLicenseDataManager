@@ -168,7 +168,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
             onFinish={onFinish}
             validateMessages={validateMessages}
           >
-            <Row gutter={[30, 15]} className="form-label-hide">
+            <Row gutter={[30, 30]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
@@ -327,7 +327,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                 </div>
               </Col>
               <Col xs={24}>
-                <div className="form-group m-0">
+                <div className="m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'url']} valuePropName="checked" noStyle>
                       <Checkbox>URL</Checkbox>
@@ -336,7 +336,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                     'URL'
                   )}
                   <Form.Item name="url" label="URL" className="m-0">
-                    <TextArea rows={4} />
+                    <TextArea rows={4} style={{ minHeight: 100 }}/>
                   </Form.Item>
                 </div>
               </Col>

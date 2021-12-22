@@ -157,13 +157,13 @@ const AddAPIMapping: React.FC = () => {
         initialValuesData[ele.name] =
           filterApiColumns?.filter(
             (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-              ele.name.toLowerCase()?.replace(/\s/g, '')
+              x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+              ele.name.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterApiColumns.filter(
                 (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name.toLowerCase()?.replace(/\s/g, '')
+                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s+/g, '')
               )[0]
             : '';
       }

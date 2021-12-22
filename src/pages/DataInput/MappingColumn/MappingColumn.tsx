@@ -203,10 +203,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       file_type: filetype,
       key_word: filename,
       is_public: isPublic,
+      delimiter: record.delimiter,
       config_excel_column_mappings: [
         {
           sheet_name: record.sheet,
-          header_row: skipRows,
+          header_row: record.header_row - 1,
           table_name: record.table_name,
           mapping: JSON.stringify(sqlToExcelMapping),
         },
