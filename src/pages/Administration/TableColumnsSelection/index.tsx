@@ -9,6 +9,7 @@ import {
   globalTableColumnSelectionSelector,
   setGlobalTableColumns,
   setGlobalTableColumnSelection,
+  setGlobalTableColumnsTableName,
 } from '../../../store/administration/globalTableColumnSelection/globalTableColumnSelection.reducer';
 import { validateMessages } from '../../../common/constants/common';
 import { IDatabaseTable } from '../../../services/common/common.model';
@@ -40,6 +41,7 @@ const TableColumnSelection: React.FC = () => {
       toast.info('Please select some columns.');
       return false;
     }
+    setGlobalTableColumnsTableName(form.getFieldValue('table_name')) ;
     dispatch(saveGlobalTableColumnSelection(columnSelection.getGlobalTableColumns.data)).then(
       (res) => {
         dispatch(setGlobalTableColumns(res.payload.data));

@@ -134,6 +134,7 @@ const AddAPIMapping: React.FC = () => {
     if (spsAPIColMapping.getById.data?.mapping?.length > 0) {
       mappingArray = JSON.parse(spsAPIColMapping.getById.data?.mapping);
     }
+    setApiColumns(null);
     const filterApiColumns = spsAPIColMapping.apiColumn.data;
     const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
     const filterTableColumns = bulkImports.getTableColumns.data?.filter(
@@ -161,10 +162,10 @@ const AddAPIMapping: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterApiColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                  ele.name.toLowerCase()?.replace(/\s+/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                ele.name.toLowerCase()?.replace(/\s+/g, '')
+            )[0]
             : '';
       }
     });
@@ -173,7 +174,8 @@ const AddAPIMapping: React.FC = () => {
 
   useEffect(() => {
     if (bulkImports.getTableColumns.data?.length > 0 || spsAPIColMapping.apiColumn.data?.length > 0)
-      setFormFields();
+    setApiColumns(null);
+    setFormFields();
   }, [bulkImports.getTableColumns.data, spsAPIColMapping.apiColumn.data]);
 
   const onFinish = (values: any) => {
