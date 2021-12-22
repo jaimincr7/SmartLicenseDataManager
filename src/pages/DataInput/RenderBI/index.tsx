@@ -117,46 +117,48 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
       }
+      const arr : Array<{excel_to_sql_mapping: any,table_name: string,file_name: string,original_file_name: string,sheet_name: string,header_row: number,delimiter: string}> = [];
       records.map((data) => {
-        const val = {
-          excel_sheet_with_mapping_details: [
-            {
-              excel_to_sql_mapping: data.excel_to_sql_mapping
-                ? data.excel_to_sql_mapping
-                : getDummyMapping(data.sheet, data.columns),
-              table_name: data.table_name,
-              file_name: data.filename,
-              original_file_name: data.original_filename,
-              sheet_name: data.sheet,
-              header_row: data.header_row - 1,
-              delimiter: data.delimeter ? data.delimiter : ',',
-            },
-          ],
-          foreign_key_values: {
-            tenant_id: _.isNull(globalSearch.tenant_id)
-              ? null
-              : globalSearch.tenant_id === undefined
-                ? null
-                : globalSearch?.tenant_id[0],
-            bu_id: _.isNull(globalSearch.bu_id)
-              ? null
-              : globalSearch.bu_id === undefined
-                ? null
-                : globalSearch?.bu_id[0],
-            company_id: _.isNull(globalSearch.company_id)
-              ? null
-              : globalSearch.company_id === undefined
-                ? null
-                : globalSearch?.company_id[0],
-            date_added: date ? date : moment(),
-          },
+        const Obj = {
+          excel_to_sql_mapping: data.excel_to_sql_mapping
+            ? data.excel_to_sql_mapping
+            : getDummyMapping(data.sheet, data.columns),
+          table_name: data.table_name,
+          file_name: data.filename,
+          original_file_name: data.original_filename,
+          sheet_name: data.sheet,
+          header_row: data.header_row - 1,
+          delimiter: data.delimeter ? data.delimiter : ',',
         };
-        if (emptyMappingFlag == true) {
-          toast.info('Some File may not have any mapping.Please check!');
-        } else {
-          dispatch(bulkInsert(val));
-        }
+        arr.push(Obj);
       });
+      const val = {
+        excel_sheet_with_mapping_details: arr,
+        foreign_key_values: {
+          tenant_id: _.isNull(globalSearch.tenant_id)
+            ? null
+            : globalSearch.tenant_id === undefined
+              ? null
+              : globalSearch?.tenant_id[0],
+          bu_id: _.isNull(globalSearch.bu_id)
+            ? null
+            : globalSearch.bu_id === undefined
+              ? null
+              : globalSearch?.bu_id[0],
+          company_id: _.isNull(globalSearch.company_id)
+            ? null
+            : globalSearch.company_id === undefined
+              ? null
+              : globalSearch?.company_id[0],
+          date_added: date ? date : moment(),
+        },
+      };
+      debugger;
+      if (emptyMappingFlag == true) {
+        toast.info('Some File may not have any mapping.Please check!');
+      } else {
+        dispatch(bulkInsert(val));
+      }
     }
   }, [count.save]);
 
