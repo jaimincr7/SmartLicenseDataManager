@@ -13,4 +13,6 @@ export interface IRenderBIProps {
   loading?: boolean;
   setLoading?: (data: boolean) => void;
   setDelimitFlag?: (data: any) => void;
+  firstFlag?: boolean;
+  setFirstFlag?: (data: boolean) => void;
 }

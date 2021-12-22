@@ -10,4 +10,6 @@ export interface IPreviewExcel {
   setExcelPreviewData?: (data: any) => void;
   maxCount: number;
   seqNumber?: number;
+  firstFlag?: boolean;
+  setFirstFlag?: (data: boolean) => void;
 }

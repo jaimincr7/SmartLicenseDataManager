@@ -198,15 +198,17 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     if (sqlToExcelMapping.length === 0) {
       return false;
     }
+    debugger;
     const excelMappingObj: ISaveExcelMapping = {
       id: parentId,
       file_type: filetype,
       key_word: filename,
       is_public: isPublic,
+      delimiter: record.delimeter,
       config_excel_column_mappings: [
         {
           sheet_name: record.sheet,
-          header_row: skipRows,
+          header_row: record.header_row - 1,
           table_name: record.table_name,
           mapping: JSON.stringify(sqlToExcelMapping),
         },
