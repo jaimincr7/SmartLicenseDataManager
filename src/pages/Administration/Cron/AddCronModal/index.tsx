@@ -54,7 +54,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   const globalFilters = useAppSelector(globalSearchSelector);
   const [week, setWeek] = useState('Daily');
 
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+  const { id, showModal, handleModalClose, filterKeys, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -88,6 +88,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     cron_frequency_day: null,
     cron_frequency_time: '',
     start_schedular: false,
+    date_added: null,
   };
 
   const onFinish = (values: any) => {
@@ -151,6 +152,9 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         cron_frequency_time: _.isNull(data.cron_frequency_time)
           ? null
           : moment(data.cron_frequency_time),
+        date_added: _.isNull(data.date_added)
+          ? null
+          : moment(data.date_added),
         start_schedular: data.status === 'Running' ? true : false,
       };
       if (data.cron_frequency_type) {
@@ -213,15 +217,23 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
       }
-      if (globalSearch.company_id) {
-        dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
-        dispatch(getBULookup(globalSearch.company_id[0]));
-        const initialValues = {
+      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
+        if (!globalFilters.search.company_id) {
+          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+        }
+        if (!globalFilters.search.bu_id && globalFilters.search.company_id !== 0) {
+          dispatch(getBULookup(globalSearch.company_id[0]));
+        }
+        const initlValues = {
           company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+          date_added:
+            filterKeys?.filter_keys?.date_added?.length == 1
+              ? moment(filterKeys.filter_keys.date_added[0])
+              : null,
         };
-        form.setFieldsValue(initialValues);
+        form.setFieldsValue(initlValues);
       }
     }
   }, []);

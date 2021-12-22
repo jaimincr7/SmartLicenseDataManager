@@ -19,6 +19,7 @@ const Cron: React.FC<ICronProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
+  const [filterKeys, setFilterKeys] = React.useState({});
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
@@ -59,6 +60,7 @@ const Cron: React.FC<ICronProps> = (props) => {
             setId(0);
             setShowSelectedListModal(state);
           }}
+          setFilterKeys={setFilterKeys}
           setSelectedId={(id) => {
             setId(id);
             setAddModalVisible(true);
@@ -68,6 +70,7 @@ const Cron: React.FC<ICronProps> = (props) => {
       {addModalVisible && (
         <AddCronModal
           showModal={addModalVisible}
+          filterKeys={filterKeys}
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);

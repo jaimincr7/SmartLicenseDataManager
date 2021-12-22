@@ -5,4 +5,5 @@ export interface IAddCronProps {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   valuesForSelection?: any[];
+  filterKeys?: any;
 }
