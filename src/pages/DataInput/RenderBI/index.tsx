@@ -153,7 +153,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           date_added: date ? date : moment(),
         },
       };
-      debugger;
       if (emptyMappingFlag == true) {
         toast.info('Some File may not have any mapping.Please check!');
       } else {
