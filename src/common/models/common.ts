@@ -33,7 +33,7 @@ export interface ITableColumnSelection {
 export interface ISearchResult<T> {
   records: T[];
   total_count: number;
-  table_name?: string;
+  table_name?: any;
   column_selection?: ITableColumnSelection;
 }
 
