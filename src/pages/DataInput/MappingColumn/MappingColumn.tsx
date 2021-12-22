@@ -203,7 +203,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       file_type: filetype,
       key_word: filename,
       is_public: isPublic,
-      delimiter: record.delimeter,
+      delimiter: record.delimiter,
       config_excel_column_mappings: [
         {
           sheet_name: record.sheet,

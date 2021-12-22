@@ -79,7 +79,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [form] = Form.useForm();
   const initialValues = {
     header_row: headerRowCount,
-    deli_meter: ',',
+    deli_meter: dataRecords.filter(data => data.index == seqNumber).length > 0 && dataRecords.filter(data => data.index == seqNumber)[0].delimiter !== null? dataRecords.filter(data => data.index == seqNumber)[0].delimiter : ',',
   };
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     dummyRecords.map((data) => {
         if (data.index == seqNumber) {
         data.header_row = values.header_row;
-        data.delimeter = values.deli_meter;
+        data.delimiter = values.deli_meter;
         data.excel_to_sql_mapping = null;
       }
     });
