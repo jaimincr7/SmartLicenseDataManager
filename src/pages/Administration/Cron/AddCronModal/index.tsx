@@ -54,8 +54,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   const globalFilters = useAppSelector(globalSearchSelector);
   const [week, setWeek] = useState('Daily');
 
-  const { id, showModal, handleModalClose, filterKeys, refreshDataTable, isMultiple, valuesForSelection } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    filterKeys,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -152,9 +159,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         cron_frequency_time: _.isNull(data.cron_frequency_time)
           ? null
           : moment(data.cron_frequency_time),
-        date_added: _.isNull(data.date_added)
-          ? null
-          : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         start_schedular: data.status === 'Running' ? true : false,
       };
       if (data.cron_frequency_type) {

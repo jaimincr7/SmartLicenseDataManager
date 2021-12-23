@@ -54,7 +54,7 @@ export const globalTableColumnSelectionSlice = createSlice({
       state.getTableColumns.data = null;
     },
     setGlobalTableColumnsTableName: (state, tableName: any) => {
-        state.getGlobalTableColumns.data.table_name = tableName;
+      state.getGlobalTableColumns.data.table_name = tableName;
     },
     setGlobalTableColumns: (state, action: PayloadAction<ITableColumnSelection>) => {
       if (action.payload) {

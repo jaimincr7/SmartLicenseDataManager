@@ -162,10 +162,10 @@ const AddAPIMapping: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterApiColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                ele.name.toLowerCase()?.replace(/\s+/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s+/g, '')
+              )[0]
             : '';
       }
     });
@@ -174,7 +174,7 @@ const AddAPIMapping: React.FC = () => {
 
   useEffect(() => {
     if (bulkImports.getTableColumns.data?.length > 0 || spsAPIColMapping.apiColumn.data?.length > 0)
-    setApiColumns(null);
+      setApiColumns(null);
     setFormFields();
   }, [bulkImports.getTableColumns.data, spsAPIColMapping.apiColumn.data]);
 

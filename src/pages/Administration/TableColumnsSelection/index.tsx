@@ -43,13 +43,11 @@ const TableColumnSelection: React.FC = () => {
     const finalData = {
       id: columnSelection.getGlobalTableColumns.data.id,
       table_name: form.getFieldValue('table_name'),
-      columns: columnSelection.getGlobalTableColumns.data.columns
+      columns: columnSelection.getGlobalTableColumns.data.columns,
     };
-    dispatch(saveGlobalTableColumnSelection(finalData)).then(
-      (res) => {
-        dispatch(setGlobalTableColumns(res.payload.data));
-      }
-    );
+    dispatch(saveGlobalTableColumnSelection(finalData)).then((res) => {
+      dispatch(setGlobalTableColumns(res.payload.data));
+    });
   };
 
   const handleTableChange = (table: string) => {
