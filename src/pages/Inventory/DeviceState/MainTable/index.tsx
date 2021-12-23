@@ -11,13 +11,10 @@ import {
   deleteDeviceState,
   searchDeviceState,
 } from '../../../../store/inventory/deviceState/deviceState.action';
-import moment from 'moment';
-import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import deviceService from '../../../../services/inventory/deviceState/deviceState.service';
 import {
   FilterByBooleanDropDown,
-  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
@@ -69,10 +66,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       null,
       ObjectForColumnFilter
     );
-  };
-
-  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
-    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -168,20 +161,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'state_name',
             key: 'state_name',
             ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Date Added</span>,
-        column: 'Date Added',
-        sorter: true,
-        children: [
-          {
-            title: FilterByDateSwapTable('date_added', deviceState.search.tableName, form),
-            dataIndex: 'date_added',
-            key: 'date_added',
-            ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
           },
         ],
       },
