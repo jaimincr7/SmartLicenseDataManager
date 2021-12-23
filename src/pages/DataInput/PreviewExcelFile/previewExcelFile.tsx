@@ -60,7 +60,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         bulkImport.getCSVExcelColumns.csvFiles !== null &&
         bulkImport.getCSVExcelColumns.csvFiles?.length > 0
       ) {
-        toast.warn('Please re-check your De-limiter');
+        toast.warn('Please re-check your Delimiter');
       }
       if (
         bulkImport.getCSVExcelColumns.csvFiles !== null &&

@@ -50,6 +50,7 @@ const BulkImport: React.FC = () => {
   table && (table = decodeURIComponent(table));
   const [count, setCount] = useState({ save: 0, reset: 0 });
   const [firstFlag, setFirstFlag] = useState(false);
+  const [repeatSheetFlag, setRepeatSheetFlag ] = useState(false);
   const [tableName, setTableName] = useState<string>(table);
   //const [defaultFile, setDefaultFile] = useState(null);
   //const [excelColumnState, setExcelColumnState] = useState([]);
@@ -93,22 +94,65 @@ const BulkImport: React.FC = () => {
       setDelimitModalShow(true);
     }
     if (bulkImports.getExcelColumns.data || bulkImports.getExcelColumns.csvFiles?.length > 0) {
-      bulkImports.getExcelColumns.data?.map(async (x: any) => {
-        const mappingData =
-          x.file_mapping.length > 0 ? x.file_mapping.filter((data) => data.is_select == true) : [];
+      if(!repeatSheetFlag){
+        bulkImports.getExcelColumns.data?.map(async (x: any) => {
+        const mappingData = x.file_mapping.length > 0 ? x.file_mapping.filter(data => data.is_select == true) : [];
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
           let filteredRecords = dummyRecords.filter(
             (data) => data.filename !== x.filename && data.original_filename !== x.original_filename
           );
           (x?.excel_sheet_columns || []).map((sheet) => {
+            const mappingSheet = mappingData.length > 0 ? mappingData[0]?.config_excel_column_mappings?.filter(data => data.sheet_name == sheet.sheet) : [];
+            filteredRecords = [
+              ...filteredRecords,
+              {
+                index: currentIndex++,
+                filename: x.filename,
+                original_filename: x.original_filename,
+                delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
+                table_name: mappingData.length > 0 ? (mappingSheet.length > 0 ? mappingSheet[0]?.table_name : tableName) : tableName,
+                header_row: mappingData.length > 0 ? (mappingSheet.length > 0 ? mappingSheet[0]?.header_row + 1 : 1) : 1,
+                sheet: sheet.sheet,
+                columns: sheet.columns,
+                currentMapping:
+                  x.file_mapping && x.file_mapping.length > 0
+                    ? (mappingData.length > 0 ? ((mappingSheet.length > 0 ? mappingSheet[0]?.sheet_name : '')) : '' )
+                    : null,
+                excel_to_sql_mapping:
+                  x.file_mapping && x.file_mapping.length > 0
+                    ? (mappingData.length > 0 ? (mappingSheet.length > 0 ? JSON.parse(mappingSheet[0]?.mapping) : null) : null)
+                    : null,
+                show_mapping: x.file_mapping  ? x.file_mapping : null,
+              },
+            ];
+          });
+
+          return filteredRecords;
+        });
+      });
+    } else {
+      const realData = _.cloneDeep(records);
+      bulkImports.getExcelColumns.data?.map(async (x: any) => {
+        const mappingData =
+          x.file_mapping.length > 0 ? x.file_mapping.filter((data) => data.is_select == true) : [];
+        setRecords((records) => {
+          const dummyRecords = _.cloneDeep(records);
+          let filteredRecords = dummyRecords;
+          (x?.excel_sheet_columns || []).map((sheet) => {
+            let nonRepeated = true;
+            realData.map((data) => {
+              if((data.sheet == sheet.sheet && data.original_filename == x.original_filename)) {
+                nonRepeated = false;
+              }
+            });
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
                     (data) => data.sheet_name == sheet.sheet
                   )
                 : [];
-            filteredRecords = [
+            if(nonRepeated){filteredRecords = [
               ...filteredRecords,
               {
                 index: currentIndex++,
@@ -147,13 +191,15 @@ const BulkImport: React.FC = () => {
                     : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
-            ];
+            ];}
           });
 
           return filteredRecords;
         });
       });
+    }
       setDefaultFileList([]);
+      setRepeatSheetFlag(false);
     }
   }, [bulkImports.getExcelColumns.data, bulkImports.getExcelColumns.csvFiles]);
 
@@ -321,6 +367,7 @@ const BulkImport: React.FC = () => {
   }, [dispatch]);
 
   const getFileMappingCall = (formData: any) => {
+    setRepeatSheetFlag(true);
     dispatch(getExcelColumns(formData));
   };
 
