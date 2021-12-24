@@ -295,14 +295,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
+    if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0 && !(globalSearchExist==false)) {
       const initlValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
         tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
       };
       form.setFieldsValue(initlValues);
-      if (globalFilters.search && !(globalSearchExist == false)) {
+      if (globalFilters.search) {
         onFinish(initlValues);
       }
     } else {
