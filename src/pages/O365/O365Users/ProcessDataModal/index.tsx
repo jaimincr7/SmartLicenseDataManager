@@ -62,7 +62,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       selected_date: values.selected_date,
       table_name: tableName,
     };
-    debugger;
     dispatch(processDataO365(finalProcessData));
   };
 
