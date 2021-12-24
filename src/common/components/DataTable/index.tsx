@@ -267,6 +267,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         toast.success(common.manageCronJob?.messages.join(' '));
         fetchTableData();
       }
+      dispatch(getCronJobStatus());
       dispatch(clearCronJobSchedularMessages());
     }
   }, [common.manageCronJob.messages]);
@@ -345,7 +346,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const startSchedule = () => {
     dispatch(manageCronJobApi());
-    dispatch(getCronJobStatus());
   };
 
   // Table columns
@@ -359,9 +359,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
