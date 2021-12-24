@@ -35,6 +35,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [excelColumns, setExcelColumns] = useState(null);
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
+  const [mappingSeq, setMappingSeq] = useState(null);
   const [localMapping, setLocalMapping] = useState<boolean>(true);
 
   useEffect(() => {
@@ -363,8 +364,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         <Button
           key="submit"
           type="primary"
-          loading={bulkImport.saveExcelFileMapping.loading}
+          loading={bulkImport.saveExcelFileMapping.loading && record.index == mappingSeq}
           onClick={() => {
+            setMappingSeq(seqNumber);
             onFinish(form.getFieldsValue());
           }}
         >

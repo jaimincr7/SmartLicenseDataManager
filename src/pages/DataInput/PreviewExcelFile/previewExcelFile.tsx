@@ -29,7 +29,6 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     setFirstFlag,
   } = props;
   const [columns, setColumns] = useState([]);
-  const [tableData, setTableData] = useState([]);
   const dispatch = useAppDispatch();
   const [showDelimiter, setShowDelimiter] = useState(false);
   const bulkImport = useAppSelector(bulkImportSelector);
@@ -67,13 +66,13 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         bulkImport.getCSVExcelColumns.csvFiles?.length == 0
       ) {
         toast.success('Your Delimiter is On Mark!');
-        setTableData(bulkImport.getCSVExcelColumns.data[0].excel_sheet_columns[0].columns);
+        previewData(true,form.getFieldValue('header_row'));
       }
     }
   }, [bulkImport.getCSVExcelColumns.csvFiles]);
 
   useEffect(() => {
-    showModal && previewData(headerRowCount);
+    showModal && previewData(false,headerRowCount);
   }, [showModal]);
 
   const [form] = Form.useForm();
@@ -108,7 +107,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
 
   useEffect(() => {
     const mainColumns = [];
-    if (!firstFlag ? records?.length > 0 : tableData?.length > 0) {
+    if (records?.length > 0) {
       for (let index = 0; index <= maxCount; index++) {
         mainColumns.push({
           dataIndex: 'description' + index,
@@ -129,7 +128,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       }
       setColumns(mainColumns);
     }
-  }, [tableData, records]);
+  }, [records]);
 
   const handleTableChange = (paginating) => {
     setPagination(paginating);
@@ -178,7 +177,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
                   max={maxCount}
                   className="form-control w-100"
                   onChange={(value) => {
-                    previewData(value);
+                    previewData(false,value);
                   }}
                 />
               </Form.Item>
@@ -237,15 +236,15 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
             ...pagination,
             pageSizeOptions: [
               '10',
-              tableData?.length > 10 ? '50' : '-',
-              tableData?.length > 50 ? '100' : '-',
-              tableData?.length > 100 ? '500' : '-',
+              records?.length > 10 ? '50' : '-',
+              records?.length > 50 ? '100' : '-',
+              records?.length > 100 ? '500' : '-',
             ],
-            total: tableData?.length,
+            total: records?.length,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
-          dataSource={!firstFlag ? records : tableData}
+          dataSource={records}
           columns={columns}
           className="custom-table first-row-header"
         />

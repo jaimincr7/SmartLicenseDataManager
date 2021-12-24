@@ -102,10 +102,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             ele.name?.toLowerCase()?.replace(/\s/g, '')
         ).length > 0
           ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+            (x: any) =>
+              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+              ele.name?.toLowerCase()?.replace(/\s/g, '')
+          )[0]
           : '';
       sqlToExcelMapping.push({
         key: `${ele.name}`,
@@ -156,18 +156,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           tenant_id: _.isNull(globalSearch.tenant_id)
             ? null
             : globalSearch.tenant_id === undefined
-            ? null
-            : globalSearch?.tenant_id[0],
+              ? null
+              : globalSearch?.tenant_id[0],
           bu_id: _.isNull(globalSearch.bu_id)
             ? null
             : globalSearch.bu_id === undefined
-            ? null
-            : globalSearch?.bu_id[0],
+              ? null
+              : globalSearch?.bu_id[0],
           company_id: _.isNull(globalSearch.company_id)
             ? null
             : globalSearch.company_id === undefined
-            ? null
-            : globalSearch?.company_id[0],
+              ? null
+              : globalSearch?.company_id[0],
           date_added: date ? date : moment(),
         },
       };
@@ -235,18 +235,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-          ? null
-          : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-          ? null
-          : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-          ? null
-          : globalSearch?.company_id[0],
+            ? null
+            : globalSearch?.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -257,10 +257,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -326,12 +326,16 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   }, [table]);
 
-  const previewData = (headerValue = 0) => {
-    const dummyRecords = records.filter((data) => data.index == selectedRowId);
-    const currentExcelData = [...dummyRecords[0]?.columns];
+  const previewData = (csvFlag: boolean , headerValue = 0) => {
+    const dummyRecords = csvFlag ? (bulkImports.getCSVExcelColumns.data[0].excel_sheet_columns[0].columns) : (records.filter((data) => data.index == selectedRowId));
+    const currentExcelData = csvFlag ? [...dummyRecords] : [...dummyRecords[0]?.columns];
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
+    if(csvFlag) {
+      setMaxHeaderRow(dummyRecords?.length);
+    } else {
     setMaxHeaderRow(dummyRecords[0].columns?.length);
+    }
     innerFormUpload.setFieldsValue({ header_row: headerValue });
     setFormFields();
   };

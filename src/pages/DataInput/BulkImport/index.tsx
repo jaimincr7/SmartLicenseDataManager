@@ -238,11 +238,13 @@ const BulkImport: React.FC = () => {
                 original_filename: x.original_filename,
                 delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
                 table_name:
-                  mappingData.length > 0
+                !firstFlag ? (mappingData.length > 0
                     ? mappingSheet.length > 0
                       ? mappingSheet[0]?.table_name
                       : tableName
-                    : tableName,
+                    : tableName) : (orgFile.length > 0
+                      ? orgFile[0].table_name
+                      : tableName),
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -260,13 +262,15 @@ const BulkImport: React.FC = () => {
                       : ''
                     : null,
                 excel_to_sql_mapping:
-                  x.file_mapping && x.file_mapping.length > 0
+                  !firstFlag ? (x.file_mapping && x.file_mapping.length > 0
                     ? mappingData.length > 0
                       ? mappingSheet.length > 0
                         ? JSON.parse(mappingSheet[0]?.mapping)
                         : null
                       : null
-                    : null,
+                    : null) : (orgFile.length > 0
+                      ? orgFile[0].excel_to_sql_mapping
+                      : null),
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
