@@ -117,6 +117,7 @@ import spsApiBaseUrlReducer from './sps/apiBaseUrl/apiBaseUrl.reducer';
 import spsApiOauthUrlInjectionSiteReducer from './sps/apiOauthUrlInjectionSite/apiOauthUrlInjectionSite.reducer';
 import spsApiOauthIdUrlInjectionSiteReducer from './sps/apiOauthIdUrlInjectionSite/apiOauthIdUrlInjectionSite.reducer';
 import spsApiTokenConfigOptionsV2Reducer from './sps/apiTokenConfigOptionsV2/apiTokenConfigOptionsV2.reducer';
+import spsApiInjectionParamV2Reducer from './sps/apiInjectionParamV2/apiInjectionParamV2.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -271,6 +272,7 @@ export const rootReducer = combineReducers({
   spsApiBaseUrl: spsApiBaseUrlReducer,
   spsApiOauthUrlInjectionSite: spsApiOauthUrlInjectionSiteReducer,
   spsApiTokenConfigOptionsV2: spsApiTokenConfigOptionsV2Reducer,
+  spsApiInjectionParamV2: spsApiInjectionParamV2Reducer,
   spsApiOauthIdUrlInjectionSite: spsApiOauthIdUrlInjectionSiteReducer,
 
   apiColumnMapping: apiColMappingReducer,

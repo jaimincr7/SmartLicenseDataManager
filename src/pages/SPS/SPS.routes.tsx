@@ -4,6 +4,7 @@ import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
 import SpsApiBaseUrl from './ApiBaseUrl';
 import SpsApiGroup from './ApiGroup';
+import SpsApiInjectionParamV2 from './ApiInjectionParamV2';
 import SpsApiOauth from './ApiOauth';
 import SpsApiOauthIdUrlInjectionSite from './ApiOauthIdUrlInjectionSite';
 import SpsApiOauthUrlInjectionSite from './ApiOauthUrlInjectionSite';
@@ -14,6 +15,7 @@ import SpsApiTokenConfigOptionsV2 from './ApiTokenConfigOptionsV2';
 import SpsApiType from './ApiType';
 import SpsApiJobs from './SpsApiJobs';
 import SpsApiJobsData from './SpsApiJobsData';
+import TabforCRUDs from './TabforCRUDs';
 
 const SPSRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -138,10 +140,29 @@ const SPSRoutes: React.FC = () => {
           />
         )}
 
+        {/* SPS API InjectionParamV2 */}
+        {ability.can(Action.View, Page.SpsApiInjectionParamV2) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-injection-param-v2`}
+            component={SpsApiInjectionParamV2}
+          />
+        )}
+        {ability.can(Action.View, Page.SpsApiInjectionParamV2) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-injection-param-v2/:id`}
+            component={SpsApiInjectionParamV2}
+          />
+        )}
+
         {/* SPS API Jobs Data */}
         {ability.can(Action.View, Page.SpsApiJobsData) && (
           <Route exact path={`${match.path}/sps-api-jobs-data/:id`} component={SpsApiJobsData} />
         )}
+
+        {/* SPS API Jobs Data */}
+        <Route exact path={`${match.path}/sps-api-type/detail/:id`} component={TabforCRUDs} />
 
         {/* keep least always */}
         <Route path={`${match.path}/*`}>

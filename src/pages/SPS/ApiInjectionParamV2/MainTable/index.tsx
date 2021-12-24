@@ -1,22 +1,27 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
+import _ from 'lodash';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
-  FilterByDropdown,
+  FilterByBooleanDropDown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
+import { AlignType } from 'rc-table/lib/interface';
 import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import {
-  clearSpsApiTypeMessages,
-  spsApiTypeSelector,
+  clearSpsApiInjectionParamV2Messages,
+  spsApiInjectionParamV2Selector,
   setTableColumnSelection,
-} from '../../../../store/sps/apiType/apiType.reducer';
-import { deleteSpsApiType, searchSpsApiType } from '../../../../store/sps/apiType/apiType.action';
-import spsApiTypeService from '../../../../services/sps/apiType/apiType.service';
+} from '../../../../store/sps/apiInjectionParamV2/apiInjectionParamV2.reducer';
+import {
+  deleteSpsApiInjectionParamV2,
+  searchSpsApiInjectionParamV2,
+} from '../../../../store/sps/apiInjectionParamV2/apiInjectionParamV2.action';
+import spsApiInjectionParamV2Service from '../../../../services/sps/apiInjectionParamV2/apiInjectionParamV2.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -26,7 +31,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     isMultiple,
     tableButtons,
   } = props;
-  const spsApiType = useAppSelector(spsApiTypeSelector);
+  const spsApiInjectionParamV2 = useAppSelector(spsApiInjectionParamV2Selector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -45,13 +50,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
-    return spsApiTypeService.exportExcelFile(searchData);
+    return spsApiInjectionParamV2Service.exportExcelFile(searchData);
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
     return FilterWithSwapOption(
       dataIndex,
-      spsApiType.search.tableName,
+      spsApiInjectionParamV2.search.tableName,
       form,
       null,
       ObjectForColumnFilter
@@ -74,101 +79,97 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      // {
+      //   title: <span className="dragHandler">API Type</span>,
+      //   column: 'API_TypeId',
+      //   sorter: true,
+      //   children: [
+      //     {
+      //       title: FilterBySwap('type', form),
+      //       dataIndex: 'type',
+      //       key: 'type',
+      //       ellipsis: true,
+      //     },
+      //   ],
+      // },
       {
-        title: <span className="dragHandler">API Group</span>,
-        column: 'API_GroupId',
+        title: <span className="dragHandler">Param</span>,
+        column: 'Param',
         sorter: true,
         children: [
           {
-            title: FilterByDropdown('api_group_id', spsApiType.search.lookups?.sps_api_groups),
-            dataIndex: 'sps_api_group_name',
-            key: 'sps_api_group_name',
+            title: FilterBySwap('param', form),
+            dataIndex: 'param',
+            key: 'param',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Name</span>,
-        column: 'Name',
+        title: <span className="dragHandler">ParamId</span>,
+        column: 'ParamId',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('name', form),
-            dataIndex: 'name',
-            key: 'name',
+            title: FilterBySwap('param_id', form),
+            dataIndex: 'param_id',
+            key: 'param_id',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Route</span>,
-        column: 'Route',
+        title: <span className="dragHandler">Is Masked</span>,
+        column: 'IsMasked',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('route', form),
-            dataIndex: 'route',
-            key: 'route',
+            title: FilterByBooleanDropDown(
+              'is_masked',
+              spsApiInjectionParamV2.search.tableName,
+              ObjectForColumnFilter
+            ),
+            dataIndex: 'is_masked',
+            key: 'is_masked',
             ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">URL</span>,
-        column: 'URL',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('url', form),
-            dataIndex: 'url',
-            key: 'url',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Base Urls</span>,
-        column: 'Base Urls',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('base_urls', form),
-            dataIndex: 'base_urls',
-            key: 'base_urls',
-            ellipsis: true,
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
+            align: 'center' as AlignType,
           },
         ],
       },
     ];
   };
 
-  const removeSpsApiType = (id: number) => {
-    dispatch(deleteSpsApiType(id));
+  const removeSpsApiInjectionParamV2 = (id: number) => {
+    dispatch(deleteSpsApiInjectionParamV2(id));
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <a
-          className="action-btn"
-          onClick={() => {
-            setSelectedId(data.id);
-            history.push(`/sps/sps-api-type/detail/${data.id}`);
-          }}
-        >
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
-        </a>
-      <Can I={Action.Update} a={Page.SpsApiType}>
+      <Can I={Action.Update} a={Page.SpsApiInjectionParamV2}>
         <a
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/sps/sps-api-type/${data.id}`);
+            history.push(`/sps/sps-api-token-config-options-v2/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.Delete} a={Page.SpsApiType}>
-        <Popconfirm title="Delete Record?" onConfirm={() => removeSpsApiType(data.id)}>
+      <Can I={Action.Delete} a={Page.SpsApiInjectionParamV2}>
+        <Popconfirm
+          title="Delete Record?"
+          onConfirm={() => removeSpsApiInjectionParamV2(data.id)}
+        >
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -181,20 +182,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={ability.can(Action.Add, Page.SpsApiType)}
+        globalSearchExist={false}
+        showAddButton={ability.can(Action.Add, Page.SpsApiInjectionParamV2)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
-        reduxSelector={spsApiTypeSelector}
-        searchTableData={searchSpsApiType}
-        clearTableDataMessages={clearSpsApiTypeMessages}
+        reduxSelector={spsApiInjectionParamV2Selector}
+        searchTableData={searchSpsApiInjectionParamV2}
+        clearTableDataMessages={clearSpsApiInjectionParamV2Messages}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
-        showBulkUpdate={ability.can(Action.Update, Page.SpsApiType)}
+        showBulkUpdate={ability.can(Action.Update, Page.SpsApiInjectionParamV2)}
         setObjectForColumnFilter={setObjectForColumnFilter}
-        globalSearchExist={false}
         tableButtons={tableButtons}
       />
     </>
