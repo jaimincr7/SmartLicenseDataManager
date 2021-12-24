@@ -29,8 +29,19 @@ import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 const { Option } = Select;
 
 const RenderBI: React.FC<IRenderBIProps> = (props) => {
-  const { count, table, form, records, setRecords, date, loading, setLoading, setDelimitFlag, firstFlag, setFirstFlag } =
-    props;
+  const {
+    count,
+    table,
+    form,
+    records,
+    setRecords,
+    date,
+    loading,
+    setLoading,
+    setDelimitFlag,
+    firstFlag,
+    setFirstFlag,
+  } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -52,11 +63,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
     const data = dummyRecords.filter((data) => data.index == currRecord.index);
-      if(data && data.length > 0)
-      {
-        data[0].table_name = tableName;
-        data[0].excel_to_sql_mapping = null;
-      }
+    if (data && data.length > 0) {
+      data[0].table_name = tableName;
+      data[0].excel_to_sql_mapping = null;
+    }
 
     setRecords(dummyRecords);
     setLoading(false);
@@ -117,7 +127,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
       }
-      const arr : Array<{excel_to_sql_mapping: any,table_name: string,file_name: string,original_file_name: string,sheet_name: string,header_row: number,delimiter: string}> = [];
+      const arr: Array<{
+        excel_to_sql_mapping: any;
+        table_name: string;
+        file_name: string;
+        original_file_name: string;
+        sheet_name: string;
+        header_row: number;
+        delimiter: string;
+      }> = [];
       records.map((data) => {
         const Obj = {
           excel_to_sql_mapping: data.excel_to_sql_mapping
@@ -308,12 +326,16 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   }, [table]);
 
-  const previewData = (headerValue = 0) => {
-    const dummyRecords = records.filter((data) => data.index == selectedRowId);
-    const currentExcelData = [...dummyRecords[0]?.columns];
+  const previewData = (csvFlag: boolean , headerValue = 0) => {
+    const dummyRecords = csvFlag ? (bulkImports.getCSVExcelColumns.data[0].excel_sheet_columns[0].columns) : (records.filter((data) => data.index == selectedRowId));
+    const currentExcelData = csvFlag ? [...dummyRecords] : [...dummyRecords[0]?.columns];
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
+    if(csvFlag) {
+      setMaxHeaderRow(dummyRecords?.length);
+    } else {
     setMaxHeaderRow(dummyRecords[0].columns?.length);
+    }
     innerFormUpload.setFieldsValue({ header_row: headerValue });
     setFormFields();
   };
@@ -389,7 +411,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const getMenuDropdown = (recordsDefault: any, curRecord: any) => {
     const dropdown = [];
-      recordsDefault?.map((m: any) => {
+    recordsDefault?.map((m: any) => {
       dropdown.push({
         title: (
           <>
@@ -442,15 +464,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           .then((res) => {
             response = res?.body?.data;
           });
-        data.currentMapping=
-        response && response.length > 0
-          ? response[0].config_excel_column_mappings[0]?.sheet_name
-          : null;
-          data.excel_to_sql_mapping=
-        response && response.length > 0
-          ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
-          : null;
-          data.show_mapping= response ? response : null;
+        data.currentMapping =
+          response && response.length > 0
+            ? response[0].config_excel_column_mappings[0]?.sheet_name
+            : null;
+        data.excel_to_sql_mapping =
+          response && response.length > 0
+            ? JSON.parse(response[0]?.config_excel_column_mappings[0]?.mapping)
+            : null;
+        data.show_mapping = response ? response : null;
       }
     }
     setRecords(dummyRecord);
@@ -459,7 +481,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     //   .getExcelFileMapping({
     //     table_name: innerFormUpload.getFieldValue('table_name'),
     //     key_word: fileData?.original_filename,
-    //     file_type: 
+    //     file_type:
     //   })
     //   .then((res) => {
     //     setSavedExcelMapping(res?.body?.data);
@@ -517,8 +539,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         selectedRecord.show_mapping.map((data1) => {
           data1.config_excel_column_mappings.map((data2) => {
             if (data2.id == value) {
-            data.table_name = data2.table_name;
-            flagMapping = JSON.parse(data2.mapping);
+              data.table_name = data2.table_name;
+              flagMapping = JSON.parse(data2.mapping);
             }
           });
         });

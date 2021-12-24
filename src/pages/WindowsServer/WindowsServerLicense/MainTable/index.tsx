@@ -87,7 +87,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">ID</span>,
         column: 'id',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterBySwap('id', form),
@@ -101,7 +100,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
@@ -120,7 +118,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Company Name</span>,
         column: 'CompanyId',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
@@ -139,7 +136,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Bu Name</span>,
         column: 'BU_Id',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
@@ -158,7 +154,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Date Added</span>,
         column: 'Date Added',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByDateSwapTable('date_added', windowsServerLicense.search.tableName, form),
@@ -173,7 +168,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Agreement Type</span>,
         column: 'Opt_AgreementType',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
@@ -190,7 +184,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Default to Data Center on Hosts</span>,
         column: 'Opt_DefaultToDatacenterOnHosts',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByBoolean('opt_default_to_data_center_on_hosts'),
@@ -215,7 +208,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Entitlements</span>,
         column: 'Opt_Entitlements',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByBoolean('opt_entitlements'),
@@ -240,7 +232,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Exclude Non-Prod</span>,
         column: 'Opt_ExcludeNonProd',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByBoolean('opt_exclude_non_prod'),
@@ -265,7 +256,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Notes</span>,
         column: 'Notes',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterBySwap('notes', form),

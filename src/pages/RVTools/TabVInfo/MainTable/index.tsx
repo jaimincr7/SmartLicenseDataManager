@@ -210,7 +210,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">CPU Size Recommendation</span>,
-        column: 'CPUSizeRecommendation',
+        column: 'CpuSizeRecommendation',
         sorter: true,
         children: [
           {

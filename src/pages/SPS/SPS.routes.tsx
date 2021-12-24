@@ -10,6 +10,7 @@ import SpsApiOauthUrlInjectionSite from './ApiOauthUrlInjectionSite';
 import SPSAPI from './APIs/index';
 import SPSAPIsCall from './APIsCall';
 import SpsApiTokenConfigOptions from './ApiTokenConfigOptions';
+import SpsApiTokenConfigOptionsV2 from './ApiTokenConfigOptionsV2';
 import SpsApiType from './ApiType';
 import SpsApiJobs from './SpsApiJobs';
 import SpsApiJobsData from './SpsApiJobsData';
@@ -118,6 +119,22 @@ const SPSRoutes: React.FC = () => {
             exact
             path={`${match.path}/sps-api-token-config-options/:id`}
             component={SpsApiTokenConfigOptions}
+          />
+        )}
+
+        {/* SPS API TokenConfigOptionsV2 */}
+        {ability.can(Action.View, Page.SpsApiTokenConfigOptionsV2) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-token-config-options-v2`}
+            component={SpsApiTokenConfigOptionsV2}
+          />
+        )}
+        {ability.can(Action.View, Page.SpsApiTokenConfigOptionsV2) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-token-config-options-v2/:id`}
+            component={SpsApiTokenConfigOptionsV2}
           />
         )}
 

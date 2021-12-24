@@ -54,8 +54,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   const globalFilters = useAppSelector(globalSearchSelector);
   const [week, setWeek] = useState('Daily');
 
-  const { id, showModal, handleModalClose, filterKeys, refreshDataTable, isMultiple, valuesForSelection } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    filterKeys,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -152,9 +159,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         cron_frequency_time: _.isNull(data.cron_frequency_time)
           ? null
           : moment(data.cron_frequency_time),
-        date_added: _.isNull(data.date_added)
-          ? null
-          : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         start_schedular: data.status === 'Running' ? true : false,
       };
       if (data.cron_frequency_type) {
@@ -291,11 +296,17 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                       }
                       loading={commonLookups.tenantLookup.loading}
                     >
-                      {commonLookups.tenantLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
+                      {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
+                        ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
+                        : commonLookups.tenantLookup.data.map((option: ILookup) => (
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -330,11 +341,17 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                       }
                       loading={commonLookups.companyLookup.loading}
                     >
-                      {commonLookups.companyLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
+                      {Object.keys(commonLookups.companyLookup.data).length > 0
+                        ? commonLookups.companyLookup.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
+                        : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -369,11 +386,17 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                       }
                       loading={commonLookups.buLookup.loading}
                     >
-                      {commonLookups.buLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
+                      {Object.keys(commonLookups.buLookup.data).length > 0
+                        ? commonLookups.buLookup.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
+                        : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>

@@ -8,7 +8,7 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { userSelector } from '../../../../store/administration/administration.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { SyncOutlined } from '@ant-design/icons';
-import { getCronJobStatus } from '../../../../store/common/common.action';
+import { getCronJobStatus, manageCronJobApi } from '../../../../store/common/common.action';
 import { commonSelector } from '../../../../store/common/common.reducer';
 import { useHistory } from 'react-router-dom';
 import { clearGlobalSearch } from '../../../../store/globalSearch/globalSearch.reducer';
@@ -72,6 +72,11 @@ function Header() {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
+  const startSchedule = () => {
+    dispatch(manageCronJobApi());
+  };
+  
+
   useEffect(() => {
     if (ability.can(Action.RunCronJob, Page.Cron)) {
       dispatch(getCronJobStatus());
@@ -99,7 +104,10 @@ function Header() {
                   {' '}
                   <Button
                     className="btn-icon"
-                    onClick={() => history.push(`/administration/schedule-api-data`)}
+                    onClick={() => {
+                      history.push(`/administration/schedule-api-data`);
+                      startSchedule();
+                    }}
                   >
                     Click to Start
                   </Button>

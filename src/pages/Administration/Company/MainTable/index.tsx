@@ -31,7 +31,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     tableButtons,
-    setFilterKeys
+    setFilterKeys,
   } = props;
   const company = useAppSelector(companySelector);
   const dispatch = useAppDispatch();

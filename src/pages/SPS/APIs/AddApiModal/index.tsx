@@ -336,7 +336,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                     'URL'
                   )}
                   <Form.Item name="url" label="URL" className="m-0">
-                    <TextArea rows={4} style={{ minHeight: 100 }}/>
+                    <TextArea rows={4} style={{ minHeight: 100 }} />
                   </Form.Item>
                 </div>
               </Col>

@@ -265,7 +265,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         toast.error(common.manageCronJob?.messages.join(' '));
       } else {
         toast.success(common.manageCronJob?.messages.join(' '));
-        fetchTableData();
+        dispatch(getCronJobStatus());
       }
       dispatch(clearCronJobSchedularMessages());
     }
@@ -294,14 +294,14 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
+    if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0 && !(globalSearchExist == false)) {
       const initlValues = {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
         tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
       };
       form.setFieldsValue(initlValues);
-      if (globalFilters.search && !(globalSearchExist == false)) {
+      if (globalFilters.search) {
         onFinish(initlValues);
       }
     } else {
@@ -345,7 +345,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const startSchedule = () => {
     dispatch(manageCronJobApi());
-    dispatch(getCronJobStatus());
   };
 
   // Table columns
@@ -359,9 +358,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img

@@ -62,7 +62,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       selected_date: values.selected_date,
       table_name: tableName,
     };
-    debugger;
     dispatch(processDataO365(finalProcessData));
   };
 
@@ -127,11 +126,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
 
   const handleBUChange = (buId: number) => {
     if (buId) {
-      dispatch(
-        getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
-        )
-      );
+      dispatch(getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName)));
     } else {
       dispatch(clearDateLookup());
     }
@@ -180,9 +175,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
       };
-      dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
-      );
+      dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));
       form.setFieldsValue(filterValues);
     }
     return () => {
@@ -235,15 +228,15 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {Object.keys(commonLookups.allCompanyLookup.data).length > 0
                       ? commonLookups.allCompanyLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                       : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                   </Select>
                 </Form.Item>
               </div>
@@ -270,15 +263,15 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {Object.keys(commonLookups.buLookup.data).length > 0
                       ? commonLookups.buLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                       : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                   </Select>
                 </Form.Item>
               </div>
@@ -286,11 +279,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Added</label>
-                <Form.Item
-                  name="selected_date"
-                  className="m-0"
-                  label="Selected Added"
-                >
+                <Form.Item name="selected_date" className="m-0" label="Selected Added">
                   <Select
                     placeholder="Select Date"
                     loading={commonLookups.getScheduledDate.loading}
