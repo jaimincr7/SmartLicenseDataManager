@@ -3,7 +3,13 @@ import { IAdUsersState } from './adUsers.model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { RootState } from '../../app.model';
-import { searchAdUsers, getAdUserById, saveAdUser, deleteAdUser, processDataAdUsers } from './adUsers.action';
+import {
+  searchAdUsers,
+  getAdUserById,
+  saveAdUser,
+  deleteAdUser,
+  processDataAdUsers,
+} from './adUsers.action';
 import { IAdUser } from '../../../services/ad/adUsers/adUsers.model';
 
 export const initialState: IAdUsersState = {

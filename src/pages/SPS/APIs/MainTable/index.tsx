@@ -160,7 +160,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Is System Defined?</span>,
-        column: 'Is System Defined?',
+        column: 'IsSystemDefined',
         sorter: true,
         ellipsis: true,
         children: [

@@ -153,10 +153,7 @@ export const o365UsersSlice = createSlice({
       state.processData.loading = true;
       state.processData.messages = [];
     },
-    [processDataO365.fulfilled.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
+    [processDataO365.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
       state.processData.loading = false;
       state.processData.hasErrors = false;
       state.processData.messages = action.payload.messages;

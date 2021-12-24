@@ -285,11 +285,8 @@ export const bulkImportSlice = createSlice({
       state.saveExcelFileMapping.messages = [];
       state.saveExcelFileMapping.data = null;
     },
-    [saveExcelFileMapping.fulfilled.type]: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      const { data , messages } = action.payload;
+    [saveExcelFileMapping.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      const { data, messages } = action.payload;
       state.saveExcelFileMapping.loading = false;
       state.saveExcelFileMapping.hasErrors = false;
       state.saveExcelFileMapping.messages = messages;

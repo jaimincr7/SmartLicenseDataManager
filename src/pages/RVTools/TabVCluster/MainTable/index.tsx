@@ -211,7 +211,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Total CPU</span>,
-        column: 'TotalCPU',
+        column: 'TotalCpu',
         sorter: true,
         children: [
           {
@@ -328,7 +328,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">DRS Default VM Behavior</span>,
-        column: 'DRSDefaultVMBehavior',
+        column: 'DRS default VM behavior',
         sorter: true,
         children: [
           {

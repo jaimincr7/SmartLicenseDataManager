@@ -35,7 +35,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
-  const { setSelectedId, setShowSelectedListModal, setValuesForSelection, isMultiple, setFilterKeys } = props;
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+  } = props;
 
   useImperativeHandle(ref, () => ({
     refreshData() {
