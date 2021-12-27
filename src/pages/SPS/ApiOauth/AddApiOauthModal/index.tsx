@@ -72,6 +72,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
     token: '',
     url_base: '',
     base_url_id: null,
+    is_masked: false,
   };
 
   const onFinish = (values: any) => {
@@ -136,6 +137,7 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
         token: data.token,
         url_base: data.url_base,
         base_url_id: data.base_url_id,
+        is_masked: data.is_masked,
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
@@ -481,6 +483,20 @@ const AddSpsApiOauthModal: React.FC<IAddSpsApiOauthProps> = (props) => {
                     </Form.Item>
                   ) : (
                     'Active'
+                  )}
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="is_masked" className="m-0 mr-1" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_masked']} valuePropName="checked" noStyle>
+                      <Checkbox>Masked</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Masked'
                   )}
                 </div>
               </Col>

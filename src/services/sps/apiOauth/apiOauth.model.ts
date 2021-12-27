@@ -13,6 +13,7 @@ export interface ISpsApiOauth {
   token?: string;
   url_base?: string;
   base_url_id?: number;
+  is_masked: boolean;
   date_added?: string | Moment;
 }
 
