@@ -15,13 +15,13 @@ import {
   spsApiTokenConfigOptionsV2Selector,
 } from '../../../store/sps/apiTokenConfigOptionsV2/apiTokenConfigOptionsV2.reducer';
 
-const SpsApiTokenConfigOptionsV2: React.FC<ISpsApiTokenConfigOptionsV2Props> = () => {
+const SpsApiTokenConfigOptionsV2: React.FC<ISpsApiTokenConfigOptionsV2Props> = (props) => {
   const spsApiTokenConfigOptionsV2 = useAppSelector(spsApiTokenConfigOptionsV2Selector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
 
-  //const { id: urlId } = props.isTabbed ? null : props.match?.params;
+  const { id: urlId } = props.isTabbed ? {id: undefined} : props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
@@ -30,12 +30,12 @@ const SpsApiTokenConfigOptionsV2: React.FC<ISpsApiTokenConfigOptionsV2Props> = (
 
   const [id, setId] = React.useState(0);
 
-  //  useEffect(() => {
-  //    if (+urlId > 0) {
-  //      setAddModalVisible(true);
-  //      setId(+urlId);
-  //    }
-  //  }, [+urlId]);
+  useEffect(() => {
+    if (+urlId > 0) {
+      setAddModalVisible(true);
+      setId(+urlId);
+    }
+  }, [+urlId]);
 
   useEffect(() => {
     setShowSelectedListModal(false);
@@ -113,6 +113,8 @@ const SpsApiTokenConfigOptionsV2: React.FC<ISpsApiTokenConfigOptionsV2Props> = (
         </div> */}
         <MainTable
           ref={dataTableRef}
+          addModalVisible={addModalVisible}
+          setAddModalVisible={setAddModalVisible}
           isMultiple={showSelectedListModal}
           setValuesForSelection={setValuesForSelection}
           setShowSelectedListModal={(state) => {
@@ -123,6 +125,7 @@ const SpsApiTokenConfigOptionsV2: React.FC<ISpsApiTokenConfigOptionsV2Props> = (
             setId(id);
             setAddModalVisible(true);
           }}
+          isTabbed={true}
           tableButtons={tableButtons}
         />
       </div>
@@ -132,9 +135,10 @@ const SpsApiTokenConfigOptionsV2: React.FC<ISpsApiTokenConfigOptionsV2Props> = (
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/sps/sps-api-token-config-options-v2');
+            {props.isTabbed ? null : history.push('/sps/sps-api-token-config-options-v2');}
           }}
           id={id}
+          typeId={props.typeId}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
@@ -145,7 +149,7 @@ const SpsApiTokenConfigOptionsV2: React.FC<ISpsApiTokenConfigOptionsV2Props> = (
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            history.push('/sps/sps-api-token-config-options-v2');
+            {props.isTabbed ? null : history.push('/sps/sps-api-token-config-options-v2');}
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}

@@ -68,4 +68,9 @@ export interface IMainTable {
   setNumberOfRecords?: (val: any) => void;
   setFilterKeys?: (val: any) => void;
   tableButtons?: () => JSX.Element;
+
+  //For Only Tabbed SPS Part
+  isTabbed?: boolean;
+  addModalVisible?: boolean;
+  setAddModalVisible?: (value: boolean) => void;
 }

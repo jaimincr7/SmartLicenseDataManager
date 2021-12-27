@@ -148,14 +148,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <a
-          className="action-btn"
-          onClick={() => {
-            setSelectedId(data.id);
-            history.push(`/sps/sps-api-type/detail/${data.id}`);
-          }}
-        >
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
-        </a>
+        className="action-btn"
+        onClick={() => {
+          setSelectedId(data.id);
+          history.push(`/sps/sps-api-type/detail/${data.id}`);
+        }}
+      >
+        <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
+      </a>
       <Can I={Action.Update} a={Page.SpsApiType}>
         <a
           className="action-btn"

@@ -524,6 +524,13 @@ class CommonService {
     });
   }
 
+  public async getSpsApiUrlInjectionV2(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-injection-param-v2/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getSpsApiGroups(): Promise<IApiResponse<ILookup[]>> {
     const url = `/sps-api-group/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

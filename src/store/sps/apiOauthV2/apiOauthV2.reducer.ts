@@ -2,16 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody } from '../../../common/models/common';
 import { RootState } from '../../app.model';
 import { booleanLookup } from '../../../common/constants/common';
-import { ISpsApiTokenConfigOptionsV2State } from './apiTokenConfigOptionsV2.model';
+import { ISpsApiOauthV2State } from './apiOauthV2.model';
 import {
-  deleteSpsApiTokenConfigOptionsV2,
-  getSpsApiTokenConfigOptionsV2ById,
-  saveSpsApiTokenConfigOptionsV2,
-  searchSpsApiTokenConfigOptionsV2,
-} from './apiTokenConfigOptionsV2.action';
-import { ISpsApiTokenConfigOptionsV2 } from '../../../services/sps/apiTokenConfigOptionsV2/apiTokenConfigOptionsV2.model';
+  deleteSpsApiOauthV2,
+  getSpsApiOauthV2ById,
+  saveSpsApiOauthV2,
+  searchSpsApiOauthV2,
+} from './apiOauthV2.action';
+import { ISpsApiOauthV2 } from '../../../services/sps/apiOauthV2/apiOauthV2.model';
 
-export const initialState: ISpsApiTokenConfigOptionsV2State = {
+export const initialState: ISpsApiOauthV2State = {
   search: {
     loading: false,
     hasErrors: false,
@@ -42,18 +42,18 @@ export const initialState: ISpsApiTokenConfigOptionsV2State = {
   },
 };
 
-export const spsApiTokenConfigOptionsV2Slice = createSlice({
-  name: 'spsApiTokenConfigOptionsV2',
+export const spsApiOauthV2Slice = createSlice({
+  name: 'spsApiOauthV2',
   initialState,
   reducers: {
-    clearSpsApiTokenConfigOptionsV2: () => {
+    clearSpsApiOauthV2: () => {
       return initialState;
     },
-    clearSpsApiTokenConfigOptionsV2Messages: (state) => {
+    clearSpsApiOauthV2Messages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
     },
-    clearSpsApiTokenConfigOptionsV2GetById: (state) => {
+    clearSpsApiOauthV2GetById: (state) => {
       state.getById.data = null;
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
@@ -62,22 +62,22 @@ export const spsApiTokenConfigOptionsV2Slice = createSlice({
   },
   extraReducers: {
     // Search
-    [searchSpsApiTokenConfigOptionsV2.pending.type]: (state) => {
+    [searchSpsApiOauthV2.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchSpsApiTokenConfigOptionsV2.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      const { records, total_count, table_name, column_selection, ...rest } = action.payload;
-      state.search.data = records;
-      state.search.count = total_count;
+    [searchSpsApiOauthV2.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      const { search_result, ...rest } = action.payload;
+      state.search.data = search_result.records;
+      state.search.count = search_result.total_count;
       if (JSON.stringify(rest) !== '{}') {
         state.search.lookups = { ...rest, booleanLookup };
       }
       state.search.loading = false;
       state.search.hasErrors = false;
-      state.search.tableName = table_name;
-      if (column_selection) {
-        state.tableColumnSelection.id = column_selection.id;
-        const tableSelectionObj = JSON.parse(column_selection.columns as any);
+      state.search.tableName = search_result.table_name;
+      if (search_result.column_selection) {
+        state.tableColumnSelection.id = search_result.column_selection.id;
+        const tableSelectionObj = JSON.parse(search_result.column_selection.columns as any);
         if (tableSelectionObj.columns) {
           state.tableColumnSelection.column_orders = tableSelectionObj.column_orders;
           state.tableColumnSelection.columns = tableSelectionObj.columns;
@@ -85,36 +85,36 @@ export const spsApiTokenConfigOptionsV2Slice = createSlice({
           state.tableColumnSelection.columns = tableSelectionObj;
         }
       }
-      state.tableColumnSelection.table_name = table_name;
+      state.tableColumnSelection.table_name = search_result.table_name;
     },
-    [searchSpsApiTokenConfigOptionsV2.rejected.type]: (state) => {
+    [searchSpsApiOauthV2.rejected.type]: (state) => {
       state.search.loading = false;
       state.search.hasErrors = true;
     },
 
     // Get by id
-    [getSpsApiTokenConfigOptionsV2ById.pending.type]: (state) => {
+    [getSpsApiOauthV2ById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getSpsApiTokenConfigOptionsV2ById.fulfilled.type]: (
+    [getSpsApiOauthV2ById.fulfilled.type]: (
       state,
-      action: PayloadAction<ISpsApiTokenConfigOptionsV2>
+      action: PayloadAction<ISpsApiOauthV2>
     ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
     },
-    [getSpsApiTokenConfigOptionsV2ById.rejected.type]: (state) => {
+    [getSpsApiOauthV2ById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
     },
 
     // Save
-    [saveSpsApiTokenConfigOptionsV2.pending.type]: (state) => {
+    [saveSpsApiOauthV2.pending.type]: (state) => {
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveSpsApiTokenConfigOptionsV2.fulfilled.type]: (
+    [saveSpsApiOauthV2.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -122,17 +122,17 @@ export const spsApiTokenConfigOptionsV2Slice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveSpsApiTokenConfigOptionsV2.rejected.type]: (state) => {
+    [saveSpsApiOauthV2.rejected.type]: (state) => {
       state.save.loading = false;
       state.save.hasErrors = true;
     },
 
     // Delete
-    [deleteSpsApiTokenConfigOptionsV2.pending.type]: (state) => {
+    [deleteSpsApiOauthV2.pending.type]: (state) => {
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteSpsApiTokenConfigOptionsV2.fulfilled.type]: (
+    [deleteSpsApiOauthV2.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
@@ -140,7 +140,7 @@ export const spsApiTokenConfigOptionsV2Slice = createSlice({
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
     },
-    [deleteSpsApiTokenConfigOptionsV2.rejected.type]: (state) => {
+    [deleteSpsApiOauthV2.rejected.type]: (state) => {
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },
@@ -148,16 +148,15 @@ export const spsApiTokenConfigOptionsV2Slice = createSlice({
 });
 
 // A selector
-export const spsApiTokenConfigOptionsV2Selector = (state: RootState) =>
-  state.spsApiTokenConfigOptionsV2;
+export const spsApiOauthV2Selector = (state: RootState) => state.spsApiOauthV2;
 
 // Actions
 export const {
-  clearSpsApiTokenConfigOptionsV2,
-  clearSpsApiTokenConfigOptionsV2Messages,
-  clearSpsApiTokenConfigOptionsV2GetById,
+  clearSpsApiOauthV2,
+  clearSpsApiOauthV2Messages,
+  clearSpsApiOauthV2GetById,
   setTableColumnSelection,
-} = spsApiTokenConfigOptionsV2Slice.actions;
+} = spsApiOauthV2Slice.actions;
 
 // The reducer
-export default spsApiTokenConfigOptionsV2Slice.reducer;
+export default spsApiOauthV2Slice.reducer;

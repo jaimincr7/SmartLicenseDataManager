@@ -28,21 +28,18 @@ import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
-const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> = (
-  props
-) => {
+const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> = (props) => {
   const spsApiInjectionParamV2 = useAppSelector(spsApiInjectionParamV2Selector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection, typeId} =
     props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '}{' '}
-        <BreadCrumbs pageName={Page.SpsApiInjectionParamV2} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.SpsApiInjectionParamV2} level={1} />
       </>
     );
   }, [isNew]);
@@ -56,6 +53,7 @@ const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> 
     param: '',
     param_id: '',
     is_masked: false,
+    api_type_ids: typeId ? [+typeId] : undefined,
   };
 
   const onFinish = (values: any) => {
@@ -79,7 +77,9 @@ const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> 
 
   const fillValuesOnEdit = async (data: ISpsApiInjectionParamV2) => {
     const typeIds = [];
-    data.sps_api_token_config_options_v2_with_api_types.map(x => { typeIds.push(x.api_type_id); });
+    data.api_injection_param_v2_with_api_types.map((x) => {
+      typeIds.push(x.api_type_id);
+    });
     if (data) {
       initialValues = {
         param: data.param,
@@ -161,17 +161,17 @@ const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
-                      <Checkbox>Name</Checkbox>
+                    <Form.Item name={['checked', 'param']} valuePropName="checked" noStyle>
+                      <Checkbox>Param</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Name'
+                    'Param'
                   )}
                   <Form.Item
-                    name="name"
-                    label="Name"
+                    name="param"
+                    label="Param"
                     className="m-0"
-                    rules={[{ required: !isMultiple, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -180,36 +180,17 @@ const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'value']} valuePropName="checked" noStyle>
-                      <Checkbox>Value</Checkbox>
+                    <Form.Item name={['checked', 'param_id']} valuePropName="checked" noStyle>
+                      <Checkbox>ParamId</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Value'
+                    'ParamId'
                   )}
                   <Form.Item
-                    name="value"
-                    label="Value"
+                    name="param_id"
+                    label="ParamId"
                     className="m-0"
-                    rules={[{ required: !isMultiple, max: 255 }]}
-                  >
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'type']} valuePropName="checked" noStyle>
-                      <Checkbox>Type</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Type'
-                  )}
-                  <Form.Item
-                    name="type"
-                    label="Type"
-                    className="m-0"
-                    rules={[{ required: !isMultiple, max: 255 }]}
+                    rules={[{ required: !isMultiple, max: 100 }]}
                   >
                     <Input className="form-control" />
                   </Form.Item>
@@ -256,15 +237,15 @@ const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> 
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="is_env_var" className="m-0 mr-1" valuePropName="checked">
+                  <Form.Item name="is_masked" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_env_var']} valuePropName="checked" noStyle>
-                      <Checkbox>Is Env Var</Checkbox>
+                    <Form.Item name={['checked', 'is_masked']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Masked</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Is Env Var'
+                    'Is Masked'
                   )}
                 </div>
               </Col>

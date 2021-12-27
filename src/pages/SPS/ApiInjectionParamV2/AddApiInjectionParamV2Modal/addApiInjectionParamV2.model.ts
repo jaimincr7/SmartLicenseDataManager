@@ -5,4 +5,5 @@ export interface IAddSpsApiInjectionParamV2Props {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   valuesForSelection?: any[];
+  typeId?: number;
 }

@@ -1,74 +1,49 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  DatePicker,
-  Form,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Switch,
-  TimePicker,
-} from 'antd';
-import _ from 'lodash';
+import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin, Switch } from 'antd';
 import moment from 'moment';
-import { useEffect, useMemo, useState } from 'react';
+import _ from 'lodash';
+import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { ILookup } from '../../../../services/common/common.model';
-import { ICronData } from '../../../../services/master/cron/cron.model';
+import { ISpsApiOauthV2 } from '../../../../services/sps/apiOauthV2/apiOauthV2.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
-  getBULookup,
-  getCompanyLookup,
-  getSpsApiGroupLookup,
-  getTenantLookup,
-} from '../../../../store/common/common.action';
+  getSpsApiOauthV2ById,
+  saveSpsApiOauthV2,
+} from '../../../../store/sps/apiOauthV2/apiOauthV2.action';
+import {
+  clearSpsApiOauthV2GetById,
+  clearSpsApiOauthV2Messages,
+  spsApiOauthV2Selector,
+} from '../../../../store/sps/apiOauthV2/apiOauthV2.reducer';
+import { IAddSpsApiOauthV2Props } from './addApiOauthV2.model';
+import { ILookup } from '../../../../services/common/common.model';
 import {
   clearBULookUp,
   clearCompanyLookUp,
   clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { updateMultiple } from '../../../../store/common/common.action';
-import { getCronById, getFrequencyDay, saveCron } from '../../../../store/master/cron/cron.action';
-import {
-  clearCronGetById,
-  clearCronMessages,
-  cronSelector,
-} from '../../../../store/master/cron/cron.reducer';
-import { IAddCronProps } from './addCron.model';
+import { getBULookup, getCompanyLookup, getSpsApiBaseUrl, getSpsApiTypeLookup, updateMultiple } from '../../../../store/common/common.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
-import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
-const AddCronModal: React.FC<IAddCronProps> = (props) => {
-  const cron = useAppSelector(cronSelector);
-  const commonLookups = useAppSelector(commonSelector);
-  const dispatch = useAppDispatch();
+const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
+  const spsApiOauthV2 = useAppSelector(spsApiOauthV2Selector);
   const globalFilters = useAppSelector(globalSearchSelector);
-  const [week, setWeek] = useState('Daily');
-
-  const {
-    id,
-    showModal,
-    handleModalClose,
-    filterKeys,
-    refreshDataTable,
-    isMultiple,
-    valuesForSelection,
-  } = props;
+  const dispatch = useAppDispatch();
+  const commonLookups = useAppSelector(commonSelector);
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection, typeId } =
+    props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Cron} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.SpsApiOauthV2} level={1} />
       </>
     );
   }, [isNew]);
@@ -78,38 +53,28 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  const onSelChange = (value: string) => {
-    setWeek(value);
-    if (value === 'Daily') {
-      form.setFieldsValue({ cron_frequency_day: null });
-    }
-  };
-
-  let initialValues: ICronData = {
-    id: null,
-    api_group_id: null,
+  let initialValues: ISpsApiOauthV2 = {
     company_id: null,
     bu_id: null,
     tenant_id: null,
-    cron_frequency_type: '',
-    cron_frequency_day: null,
-    cron_frequency_time: '',
-    start_schedular: false,
-    date_added: null,
+    api_type_id: typeId ? + typeId : null,
+    base_url_id: null,
+    consent: false,
+    active: false,
   };
 
   const onFinish = (values: any) => {
-    const inputValues: ICronData = {
+    const inputValues: ISpsApiOauthV2 = {
       ...values,
       id: id ? +id : null,
     };
     if (!isMultiple) {
-      dispatch(saveCron(inputValues));
+      dispatch(saveSpsApiOauthV2(inputValues));
     } else {
       const result = getObjectForUpdateMultiple(
         valuesForSelection,
         inputValues,
-        cron.search.tableName
+        spsApiOauthV2.search.tableName
       );
       if (result) {
         dispatch(updateMultiple(result));
@@ -141,46 +106,34 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     form.setFieldsValue({ bu_id: buId });
   };
 
-  const fillValuesOnEdit = async (data: ICronData) => {
-    if (data.tenant_id) {
-      await dispatch(getCompanyLookup(data.tenant_id));
-    }
-    if (data.company_id) {
-      await dispatch(getBULookup(data.company_id));
-    }
+  const fillValuesOnEdit = async (data: ISpsApiOauthV2) => {
     if (data) {
       initialValues = {
-        tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
-        api_group_id: _.isNull(data.api_group_id) ? null : data.api_group_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-        cron_frequency_type: data.cron_frequency_type,
-        cron_frequency_day: _.isNull(data.cron_frequency_day) ? null : data.cron_frequency_day,
-        cron_frequency_time: _.isNull(data.cron_frequency_time)
-          ? null
-          : moment(data.cron_frequency_time),
+        tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
+        api_type_id: _.isNull(data.api_type_id) ? null : data.api_type_id,
+        base_url_id: _.isNull(data.base_url_id) ? null : data.base_url_id,
+        consent: data.consent,
+        active: data.active,
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
-        start_schedular: data.status === 'Running' ? true : false,
       };
-      if (data.cron_frequency_type) {
-        setWeek(data.cron_frequency_type);
-      }
       form.setFieldsValue(initialValues);
     }
   };
 
   useEffect(() => {
-    if (cron.save.messages.length > 0) {
-      if (cron.save.hasErrors) {
-        toast.error(cron.save.messages.join(' '));
+    if (spsApiOauthV2.save.messages.length > 0) {
+      if (spsApiOauthV2.save.hasErrors) {
+        toast.error(spsApiOauthV2.save.messages.join(' '));
       } else {
-        toast.success(cron.save.messages.join(' '));
+        toast.success(spsApiOauthV2.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearCronMessages());
+      dispatch(clearSpsApiOauthV2Messages());
     }
-  }, [cron.save.messages]);
+  }, [spsApiOauthV2.save.messages]);
 
   useEffect(() => {
     if (commonLookups.save.messages.length > 0) {
@@ -196,52 +149,22 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   }, [commonLookups.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && cron.getById.data) {
-      const data = cron.getById.data;
+    if (+id > 0 && spsApiOauthV2.getById.data) {
+      const data = spsApiOauthV2.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [cron.getById.data]);
+  }, [spsApiOauthV2.getById.data]);
 
   useEffect(() => {
-    dispatch(getTenantLookup());
-    dispatch(getSpsApiGroupLookup());
-    dispatch(getFrequencyDay());
+    dispatch(getSpsApiTypeLookup());
+    dispatch(getSpsApiBaseUrl());
     if (+id > 0) {
-      dispatch(getCronById(+id));
+      dispatch(getSpsApiOauthV2ById(+id));
     }
     return () => {
-      dispatch(clearCronGetById());
-      dispatch(clearBULookUp());
+      dispatch(clearSpsApiOauthV2GetById());
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    if (+id === 0 && !isMultiple) {
-      const globalSearch: IInlineSearch = {};
-      for (const key in globalFilters.search) {
-        const element = globalFilters.search[key];
-        globalSearch[key] = element ? [element] : null;
-      }
-      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
-        if (!globalFilters.search.company_id) {
-          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
-        }
-        if (!globalFilters.search.bu_id && globalFilters.search.company_id !== 0) {
-          dispatch(getBULookup(globalSearch.company_id[0]));
-        }
-        const initlValues = {
-          company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
-          bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
-          tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
-          date_added:
-            filterKeys?.filter_keys?.date_added?.length == 1
-              ? moment(filterKeys.filter_keys.date_added[0])
-              : null,
-        };
-        form.setFieldsValue(initlValues);
-      }
-    }
-  }, []);
 
   return (
     <>
@@ -253,20 +176,20 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         onCancel={handleModalClose}
         footer={false}
       >
-        {cron.getById.loading ? (
+        {spsApiOauthV2.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={cron.getById.loading} />
+            <Spin spinning={spsApiOauthV2.getById.loading} />
           </div>
         ) : (
           <Form
             form={form}
-            name="addCron"
+            name="spsApiOauthV2"
             initialValues={initialValues}
             onFinish={onFinish}
             validateMessages={validateMessages}
           >
             <Row gutter={[30, 15]} className="form-label-hide">
-              <Col xs={24} sm={12} md={8}>
+            <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
@@ -283,6 +206,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   >
                     <Select
                       onChange={handleTenantChange}
+                      loading={commonLookups.tenantLookup.loading}
                       allowClear
                       showSearch
                       optionFilterProp="children"
@@ -294,7 +218,6 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
-                      loading={commonLookups.tenantLookup.loading}
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
@@ -320,12 +243,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'Company'
                   )}
-                  <Form.Item
-                    name="company_id"
-                    className="m-0"
-                    label="Company"
-                    rules={[{ required: !isMultiple }]}
-                  >
+                  <Form.Item name="company_id" className="m-0" label="Company">
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -365,15 +283,11 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   ) : (
                     'BU'
                   )}
-                  <Form.Item
-                    name="bu_id"
-                    className="m-0"
-                    label="BU"
-                    rules={[{ required: !isMultiple }]}
-                  >
+                  <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
-                      allowClear
                       onChange={handleBUChange}
+                      loading={commonLookups.buLookup.loading}
+                      allowClear
                       showSearch
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
@@ -384,7 +298,6 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
-                      loading={commonLookups.buLookup.loading}
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
@@ -404,21 +317,21 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'api_group_id']} valuePropName="checked" noStyle>
-                      <Checkbox>API Group</Checkbox>
+                    <Form.Item name={['checked', 'api_type_id']} valuePropName="checked" noStyle>
+                      <Checkbox>API Type</Checkbox>
                     </Form.Item>
                   ) : (
-                    'API Group'
+                    'API Type'
                   )}
                   <Form.Item
-                    name="api_group_id"
+                    name="api_type_id"
                     className="m-0"
-                    label="API Group"
+                    label="API Type"
                     rules={[{ required: !isMultiple }]}
                   >
                     <Select
-                      loading={commonLookups.spsApiGroups.loading}
                       allowClear
+                      loading={commonLookups.spsApiTypes.loading}
                       showSearch
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
@@ -430,7 +343,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
                     >
-                      {commonLookups.spsApiGroups.data.map((option: ILookup) => (
+                      {commonLookups.spsApiTypes.data.map((option: ILookup) => (
                         <Option key={option.id} value={option.id}>
                           {option.name}
                         </Option>
@@ -442,25 +355,14 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'cron_frequency_type']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>Frequency Type</Checkbox>
+                    <Form.Item name={['checked', 'base_url_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Base Url</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Frequency Type'
+                    'Base Url'
                   )}
-                  <Form.Item
-                    name="cron_frequency_type"
-                    label="Frequency Type"
-                    className="m-0"
-                    rules={[{ required: !isMultiple }]}
-                  >
+                  <Form.Item name="base_url_id" className="m-0" label="Base Url Id">
                     <Select
-                      onChange={onSelChange}
-                      allowClear
                       showSearch
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
@@ -471,127 +373,42 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
+                      loading={commonLookups.spsApiBaseUrl.loading}
                     >
-                      <Option value="Daily">Daily</Option>
-                      <Option value="Weekly">Weekly</Option>
-                      <Option value="Monthly">Monthly</Option>
+                      {commonLookups.spsApiBaseUrl.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
                     </Select>
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'cron_frequency_day']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>Frequency Day</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Frequency Day'
-                  )}
-                  <Form.Item
-                    name="cron_frequency_day"
-                    className="m-0"
-                    label="Frequency Day"
-                    rules={[{ required: !isMultiple && week !== 'Daily' }]}
-                  >
-                    <Select
-                      allowClear
-                      showSearch
-                      disabled={week == 'Daily'}
-                      optionFilterProp="children"
-                      filterOption={(input, option: any) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }
-                      filterSort={(optionA: any, optionB: any) =>
-                        optionA.children
-                          ?.toLowerCase()
-                          ?.localeCompare(optionB.children?.toLowerCase())
-                      }
-                      loading={cron.FrequencyDay.loading}
-                    >
-                      {week == 'Weekly' ? (
-                        cron.FrequencyDay.week.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
-                      ) : week == 'Monthly' ? (
-                        cron.FrequencyDay.month.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.id}
-                          </Option>
-                        ))
-                      ) : (
-                        <></>
-                      )}
-                    </Select>
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'cron_frequency_time']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>Frequency Time</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Frequency Time'
-                  )}
-                  <Form.Item
-                    name="cron_frequency_time"
-                    label="Frequency Time"
-                    className="m-0"
-                    rules={[{ required: !isMultiple }]}
-                  >
-                    <TimePicker
-                      className="form-control w-100"
-                      defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}
-                    />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
-                      <Checkbox>Date Added</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Date Added'
-                  )}
-                  <Form.Item
-                    name="date_added"
-                    label="Date Added"
-                    className="m-0"
-                    rules={[{ required: !isMultiple }]}
-                  >
-                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="start_schedular" className="m-0 mr-1" valuePropName="checked">
+                  <Form.Item name="consent" className="m-0 mr-1" valuePropName="checked">
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'start_schedular']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>Enable</Checkbox>
+                    <Form.Item name={['checked', 'consent']} valuePropName="checked" noStyle>
+                      <Checkbox>Consent</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Enable'
+                    'Consent'
+                  )}
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="active" className="m-0 mr-1" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'active']} valuePropName="checked" noStyle>
+                      <Checkbox>Active</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Active'
                   )}
                 </div>
               </Col>
@@ -601,7 +418,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={cron.save.loading || commonLookups.save.loading}
+                loading={spsApiOauthV2.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
@@ -615,4 +432,4 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     </>
   );
 };
-export default AddCronModal;
+export default AddSpsApiOauthV2Modal;

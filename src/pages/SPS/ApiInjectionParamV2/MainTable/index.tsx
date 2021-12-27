@@ -22,6 +22,7 @@ import {
   searchSpsApiInjectionParamV2,
 } from '../../../../store/sps/apiInjectionParamV2/apiInjectionParamV2.action';
 import spsApiInjectionParamV2Service from '../../../../services/sps/apiInjectionParamV2/apiInjectionParamV2.service';
+import AddSpsApiInjectionParamV2Modal from '../AddApiInjectionParamV2Modal';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -30,6 +31,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     tableButtons,
+    isTabbed,
+    addModalVisible,
+    setAddModalVisible,
   } = props;
   const spsApiInjectionParamV2 = useAppSelector(spsApiInjectionParamV2Selector);
   const dispatch = useAppDispatch();
@@ -42,6 +46,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  const refreshDataTable = () => {
+    dataTableRef?.current.refreshData();
+  };
 
   useEffect(() => {
     if (isMultiple) {
@@ -159,17 +167,27 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/sps/sps-api-token-config-options-v2/${data.id}`);
+            {
+              isTabbed ?
+                <AddSpsApiInjectionParamV2Modal
+                  showModal={addModalVisible}
+                  isMultiple={false}
+                  handleModalClose={() => {
+                    setAddModalVisible(false);
+                    { props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2'); }
+                  }}
+                  id={data.id}
+                  refreshDataTable={() => refreshDataTable()}
+                />
+                : history.push(`/sps/sps-api-injection-param-v2/${data.id}`);
+            }
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.SpsApiInjectionParamV2}>
-        <Popconfirm
-          title="Delete Record?"
-          onConfirm={() => removeSpsApiInjectionParamV2(data.id)}
-        >
+        <Popconfirm title="Delete Record?" onConfirm={() => removeSpsApiInjectionParamV2(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

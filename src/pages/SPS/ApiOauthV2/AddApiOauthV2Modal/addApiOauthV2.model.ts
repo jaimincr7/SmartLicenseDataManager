@@ -1,4 +1,4 @@
-export interface IAddSpsApiTokenConfigOptionsV2Props {
+export interface IAddSpsApiOauthV2Props {
   id: number;
   showModal: boolean;
   isMultiple?: boolean;

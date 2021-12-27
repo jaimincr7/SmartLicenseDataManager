@@ -1,4 +1,4 @@
-export interface IAddSpsApiTokenConfigOptionsV2Props {
+export interface IAddSpsApiInjectionValueParamV2Props {
   id: number;
   showModal: boolean;
   isMultiple?: boolean;

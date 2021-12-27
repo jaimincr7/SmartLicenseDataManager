@@ -176,6 +176,16 @@ export const getSpsApiUrlInjectionLookup = createAsyncThunk(
   }
 );
 
+export const getSpsApiUrlInjectionV2Lookup = createAsyncThunk(
+  'getSpsApiUrlInjectionV2Lookup',
+  async () => {
+    const response = await commonService.getSpsApiUrlInjectionV2().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getSpsApiTypeLookup = createAsyncThunk('getSpsApiTypeLookup', async () => {
   const response = await commonService.getSpsApiTypeLookup().then((res) => {
     return res.body;

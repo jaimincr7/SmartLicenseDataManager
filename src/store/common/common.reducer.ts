@@ -64,6 +64,7 @@ import {
   getSpsApiUrlInjectionLookup,
   getScheduleDateforWindowsServer,
   getScheduleDateforSqlServer,
+  getSpsApiUrlInjectionV2Lookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -162,6 +163,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   spsApiUrlInjectionLookup: {
+    data: [],
+    loading: false,
+  },
+  spsApiUrlInjectionV2Lookup: {
     data: [],
     loading: false,
   },
@@ -620,6 +625,15 @@ export const commonSlice = createSlice({
     [getSpsApiUrlInjectionLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.spsApiUrlInjectionLookup.data = action.payload;
       state.spsApiUrlInjectionLookup.loading = false;
+    },
+
+    // SpsApi Url InjectionV2 lookup
+    [getSpsApiUrlInjectionV2Lookup.pending.type]: (state) => {
+      state.spsApiUrlInjectionV2Lookup.loading = true;
+    },
+    [getSpsApiUrlInjectionV2Lookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.spsApiUrlInjectionV2Lookup.data = action.payload;
+      state.spsApiUrlInjectionV2Lookup.loading = false;
     },
 
     // SpsApiBaseUrl lookup

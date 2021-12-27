@@ -66,7 +66,7 @@ export const spsApiInjectionParamV2Slice = createSlice({
       state.search.loading = true;
     },
     [searchSpsApiInjectionParamV2.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      const { records, total_count, table_name , column_selection, ...rest } = action.payload;
+      const { records, total_count, table_name, column_selection, ...rest } = action.payload;
       state.search.data = records;
       state.search.count = total_count;
       if (JSON.stringify(rest) !== '{}') {
@@ -148,8 +148,7 @@ export const spsApiInjectionParamV2Slice = createSlice({
 });
 
 // A selector
-export const spsApiInjectionParamV2Selector = (state: RootState) =>
-  state.spsApiInjectionParamV2;
+export const spsApiInjectionParamV2Selector = (state: RootState) => state.spsApiInjectionParamV2;
 
 // Actions
 export const {

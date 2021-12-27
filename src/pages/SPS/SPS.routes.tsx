@@ -5,9 +5,11 @@ import { Action, Page } from '../../common/constants/pageAction';
 import SpsApiBaseUrl from './ApiBaseUrl';
 import SpsApiGroup from './ApiGroup';
 import SpsApiInjectionParamV2 from './ApiInjectionParamV2';
+import SpsApiInjectionValueParamV2 from './ApiInjectionValueParamV2';
 import SpsApiOauth from './ApiOauth';
 import SpsApiOauthIdUrlInjectionSite from './ApiOauthIdUrlInjectionSite';
 import SpsApiOauthUrlInjectionSite from './ApiOauthUrlInjectionSite';
+import SpsApiOauthV2 from './ApiOauthV2';
 import SPSAPI from './APIs/index';
 import SPSAPIsCall from './APIsCall';
 import SpsApiTokenConfigOptions from './ApiTokenConfigOptions';
@@ -153,6 +155,38 @@ const SPSRoutes: React.FC = () => {
             exact
             path={`${match.path}/sps-api-injection-param-v2/:id`}
             component={SpsApiInjectionParamV2}
+          />
+        )}
+
+        {/* SPS API InjectionValueParamV2 */}
+        {ability.can(Action.View, Page.SpsApiInjectionValueParamV2) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-injection-value-v2`}
+            component={SpsApiInjectionValueParamV2}
+          />
+        )}
+        {ability.can(Action.View, Page.SpsApiInjectionValueParamV2) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-injection-value-v2/:id`}
+            component={SpsApiInjectionValueParamV2}
+          />
+        )}
+
+        {/* SPS API OauthV2 */}
+        {ability.can(Action.View, Page.SpsApiOauthV2) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-oauth-v2`}
+            component={SpsApiOauthV2}
+          />
+        )}
+        {ability.can(Action.View, Page.SpsApiOauthV2) && (
+          <Route
+            exact
+            path={`${match.path}/sps-api-oauth-v2/:id`}
+            component={SpsApiOauthV2}
           />
         )}
 

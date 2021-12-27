@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import { ISpsApiInjectionParamV2Props } from './apiInjectionParamV2.model';
+import { ISpsApiOauthV2Props } from './apiOauthV2.model';
 import React from 'react';
 import MainTable from './MainTable/index';
 import { useHistory } from 'react-router-dom';
@@ -9,14 +9,14 @@ import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import AddSpsApiInjectionParamV2Modal from './AddApiInjectionParamV2Modal';
+import AddSpsApiOauthV2Modal from './AddApiOauthV2Modal';
 import {
-  clearSpsApiInjectionParamV2,
-  spsApiInjectionParamV2Selector,
-} from '../../../store/sps/apiInjectionParamV2/apiInjectionParamV2.reducer';
+  clearSpsApiOauthV2,
+  spsApiOauthV2Selector,
+} from '../../../store/sps/apiOauthV2/apiOauthV2.reducer';
 
-const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) => {
-  const spsApiInjectionParamV2 = useAppSelector(spsApiInjectionParamV2Selector);
+const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
+  const spsApiOauthV2 = useAppSelector(spsApiOauthV2Selector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -40,7 +40,7 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
   useEffect(() => {
     setShowSelectedListModal(false);
     return () => {
-      dispatch(clearSpsApiInjectionParamV2());
+      dispatch(clearSpsApiOauthV2());
     };
   }, []);
 
@@ -50,13 +50,13 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
 
   const tableButtons = () => (
     <>
-      <Can I={Action.ImportToExcel} a={Page.SpsApiInjectionParamV2}>
+      <Can I={Action.ImportToExcel} a={Page.SpsApiOauthV2}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
               `/data-input/bulk-import/${encodeURIComponent(
-                spsApiInjectionParamV2.search.tableName
+                spsApiOauthV2.search.tableName
               )}`
             )
           }
@@ -79,20 +79,20 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
     <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">
-          <BreadCrumbs pageName={Page.SpsApiInjectionParamV2} />
+          <BreadCrumbs pageName={Page.SpsApiOauthV2} />
         </h4>
       </div>
       <div className="main-card">
         {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.SpsApiInjectionParamV2}>
+            <Can I={Action.ImportToExcel} a={Page.SpsApiOauthV2}>
               <Col>
                 <Button
                   className="btn-icon"
                   onClick={() =>
                     history.push(
                       `/data-input/bulk-import/${encodeURIComponent(
-                        spsApiInjectionParamV2.search.tableName
+                        spsApiOauthV2.search.tableName
                       )}`
                     )
                   }
@@ -123,19 +123,19 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
             setId(id);
             setAddModalVisible(true);
           }}
-          tableButtons={tableButtons}
           isTabbed={true}
           addModalVisible={addModalVisible}
           setAddModalVisible={setAddModalVisible}
+          tableButtons={tableButtons}
         />
       </div>
       {addModalVisible && (
-        <AddSpsApiInjectionParamV2Modal
+        <AddSpsApiOauthV2Modal
           showModal={addModalVisible}
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            {props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');}
+            {props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2');}
           }}
           id={id}
           typeId={props.typeId}
@@ -143,13 +143,13 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
         />
       )}
       {showSelectedListModal && (
-        <AddSpsApiInjectionParamV2Modal
+        <AddSpsApiOauthV2Modal
           showModal={showSelectedListModal}
           valuesForSelection={valuesForSelection}
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            {props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');}
+            {props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2');}
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -159,7 +159,7 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
         <DeleteDatasetModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={spsApiInjectionParamV2.search.tableName}
+          tableName={spsApiOauthV2.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
@@ -167,4 +167,4 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
   );
 };
 
-export default SpsApiInjectionParamV2;
+export default SpsApiOauthV2;

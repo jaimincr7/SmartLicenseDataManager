@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import { ISpsApiInjectionParamV2Props } from './apiInjectionParamV2.model';
+import { ISpsApiInjectionValueParamV2Props } from './apiInjectionValueParamV2.model';
 import React from 'react';
 import MainTable from './MainTable/index';
 import { useHistory } from 'react-router-dom';
@@ -9,14 +9,14 @@ import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import AddSpsApiInjectionParamV2Modal from './AddApiInjectionParamV2Modal';
+import AddSpsApiInjectionValueParamV2Modal from './AddApiInjectionValueParamV2Modal';
 import {
-  clearSpsApiInjectionParamV2,
-  spsApiInjectionParamV2Selector,
-} from '../../../store/sps/apiInjectionParamV2/apiInjectionParamV2.reducer';
+  clearSpsApiInjectionValueParamV2,
+  spsApiInjectionValueParamV2Selector,
+} from '../../../store/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.reducer';
 
-const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) => {
-  const spsApiInjectionParamV2 = useAppSelector(spsApiInjectionParamV2Selector);
+const SpsApiInjectionValueParamV2: React.FC<ISpsApiInjectionValueParamV2Props> = (props) => {
+  const spsApiInjectionValueParamV2 = useAppSelector(spsApiInjectionValueParamV2Selector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -40,7 +40,7 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
   useEffect(() => {
     setShowSelectedListModal(false);
     return () => {
-      dispatch(clearSpsApiInjectionParamV2());
+      dispatch(clearSpsApiInjectionValueParamV2());
     };
   }, []);
 
@@ -50,13 +50,13 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
 
   const tableButtons = () => (
     <>
-      <Can I={Action.ImportToExcel} a={Page.SpsApiInjectionParamV2}>
+      <Can I={Action.ImportToExcel} a={Page.SpsApiInjectionValueParamV2}>
         <Button
           className="btn-icon"
           onClick={() =>
             history.push(
               `/data-input/bulk-import/${encodeURIComponent(
-                spsApiInjectionParamV2.search.tableName
+                spsApiInjectionValueParamV2.search.tableName
               )}`
             )
           }
@@ -79,20 +79,20 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
     <div className="sqlServer">
       <div className="title-block">
         <h4 className="p-0">
-          <BreadCrumbs pageName={Page.SpsApiInjectionParamV2} />
+          <BreadCrumbs pageName={Page.SpsApiInjectionValueParamV2} />
         </h4>
       </div>
       <div className="main-card">
         {/* <div className="input-btns-title">
           <Row gutter={[10, 4]}>
-            <Can I={Action.ImportToExcel} a={Page.SpsApiInjectionParamV2}>
+            <Can I={Action.ImportToExcel} a={Page.SpsApiInjectionValueParamV2}>
               <Col>
                 <Button
                   className="btn-icon"
                   onClick={() =>
                     history.push(
                       `/data-input/bulk-import/${encodeURIComponent(
-                        spsApiInjectionParamV2.search.tableName
+                        spsApiInjectionValueParamV2.search.tableName
                       )}`
                     )
                   }
@@ -124,32 +124,28 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
             setAddModalVisible(true);
           }}
           tableButtons={tableButtons}
-          isTabbed={true}
-          addModalVisible={addModalVisible}
-          setAddModalVisible={setAddModalVisible}
         />
       </div>
       {addModalVisible && (
-        <AddSpsApiInjectionParamV2Modal
+        <AddSpsApiInjectionValueParamV2Modal
           showModal={addModalVisible}
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            {props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');}
+            {props.isTabbed ? null : history.push('/sps/sps-api-injection-value-v2');}
           }}
           id={id}
-          typeId={props.typeId}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
       {showSelectedListModal && (
-        <AddSpsApiInjectionParamV2Modal
+        <AddSpsApiInjectionValueParamV2Modal
           showModal={showSelectedListModal}
           valuesForSelection={valuesForSelection}
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            {props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');}
+            {props.isTabbed ? null : history.push('/sps/sps-api-injection-value-v2');}
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -159,7 +155,7 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
         <DeleteDatasetModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
-          tableName={spsApiInjectionParamV2.search.tableName}
+          tableName={spsApiInjectionValueParamV2.search.tableName}
           refreshDataTable={() => refreshDataTable()}
         />
       )}
@@ -167,4 +163,4 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
   );
 };
 
-export default SpsApiInjectionParamV2;
+export default SpsApiInjectionValueParamV2;
