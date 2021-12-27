@@ -123,6 +123,9 @@ const SpsApiInjectionValueParamV2: React.FC<ISpsApiInjectionValueParamV2Props> =
             setId(id);
             setAddModalVisible(true);
           }}
+          isTabbed={true}
+          addModalVisible={addModalVisible}
+          setAddModalVisible={setAddModalVisible}
           tableButtons={tableButtons}
         />
       </div>
