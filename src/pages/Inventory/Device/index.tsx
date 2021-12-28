@@ -83,6 +83,20 @@ const Device: React.FC<IDeviceProps> = (props) => {
           Process Data
         </Button>
       </Can>
+      <Can I={Action.DeleteData} a={Page.Device}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={device.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+      </Can>
     </>
   );
 

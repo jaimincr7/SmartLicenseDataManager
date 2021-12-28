@@ -66,13 +66,13 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         bulkImport.getCSVExcelColumns.csvFiles?.length == 0
       ) {
         toast.success('Your Delimiter is On Mark!');
-        previewData(true,form.getFieldValue('header_row'));
+        previewData(true, form.getFieldValue('header_row'));
       }
     }
   }, [bulkImport.getCSVExcelColumns.csvFiles]);
 
   useEffect(() => {
-    showModal && previewData(false,headerRowCount);
+    showModal && previewData(false, headerRowCount);
   }, [showModal]);
 
   const [form] = Form.useForm();
@@ -177,7 +177,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
                   max={maxCount}
                   className="form-control w-100"
                   onChange={(value) => {
-                    previewData(false,value);
+                    previewData(false, value);
                   }}
                 />
               </Form.Item>

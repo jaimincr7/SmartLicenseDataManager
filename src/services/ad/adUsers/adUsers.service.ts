@@ -1,6 +1,8 @@
 import { IAdUser, IProcessData, ISearchAdUsers } from './adUsers.model';
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 class AdUsersService {
   ENDPOINT = '/ad-users';
@@ -27,9 +29,34 @@ class AdUsersService {
       debug: false,
     };
     const url = `${this.ENDPOINT}/process-data`;
-    return request({ url, method: 'POST', data: inputValues }).then((res) => {
-      return res.data;
+
+    const cancelTokenSource = axios.CancelToken.source();
+
+    return new Promise((resolve, reject) => {
+      const timmer = setTimeout(() => {
+        // Cancel request
+        cancelTokenSource.cancel();
+        toast.warning('Process is working in background.');
+        reject();
+      }, 30 * 1000); // wait till 30 seconds
+
+      request({ url, method: 'POST', data: inputValues, cancelToken: cancelTokenSource.token })
+        .then((res) => {
+          return res?.data;
+        })
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((data) => {
+          reject(data);
+        })
+        .finally(() => {
+          clearTimeout(timmer);
+        });
     });
+    // return request({ url, method: 'POST', data: inputValues }).then((res) => {
+    //   return res.data;
+    // });
   }
 
   public async saveAdUser(data: IAdUser): Promise<any> {

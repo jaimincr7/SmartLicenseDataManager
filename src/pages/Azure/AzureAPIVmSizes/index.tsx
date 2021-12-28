@@ -13,6 +13,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
   const azureAPIVmSizes = useAppSelector(azureAPIVmSizesSelector);
@@ -23,8 +24,10 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
   const { id: urlId } = props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [id, setId] = React.useState(0);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [filterKeys, setFilterKeys] = React.useState({});
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
 
   const tableButtons = () => (
     <>
-      <Can I={Action.ImportToExcel} a={Page.SqlServerExclusions}>
+      <Can I={Action.ImportToExcel} a={Page.AzureAPIVmSizes}>
         <Button
           className="btn-icon"
           onClick={() =>
@@ -65,6 +68,20 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.AzureAPIVmSizes}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={azureAPIVmSizes.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
         </Button>
       </Can>
     </>
@@ -118,6 +135,7 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -144,6 +162,15 @@ const AzureAPIVmSizes: React.FC<IAzureAPIVmSizesProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={azureAPIVmSizes.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

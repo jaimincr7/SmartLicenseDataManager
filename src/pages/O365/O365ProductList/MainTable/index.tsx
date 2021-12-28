@@ -33,6 +33,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     tableButtons,
+    setFilterKeys,
   } = props;
   const o365ProductList = useAppSelector(o365ProductListSelector);
   const dispatch = useAppDispatch();
@@ -58,6 +59,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
+    setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       o365ProductList.search.tableName,

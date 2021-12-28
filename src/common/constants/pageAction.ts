@@ -42,6 +42,7 @@ export enum Page {
   AzureAPIVmSizes = 'azure-api-vm-sizes',
 
   BulkImport = 'bulk-import',
+  DeleteData = 'delete-data-set',
   ConfigExcelFileMapping = 'config-excel-file-mapping',
 
   O365ActivationsUserDetail = 'o365-activations-user-detail',
@@ -132,7 +133,10 @@ export enum Page {
   SpsApiBaseUrl = 'sps-api-base-url',
   SpsApiOauthUrlInjectionSite = 'sps-api-oauth-url-injection-site',
   SpsApiOauthIdUrlInjectionSite = 'sps-api-oauth-id-url-injection-site',
+  SpsApiInjectionParamV2 = 'sps-api-injection-param-v2',
+  SpsApiOauthV2 = "sps-api-oauth-v2",
   SpsApiTokenConfigOptionsV2 = 'sps-api-token-config-options-v2',
+  SpsApiInjectionValueParamV2 = "sps-api-injection-value-v2",
 
   Cron = 'sps-cron-job-data',
   CronViewLogData = 'sps-cron-job-log',
