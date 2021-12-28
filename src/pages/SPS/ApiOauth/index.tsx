@@ -71,6 +71,20 @@ const SpsApiOauth: React.FC<ISpsApiOauthProps> = (props) => {
           Import
         </Button>
       </Can>
+      <Can I={Action.DeleteData} a={Page.SpsApiOauth}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={spsApiOauth.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+      </Can>
     </>
   );
 

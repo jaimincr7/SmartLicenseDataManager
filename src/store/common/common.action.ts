@@ -186,6 +186,16 @@ export const getSpsApiUrlInjectionV2Lookup = createAsyncThunk(
   }
 );
 
+export const getTablesForDelete = createAsyncThunk(
+  'getTablesForDelete',
+  async () => {
+    const response = await commonService.getTablesForDelete().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getSpsApiTypeLookup = createAsyncThunk('getSpsApiTypeLookup', async () => {
   const response = await commonService.getSpsApiTypeLookup().then((res) => {
     return res.body;

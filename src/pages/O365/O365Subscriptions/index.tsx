@@ -15,6 +15,7 @@ import { IO365SubscriptionsProps } from './o365Subscriptions.model';
 import AddO365SubscriptionsModal from './AddO365SubscriptionsModal';
 import MainTable from './MainTable';
 import ProcessDataModal from '../O365Users/ProcessDataModal';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
   const o365Subscriptions = useAppSelector(o365SubscriptionsSelector);
@@ -27,6 +28,8 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [filterKeys, setFilterKeys] = React.useState({});
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
@@ -85,6 +88,20 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
           Process Data
         </Button>
       </Can>
+      <Can I={Action.DeleteData} a={Page.O365Subscriptions}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={o365Subscriptions.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+      </Can>
     </>
   );
 
@@ -139,6 +156,7 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -173,6 +191,15 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
           tableName={o365Subscriptions.search.tableName}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={o365Subscriptions.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

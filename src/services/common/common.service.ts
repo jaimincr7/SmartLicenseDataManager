@@ -531,6 +531,13 @@ class CommonService {
     });
   }
 
+  public async getTablesForDelete(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/config-delete-data-set/all`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getSpsApiGroups(): Promise<IApiResponse<ILookup[]>> {
     const url = `/sps-api-group/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

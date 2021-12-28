@@ -42,6 +42,7 @@ export enum Page {
   AzureAPIVmSizes = 'azure-api-vm-sizes',
 
   BulkImport = 'bulk-import',
+  DeleteData = 'delete-data-set',
   ConfigExcelFileMapping = 'config-excel-file-mapping',
 
   O365ActivationsUserDetail = 'o365-activations-user-detail',

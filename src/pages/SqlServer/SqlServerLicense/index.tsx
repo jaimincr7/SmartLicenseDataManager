@@ -1,26 +1,30 @@
 import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../../store/app.hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import { ISqlServerLicenseProps } from './sqlServerLicense.model';
-import { clearSqlServerLicense } from '../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
+import { clearSqlServerLicense, sqlServerLicenseSelector } from '../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 import AddSqlServerLicenseModal from './AddSqlServerLicenseModal';
 import ReRunAllScenariosModal from './ReRunAllScenariosModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
+  const sqlServerLicense = useAppSelector(sqlServerLicenseSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
 
   const { id: urlId } = props.match?.params;
 
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [addModalVisible, setAddModalVisible] = React.useState(false);
+  const [filterKeys, setFilterKeys] = React.useState({});
   const [runAllScenariosModalVisible, setRunAllScenariosModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
@@ -74,6 +78,20 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
           }
         >
           Re-Run All License Scenarios
+        </Button>
+      </Can>
+      <Can I={Action.DeleteData} a={Page.SqlServerLicense}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={sqlServerLicense.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
         </Button>
       </Can>
     </>
@@ -145,6 +163,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -171,6 +190,15 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={sqlServerLicense.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
       {runAllScenariosModalVisible && (

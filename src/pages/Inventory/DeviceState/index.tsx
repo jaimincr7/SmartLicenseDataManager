@@ -88,6 +88,20 @@ const DeviceState: React.FC<IDeviceStateProps> = (props) => {
           Process Data
         </Button>
       </Can>
+      <Can I={Action.DeleteData} a={Page.DeviceState}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={deviceState.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+      </Can>
     </>
   );
 
@@ -159,6 +173,7 @@ const DeviceState: React.FC<IDeviceStateProps> = (props) => {
           tableName={deviceState.search.tableName}
           refreshDataTable={() => refreshDataTable()}
           filterKeys={filterKeys}
+          isDateAvailable={false}
         />
       )}
     </div>

@@ -15,6 +15,7 @@ import {
 } from '../../../store/o365/o365ProductList/o365ProductList.reducer';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import ProcessDataModal from '../O365Users/ProcessDataModal';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
   const o365ProductList = useAppSelector(o365ProductListSelector);
@@ -26,8 +27,10 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
 
+  const [filterKeys, setFilterKeys] = React.useState({});
   const [id, setId] = React.useState(0);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
@@ -85,6 +88,20 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
           Process Data
         </Button>
       </Can>
+      <Can I={Action.DeleteData} a={Page.O365ProductList}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={o365ProductList.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+      </Can>
     </>
   );
 
@@ -139,6 +156,7 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -173,6 +191,15 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
           tableName={o365ProductList.search.tableName}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={o365ProductList.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

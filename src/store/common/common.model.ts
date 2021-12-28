@@ -102,6 +102,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  tablesForDelete: {
+    data: any[];
+    loading: boolean;
+  };
   spsApiTypeLookup: {
     data: ILookup[];
     loading: boolean;

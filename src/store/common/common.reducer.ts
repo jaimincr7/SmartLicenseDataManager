@@ -65,6 +65,7 @@ import {
   getScheduleDateforWindowsServer,
   getScheduleDateforSqlServer,
   getSpsApiUrlInjectionV2Lookup,
+  getTablesForDelete,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -102,6 +103,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   buLookup: {
+    data: [],
+    loading: false,
+  },
+  tablesForDelete: {
     data: [],
     loading: false,
   },
@@ -634,6 +639,15 @@ export const commonSlice = createSlice({
     [getSpsApiUrlInjectionV2Lookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.spsApiUrlInjectionV2Lookup.data = action.payload;
       state.spsApiUrlInjectionV2Lookup.loading = false;
+    },
+
+    // Tables For Delete lookup
+    [getTablesForDelete.pending.type]: (state) => {
+      state.tablesForDelete.loading = true;
+    },
+    [getTablesForDelete.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.tablesForDelete.data = action.payload;
+      state.tablesForDelete.loading = false;
     },
 
     // SpsApiBaseUrl lookup
