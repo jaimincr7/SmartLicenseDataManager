@@ -22,6 +22,7 @@ import {
   searchSpsApiTokenConfigOptionsV2,
 } from '../../../../store/sps/apiTokenConfigOptionsV2/apiTokenConfigOptionsV2.action';
 import spsApiTokenConfigOptionsV2Service from '../../../../services/sps/apiTokenConfigOptionsV2/apiTokenConfigOptionsV2.service';
+import AddSpsApiTokenConfigOptionsV2Modal from '../AddApiTokenConfigOptionsV2Modal';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -30,6 +31,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     tableButtons,
+    isTabbed,
+    addModalVisible,
+    setAddModalVisible,
   } = props;
   const spsApiTokenConfigOptionsV2 = useAppSelector(spsApiTokenConfigOptionsV2Selector);
   const dispatch = useAppDispatch();
@@ -42,6 +46,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       dataTableRef?.current.refreshData();
     },
   }));
+
+  const refreshDataTable = () => {
+    dataTableRef?.current.refreshData();
+  };
 
   useEffect(() => {
     if (isMultiple) {
@@ -172,7 +180,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/sps/sps-api-token-config-options-v2/${data.id}`);
+            {
+              isTabbed ?
+                <AddSpsApiTokenConfigOptionsV2Modal
+                  showModal={addModalVisible}
+                  isMultiple={false}
+                  handleModalClose={() => {
+                    setAddModalVisible(false);
+                    { props.isTabbed ? null : history.push('/sps/sps-api-token-config-options-v2'); }
+                  }}
+                  id={data.id}
+                  refreshDataTable={() => refreshDataTable()}
+                />
+                : history.push(`/sps/sps-api-token-config-options-v2/${data.id}`);
+            }
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />

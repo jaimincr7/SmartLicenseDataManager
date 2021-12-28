@@ -15,6 +15,7 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import ProcessDataModal from '../O365Users/ProcessDataModal';
+import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
 
 const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
   const o365Reservations = useAppSelector(o365ReservationsSelector);
@@ -27,8 +28,10 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
 
   const [id, setId] = React.useState(0);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [filterKeys, setFilterKeys] = React.useState({});
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
@@ -85,6 +88,20 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
           Process Data
         </Button>
       </Can>
+      <Can I={Action.DeleteData} a={Page.O365Reservations}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={o365Reservations.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+      </Can>
     </>
   );
 
@@ -139,6 +156,7 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -173,6 +191,15 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
           tableName={o365Reservations.search.tableName}
+        />
+      )}
+      {deleteModalVisible && (
+        <DeleteDatasetModal
+          showModal={deleteModalVisible}
+          handleModalClose={() => setDeleteModalVisible(false)}
+          tableName={o365Reservations.search.tableName}
+          refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
         />
       )}
     </div>

@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
 import { ISearchDeviceState, IDeviceState, IProcessData } from './deviceState.model';
@@ -45,9 +47,34 @@ class DeviceStateService {
 
   public async processData(data: IProcessData): Promise<any> {
     const url = `${this.ENDPOINT}/process-data`;
-    return request({ url, method: 'POST', data: data }).then((res) => {
-      return res.data;
+
+    const cancelTokenSource = axios.CancelToken.source();
+
+    return new Promise((resolve, reject) => {
+      const timmer = setTimeout(() => {
+        // Cancel request
+        cancelTokenSource.cancel();
+        toast.warning('Process is working in background.');
+        reject();
+      }, 30 * 1000); // wait till 30 seconds
+
+      request({ url, method: 'POST', data: data, cancelToken: cancelTokenSource.token })
+        .then((res) => {
+          return res?.data;
+        })
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((data) => {
+          reject(data);
+        })
+        .finally(() => {
+          clearTimeout(timmer);
+        });
     });
+    // return request({ url, method: 'POST', data: data }).then((res) => {
+    //   return res.data;
+    // });
   }
 
   public async exportExcelFile(searchParams?: ISearchDeviceState): Promise<any> {

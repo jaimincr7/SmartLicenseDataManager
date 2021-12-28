@@ -34,7 +34,7 @@ const AddSpsApiTokenConfigOptionsV2Modal: React.FC<IAddSpsApiTokenConfigOptionsV
   const spsApiTokenConfigOptionsV2 = useAppSelector(spsApiTokenConfigOptionsV2Selector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection, typeId} =
     props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -57,7 +57,8 @@ const AddSpsApiTokenConfigOptionsV2Modal: React.FC<IAddSpsApiTokenConfigOptionsV
     value: '',
     type: '',
     is_env_var: false,
-  };
+    api_type_ids: typeId ? [+typeId] : undefined,
+   };
 
   const onFinish = (values: any) => {
     const inputValues: ISpsApiTokenConfigOptionsV2 = {
@@ -80,7 +81,9 @@ const AddSpsApiTokenConfigOptionsV2Modal: React.FC<IAddSpsApiTokenConfigOptionsV
 
   const fillValuesOnEdit = async (data: ISpsApiTokenConfigOptionsV2) => {
     const typeIds = [];
-    data.sps_api_token_config_options_v2_with_api_types.map(x => {typeIds.push(x.api_type_id);});
+    data.sps_api_token_config_options_v2_with_api_types.map((x) => {
+      typeIds.push(x.api_type_id);
+    });
     if (data) {
       initialValues = {
         name: data.name,

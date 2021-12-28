@@ -71,6 +71,20 @@ const Slim360O365UserPlans: React.FC<ISlim360O365UserPlansProps> = (props) => {
           Import
         </Button>
       </Can>
+      <Can I={Action.DeleteData} a={Page.Slim360O365UserPlans}>
+        <Button
+          className="btn-icon mr-1"
+          onClick={() => setDeleteModalVisible(true)}
+          disabled={o365UserPlans.search.loading}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+            </em>
+          }
+        >
+          Delete Dataset
+        </Button>
+      </Can>
     </>
   );
 

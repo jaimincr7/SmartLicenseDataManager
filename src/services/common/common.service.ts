@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
 import {
@@ -453,9 +455,34 @@ class CommonService {
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
     const inputValues = { ...data, debug: false };
     const url = `/app/delete-dataset`;
-    return request({ url, method: 'POST', data: inputValues }).then((res) => {
-      return res.data;
+
+    const cancelTokenSource = axios.CancelToken.source();
+
+    return new Promise((resolve, reject) => {
+      const timmer = setTimeout(() => {
+        // Cancel request
+        cancelTokenSource.cancel();
+        toast.warning('Process is working in background.');
+        reject();
+      }, 30 * 1000); // wait till 30 seconds
+
+      request({ url, method: 'POST', data: inputValues, cancelToken: cancelTokenSource.token })
+        .then((res) => {
+          return res?.data;
+        })
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((data) => {
+          reject(data);
+        })
+        .finally(() => {
+          clearTimeout(timmer);
+        });
     });
+    // return request({ url, method: 'POST', data: inputValues }).then((res) => {
+    //   return res.data;
+    // });
   }
 
   public async updateMultiple(searchParams?: IBulkUpdate): Promise<any> {
@@ -492,6 +519,20 @@ class CommonService {
 
   public async getSpsApiUrlInjection(): Promise<IApiResponse<ILookup[]>> {
     const url = `/sps-api-oauth-url-injection-site/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getSpsApiUrlInjectionV2(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-injection-param-v2/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getTablesForDelete(): Promise<IApiResponse<ILookup[]>> {
+    const url = `/config-delete-data-set/all`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

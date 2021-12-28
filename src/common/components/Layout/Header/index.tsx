@@ -75,7 +75,6 @@ function Header() {
   const startSchedule = () => {
     dispatch(manageCronJobApi());
   };
-  
 
   useEffect(() => {
     if (ability.can(Action.RunCronJob, Page.Cron)) {

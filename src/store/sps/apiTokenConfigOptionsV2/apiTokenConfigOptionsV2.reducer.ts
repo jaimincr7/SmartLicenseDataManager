@@ -66,7 +66,7 @@ export const spsApiTokenConfigOptionsV2Slice = createSlice({
       state.search.loading = true;
     },
     [searchSpsApiTokenConfigOptionsV2.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      const { records, total_count, table_name , column_selection, ...rest } = action.payload;
+      const { records, total_count, table_name, column_selection, ...rest } = action.payload;
       state.search.data = records;
       state.search.count = total_count;
       if (JSON.stringify(rest) !== '{}') {
