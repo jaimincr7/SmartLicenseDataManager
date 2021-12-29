@@ -71,6 +71,7 @@ export interface IMainTable {
 
   //For Only Tabbed SPS Part
   isTabbed?: boolean;
+  anyId?: number;
   addModalVisible?: boolean;
   setAddModalVisible?: (value: boolean) => void;
 }

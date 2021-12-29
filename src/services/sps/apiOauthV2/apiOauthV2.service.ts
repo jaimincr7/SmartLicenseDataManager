@@ -1,9 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import {
-  ISearchSpsApiOauthV2,
-  ISpsApiOauthV2,
-} from './apiOauthV2.model';
+import { ISearchSpsApiOauthV2, ISpsApiOauthV2 } from './apiOauthV2.model';
 
 class SpsApiOauthService {
   ENDPOINT = '/sps-api-oauth-v2';

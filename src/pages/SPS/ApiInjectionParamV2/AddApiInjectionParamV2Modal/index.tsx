@@ -32,8 +32,15 @@ const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> 
   const spsApiInjectionParamV2 = useAppSelector(spsApiInjectionParamV2Selector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection, typeId} =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+    typeId,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {

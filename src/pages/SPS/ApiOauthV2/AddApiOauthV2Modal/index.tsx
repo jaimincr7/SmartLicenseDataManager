@@ -25,7 +25,13 @@ import {
   clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { getBULookup, getCompanyLookup, getSpsApiBaseUrl, getSpsApiTypeLookup, updateMultiple } from '../../../../store/common/common.action';
+import {
+  getBULookup,
+  getCompanyLookup,
+  getSpsApiBaseUrl,
+  getSpsApiTypeLookup,
+  updateMultiple,
+} from '../../../../store/common/common.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
@@ -36,8 +42,15 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
   const globalFilters = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection, typeId } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+    typeId,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -57,7 +70,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
     company_id: null,
     bu_id: null,
     tenant_id: null,
-    api_type_id: typeId ? + typeId : null,
+    api_type_id: typeId ? +typeId : null,
     base_url_id: null,
     consent: false,
     active: false,
@@ -189,7 +202,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
             validateMessages={validateMessages}
           >
             <Row gutter={[30, 15]} className="form-label-hide">
-            <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>

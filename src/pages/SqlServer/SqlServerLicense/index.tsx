@@ -5,7 +5,10 @@ import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import { ISqlServerLicenseProps } from './sqlServerLicense.model';
-import { clearSqlServerLicense, sqlServerLicenseSelector } from '../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
+import {
+  clearSqlServerLicense,
+  sqlServerLicenseSelector,
+} from '../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 import AddSqlServerLicenseModal from './AddSqlServerLicenseModal';
 import ReRunAllScenariosModal from './ReRunAllScenariosModal';
 import MainTable from './MainTable';

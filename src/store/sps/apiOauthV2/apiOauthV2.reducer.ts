@@ -96,10 +96,7 @@ export const spsApiOauthV2Slice = createSlice({
     [getSpsApiOauthV2ById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getSpsApiOauthV2ById.fulfilled.type]: (
-      state,
-      action: PayloadAction<ISpsApiOauthV2>
-    ) => {
+    [getSpsApiOauthV2ById.fulfilled.type]: (state, action: PayloadAction<ISpsApiOauthV2>) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;

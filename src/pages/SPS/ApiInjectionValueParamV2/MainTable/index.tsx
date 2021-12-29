@@ -32,7 +32,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     tableButtons,
     isTabbed,
     addModalVisible,
-    setAddModalVisible
+    setAddModalVisible,
   } = props;
   const spsApiInjectionValueParamV2 = useAppSelector(spsApiInjectionValueParamV2Selector);
   const dispatch = useAppDispatch();
@@ -162,7 +162,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDropdown(
               'api_type_id',
-                spsApiInjectionValueParamV2.search.lookups?.sps_api_types
+              spsApiInjectionValueParamV2.search.lookups?.sps_api_types
             ),
             dataIndex: 'sps_api_type_name',
             key: 'sps_api_type_name',
@@ -192,9 +192,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap(
-              'oauth_id', form
-            ),
+            title: FilterBySwap('oauth_id', form),
             dataIndex: 'oauth_id',
             key: 'oauth_id',
             ellipsis: true,
@@ -241,18 +239,22 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           onClick={() => {
             setSelectedId(data.id);
             {
-              isTabbed ?
+              isTabbed ? (
                 <AddSpsApiInjectionValueParamV2Modal
                   showModal={addModalVisible}
                   isMultiple={false}
                   handleModalClose={() => {
                     setAddModalVisible(false);
-                    { props.isTabbed ? null : history.push('/sps/sps-api-injection-value-v2'); }
+                    {
+                      props.isTabbed ? null : history.push('/sps/sps-api-injection-value-v2');
+                    }
                   }}
                   id={data.id}
                   refreshDataTable={() => refreshDataTable()}
                 />
-                : history.push(`/sps/sps-api-injection-value-v2/${data.id}`);
+              ) : (
+                history.push(`/sps/sps-api-injection-value-v2/${data.id}`)
+              );
             }
           }}
         >
@@ -260,7 +262,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.SpsApiInjectionValueParamV2}>
-        <Popconfirm title="Delete Record?" onConfirm={() => removeSpsApiInjectionValueParamV2(data.id)}>
+        <Popconfirm
+          title="Delete Record?"
+          onConfirm={() => removeSpsApiInjectionValueParamV2(data.id)}
+        >
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

@@ -24,6 +24,13 @@ class SpsApiInjectionParamService {
     });
   }
 
+  public async getSpsApiInjectionParamV2(id: number): Promise<any> {
+    const url = `${this.ENDPOINT}/get-by-api-type/${id}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveSpsApiInjectionParamV2(data: ISpsApiInjectionParamV2): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {

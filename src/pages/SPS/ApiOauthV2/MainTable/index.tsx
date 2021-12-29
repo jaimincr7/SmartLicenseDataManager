@@ -25,6 +25,7 @@ import {
 import spsApiOauthV2Service from '../../../../services/sps/apiOauthV2/apiOauthV2.service';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import AddSpsApiOauthV2Modal from '../AddApiOauthV2Modal';
+import ApiInjectionParamV2 from '../InjectionParamV2';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -36,6 +37,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     isTabbed,
     addModalVisible,
     setAddModalVisible,
+    anyId,
   } = props;
   const spsApiOauthV2 = useAppSelector(spsApiOauthV2Selector);
   const dispatch = useAppDispatch();
@@ -43,6 +45,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dataTableRef = useRef(null);
   const history = useHistory();
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
+  const [id, setId] = useState(null);
+  const [oauthId, setOauthId] = useState(null);
+  const [showInjectionModal, setShowInjectionModal] = useState(false);
 
   const refreshDataTable = () => {
     dataTableRef?.current.refreshData();
@@ -163,10 +168,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'api_type_id',
-                spsApiOauthV2.search.lookups?.sps_api_types
-            ),
+            title: FilterByDropdown('api_type_id', spsApiOauthV2.search.lookups?.sps_api_types),
             dataIndex: 'sps_api_type_name',
             key: 'sps_api_type_name',
             ellipsis: true,
@@ -179,10 +181,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDropdown(
-              'base_url_id',
-              spsApiOauthV2.search.lookups?.sps_api_base_urls
-            ),
+            title: FilterByDropdown('base_url_id', spsApiOauthV2.search.lookups?.sps_api_base_urls),
             dataIndex: 'sps_base_url_name',
             key: 'sps_base_url_name',
             ellipsis: true,
@@ -253,24 +252,42 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
+      {isTabbed == true ? (
+        <a
+          className="action-btn"
+          onClick={() => {
+            setId(data.api_type_id);
+            setShowInjectionModal(true);
+            setOauthId(data.id);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
+        </a>
+      ) : (
+        <></>
+      )}
       <Can I={Action.Update} a={Page.SpsApiOauthV2}>
         <a
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
             {
-              isTabbed ?
+              isTabbed ? (
                 <AddSpsApiOauthV2Modal
                   showModal={addModalVisible}
                   isMultiple={false}
                   handleModalClose={() => {
                     setAddModalVisible(false);
-                    { props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2'); }
+                    {
+                      props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2');
+                    }
                   }}
                   id={data.id}
                   refreshDataTable={() => refreshDataTable()}
                 />
-                : history.push(`/sps/sps-api-oauth-v2/${data.id}`);
+              ) : (
+                history.push(`/sps/sps-api-oauth-v2/${data.id}`)
+              );
             }
           }}
         >
@@ -307,6 +324,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setObjectForColumnFilter={setObjectForColumnFilter}
         tableButtons={tableButtons}
       />
+      {showInjectionModal && (
+        <ApiInjectionParamV2
+          id={id}
+          oauth_id={oauthId}
+          showModal={showInjectionModal}
+          handleModalClose={() => setShowInjectionModal(false)}
+        />
+      )}
     </>
   );
 };
