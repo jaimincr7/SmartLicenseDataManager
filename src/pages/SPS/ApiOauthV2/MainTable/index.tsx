@@ -37,7 +37,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     isTabbed,
     addModalVisible,
     setAddModalVisible,
-    anyId,
   } = props;
   const spsApiOauthV2 = useAppSelector(spsApiOauthV2Selector);
   const dispatch = useAppDispatch();
