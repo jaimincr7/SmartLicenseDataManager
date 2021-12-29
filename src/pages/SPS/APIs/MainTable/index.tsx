@@ -223,7 +223,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           </a>
         </Popconfirm>
       </Can>
-      <a
+      {data?.enabled && (<a
         title=""
         className="action-btn"
         onClick={() => {
@@ -235,7 +235,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ) : (
           <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
         )}
-      </a>
+      </a>)}
     </div>
   );
 

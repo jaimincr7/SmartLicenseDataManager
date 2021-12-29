@@ -625,6 +625,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       );
     }
   };
+  
   return (
     <>
       <div className="title-block search-block tabel-search">
@@ -633,7 +634,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           {tableButtons ? tableButtons() : () => <></>}
           {isCronJobApiButton && (
             <Can I={Action.RunCronJob} a={Page.Cron}>
-              <Button onClick={startSchedule} icon={<RedoOutlined style={{ color: 'blue' }} />}>
+              <Button onClick={startSchedule} loading={common.manageCronJob.loading} icon={<RedoOutlined style={{ color: 'blue' }} />}>
                 Enable Scheduler
               </Button>
             </Can>
