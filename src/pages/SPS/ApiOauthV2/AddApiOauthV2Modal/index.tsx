@@ -30,6 +30,7 @@ import {
   getCompanyLookup,
   getSpsApiBaseUrl,
   getSpsApiTypeLookup,
+  getTenantLookup,
   updateMultiple,
 } from '../../../../store/common/common.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
@@ -171,6 +172,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
   useEffect(() => {
     dispatch(getSpsApiTypeLookup());
     dispatch(getSpsApiBaseUrl());
+    dispatch(getTenantLookup());
     if (+id > 0) {
       dispatch(getSpsApiOauthV2ById(+id));
     }
@@ -256,7 +258,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                   ) : (
                     'Company'
                   )}
-                  <Form.Item name="company_id" className="m-0" label="Company">
+                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
