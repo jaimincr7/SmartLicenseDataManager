@@ -98,7 +98,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-
       {
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
