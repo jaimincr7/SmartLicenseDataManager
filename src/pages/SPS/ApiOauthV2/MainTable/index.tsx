@@ -307,7 +307,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        globalSearchExist={false}
+        globalSearchExist={true}
         showAddButton={ability.can(Action.Add, Page.SpsApiOauthV2)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
