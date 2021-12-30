@@ -35,7 +35,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     isMultiple,
     tableButtons,
     isTabbed,
-    anyId,
     addModalVisible,
     setAddModalVisible,
   } = props;
@@ -323,7 +322,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.SpsApiOauthV2)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         tableButtons={tableButtons}
-        type_id={anyId}
       />
       {showInjectionModal && (
         <ApiInjectionParamV2
