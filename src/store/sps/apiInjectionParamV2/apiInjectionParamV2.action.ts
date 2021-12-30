@@ -31,6 +31,16 @@ export const getSpsApiInjectionParamV2ById = createAsyncThunk(
   }
 );
 
+export const getSpsApiInjectionParamV2 = createAsyncThunk(
+  'getSpsApiInjectionParamV2',
+  async (id: number) => {
+    const response = await apiInjectionParamV2Service.getSpsApiInjectionParamV2(id).then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const saveSpsApiInjectionParamV2 = createAsyncThunk(
   'saveSpsApiInjectionParamV2',
   async (data: ISpsApiInjectionParamV2) => {

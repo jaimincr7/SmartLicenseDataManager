@@ -19,7 +19,7 @@ const CronViewLog: React.FC<ICronViewLogProps> = () => {
         <h4 className="p-0">
           <BreadCrumbs pageName={Page.CronViewLogData} />
         </h4>
-        <div className="right-title">
+        <div className="btns-block">
           <Button
             className="btn-icon"
             type="primary"

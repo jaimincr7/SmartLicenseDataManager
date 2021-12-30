@@ -67,13 +67,11 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
     const tenantId = form.getFieldValue('tenant_id');
     const companyId = form.getFieldValue('company_id');
     const buId = form.getFieldValue('bu_id');
-    const date_added = form.getFieldValue('date_added');
 
     const searchValues = {
       tenant_id: tenantId ? tenantId : 0,
       company_id: companyId ? companyId : 0,
       bu_id: buId ? buId : 0,
-      date_added: isDateAdded ? (_.isNull(date_added) ? null : moment(date_added)) : null,
     };
     dispatch(setGlobalSearch(searchValues));
   };

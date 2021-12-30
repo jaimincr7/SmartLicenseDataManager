@@ -3,7 +3,10 @@ import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { ISpsApiJobsProps } from './spsApiJobs.model';
-import { clearSpsApiJobs, spsApiJobsSelector } from '../../../store/sps/spsApiJobs/spsApiJobs.reducer';
+import {
+  clearSpsApiJobs,
+  spsApiJobsSelector,
+} from '../../../store/sps/spsApiJobs/spsApiJobs.reducer';
 import MainTable from './MainTable';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
@@ -58,7 +61,7 @@ const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
         </div>
       </div>
       <div className="main-card">
-        <MainTable ref={dataTableRef} tableButtons={tableButtons}/>
+        <MainTable ref={dataTableRef} tableButtons={tableButtons} />
       </div>
       {deleteModalVisible && (
         <DeleteDatasetModal

@@ -148,7 +148,8 @@ export const spsApiInjectionValueParamV2Slice = createSlice({
 });
 
 // A selector
-export const spsApiInjectionValueParamV2Selector = (state: RootState) => state.spsApiInjectionValueParamV2;
+export const spsApiInjectionValueParamV2Selector = (state: RootState) =>
+  state.spsApiInjectionValueParamV2;
 
 // Actions
 export const {

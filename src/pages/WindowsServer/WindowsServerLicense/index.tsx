@@ -5,7 +5,10 @@ import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import { IWindowsServerLicenseProps } from './windowsServerLicense.model';
-import { clearWindowsServerLicense, windowsServerLicenseSelector } from '../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
+import {
+  clearWindowsServerLicense,
+  windowsServerLicenseSelector,
+} from '../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
 import AddWindowsServerLicenseModal from './AddWindowsServerLicenseModal';
 import ReRunAllScenariosModal from './ReRunAllScenariosModal';
 import MainTable from './MainTable';

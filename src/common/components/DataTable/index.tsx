@@ -1,5 +1,5 @@
 import { Table, Form, Button, Checkbox, Popover } from 'antd';
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { IDataTable } from './dataTable.model';
@@ -33,13 +33,6 @@ import { startAll } from '../../../store/master/cron/cron.action';
 
 let pageLoaded = false;
 
-let tableFilter = {
-  keyword: '',
-  order_by: 'id',
-  order_direction: 'DESC' as orderByType,
-  filter_keys: {},
-};
-
 const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, ref) => {
   const {
     defaultOrderBy,
@@ -70,6 +63,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     type_id,
   } = props;
 
+  const tableFilter = useRef({
+    keyword: '',
+    order_by: 'id',
+    order_direction: 'DESC' as orderByType,
+    filter_keys: {},
+  });
+
   const reduxStoreData = useAppSelector(reduxSelector);
   const common = useAppSelector(commonSelector);
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -90,7 +90,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [tableColumns, setTableColumns] = React.useState([]);
   const [selectedRowList, setSelectedRowList] = React.useState([]);
 
-  tableFilter.order_by = defaultOrderBy ? defaultOrderBy : tableFilter.order_by;
+  tableFilter.current.order_by = defaultOrderBy ? defaultOrderBy : tableFilter.current.order_by;
 
   //For checked List of Rows Selection
   const rowSelection = {
@@ -104,7 +104,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const getSearchData = (page, isExportToExcel: boolean) => {
-    const { filter_keys, ...rest } = tableFilter;
+    const { filter_keys, ...rest } = tableFilter.current;
 
     if (!page) {
       page = pagination;
@@ -155,8 +155,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         limit: searchData.limit,
         offset: searchData.offset,
         is_column_selection: searchData.is_column_selection,
-        order_by: tableFilter.order_by,
-        order_direction: tableFilter.order_direction,
+        order_by: tableFilter.current.order_by,
+        order_direction: tableFilter.current.order_direction,
         column_called: [],
       });
     }
@@ -168,7 +168,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       fetchTableData();
     },
     getValuesForSelection() {
-      const inlineSearchFilter = _.pickBy(tableFilter.filter_keys, function (value) {
+      const inlineSearchFilter = _.pickBy(tableFilter.current.filter_keys, function (value) {
         return !(
           value === undefined ||
           value === '' ||
@@ -182,9 +182,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         is_export_to_excel: !pageLoaded,
         limit: 10,
         offset: 0,
-        order_by: tableFilter.order_by,
-        order_direction: tableFilter.order_direction,
-        keyword: tableFilter.keyword,
+        order_by: tableFilter.current.order_by,
+        order_direction: tableFilter.current.order_direction,
+        keyword: tableFilter.current.keyword,
       };
       Obj['selectedIds'] = selectedRowList;
       setValuesForSelection(Obj);
@@ -202,7 +202,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return () => {
       //For RowSelection in Table
       pageLoaded = false;
-      tableFilter = {
+      tableFilter.current = {
         keyword: '',
         order_by: 'id',
         order_direction: 'DESC' as orderByType,
@@ -219,24 +219,25 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       for (const key in globalFilters.search) {
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
-        // if (element) {
-        //   globalSearch[key] = [element];
-        // }
       }
-      tableFilter.filter_keys = { ...tableFilter.filter_keys, ...globalSearch };
-      setPagination({ ...pagination, current: 1 });
-      fetchTableData({ ...pagination, current: 1 });
-    } else {
+      tableFilter.current.filter_keys = { ...tableFilter.current.filter_keys, ...globalSearch };
       setPagination({ ...pagination, current: 1 });
       fetchTableData({ ...pagination, current: 1 });
     }
   }, [globalFilters.search]);
+  React.useEffect(() => {
+    const isGlobalSearchExist: boolean = globalSearchExist === undefined ? true : globalSearchExist;
+    if (!isGlobalSearchExist) {
+      setPagination({ ...pagination, current: 1 });
+      fetchTableData({ ...pagination, current: 1 });
+    }
+  }, []);
   // End: Global Search
 
   // Start: Pagination ans Sorting
   const handleTableChange = (paginating, filters, sorter) => {
-    tableFilter = {
-      ...tableFilter,
+    tableFilter.current = {
+      ...tableFilter.current,
       order_by:
         sorter.field ||
         sorter.column?.children[0]?.dataIndex ||
@@ -274,8 +275,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Keyword search
   const onFinishSearch = (value: string) => {
-    tableFilter = {
-      ...tableFilter,
+    tableFilter.current = {
+      ...tableFilter.current,
       keyword: value,
     };
     setPagination({ ...pagination, current: 1 });
@@ -284,7 +285,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Start: Column level filter
   const onFinish = (values: IInlineSearch) => {
-    tableFilter.filter_keys = values;
+    tableFilter.current.filter_keys = values;
     setPagination({ ...pagination, current: 1 });
     fetchTableData({ ...pagination, current: 1 });
   };
@@ -362,9 +363,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -584,7 +584,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   const onRowSelection = () => {
     if (onCallAllApi) {
-      onCallAllApi(tableFilter);
+      onCallAllApi(tableFilter.current);
     }
   };
 
@@ -596,7 +596,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           className="btn-icon"
           onClick={() => {
             if (isStartSchedulaAllApi) {
-              const inlineSearchFilter = _.pickBy(tableFilter.filter_keys, function (value) {
+              const inlineSearchFilter = _.pickBy(tableFilter.current.filter_keys, function (value) {
                 return !(
                   value === undefined ||
                   value === '' ||
@@ -610,9 +610,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                 is_export_to_excel: !pageLoaded,
                 limit: 10,
                 offset: 0,
-                order_by: tableFilter.order_by,
-                order_direction: tableFilter.order_direction,
-                keyword: tableFilter.keyword,
+                order_by: tableFilter.current.order_by,
+                order_direction: tableFilter.current.order_direction,
+                keyword: tableFilter.current.keyword,
               };
               dispatch(startAll(Obj));
             } else {
@@ -625,6 +625,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       );
     }
   };
+
   return (
     <>
       <div className="title-block search-block tabel-search">
@@ -633,7 +634,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           {tableButtons ? tableButtons() : () => <></>}
           {isCronJobApiButton && (
             <Can I={Action.RunCronJob} a={Page.Cron}>
-              <Button onClick={startSchedule} icon={<RedoOutlined style={{ color: 'blue' }} />}>
+              <Button onClick={startSchedule} loading={common.manageCronJob.loading} icon={<RedoOutlined style={{ color: 'blue' }} />}>
                 Enable Scheduler
               </Button>
             </Can>
