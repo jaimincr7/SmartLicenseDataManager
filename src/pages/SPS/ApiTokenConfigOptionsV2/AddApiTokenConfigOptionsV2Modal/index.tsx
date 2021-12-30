@@ -34,8 +34,15 @@ const AddSpsApiTokenConfigOptionsV2Modal: React.FC<IAddSpsApiTokenConfigOptionsV
   const spsApiTokenConfigOptionsV2 = useAppSelector(spsApiTokenConfigOptionsV2Selector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection, typeId} =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    isMultiple,
+    valuesForSelection,
+    typeId,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -58,7 +65,7 @@ const AddSpsApiTokenConfigOptionsV2Modal: React.FC<IAddSpsApiTokenConfigOptionsV
     type: '',
     is_env_var: false,
     api_type_ids: typeId ? [+typeId] : undefined,
-   };
+  };
 
   const onFinish = (values: any) => {
     const inputValues: ISpsApiTokenConfigOptionsV2 = {

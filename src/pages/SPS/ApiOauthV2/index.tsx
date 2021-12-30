@@ -21,7 +21,7 @@ const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
   const dataTableRef = useRef(null);
   const history = useHistory();
 
-  const { id: urlId } = props.isTabbed ? {id: undefined} : props.match?.params;
+  const { id: urlId } = props.isTabbed ? { id: undefined } : props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
@@ -55,9 +55,7 @@ const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(
-                spsApiOauthV2.search.tableName
-              )}`
+              `/data-input/bulk-import/${encodeURIComponent(spsApiOauthV2.search.tableName)}`
             )
           }
           icon={
@@ -123,7 +121,8 @@ const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
-          isTabbed={true}
+          anyId={props.typeId}
+          isTabbed={props.isTabbed}
           addModalVisible={addModalVisible}
           setAddModalVisible={setAddModalVisible}
           tableButtons={tableButtons}
@@ -135,7 +134,9 @@ const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            {props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2');}
+            {
+              props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2');
+            }
           }}
           id={id}
           typeId={props.typeId}
@@ -149,7 +150,9 @@ const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            {props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2');}
+            {
+              props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2');
+            }
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}

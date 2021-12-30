@@ -1,13 +1,15 @@
 import { useRef } from 'react';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { ISpsApiJobsProps } from './spsApiJobsData.model';
 import MainTable from './MainTable';
 import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
+import { Button } from 'antd';
 
 const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
+  const history = useHistory();
   const dataTableRef = useRef(null);
 
   const { id: job_id } = useParams<{ id?: string }>();
@@ -26,6 +28,20 @@ const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
         </h4>
         <div className="right-title">
           <GlobalSearch />
+        </div>
+        <div className="btns-block">
+          <Button
+            className="btn-icon"
+            type="primary"
+            onClick={() => history.goBack()}
+            icon={
+              <em className="anticon">
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-left-arrow.svg`} alt="" />
+              </em>
+            }
+          >
+            Back
+          </Button>
         </div>
       </div>
       <div className="main-card">

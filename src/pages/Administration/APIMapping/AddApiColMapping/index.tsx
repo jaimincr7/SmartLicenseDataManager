@@ -162,10 +162,10 @@ const AddAPIMapping: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterApiColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                  ele.name.toLowerCase()?.replace(/\s+/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                ele.name.toLowerCase()?.replace(/\s+/g, '')
+            )[0]
             : '';
       }
     });
@@ -256,6 +256,20 @@ const AddAPIMapping: React.FC = () => {
           <h4 className="p-0">
             <BreadCrumbs pageName={Page.ConfigSPSColMapping} />
           </h4>
+          <div className="btns-block">
+            <Button
+              className="btn-icon"
+              type="primary"
+              onClick={() => history.goBack()}
+              icon={
+                <em className="anticon">
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-left-arrow.svg`} alt="" />
+                </em>
+              }
+            >
+              Back
+            </Button>
+          </div>
         </div>
 
         <div className="main-card">

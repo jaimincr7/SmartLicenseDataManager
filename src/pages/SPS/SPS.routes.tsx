@@ -176,18 +176,10 @@ const SPSRoutes: React.FC = () => {
 
         {/* SPS API OauthV2 */}
         {ability.can(Action.View, Page.SpsApiOauthV2) && (
-          <Route
-            exact
-            path={`${match.path}/sps-api-oauth-v2`}
-            component={SpsApiOauthV2}
-          />
+          <Route exact path={`${match.path}/sps-api-oauth-v2`} component={SpsApiOauthV2} />
         )}
         {ability.can(Action.View, Page.SpsApiOauthV2) && (
-          <Route
-            exact
-            path={`${match.path}/sps-api-oauth-v2/:id`}
-            component={SpsApiOauthV2}
-          />
+          <Route exact path={`${match.path}/sps-api-oauth-v2/:id`} component={SpsApiOauthV2} />
         )}
 
         {/* SPS API Jobs Data */}

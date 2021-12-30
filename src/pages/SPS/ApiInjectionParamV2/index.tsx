@@ -21,7 +21,7 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
   const dataTableRef = useRef(null);
   const history = useHistory();
 
-  const { id: urlId } = props.isTabbed ? {id: undefined} : props.match?.params;
+  const { id: urlId } = props.isTabbed ? { id: undefined } : props.match?.params;
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
@@ -135,7 +135,9 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            {props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');}
+            {
+              props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');
+            }
           }}
           id={id}
           typeId={props.typeId}
@@ -149,7 +151,9 @@ const SpsApiInjectionParamV2: React.FC<ISpsApiInjectionParamV2Props> = (props) =
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            {props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');}
+            {
+              props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');
+            }
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}

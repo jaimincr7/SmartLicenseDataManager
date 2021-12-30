@@ -23,13 +23,18 @@ import {
   clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { getSpsApiUrlInjectionV2Lookup, updateMultiple } from '../../../../store/common/common.action';
+import {
+  getSpsApiUrlInjectionV2Lookup,
+  updateMultiple,
+} from '../../../../store/common/common.action';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import commonService from '../../../../services/common/common.service';
 
 const { Option } = Select;
 
-const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValueParamV2Props> = (props) => {
+const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValueParamV2Props> = (
+  props
+) => {
   const spsApiInjectionValueParamV2 = useAppSelector(spsApiInjectionValueParamV2Selector);
   const dispatch = useAppDispatch();
   const commonLookups = useAppSelector(commonSelector);
@@ -41,7 +46,8 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.SpsApiInjectionValueParamV2} level={1} />
+        {isNew ? 'Add ' : 'Edit '}{' '}
+        <BreadCrumbs pageName={Page.SpsApiInjectionValueParamV2} level={1} />
       </>
     );
   }, [isNew]);
@@ -126,18 +132,20 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
   useEffect(() => {
     dispatch(getSpsApiUrlInjectionV2Lookup());
     const filterOBJ: any = {
-      table_name: "SPS_API_OAUTH_v2",
-      column_name: "id",
+      table_name: 'SPS_API_OAUTH_v2',
+      column_name: 'id',
       filter_keys: {},
       is_column_selection: false,
       current_user: {},
     };
-    commonService.getColumnLookup(filterOBJ).then((res) => {
-      return res.body.data;
-    })
-    .then((res) => {
-      setOptions(res);
-    });
+    commonService
+      .getColumnLookup(filterOBJ)
+      .then((res) => {
+        return res.body.data;
+      })
+      .then((res) => {
+        setOptions(res);
+      });
 
     if (+id > 0) {
       dispatch(getSpsApiInjectionValueParamV2ById(+id));
@@ -170,10 +178,14 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
             validateMessages={validateMessages}
           >
             <Row gutter={[30, 15]} className="form-label-hide">
-            <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'injection_param_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'injection_param_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Injection URL</Checkbox>
                     </Form.Item>
                   ) : (
@@ -274,11 +286,7 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
                   ) : (
                     'Token'
                   )}
-                  <Form.Item
-                    name="token"
-                    label="Token"
-                    className="m-0"
-                  >
+                  <Form.Item name="token" label="Token" className="m-0">
                     <Input className="form-control" />
                   </Form.Item>
                 </div>

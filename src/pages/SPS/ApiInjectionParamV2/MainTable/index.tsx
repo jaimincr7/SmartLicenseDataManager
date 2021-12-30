@@ -168,18 +168,22 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           onClick={() => {
             setSelectedId(data.id);
             {
-              isTabbed ?
+              isTabbed ? (
                 <AddSpsApiInjectionParamV2Modal
                   showModal={addModalVisible}
                   isMultiple={false}
                   handleModalClose={() => {
                     setAddModalVisible(false);
-                    { props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2'); }
+                    {
+                      props.isTabbed ? null : history.push('/sps/sps-api-injection-param-v2');
+                    }
                   }}
                   id={data.id}
                   refreshDataTable={() => refreshDataTable()}
                 />
-                : history.push(`/sps/sps-api-injection-param-v2/${data.id}`);
+              ) : (
+                history.push(`/sps/sps-api-injection-param-v2/${data.id}`)
+              );
             }
           }}
         >

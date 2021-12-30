@@ -16,6 +16,11 @@ export interface ISpsApiInjectionParamV2State {
     hasErrors: boolean;
     data: ISpsApiInjectionParamV2;
   };
+  getInjectionParam: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: any[];
+  };
   save: {
     loading: boolean;
     hasErrors: boolean;

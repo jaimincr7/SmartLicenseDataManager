@@ -5,6 +5,7 @@ import { booleanLookup } from '../../../common/constants/common';
 import { ISpsApiInjectionParamV2State } from './apiInjectionParamV2.model';
 import {
   deleteSpsApiInjectionParamV2,
+  getSpsApiInjectionParamV2,
   getSpsApiInjectionParamV2ById,
   saveSpsApiInjectionParamV2,
   searchSpsApiInjectionParamV2,
@@ -26,6 +27,11 @@ export const initialState: ISpsApiInjectionParamV2State = {
     columns: {},
   },
   getById: {
+    loading: false,
+    hasErrors: false,
+    data: null,
+  },
+  getInjectionParam: {
     loading: false,
     hasErrors: false,
     data: null,
@@ -107,6 +113,20 @@ export const spsApiInjectionParamV2Slice = createSlice({
     [getSpsApiInjectionParamV2ById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
+    },
+
+    // Get Injection Param
+    [getSpsApiInjectionParamV2.pending.type]: (state) => {
+      state.getInjectionParam.loading = true;
+    },
+    [getSpsApiInjectionParamV2.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      state.getInjectionParam.data = action.payload;
+      state.getInjectionParam.loading = false;
+      state.getInjectionParam.hasErrors = false;
+    },
+    [getSpsApiInjectionParamV2.rejected.type]: (state) => {
+      state.getInjectionParam.loading = false;
+      state.getInjectionParam.hasErrors = true;
     },
 
     // Save

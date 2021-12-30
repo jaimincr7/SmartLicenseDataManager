@@ -168,11 +168,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       <Can I={Action.Error} a={Page.CronViewLogData}>
-        {data.status == 'Error' && (
+        {!(data.status == 'Success' || data.status == 'Stopped' || data.status == 'Running' || data.status == 'Ready') ? (
           <Popover content={data.comment} trigger="hover">
             {renderActionButton()}
           </Popover>
-        )}
+        ): <></>}
       </Can>
     </div>
   );
