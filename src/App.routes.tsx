@@ -29,9 +29,26 @@ import CmdbRoutes from './pages/CMDB/CMDB.routes';
 import SPSRoutes from './pages/SPS/SPS.routes';
 import Slim360Routes from './pages/Slim360/Slim360.routes';
 import InventoryRoutes from './pages/Inventory/Inventory.routes';
+import { useAppSelector } from './store/app.hooks';
+import { userSelector } from './store/administration/administration.reducer';
+import { toast } from 'react-toastify';
+import config from './utils/config';
+import { io } from "socket.io-client";
 
 function AppRoutes() {
   const history = useHistory();
+  const userDetails = useAppSelector(userSelector);
+
+  // Set socket io
+  React.useEffect(() => {
+    if(userDetails?.activeAccount?.username){
+      const socket = io(config.baseApi);
+      socket.on(userDetails.activeAccount.username, (message:string) => {
+        toast.info(message);
+      });
+    }
+  }, [userDetails?.activeAccount?.username]);
+  
 
   React.useEffect(() => {
     setResponseError(history);
