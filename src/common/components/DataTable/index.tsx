@@ -579,7 +579,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     return columns?.filter((col) => {
       return col?.column in reduxStoreData.tableColumnSelection.columns
         ? reduxStoreData.tableColumnSelection.columns[col.column]
-        : false;
+        : true;
     });
   };
 
