@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import SpsApiInjectionParamV2 from '../ApiInjectionParamV2';
-//import SpsApiOauthV2 from '../ApiOauthV2';
+import SpsApiOauthV2 from '../ApiOauthV2';
 import SpsApiTokenConfigOptionsV2 from '../ApiTokenConfigOptionsV2';
 
 const { TabPane } = Tabs;
@@ -49,9 +49,9 @@ const TabforCRUDs = (props) => {
             <TabPane tab="Injection Param" key="2">
               <SpsApiInjectionParamV2 isTabbed={true} typeId={typeId} />
             </TabPane>
-            {/* <TabPane tab="OAuth" key="3">
+            <TabPane tab="OAuth" key="3">
               <SpsApiOauthV2 isTabbed={true} typeId={typeId} />
-            </TabPane> */}
+            </TabPane>
           </Tabs>
         </div>
       </div>

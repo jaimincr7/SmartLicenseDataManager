@@ -205,7 +205,7 @@ const AddSpsApiTypeModal: React.FC<IAddSpsApiTypeProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-              <Col xs={24} sm={12} md={8}>
+              {/* <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'base_urls']} valuePropName="checked" noStyle>
@@ -223,7 +223,7 @@ const AddSpsApiTypeModal: React.FC<IAddSpsApiTypeProps> = (props) => {
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
-              </Col>
+              </Col> */}
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
