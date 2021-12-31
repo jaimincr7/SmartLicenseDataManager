@@ -357,6 +357,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     ...(getTableColumns(form) || []),
     {
       title: 'Actions',
+      column: 'Actions',
       children: [
         {
           title: (
@@ -576,9 +577,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       columns = tableColumns.map((i) => columns?.find((j) => j?.column === i?.column));
     }
     return columns?.filter((col) => {
-      return col.column in reduxStoreData.tableColumnSelection.columns
+      return col?.column in reduxStoreData.tableColumnSelection.columns
         ? reduxStoreData.tableColumnSelection.columns[col.column]
-        : true;
+        : false;
     });
   };
 
