@@ -41,14 +41,24 @@ function AppRoutes() {
 
   // Set socket io
   React.useEffect(() => {
-    if(userDetails?.activeAccount?.username){
+    if (userDetails?.activeAccount?.username) {
       const socket = io(config.baseApi);
-      socket.on(userDetails.activeAccount.username, (message:string) => {
+      socket.on(userDetails.activeAccount.username, (message: string) => {
         toast.info(message);
+      });
+
+      socket.on('disconnect', () => {
+        toast.info('Socket is disconnected');
+        console.info('Socket is disconnected');
+        socket.connect();
+      });
+
+      socket.on('connect', () => {
+        console.info('Socket is connect');
       });
     }
   }, [userDetails?.activeAccount?.username]);
-  
+
 
   React.useEffect(() => {
     setResponseError(history);
