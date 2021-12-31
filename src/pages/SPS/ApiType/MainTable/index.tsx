@@ -125,20 +125,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             ellipsis: true,
           },
         ],
-      },
-      {
-        title: <span className="dragHandler">Base Urls</span>,
-        column: 'Base Urls',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('base_urls', form),
-            dataIndex: 'base_urls',
-            key: 'base_urls',
-            ellipsis: true,
-          },
-        ],
-      },
+       },
+      // {
+      //   title: <span className="dragHandler">Base Urls</span>,
+      //   column: 'Base Urls',
+      //   sorter: true,
+      //   children: [
+      //     {
+      //       title: FilterBySwap('base_urls', form),
+      //       dataIndex: 'base_urls',
+      //       key: 'base_urls',
+      //       ellipsis: true,
+      //     },
+      //   ],
+      // },
     ];
   };
 
