@@ -1,13 +1,16 @@
 import { Button, Col, DatePicker, Form, Input, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { validateMessages } from '../../../../common/constants/common';
-import { useAppSelector } from '../../../../store/app.hooks';
+import { ICallAPI } from '../../../../services/sps/spsApiCall/spsApiCall.model';
+import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
+import { callApi } from '../../../../store/sps/spsAPICall/spsApiCall.action';
 import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
 import { ICallApiModalProps } from './callApiModal.model';
 
 const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
-  const { showModal, handleModalClose, params, onCallApi } = props;
+  const { showModal, handleModalClose, params, onCallApi, id, company_id, tenant_id, bu_id } = props;
   const spsApis = useAppSelector(spsApiCallSelector);
+  const dispatch = useAppDispatch();
 
   const [queryParams, setQueryParams] = useState(null);
   const [form] = Form.useForm();
@@ -65,14 +68,14 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
 
   const onFinish = (values: any) => {
     onCallApi(values);
-    // const callApiObj: ICallAPI = {
-    //   id: id,
-    //   company_id: globalLookups.search.company_id,
-    //   bu_id: globalLookups.search.bu_id,
-    //   tenant_id: globalLookups.search.tenant_id,
-    //   spsApiQueryParam: values,
-    // };
-    // dispatch(callApi(callApiObj));
+     const callApiObj: ICallAPI = {
+       id: id,
+       company_id: company_id,
+       bu_id: bu_id,
+       tenant_id: tenant_id,
+       spsApiQueryParam: values,
+     };
+     dispatch(callApi(callApiObj));
   };
 
   return (

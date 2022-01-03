@@ -736,10 +736,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               record={record}
               records={records}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
-              fileName={record?.original_filename.split('.')[0]}
+              fileName={record?.key_word === null ? record?.original_filename.split('.')[0] : record?.key_word}
               fileType={record?.original_filename.slice(
                 ((record?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
               )}
+              is_public={record.is_public}
               tableName={record?.table_name}
               seqNumber={record?.index}
             ></MappingColumn>

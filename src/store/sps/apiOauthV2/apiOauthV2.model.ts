@@ -20,6 +20,7 @@ export interface ISpsApiOauthV2State {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];
+    data: any;
   };
   delete: {
     loading: boolean;

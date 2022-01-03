@@ -34,6 +34,7 @@ export const initialState: ISpsApiOauthV2State = {
     loading: false,
     hasErrors: false,
     messages: [],
+    data: null,
   },
   delete: {
     loading: false,
@@ -118,6 +119,7 @@ export const spsApiOauthV2Slice = createSlice({
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
+      state.save.data = action.payload.data;
     },
     [saveSpsApiOauthV2.rejected.type]: (state) => {
       state.save.loading = false;

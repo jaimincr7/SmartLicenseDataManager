@@ -8,7 +8,7 @@ import {
     spsApiInjectionParamV2Selector,
 } from '../../../../store/sps/apiInjectionParamV2/apiInjectionParamV2.reducer';
 import { saveSpsApiInjectionValueParamV2 } from '../../../../store/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.action';
-import { spsApiInjectionValueParamV2Selector } from '../../../../store/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.reducer';
+import { clearSpsApiInjectionValueParamV2Messages, spsApiInjectionValueParamV2Selector } from '../../../../store/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.reducer';
 import { IApiInjectionParamV2Props } from './apiInjectionParamV2.model';
 
 const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
@@ -26,7 +26,6 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
             const obj = {
                 injection_param_id: options.inj,
                 value: values.value[index].value,
-                token: values.token[index].token,
             };
             arr.push(obj);
         });
@@ -45,7 +44,7 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
                 toast.success(spsApiInjectionValueV2.save.messages.join(' '));
                 handleModalClose();
             }
-            dispatch(clearSpsApiInjectionValueV2Messages());
+            dispatch(clearSpsApiInjectionValueParamV2Messages());
         }
     }, [spsApiInjectionValueV2.save.messages]);
 
@@ -62,7 +61,7 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
     }, []);
 
     const removeRecord = (value) => {
-        const dummyR = records.filter(data => data.id === value);
+        const dummyR = records.filter(data => data.id !== value);
         setRecords(dummyR);
     };
 
@@ -94,18 +93,7 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
                                             name={['value', index, 'value']}
                                             label="Value"
                                             className="m-0"
-                                            rules={[{ required: form.getFieldValue(['token', index, 'token']) === undefined }]}
-                                        >
-                                            <Input className="form-control" />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={12} md={6}>
-                                        <label className="label w-100">Token</label>
-                                        <Form.Item
-                                            name={['token', index, 'token']}
-                                            label="Token"
-                                            className="m-0"
-                                            rules={[{ required: form.getFieldValue(['value', index, 'value']) === undefined }]}
+                                            rules={[{ required: true }]}
                                         >
                                             <Input className="form-control" />
                                         </Form.Item>
@@ -123,7 +111,7 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
                             key="submit"
                             type="primary"
                             htmlType="submit"
-                            loading={spsApiInjectionParamV2.save.loading}
+                            loading={spsApiInjectionValueV2.save.loading}
                         >
                             Save
                         </Button>
@@ -137,7 +125,4 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
     );
 };
 export default ApiInjectionParamV2;
-function clearSpsApiInjectionValueV2Messages(): any {
-    throw new Error('Function not implemented.');
-}
 

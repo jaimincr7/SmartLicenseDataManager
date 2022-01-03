@@ -125,20 +125,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             ellipsis: true,
           },
         ],
-      },
-      {
-        title: <span className="dragHandler">Base Urls</span>,
-        column: 'Base Urls',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('base_urls', form),
-            dataIndex: 'base_urls',
-            key: 'base_urls',
-            ellipsis: true,
-          },
-        ],
-      },
+       },
+      // {
+      //   title: <span className="dragHandler">Base Urls</span>,
+      //   column: 'Base Urls',
+      //   sorter: true,
+      //   children: [
+      //     {
+      //       title: FilterBySwap('base_urls', form),
+      //       dataIndex: 'base_urls',
+      //       key: 'base_urls',
+      //       ellipsis: true,
+      //     },
+      //   ],
+      // },
     ];
   };
 
@@ -147,7 +147,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <a
+      {/* <a
         className="action-btn"
         onClick={() => {
           setSelectedId(data.id);
@@ -155,7 +155,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         }}
       >
         <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
-      </a>
+      </a> */}
       <Can I={Action.Update} a={Page.SpsApiType}>
         <a
           className="action-btn"

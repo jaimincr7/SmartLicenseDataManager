@@ -274,10 +274,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       const newURL = new URL(data.url);
       const urlSearchParams = new URLSearchParams(newURL.search);
       const params = Object.fromEntries(urlSearchParams?.entries());
-      // const editableParams = Object.values(params)?.filter(
-      //   (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
-      // );
-      setCallApiObj({ ...callApiObj, params: params, show: false, isAll: false, id: data.id });
+      const editableParams = Object.values(params)?.filter(
+        (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
+      );
       setTypeId(data.api_type_id);
       const callApiObject: ICallAPI = {
         id: data.id,
@@ -287,10 +286,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         oauth_id: data.oauth_id,
         spsApiQueryParam: params,
       };
-      dispatch(callApi(callApiObject));
-      // if (editableParams?.length > 0) {
-      //   toast.info("Url Doesn't have Start or End Time");
-      // }
+      if (editableParams?.length > 0) {
+        setCallApiObj({ ...callApiObj,filterKeys: callApiObject, params: params, show: true, isAll: false, id: data.id });
+      } else {
+        dispatch(callApi(callApiObject));
+      }
     } else {
       toast.error('Selected api does not have url.');
     }
@@ -316,23 +316,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             }
           }
         });
-        if (Object.keys(allParams)?.length > 0) {
-          setCallApiObj({
-            params: allParams,
-            filterKeys: tableFilter.filter_keys,
-            keyword: tableFilter.keyword,
-            show: true,
-            isAll: true,
-            id: 0,
-          });
-        } else {
-          const cllApiObj: ICallAllApi = {
-            filter_keys: tableFilter.filterKeys,
-            keyword: tableFilter.keyword,
-            sps_api_query_param: {},
-          };
-          dispatch(callAllApi(cllApiObj));
-        }
+        const cllApiObj: ICallAllApi = {
+          filter_keys: tableFilter.filter_keys,
+          keyword: tableFilter.keyword,
+          sps_api_query_param: {},
+        };
+        dispatch(callAllApi(cllApiObj));
       } else {
         toast.info('No mapping available for searched apis.');
       }
@@ -381,6 +370,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         <CallApiModal
           showModal={callApiObj.show}
           params={callApiObj.params}
+          id={callApiObj.id}
+          tenant_id={callApiObj.filterKeys.tenant_id}
+          company_id={callApiObj.filterKeys.company_id}
+          bu_id={callApiObj.filterKeys.bu_id}
           handleModalClose={() => {
             setCallApiObj({
               filterKeys: null,
