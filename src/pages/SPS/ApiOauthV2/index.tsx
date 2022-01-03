@@ -14,6 +14,7 @@ import {
   clearSpsApiOauthV2,
   spsApiOauthV2Selector,
 } from '../../../store/sps/apiOauthV2/apiOauthV2.reducer';
+import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 
 const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
   const spsApiOauthV2 = useAppSelector(spsApiOauthV2Selector);
@@ -79,6 +80,9 @@ const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
         <h4 className="p-0">
           <BreadCrumbs pageName={Page.SpsApiOauthV2} />
         </h4>
+        <div className="right-title">
+          <GlobalSearch />
+        </div>
       </div>
       <div className="main-card">
         {/* <div className="input-btns-title">
