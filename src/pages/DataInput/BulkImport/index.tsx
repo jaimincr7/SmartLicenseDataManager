@@ -120,6 +120,7 @@ const BulkImport: React.FC = () => {
                   filename: x.filename,
                   original_filename: x.original_filename,
                   is_public: mappingData.length > 0 ? mappingData[0].is_public : false,
+                  key_word: mappingData.length > 0 ? mappingData[0].key_word : null,
                   delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
                   table_name:
                     mappingData.length > 0
@@ -190,6 +191,7 @@ const BulkImport: React.FC = () => {
                     filename: x.filename,
                     original_filename: x.original_filename,
                     is_public: mappingData.length > 0 ? mappingData[0].is_public : false,
+                    key_word: mappingData.length > 0 ? mappingData[0].key_word : null,
                     delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
                     table_name:
                       mappingData.length > 0
@@ -269,6 +271,7 @@ const BulkImport: React.FC = () => {
                   : currentIndex++,
                 filename: x.filename,
                 is_public: mappingData.length > 0 ? mappingData[0].is_public : false,
+                key_word: mappingData.length > 0 ? mappingData[0].key_word : null,
                 original_filename: x.original_filename,
                 delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
                 table_name: !firstFlag

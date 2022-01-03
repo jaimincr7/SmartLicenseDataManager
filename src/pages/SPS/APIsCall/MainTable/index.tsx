@@ -327,7 +327,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           });
         } else {
           const cllApiObj: ICallAllApi = {
-            filter_keys: tableFilter.filterKeys,
+            filter_keys: tableFilter.filter_keys,
             keyword: tableFilter.keyword,
             sps_api_query_param: {},
           };
