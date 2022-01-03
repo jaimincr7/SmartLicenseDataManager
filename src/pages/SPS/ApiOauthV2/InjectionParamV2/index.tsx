@@ -61,7 +61,7 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
     }, []);
 
     const removeRecord = (value) => {
-        const dummyR = records.filter(data => data.id === value);
+        const dummyR = records.filter(data => data.id !== value);
         setRecords(dummyR);
     };
 

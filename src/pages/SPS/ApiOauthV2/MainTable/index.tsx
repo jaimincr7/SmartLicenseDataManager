@@ -246,6 +246,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     ];
   };
 
+  useEffect(() => {
+    if (spsApiOauthV2.save.data !== null && spsApiOauthV2.save.data !== undefined) {
+      if (!spsApiOauthV2.save.hasErrors) {
+        setId(spsApiOauthV2.save.data.api_type_id);
+        setShowInjectionModal(true);
+        setOauthId(spsApiOauthV2.save.data.id);
+      } 
+    }
+  }, [spsApiOauthV2.save.data]);
+
   const removeSpsApiOauthV2 = (id: number) => {
     dispatch(deleteSpsApiOauthV2(id));
   };
