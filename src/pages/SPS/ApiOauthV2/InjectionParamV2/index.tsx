@@ -26,7 +26,6 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
             const obj = {
                 injection_param_id: options.inj,
                 value: values.value[index].value,
-                token: values.token[index].token,
             };
             arr.push(obj);
         });
@@ -94,18 +93,7 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
                                             name={['value', index, 'value']}
                                             label="Value"
                                             className="m-0"
-                                            rules={[{ required: form.getFieldValue(['token', index, 'token']) === undefined }]}
-                                        >
-                                            <Input className="form-control" />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={12} md={6}>
-                                        <label className="label w-100">Token</label>
-                                        <Form.Item
-                                            name={['token', index, 'token']}
-                                            label="Token"
-                                            className="m-0"
-                                            rules={[{ required: form.getFieldValue(['value', index, 'value']) === undefined }]}
+                                            rules={[{ required: true }]}
                                         >
                                             <Input className="form-control" />
                                         </Form.Item>
