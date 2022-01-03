@@ -251,7 +251,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {isTabbed == true ? (
         <a
           className="action-btn"
           onClick={() => {
@@ -262,9 +261,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
         </a>
-      ) : (
-        <></>
-      )}
       <Can I={Action.Update} a={Page.SpsApiOauthV2}>
         <a
           className="action-btn"

@@ -8,7 +8,7 @@ import {
     spsApiInjectionParamV2Selector,
 } from '../../../../store/sps/apiInjectionParamV2/apiInjectionParamV2.reducer';
 import { saveSpsApiInjectionValueParamV2 } from '../../../../store/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.action';
-import { spsApiInjectionValueParamV2Selector } from '../../../../store/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.reducer';
+import { clearSpsApiInjectionValueParamV2Messages, spsApiInjectionValueParamV2Selector } from '../../../../store/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.reducer';
 import { IApiInjectionParamV2Props } from './apiInjectionParamV2.model';
 
 const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
@@ -45,7 +45,7 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
                 toast.success(spsApiInjectionValueV2.save.messages.join(' '));
                 handleModalClose();
             }
-            dispatch(clearSpsApiInjectionValueV2Messages());
+            dispatch(clearSpsApiInjectionValueParamV2Messages());
         }
     }, [spsApiInjectionValueV2.save.messages]);
 
@@ -123,7 +123,7 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
                             key="submit"
                             type="primary"
                             htmlType="submit"
-                            loading={spsApiInjectionParamV2.save.loading}
+                            loading={spsApiInjectionValueV2.save.loading}
                         >
                             Save
                         </Button>
@@ -137,7 +137,4 @@ const ApiInjectionParamV2: React.FC<IApiInjectionParamV2Props> = (props) => {
     );
 };
 export default ApiInjectionParamV2;
-function clearSpsApiInjectionValueV2Messages(): any {
-    throw new Error('Function not implemented.');
-}
 
