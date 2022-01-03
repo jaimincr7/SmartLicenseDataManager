@@ -584,8 +584,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   const onRowSelection = () => {
-    debugger;
-    console.log(tableFilter.current);
     if (onCallAllApi) {
       onCallAllApi(tableFilter.current);
     }
