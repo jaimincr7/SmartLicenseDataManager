@@ -6,6 +6,7 @@ export interface IMappingColumnProps {
   seqNumber?: number;
   record?: any;
   records?: any;
+  is_public?: boolean;
   setRecords?: (data: any) => void;
   onExcelMapping?: (values: any) => void;
 }

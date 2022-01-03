@@ -4,6 +4,7 @@ import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } f
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
   FilterByBooleanDropDown,
+  FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { AlignType } from 'rc-table/lib/interface';
@@ -109,6 +110,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('name', form),
             dataIndex: 'name',
             key: 'name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">API Type</span>,
+        column: 'API_Type',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown('api_type_id', spsApiTokenConfigOptionsV2.search.lookups?.sps_api_types),
+            dataIndex: 'sps_api_types_names',
+            key: 'sps_api_types_names',
             ellipsis: true,
           },
         ],

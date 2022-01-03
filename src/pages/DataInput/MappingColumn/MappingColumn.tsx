@@ -20,13 +20,13 @@ import {
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords } = props;
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public } = props;
 
   const [form] = Form.useForm();
   const initialValues = {
     file_name: fileName,
     file_type: fileType,
-    isPublic: false,
+    isPublic: is_public ? is_public : false,
   };
   const globalFilters = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
