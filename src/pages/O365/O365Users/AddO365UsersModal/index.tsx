@@ -75,7 +75,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
     company_id: null,
     bu_id: null,
     tenant_id: null,
-    alternate_email_addresses: '',
+    alternate_email_addresses: null,
     block_credential: false,
     city: '',
     country: '',

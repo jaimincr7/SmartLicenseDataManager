@@ -740,6 +740,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               fileType={record?.original_filename.slice(
                 ((record?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
               )}
+              is_public={record.is_public}
               tableName={record?.table_name}
               seqNumber={record?.index}
             ></MappingColumn>
