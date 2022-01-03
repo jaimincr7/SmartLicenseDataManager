@@ -468,7 +468,10 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
             {records?.length > 0 && +id > 0 &&
               (records || []).map((option, index) => (
                 <>
+                  <br />
                   <hr />
+                  <span style={{fontWeight: 'bold'}}>Injection Value </span>
+                  <br /><br />
                   <Row gutter={[30, 15]} className="form-label-hide" key={index}>
                     <Col xs={24} sm={12} md={6}>
                       <label className="label w-100">Injection Param</label>
@@ -493,7 +496,6 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                       <Button onClick={() => removeRecord(option.id)}>Remove</Button>
                     </Col>
                   </Row>
-                  <hr />
                 </>
               ))}
             <div className="btns-block modal-footer">
