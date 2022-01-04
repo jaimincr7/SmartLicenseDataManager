@@ -660,7 +660,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       ),
     },
     {
-      title: 'Sheet Name',
+      title: 'Tab',
       dataIndex: 'sheet',
       key: 'sheet',
     },
