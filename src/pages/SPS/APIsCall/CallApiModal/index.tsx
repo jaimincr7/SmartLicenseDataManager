@@ -8,7 +8,8 @@ import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.
 import { ICallApiModalProps } from './callApiModal.model';
 
 const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
-  const { showModal, handleModalClose, params, onCallApi, id, company_id, tenant_id, bu_id } = props;
+  const { showModal, handleModalClose, params, onCallApi, id, company_id, tenant_id, bu_id } =
+    props;
   const spsApis = useAppSelector(spsApiCallSelector);
   const dispatch = useAppDispatch();
 
@@ -68,14 +69,14 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
 
   const onFinish = (values: any) => {
     onCallApi(values);
-     const callApiObj: ICallAPI = {
-       id: id,
-       company_id: company_id,
-       bu_id: bu_id,
-       tenant_id: tenant_id,
-       spsApiQueryParam: values,
-     };
-     dispatch(callApi(callApiObj));
+    const callApiObj: ICallAPI = {
+      id: id,
+      company_id: company_id,
+      bu_id: bu_id,
+      tenant_id: tenant_id,
+      spsApiQueryParam: values,
+    };
+    dispatch(callApi(callApiObj));
   };
 
   return (

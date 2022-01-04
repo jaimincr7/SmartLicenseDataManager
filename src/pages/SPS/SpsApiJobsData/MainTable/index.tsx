@@ -217,7 +217,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {data.status !== 'Success' && 
+      {data.status !== 'Success' &&
         (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
           <Popover content={<>Please select global filter first!</>} trigger="click">
             {renderActionButton(data)}

@@ -166,7 +166,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
   useEffect(() => {
     if (spsApiInjectionParamV2.getInjectionParam.data?.length > 0)
       setRecords(spsApiInjectionParamV2.getInjectionParam?.data);
-  }, [spsApiInjectionParamV2.getInjectionParam?.data])
+  }, [spsApiInjectionParamV2.getInjectionParam?.data]);
 
   useEffect(() => {
     if (spsApiOauthV2.save.messages.length > 0) {
@@ -214,7 +214,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
   }, [dispatch]);
 
   const removeRecord = (value) => {
-    const dummyR = records.filter(data => data.id !== value);
+    const dummyR = records.filter((data) => data.id !== value);
     setRecords(dummyR);
   };
 
@@ -273,15 +273,15 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -295,7 +295,12 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                   ) : (
                     'Company'
                   )}
-                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="company_id"
+                    className="m-0"
+                    label="Company"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -313,15 +318,15 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -353,15 +358,15 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -467,14 +472,20 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
             </Row>
             <br />
             <hr />
-            {records?.length > 0 && +id > 0 &&
+            {records?.length > 0 &&
+              +id > 0 &&
               (records || []).map((option, index) => (
                 <>
-                  <br/>
+                  <br />
                   <Row gutter={[30, 15]} className="form-label-hide" key={index}>
                     <Col xs={24} sm={12} md={6}>
                       <label className="label w-100">Injection Param</label>
-                      <Form.Item name={['inj', index, 'inj']} initialValue={option.id} label="Injection Param" className="m-0">
+                      <Form.Item
+                        name={['inj', index, 'inj']}
+                        initialValue={option.id}
+                        label="Injection Param"
+                        className="m-0"
+                      >
                         {option.name}
                         <Input className="form-control" value={option.id} hidden={true} />
                       </Form.Item>

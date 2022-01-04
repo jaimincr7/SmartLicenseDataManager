@@ -1,7 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  ISearchSpsApiInjectionValueParamV2,
-} from '../../../services/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.model';
+import { ISearchSpsApiInjectionValueParamV2 } from '../../../services/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.model';
 import apiInjectionValueParamV2Service from '../../../services/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.service';
 
 // Asynchronous thunk action

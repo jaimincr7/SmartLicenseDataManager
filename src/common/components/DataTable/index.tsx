@@ -364,8 +364,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -597,14 +598,17 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           className="btn-icon"
           onClick={() => {
             if (isStartSchedulaAllApi) {
-              const inlineSearchFilter = _.pickBy(tableFilter.current.filter_keys, function (value) {
-                return !(
-                  value === undefined ||
-                  value === '' ||
-                  _.isNull(value) ||
-                  (Array.isArray(value) && value.length === 0)
-                );
-              });
+              const inlineSearchFilter = _.pickBy(
+                tableFilter.current.filter_keys,
+                function (value) {
+                  return !(
+                    value === undefined ||
+                    value === '' ||
+                    _.isNull(value) ||
+                    (Array.isArray(value) && value.length === 0)
+                  );
+                }
+              );
               const Obj = {
                 isLookup: !pageLoaded,
                 filterKeys: inlineSearchFilter,
@@ -635,7 +639,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
           {tableButtons ? tableButtons() : () => <></>}
           {isCronJobApiButton && (
             <Can I={Action.RunCronJob} a={Page.Cron}>
-              <Button onClick={startSchedule} loading={common.manageCronJob.loading} icon={<RedoOutlined style={{ color: 'blue' }} />}>
+              <Button
+                onClick={startSchedule}
+                loading={common.manageCronJob.loading}
+                icon={<RedoOutlined style={{ color: 'blue' }} />}
+              >
                 Enable Scheduler
               </Button>
             </Can>
@@ -693,12 +701,13 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         </div>
       </div>
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
-        <ReactDragListView {...dragProps}>
+        <ReactDragListView {...dragProps}>          
           <Table
             rowSelection={!disableRowSelection ? rowSelection : null}
             scroll={{ x: true }}
             rowKey={(record) =>
-              record[defaultOrderBy ? defaultOrderBy : 'id'] +
+              record[defaultOrderBy ? defaultOrderBy : 'id'] 
+              + '-' +
               (record['oauth_id'] ? record['oauth_id'] : '')
             }
             dataSource={reduxStoreData.search.data}
