@@ -16,6 +16,11 @@ export interface ISpsApiInjectionValueParamV2State {
     hasErrors: boolean;
     data: ISpsApiInjectionValueParamV2;
   };
+  getByOauthId: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: ISpsApiInjectionValueParamV2[];
+  };
   save: {
     loading: boolean;
     hasErrors: boolean;

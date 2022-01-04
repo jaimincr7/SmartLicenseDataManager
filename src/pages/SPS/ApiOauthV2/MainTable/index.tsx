@@ -252,7 +252,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setId(spsApiOauthV2.save.data.api_type_id);
         setShowInjectionModal(true);
         setOauthId(spsApiOauthV2.save.data.id);
-      } 
+      }
     }
   }, [spsApiOauthV2.save.data]);
 
@@ -261,7 +261,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-        {/* <a
+      {/* <a
           className="action-btn"
           onClick={() => {
             setId(data.api_type_id);

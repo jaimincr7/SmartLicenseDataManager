@@ -223,19 +223,21 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           </a>
         </Popconfirm>
       </Can>
-      {data?.enabled && (<a
-        title=""
-        className="action-btn"
-        onClick={() => {
-          onFetchCall(data);
-        }}
-      >
-        {data?.sps_mapping_id > 0 ? (
-          <ControlOutlined title="Mapped Api" />
-        ) : (
-          <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
-        )}
-      </a>)}
+      {data?.enabled && (
+        <a
+          title=""
+          className="action-btn"
+          onClick={() => {
+            onFetchCall(data);
+          }}
+        >
+          {data?.sps_mapping_id > 0 ? (
+            <ControlOutlined title="Mapped Api" />
+          ) : (
+            <ControlFilled title="Map Api" style={{ color: '#00274d' }} />
+          )}
+        </a>
+      )}
     </div>
   );
 
