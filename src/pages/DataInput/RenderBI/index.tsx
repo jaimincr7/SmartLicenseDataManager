@@ -531,14 +531,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   // }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
 
   const onChange = (selectedRecord: any, value: any) => {
-    // console.log('record',selectedRecord);
-    // console.log(value);
     const dummyRecord = _.cloneDeep(records);
     dummyRecord.map((data) => {
       if (data.index == selectedRecord.index) {
         let flagMapping = null;
         data.currentMapping = value;
         selectedRecord.show_mapping.map((data1) => {
+          data.key_word = data1?.key_word;
           data1.config_excel_column_mappings.map((data2) => {
             if (data2.id == value) {
               data.table_name = data2.table_name;
