@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import React from 'react';
-import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory, useParams } from 'react-router-dom';
 import { ISpsApiJobsProps } from './spsApiJobsData.model';
 import MainTable from './MainTable';
@@ -26,9 +25,6 @@ const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
         <h4 className="p-0">
           <BreadCrumbs pageName={Page.SpsApiJobsData} />
         </h4>
-        <div className="right-title">
-          <GlobalSearch />
-        </div>
         <div className="btns-block">
           <Button
             className="btn-icon"

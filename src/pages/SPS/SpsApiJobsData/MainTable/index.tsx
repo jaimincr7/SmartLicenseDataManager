@@ -12,7 +12,6 @@ import {
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
-import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import spsApiJobsDataService from '../../../../services/sps/spsApiJobsData/spsApiJobsData.service';
 import {
   FilterByDateSwap,
@@ -22,7 +21,7 @@ import { ISearch } from '../../../../common/models/common';
 import DataTable from '../../../../common/components/DataTable';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { Popconfirm, Popover } from 'antd';
+import { Popconfirm } from 'antd';
 import { ICallAPI } from '../../../../services/sps/spsApiJobsData/spsApiJobsData.model';
 import { ReloadOutlined } from '@ant-design/icons';
 import { IMainTable } from './mainTable.model';
@@ -32,7 +31,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dispatch = useAppDispatch();
   const spsApiJobsData = useAppSelector(spsApiJobsDataSelector);
   const dataTableRef = useRef(null);
-  const globalLookups = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   const extraSearchData = {
@@ -191,9 +189,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const onRun = (data: any) => {
     const callApiObj: ICallAPI = {
       id: data.id,
-      company_id: globalLookups.search.company_id,
-      bu_id: globalLookups.search.bu_id,
-      tenant_id: globalLookups.search.tenant_id,
     };
     dispatch(runJobData(callApiObj));
   };
@@ -205,9 +200,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title=""
         className="action-btn"
         onClick={() => {
-          if (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length === 3) {
             onRun(data);
-          }
         }}
       >
         <ReloadOutlined title="Run Job Data" />
@@ -218,13 +211,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       {data.status !== 'Success' &&
-        (Object.values(globalLookups.search)?.filter((x) => x > 0)?.length !== 3 ? (
-          <Popover content={<>Please select global filter first!</>} trigger="click">
-            {renderActionButton(data)}
-          </Popover>
-        ) : (
+         (
           renderActionButton(data)
-        ))}
+        )}
       <Can I={Action.Delete} a={Page.SpsApiJobs}>
         <Popconfirm title="Delete Record?">
           <a href="#" title="" className="action-btn">

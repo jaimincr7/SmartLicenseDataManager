@@ -716,7 +716,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               reduxStoreData.search.loading ||
               reduxStoreData?.delete?.loading ||
               reduxStoreData?.callAllApi?.loading ||
-              reduxStoreData?.callApi?.loading
+              reduxStoreData?.callApi?.loading || 
+              reduxStoreData?.runJobData?.loading
             }
             pagination={{
               ...pagination,
