@@ -77,6 +77,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
     tenant_id: null,
     alternate_email_addresses: null,
     block_credential: false,
+    account_enabled: false,
     city: '',
     country: '',
     department: '',
@@ -239,6 +240,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
         usage_location: data.usage_location,
         user_principal_name: data.user_principal_name,
         when_created: data.when_created,
+        account_enabled: data.account_enabled,
         non_human: data.non_human,
         in_ad: data.in_ad,
         active_in_ad: data.active_in_ad,
@@ -1478,6 +1480,20 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                     </Form.Item>
                   ) : (
                     'Non Human'
+                  )}
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="account_enabled" className="m-0 mr-1" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'account_enabled']} valuePropName="checked" noStyle>
+                      <Checkbox>Accont Enabled</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Accont Enabled'
                   )}
                 </div>
               </Col>

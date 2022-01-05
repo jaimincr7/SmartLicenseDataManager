@@ -151,9 +151,9 @@ const AddAPIMapping: React.FC = () => {
     filterTableColumns?.map(function (ele) {
       if (mappingArray?.length > 0) {
         const mapObj = mappingArray?.find((x) => x.key === ele.name);
-        if (mapObj && filterApiColumns?.includes(mapObj?.value)) {
-          form.setFieldsValue({ [ele.name]: mapObj.value });
-        }
+          if (mapObj && Array.isArray(filterApiColumns) && filterApiColumns?.includes(mapObj?.value)) {
+            form.setFieldsValue({ [ele.name]: mapObj.value });
+          }
       } else {
         initialValuesData[ele.name] =
           filterApiColumns?.filter(

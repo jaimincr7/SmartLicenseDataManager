@@ -177,27 +177,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">SPS Input Type</span>,
-        column: 'SPS_InputTypeId',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterBySwap('sps_input_type_id', form),
-            dataIndex: 'sps_input_type_id',
-            key: 'sps_input_type_id',
-            ellipsis: true,
-          },
-        ],
-      },
-      {
         title: <span className="dragHandler">API Call Id</span>,
         column: 'API_CallId',
         sorter: true,
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('api_call_id', form),
+            title: FilterByDropdown('api_call_id', spsApiJobs.search.lookups?.api_calls),
             dataIndex: 'api_call_name',
             key: 'api_call_name',
             ellipsis: true,
@@ -211,7 +197,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('api_type_id', form),
+            title: FilterByDropdown('api_type_id', spsApiJobs.search.lookups?.api_types),
             dataIndex: 'api_type_name',
             key: 'api_type_name',
             ellipsis: true,

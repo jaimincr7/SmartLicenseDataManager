@@ -1,7 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  ISearchSpsApiInjectionValueParamV2,
-} from '../../../services/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.model';
+import { ISearchSpsApiInjectionValueParamV2 } from '../../../services/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.model';
 import apiInjectionValueParamV2Service from '../../../services/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.service';
 
 // Asynchronous thunk action
@@ -23,6 +21,18 @@ export const getSpsApiInjectionValueParamV2ById = createAsyncThunk(
   async (id: number) => {
     const response = await apiInjectionValueParamV2Service
       .getSpsApiInjectionValueParamV2ById(id)
+      .then((res) => {
+        return res.body;
+      });
+    return response.data;
+  }
+);
+
+export const getSpsApiInjectionValueV2ByOauthId = createAsyncThunk(
+  'getSpsApiInjectionValueV2ByOauthId',
+  async (id: number) => {
+    const response = await apiInjectionValueParamV2Service
+      .getSpsApiInjectionValueV2ByOauthId(id)
       .then((res) => {
         return res.body;
       });

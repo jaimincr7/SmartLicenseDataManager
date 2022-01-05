@@ -41,6 +41,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     setDelimitFlag,
     firstFlag,
     setFirstFlag,
+    hideUnmapped,
   } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -59,6 +60,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
   const [curRecordMap, setCurRecordMap] = useState(null);
+  const [withoutUnmappedRecords, setWithoutUnmappedRecords] = useState([]);
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
@@ -102,10 +104,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             ele.name?.toLowerCase()?.replace(/\s/g, '')
         ).length > 0
           ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+            (x: any) =>
+              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+              ele.name?.toLowerCase()?.replace(/\s/g, '')
+          )[0]
           : '';
       sqlToExcelMapping.push({
         key: `${ele.name}`,
@@ -136,38 +138,55 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         header_row: number;
         delimiter: string;
       }> = [];
-      records.map((data) => {
-        const Obj = {
-          excel_to_sql_mapping: data.excel_to_sql_mapping
-            ? data.excel_to_sql_mapping
-            : getDummyMapping(data.sheet, data.columns),
-          table_name: data.table_name,
-          file_name: data.filename,
-          original_file_name: data.original_filename,
-          sheet_name: data.sheet,
-          header_row: data.header_row - 1,
-          delimiter: data.delimeter ? data.delimiter : ',',
-        };
-        arr.push(Obj);
-      });
+      if (hideUnmapped === true) {
+        withoutUnmappedRecords.map((data) => {
+          const Obj = {
+            excel_to_sql_mapping: data.excel_to_sql_mapping
+              ? data.excel_to_sql_mapping
+              : getDummyMapping(data.sheet, data.columns),
+            table_name: data.table_name,
+            file_name: data.filename,
+            original_file_name: data.original_filename,
+            sheet_name: data.sheet,
+            header_row: data.header_row - 1,
+            delimiter: data.delimeter ? data.delimiter : ',',
+          };
+          arr.push(Obj);
+        });
+      } else {
+        records.map((data) => {
+          const Obj = {
+            excel_to_sql_mapping: data.excel_to_sql_mapping
+              ? data.excel_to_sql_mapping
+              : getDummyMapping(data.sheet, data.columns),
+            table_name: data.table_name,
+            file_name: data.filename,
+            original_file_name: data.original_filename,
+            sheet_name: data.sheet,
+            header_row: data.header_row - 1,
+            delimiter: data.delimeter ? data.delimiter : ',',
+          };
+          arr.push(Obj);
+        });
+      }
       const val = {
         excel_sheet_with_mapping_details: arr,
         foreign_key_values: {
           tenant_id: _.isNull(globalSearch.tenant_id)
             ? null
             : globalSearch.tenant_id === undefined
-            ? null
-            : globalSearch?.tenant_id[0],
+              ? null
+              : globalSearch?.tenant_id[0],
           bu_id: _.isNull(globalSearch.bu_id)
             ? null
             : globalSearch.bu_id === undefined
-            ? null
-            : globalSearch?.bu_id[0],
+              ? null
+              : globalSearch?.bu_id[0],
           company_id: _.isNull(globalSearch.company_id)
             ? null
             : globalSearch.company_id === undefined
-            ? null
-            : globalSearch?.company_id[0],
+              ? null
+              : globalSearch?.company_id[0],
           date_added: date ? date : moment(),
         },
       };
@@ -235,18 +254,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-          ? null
-          : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-          ? null
-          : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-          ? null
-          : globalSearch?.company_id[0],
+            ? null
+            : globalSearch?.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -257,10 +276,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -344,6 +363,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   // End: set tables for import
 
   useEffect(() => {
+    const dummyRecords = _.cloneDeep(records);
+    const unmapRec = dummyRecords.filter((data) => data.excel_to_sql_mapping !== null);
+    setWithoutUnmappedRecords(unmapRec);
     return () => {
       setTableColumnState([]);
     };
@@ -531,8 +553,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   // }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
 
   const onChange = (selectedRecord: any, value: any) => {
-    // console.log('record',selectedRecord);
-    // console.log(value);
     const dummyRecord = _.cloneDeep(records);
     dummyRecord.map((data) => {
       if (data.index == selectedRecord.index) {
@@ -541,6 +561,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         selectedRecord.show_mapping.map((data1) => {
           data1.config_excel_column_mappings.map((data2) => {
             if (data2.id == value) {
+              data.key_word = data1?.key_word;
+              data.is_public = data1?.is_public
               data.table_name = data2.table_name;
               flagMapping = JSON.parse(data2.mapping);
             }
@@ -549,6 +571,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.excel_to_sql_mapping = flagMapping;
       }
     });
+    const unmapRec = dummyRecord.filter(data => data.excel_to_sql_mapping !== null);
+    setWithoutUnmappedRecords(unmapRec);
     setRecords(dummyRecord);
     if (value) {
       const defaultMappingDetail = savedExcelMapping?.filter(
@@ -602,6 +626,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         commonService.deleteFileForBulkImport(fileName);
       }
 
+      const dummyWithoutRecords = _.cloneDeep(filteredRecords);
+      const unmapRec = dummyWithoutRecords.filter((data) => data.excel_to_sql_mapping !== null);
+      setWithoutUnmappedRecords(unmapRec);
       setRecords(filteredRecords);
     }
   };
@@ -661,7 +688,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       ),
     },
     {
-      title: 'Sheet Name',
+      title: 'Tab',
       dataIndex: 'sheet',
       key: 'sheet',
     },
@@ -725,7 +752,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         showHeader={true}
         pagination={false}
         scroll={{ x: true }}
-        dataSource={records}
+        dataSource={hideUnmapped === true ? withoutUnmappedRecords : records}
         rowKey={(record) => record['index']}
         columns={columns}
         loading={records.length == 0}
@@ -736,7 +763,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               record={record}
               records={records}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
-              fileName={record?.key_word === null ? record?.original_filename.split('.')[0] : record?.key_word}
+              fileName={
+                record?.key_word === null
+                  ? record?.original_filename.split('.')[0]
+                  : record?.key_word
+              }
               fileType={record?.original_filename.slice(
                 ((record?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
               )}

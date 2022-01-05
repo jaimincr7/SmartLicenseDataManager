@@ -6,6 +6,7 @@ import { ISpsApiInjectionValueParamV2State } from './apiInjectionValueParamV2.mo
 import {
   deleteSpsApiInjectionValueParamV2,
   getSpsApiInjectionValueParamV2ById,
+  getSpsApiInjectionValueV2ByOauthId,
   saveSpsApiInjectionValueParamV2,
   searchSpsApiInjectionValueParamV2,
 } from './apiInjectionValueParamV2.action';
@@ -26,6 +27,11 @@ export const initialState: ISpsApiInjectionValueParamV2State = {
     columns: {},
   },
   getById: {
+    loading: false,
+    hasErrors: false,
+    data: null,
+  },
+  getByOauthId: {
     loading: false,
     hasErrors: false,
     data: null,
@@ -55,6 +61,7 @@ export const spsApiInjectionValueParamV2Slice = createSlice({
     },
     clearSpsApiInjectionValueParamV2GetById: (state) => {
       state.getById.data = null;
+      state.getByOauthId.data = null;
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
@@ -107,6 +114,23 @@ export const spsApiInjectionValueParamV2Slice = createSlice({
     [getSpsApiInjectionValueParamV2ById.rejected.type]: (state) => {
       state.getById.loading = false;
       state.getById.hasErrors = true;
+    },
+
+    // Get by Oauth id
+    [getSpsApiInjectionValueV2ByOauthId.pending.type]: (state) => {
+      state.getByOauthId.loading = true;
+    },
+    [getSpsApiInjectionValueV2ByOauthId.fulfilled.type]: (
+      state,
+      action: PayloadAction<ISpsApiInjectionValueParamV2[]>
+    ) => {
+      state.getByOauthId.data = action.payload;
+      state.getByOauthId.loading = false;
+      state.getByOauthId.hasErrors = false;
+    },
+    [getSpsApiInjectionValueV2ByOauthId.rejected.type]: (state) => {
+      state.getByOauthId.loading = false;
+      state.getByOauthId.hasErrors = true;
     },
 
     // Save

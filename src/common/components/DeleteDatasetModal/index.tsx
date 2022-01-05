@@ -181,9 +181,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
             ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
             : null,
       };
-      if (commonLookups.getModelPopUpSelection.data == {}) {
-        dispatch(getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName)));
-      }
+      dispatch(getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName)));
       form.setFieldsValue(initialValues);
     }
     return () => {
