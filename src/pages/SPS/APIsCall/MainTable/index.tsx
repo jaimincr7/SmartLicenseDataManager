@@ -274,9 +274,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       const newURL = new URL(data.url);
       const urlSearchParams = new URLSearchParams(newURL.search);
       const params = Object.fromEntries(urlSearchParams?.entries());
-      const editableParams = Object.values(params)?.filter(
-        (x) => x?.toLowerCase() === '@starttime' || x?.toLowerCase() === '@endtime'
-      );
+      const showStartTime = data.url.toLowerCase().includes('@starttime');
+      const showEndTime = data.url.toLowerCase().includes('@endtime');
       setTypeId(data.api_type_id);
       const callApiObject: ICallAPI = {
         id: data.id,
@@ -286,11 +285,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         oauth_id: data.oauth_id,
         spsApiQueryParam: params,
       };
-      if (editableParams?.length > 0) {
+      if (showStartTime && showEndTime) {
+        const dummyParams = {
+          startTime: '@startTime',
+          endTime: '@endTime'
+        };
         setCallApiObj({
           ...callApiObj,
           filterKeys: callApiObject,
-          params: params,
+          params: dummyParams,
           show: true,
           isAll: false,
           id: data.id,
