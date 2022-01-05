@@ -138,7 +138,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         header_row: number;
         delimiter: string;
       }> = [];
-      if(hideUnmapped === true) {
+      if (hideUnmapped === true) {
         withoutUnmappedRecords.map((data) => {
           const Obj = {
             excel_to_sql_mapping: data.excel_to_sql_mapping
@@ -152,23 +152,23 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             delimiter: data.delimeter ? data.delimiter : ',',
           };
           arr.push(Obj);
-        }); 
+        });
       } else {
-      records.map((data) => {
-        const Obj = {
-          excel_to_sql_mapping: data.excel_to_sql_mapping
-            ? data.excel_to_sql_mapping
-            : getDummyMapping(data.sheet, data.columns),
-          table_name: data.table_name,
-          file_name: data.filename,
-          original_file_name: data.original_filename,
-          sheet_name: data.sheet,
-          header_row: data.header_row - 1,
-          delimiter: data.delimeter ? data.delimiter : ',',
-        };
-        arr.push(Obj);
-      }); 
-    }
+        records.map((data) => {
+          const Obj = {
+            excel_to_sql_mapping: data.excel_to_sql_mapping
+              ? data.excel_to_sql_mapping
+              : getDummyMapping(data.sheet, data.columns),
+            table_name: data.table_name,
+            file_name: data.filename,
+            original_file_name: data.original_filename,
+            sheet_name: data.sheet,
+            header_row: data.header_row - 1,
+            delimiter: data.delimeter ? data.delimiter : ',',
+          };
+          arr.push(Obj);
+        });
+      }
       const val = {
         excel_sheet_with_mapping_details: arr,
         foreign_key_values: {
@@ -626,6 +626,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         commonService.deleteFileForBulkImport(fileName);
       }
 
+      const dummyWithoutRecords = _.cloneDeep(filteredRecords);
+      const unmapRec = dummyWithoutRecords.filter((data) => data.excel_to_sql_mapping !== null);
+      setWithoutUnmappedRecords(unmapRec);
       setRecords(filteredRecords);
     }
   };
