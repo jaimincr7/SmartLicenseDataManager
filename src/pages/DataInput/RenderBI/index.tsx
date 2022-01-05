@@ -41,6 +41,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     setDelimitFlag,
     firstFlag,
     setFirstFlag,
+    hideUnmapped,
   } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -59,6 +60,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
   const [curRecordMap, setCurRecordMap] = useState(null);
+  const [withoutUnmappedRecords, setWithoutUnmappedRecords] = useState([]);
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
@@ -136,6 +138,22 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         header_row: number;
         delimiter: string;
       }> = [];
+      if(hideUnmapped === true) {
+        withoutUnmappedRecords.map((data) => {
+          const Obj = {
+            excel_to_sql_mapping: data.excel_to_sql_mapping
+              ? data.excel_to_sql_mapping
+              : getDummyMapping(data.sheet, data.columns),
+            table_name: data.table_name,
+            file_name: data.filename,
+            original_file_name: data.original_filename,
+            sheet_name: data.sheet,
+            header_row: data.header_row - 1,
+            delimiter: data.delimeter ? data.delimiter : ',',
+          };
+          arr.push(Obj);
+        }); 
+      } else {
       records.map((data) => {
         const Obj = {
           excel_to_sql_mapping: data.excel_to_sql_mapping
@@ -149,7 +167,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           delimiter: data.delimeter ? data.delimiter : ',',
         };
         arr.push(Obj);
-      });
+      }); 
+    }
       const val = {
         excel_sheet_with_mapping_details: arr,
         foreign_key_values: {
@@ -344,6 +363,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   // End: set tables for import
 
   useEffect(() => {
+    const dummyRecords = _.cloneDeep(records);
+    const unmapRec = dummyRecords.filter((data) => data.excel_to_sql_mapping !== null);
+    setWithoutUnmappedRecords(unmapRec);
     return () => {
       setTableColumnState([]);
     };
@@ -549,6 +571,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.excel_to_sql_mapping = flagMapping;
       }
     });
+    const unmapRec = dummyRecord.filter(data => data.excel_to_sql_mapping !== null);
+    setWithoutUnmappedRecords(unmapRec);
     setRecords(dummyRecord);
     if (value) {
       const defaultMappingDetail = savedExcelMapping?.filter(
@@ -725,7 +749,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         showHeader={true}
         pagination={false}
         scroll={{ x: true }}
-        dataSource={records}
+        dataSource={hideUnmapped === true ? withoutUnmappedRecords : records}
         rowKey={(record) => record['index']}
         columns={columns}
         loading={records.length == 0}

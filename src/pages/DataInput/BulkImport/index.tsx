@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin, Switch } from 'antd';
 import { useHistory, useParams } from 'react-router-dom';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { Page } from '../../../common/constants/pageAction';
@@ -43,6 +43,7 @@ const BulkImport: React.FC = () => {
 
   const [checkAll, setCheckAll] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
+  const [hideUnmapped, setHideUnmapped] = useState(false);
   const [formUpload] = Form.useForm();
   const [form] = Form.useForm();
 
@@ -110,8 +111,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               filteredRecords = [
                 ...filteredRecords,
@@ -180,8 +181,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (nonRepeated) {
                 filteredRecords = [
@@ -258,8 +259,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                  (data) => data.sheet_name == sheet.sheet
+                )
                 : [];
             filteredRecords = [
               ...filteredRecords,
@@ -281,8 +282,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                  ? orgFile[0].table_name
-                  : tableName,
+                    ? orgFile[0].table_name
+                    : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -308,8 +309,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                  ? orgFile[0].excel_to_sql_mapping
-                  : null,
+                    ? orgFile[0].excel_to_sql_mapping
+                    : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -557,6 +558,10 @@ const BulkImport: React.FC = () => {
   );
   // End: set tables for import
 
+  const onSwitchChange = (e) => {
+    setHideUnmapped(e);
+  };
+
   return (
     <>
       <div className="update-excel-page">
@@ -664,6 +669,14 @@ const BulkImport: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Col>
+                  <Col xs={24} sm={12} md={8}>
+                    <div className="form-group form-inline-pt m-0">
+                      <Form.Item name="hide_unmapped" className="m-0" valuePropName="checked">
+                        <Switch className="form-control" onChange={onSwitchChange}/>
+                      </Form.Item>
+                      <label className="label">Hide Unmapped</label>
+                    </div>
+                  </Col>
                 </Row>
               </Form>
             </div>
@@ -695,6 +708,7 @@ const BulkImport: React.FC = () => {
                   table={tableName}
                   firstFlag={firstFlag}
                   setFirstFlag={setFirstFlag}
+                  hideUnmapped={hideUnmapped}
                 ></RenderBI>
                 <br />
                 <hr />

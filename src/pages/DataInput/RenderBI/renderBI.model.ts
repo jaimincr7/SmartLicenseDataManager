@@ -15,4 +15,5 @@ export interface IRenderBIProps {
   setDelimitFlag?: (data: any) => void;
   firstFlag?: boolean;
   setFirstFlag?: (data: boolean) => void;
+  hideUnmapped?: boolean;
 }
