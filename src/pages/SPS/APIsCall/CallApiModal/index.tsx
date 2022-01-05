@@ -1,4 +1,5 @@
 import { Button, Col, DatePicker, Form, Input, Modal, Row } from 'antd';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { validateMessages } from '../../../../common/constants/common';
 import { ICallAPI } from '../../../../services/sps/spsApiCall/spsApiCall.model';
@@ -8,7 +9,7 @@ import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.
 import { ICallApiModalProps } from './callApiModal.model';
 
 const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
-  const { showModal, handleModalClose, params, onCallApi, id, company_id, tenant_id, bu_id } =
+  const { showModal, handleModalClose, params, id, company_id, tenant_id, bu_id } =
     props;
   const spsApis = useAppSelector(spsApiCallSelector);
   const dispatch = useAppDispatch();
@@ -42,7 +43,7 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
                   rules={[{ required: isEditable }]}
                 >
                   {['@STARTTIME', '@ENDTIME'].includes(queryParams[key]) ? (
-                    <DatePicker className="form-control w-100"></DatePicker>
+                    <DatePicker className="form-control w-100" showTime={true}></DatePicker>
                   ) : (
                     <Input className="form-control" disabled={!isEditable} />
                   )}
@@ -68,13 +69,16 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
   }, [spsApis.callAllApi.messages]);
 
   const onFinish = (values: any) => {
-    onCallApi(values);
+    const dummyValue = {
+      startTime: moment(values.startTime).toISOString(),
+      endTime: moment(values.endTime).toISOString(),
+    };
     const callApiObj: ICallAPI = {
       id: id,
       company_id: company_id,
       bu_id: bu_id,
       tenant_id: tenant_id,
-      spsApiQueryParam: values,
+      spsApiQueryParam: dummyValue,
     };
     dispatch(callApi(callApiObj));
   };
