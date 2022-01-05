@@ -125,7 +125,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             ellipsis: true,
           },
         ],
-       },
+      },
       // {
       //   title: <span className="dragHandler">Base Urls</span>,
       //   column: 'Base Urls',

@@ -287,7 +287,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         spsApiQueryParam: params,
       };
       if (editableParams?.length > 0) {
-        setCallApiObj({ ...callApiObj,filterKeys: callApiObject, params: params, show: true, isAll: false, id: data.id });
+        setCallApiObj({
+          ...callApiObj,
+          filterKeys: callApiObject,
+          params: params,
+          show: true,
+          isAll: false,
+          id: data.id,
+        });
       } else {
         dispatch(callApi(callApiObject));
       }

@@ -9,6 +9,7 @@ export interface IO365Users {
   date_added?: string | Moment;
   alternate_email_addresses?: string;
   block_credential?: boolean;
+  account_enabled?: boolean;
   city?: string;
   country?: string;
   department?: string;

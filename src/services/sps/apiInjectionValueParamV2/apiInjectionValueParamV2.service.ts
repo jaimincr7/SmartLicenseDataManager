@@ -24,6 +24,13 @@ class SpsApiInjectionValueParamService {
     });
   }
 
+  public async getSpsApiInjectionValueV2ByOauthId(id: number): Promise<any> {
+    const url = `${this.ENDPOINT}/get-by-oauth/${id}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveSpsApiInjectionValueParamV2(data: ISpsApiInjectionValueParamV2): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {

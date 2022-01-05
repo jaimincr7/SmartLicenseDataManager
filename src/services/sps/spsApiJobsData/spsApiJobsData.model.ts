@@ -18,9 +18,9 @@ export interface ISearchSpsApiJobsData extends ISearch {
 
 export interface ICallAPI {
   id?: number;
-  company_id: number;
-  bu_id: number;
-  tenant_id: number;
+  company_id?: number;
+  bu_id?: number;
+  tenant_id?: number;
   sps_api_query_param?: {
     [key: string]: any;
   };

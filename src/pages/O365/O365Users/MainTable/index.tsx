@@ -563,6 +563,34 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Account Enabled</span>,
+        column: 'accountEnabled',
+        sorter: true,
+        children: [
+          {
+            title: FilterByBooleanDropDown(
+              'account_enabled',
+              o365Users.search.tableName,
+              ObjectForColumnFilter
+            ),
+            dataIndex: 'account_enabled',
+            key: 'account_enabled',
+            ellipsis: true,
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
+            align: 'center' as AlignType,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Non Human</span>,
         column: 'NonHuman',
         sorter: true,
