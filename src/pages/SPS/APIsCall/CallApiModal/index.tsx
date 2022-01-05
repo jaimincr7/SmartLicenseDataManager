@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row } from 'antd';
+import { Button, Col, DatePicker, Form, Modal, Row } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { validateMessages } from '../../../../common/constants/common';
@@ -42,11 +42,7 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
                   className="m-0"
                   rules={[{ required: isEditable }]}
                 >
-                  {['@STARTTIME', '@ENDTIME'].includes(queryParams[key]) ? (
-                    <DatePicker className="form-control w-100" showTime={true}></DatePicker>
-                  ) : (
-                    <Input className="form-control" disabled={!isEditable} />
-                  )}
+                  <DatePicker className="form-control w-100" showTime={true}></DatePicker>
                 </Form.Item>
               </div>
             </Col>
