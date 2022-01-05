@@ -340,6 +340,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         toast.error('Document not available.');
         return;
       } else {
+        window.open(window.location.href);
         const fileName = `${res.headers['content-disposition'].split('filename=')[1]}`; //res.headers["content-disposition"];
         const url = window.URL.createObjectURL(new Blob([res.data]));
         exportExcel(fileName, url);
