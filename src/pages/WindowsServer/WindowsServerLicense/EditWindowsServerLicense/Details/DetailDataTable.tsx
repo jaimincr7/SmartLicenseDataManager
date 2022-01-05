@@ -19,10 +19,12 @@ import {
 import { Common } from '../../../../../common/constants/common';
 import { ISearchWindowsServerLicenseDetail } from '../../../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.model';
 import { Checkbox } from 'antd';
+import { globalSearchSelector } from '../../../../../store/globalSearch/globalSearch.reducer';
 
 const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
   const { licenseId } = props;
   const windowsServerLicenseDetail = useAppSelector(windowsServerLicenseDetailSelector);
+  const globalFilters = useAppSelector(globalSearchSelector);
   const dataTableRef = useRef(null);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
@@ -232,28 +234,58 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: <span className="dragHandler">Tenant Id</span>,
+        title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
         sorter: true,
-        dataIndex: 'tenant_id',
-        key: 'tenant_id',
-        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'tenant_id',
+              windowsServerLicenseDetail.search.lookups?.tenants?.length > 0
+                ? windowsServerLicenseDetail.search.lookups?.tenants
+                : globalFilters?.globalTenantLookup?.data
+            ),
+            dataIndex: 'tenant_name',
+            key: 'tenant_name',
+            ellipsis: true,
+          },
+        ],
       },
       {
-        title: <span className="dragHandler">Company Id</span>,
+        title: <span className="dragHandler">Company Name</span>,
         column: 'CompanyId',
         sorter: true,
-        dataIndex: 'company_id',
-        key: 'company_id',
-        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'company_id',
+              windowsServerLicenseDetail.search.lookups?.companies?.length > 0
+                ? windowsServerLicenseDetail.search.lookups?.companies
+                : globalFilters?.globalCompanyLookup?.data
+            ),
+            dataIndex: 'company_name',
+            key: 'company_name',
+            ellipsis: true,
+          },
+        ],
       },
       {
-        title: <span className="dragHandler">BU Id</span>,
+        title: <span className="dragHandler">Bu Name</span>,
         column: 'BU_Id',
         sorter: true,
-        dataIndex: 'bu_id',
-        key: 'bu_id',
-        ellipsis: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'bu_id',
+              windowsServerLicenseDetail.search.lookups?.bus?.length > 0
+                ? windowsServerLicenseDetail.search.lookups?.bus
+                : globalFilters?.globalBULookup?.data
+            ),
+            dataIndex: 'bu_name',
+            key: 'bu_name',
+            ellipsis: true,
+          },
+        ],
       },
       {
         title: <span className="dragHandler">Product Family</span>,
@@ -574,14 +606,6 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             ellipsis: true,
           },
         ],
-      },
-      {
-        title: <span className="dragHandler">Agreement Type</span>,
-        column: 'Opt_AgreementType',
-        sorter: true,
-        dataIndex: 'opt_agreement_type',
-        key: 'opt_agreement_type',
-        ellipsis: true,
       },
       {
         title: <span className="dragHandler">Default to Data Center on Hosts</span>,

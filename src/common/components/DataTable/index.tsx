@@ -365,9 +365,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -702,12 +701,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         </div>
       </div>
       <Form form={form} initialValues={inlineSearch} name="searchTable" onFinish={onFinish}>
-        <ReactDragListView {...dragProps}>          
+        <ReactDragListView {...dragProps}>
           <Table
             rowSelection={!disableRowSelection ? rowSelection : null}
             scroll={{ x: true }}
             rowKey={(record) =>
-              record[defaultOrderBy ? defaultOrderBy : 'id'] 
+              record[defaultOrderBy ? defaultOrderBy : 'id']
               + '-' +
               (record['oauth_id'] ? record['oauth_id'] : '')
             }
@@ -717,7 +716,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               reduxStoreData.search.loading ||
               reduxStoreData?.delete?.loading ||
               reduxStoreData?.callAllApi?.loading ||
-              reduxStoreData?.callApi?.loading || 
+              reduxStoreData?.callApi?.loading ||
               reduxStoreData?.runJobData?.loading
             }
             pagination={{
