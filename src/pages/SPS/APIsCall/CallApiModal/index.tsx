@@ -42,7 +42,7 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
                   className="m-0"
                   rules={[{ required: isEditable }]}
                 >
-                  <DatePicker className="form-control w-100" showTime={true}></DatePicker>
+                  <DatePicker className="form-control w-100" ></DatePicker>
                 </Form.Item>
               </div>
             </Col>
@@ -66,8 +66,8 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
 
   const onFinish = (values: any) => {
     const dummyValue = {
-      startTime: moment(values.startTime).toISOString(),
-      endTime: moment(values.endTime).toISOString(),
+      startTime: moment(values.startTime).format('YYYY-MM-DD'),
+      endTime: moment(values.endTime).format('YYYY-MM-DD'),
     };
     const callApiObj: ICallAPI = {
       id: id,
