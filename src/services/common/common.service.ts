@@ -452,6 +452,13 @@ class CommonService {
     });
   }
 
+  public async getJwtTokenForSocket(): Promise<IApiResponse<any>> {
+    const url = `/app/jwt-token`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
     const inputValues = { ...data, debug: false };
     const url = `/app/delete-dataset`;
