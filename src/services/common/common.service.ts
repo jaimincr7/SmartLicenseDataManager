@@ -440,13 +440,44 @@ class CommonService {
 
   public async bulkInsert(data: IBulkInsertDataset): Promise<IApiResponse<any>> {
     const url = `/app/bulk-insert`;
-    return request({ url, method: 'POST', data: data }).then((res) => {
-      return res.data;
+    const cancelTokenSource = axios.CancelToken.source();
+
+    return new Promise((resolve, reject) => {
+      const timmer = setTimeout(() => {
+        // Cancel request
+        cancelTokenSource.cancel();
+        toast.warning('Process is working in background.');
+        reject();
+      }, 3 * 1000); // wait till 3 seconds
+
+      request({ url, method: 'POST', data: data, cancelToken: cancelTokenSource.token })
+        .then((res) => {
+          return res?.data;
+        })
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((data) => {
+          reject(data);
+        })
+        .finally(() => {
+          clearTimeout(timmer);
+        });
     });
+    // return request({ url, method: 'POST', data: data }).then((res) => {
+    //   return res.data;
+    // });
   }
 
   public async getDatabaseTables(): Promise<IApiResponse<any>> {
     const url = `/app/tables`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getJwtTokenForSocket(): Promise<IApiResponse<any>> {
+    const url = `/app/jwt-token`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
