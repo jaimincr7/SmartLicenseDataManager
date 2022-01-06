@@ -74,7 +74,7 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
       company_id: company_id,
       bu_id: bu_id,
       tenant_id: tenant_id,
-      spsApiQueryParam: dummyValue,
+      sps_api_query_param: dummyValue,
     };
     dispatch(callApi(callApiObj));
   };

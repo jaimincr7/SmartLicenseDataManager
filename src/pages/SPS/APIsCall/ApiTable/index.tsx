@@ -11,11 +11,11 @@ import {
 } from '../../../../store/sps/apiOauth/apiOauth.reducer';
 import { searchSpsApiOauth } from '../../../../store/sps/apiOauth/apiOauth.action';
 import { IApiTableProps } from './apiTable.model';
-import { ICallAPI } from '../../../../services/sps/spsApi/sps.model';
 import { callApi } from '../../../../store/sps/spsAPICall/spsApiCall.action';
 import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.reducer';
 import { ISearchAPIColumn } from '../../../../services/sps/apiColumnMapping/apiColMapping.model';
 import { getApiColumn } from '../../../../store/sps/apiColumnMapping/apiColMapping.action';
+import { ICallAPI } from '../../../../services/sps/spsApiCall/spsApiCall.model';
 
 const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props, ref) => {
   const { type_id, showModal, handleModalClose, callApiObj, isFetchApi } = props;
@@ -145,7 +145,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       company_id: data.company_id,
       bu_id: data.bu_id,
       tenant_id: data.tenant_id,
-      spsApiQueryParam: callApiObj.params,
+      sps_api_query_param: callApiObj.params,
     };
     dispatch(callApi(callApiObject));
   };
