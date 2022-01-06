@@ -16,4 +16,6 @@ export interface IRenderBIProps {
   firstFlag?: boolean;
   setFirstFlag?: (data: boolean) => void;
   hideUnmapped?: boolean;
+  withoutUnmappedRecords?: any[];
+  setWithoutUnmappedRecords?: (data: any) => void;
 }

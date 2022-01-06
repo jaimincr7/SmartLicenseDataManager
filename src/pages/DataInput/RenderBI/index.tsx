@@ -42,6 +42,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     firstFlag,
     setFirstFlag,
     hideUnmapped,
+    withoutUnmappedRecords,
+    setWithoutUnmappedRecords,
   } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -60,7 +62,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
   const [curRecordMap, setCurRecordMap] = useState(null);
-  const [withoutUnmappedRecords, setWithoutUnmappedRecords] = useState([]);
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);

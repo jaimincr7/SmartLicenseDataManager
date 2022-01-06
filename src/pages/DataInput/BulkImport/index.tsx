@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from 'react';
 import {
   getExcelColumns,
+  getExcelFileMappingLookup,
   getTables,
   getTablesForImport,
   saveTableForImport,
@@ -55,6 +56,7 @@ const BulkImport: React.FC = () => {
   const [tableName, setTableName] = useState<string>(table);
   //const [defaultFile, setDefaultFile] = useState(null);
   //const [excelColumnState, setExcelColumnState] = useState([]);
+  const [withoutUnmappedRecords, setWithoutUnmappedRecords] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
   const [records, setRecords] = useState<
     Array<{
@@ -400,6 +402,7 @@ const BulkImport: React.FC = () => {
   useEffect(() => {
     if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
       dispatch(getTables());
+      dispatch(getExcelFileMappingLookup());
     }
     if (!table) {
       dispatch(getTablesForImport());
@@ -562,6 +565,30 @@ const BulkImport: React.FC = () => {
     setHideUnmapped(e);
   };
 
+  const changeFileMapping = (value) => {
+    const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
+    const selectedRecord = dummyRecord.filter((data) => data.key_word === value);
+    if (selectedRecord.length) {
+      const dummyRecords = _.cloneDeep(records);
+      selectedRecord[0].config_excel_column_mappings?.map((data) => {
+        dummyRecords.map((data1) => {
+          if (data.sheet_name == data1.sheet) {
+            data1.currentMapping = data.sheet_name;
+            data1.excel_to_sql_mapping = JSON.parse(data.mapping);
+            data1.header_row = data.header_row + 1;
+            data1.table_name = data.table_name;
+            data1.key_word = selectedRecord[0].key_word;
+            data1.is_public = selectedRecord[0].is_public
+          }
+        });
+      });
+      const dummy = _.cloneDeep(dummyRecords);
+      const unmapRec = dummy.filter((data) => data.excel_to_sql_mapping !== null);
+      setWithoutUnmappedRecords(unmapRec);
+      setRecords(dummyRecords);
+    }
+  };
+
   return (
     <>
       <div className="update-excel-page">
@@ -652,7 +679,7 @@ const BulkImport: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Col>
-                  <Col xs={24} md={4}>
+                  <Col xs={24} md={8}>
                     <div className="form-group m-0">
                       <label className="label">Date Added</label>
                       <Form.Item
@@ -669,14 +696,44 @@ const BulkImport: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Col>
-                  <Col xs={24} sm={12} md={4}>
+                  <Col xs={24} sm={12} md={8}>
                     <div className="form-group form-inline-pt m-0">
                       <Form.Item name="hide_unmapped" className="m-0" valuePropName="checked">
-                        <Switch className="form-control" onChange={onSwitchChange}/>
+                        <Switch className="form-control" onChange={onSwitchChange} />
                       </Form.Item>
                       <label className="label">Hide Unmapped</label>
                     </div>
                   </Col>
+                  {records.length > 0 && (<Col xs={24} md={8}>
+                    <div className="form-group m-0">
+                      <label className="label">File Mapping</label>
+                      <Form.Item name={'file_mapping'} className="m-0">
+                        <Select
+                          loading={bulkImports.getExcelFileMappingLookup.loading || loading}
+                          onChange={(option) => { changeFileMapping(option); }}
+                          showSearch
+                          allowClear
+                          optionFilterProp="children"
+                          filterOption={(input, option: any) =>
+                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                          }
+                          filterSort={(optionA: any, optionB: any) =>
+                            optionA.children
+                              ?.toLowerCase()
+                              ?.localeCompare(optionB.children?.toLowerCase())
+                          }
+                        >
+                          {(bulkImports.getExcelFileMappingLookup.data || [])?.map(
+                            (option: any, index: number) => (
+                              <Option key={index} value={option.key_word}>
+                                {option.key_word}<span className="value-badge">{option.file_type}</span>
+                              </Option>
+                            )
+                          )}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                  </Col>)}
                 </Row>
               </Form>
             </div>
@@ -709,6 +766,8 @@ const BulkImport: React.FC = () => {
                   firstFlag={firstFlag}
                   setFirstFlag={setFirstFlag}
                   hideUnmapped={hideUnmapped}
+                  withoutUnmappedRecords={withoutUnmappedRecords}
+                  setWithoutUnmappedRecords={setWithoutUnmappedRecords}
                 ></RenderBI>
                 <br />
                 <hr />

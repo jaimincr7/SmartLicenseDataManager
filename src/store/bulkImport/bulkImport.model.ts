@@ -32,6 +32,11 @@ export interface IBulkImportState {
     hasErrors: boolean;
     data: ITableColumn[];
   };
+  getExcelFileMappingLookup: {
+    loading: boolean;
+    hasErrors: boolean;
+    data: any[];
+  };
   getExcelColumns: {
     loading: boolean;
     hasErrors: boolean;
