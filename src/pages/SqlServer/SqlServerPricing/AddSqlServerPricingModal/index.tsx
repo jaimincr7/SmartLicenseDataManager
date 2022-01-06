@@ -375,6 +375,20 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item name="date_added" label="Date Added" className="m-0">
+                    <DatePicker className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
                     <Form.Item name={['checked', 'license_id']} valuePropName="checked" noStyle>
                       <Checkbox>Product Name</Checkbox>
                     </Form.Item>
@@ -473,20 +487,6 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                         </Option>
                       ))}
                     </Select>
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
-                      <Checkbox>Date Added</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Date Added'
-                  )}
-                  <Form.Item name="date_added" label="Date Added" className="m-0">
-                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

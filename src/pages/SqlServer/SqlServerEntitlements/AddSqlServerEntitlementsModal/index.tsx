@@ -368,6 +368,54 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item name="date_added" label="Date Added" className="m-0">
+                    <DatePicker className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'license_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Name'
+                  )}
+                  <Form.Item name="license_id" className="m-0" label="Product Name">
+                    <Select
+                      loading={commonLookups.sqlServerLicenseLookup.loading}
+                      dropdownClassName="value-box-select"
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.sqlServerLicenseLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
                     <Form.Item name={['checked', 'qty_01']} valuePropName="checked" noStyle>
                       <Checkbox>Qty1</Checkbox>
                     </Form.Item>
@@ -419,54 +467,6 @@ const AddSqlServerEntitlementsModal: React.FC<IAddSqlServerEntitlementsProps> = 
                     rules={[{ type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'license_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Product Name</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Product Name'
-                  )}
-                  <Form.Item name="license_id" className="m-0" label="Product Name">
-                    <Select
-                      loading={commonLookups.sqlServerLicenseLookup.loading}
-                      dropdownClassName="value-box-select"
-                      allowClear
-                      showSearch
-                      optionFilterProp="children"
-                      filterOption={(input, option: any) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }
-                      filterSort={(optionA: any, optionB: any) =>
-                        optionA.children
-                          ?.toLowerCase()
-                          ?.localeCompare(optionB.children?.toLowerCase())
-                      }
-                    >
-                      {commonLookups.sqlServerLicenseLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
-                      <Checkbox>Date Added</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Date Added'
-                  )}
-                  <Form.Item name="date_added" label="Date Added" className="m-0">
-                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
