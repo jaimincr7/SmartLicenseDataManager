@@ -679,7 +679,7 @@ const BulkImport: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Col>
-                  <Col xs={24} md={8}>
+                  <Col xs={24} md={4}>
                     <div className="form-group m-0">
                       <label className="label">Date Added</label>
                       <Form.Item
@@ -696,7 +696,7 @@ const BulkImport: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Col>
-                  <Col xs={24} sm={12} md={8}>
+                  <Col xs={24} sm={12} md={4}>
                     <div className="form-group form-inline-pt m-0">
                       <Form.Item name="hide_unmapped" className="m-0" valuePropName="checked">
                         <Switch className="form-control" onChange={onSwitchChange} />
