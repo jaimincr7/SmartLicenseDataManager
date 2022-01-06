@@ -384,6 +384,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
                   <Form.Item name="license_id" className="m-0" label="Product Name">
                     <Select
                       loading={commonLookups.sqlServerLicenseLookup.loading}
+                      dropdownClassName="value-box-select"
                       allowClear
                       showSearch
                       optionFilterProp="children"
