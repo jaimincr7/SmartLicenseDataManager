@@ -25,9 +25,9 @@ import { ISqlServerLicense } from '../../../../services/sqlServer/sqlServerLicen
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getAgreementTypesLookup,
+  getAllCompanyLookup,
   getBULookup,
   getCompanyLookup,
-  getTenantLookup,
   updateMultiple,
 } from '../../../../store/common/common.action';
 import {
@@ -84,7 +84,6 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
     notes: '',
     opt_entitlements: false,
     selected_date: moment(),
-    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -103,17 +102,6 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
       if (result) {
         dispatch(updateMultiple(result));
       }
-    }
-  };
-
-  const handleTenantChange = (tenantId: number) => {
-    form.setFieldsValue({ tenant_id: tenantId, company_id: null, bu_id: null });
-    if (tenantId) {
-      dispatch(getCompanyLookup(tenantId));
-      dispatch(clearBULookUp());
-    } else {
-      dispatch(clearCompanyLookUp());
-      dispatch(clearBULookUp());
     }
   };
 
@@ -149,7 +137,6 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
         opt_exclude_non_prod: data.opt_exclude_non_prod,
         opt_entitlements: data.opt_entitlements,
         selected_date: _.isNull(data.selected_date) ? null : moment(data.selected_date),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -189,9 +176,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
   }, [sqlServerLicense.getById.data]);
 
   useEffect(() => {
-    if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
-      dispatch(getTenantLookup());
-    }
+    dispatch(getAllCompanyLookup());
     dispatch(getAgreementTypesLookup());
     if (+id > 0) {
       dispatch(getSqlServerLicenseById(+id));
@@ -210,13 +195,9 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
         const element = globalFilters.search[key];
         globalSearch[key] = element ? [element] : null;
       }
-      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
-        if (!globalFilters.search.company_id) {
-          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
-        }
-        if (!globalFilters.search.bu_id && globalFilters.search.company_id !== 0) {
-          dispatch(getBULookup(globalSearch.company_id[0]));
-        }
+      if (globalSearch.company_id) {
+        dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+        dispatch(getBULookup(globalSearch.company_id[0]));
         const initlValues = {
           company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
@@ -283,52 +264,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
             validateMessages={validateMessages}
           >
             <Row gutter={[30, 15]} className="form-label-hide">
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'tenant_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Tenant</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Tenant'
-                  )}
-                  <Form.Item
-                    name="tenant_id"
-                    className="m-0"
-                    label="Tenant"
-                    rules={[{ required: !isMultiple }]}
-                  >
-                    <Select
-                      onChange={handleTenantChange}
-                      allowClear
-                      showSearch
-                      optionFilterProp="children"
-                      filterOption={(input, option: any) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }
-                      filterSort={(optionA: any, optionB: any) =>
-                        optionA.children
-                          ?.toLowerCase()
-                          ?.localeCompare(optionB.children?.toLowerCase())
-                      }
-                      loading={commonLookups.tenantLookup.loading}
-                    >
-                      {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
-                        ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
-                        : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
-                    </Select>
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
+            <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
@@ -344,6 +280,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                     rules={[{ required: !isMultiple }]}
                   >
                     <Select
+                      loading={commonLookups.allCompanyLookup.loading}
                       onChange={handleCompanyChange}
                       allowClear
                       showSearch
@@ -356,19 +293,12 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
-                      loading={commonLookups.companyLookup.loading}
                     >
-                      {Object.keys(commonLookups.companyLookup.data).length > 0
-                        ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
-                        : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                      {commonLookups.allCompanyLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -472,25 +402,6 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                     rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
-                      <Checkbox>Date Added</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Date Added'
-                  )}
-                  <Form.Item
-                    name="date_added"
-                    label="Date Added"
-                    className="m-0"
-                    rules={[{ required: !isMultiple }]}
-                  >
-                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

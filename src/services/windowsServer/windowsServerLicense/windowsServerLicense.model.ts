@@ -6,7 +6,6 @@ export interface IWindowsServerLicense {
   tenant_id?: number;
   company_id?: number;
   bu_id?: number;
-  date_added?: string | Moment;
   opt_agreement_type?: number;
   opt_exclude_non_prod?: boolean;
   opt_default_to_data_center_on_hosts?: boolean;

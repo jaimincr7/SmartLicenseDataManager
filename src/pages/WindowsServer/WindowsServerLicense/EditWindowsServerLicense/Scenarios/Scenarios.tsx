@@ -16,8 +16,6 @@ import {
 import _ from 'lodash';
 import { ILookup } from '../../../../../services/common/common.model';
 import { IScenariosProps } from './scenarios.model';
-import { Common } from '../../../../../common/constants/common';
-import moment from 'moment';
 
 const { Option } = Select;
 
@@ -48,7 +46,6 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
         opt_default_to_data_center_on_hosts: data.opt_default_to_data_center_on_hosts,
         opt_exclude_non_prod: data.opt_exclude_non_prod,
         opt_entitlements: data.opt_entitlements,
-        date_added: moment(data.date_added).format(Common.DATEFORMAT),
       };
       form.setFieldsValue(values);
     }
@@ -159,7 +156,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   <label className="label">Selected Date</label>
-                  <Form.Item name="date_added" className="m-0">
+                  <Form.Item name="selected_date" className="m-0">
                     <Input disabled className="form-control" />
                   </Form.Item>
                 </div>
