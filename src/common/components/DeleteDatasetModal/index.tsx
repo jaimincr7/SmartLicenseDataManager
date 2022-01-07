@@ -104,7 +104,6 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
       if (common.deleteDataset.hasErrors) {
         toast.error(common.deleteDataset.messages.join(' '));
       } else {
-        toast.success(common.deleteDataset.messages.join(' '));
         handleModalClose();
         if (isDeleteDataSet !== true) refreshDataTable();
       }

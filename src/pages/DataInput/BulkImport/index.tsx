@@ -359,9 +359,6 @@ const BulkImport: React.FC = () => {
       if (bulkImports.bulkInsert.hasErrors) {
         toast.error(bulkImports.bulkInsert.messages.join(' '));
       } else {
-        if (bulkImports.bulkInsert.messages[0] !== 'rejected') {
-          toast.success(bulkImports.bulkInsert.messages.join(' '));
-        }
         dispatch(clearExcelColumns());
         dispatch(clearBulkImportMessages());
         setRecords([]);
