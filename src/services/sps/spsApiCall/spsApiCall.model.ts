@@ -29,7 +29,7 @@ export interface ICallAPI {
   bu_id?: number;
   tenant_id?: number;
   oauth_id?: number;
-  spsApiQueryParam: {
+  sps_api_query_param: {
     [key: string]: any;
   };
 }

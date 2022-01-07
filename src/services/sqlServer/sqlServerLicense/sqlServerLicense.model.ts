@@ -9,7 +9,6 @@ export interface ISqlServerLicense {
   bu_name?: string;
   tenant_id?: number;
   tenant_name?: string;
-  date_added?: string | Moment;
   opt_agreement_type?: number;
   agreement_type?: string;
   opt_exclude_non_prod?: boolean;

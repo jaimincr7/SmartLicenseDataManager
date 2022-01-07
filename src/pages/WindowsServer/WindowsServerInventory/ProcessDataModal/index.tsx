@@ -105,7 +105,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       if (windowsServerInventory.processData.hasErrors) {
         toast.error(windowsServerInventory.processData.messages.join(' '));
       } else {
-        toast.success(windowsServerInventory.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }

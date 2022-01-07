@@ -103,7 +103,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       if (sqlServerInventory.processData.hasErrors) {
         toast.error(sqlServerInventory.processData.messages.join(' '));
       } else {
-        toast.success(sqlServerInventory.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }

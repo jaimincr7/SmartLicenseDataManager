@@ -152,13 +152,13 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
     const dummyRecords = _.cloneDeep(spsApiInjectionParamV2.getInjectionParam?.data);
     dummyRecords.map((x) => {
       const arrRec = [...spsApiInjectionValueV2.getByOauthId.data];
-      const rec = arrRec?.filter(i => i.injection_param_id == x.id);
+      const rec = arrRec?.filter((i) => i.injection_param_id == x.id);
       x.value = rec[0]?.value;
     });
     setRecords(dummyRecords);
     setTimeout(() => {
-    form.resetFields();
-    } );
+      form.resetFields();
+    });
   };
 
   const fillValuesOnEdit = async (data: ISpsApiOauthV2) => {
@@ -532,7 +532,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                         initialValue={option.value}
                         rules={[{ required: true }]}
                       >
-                        <Input className="form-control" defaultValue={option.value}/>
+                        <Input className="form-control" defaultValue={option.value} />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={6}>

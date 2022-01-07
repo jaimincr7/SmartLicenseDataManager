@@ -1282,3 +1282,20 @@ textarea.ant-input {
   height: 100%;
   width: 100%;
 }
+
+.value-badge {
+  background-color: #2a81ac;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 3px;
+  font-weight: 400;
+  padding: 4px 8px;
+  text-align: center;
+  display: inline-block;
+  position: absolute;
+  right: 20px;
+  top: 4px;
+  line-height: normal;
+  text-transform: uppercase;
+  min-width: 60px;
+}

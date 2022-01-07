@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Select, Spin, Switch } from 'antd';
+import { Button, Col, DatePicker, Form, Input, Row, Select, Spin, Switch } from 'antd';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Can } from '../../../common/ability';
@@ -16,17 +16,19 @@ import {
   bulkImportSelector,
   clearSaveExcelData,
 } from '../../../store/bulkImport/bulkImport.reducer';
+import { Common } from '../../../common/constants/common';
 
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public } = props;
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, date } = props;
 
   const [form] = Form.useForm();
   const initialValues = {
     file_name: fileName,
     file_type: fileType,
     isPublic: is_public ? is_public : false,
+    date_added: moment(date),
   };
   const globalFilters = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
@@ -37,6 +39,10 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
   const [mappingSeq, setMappingSeq] = useState(null);
   const [localMapping, setLocalMapping] = useState<boolean>(true);
+
+  useEffect(() => {
+    form.setFieldsValue({date_added: moment(date)});  
+  }, [date]);
 
   useEffect(() => {
     if (
@@ -88,15 +94,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
                 ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                   ? filterExcelColumns.filter(
-                      (x: any) =>
-                        x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                        ele.name?.toLowerCase()?.replace(/\s/g, '')
-                    )[0]
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                      ele.name?.toLowerCase()?.replace(/\s/g, '')
+                  )[0]
                   : skipRows == 0
-                  ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                    ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
                       return data.key == ele.name;
                     })[0]?.value
-                  : '';
+                    : '';
             });
             form.setFieldsValue(initialValuesData);
           }
@@ -138,18 +144,18 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             tenant_id: _.isNull(globalSearch.tenant_id)
               ? null
               : globalSearch.tenant_id === undefined
-              ? null
-              : globalSearch?.tenant_id[0],
+                ? null
+                : globalSearch?.tenant_id[0],
             bu_id: _.isNull(globalSearch.bu_id)
               ? null
               : globalSearch.bu_id === undefined
-              ? null
-              : globalSearch?.bu_id[0],
+                ? null
+                : globalSearch?.bu_id[0],
             company_id: _.isNull(globalSearch.company_id)
               ? null
               : globalSearch.company_id === undefined
-              ? null
-              : globalSearch?.company_id[0],
+                ? null
+                : globalSearch?.company_id[0],
             date_added: moment(),
           };
           filterTableColumns.map(function (ele) {
@@ -161,15 +167,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   ele.name?.toLowerCase()?.replace(/\s/g, '')
               ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                 ? filterExcelColumns.filter(
-                    (x: any) =>
-                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                      ele.name?.toLowerCase()?.replace(/\s/g, '')
-                  )[0]
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    ele.name?.toLowerCase()?.replace(/\s/g, '')
+                )[0]
                 : skipRows == 0
-                ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                  ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
                     return data.key == ele.name;
                   })[0]?.value
-                : '';
+                  : '';
           });
           form.setFieldsValue(initialValuesData);
         }
@@ -193,6 +199,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     delete fieldValues.file_name;
     delete fieldValues.file_type;
     delete fieldValues.is_public;
+    delete fieldValues.date_added;
     const sqlToExcelMapping = [];
     Object.entries(fieldValues).forEach(([key, value]) => {
       if (key && value) {
@@ -237,6 +244,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     delete fieldValues.file_name;
     delete fieldValues.file_type;
     delete fieldValues.is_public;
+    delete fieldValues.date_added;
     const sqlToExcelMapping = [];
     Object.entries(fieldValues).forEach(([key, value]) => {
       if (key && value) {
@@ -250,6 +258,16 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     dummyrecords.map((data) => {
       if (data.index == seqNumber) {
         data.excel_to_sql_mapping = sqlToExcelMapping;
+      }
+    });
+    setRecords(dummyrecords);
+  };
+
+  const onDateChange = (e) => {
+    const dummyrecords = [...records];
+    dummyrecords.map((data) => {
+      if (data.index == seqNumber) {
+        data.dateAdded = moment(e).format(Common.DATEFORMAT);
       }
     });
     setRecords(dummyrecords);
@@ -277,6 +295,18 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               <label className="label">File Type</label>
               <Form.Item name="file_type" label="File Type" className="m-0">
                 <Input className="form-control" disabled={true} />
+              </Form.Item>
+            </div>
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            <div className="form-group m-0">
+              <label className="label">Date Added</label>
+              <Form.Item name="date_added" label="Date Added" className="m-0">
+                <DatePicker
+                  className="form-control"
+                  onChange={onDateChange}
+                  placeholder="Select Date Added"
+                />
               </Form.Item>
             </div>
           </Col>

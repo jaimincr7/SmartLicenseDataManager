@@ -264,7 +264,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       company_id: globalLookups.search.company_id,
       bu_id: globalLookups.search.bu_id,
       tenant_id: globalLookups.search.tenant_id,
-      spsApiQueryParam: params,
+      sps_api_query_param: params,
     };
     dispatch(callApi(callApiObj));
   };
@@ -283,12 +283,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         bu_id: data.bu_id,
         tenant_id: data.tenant_id,
         oauth_id: data.oauth_id,
-        spsApiQueryParam: params,
+        sps_api_query_param: params,
       };
       if (showStartTime && showEndTime) {
         const dummyParams = {
           startTime: '@startTime',
-          endTime: '@endTime'
+          endTime: '@endTime',
         };
         setCallApiObj({
           ...callApiObj,

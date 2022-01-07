@@ -29,6 +29,7 @@ import CmdbRoutes from './pages/CMDB/CMDB.routes';
 import SPSRoutes from './pages/SPS/SPS.routes';
 import Slim360Routes from './pages/Slim360/Slim360.routes';
 import InventoryRoutes from './pages/Inventory/Inventory.routes';
+import { SocketIO } from './utils/socket.io';
 
 function AppRoutes() {
   const history = useHistory();
@@ -48,6 +49,7 @@ function AppRoutes() {
         </Switch>
       </UnauthenticatedTemplate>
       <AuthenticatedTemplate>
+        <SocketIO/>
         <Switch>
           <Route path="/login">
             <Redirect to="/" />

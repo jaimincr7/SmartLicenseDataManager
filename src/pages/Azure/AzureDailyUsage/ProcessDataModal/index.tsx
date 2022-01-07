@@ -139,7 +139,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       if (azureDailyUsage.processData.hasErrors) {
         toast.error(azureDailyUsage.processData.messages.join(' '));
       } else {
-        toast.success(azureDailyUsage.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
