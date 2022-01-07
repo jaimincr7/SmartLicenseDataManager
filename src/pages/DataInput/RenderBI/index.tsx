@@ -25,6 +25,7 @@ import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.r
 import { IInlineSearch } from '../../../common/models/common';
 import { toast } from 'react-toastify';
 import bulkImportService from '../../../services/bulkImport/bulkImport.service';
+import { Common } from '../../../common/constants/common';
 
 const { Option } = Select;
 
@@ -139,6 +140,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         sheet_name: string;
         header_row: number;
         delimiter: string;
+        foreign_key_values: any;
       }> = [];
       if (hideUnmapped === true) {
         withoutUnmappedRecords.map((data) => {
@@ -152,6 +154,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             sheet_name: data.sheet,
             header_row: data.header_row - 1,
             delimiter: data.delimeter ? data.delimiter : ',',
+            foreign_key_values: {
+              date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
+            }
           };
           arr.push(Obj);
         });
@@ -167,6 +172,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             sheet_name: data.sheet,
             header_row: data.header_row - 1,
             delimiter: data.delimeter ? data.delimiter : ',',
+            foreign_key_values: {
+              date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
+            }
           };
           arr.push(Obj);
         });
@@ -776,6 +784,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               is_public={record.is_public}
               tableName={record?.table_name}
               seqNumber={record?.index}
+              date={date}
             ></MappingColumn>
           ),
         }}

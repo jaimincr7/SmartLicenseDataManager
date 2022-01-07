@@ -73,8 +73,7 @@ const BulkImport: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [delimitModalShow, setDelimitModalShow] = useState(false);
   const [delimitFlag, setDelimitFlag] = useState(true);
-
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(moment().format(Common.DATEFORMAT));
 
   const formUploadInitialValues = {
     header_row: 1,
