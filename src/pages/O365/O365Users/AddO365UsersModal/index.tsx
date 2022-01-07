@@ -1489,7 +1489,11 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'account_enabled']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'account_enabled']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Accont Enabled</Checkbox>
                     </Form.Item>
                   ) : (

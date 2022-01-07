@@ -106,7 +106,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       if (o365Users.processData.hasErrors) {
         toast.error(o365Users.processData.messages.join(' '));
       } else {
-        toast.success(o365Users.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }

@@ -9,8 +9,7 @@ import { spsApiCallSelector } from '../../../../store/sps/spsAPICall/spsApiCall.
 import { ICallApiModalProps } from './callApiModal.model';
 
 const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
-  const { showModal, handleModalClose, params, id, company_id, tenant_id, bu_id } =
-    props;
+  const { showModal, handleModalClose, params, id, company_id, tenant_id, bu_id } = props;
   const spsApis = useAppSelector(spsApiCallSelector);
   const dispatch = useAppDispatch();
 
@@ -42,7 +41,7 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
                   className="m-0"
                   rules={[{ required: isEditable }]}
                 >
-                  <DatePicker className="form-control w-100" ></DatePicker>
+                  <DatePicker className="form-control w-100"></DatePicker>
                 </Form.Item>
               </div>
             </Col>
@@ -74,7 +73,7 @@ const CallApiModal: React.FC<ICallApiModalProps> = (props) => {
       company_id: company_id,
       bu_id: bu_id,
       tenant_id: tenant_id,
-      spsApiQueryParam: dummyValue,
+      sps_api_query_param: dummyValue,
     };
     dispatch(callApi(callApiObj));
   };

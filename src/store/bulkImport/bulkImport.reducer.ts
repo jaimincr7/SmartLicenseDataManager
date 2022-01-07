@@ -15,6 +15,7 @@ import {
   deleteColumnMapping,
   deleteFileMapping,
   getCSVExcelColumns,
+  getExcelFileMappingLookup,
 } from './bulkImport.action';
 import { IBulkImportState } from './bulkImport.model';
 
@@ -45,6 +46,11 @@ export const initialState: IBulkImportState = {
     messages: [],
   },
   getTableColumns: {
+    loading: false,
+    hasErrors: false,
+    data: [],
+  },
+  getExcelFileMappingLookup: {
     loading: false,
     hasErrors: false,
     data: [],
@@ -92,6 +98,7 @@ export const bulkImportSlice = createSlice({
       state.saveExcelFileMapping.messages = [];
       state.deleteColumnMapping.messages = [];
       state.deleteFileMapping.messages = [];
+      state.getExcelFileMappingLookup.data = [];
     },
     clearDeleteMessages: (state) => {
       state.deleteColumnMapping.messages = [];
@@ -130,6 +137,20 @@ export const bulkImportSlice = createSlice({
     [getTablesForImport.rejected.type]: (state) => {
       state.getTablesForImport.loading = false;
       state.getTablesForImport.hasErrors = true;
+    },
+
+    // Get Table Columns
+    [getExcelFileMappingLookup.pending.type]: (state) => {
+      state.getExcelFileMappingLookup.loading = true;
+    },
+    [getExcelFileMappingLookup.fulfilled.type]: (state, action: PayloadAction<any[]>) => {
+      state.getExcelFileMappingLookup.data = action.payload;
+      state.getExcelFileMappingLookup.loading = false;
+      state.getExcelFileMappingLookup.hasErrors = false;
+    },
+    [getExcelFileMappingLookup.rejected.type]: (state) => {
+      state.getExcelFileMappingLookup.loading = false;
+      state.getExcelFileMappingLookup.hasErrors = true;
     },
 
     // Get Table Columns

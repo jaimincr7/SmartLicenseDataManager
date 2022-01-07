@@ -25,6 +25,7 @@ import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.r
 import { IInlineSearch } from '../../../common/models/common';
 import { toast } from 'react-toastify';
 import bulkImportService from '../../../services/bulkImport/bulkImport.service';
+import { Common } from '../../../common/constants/common';
 
 const { Option } = Select;
 
@@ -42,6 +43,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     firstFlag,
     setFirstFlag,
     hideUnmapped,
+    withoutUnmappedRecords,
+    setWithoutUnmappedRecords,
   } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -60,7 +63,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
   const [curRecordMap, setCurRecordMap] = useState(null);
-  const [withoutUnmappedRecords, setWithoutUnmappedRecords] = useState([]);
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
@@ -68,6 +70,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (data && data.length > 0) {
       data[0].table_name = tableName;
       data[0].excel_to_sql_mapping = null;
+      data[0].currentMapping = null;
     }
 
     setRecords(dummyRecords);
@@ -104,10 +107,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             ele.name?.toLowerCase()?.replace(/\s/g, '')
         ).length > 0
           ? filterExcelColumns.filter(
-            (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-              ele.name?.toLowerCase()?.replace(/\s/g, '')
-          )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
+            )[0]
           : '';
       sqlToExcelMapping.push({
         key: `${ele.name}`,
@@ -137,6 +140,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         sheet_name: string;
         header_row: number;
         delimiter: string;
+        foreign_key_values: any;
       }> = [];
       if (hideUnmapped === true) {
         withoutUnmappedRecords.map((data) => {
@@ -150,6 +154,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             sheet_name: data.sheet,
             header_row: data.header_row - 1,
             delimiter: data.delimeter ? data.delimiter : ',',
+            foreign_key_values: {
+              date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
+            }
           };
           arr.push(Obj);
         });
@@ -165,6 +172,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             sheet_name: data.sheet,
             header_row: data.header_row - 1,
             delimiter: data.delimeter ? data.delimiter : ',',
+            foreign_key_values: {
+              date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
+            }
           };
           arr.push(Obj);
         });
@@ -175,18 +185,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           tenant_id: _.isNull(globalSearch.tenant_id)
             ? null
             : globalSearch.tenant_id === undefined
-              ? null
-              : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
           bu_id: _.isNull(globalSearch.bu_id)
             ? null
             : globalSearch.bu_id === undefined
-              ? null
-              : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
           company_id: _.isNull(globalSearch.company_id)
             ? null
             : globalSearch.company_id === undefined
-              ? null
-              : globalSearch?.company_id[0],
+            ? null
+            : globalSearch?.company_id[0],
           date_added: date ? date : moment(),
         },
       };
@@ -254,18 +264,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-            ? null
-            : globalSearch?.tenant_id[0],
+          ? null
+          : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-            ? null
-            : globalSearch?.bu_id[0],
+          ? null
+          : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-            ? null
-            : globalSearch?.company_id[0],
+          ? null
+          : globalSearch?.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -276,10 +286,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -562,7 +572,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           data1.config_excel_column_mappings.map((data2) => {
             if (data2.id == value) {
               data.key_word = data1?.key_word;
-              data.is_public = data1?.is_public
+              data.is_public = data1?.is_public;
               data.table_name = data2.table_name;
               flagMapping = JSON.parse(data2.mapping);
             }
@@ -571,7 +581,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.excel_to_sql_mapping = flagMapping;
       }
     });
-    const unmapRec = dummyRecord.filter(data => data.excel_to_sql_mapping !== null);
+    const unmapRec = dummyRecord.filter((data) => data.excel_to_sql_mapping !== null);
     setWithoutUnmappedRecords(unmapRec);
     setRecords(dummyRecord);
     if (value) {
@@ -774,6 +784,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               is_public={record.is_public}
               tableName={record?.table_name}
               seqNumber={record?.index}
+              date={date}
             ></MappingColumn>
           ),
         }}

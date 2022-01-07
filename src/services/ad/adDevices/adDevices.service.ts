@@ -59,8 +59,8 @@ class AdDevicesService {
         // Cancel request
         cancelTokenSource.cancel();
         toast.warning('Process is working in background.');
-        reject();
-      }, 30 * 1000); // wait till 30 seconds
+        resolve({status:200, body:{messages:['']}});
+      }, 5 * 1000); // wait till 5 seconds
 
       request({ url, method: 'POST', data: inputValues, cancelToken: cancelTokenSource.token })
         .then((res) => {
