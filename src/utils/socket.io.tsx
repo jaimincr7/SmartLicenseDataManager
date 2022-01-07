@@ -40,7 +40,9 @@ export const SocketIO = React.memo(() => {
                     // });
                 });
             } catch (error) {
-                tryToConnect++;
+                setTimeout(() => {
+                    connectSocket();
+                }, 10000);
             }
         }
     };
