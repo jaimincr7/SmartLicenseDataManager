@@ -210,19 +210,22 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
 
   const onAgreementChange = (e) => {
     const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === e);
-    form.setFieldsValue({ notes: agreementName[0]?.name });
+    const text1 = form.getFieldValue('opt_default_to_enterprise_on_hosts') === true ? 'DC on Host' : 'Cost Optimized';
+    const text2 = form.getFieldValue('opt_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod';
+    form.setFieldsValue({ notes: agreementName[0]?.name + ' - ' + text1 + ' - ' + text2 });
   };
 
   const defaultToEntHostChange = (e) => {
     if (form.getFieldValue('opt_agreement_type') !== null && form.getFieldValue('opt_agreement_type') !== undefined) {
+      const text2 = form.getFieldValue('opt_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod'; 
       if (e === true) {
         const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
         const notes = agreementName[0]?.name + ' - ' + 'DC on Host';
-        form.setFieldsValue({ notes: notes });
+        form.setFieldsValue({ notes: notes + ' - ' + text2 });
       } else {
         const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
         const notes = agreementName[0]?.name + ' - ' + 'Cost Optimized';
-        form.setFieldsValue({ notes: notes });
+        form.setFieldsValue({ notes: notes + ' - ' + text2 });
       }
     }
   };
