@@ -193,6 +193,39 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
     }
   }, []);
 
+  const onAgreementChange = (e) => {
+    const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === e);
+    form.setFieldsValue({ notes: agreementName[0]?.name });
+  };
+
+  const defaultToEntHostChange = (e) => {
+    if (form.getFieldValue('opt_agreement_type') !== null && form.getFieldValue('opt_agreement_type') !== undefined) {
+      if (e === true) {
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
+        const notes = agreementName[0]?.name + ' - ' + 'DC on Host';
+        form.setFieldsValue({ notes: notes });
+      } else {
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
+        const notes = agreementName[0]?.name + ' - ' + 'Cost Optimized';
+        form.setFieldsValue({ notes: notes });
+      }
+    }
+  };
+
+  const onExcludeChange = (e) => {
+    if (form.getFieldValue('opt_agreement_type') !== null && form.getFieldValue('opt_agreement_type') !== undefined) {
+      const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
+      const optstring = form.getFieldValue('opt_default_to_data_center_on_hosts') === true ? 'DC on Host' : 'Cost Optimized';
+      if (e === true) {
+        const notes = agreementName[0]?.name + ' - ' + optstring + ' - ' + 'Exclude Non-Prod';
+        form.setFieldsValue({ notes: notes });
+      } else {
+        const notes = agreementName[0]?.name + ' - ' + optstring + ' - ' + 'Include Non-Prod';
+        form.setFieldsValue({ notes: notes });
+      }
+    }
+  };
+
   return (
     <>
       <Modal
@@ -310,6 +343,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                   <Form.Item name="opt_agreement_type" className="m-0" label="Agreement Type">
                     <Select
                       loading={commonLookups.agreementTypesLookup.loading}
+                      onChange={onAgreementChange}
                       allowClear
                       showSearch
                       optionFilterProp="children"
@@ -334,33 +368,11 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
                   <Form.Item
-                    name="opt_exclude_non_prod"
-                    className="m-0 mr-1"
-                    valuePropName="checked"
-                  >
-                    <Switch className="form-control" />
-                  </Form.Item>
-                  {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'opt_exclude_non_prod']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>OPT Exclude Non Prod</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'OPT Exclude Non Prod'
-                  )}
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group form-inline-pt m-0">
-                  <Form.Item
                     name="opt_default_to_data_center_on_hosts"
                     className="m-0 mr-1"
                     valuePropName="checked"
                   >
-                    <Switch className="form-control" />
+                    <Switch className="form-control" onChange={defaultToEntHostChange}/>
                   </Form.Item>
                   {isMultiple ? (
                     <Form.Item
@@ -368,10 +380,32 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>OPT Default to DataCenter on Hosts</Checkbox>
+                      <Checkbox>Default to DataCenter on Hosts</Checkbox>
                     </Form.Item>
                   ) : (
-                    'OPT Default to DataCenter on Hosts'
+                    'Default to DataCenter on Hosts'
+                  )}
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item
+                    name="opt_exclude_non_prod"
+                    className="m-0 mr-1"
+                    valuePropName="checked"
+                  >
+                    <Switch className="form-control" onChange={onExcludeChange}/>
+                  </Form.Item>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'opt_exclude_non_prod']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Exclude Non Prod</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exclude Non Prod'
                   )}
                 </div>
               </Col>
@@ -386,10 +420,10 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>OPT Entitlements</Checkbox>
+                      <Checkbox>Entitlements</Checkbox>
                     </Form.Item>
                   ) : (
-                    'OPT Entitlements'
+                    'Entitlements'
                   )}
                 </div>
               </Col>

@@ -69,6 +69,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (data && data.length > 0) {
       data[0].table_name = tableName;
       data[0].excel_to_sql_mapping = null;
+      data[0].currentMapping = null;
     }
 
     setRecords(dummyRecords);
