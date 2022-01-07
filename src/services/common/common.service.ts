@@ -479,7 +479,7 @@ class CommonService {
   public async getJwtTokenForSocket(): Promise<IApiResponse<any>> {
     const url = `/app/jwt-token`;
     return request({ url, method: 'GET' }).then((res) => {
-      return res.data;
+      return res?.data;
     });
   }
 

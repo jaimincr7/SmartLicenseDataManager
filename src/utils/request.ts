@@ -69,26 +69,28 @@ export const setResponseError = (history) => {
       const e = Array.isArray(error.response?.data.body.errors)
         ? error.response.data.body.errors.join(' ')
         : error.response?.data.body.errors;
-      switch (error.response.status) {
-        // Authorization Failed Response can add other status codes here to manage error Logging
-        case 401:
-          history.push('/401');
-          break;
-        case 403:
-          history.push('/403');
-          break;
-        case 500:
-          if (ability.can(Action.Error, Page.Application)) {
+      if(error && error?.response && error?.response?.status){
+        switch (error.response.status) {
+          // Authorization Failed Response can add other status codes here to manage error Logging
+          case 401:
+            history.push('/401');
+            break;
+          case 403:
+            history.push('/403');
+            break;
+          case 500:
+            if (ability.can(Action.Error, Page.Application)) {
+              toast.error(e);
+            } else {
+              history.push('/500');
+            }
+            break;
+          default:
             toast.error(e);
-          } else {
-            history.push('/500');
-          }
-          break;
-        default:
-          toast.error(e);
-          break;
+            break;
+        }
+        return Promise.reject(error);
       }
-      return Promise.reject(error);
     }
   );
 };
