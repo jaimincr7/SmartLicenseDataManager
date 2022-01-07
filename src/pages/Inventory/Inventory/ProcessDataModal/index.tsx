@@ -131,7 +131,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       if (inventory.processData.hasErrors) {
         toast.error(inventory.processData.messages.join(' '));
       } else {
-        toast.success(inventory.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
