@@ -25,14 +25,14 @@ request.interceptors.request.use(
     }
 
     // convert empty string to null for all add/edit data
-    if(config.method === 'put' || config.method === 'post'){
-      if(config.data){
+    if (config.method === 'put' || config.method === 'post') {
+      if (config.data) {
         for (const key in config.data) {
           if (Object.prototype.hasOwnProperty.call(config.data, key)) {
             const element = config.data[key];
-            if(typeof element === 'string' && element === ''){
+            if (typeof element === 'string' && element === '') {
               config.data[key] = null;
-            }          
+            }
           }
         }
       }

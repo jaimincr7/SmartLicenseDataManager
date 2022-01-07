@@ -116,7 +116,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'api_call_start',
             key: 'api_call_start',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
           },
         ],
       },
@@ -131,7 +132,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'api_call_end',
             key: 'api_call_end',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
           },
         ],
       },
@@ -200,7 +202,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title=""
         className="action-btn"
         onClick={() => {
-            onRun(data);
+          onRun(data);
         }}
       >
         <ReloadOutlined title="Run Job Data" />
@@ -210,10 +212,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      {data.status !== 'Success' &&
-         (
-          renderActionButton(data)
-        )}
+      {data.status !== 'Success' && renderActionButton(data)}
       <Can I={Action.Delete} a={Page.SpsApiJobs}>
         <Popconfirm title="Delete Record?">
           <a href="#" title="" className="action-btn">

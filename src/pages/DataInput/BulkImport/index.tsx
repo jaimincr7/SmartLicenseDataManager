@@ -113,8 +113,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                      (data) => data.sheet_name == sheet.sheet
+                    )
                   : [];
               filteredRecords = [
                 ...filteredRecords,
@@ -183,8 +183,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                      (data) => data.sheet_name == sheet.sheet
+                    )
                   : [];
               if (nonRepeated) {
                 filteredRecords = [
@@ -261,8 +261,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                  (data) => data.sheet_name == sheet.sheet
-                )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                 : [];
             filteredRecords = [
               ...filteredRecords,
@@ -284,8 +284,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                    ? orgFile[0].table_name
-                    : tableName,
+                  ? orgFile[0].table_name
+                  : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -311,8 +311,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                    ? orgFile[0].excel_to_sql_mapping
-                    : null,
+                  ? orgFile[0].excel_to_sql_mapping
+                  : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -360,7 +360,7 @@ const BulkImport: React.FC = () => {
       if (bulkImports.bulkInsert.hasErrors) {
         toast.error(bulkImports.bulkInsert.messages.join(' '));
       } else {
-        if(bulkImports.bulkInsert.messages[0] !=='rejected'){
+        if (bulkImports.bulkInsert.messages[0] !== 'rejected') {
           toast.success(bulkImports.bulkInsert.messages.join(' '));
         }
         dispatch(clearExcelColumns());
@@ -580,7 +580,7 @@ const BulkImport: React.FC = () => {
             data1.header_row = data.header_row + 1;
             data1.table_name = data.table_name;
             data1.key_word = selectedRecord[0].key_word;
-            data1.is_public = selectedRecord[0].is_public
+            data1.is_public = selectedRecord[0].is_public;
           }
         });
       });
@@ -706,36 +706,41 @@ const BulkImport: React.FC = () => {
                       <label className="label">Hide Unmapped</label>
                     </div>
                   </Col>
-                  {records.length > 0 && (<Col xs={24} md={8}>
-                    <div className="form-group m-0">
-                      <label className="label">File Mapping</label>
-                      <Form.Item name={'file_mapping'} className="m-0">
-                        <Select
-                          loading={bulkImports.getExcelFileMappingLookup.loading || loading}
-                          onChange={(option) => { changeFileMapping(option); }}
-                          showSearch
-                          allowClear
-                          optionFilterProp="children"
-                          filterOption={(input, option: any) =>
-                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                          }
-                          filterSort={(optionA: any, optionB: any) =>
-                            optionA.children
-                              ?.toLowerCase()
-                              ?.localeCompare(optionB.children?.toLowerCase())
-                          }
-                        >
-                          {(bulkImports.getExcelFileMappingLookup.data || [])?.map(
-                            (option: any, index: number) => (
-                              <Option key={index} value={option.key_word}>
-                                {option.key_word}<span className="value-badge">{option.file_type}</span>
-                              </Option>
-                            )
-                          )}
-                        </Select>
-                      </Form.Item>
-                    </div>
-                  </Col>)}
+                  {records.length > 0 && (
+                    <Col xs={24} md={8}>
+                      <div className="form-group m-0">
+                        <label className="label">File Mapping</label>
+                        <Form.Item name={'file_mapping'} className="m-0">
+                          <Select
+                            loading={bulkImports.getExcelFileMappingLookup.loading || loading}
+                            onChange={(option) => {
+                              changeFileMapping(option);
+                            }}
+                            showSearch
+                            allowClear
+                            optionFilterProp="children"
+                            filterOption={(input, option: any) =>
+                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA: any, optionB: any) =>
+                              optionA.children
+                                ?.toLowerCase()
+                                ?.localeCompare(optionB.children?.toLowerCase())
+                            }
+                          >
+                            {(bulkImports.getExcelFileMappingLookup.data || [])?.map(
+                              (option: any, index: number) => (
+                                <Option key={index} value={option.key_word}>
+                                  {option.key_word}
+                                  <span className="value-badge">{option.file_type}</span>
+                                </Option>
+                              )
+                            )}
+                          </Select>
+                        </Form.Item>
+                      </div>
+                    </Col>
+                  )}
                 </Row>
               </Form>
             </div>

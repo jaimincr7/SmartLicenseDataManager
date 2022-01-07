@@ -3,7 +3,7 @@ import { IMenuRightsByRoleId } from '../../services/administration/menu/menu.mod
 export interface IActiveAccount {
   name?: string;
   email?: string;
-  username?:string;
+  username?: string;
 }
 
 export interface IUserState {

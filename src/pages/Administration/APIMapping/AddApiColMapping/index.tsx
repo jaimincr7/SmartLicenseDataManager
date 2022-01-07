@@ -151,9 +151,13 @@ const AddAPIMapping: React.FC = () => {
     filterTableColumns?.map(function (ele) {
       if (mappingArray?.length > 0) {
         const mapObj = mappingArray?.find((x) => x.key === ele.name);
-          if (mapObj && Array.isArray(filterApiColumns) && filterApiColumns?.includes(mapObj?.value)) {
-            form.setFieldsValue({ [ele.name]: mapObj.value });
-          }
+        if (
+          mapObj &&
+          Array.isArray(filterApiColumns) &&
+          filterApiColumns?.includes(mapObj?.value)
+        ) {
+          form.setFieldsValue({ [ele.name]: mapObj.value });
+        }
       } else {
         initialValuesData[ele.name] =
           filterApiColumns?.filter(
@@ -162,10 +166,10 @@ const AddAPIMapping: React.FC = () => {
               ele.name.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterApiColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                ele.name.toLowerCase()?.replace(/\s+/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                  ele.name.toLowerCase()?.replace(/\s+/g, '')
+              )[0]
             : '';
       }
     });

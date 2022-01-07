@@ -288,7 +288,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       if (showStartTime && showEndTime) {
         const dummyParams = {
           startTime: '@startTime',
-          endTime: '@endTime'
+          endTime: '@endTime',
         };
         setCallApiObj({
           ...callApiObj,

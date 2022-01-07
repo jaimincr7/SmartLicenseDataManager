@@ -33,52 +33,52 @@ import { useAppSelector } from './store/app.hooks';
 import { userSelector } from './store/administration/administration.reducer';
 import { toast } from 'react-toastify';
 import config from './utils/config';
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 import commonService from './services/common/common.service';
 
-let tryToConnect = 0
+let tryToConnect = 0;
 let socket;
 function AppRoutes() {
   const history = useHistory();
   const userDetails = useAppSelector(userSelector);
 
-  const connectSocket = () =>{
-    if (userDetails?.activeAccount?.username && tryToConnect<10) {
+  const connectSocket = () => {
+    if (userDetails?.activeAccount?.username && tryToConnect < 10) {
       tryToConnect++;
-      commonService.getJwtTokenForSocket().then((res)=>{
+      commonService.getJwtTokenForSocket().then((res) => {
         socket = io(config.baseApi, {
           extraHeaders: {
-            "Authorization": res.body.data
-          }
+            Authorization: res.body.data,
+          },
         });
         socket.on(userDetails.activeAccount.username, (message: string) => {
           toast.info(message);
         });
-  
+
         socket.on('disconnect', () => {
           // console.info('Socket is disconnected');
           setTimeout(() => {
             connectSocket();
           }, 5000);
-        });  
+        });
 
         // socket.on('connect', () => {
         //   console.info('Socket is connect');
         // });
-      })
+      });
     }
-  }
+  };
 
   // Set socket io
   React.useEffect(() => {
     tryToConnect = 0;
     connectSocket();
     return () => {
-      if(socket){
+      if (socket) {
         socket.disconnect();
         tryToConnect = 11;
       }
-    } 
+    };
   }, [userDetails?.activeAccount?.username]);
 
   React.useEffect(() => {

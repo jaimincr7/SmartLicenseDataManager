@@ -86,15 +86,12 @@ export const getExcelFileMapping = createAsyncThunk(
   }
 );
 
-export const getExcelFileMappingLookup = createAsyncThunk(
-  'getExcelFileMappingLookup',
-  async () => {
-    const response = await bulkImportService.getExcelFileMappingLookup().then((res) => {
-      return res.body;
-    });
-    return response.data;
-  }
-);
+export const getExcelFileMappingLookup = createAsyncThunk('getExcelFileMappingLookup', async () => {
+  const response = await bulkImportService.getExcelFileMappingLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
 
 export const saveExcelFileMapping = createAsyncThunk(
   'saveExcelFileMapping',

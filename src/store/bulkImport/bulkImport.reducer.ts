@@ -277,12 +277,12 @@ export const bulkImportSlice = createSlice({
       state.bulkInsert.hasErrors = false;
       state.bulkInsert.messages = action.payload.messages;
     },
-    [bulkInsert.rejected.type]: (state, action) => {      
+    [bulkInsert.rejected.type]: (state, action) => {
       state.bulkInsert.loading = false;
       state.bulkInsert.hasErrors = true;
-      if(typeof action.payload === 'undefined'){
+      if (typeof action.payload === 'undefined') {
         state.bulkInsert.hasErrors = false;
-        state.bulkInsert.messages = ['rejected']
+        state.bulkInsert.messages = ['rejected'];
       }
     },
 
