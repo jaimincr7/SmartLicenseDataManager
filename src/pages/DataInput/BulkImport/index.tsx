@@ -113,8 +113,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               filteredRecords = [
                 ...filteredRecords,
@@ -183,8 +183,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (nonRepeated) {
                 filteredRecords = [
@@ -261,8 +261,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                  (data) => data.sheet_name == sheet.sheet
+                )
                 : [];
             filteredRecords = [
               ...filteredRecords,
@@ -284,8 +284,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                  ? orgFile[0].table_name
-                  : tableName,
+                    ? orgFile[0].table_name
+                    : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -311,8 +311,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                  ? orgFile[0].excel_to_sql_mapping
-                  : null,
+                    ? orgFile[0].excel_to_sql_mapping
+                    : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -570,8 +570,8 @@ const BulkImport: React.FC = () => {
   const changeFileMapping = (value) => {
     const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
     const selectedRecord = dummyRecord.filter((data) => data.key_word === value);
+    const dummyRecords = _.cloneDeep(records);
     if (selectedRecord.length) {
-      const dummyRecords = _.cloneDeep(records);
       selectedRecord[0].config_excel_column_mappings?.map((data) => {
         dummyRecords.map((data1) => {
           if (data.sheet_name == data1.sheet) {
@@ -590,6 +590,12 @@ const BulkImport: React.FC = () => {
       setRecords(dummyRecords);
     }
   };
+
+  useEffect(() => {
+    const dummyRecords = _.cloneDeep(records);
+    const unmapRec = dummyRecords.filter((data) => data.excel_to_sql_mapping !== null);
+    setWithoutUnmappedRecords(unmapRec);
+  }, [records]);
 
   return (
     <>
