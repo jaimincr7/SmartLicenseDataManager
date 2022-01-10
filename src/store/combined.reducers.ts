@@ -74,6 +74,7 @@ import cmdbDeviceReducer from './cmdb/device/device.reducer';
 import cmdbLicenseModelReducer from './cmdb/licenseModel/licenseModel.reducer';
 import cmdbSoftwareReducer from './cmdb/software/software.reducer';
 import cmdbUserReducer from './cmdb/user/user.reducer';
+import cmdbOsNormalizationReducer from './cmdb/osNormalization/osNormalization.reducer';
 import cmdbUserMapReducer from './cmdb/userMap/userMap.reducer';
 import cmdbExclusionReducer from './cmdb/exclusion/exclusion.reducer';
 import configExclusionComponentReducer from './master/exclusionComponent/exclusionComponent.reducer';
@@ -219,6 +220,7 @@ export const rootReducer = combineReducers({
   cmdbDevice: cmdbDeviceReducer,
   cmdbLicenseModel: cmdbLicenseModelReducer,
   cmdbSoftware: cmdbSoftwareReducer,
+  cmdbOsNormalization: cmdbOsNormalizationReducer,
   cmdbUser: cmdbUserReducer,
   cmdbUserMap: cmdbUserMapReducer,
 
