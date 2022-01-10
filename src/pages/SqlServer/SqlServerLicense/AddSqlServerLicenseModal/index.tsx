@@ -83,7 +83,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
     opt_default_to_enterprise_on_hosts: false,
     notes: '',
     opt_entitlements: false,
-    selected_date: moment(),
+    selected_date: null,
   };
 
   const onFinish = (values: any) => {
