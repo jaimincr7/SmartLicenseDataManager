@@ -5,4 +5,5 @@ export interface IAddSqlServerLicenseProps {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   valuesForSelection?: any[];
+  filterKeys?: any;
 }

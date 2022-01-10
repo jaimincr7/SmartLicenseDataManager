@@ -178,6 +178,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
             setAddModalVisible(false);
             history.push('/sql-server/license');
           }}
+          filterKeys={filterKeys}
           id={id}
           refreshDataTable={() => refreshDataTable()}
         />

@@ -178,6 +178,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
             setAddModalVisible(false);
             history.push('/windows-server/license');
           }}
+          filterKeys={filterKeys}
           id={id}
           refreshDataTable={() => refreshDataTable()}
         />
