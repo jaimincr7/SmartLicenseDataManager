@@ -336,7 +336,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const exportData = { ...searchData, export_column_details };
 
     return exportExcelFile(exportData).then((res) => {
-      if (!res && res?.data?.body?.messages) {
+      if (res && res?.data?.body?.messages) {
         toast.warning(res.data.body.messages.join(' '));
       } else {
         toast.error('Document not available.');
