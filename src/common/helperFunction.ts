@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { toast } from 'react-toastify';
 import { IScheduleDate } from '../services/common/common.model';
 
@@ -31,6 +32,15 @@ export const getObjectForUpdateMultiple = (
     toast.error('Please select at least 1 field to update');
     return;
   }
+  Object.keys(Obj.filterKeys)?.forEach((key) => {
+    const val = Obj.filterKeys[key];
+    if (val?.length === 2 && typeof val[0] === 'object' && moment(val[0]).isValid()) {
+      Obj.filterKeys[key] = {
+        start_date: val[0],
+        end_date: val[1],
+      };
+    }
+  });
   const objectForSelection = {
     table_name: tableName,
     update_data: bu1,
