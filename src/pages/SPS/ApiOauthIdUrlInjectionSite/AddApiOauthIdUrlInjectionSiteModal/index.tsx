@@ -177,6 +177,7 @@ const AddSpsApiOauthIdUrlInjectionSiteModal: React.FC<IAddSpsApiOauthIdUrlInject
                   >
                     <Select
                       allowClear
+                      dropdownClassName="value-box-select"
                       loading={commonLookups.spsApiUrlInjectionLookup.loading}
                       showSearch
                       optionFilterProp="children"
@@ -215,6 +216,7 @@ const AddSpsApiOauthIdUrlInjectionSiteModal: React.FC<IAddSpsApiOauthIdUrlInject
                   >
                     <Select
                       allowClear
+                      dropdownClassName="value-box-select"
                       loading={commonLookups.spsApiOAuthLookup.loading}
                       showSearch
                       optionFilterProp="children"
