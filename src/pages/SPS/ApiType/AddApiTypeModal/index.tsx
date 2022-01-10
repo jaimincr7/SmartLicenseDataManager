@@ -105,7 +105,7 @@ const AddSpsApiTypeModal: React.FC<IAddSpsApiTypeProps> = (props) => {
       if (commonLookups.save.hasErrors) {
         toast.error(commonLookups.save.messages.join(' '));
       } else {
-        toast.success(commonLookups.save.messages.join(' '));
+        toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
