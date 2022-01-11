@@ -38,6 +38,7 @@ import WindowsServerVersions from './WindowsServerVersions';
 import WindowsServerLicense from './WindowsServerLicense';
 import Cron from './Cron';
 import CronViewLog from './CronViewLog';
+import DeleteDataset from './DeleteDataset';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -58,6 +59,14 @@ const AdministrationRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.Bu) && (
           <Route exact path={`${match.path}/bu/:id`} component={BU} />
+        )}
+
+        {/* DeleteDataset */}
+        {ability.can(Action.View, Page.DeleteDataset) && (
+          <Route exact path={`${match.path}/config-delete-data-set`} component={DeleteDataset} />
+        )}
+        {ability.can(Action.View, Page.DeleteDataset) && (
+          <Route exact path={`${match.path}/config-delete-data-set/:id`} component={DeleteDataset} />
         )}
 
         {/* Tenant */}

@@ -12,6 +12,8 @@ import LicenseModel from './LicenseModel';
 import User from './User';
 import UserMap from './UserMap';
 import Exclusion from './Exclusion';
+import OsNormalization from './OsNormalization';
+import SoftwareNormalization from './SoftwareNormalization';
 
 const CmdbRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -77,6 +79,22 @@ const CmdbRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.CmdbSoftware) && (
           <Route exact path={`${match.path}/cmdb-software`} component={Software} />
+        )}
+
+        {/* Os Normalization */}
+        {ability.can(Action.View, Page.CmdbOsNormalization) && (
+          <Route exact path={`${match.path}/cmdb-os-normalization/:id`} component={OsNormalization} />
+        )}
+        {ability.can(Action.View, Page.CmdbOsNormalization) && (
+          <Route exact path={`${match.path}/cmdb-os-normalization`} component={OsNormalization} />
+        )}
+
+        {/* Software Normalization */}
+        {ability.can(Action.View, Page.CmdbSoftwareNormalization) && (
+          <Route exact path={`${match.path}/cmdb-software-normalization/:id`} component={SoftwareNormalization} />
+        )}
+        {ability.can(Action.View, Page.CmdbSoftwareNormalization) && (
+          <Route exact path={`${match.path}/cmdb-software-normalization`} component={SoftwareNormalization} />
         )}
 
         {/* User */}

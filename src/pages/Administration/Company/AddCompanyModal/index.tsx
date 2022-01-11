@@ -37,6 +37,7 @@ import {
 } from '../../../../store/master/company/company.reducer';
 import { IAddCompanyProps } from './addCompany.model';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { clearGlobalCompanyLookUp } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
@@ -82,6 +83,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    dispatch(clearGlobalCompanyLookUp());
     if (!isMultiple) {
       dispatch(saveCompany(inputValues));
     } else {
@@ -134,7 +136,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
       if (commonLookups.save.hasErrors) {
         toast.error(commonLookups.save.messages.join(' '));
       } else {
-        toast.success(commonLookups.save.messages.join(' '));
+        toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }

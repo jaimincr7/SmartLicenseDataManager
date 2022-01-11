@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { toast } from 'react-toastify';
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
 import {
@@ -440,33 +438,9 @@ class CommonService {
 
   public async bulkInsert(data: IBulkInsertDataset): Promise<IApiResponse<any>> {
     const url = `/app/bulk-insert`;
-    const cancelTokenSource = axios.CancelToken.source();
-
-    return new Promise((resolve, reject) => {
-      const timmer = setTimeout(() => {
-        // Cancel request
-        cancelTokenSource.cancel();
-        toast.warning('Process is working in background.');
-        resolve({status:200, body:{messages:['']}});
-      }, 5 * 1000); // wait till 5 seconds
-
-      request({ url, method: 'POST', data: data, cancelToken: cancelTokenSource.token })
-        .then((res) => {
-          return res?.data;
-        })
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((data) => {
-          reject(data);
-        })
-        .finally(() => {
-          clearTimeout(timmer);
-        });
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
     });
-    // return request({ url, method: 'POST', data: data }).then((res) => {
-    //   return res.data;
-    // });
   }
 
   public async getDatabaseTables(): Promise<IApiResponse<any>> {
@@ -486,34 +460,9 @@ class CommonService {
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
     const inputValues = { ...data, debug: false };
     const url = `/app/delete-dataset`;
-
-    const cancelTokenSource = axios.CancelToken.source();
-
-    return new Promise((resolve, reject) => {
-      const timmer = setTimeout(() => {
-        // Cancel request
-        cancelTokenSource.cancel();
-        toast.warning('Process is working in background.');
-        resolve({status:200, body:{messages:['']}});
-      }, 5 * 1000); // wait till 5 seconds
-
-      request({ url, method: 'POST', data: inputValues, cancelToken: cancelTokenSource.token })
-        .then((res) => {
-          return res?.data;
-        })
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((data) => {
-          reject(data);
-        })
-        .finally(() => {
-          clearTimeout(timmer);
-        });
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
+      return res.data;
     });
-    // return request({ url, method: 'POST', data: inputValues }).then((res) => {
-    //   return res.data;
-    // });
   }
 
   public async updateMultiple(searchParams?: IBulkUpdate): Promise<any> {

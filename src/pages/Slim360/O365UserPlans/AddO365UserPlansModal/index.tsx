@@ -152,7 +152,7 @@ const AddSlim360O365UserPlansModal: React.FC<IAddSlim360O365UserPlansProps> = (p
       if (commonLookups.save.hasErrors) {
         toast.error(commonLookups.save.messages.join(' '));
       } else {
-        toast.success(commonLookups.save.messages.join(' '));
+        toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }

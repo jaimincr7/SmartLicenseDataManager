@@ -56,7 +56,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+  const { id, showModal, handleModalClose, refreshDataTable, filterKeys, isMultiple, valuesForSelection } =
     props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -83,7 +83,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
     opt_default_to_enterprise_on_hosts: false,
     notes: '',
     opt_entitlements: false,
-    selected_date: moment(),
+    selected_date: null,
   };
 
   const onFinish = (values: any) => {
@@ -160,7 +160,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
       if (commonLookups.save.hasErrors) {
         toast.error(commonLookups.save.messages.join(' '));
       } else {
-        toast.success(commonLookups.save.messages.join(' '));
+        toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
@@ -202,6 +202,10 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
           company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+          selected_date:
+          filterKeys?.filter_keys?.date_added?.length === 1
+            ? moment(filterKeys.filter_keys.date_added[0])
+            : null,
         };
         form.setFieldsValue(initlValues);
       }

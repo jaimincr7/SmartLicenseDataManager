@@ -24,6 +24,7 @@ import menuReducer from './administration/menu/menu.reducer';
 import tenantReducer from './master/tenant/tenant.reducer';
 import companyReducer from './master/company/company.reducer';
 import buReducer from './master/bu/bu.reducer';
+import deleteDatasetReducer from './master/deleteDataset/deleteDataset.reducer';
 import globalSearchReducer from './globalSearch/globalSearch.reducer';
 import globalTableColumnSelectionReducer from './administration/globalTableColumnSelection/globalTableColumnSelection.reducer';
 import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
@@ -74,6 +75,8 @@ import cmdbDeviceReducer from './cmdb/device/device.reducer';
 import cmdbLicenseModelReducer from './cmdb/licenseModel/licenseModel.reducer';
 import cmdbSoftwareReducer from './cmdb/software/software.reducer';
 import cmdbUserReducer from './cmdb/user/user.reducer';
+import cmdbOsNormalizationReducer from './cmdb/osNormalization/osNormalization.reducer';
+import cmdbSoftwareNormalizationReducer from './cmdb/softwareNormalization/softwareNormalization.reducer';
 import cmdbUserMapReducer from './cmdb/userMap/userMap.reducer';
 import cmdbExclusionReducer from './cmdb/exclusion/exclusion.reducer';
 import configExclusionComponentReducer from './master/exclusionComponent/exclusionComponent.reducer';
@@ -162,6 +165,7 @@ export const rootReducer = combineReducers({
   tenant: tenantReducer,
   company: companyReducer,
   bu: buReducer,
+  deleteDataset: deleteDatasetReducer,
   currency: currencyReducer,
   role: roleReducer,
   agreementTypes: agreementTypesReducer,
@@ -219,6 +223,8 @@ export const rootReducer = combineReducers({
   cmdbDevice: cmdbDeviceReducer,
   cmdbLicenseModel: cmdbLicenseModelReducer,
   cmdbSoftware: cmdbSoftwareReducer,
+  cmdbOsNormalization: cmdbOsNormalizationReducer,
+  cmdbSoftwareNormalization: cmdbSoftwareNormalizationReducer,
   cmdbUser: cmdbUserReducer,
   cmdbUserMap: cmdbUserMapReducer,
 

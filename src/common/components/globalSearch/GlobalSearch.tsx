@@ -1,7 +1,5 @@
 import { DatePicker, Form, Select } from 'antd';
-import moment from 'moment';
 import { useEffect } from 'react';
-import _ from 'lodash';
 import { ILookup } from '../../../services/common/common.model';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
@@ -78,18 +76,17 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
 
   useEffect(() => {
     dispatch(getGlobalTenantLookup());
-    if (isDateAdded) {
-      const dummySearch = {
-        ...globalLookups.search,
-        date_added: _.isNull(globalLookups.search.date_added)
-          ? null
-          : moment(globalLookups.search.date_added),
-      };
-      form.setFieldsValue(dummySearch);
-    } else {
-      form.setFieldsValue(globalLookups.search);
-    }
+    form.setFieldsValue(globalLookups.search);
   }, [dispatch]);
+
+  useEffect(() => {
+    if(form.getFieldValue('tenant_id')) {
+      dispatch(getGlobalCompanyLookup(form.getFieldValue('tenant_id')));
+    }
+    if(form.getFieldValue('company_id')) {
+      dispatch(getGlobalBULookup(form.getFieldValue('company_id')));
+    }
+  }, []);
 
   return (
     <>

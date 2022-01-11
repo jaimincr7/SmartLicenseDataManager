@@ -54,7 +54,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
+  const { id, showModal, handleModalClose, refreshDataTable, filterKeys, isMultiple, valuesForSelection } =
     props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -75,7 +75,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
     opt_default_to_data_center_on_hosts: false,
     notes: '',
     opt_entitlements: false,
-    selected_date: moment(),
+    selected_date: null,
   };
 
   const onFinish = (values: IWindowsServerLicense) => {
@@ -143,7 +143,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
       if (commonLookups.save.hasErrors) {
         toast.error(commonLookups.save.messages.join(' '));
       } else {
-        toast.success(commonLookups.save.messages.join(' '));
+        toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
@@ -185,6 +185,10 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
           company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+          selected_date:
+          filterKeys?.filter_keys?.date_added?.length === 1
+            ? moment(filterKeys.filter_keys.date_added[0])
+            : null,
         };
         form.setFieldsValue(initlValues);
       }
