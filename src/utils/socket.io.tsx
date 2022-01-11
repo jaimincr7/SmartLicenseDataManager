@@ -35,7 +35,7 @@ export const SocketIO = React.memo(() => {
                                         case SocketNotificationType.FilePath:
                                             toast(() => (
                                                 <span style={{ color: '#014e97' }}>
-                                                    <a href={`${config.baseApi}\\${message.message}`} target="_blank" rel="noreferrer" download><strong>Click here</strong></a> to download the file.
+                                                    <a href={`${config.baseApi}\\${message.data}`} target="_blank" rel="noreferrer" download><strong>Click here</strong></a> to download the file.
                                                 </span>
                                             ), { autoClose: false })
                                             break;
