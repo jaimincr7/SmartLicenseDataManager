@@ -52,7 +52,6 @@ class O365M365AppsUsageUserDetailService {
       url,
       method: 'POST',
       data: searchParams,
-      responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
     });

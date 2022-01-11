@@ -336,16 +336,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const exportData = { ...searchData, export_column_details };
 
     return exportExcelFile(exportData).then((res) => {
-      if (!res) {
-        toast.error('Document not available.');
-        return;
+      if (res && res?.data?.body?.messages) {
+        toast.warning(res.data.body.messages.join(' '));
       } else {
+        toast.error('Document not available.');
         //window.open(window.location.href);
-        const fileName = `${res.headers['content-disposition'].split('filename=')[1]}`; //res.headers["content-disposition"];
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        exportExcel(fileName, url);
-        setLoading(false);
+        // const fileName = `${res.headers['content-disposition'].split('filename=')[1]}`; //res.headers["content-disposition"];
+        // const url = window.URL.createObjectURL(new Blob([res.data]));
+        // exportExcel(fileName, url);
       }
+      setLoading(false);
     });
   };
 
@@ -365,9 +365,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img

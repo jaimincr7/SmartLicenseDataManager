@@ -98,7 +98,7 @@ const AddConfigSqlServerEditionsModal: React.FC<IAddConfigSqlServerEditionsProps
       if (common.save.hasErrors) {
         toast.error(common.save.messages.join(' '));
       } else {
-        toast.success(common.save.messages.join(' '));
+        toast.warn(common.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }

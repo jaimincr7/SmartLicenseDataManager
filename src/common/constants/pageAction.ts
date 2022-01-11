@@ -85,6 +85,8 @@ export enum Page {
   CmdbUser = 'cmdb-user',
   CmdbUserMap = 'cmdb-user-map',
   CmdbExclusion = 'cmdb-exclusion',
+  CmdbOsNormalization = "cmdb-os-normalization",
+  CmdbSoftwareNormalization = "cmdb-software-normalization",
 
   ConfigComponent = 'config-component',
   ConfigComponentTableColumn = 'config-component-table-column',
@@ -108,6 +110,7 @@ export enum Page {
   ConfigWindowsServerVersions = 'config-windows-server-versions',
   ConfigWindowsServerLicense = 'config-windows-server-license',
   ConfigModelPopUpSelection = 'config-model-pop-up-data-selection',
+  DeleteDataset = "config-delete-data-set",
 
   //Slim360
   Slim360O365Licenses = 'slim360-o365-licenses',

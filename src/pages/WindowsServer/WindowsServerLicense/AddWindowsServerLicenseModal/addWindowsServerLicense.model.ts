@@ -5,4 +5,5 @@ export interface IAddWindowsServerLicenseProps {
   handleModalClose: () => void;
   refreshDataTable: () => void;
   valuesForSelection?: any[];
+  filterKeys?: any;
 }

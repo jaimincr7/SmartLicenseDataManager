@@ -109,7 +109,7 @@ const AddSpsApiOauthIdUrlInjectionSiteModal: React.FC<IAddSpsApiOauthIdUrlInject
       if (commonLookups.save.hasErrors) {
         toast.error(commonLookups.save.messages.join(' '));
       } else {
-        toast.success(commonLookups.save.messages.join(' '));
+        toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
@@ -177,6 +177,7 @@ const AddSpsApiOauthIdUrlInjectionSiteModal: React.FC<IAddSpsApiOauthIdUrlInject
                   >
                     <Select
                       allowClear
+                      dropdownClassName="value-box-select"
                       loading={commonLookups.spsApiUrlInjectionLookup.loading}
                       showSearch
                       optionFilterProp="children"
@@ -215,6 +216,7 @@ const AddSpsApiOauthIdUrlInjectionSiteModal: React.FC<IAddSpsApiOauthIdUrlInject
                   >
                     <Select
                       allowClear
+                      dropdownClassName="value-box-select"
                       loading={commonLookups.spsApiOAuthLookup.loading}
                       showSearch
                       optionFilterProp="children"

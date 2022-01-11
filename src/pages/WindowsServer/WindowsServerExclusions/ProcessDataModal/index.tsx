@@ -85,6 +85,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       if (windowsServerExclusions.processData.hasErrors) {
         toast.error(windowsServerExclusions.processData.messages.join(' '));
       } else {
+        toast.warning(windowsServerExclusions.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }

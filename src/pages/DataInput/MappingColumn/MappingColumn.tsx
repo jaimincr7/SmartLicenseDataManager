@@ -41,7 +41,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [localMapping, setLocalMapping] = useState<boolean>(true);
 
   useEffect(() => {
-    form.setFieldsValue({date_added: moment(date)});  
+    form.setFieldsValue({ date_added: moment(date) });
   }, [date]);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
 
             const initialValuesData: any = {};
             filterTableColumns.map(function (ele) {
-              const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
+              const mapRecord = records.filter((x) => x.index == seqNumber);
               initialValuesData[ele.name] =
                 filterExcelColumns?.filter(
                   (x: any) =>
@@ -98,11 +98,10 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                       x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                       ele.name?.toLowerCase()?.replace(/\s/g, '')
                   )[0]
-                  : skipRows == 0
-                    ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                  :  (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
                       return data.key == ele.name;
                     })[0]?.value
-                    : '';
+                    ;
             });
             form.setFieldsValue(initialValuesData);
           }
@@ -159,7 +158,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             date_added: moment(),
           };
           filterTableColumns.map(function (ele) {
-            const mapRecord = skipRows == 0 ? records.filter((x) => x.index == seqNumber) : null;
+            const mapRecord = records.filter((x) => x.index == seqNumber) ;
             initialValuesData[ele.name] =
               filterExcelColumns?.filter(
                 (x: any) =>
@@ -171,11 +170,10 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
                 )[0]
-                : skipRows == 0
-                  ? (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
                     return data.key == ele.name;
                   })[0]?.value
-                  : '';
+                  ;
           });
           form.setFieldsValue(initialValuesData);
         }

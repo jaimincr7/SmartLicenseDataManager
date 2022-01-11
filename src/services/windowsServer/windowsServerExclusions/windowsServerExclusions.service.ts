@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { toast } from 'react-toastify';
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
 import {
@@ -62,7 +60,6 @@ class WindowsServerExclusionsService {
       url,
       method: 'POST',
       data: searchParams,
-      responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
     });
@@ -74,34 +71,9 @@ class WindowsServerExclusionsService {
       debug: false,
     };
     const url = `${this.ENDPOINT}/process-data`;
-
-    const cancelTokenSource = axios.CancelToken.source();
-
-    return new Promise((resolve, reject) => {
-      const timmer = setTimeout(() => {
-        // Cancel request
-        cancelTokenSource.cancel();
-        toast.warning('Process is working in background.');
-        resolve({status:200, body:{messages:['']}});
-      }, 5 * 1000); // wait till 5 seconds
-
-      request({ url, method: 'POST', data: inputValues, cancelToken: cancelTokenSource.token })
-        .then((res) => {
-          return res?.data;
-        })
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((data) => {
-          reject(data);
-        })
-        .finally(() => {
-          clearTimeout(timmer);
-        });
+    return request({ url, method: 'POST', data: inputValues }).then((res) => {
+      return res.data;
     });
-    // return request({ url, method: 'POST', data: inputValues }).then((res) => {
-    //   return res.data;
-    // });
   }
 }
 export default new WindowsServerExclusionsService();
