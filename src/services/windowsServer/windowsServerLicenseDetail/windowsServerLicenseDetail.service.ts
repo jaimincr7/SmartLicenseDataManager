@@ -33,7 +33,6 @@ class WindowsServerLicenseDetailService {
       url,
       method: 'POST',
       data: searchParams,
-      responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
     });

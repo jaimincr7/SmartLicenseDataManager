@@ -9,6 +9,11 @@ import { userSelector } from "../store/administration/administration.reducer";
 let tryToConnect = 0;
 let socket;
 
+export enum SocketNotificationType {
+    FilePath,
+    Message,
+}
+
 export const SocketIO = React.memo(() => {
     const userDetails = useAppSelector(userSelector);
 
@@ -24,16 +29,32 @@ export const SocketIO = React.memo(() => {
                             },
                         });
                     }
-                    socket.on(userDetails.activeAccount.username, (message: string) => {
-                        toast.info(message);
-                    });
+                    if (socket) {
+                        socket.on(userDetails.activeAccount.username, (message) => {
+                            if (message) {
+                                switch (message.type) {
+                                    case SocketNotificationType.FilePath:
+                                        toast(() => (
+                                            <span style={{ color: '#014e97' }}>
+                                                <a href={`${config.baseApi}\\${message.message}`} target="_blank" rel="noreferrer"  download><strong>Click here</strong></a> to download the file.
+                                            </span>
+                                        ), { autoClose: false })
+                                        break;
+                                    case SocketNotificationType.Message:
+                                        toast.info(message.message);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
 
-                    socket.on('disconnect', () => {
-                        // console.info('Socket is disconnected');
-                        setTimeout(() => {
-                            connectSocket();
-                        }, 10000);
-                    });
+                        socket.on('disconnect', () => {
+                            // console.info('Socket is disconnected');
+                            setTimeout(() => {
+                                connectSocket();
+                            }, 10000);
+                        });
 
                     // socket.on('connect', () => {
                     //   console.info('Socket is connect');
