@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { toast } from 'react-toastify';
 import { IDataTable } from './dataTable.model';
 import moment from 'moment';
-import { DEFAULT_PAGE_SIZE, exportExcel } from '../../../common/constants/common';
+import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
 import _ from 'lodash';
 import { Filter } from './DataTableFilters';
 import {
