@@ -100,6 +100,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       if (adUsers.processData.hasErrors) {
         toast.error(adUsers.processData.messages.join(' '));
       } else {
+        toast.warning(adUsers.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }

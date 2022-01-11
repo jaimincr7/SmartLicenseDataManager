@@ -43,6 +43,7 @@ export const SocketIO = React.memo(() => {
                                             toast.info(message.message);
                                             break;
                                         default:
+                                            toast.info(message);
                                             break;
                                     }
                                 }
