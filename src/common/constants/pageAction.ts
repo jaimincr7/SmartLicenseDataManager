@@ -110,6 +110,7 @@ export enum Page {
   ConfigWindowsServerVersions = 'config-windows-server-versions',
   ConfigWindowsServerLicense = 'config-windows-server-license',
   ConfigModelPopUpSelection = 'config-model-pop-up-data-selection',
+  DeleteDataset = "config-delete-data-set",
 
   //Slim360
   Slim360O365Licenses = 'slim360-o365-licenses',

@@ -24,6 +24,7 @@ import menuReducer from './administration/menu/menu.reducer';
 import tenantReducer from './master/tenant/tenant.reducer';
 import companyReducer from './master/company/company.reducer';
 import buReducer from './master/bu/bu.reducer';
+import deleteDatasetReducer from './master/deleteDataset/deleteDataset.reducer';
 import globalSearchReducer from './globalSearch/globalSearch.reducer';
 import globalTableColumnSelectionReducer from './administration/globalTableColumnSelection/globalTableColumnSelection.reducer';
 import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
@@ -164,6 +165,7 @@ export const rootReducer = combineReducers({
   tenant: tenantReducer,
   company: companyReducer,
   bu: buReducer,
+  deleteDataset: deleteDatasetReducer,
   currency: currencyReducer,
   role: roleReducer,
   agreementTypes: agreementTypesReducer,
