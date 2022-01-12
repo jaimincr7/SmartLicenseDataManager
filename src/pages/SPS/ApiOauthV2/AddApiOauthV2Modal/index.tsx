@@ -101,7 +101,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
         values.inj.map((options, index) => {
           const obj = {
             injection_param_id: options.inj,
-            value: values.value[index].value,
+            value: options.inj == 8 ? commonLookups.spsApiBaseUrl.data.filter((data) => data.id == values.base_url_id)[0].name : values.value[index].value,
           };
           arr.push(obj);
         });
@@ -251,6 +251,18 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
     setRecords(dummyR);
   };
 
+  const onBaseUrlChange = (value, event) => {
+    if (+id > 0 && spsApiOauthV2.getById.data) {
+      const dummyRecords = _.cloneDeep(records);
+      dummyRecords.map((data) => {
+        if (data.name == '@BASEURL') {
+          data.value = event.children;
+        }
+      });
+      setRecords(dummyRecords);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -306,15 +318,15 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -351,15 +363,15 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -391,15 +403,15 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -455,6 +467,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                     <Select
                       showSearch
                       optionFilterProp="children"
+                      onSelect={(value, event) => { onBaseUrlChange(value, event) }}
                       filterOption={(input, option: any) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }
@@ -532,7 +545,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                         initialValue={option.value}
                         rules={[{ required: true }]}
                       >
-                        <Input className="form-control" defaultValue={option.value} />
+                        {option.name !== '@BASEURL' ? (<Input className="form-control" value={option.value} disabled={option.name == '@BASEURL'} />) : (<label className="label w-100">{option.value}</label>)}
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={6}>
