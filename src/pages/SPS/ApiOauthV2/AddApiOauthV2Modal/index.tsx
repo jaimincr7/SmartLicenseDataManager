@@ -86,8 +86,8 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
     tenant_id: null,
     api_type_id: typeId ? +typeId : null,
     base_url_id: null,
-    consent: false,
-    active: false,
+    consent: true,
+    active: true,
   };
 
   const onFinish = (values: any) => {
