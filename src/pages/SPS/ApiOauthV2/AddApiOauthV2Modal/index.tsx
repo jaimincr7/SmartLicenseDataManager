@@ -101,7 +101,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
         values.inj.map((options, index) => {
           const obj = {
             injection_param_id: options.inj,
-            value: options.inj == 8 ? commonLookups.spsApiBaseUrl.data.filter((data) => data.id == values.base_url_id)[0]?.name : values.value[index].value,
+            value: options.inj == 8 ? commonLookups.spsApiBaseUrl.data.filter((data) => data.id == values?.base_url_id)[0]?.name : values.value[index].value,
           };
           arr.push(obj);
         });
@@ -154,7 +154,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
       const arrRec = [...spsApiInjectionValueV2.getByOauthId.data];
       const rec = arrRec?.filter((i) => i.injection_param_id == x.id);
       const data = spsApiOauthV2.getById.data;
-      x.value = x.name == '@BASEURL' ? commonLookups.spsApiBaseUrl.data.filter((data1) => data1.id == data.base_url_id)[0]?.name : rec[0]?.value;
+      x.value = x.name == '@BASEURL' ? commonLookups.spsApiBaseUrl.data.filter((data1) => data1.id == data?.base_url_id)[0]?.name : rec[0]?.value;
     });
     setRecords(dummyRecords);
     setTimeout(() => {
