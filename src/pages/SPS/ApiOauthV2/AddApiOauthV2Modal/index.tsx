@@ -243,6 +243,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
     }
     return () => {
       dispatch(clearSpsApiOauthV2GetById());
+      setRecords([]);
       dispatch(clearSpsApiInjectionValueParamV2GetById());
     };
   }, [dispatch]);

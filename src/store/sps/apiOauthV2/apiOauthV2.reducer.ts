@@ -57,6 +57,9 @@ export const spsApiOauthV2Slice = createSlice({
     clearSpsApiOauthV2GetById: (state) => {
       state.getById.data = null;
     },
+    clearSpsApiOauthV2Data: (state) => {
+      state.save.data = null;
+    },    
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
     },
@@ -155,6 +158,7 @@ export const {
   clearSpsApiOauthV2Messages,
   clearSpsApiOauthV2GetById,
   setTableColumnSelection,
+  clearSpsApiOauthV2Data,
 } = spsApiOauthV2Slice.actions;
 
 // The reducer
