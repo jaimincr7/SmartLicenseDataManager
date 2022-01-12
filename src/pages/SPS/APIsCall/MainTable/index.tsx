@@ -191,19 +191,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-      {
-        title: <span className="dragHandler">Stored Procedure</span>,
-        column: 'StoredProcedure',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('stored_procedure', form),
-            dataIndex: 'stored_procedure',
-            key: 'stored_procedure',
-            ellipsis: true,
-          },
-        ],
-      },
+      // {
+      //   title: <span className="dragHandler">Stored Procedure</span>,
+      //   column: 'StoredProcedure',
+      //   sorter: true,
+      //   children: [
+      //     {
+      //       title: FilterBySwap('stored_procedure', form),
+      //       dataIndex: 'stored_procedure',
+      //       key: 'stored_procedure',
+      //       ellipsis: true,
+      //     },
+      //   ],
+      // },
       {
         title: <span className="dragHandler">Enabled</span>,
         column: 'Enabled',
