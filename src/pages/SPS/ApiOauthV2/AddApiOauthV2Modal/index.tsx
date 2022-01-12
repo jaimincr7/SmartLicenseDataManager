@@ -101,7 +101,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
         values.inj.map((options, index) => {
           const obj = {
             injection_param_id: options.inj,
-            value: options.inj == 8 ? commonLookups.spsApiBaseUrl.data.filter((data) => data.id == values.base_url_id)[0].name : values.value[index].value,
+            value: options.inj == 8 ? commonLookups.spsApiBaseUrl.data.filter((data) => data.id == values.base_url_id)[0]?.name : values.value[index].value,
           };
           arr.push(obj);
         });
@@ -463,7 +463,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                   ) : (
                     'Base Url'
                   )}
-                  <Form.Item name="base_url_id" className="m-0" label="Base Url Id">
+                  <Form.Item name="base_url_id" className="m-0" label="Base Url Id" rules={[{ required: records.filter((data) => data.name == '@BASEURL')?.length > 0 , message: 'Base Url is required'}]} >
                     <Select
                       showSearch
                       optionFilterProp="children"
@@ -543,7 +543,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
                         label="Value"
                         className="m-0"
                         initialValue={option.value}
-                        rules={[{ required: true }]}
+                        rules={[{ required: true && option.name !== '@BASEURL' }]}
                       >
                         {option.name !== '@BASEURL' ? (<Input className="form-control" value={option.value} disabled={option.name == '@BASEURL'} />) : (<label className="label w-100">{option.value}</label>)}
                       </Form.Item>
