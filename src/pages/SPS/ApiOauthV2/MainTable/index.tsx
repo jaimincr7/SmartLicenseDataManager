@@ -17,6 +17,7 @@ import {
   clearSpsApiOauthV2Messages,
   spsApiOauthV2Selector,
   setTableColumnSelection,
+  clearSpsApiOauthV2Data,
 } from '../../../../store/sps/apiOauthV2/apiOauthV2.reducer';
 import {
   deleteSpsApiOauthV2,
@@ -25,7 +26,6 @@ import {
 import spsApiOauthV2Service from '../../../../services/sps/apiOauthV2/apiOauthV2.service';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import AddSpsApiOauthV2Modal from '../AddApiOauthV2Modal';
-import ApiInjectionParamV2 from '../InjectionParamV2';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -44,9 +44,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const dataTableRef = useRef(null);
   const history = useHistory();
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
-  const [id, setId] = useState(null);
-  const [oauthId, setOauthId] = useState(null);
-  const [showInjectionModal, setShowInjectionModal] = useState(false);
 
   const refreshDataTable = () => {
     dataTableRef?.current.refreshData();
@@ -249,9 +246,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   useEffect(() => {
     if (spsApiOauthV2.save.data !== null && spsApiOauthV2.save.data !== undefined) {
       if (!spsApiOauthV2.save.hasErrors) {
-        setId(spsApiOauthV2.save.data.api_type_id);
-        setShowInjectionModal(true);
-        setOauthId(spsApiOauthV2.save.data.id);
+        history.push(`/sps/sps-api-oauth-v2/${spsApiOauthV2.save.data.id}`);
+        dispatch(clearSpsApiOauthV2Data());
       }
     }
   }, [spsApiOauthV2.save.data]);
@@ -329,14 +325,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setObjectForColumnFilter={setObjectForColumnFilter}
         tableButtons={tableButtons}
       />
-      {showInjectionModal && (
-        <ApiInjectionParamV2
-          id={id}
-          oauth_id={oauthId}
-          showModal={showInjectionModal}
-          handleModalClose={() => setShowInjectionModal(false)}
-        />
-      )}
     </>
   );
 };

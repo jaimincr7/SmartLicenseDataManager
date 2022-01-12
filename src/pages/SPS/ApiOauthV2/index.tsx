@@ -138,9 +138,6 @@ const SpsApiOauthV2: React.FC<ISpsApiOauthV2Props> = (props) => {
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            {
-              props.isTabbed ? null : history.push('/sps/sps-api-oauth-v2');
-            }
           }}
           id={id}
           typeId={props.typeId}
