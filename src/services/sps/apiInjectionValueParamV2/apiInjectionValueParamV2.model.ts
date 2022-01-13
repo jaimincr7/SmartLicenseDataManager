@@ -2,11 +2,15 @@ import { ISearch } from '../../../common/models/common';
 import { Moment } from 'moment';
 
 export interface ISpsApiInjectionValueParamV2 {
+  [x: string]: any;
   id?: number;
-  injection_param_id: number;
   oauth_id: number;
-  value: string;
-  token?: string;
+  injection_values: [
+    {
+      injection_param_id: number,
+      value: string,
+    }
+  ];
   date_added?: string | Moment;
 }
 

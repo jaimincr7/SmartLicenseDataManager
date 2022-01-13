@@ -63,6 +63,26 @@ export const configModelPopUpDataSelection = createAsyncThunk(
   }
 );
 
+export const getApiTypeV2Lookup = createAsyncThunk(
+  'getApiTypeV2Lookup',
+  async (data: any) => {
+    const response = await commonService.getApiTypeV2Lookup(data).then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
+export const getOAuthV2IdLookup = createAsyncThunk(
+  'getOAuthV2IdLookup',
+  async (data: any) => {
+    const response = await commonService.getOAuthV2IdLookup(data).then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
+
 export const getConfigModelPopUpDataSelection = createAsyncThunk(
   'getConfigModelPopUpDataSelection',
   async (data: IGetConfigModelPopUpDataSelection) => {
@@ -178,8 +198,8 @@ export const getSpsApiUrlInjectionLookup = createAsyncThunk(
 
 export const getSpsApiUrlInjectionV2Lookup = createAsyncThunk(
   'getSpsApiUrlInjectionV2Lookup',
-  async () => {
-    const response = await commonService.getSpsApiUrlInjectionV2().then((res) => {
+  async (id: number) => {
+    const response = await commonService.getSpsApiUrlInjectionV2(id).then((res) => {
       return res.body;
     });
     return response.data;

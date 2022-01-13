@@ -32,18 +32,10 @@ class SpsApiInjectionValueParamService {
   }
 
   public async saveSpsApiInjectionValueParamV2(data: ISpsApiInjectionValueParamV2): Promise<any> {
-    const { id, ...restData } = data;
-    if (id > 0) {
-      const url = `${this.ENDPOINT}/${id}`;
-      return request({ url, method: 'PUT', data: restData }).then((res) => {
-        return res.data;
-      });
-    } else {
       const url = `${this.ENDPOINT}`;
-      return request({ url, method: 'POST', data: restData }).then((res) => {
+      return request({ url, method: 'POST', data: data }).then((res) => {
         return res.data;
       });
-    }
   }
 
   public async deleteSpsApiInjectionValueParamV2(id: number): Promise<any> {

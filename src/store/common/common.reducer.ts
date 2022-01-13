@@ -66,6 +66,8 @@ import {
   getScheduleDateforSqlServer,
   getSpsApiUrlInjectionV2Lookup,
   getTablesForDelete,
+  getApiTypeV2Lookup,
+  getOAuthV2IdLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -80,6 +82,14 @@ export const initialState: ICommonState = {
   },
   cronFormula: {
     data: [],
+    loading: false,
+  },
+  ApiTypeV2: {
+    data: [],
+    loading: false,
+  },
+  OauthIdV2: {
+    data: null,
     loading: false,
   },
   manageCronJob: {
@@ -480,6 +490,25 @@ export const commonSlice = createSlice({
     [getCronFormula.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.cronFormula.data = action.payload;
       state.cronFormula.loading = false;
+    },
+
+    // Api Type V2
+    [getApiTypeV2Lookup.pending.type]: (state) => {
+      state.ApiTypeV2.loading = true;
+    },
+    [getApiTypeV2Lookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.ApiTypeV2.data = action.payload;
+      state.ApiTypeV2.loading = false;
+    },
+
+    // OAuth Id V2
+    [getOAuthV2IdLookup.pending.type]: (state) => {
+      state.OauthIdV2.loading = true;
+    },
+    [getOAuthV2IdLookup.fulfilled.type]: (state, action: PayloadAction<any>) => {
+      const {id} = action.payload;
+      state.OauthIdV2.data = id;
+      state.OauthIdV2.loading = false;
     },
 
     // All Company lookup
