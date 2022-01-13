@@ -186,7 +186,7 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
   };
 
   useEffect(() => {
-    if (spsApiInjectionParamV2.getInjectionParam.data?.length > 0)
+    if (spsApiInjectionParamV2.getInjectionParam.data?.length > 0 && +id > 0)
       setRecords(spsApiInjectionParamV2.getInjectionParam?.data);
   }, [spsApiInjectionParamV2.getInjectionParam?.data]);
 
