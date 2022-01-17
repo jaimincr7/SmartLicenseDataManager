@@ -25,6 +25,20 @@ class CommonService {
     });
   }
 
+  public async getApiTypeV2Lookup(data: any): Promise<IApiResponse<ILookup>> {
+    const url = `/sps-api-oauth-v2/api-type-global-dd`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getOAuthV2IdLookup(data: any): Promise<IApiResponse<ILookup>> {
+    const url = `/sps-api-oauth-v2/api-type-base-oauth`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getCronFormula(): Promise<IApiResponse<ILookup>> {
     const url = `/config-cron-job-frequency/lookup/`;
     return request({ url, method: 'GET' }).then((res) => {
@@ -504,8 +518,8 @@ class CommonService {
     });
   }
 
-  public async getSpsApiUrlInjectionV2(): Promise<IApiResponse<ILookup[]>> {
-    const url = `/sps-api-injection-param-v2/lookup`;
+  public async getSpsApiUrlInjectionV2(id: number): Promise<IApiResponse<ILookup[]>> {
+    const url = `/sps-api-injection-param-v2/get-by-api-type/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });

@@ -52,7 +52,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
-  const [week, setWeek] = useState('Daily');
+  const [week, setWeek] = useState('Weekly');
 
   const {
     id,
@@ -85,17 +85,19 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     }
   };
 
+  const presentDay = new Date().getDay();
+
   let initialValues: ICronData = {
     id: null,
     api_group_id: null,
     company_id: null,
     bu_id: null,
     tenant_id: null,
-    cron_frequency_type: '',
-    cron_frequency_day: null,
-    cron_frequency_time: '',
-    start_schedular: false,
-    date_added: null,
+    cron_frequency_type: "Weekly",
+    cron_frequency_day: presentDay,
+    cron_frequency_time: moment().add(5,'minutes'),
+    start_schedular: true,
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -236,7 +238,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
           date_added:
             filterKeys?.filter_keys?.date_added?.length == 1
               ? moment(filterKeys.filter_keys.date_added[0])
-              : null,
+              : moment(),
         };
         form.setFieldsValue(initlValues);
       }
@@ -522,12 +524,10 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                       ) : week == 'Monthly' ? (
                         cron.FrequencyDay.month.map((option: ILookup) => (
                           <Option key={option.id} value={option.id}>
-                            {option.id}
+                            {option.name}
                           </Option>
                         ))
-                      ) : (
-                        <></>
-                      )}
+                      ) : <></>}
                     </Select>
                   </Form.Item>
                 </div>

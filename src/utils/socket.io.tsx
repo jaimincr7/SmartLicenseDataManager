@@ -21,7 +21,7 @@ export const SocketIO = React.memo(() => {
         if (userDetails?.activeAccount?.username && tryToConnect < 5) {
             tryToConnect++;
             try {
-                commonService.getJwtTokenForSocket().then((res) => {
+                commonService.getJwtTokenForSocket().catch(()=>null).then((res) => {
                     if (res) {
                         socket = io(config.baseApi, {
                             extraHeaders: {
@@ -35,7 +35,7 @@ export const SocketIO = React.memo(() => {
                                         case SocketNotificationType.FilePath:
                                             toast(() => (
                                                 <span style={{ color: '#014e97' }}>
-                                                    <a href={`${config.baseApi}\\${message.data}`} target="_blank" rel="noreferrer" download><strong>Click here</strong></a> to download the file.
+                                                    <a href={`${config.baseApi}\\${message.data}`} target="_blank" rel="noreferrer" download><strong style={{ color: '#014e97' }}>Click here</strong></a> <span style={{ color: 'black' }}>to download the file.</span>
                                                 </span>
                                             ), { autoClose: false })
                                             break;
@@ -48,14 +48,14 @@ export const SocketIO = React.memo(() => {
                                     }
                                 }
                             });
-    
+
                             socket.on('disconnect', () => {
                                 // console.info('Socket is disconnected');
                                 setTimeout(() => {
                                     connectSocket();
                                 }, 10000);
                             });
-    
+
                             // socket.on('connect', () => {
                             //   console.info('Socket is connect');
                             // });

@@ -432,6 +432,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
                       loading={commonLookups.o365ProductsLookup.loading}
                       allowClear
                       showSearch
+                      dropdownClassName="value-box-select"
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

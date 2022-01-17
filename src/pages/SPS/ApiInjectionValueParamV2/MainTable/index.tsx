@@ -186,19 +186,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-      {
-        title: <span className="dragHandler">OauthId</span>,
-        column: 'OauthId',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('oauth_id', form),
-            dataIndex: 'oauth_id',
-            key: 'oauth_id',
-            ellipsis: true,
-          },
-        ],
-      },
+      // {
+      //   title: <span className="dragHandler">OauthId</span>,
+      //   column: 'OauthId',
+      //   sorter: true,
+      //   children: [
+      //     {
+      //       title: FilterBySwap('oauth_id', form),
+      //       dataIndex: 'oauth_id',
+      //       key: 'oauth_id',
+      //       ellipsis: true,
+      //     },
+      //   ],
+      // },
       {
         title: <span className="dragHandler">Value</span>,
         column: 'Value',
@@ -212,19 +212,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-      {
-        title: <span className="dragHandler">Token</span>,
-        column: 'Token',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('token', form),
-            dataIndex: 'token',
-            key: 'token',
-            ellipsis: true,
-          },
-        ],
-      },
+      // {
+      //   title: <span className="dragHandler">Token</span>,
+      //   column: 'Token',
+      //   sorter: true,
+      //   children: [
+      //     {
+      //       title: FilterBySwap('token', form),
+      //       dataIndex: 'token',
+      //       key: 'token',
+      //       ellipsis: true,
+      //     },
+      //   ],
+      // },
     ];
   };
 

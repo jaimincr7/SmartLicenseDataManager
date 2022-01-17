@@ -13,6 +13,14 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  ApiTypeV2: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  OauthIdV2: {
+    data: any;
+    loading: boolean;
+  };
   manageCronJob: {
     messages: string[];
     hasErrors: boolean;

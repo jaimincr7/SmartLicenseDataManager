@@ -209,6 +209,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
         <ReRunAllScenariosModal
           showModal={runAllScenariosModalVisible}
           handleModalClose={() => setRunAllScenariosModalVisible(false)}
+          filterKeys={filterKeys}
         />
       )}
     </div>
