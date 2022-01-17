@@ -208,6 +208,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
       {runAllScenariosModalVisible && (
         <ReRunAllScenariosModal
           showModal={runAllScenariosModalVisible}
+          filterKeys={filterKeys}
           handleModalClose={() => setRunAllScenariosModalVisible(false)}
         />
       )}

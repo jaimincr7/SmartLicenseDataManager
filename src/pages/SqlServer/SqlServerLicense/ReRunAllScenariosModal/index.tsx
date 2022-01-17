@@ -1,9 +1,9 @@
-import { Button, Col, DatePicker, Form, Modal, Row, Select } from 'antd';
+import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import { useEffect } from 'react';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getAllCompanyLookup, getBULookup } from '../../../../store/common/common.action';
-import { clearBULookUp, commonSelector } from '../../../../store/common/common.reducer';
+import { getAllCompanyLookup, getBULookup, getScheduleDate } from '../../../../store/common/common.action';
+import { clearBULookUp, clearDateLookup, commonSelector } from '../../../../store/common/common.reducer';
 import { IReRunAllScenariosModalProps } from './reRunAllScenarios.model';
 import { reRunAllScenarios } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.action';
 import { toast } from 'react-toastify';
@@ -12,8 +12,11 @@ import {
   sqlServerLicenseSelector,
 } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
 import moment from 'moment';
-import { validateMessages } from '../../../../common/constants/common';
+import _ from 'lodash';
+import { Common, validateMessages } from '../../../../common/constants/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { IInlineSearch } from '../../../../common/models/common';
+import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -23,14 +26,14 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose } = props;
+  const { showModal, handleModalClose, filterKeys } = props;
 
   const [form] = Form.useForm();
 
   const initialValues = {
     company_id: globalFilters.search.company_id !== 0 ? globalFilters.search.company_id : null,
     bu_id: globalFilters.search.bu_id !== 0 ? globalFilters.search.bu_id : null,
-    selected_date: moment(),
+    selected_date: null,
   };
 
   const onFinish = (values: any) => {
@@ -50,7 +53,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
   }, [sqlServersLicense.reRunAllScenarios.messages]);
 
   const handleCompanyChange = (companyId: number) => {
-    form.setFieldsValue({ company_id: companyId, bu_id: null });
+    form.setFieldsValue({ company_id: companyId, bu_id: null, selected_date: null });
     if (companyId) {
       dispatch(getBULookup(companyId));
     } else {
@@ -59,17 +62,49 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
   };
 
   const handleBUChange = (buId: number) => {
+    if (buId) {
+      dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), sqlServersLicense.search.tableName)
+        )
+      );
+    } else {
+      dispatch(clearDateLookup());
+    }
     form.setFieldsValue({ bu_id: buId });
   };
 
   useEffect(() => {
     dispatch(getAllCompanyLookup());
-    if (globalFilters.search.company_id !== 0)
+    if (globalFilters.search.company_id !== 0 && globalFilters.search.company_id)
       dispatch(getBULookup(globalFilters.search.company_id));
     return () => {
+      dispatch(clearDateLookup());
       dispatch(clearBULookUp());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
+    if (globalSearch.company_id !== undefined)
+      dispatch(getBULookup(globalSearch.company_id[0]));
+    const filterValues = {
+      company_id: _.isNull(globalSearch.company_id) || globalSearch.company_id == undefined ? null : globalSearch.company_id[0],
+      bu_id: _.isNull(globalSearch.bu_id) || globalSearch.bu_id == undefined ? null : globalSearch.bu_id[0],
+      selected_date:
+        filterKeys?.filter_keys?.date_added?.length === 1
+          ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+          : null,
+    };
+    dispatch(
+      getScheduleDate(getScheduleDateHelperLookup(filterValues, sqlServersLicense.search.tableName))
+    );
+    form.setFieldsValue(filterValues);
+  }, []);
 
   return (
     <>
@@ -141,7 +176,29 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
                   className="m-0"
                   rules={[{ required: true }]}
                 >
-                  <DatePicker className="w-100" />
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDate.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDate.data.map((option: any) => (
+                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
+                        {moment(option)?.toString() == 'Invalid date'
+                          ? 'NULL'
+                          : moment(option).format(Common.DATEFORMAT)}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </div>
             </Col>

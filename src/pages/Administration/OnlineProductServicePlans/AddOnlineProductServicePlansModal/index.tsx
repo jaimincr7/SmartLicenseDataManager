@@ -175,6 +175,7 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
                         allowClear
                         loading={commonLookups.configOnlineProductsLookup.loading}
                         showSearch
+                        dropdownClassName="value-box-select"
                         optionFilterProp="children"
                         filterOption={(input, option: any) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -215,6 +216,7 @@ const AddConfigOnlineProductServicePlansModal: React.FC<IAddConfigOnlineProductS
                     >
                       <Select
                         allowClear
+                        dropdownClassName="value-box-select"
                         loading={commonLookups.configOnlineServicePlansLookup.loading}
                         showSearch
                         optionFilterProp="children"

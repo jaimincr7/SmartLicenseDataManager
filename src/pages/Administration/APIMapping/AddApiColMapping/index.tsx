@@ -304,6 +304,7 @@ const AddAPIMapping: React.FC = () => {
                         }}
                         allowClear
                         showSearch
+                        dropdownClassName="value-box-select"
                         optionFilterProp="children"
                         filterOption={(input, option: any) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -334,6 +335,7 @@ const AddAPIMapping: React.FC = () => {
                     >
                       <Select
                         allowClear
+                        dropdownClassName="value-box-select"
                         onChange={handleTableChange}
                         loading={bulkImports.getTables.loading}
                         showSearch
