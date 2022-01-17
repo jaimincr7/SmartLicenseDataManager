@@ -225,6 +225,7 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
                     <Select
                       allowClear
                       showSearch
+                      dropdownClassName="value-box-select"
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -268,6 +269,7 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
                     <Select
                       allowClear
                       showSearch
+                      dropdownClassName="value-box-select"
                       optionFilterProp="children"
                       filterOption={(input, option: any) =>
                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

@@ -76,7 +76,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
 
   useEffect(() => {
     dispatch(getAllCompanyLookup());
-    if (globalFilters.search.company_id !== 0)
+    if (globalFilters.search.company_id !== 0 && globalFilters.search.company_id)
       dispatch(getBULookup(globalFilters.search.company_id));
     return () => {
       dispatch(clearDateLookup());
@@ -90,11 +90,11 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalSearch.company_id)
+    if (globalSearch.company_id !== undefined)
       dispatch(getBULookup(globalSearch.company_id[0]));
     const filterValues = {
-      company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
-      bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+      company_id: _.isNull(globalSearch.company_id) || globalSearch.company_id == undefined ? null : globalSearch.company_id[0],
+      bu_id: _.isNull(globalSearch.bu_id) || globalSearch.bu_id == undefined ? null : globalSearch.bu_id[0],
       selected_date:
         filterKeys?.filter_keys?.date_added?.length === 1
           ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
