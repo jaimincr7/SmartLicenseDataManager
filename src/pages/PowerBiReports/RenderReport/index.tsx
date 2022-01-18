@@ -7,6 +7,7 @@ import { Spin } from 'antd';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { useAppSelector } from '../../../store/app.hooks';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
+import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 
 const RenderReport: React.FC<IRenderReportProps> = (props) => {
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -20,7 +21,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     id: '',
     embedUrl: '',
     accessToken: '',
-   });
+  });
 
   const updateHeight = () => {
     const header = document.querySelector('.header')?.clientHeight;
@@ -33,11 +34,14 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
   const setString = (url: string) => {
     const signal = url.includes('?') ? '&' : '?';
 
-    if(globalFilters.search.company_id && globalFilters.search.company_id !== 0) {
-      if(globalFilters.search.bu_id && globalFilters.search.bu_id !== 0) {
-        return signal+`rp:paramCompanyId=${globalFilters.search.company_id}` + `&rp:paramBU_Id=${globalFilters.search.bu_id}`  
+    if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
+      if (globalFilters.search.company_id && globalFilters.search.company_id !== 0) {
+        if (globalFilters.search.bu_id && globalFilters.search.bu_id !== 0) {
+          return signal + `&rp:paramTenantId=${globalFilters.search.tenant_id}` + `&rp:paramCompanyId=${globalFilters.search.company_id}` + `&rp:paramBU_Id=${globalFilters.search.bu_id}`
+        }
+        return signal + `&rp:paramTenantId=${globalFilters.search.tenant_id}` + `rp:paramCompanyId=${globalFilters.search.company_id}`;
       }
-      return signal+`rp:paramCompanyId=${globalFilters.search.company_id}`;
+      return signal + `&rp:paramTenantId=${globalFilters.search.tenant_id}`;
     }
   };
 
@@ -66,6 +70,9 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
         <h4 className="p-0">
           <BreadCrumbs pageName={name} />
         </h4>
+        <div className="right-title">
+          <GlobalSearch />
+        </div>
       </div>
       <div className="main-card">
         {reportConfig.id ? (
