@@ -456,7 +456,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 <Form.Item name="is_selected_date_device" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">Date Device</label>
+                <label className="label">Device</label>
               </div>
             </Col>
           </Row>
