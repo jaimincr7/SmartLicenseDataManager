@@ -44,7 +44,7 @@ const BulkImport: React.FC = () => {
 
   const [checkAll, setCheckAll] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
-  const [hideUnmapped, setHideUnmapped] = useState(false);
+  const [hideUnmapped, setHideUnmapped] = useState(true);
   const [formUpload] = Form.useForm();
   const [form] = Form.useForm();
 
@@ -78,6 +78,7 @@ const BulkImport: React.FC = () => {
   const formUploadInitialValues = {
     header_row: 1,
     table_name: table,
+    hide_unmapped: true
   };
 
   const uploadFile = async (options) => {
@@ -115,6 +116,11 @@ const BulkImport: React.FC = () => {
                     (data) => data.sheet_name == sheet.sheet
                   )
                   : [];
+              if (mappingData.length) {
+                formUpload.setFieldsValue({ hide_unmapped: false });
+                setHideUnmapped(false);
+              }
+
               filteredRecords = [
                 ...filteredRecords,
                 {
@@ -185,6 +191,11 @@ const BulkImport: React.FC = () => {
                     (data) => data.sheet_name == sheet.sheet
                   )
                   : [];
+              if (mappingData.length) {
+                formUpload.setFieldsValue({ hide_unmapped: false });
+                setHideUnmapped(false);
+              }
+
               if (nonRepeated) {
                 filteredRecords = [
                   ...filteredRecords,
@@ -263,6 +274,11 @@ const BulkImport: React.FC = () => {
                   (data) => data.sheet_name == sheet.sheet
                 )
                 : [];
+            if (mappingData.length) {
+              formUpload.setFieldsValue({ hide_unmapped: false });
+              setHideUnmapped(false);
+            }
+
             filteredRecords = [
               ...filteredRecords,
               {
@@ -703,10 +719,10 @@ const BulkImport: React.FC = () => {
                   </Col>
                   <Col xs={24} sm={12} md={4}>
                     <div className="form-group form-inline-pt m-0">
-                      <Form.Item name="hide_unmapped" className="m-0" valuePropName="checked">
+                      <Form.Item name="hide_unmapped" className="m-0" valuePropName="checked" >
                         <Switch className="form-control" onChange={onSwitchChange} />
                       </Form.Item>
-                      <label className="label">Hide Unmapped</label>
+                      <label className="label">Show All Tabs</label>
                     </div>
                   </Col>
                   {records.length > 0 && (

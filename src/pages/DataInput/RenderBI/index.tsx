@@ -764,7 +764,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         showHeader={true}
         pagination={false}
         scroll={{ x: true }}
-        dataSource={hideUnmapped === true ? withoutUnmappedRecords : records}
+        dataSource={hideUnmapped === false ? withoutUnmappedRecords : records}
         rowKey={(record) => record['index']}
         columns={columns}
         loading={records.length == 0}
