@@ -67,10 +67,12 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
   }, [match.params]);
 
   useEffect(() => {
-    if (reportConfig.embedUrl !== '') {
+    if (reportConfig.embedUrl && reportConfig.id) {
       const string = setString(embedUrlString);
-      setReportConfig({ ...reportConfig, embedUrl: embedUrlString + string });
-      embeddedReport?.refresh();
+      setReportConfig({ ...reportConfig, embedUrl: '' });
+      setTimeout(() => {
+        setReportConfig({ ...reportConfig, embedUrl: embedUrlString + string });
+      }, 200);
     }
   }, [globalFilters.search])
 
@@ -85,7 +87,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        {reportConfig.id ? (
+        {(reportConfig.embedUrl && reportConfig.id) ? (
           <div style={{ height: height }}>
             <PowerBIEmbed
               embedConfig={reportConfig}
