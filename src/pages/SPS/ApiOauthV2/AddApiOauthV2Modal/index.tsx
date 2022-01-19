@@ -45,6 +45,7 @@ import {
   clearSpsApiInjectionValueParamV2GetById,
   spsApiInjectionValueParamV2Selector,
 } from '../../../../store/sps/apiInjectionValueParamV2/apiInjectionValueParamV2.reducer';
+import { IInlineSearch } from '../../../../common/models/common';
 
 const { Option } = Select;
 
@@ -247,6 +248,30 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
       dispatch(clearSpsApiInjectionValueParamV2GetById());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (+id === 0 && !isMultiple) {
+      const globalSearch: IInlineSearch = {};
+      for (const key in globalFilters.search) {
+        const element = globalFilters.search[key];
+        globalSearch[key] = element ? [element] : null;
+      }
+      if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
+        if (!globalFilters.search.company_id) {
+          dispatch(getCompanyLookup(globalSearch.tenant_id[0]));
+        }
+        if (!globalFilters.search.bu_id && globalFilters.search.company_id !== 0) {
+          dispatch(getBULookup(globalSearch.company_id[0]));
+        }
+        const initlValues = {
+          company_id: _.isNull(globalSearch.company_id) ? null : globalSearch.company_id[0],
+          bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+          tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        };
+        form.setFieldsValue(initlValues);
+      }
+    }
+  }, []);
 
   const removeRecord = (value) => {
     const dummyR = records.filter((data) => data.id !== value);
