@@ -11,6 +11,7 @@ import {
   clearBulkImportMessages,
   clearExcelColumns,
   clearGetTableColumns,
+  setExcelColumnsProgress,
   setTableForImport,
 } from '../../../store/bulkImport/bulkImport.reducer';
 import { useEffect, useState } from 'react';
@@ -428,9 +429,13 @@ const BulkImport: React.FC = () => {
     };
   }, [dispatch]);
 
+  const callbackProgress = (currentProgress:number) => {
+    dispatch(setExcelColumnsProgress(currentProgress));
+  }
+
   const getFileMappingCall = (formData: any) => {
     setRepeatSheetFlag(true);
-    dispatch(getExcelColumns(formData));
+    dispatch(getExcelColumns({file: formData, callbackProgress}));
   };
 
   const handleOnChange = (info) => {
@@ -663,7 +668,12 @@ const BulkImport: React.FC = () => {
                           showUploadList={false}
                         >
                           <UploadOutlined />
-                          <span className="ant-upload-text"> Click or drag file </span>
+                          <span className="ant-upload-text"> 
+                          {bulkImports.getExcelColumns.progress === null
+                          ? ' Click or drag file'
+                          : ` Uploading... (${bulkImports.getExcelColumns.progress}%)`
+                          } 
+                          </span>
                         </Dragger>
                       </div>
                     </Form.Item>

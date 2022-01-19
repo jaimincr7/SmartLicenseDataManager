@@ -60,6 +60,7 @@ export const initialState: IBulkImportState = {
     hasErrors: false,
     data: null,
     csvFiles: null,
+    progress: null,
   },
   getCSVExcelColumns: {
     loading: false,
@@ -109,6 +110,9 @@ export const bulkImportSlice = createSlice({
     },
     clearExcelColumns: (state) => {
       state.getExcelColumns.data = null;
+    },
+    setExcelColumnsProgress: (state,  action: PayloadAction<number>) => {
+      state.getExcelColumns.progress = action.payload;
     },
     clearSaveExcelData: (state) => {
       state.saveExcelFileMapping.data = null;
@@ -328,6 +332,7 @@ export const {
   clearBulkImport,
   clearBulkImportMessages,
   clearExcelColumns,
+  setExcelColumnsProgress,
   clearCSVExcelColumns,
   clearGetTableColumns,
   clearDeleteMessages,

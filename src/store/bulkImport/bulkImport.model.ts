@@ -42,6 +42,7 @@ export interface IBulkImportState {
     hasErrors: boolean;
     data?: IGetExcelColumns[];
     csvFiles?: any;
+    progress?: number;
   };
   getCSVExcelColumns: {
     loading: boolean;
