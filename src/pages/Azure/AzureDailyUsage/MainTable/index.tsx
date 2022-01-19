@@ -614,6 +614,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Meter Sub Category</span>,
+        column: 'meterSubCategory',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('meterSubCategory', form),
+            dataIndex: 'meterSubCategory',
+            key: 'meterSubCategory',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Year</span>,
         column: 'Year',
         sorter: true,
@@ -1441,6 +1455,287 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'growth',
             key: 'growth',
             ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Product Id</span>,
+        column: 'productId',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('product_id', form),
+            dataIndex: 'product_id',
+            key: 'product_id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Resource Group Name</span>,
+        column: 'resourceGroupName',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('resource_group_name', form),
+            dataIndex: 'resource_group_name',
+            key: 'resource_group_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Resource Id</span>,
+        column: 'resourceId',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('resource_id', form),
+            dataIndex: 'resource_id',
+            key: 'resource_id',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Location</span>,
+        column: 'location',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('location', form),
+            dataIndex: 'location',
+            key: 'location',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Effective Price</span>,
+        column: 'effectivePrice',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('effective_price', form),
+            dataIndex: 'effective_price',
+            key: 'effective_price',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Quantity</span>,
+        column: 'quantity',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('quantity', form),
+            dataIndex: 'quantity',
+            key: 'quantity',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Pricing Currency</span>,
+        column: 'pricingCurrency',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('pricing_currency', form),
+            dataIndex: 'pricing_currency',
+            key: 'pricing_currency',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Cost In Billing Currency</span>,
+        column: 'costInBillingCurrency',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('cost_in_billing_currency', form),
+            dataIndex: 'cost_in_billing_currency',
+            key: 'cost_in_billing_currency',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Cost In Pricing Currency</span>,
+        column: 'costInPricingCurrency',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('cost_in_pricing_currency', form),
+            dataIndex: 'cost_in_pricing_currency',
+            key: 'cost_in_pricing_currency',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Cost In USD</span>,
+        column: 'costInUsd',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('cost_in_usd', form),
+            dataIndex: 'cost_in_usd',
+            key: 'cost_in_usd',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">PAYG Cost In Billing Currency</span>,
+        column: 'paygCostInBillingCurrency',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('payg_cost_in_billing_currency', form),
+            dataIndex: 'payg_cost_in_billing_currency',
+            key: 'payg_cost_in_billing_currency',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">PAYG Cost In Usd</span>,
+        column: 'paygCostInUsd',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('payg_cost_in_usd', form),
+            dataIndex: 'payg_cost_in_usd',
+            key: 'payg_cost_in_usd',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">PAYG Cost In Usd</span>,
+        column: 'paygCostInUsd',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('payg_cost_in_usd', form),
+            dataIndex: 'payg_cost_in_usd',
+            key: 'payg_cost_in_usd',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Exchange Rate Pricing To Billing</span>,
+        column: 'exchangeRatePricingToBilling',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('exchange_rate_pricing_to_billing', form),
+            dataIndex: 'exchange_rate_pricing_to_billing',
+            key: 'exchange_rate_pricing_to_billing',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Exchange Rate Date</span>,
+        column: 'exchangeRateDate',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('exchange_rate_date', form),
+            dataIndex: 'exchange_rate_date',
+            key: 'exchange_rate_date',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Cost</span>,
+        column: 'cost',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('cost', form),
+            dataIndex: 'cost',
+            key: 'cost',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Environment</span>,
+        column: 'Environment',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('environment', form),
+            dataIndex: 'environment',
+            key: 'environment',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Environment - Tags</span>,
+        column: 'Environment - Tags',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('environment_tags', form),
+            dataIndex: 'environment_tags',
+            key: 'environment_tags',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">DevTest Eligible</span>,
+        column: 'DevTest Eligible',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByBooleanDropDown(
+              'dev_test_eligible',
+              azureDailyUsage.search.tableName,
+              ObjectForColumnFilter
+            ),
+            dataIndex: 'dev_test_eligible',
+            key: 'dev_test_eligible',
+            ellipsis: true,
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
+            align: 'center' as AlignType,
           },
         ],
       },
