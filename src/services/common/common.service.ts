@@ -408,13 +408,20 @@ class CommonService {
     });
   }
 
-  public async getExcelColumns(file: any): Promise<IApiResponse<any>> {
+  public async getExcelColumns(file: any, callbackProgress?: any): Promise<IApiResponse<any>> {
     const headers = { Accept: 'multipart/form-data' };
     const url = `/app/read-excel-file`;
-    // const formData = new FormData();
-    // formData.append('file', file);
-    return request({ url, method: 'POST', data: file, headers: headers }).then((res) => {
+    return request({
+      url, method: 'POST', data: file, headers: headers, onUploadProgress: data => {
+        if (callbackProgress) {
+          const current = Math.round((100 * data.loaded) / data.total);
+          callbackProgress(current);
+        }
+      }
+    }).then((res) => {
       return res.data;
+    }).finally(()=>{
+      callbackProgress(null);
     });
   }
 
@@ -437,7 +444,7 @@ class CommonService {
   public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
     const url = `/app/table-column/${
       tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
-    }`;
+      }`;
     return request({ url, method: 'GET' }).then((res) => {
       if (res.data?.body.data?.identity_column) {
         const response = res.data?.body.data?.column_data.filter(
