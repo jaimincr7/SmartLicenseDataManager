@@ -438,7 +438,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             </Popconfirm>
           </>
         ),
-        value: m.id,
+        value: m.sheet_name,
       });
     });
 
@@ -723,6 +723,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             onChange={(e) => onChange(selectedRecord, e)}
             treeDefaultExpandAll
             allowClear
+            showSearch
           />
         </>
       ),
