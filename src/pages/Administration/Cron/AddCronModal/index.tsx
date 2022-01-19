@@ -4,6 +4,7 @@ import {
   Col,
   DatePicker,
   Form,
+  Input,
   Modal,
   Row,
   Select,
@@ -98,6 +99,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     cron_frequency_time: moment().add(5,'minutes'),
     start_schedular: true,
     date_added: moment(),
+    time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 
   const onFinish = (values: any) => {
@@ -163,6 +165,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
           : moment(data.cron_frequency_time),
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         start_schedular: data.status === 'Running' ? true : false,
+        time_zone: data.time_zone
       };
       if (data.cron_frequency_type) {
         setWeek(data.cron_frequency_type);
@@ -555,6 +558,29 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                       className="form-control w-100"
                       defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}
                     />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'time_zone']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Time Zone</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Time Zone'
+                  )}
+                  <Form.Item
+                    name="time_zone"
+                    label="Time Zone"
+                    className="m-0"
+                    rules={[{ required: !isMultiple }]}
+                  >
+                    <Input className="form-control" disabled={true}/>
                   </Form.Item>
                 </div>
               </Col>

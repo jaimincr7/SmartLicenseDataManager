@@ -236,6 +236,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Time Zone</span>,
+        column: 'Time Zone',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('time_zone', form),
+            dataIndex: 'time_zone',
+            key: 'time_zone',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Frequency Day</span>,
         column: 'Frequency Day',
         sorter: true,
