@@ -59,10 +59,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     company_id: null,
     bu_id: null,
     date_added: null,
-    selected_date_ws: moment().format(Common.DATEFORMAT)?.toString(),
     include_sc: false,
-    selected_date_ss: moment().format(Common.DATEFORMAT)?.toString(),
-    selected_date_device: moment(),
+    is_selected_date_ws: true,
+    is_selected_date_ss: true,
+    is_selected_date_device: true,
+    selected_date: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -356,13 +357,13 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date Device</label>
-                <Form.Item name="selected_date_device" label="Selected Date Device" className="m-0">
+                <label className="label">Selected Date</label>
+                <Form.Item name="selected_date" label="Selected Date" className="m-0">
                   <DatePicker className="w-100" />
                 </Form.Item>
               </div>
             </Col>
-            <Col xs={24} sm={12} md={8}>
+            {/*<Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date Sql Server</label>
                 <Form.Item name="selected_date_ss" className="m-0" label="Selected Date Sql Server">
@@ -391,24 +392,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   </Select>
                 </Form.Item>
               </div>
-            </Col>
-            {/* <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Selected Date Windows Server</label>
-                <Form.Item name="selected_date_ws" label="Selected Date WS" className="m-0">
-                  <DatePicker className="w-100" />
-                </Form.Item>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Selected Date Sql Server</label>
-                <Form.Item name="selected_date_ss" label="Selected Date SS" className="m-0">
-                  <DatePicker className="w-100" />
-                </Form.Item>
-              </div>
             </Col> */}
-            <Col xs={24} sm={12} md={8}>
+            {/* <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date Windows Server</label>
                 <Form.Item
@@ -441,13 +426,37 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   </Select>
                 </Form.Item>
               </div>
-            </Col>
+            </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
                 <Form.Item name="include_sc" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
                 <label className="label">Include System Center</label>
+              </div>
+            </Col>
+            <Col xs={24} sm={12} md={8}>
+              <div className="form-group form-inline-pt m-0">
+                <Form.Item name="is_selected_date_ws" className="m-0" valuePropName="checked">
+                  <Switch className="form-control" />
+                </Form.Item>
+                <label className="label">Windows Server</label>
+              </div>
+            </Col>
+            <Col xs={24} sm={12} md={8}>
+              <div className="form-group form-inline-pt m-0">
+                <Form.Item name="is_selected_date_ss" className="m-0" valuePropName="checked">
+                  <Switch className="form-control" />
+                </Form.Item>
+                <label className="label">Sql Server</label>
+              </div>
+            </Col>
+            <Col xs={24} sm={12} md={8}>
+              <div className="form-group form-inline-pt m-0">
+                <Form.Item name="is_selected_date_device" className="m-0" valuePropName="checked">
+                  <Switch className="form-control" />
+                </Form.Item>
+                <label className="label">Date Device</label>
               </div>
             </Col>
           </Row>

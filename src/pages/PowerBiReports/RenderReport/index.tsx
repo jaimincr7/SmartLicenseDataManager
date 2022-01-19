@@ -14,6 +14,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
   const { match } = props;
   const [embeddedReport, setEmbeddedReport] = useState<Report>(null);
   const [height, setHeight] = useState<string>('500px');
+  const [embedUrlString, setEmbedUrlString] = useState('');
 
   const [reportConfig, setReportConfig] = useState({
     type: 'report',
@@ -37,11 +38,11 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
       if (globalFilters.search.company_id && globalFilters.search.company_id !== 0) {
         if (globalFilters.search.bu_id && globalFilters.search.bu_id !== 0) {
-          return signal + `&rp:paramTenantId=${globalFilters.search.tenant_id}` + `&rp:paramCompanyId=${globalFilters.search.company_id}` + `&rp:paramBU_Id=${globalFilters.search.bu_id}`
+          return signal + `rp:paramTenantId=${globalFilters.search.tenant_id}` + `&rp:paramCompanyId=${globalFilters.search.company_id}` + `&rp:paramBU_Id=${globalFilters.search.bu_id}`
         }
-        return signal + `&rp:paramTenantId=${globalFilters.search.tenant_id}` + `rp:paramCompanyId=${globalFilters.search.company_id}`;
+        return signal + `rp:paramTenantId=${globalFilters.search.tenant_id}` + `&rp:paramCompanyId=${globalFilters.search.company_id}`;
       }
-      return signal + `&rp:paramTenantId=${globalFilters.search.tenant_id}`;
+      return signal + `rp:paramTenantId=${globalFilters.search.tenant_id}`;
     }
   };
 
@@ -51,7 +52,8 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     configurationService.getReportDetail(name).then(async (res) => {
       if (res && res.body?.data) {
         const reportDetail = res.body.data;
-        const str = await setString(reportDetail.embedded_url);
+        const str = setString(reportDetail.embedded_url);
+        setEmbedUrlString(reportDetail.embedded_url);
         setReportConfig({
           ...reportConfig,
           id: reportDetail.pb_report_id,
@@ -64,6 +66,16 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     });
   }, [match.params]);
 
+  useEffect(() => {
+    if (reportConfig.embedUrl && reportConfig.id) {
+      const string = setString(embedUrlString);
+      setReportConfig({ ...reportConfig, embedUrl: '' });
+      setTimeout(() => {
+        setReportConfig({ ...reportConfig, embedUrl: embedUrlString + string });
+      }, 200);
+    }
+  }, [globalFilters.search])
+
   return (
     <div className="sqlServer">
       <div className="title-block">
@@ -75,7 +87,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        {reportConfig.id ? (
+        {(reportConfig.embedUrl && reportConfig.id) ? (
           <div style={{ height: height }}>
             <PowerBIEmbed
               embedConfig={reportConfig}

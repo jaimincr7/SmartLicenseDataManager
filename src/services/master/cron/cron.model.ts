@@ -29,6 +29,7 @@ export interface ICronData {
   date_added?: string | Moment;
   start_schedular?: boolean;
   status?: string;
+  time_zone?: string;
 }
 
 export interface ISearchAPI extends ICron {

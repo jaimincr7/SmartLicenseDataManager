@@ -82,6 +82,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
     subscription_id: '',
     subscription_guid: '',
     subscription_name: '',
+    meterSubCategory: '',
     date: null,
     month: null,
     day: null,
@@ -159,6 +160,24 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
     month_name: '',
     tenant_id: null,
     date_added: moment(),
+    product_id: '',
+    resource_group_name: '',
+    resource_id: '',
+    location: '',
+    effective_price: null,
+    quantity: null,
+    pricing_currency: '',
+    cost_in_billing_currency: null,
+    cost_in_pricing_currency: null,
+    cost_in_usd: null,
+    payg_cost_in_billing_currency: null,
+    payg_cost_in_usd: null,
+    exchange_rate_pricing_to_billing: null,
+    exchange_rate_date: null,
+    cost: null,
+    environment: '',
+    environment_tags: '',
+    dev_test_eligible: false,
   };
 
   const onFinish = (values: IAzureDailyUsage) => {
@@ -239,6 +258,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         extended_cost: data.extended_cost,
         resource_location: data.resource_location,
         consumed_service: data.consumed_service,
+        meterSubCategory: data.meterSubCategory,
         instance_id: data.instance_id,
         service_info1: data.service_info1,
         service_info2: data.service_info2,
@@ -304,6 +324,24 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         usage: data.usage,
         growth: data.growth,
         month_name: data.month_name,
+        product_id: data.product_id,
+        resource_group_name: data.resource_group_name,
+        resource_id: data.resource_id,
+        location: data.location,
+        effective_price: _.isNull(data.effective_price) ? null : data.effective_price,
+        quantity: _.isNull(data.quantity) ? null : data.quantity,
+        pricing_currency: data.environment,
+        cost_in_billing_currency: _.isNull(data.cost_in_billing_currency) ? null : data.cost_in_billing_currency,
+        cost_in_pricing_currency: _.isNull(data.cost_in_pricing_currency) ? null : data.cost_in_pricing_currency,
+        cost_in_usd: _.isNull(data.cost_in_usd) ? null : data.cost_in_usd,
+        payg_cost_in_billing_currency: _.isNull(data.bu_id) ? null : data.bu_id,
+        payg_cost_in_usd: _.isNull(data.payg_cost_in_usd) ? null : data.payg_cost_in_usd,
+        exchange_rate_pricing_to_billing: _.isNull(data.exchange_rate_pricing_to_billing) ? null : data.exchange_rate_pricing_to_billing,
+        exchange_rate_date: _.isNull(data.exchange_rate_date) ? null : moment(data.exchange_rate_date),
+        cost: _.isNull(data.cost) ? null : data.cost,
+        environment: data.environment,
+        environment_tags: data.environment_tags,
+        dev_test_eligible: data.dev_test_eligible,
       };
       form.setFieldsValue(initialValues);
     }
@@ -435,15 +473,15 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -475,15 +513,15 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -515,15 +553,15 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -683,6 +721,29 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                         });
                       }}
                     />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'meterSubCategory']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>meterSubCategory</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'meterSubCategory'
+                  )}
+                  <Form.Item
+                    name="meterSubCategory"
+                    label="meterSubCategory"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
@@ -1969,6 +2030,244 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'product_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Product Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Product Id'
+                  )}
+                  <Form.Item name="product_id" label="Product Id" className="m-0" rules={[{ max: 50 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'resource_group_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Resource Group Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Resource Group Name'
+                  )}
+                  <Form.Item name="resource_group_name" label="Resource Group Name" className="m-0" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'resource_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Resource Id</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Resource Id'
+                  )}
+                  <Form.Item name="resource_id" label="Resource Id" className="m-0" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'location']} valuePropName="checked" noStyle>
+                      <Checkbox>Location</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Location'
+                  )}
+                  <Form.Item name="location" label="Location" className="m-0" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'effective_price']} valuePropName="checked" noStyle>
+                      <Checkbox>Effective Price</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Effective Price'
+                  )}
+                  <Form.Item name="effective_price" label="Effective Price" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'quantity']} valuePropName="checked" noStyle>
+                      <Checkbox>Quantity</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Quantity'
+                  )}
+                  <Form.Item name="quantity" label="Quantity" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'pricing_currency']} valuePropName="checked" noStyle>
+                      <Checkbox>Pricing Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Pricing Currency'
+                  )}
+                  <Form.Item name="pricing_currency" label="Pricing Currency" className="m-0" rules={[{ max: 10 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cost_in_billing_currency']} valuePropName="checked" noStyle>
+                      <Checkbox>Cost In Billing Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cost In Billing Currency'
+                  )}
+                  <Form.Item name="cost_in_billing_currency" label="Cost In Billing Currency" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cost_in_pricing_currency']} valuePropName="checked" noStyle>
+                      <Checkbox>Cost In Pricing Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cost In Pricing Currency'
+                  )}
+                  <Form.Item name="cost_in_pricing_currency" label="Cost In Pricing Currency" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cost_in_usd']} valuePropName="checked" noStyle>
+                      <Checkbox>Cost In Usd</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cost In Usd'
+                  )}
+                  <Form.Item name="cost_in_usd" label="Cost In Usd" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'payg_cost_in_billing_currency']} valuePropName="checked" noStyle>
+                      <Checkbox>PAYG Cost In Billing Currency</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'PAYG Cost In Billing Currency'
+                  )}
+                  <Form.Item name="payg_cost_in_billing_currency" label="PAYG Cost In Billing Currency" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'payg_cost_in_usd']} valuePropName="checked" noStyle>
+                      <Checkbox>PAYG Cost In Usd</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'PAYG Cost In Usd'
+                  )}
+                  <Form.Item name="payg_cost_in_usd" label="PAYG Cost In Usd" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'exchange_rate_pricing_to_billing']} valuePropName="checked" noStyle>
+                      <Checkbox>Exchange Rate Pricing To Billing</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exchange Rate Pricing To Billing'
+                  )}
+                  <Form.Item name="exchange_rate_pricing_to_billing" label="Exchange Rate Pricing To Billing" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'cost']} valuePropName="checked" noStyle>
+                      <Checkbox>Cost</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Cost'
+                  )}
+                  <Form.Item name="cost" label="Cost" className="m-0" rules={[{ type: 'number' }]}>
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'exchange_rate_date']} valuePropName="checked" noStyle>
+                      <Checkbox>Exchange Rate Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exchange Rate Date'
+                  )}
+                  <Form.Item name="exchange_rate_date" label="Exchange Rate Date" className="m-0">
+                    <DatePicker className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'environment']} valuePropName="checked" noStyle>
+                      <Checkbox>Environment</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Environment'
+                  )}
+                  <Form.Item name="environment" label="Environment" className="m-0" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'environment_tags']} valuePropName="checked" noStyle>
+                      <Checkbox>Environment - Tags</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Environment - Tags'
+                  )}
+                  <Form.Item name="environment_tags" label="Environment - Tags" className="m-0" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
@@ -2131,6 +2430,28 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     </Form.Item>
                   ) : (
                     'dev_test_suggested'
+                  )}
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item
+                    name="dev_test_eligible"
+                    className="m-0 mr-1"
+                    valuePropName="checked"
+                  >
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'dev_test_eligible']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Dev Test Eligible</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Dev Test Eligible'
                   )}
                 </div>
               </Col>
