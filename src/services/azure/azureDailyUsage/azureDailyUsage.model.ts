@@ -10,6 +10,7 @@ export interface IAzureDailyUsage {
   service_administrator_id?: string;
   subscription_id?: string;
   subscription_guid?: string;
+  meterSubCategory?: string;
   subscription_name?: string;
   date?: string | Moment;
   date_added?: string | Moment;
@@ -88,6 +89,24 @@ export interface IAzureDailyUsage {
   growth?: number;
   month_name?: string;
   tenant_id: number;
+  product_id?: string;
+  resource_group_name?: string;
+  resource_id?: string;
+  location?: string;
+  effective_price?: number;
+  quantity?: number;
+  pricing_currency?: string;
+  cost_in_billing_currency?: number;
+  cost_in_pricing_currency?: number;
+  cost_in_usd?: number;
+  payg_cost_in_billing_currency?: number;
+  payg_cost_in_usd?: number;
+  exchange_rate_pricing_to_billing?: number;
+  exchange_rate_date?: string | Moment;
+  cost?: number;
+  environment?: string;
+  environment_tags?: string;
+  dev_test_eligible?: boolean;
 }
 
 export interface ISearchAzureDailyUsage extends ISearch {
