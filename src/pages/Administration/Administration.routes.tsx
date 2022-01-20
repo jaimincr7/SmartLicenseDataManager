@@ -39,6 +39,7 @@ import WindowsServerLicense from './WindowsServerLicense';
 import Cron from './Cron';
 import CronViewLog from './CronViewLog';
 import DeleteDataset from './DeleteDataset';
+import ConfigO365Products from './ConfigO365Products';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -59,6 +60,14 @@ const AdministrationRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.Bu) && (
           <Route exact path={`${match.path}/bu/:id`} component={BU} />
+        )}
+
+        {/* ConfigO365Products */}
+        {ability.can(Action.View, Page.ConfigO365Products) && (
+          <Route exact path={`${match.path}/config-o365-products`} component={ConfigO365Products} />
+        )}
+        {ability.can(Action.View, Page.ConfigO365Products) && (
+          <Route exact path={`${match.path}/config-o365-products/:id`} component={ConfigO365Products} />
         )}
 
         {/* DeleteDataset */}

@@ -67,7 +67,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       if (spsApis.callApi.hasErrors) {
         toast.error(spsApis.callApi.messages.join(' '));
       } else {
-        toast.success(spsApis.callApi.messages.join(' '));
+        toast.warning(spsApis.callApi.messages.join(' '));
         dataTableRef?.current.refreshData();
       }
       dispatch(clearCallApiMessages());
@@ -75,7 +75,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       if (spsApis.callAllApi.hasErrors) {
         toast.error(spsApis.callAllApi.messages.join(' '));
       } else {
-        toast.success(spsApis.callAllApi.messages.join(' '));
+        toast.warning(spsApis.callAllApi.messages.join(' '));
         dataTableRef?.current.refreshData();
       }
       dispatch(clearCallApiMessages());
