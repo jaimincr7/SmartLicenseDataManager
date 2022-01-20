@@ -592,6 +592,9 @@ const BulkImport: React.FC = () => {
     if (selectedRecord.length) {
       selectedRecord[0].config_excel_column_mappings?.map((data) => {
         dummyRecords.map((data1) => {
+          data1.currentMapping = null;
+          data1.header_row = 1;
+          data1.table_name = null;
           if (data.sheet_name == data1.sheet) {
             data1.currentMapping = data.sheet_name;
             data1.excel_to_sql_mapping = JSON.parse(data.mapping);
