@@ -160,6 +160,7 @@ const O365Users: React.FC<IO365UsersProps> = (props) => {
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
           tableName={o365Users.search.tableName}
+          filterKeys={filterKeys}
         />
       )}
       {deleteModalVisible && (
