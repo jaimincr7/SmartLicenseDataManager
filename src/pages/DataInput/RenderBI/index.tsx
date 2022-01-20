@@ -69,7 +69,39 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     const data = dummyRecords.filter((data) => data.index == currRecord.index);
     if (data && data.length > 0) {
       data[0].table_name = tableName;
-      data[0].excel_to_sql_mapping = null;
+      commonService.getTableColumns(tableName).then((res) => {
+        if (res) {
+          debugger;
+          const response: any = res;
+            const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+            const filterExcelColumns: any = data[0].columns;
+            const filterTableColumns = response?.filter(
+              (x) => !columnsArray.includes(x.name?.toLowerCase())
+            );
+            const ExcelColsSorted = [...filterExcelColumns];
+            ExcelColsSorted.sort();
+
+            const initialValuesData: any = {};
+            filterTableColumns.map(function (ele) {
+              initialValuesData[ele.name] =
+                filterExcelColumns?.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    ele.name?.toLowerCase()?.replace(/\s/g, '')
+                ).length > 0 && data[0]?.excel_to_sql_mapping == null
+                  ? filterExcelColumns.filter(
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                      ele.name?.toLowerCase()?.replace(/\s/g, '')
+                  )[0]
+                  :  (data[0]?.excel_to_sql_mapping || []).filter((data) => {
+                      return data.key == ele.name;
+                    })[0]?.value
+                    ;
+            });
+          data[0].excel_to_sql_mapping = initialValuesData;
+        }
+      });
       data[0].currentMapping = null;
     }
 
@@ -345,12 +377,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (currentTable.length > 0) {
         innerFormUpload.setFieldsValue({ table_name: currentTable[0].name });
         //setLoadingTableColumns(true);
-        commonService.getTableColumns(currentTable[0].name).then((res) => {
-          if (res) {
-            setTableColumnState(res);
-          }
-          //setLoadingTableColumns(false);
-        });
+
       }
     }
   }, [bulkImports.getTables.data, table]);
