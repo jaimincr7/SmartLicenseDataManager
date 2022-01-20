@@ -58,7 +58,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
-  const [emptyMappingFlag, setEmptyMappingFlag] = useState<boolean>(false);
+  //const [emptyMappingFlag, setEmptyMappingFlag] = useState<boolean>(false);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
@@ -90,40 +90,40 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //   setFormFields();
   // };
 
-  const getDummyMapping = (currentSheetName: string, columns: any) => {
-    setEmptyMappingFlag(true);
-    const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-    const filterExcelColumns: any = columns[0];
-    const filterTableColumns = tableColumnState.filter(
-      (x) => !columnsArray.includes(x.name?.toLowerCase())
-    );
-    const initialValuesData: any = {};
-    const sqlToExcelMapping: any = [];
-    filterTableColumns.map(function (ele) {
-      initialValuesData[ele.name] =
-        filterExcelColumns?.filter(
-          (x: any) =>
-            x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-            ele.name?.toLowerCase()?.replace(/\s/g, '')
-        ).length > 0
-          ? filterExcelColumns.filter(
-            (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-              ele.name?.toLowerCase()?.replace(/\s/g, '')
-          )[0]
-          : '';
-      sqlToExcelMapping.push({
-        key: `${ele.name}`,
-        value: `${initialValuesData[ele.name]}`,
-      });
-    });
-    for (const x in initialValuesData) {
-      if (initialValuesData[x] !== '') {
-        setEmptyMappingFlag(false);
-      }
-    }
-    return sqlToExcelMapping;
-  };
+  // const getDummyMapping = (currentSheetName: string, columns: any) => {
+  //   setEmptyMappingFlag(true);
+  //   const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+  //   const filterExcelColumns: any = columns[0];
+  //   const filterTableColumns = tableColumnState.filter(
+  //     (x) => !columnsArray.includes(x.name?.toLowerCase())
+  //   );
+  //   const initialValuesData: any = {};
+  //   const sqlToExcelMapping: any = [];
+  //   filterTableColumns.map(function (ele) {
+  //     initialValuesData[ele.name] =
+  //       filterExcelColumns?.filter(
+  //         (x: any) =>
+  //           x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+  //           ele.name?.toLowerCase()?.replace(/\s/g, '')
+  //       ).length > 0
+  //         ? filterExcelColumns.filter(
+  //           (x: any) =>
+  //             x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+  //             ele.name?.toLowerCase()?.replace(/\s/g, '')
+  //         )[0]
+  //         : '';
+  //     sqlToExcelMapping.push({
+  //       key: `${ele.name}`,
+  //       value: `${initialValuesData[ele.name]}`,
+  //     });
+  //   });
+  //   for (const x in initialValuesData) {
+  //     if (initialValuesData[x] !== '') {
+  //       setEmptyMappingFlag(false);
+  //     }
+  //   }
+  //   return sqlToExcelMapping;
+  // };
 
   useEffect(() => {
     if (count.save > 0) {
@@ -142,13 +142,17 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         delimiter: string;
         foreign_key_values: any;
       }> = [];
-      if (hideUnmapped === true) {
+      let isMapped = true;
+      if (hideUnmapped === false && withoutUnmappedRecords.length) {
         withoutUnmappedRecords.map((data) => {
-          data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
+          if (data.excel_to_sql_mapping) {
+            data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
+          } else {
+            isMapped = false;
+            toast.info(data.original_filename + ' has mapping concerns');
+          }
           const Obj = {
-            excel_to_sql_mapping: data.excel_to_sql_mapping
-              ? data.excel_to_sql_mapping
-              : getDummyMapping(data.sheet, data.columns),
+            excel_to_sql_mapping: data.excel_to_sql_mapping,
             table_name: data.table_name,
             file_name: data.filename,
             original_file_name: data.original_filename,
@@ -163,11 +167,14 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         });
       } else {
         records.map((data) => {
-          data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
+          if (data.excel_to_sql_mapping) {
+            data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
+          } else {
+            isMapped = false;
+            toast.info(data.original_filename + ' has mapping concerns');
+          }
           const Obj = {
-            excel_to_sql_mapping: data.excel_to_sql_mapping
-              ? data.excel_to_sql_mapping
-              : getDummyMapping(data.sheet, data.columns),
+            excel_to_sql_mapping: data.excel_to_sql_mapping,
             table_name: data.table_name,
             file_name: data.filename,
             original_file_name: data.original_filename,
@@ -202,10 +209,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           date_added: date ? date : moment(),
         },
       };
-      if (emptyMappingFlag == true) {
-        toast.info('Some File may not have any mapping.Please check!');
+      if (val.excel_sheet_with_mapping_details.length === 0) {
+        toast.info('Some Tab are lacking mapping concerns.')
       } else {
-        dispatch(bulkInsert(val));
+        if (isMapped)
+          dispatch(bulkInsert(val));
       }
     }
   }, [count.save]);

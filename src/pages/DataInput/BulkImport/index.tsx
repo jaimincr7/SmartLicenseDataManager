@@ -55,8 +55,6 @@ const BulkImport: React.FC = () => {
   const [firstFlag, setFirstFlag] = useState(false);
   const [repeatSheetFlag, setRepeatSheetFlag] = useState(false);
   const [tableName, setTableName] = useState<string>(table);
-  //const [defaultFile, setDefaultFile] = useState(null);
-  //const [excelColumnState, setExcelColumnState] = useState([]);
   const [withoutUnmappedRecords, setWithoutUnmappedRecords] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
   const [records, setRecords] = useState<
@@ -79,7 +77,8 @@ const BulkImport: React.FC = () => {
   const formUploadInitialValues = {
     header_row: 1,
     table_name: table,
-    hide_unmapped: true
+    hide_unmapped: true,
+    date_added: moment()
   };
 
   const uploadFile = async (options) => {
@@ -723,7 +722,6 @@ const BulkImport: React.FC = () => {
                       >
                         <DatePicker
                           className="w-100"
-                          defaultValue={moment()}
                           onChange={dateChange}
                           placeholder="Select Date Added"
                         />
