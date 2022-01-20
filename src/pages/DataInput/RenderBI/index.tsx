@@ -716,7 +716,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (record, selectedRecord) => (
         <>
           <TreeSelect
-            style={{ width: '180px' }}
+            style={{ width: '200px' }}
+            dropdownClassName="value-box-select"
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeData={getMenuDropdown(selectedRecord.show_mapping, selectedRecord)}
             value={selectedRecord.currentMapping}
