@@ -24,6 +24,7 @@ import menuReducer from './administration/menu/menu.reducer';
 import tenantReducer from './master/tenant/tenant.reducer';
 import companyReducer from './master/company/company.reducer';
 import buReducer from './master/bu/bu.reducer';
+import configO365ProductsReducer from './master/configO365Products/configO365Products.reducer';
 import deleteDatasetReducer from './master/deleteDataset/deleteDataset.reducer';
 import globalSearchReducer from './globalSearch/globalSearch.reducer';
 import globalTableColumnSelectionReducer from './administration/globalTableColumnSelection/globalTableColumnSelection.reducer';
@@ -165,6 +166,7 @@ export const rootReducer = combineReducers({
   tenant: tenantReducer,
   company: companyReducer,
   bu: buReducer,
+  configO365Products: configO365ProductsReducer,
   deleteDataset: deleteDatasetReducer,
   currency: currencyReducer,
   role: roleReducer,

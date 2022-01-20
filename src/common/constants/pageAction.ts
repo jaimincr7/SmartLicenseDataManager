@@ -145,10 +145,12 @@ export enum Page {
   CronViewLogData = 'sps-cron-job-log',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
+  ConfigO365Products = "config-o365-products",
 
   Inventory = 'inventory',
   Device = 'device',
   DeviceState = 'device-states',
+  
 }
 export enum Action {
   View = 'view',

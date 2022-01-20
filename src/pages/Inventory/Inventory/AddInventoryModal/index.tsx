@@ -10,6 +10,7 @@ import {
   Row,
   Select,
   Spin,
+  Switch,
 } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
@@ -95,6 +96,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
     last_hw_scan: null,
     last_sw_scan: null,
     date_installed: null,
+    is_virtual: false,
     date_added: moment(),
   };
 
@@ -171,6 +173,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
         username: data.username,
         last_hw_scan: data.last_hw_scan,
         last_sw_scan: data.last_sw_scan,
+        is_virtual: data.is_virtual,
         date_installed: _.isNull(data.date_installed) ? null : moment(data.date_installed),
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
@@ -776,6 +779,20 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   <Form.Item name="date_installed" label="Date Installed" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="is_virtual" className="m-0 mr-1" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_virtual']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Virtual</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Virtual'
+                  )}
                 </div>
               </Col>
             </Row>

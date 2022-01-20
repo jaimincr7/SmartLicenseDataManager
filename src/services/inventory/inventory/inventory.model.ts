@@ -25,6 +25,7 @@ export interface IInventory {
   last_hw_scan?: string;
   last_sw_scan?: string;
   date_installed?: string | Moment;
+  is_virtual?: boolean;
   date_added?: string | Moment;
 }
 

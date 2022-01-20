@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -10,11 +10,13 @@ import {
   deleteInventory,
   searchInventory,
 } from '../../../../store/inventory/inventory/inventory.action';
+import { AlignType } from 'rc-table/lib/interface';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import inventoryService from '../../../../services/inventory/inventory/inventory.service';
 import {
+  FilterByBooleanDropDown,
   FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
@@ -402,6 +404,34 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'last_sw_scan',
             key: 'last_sw_scan',
             ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is Virtual</span>,
+        column: 'IsVirtual',
+        sorter: true,
+        children: [
+          {
+            title: FilterByBooleanDropDown(
+              'is_virtual',
+              inventory.search.tableName,
+              ObjectForColumnFilter
+            ),
+            dataIndex: 'is_virtual',
+            key: 'is_virtual',
+            ellipsis: true,
+            render: (value: boolean) =>
+              !_.isNull(value) ? (
+                value ? (
+                  <Checkbox defaultChecked disabled />
+                ) : (
+                  <Checkbox defaultChecked={false} disabled />
+                )
+              ) : (
+                ''
+              ),
+            align: 'center' as AlignType,
           },
         ],
       },
