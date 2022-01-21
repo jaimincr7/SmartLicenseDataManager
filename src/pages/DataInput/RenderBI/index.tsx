@@ -69,7 +69,37 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     const data = dummyRecords.filter((data) => data.index == currRecord.index);
     if (data && data.length > 0) {
       data[0].table_name = tableName;
-      data[0].excel_to_sql_mapping = null;
+      await commonService.getTableColumns(tableName).then((res) => {
+        if (res) {
+          const response: any = res;
+          const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+          let filterExcelColumns: any = data[0].columns;
+          const filterTableColumns = response?.filter(
+            (x) => !columnsArray.includes(x.name?.toLowerCase())
+          );
+          if (filterExcelColumns?.length >= data[0].header_row) {
+            filterExcelColumns = filterExcelColumns[data[0].header_row - 1];
+          }
+          const ExcelColsSorted = [...filterExcelColumns];
+          ExcelColsSorted.sort();
+
+          const initialValuesData: any = {};
+          const sqlToExcelMapping = [];
+          filterTableColumns.map(function (ele) {
+            initialValuesData[ele.name] =
+            ExcelColsSorted.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                    ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                )[0];
+              sqlToExcelMapping.push({
+                key: `${ele.name}`,
+                value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
+              });
+          });
+          data[0].excel_to_sql_mapping = sqlToExcelMapping;
+        }
+      });
       data[0].currentMapping = null;
     }
 
@@ -149,7 +179,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
           } else {
             isMapped = false;
-            toast.info('Some fields in ' + data.original_filename + ' has mapping concerns');
+            toast.warn(data.original_filename + ' has mapping concerns');
           }
           const Obj = {
             excel_to_sql_mapping: data.excel_to_sql_mapping,
@@ -171,7 +201,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
           } else {
             isMapped = false;
-            toast.info('Some fields in ' + data.original_filename + ' has mapping concerns');
+            toast.warn(data.original_filename + ' has mapping concerns');
           }
           const Obj = {
             excel_to_sql_mapping: data.excel_to_sql_mapping,
@@ -292,13 +322,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         initialValuesData[ele.name] =
           filterExcelColumns?.filter(
             (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-              ele.name?.toLowerCase()?.replace(/\s/g, '')
+              x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+              ele.name?.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
               (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s/g, '')
+                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s+/g, '')
             )[0]
             : '';
       });
@@ -574,8 +604,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         let flagMapping = null;
         data.currentMapping = value;
         selectedRecord.show_mapping.map((data1) => {
-          data1.config_excel_column_mappings.map((data2) => {
-            if (data2.id == value) {
+            data1.config_excel_column_mappings.map((data2) => {
+            if (data2.sheet_name == value) {
               data.key_word = data1?.key_word;
               data.is_public = data1?.is_public;
               data.table_name = data2.table_name;
