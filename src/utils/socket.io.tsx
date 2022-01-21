@@ -51,6 +51,7 @@ export const SocketIO = React.memo(() => {
 
                             socket.on('disconnect', () => {
                                 // console.info('Socket is disconnected');
+                                socket.off();
                                 setTimeout(() => {
                                     connectSocket();
                                 }, 10000);
@@ -63,6 +64,7 @@ export const SocketIO = React.memo(() => {
                     }
                 });
             } catch (error) {
+                socket.off();
                 setTimeout(() => {
                     connectSocket();
                 }, 10000);
@@ -76,8 +78,9 @@ export const SocketIO = React.memo(() => {
         connectSocket();
         return () => {
             if (socket) {
-                socket.disconnect();
                 tryToConnect = 11;
+                socket.off();
+                socket.disconnect();
             }
         };
     }, [userDetails?.activeAccount?.username]);
