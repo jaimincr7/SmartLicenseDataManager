@@ -64,12 +64,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
+    const fieldValues = { ...form.getFieldsValue() };
+    delete fieldValues.date_added;
     const setModelSelection: IConfigModelPopUpDataSelection = {
       id:
         commonLookups.getModelPopUpSelection.id === null
           ? null
           : commonLookups.getModelPopUpSelection.id,
-      selection: JSON.stringify(form.getFieldsValue()),
+      selection: JSON.stringify(fieldValues),
       table_name: tableName,
       pop_up_name: 'ProcessDataSet',
       company_id: form.getFieldValue('company_id'),
