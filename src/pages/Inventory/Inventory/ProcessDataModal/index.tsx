@@ -429,18 +429,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="include_sc" className="m-0" valuePropName="checked">
+                <Form.Item name="is_selected_date_device" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">Include System Center</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="is_selected_date_ws" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
-                </Form.Item>
-                <label className="label">Windows Server</label>
+                <label className="label">Device</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
@@ -453,10 +445,18 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="is_selected_date_device" className="m-0" valuePropName="checked">
+                <Form.Item name="is_selected_date_ws" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">Device</label>
+                <label className="label">Windows Server</label>
+              </div>
+            </Col>
+            <Col xs={24} sm={12} md={8}>
+              <div className="form-group form-inline-pt m-0">
+                <Form.Item name="include_sc" className="m-0" valuePropName="checked">
+                  <Switch className="form-control" />
+                </Form.Item>
+                <label className="label">Include System Center</label>
               </div>
             </Col>
           </Row>
