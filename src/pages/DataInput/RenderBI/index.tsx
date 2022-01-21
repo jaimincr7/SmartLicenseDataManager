@@ -179,7 +179,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
           } else {
             isMapped = false;
-            toast.warn(data.original_filename + ' has mapping concerns');
+            toast.error('Select configurations for ' + data.original_filename);
           }
           const Obj = {
             excel_to_sql_mapping: data.excel_to_sql_mapping,
@@ -201,7 +201,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
           } else {
             isMapped = false;
-            toast.warn(data.original_filename + ' has mapping concerns');
+            toast.error('Select configurations for ' + data.original_filename);
           }
           const Obj = {
             excel_to_sql_mapping: data.excel_to_sql_mapping,
