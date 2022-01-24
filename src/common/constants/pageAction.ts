@@ -148,9 +148,9 @@ export enum Page {
   ConfigO365Products = "config-o365-products",
 
   Inventory = 'inventory',
+  Software = 'inventory-software',
   Device = 'device',
   DeviceState = 'device-states',
-  
 }
 export enum Action {
   View = 'view',
