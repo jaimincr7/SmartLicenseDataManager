@@ -22,7 +22,6 @@ import {
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { toast } from 'react-toastify';
-import moment from 'moment-timezone';
 import {
   adDevicesSelector,
   clearAdDeviceMessages,
@@ -35,6 +34,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import moment from 'moment';
 
 const { Option } = Select;
 
