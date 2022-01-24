@@ -110,6 +110,7 @@ export const bulkImportSlice = createSlice({
     },
     clearExcelColumns: (state) => {
       state.getExcelColumns.data = null;
+      state.getExcelColumns.csvFiles = [];
     },
     setExcelColumnsProgress: (state,  action: PayloadAction<number>) => {
       state.getExcelColumns.progress = action.payload;
