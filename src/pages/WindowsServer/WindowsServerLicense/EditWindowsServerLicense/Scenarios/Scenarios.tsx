@@ -142,7 +142,7 @@ const Scenarios: React.FC<IScenariosProps> = (props) => {
                   >
                     <Switch disabled className="form-control" />
                   </Form.Item>
-                  <label className="label">Default to Data Center on Hosts</label>
+                  <label className="label">Default to Datacenter on Hosts</label>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>

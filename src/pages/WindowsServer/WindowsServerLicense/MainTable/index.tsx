@@ -183,7 +183,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Default to Data Center on Hosts</span>,
+        title: <span className="dragHandler">Default to Datacenter on Hosts</span>,
         column: 'Opt_DefaultToDatacenterOnHosts',
         sorter: true,
         children: [

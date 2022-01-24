@@ -281,7 +281,7 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>Data Center Name</Checkbox>
+                      <Checkbox>Datacenter Name</Checkbox>
                     </Form.Item>
                   ) : (
                     'Data Center Name'
@@ -300,7 +300,7 @@ const AddCmdbVirtualizationModal: React.FC<IAddCmdbVirtualizationProps> = (props
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'data_center_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Data Center Id</Checkbox>
+                      <Checkbox>Datacenter Id</Checkbox>
                     </Form.Item>
                   ) : (
                     'Data Center Id'
