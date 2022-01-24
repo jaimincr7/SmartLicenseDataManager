@@ -11,6 +11,7 @@ import {
   getAllCompanyLookup,
   getBULookup,
   getConfigModelPopUpDataSelection,
+  getScheduleDate,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
@@ -33,6 +34,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -62,14 +64,23 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const saveConfig = () => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
+    const fieldValues = { ...form.getFieldsValue() };
+    delete fieldValues.selected_date;
     const setModelSelection: IConfigModelPopUpDataSelection = {
       id:
         commonLookups.getModelPopUpSelection.id === null
           ? null
           : commonLookups.getModelPopUpSelection.id,
-      selection: JSON.stringify(form.getFieldsValue()),
+      selection: JSON.stringify(fieldValues),
       table_name: tableName,
       pop_up_name: 'ProcessDataSet',
+      company_id: form.getFieldValue('company_id'),
+      bu_id: form.getFieldValue('bu_id'),
     };
     dispatch(configModelPopUpDataSelection(setModelSelection));
   };
@@ -143,17 +154,21 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [dispatch]);
 
   React.useEffect(() => {
-    if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
-      const modelPopUp: IGetConfigModelPopUpDataSelection = {
-        table_name: tableName,
-        pop_up_name: 'ProcessDataSet',
-      };
-      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
-    }
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
+    }
+    if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
+      const modelPopUp: IGetConfigModelPopUpDataSelection = {
+        table_name: tableName,
+        pop_up_name: 'ProcessDataSet',
+        tenant_id: _.isNull(globalSearch.tenant_id) || !(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        company_id: _.isNull(globalSearch.company_id) || !(globalSearch.company_id) ? null : globalSearch.company_id[0],
+        bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+      };
+      if(globalSearch.company_id && globalSearch.company_id[0] !== 0)
+      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
     }
     if (
       globalFilters.search.company_id ||
@@ -164,15 +179,16 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       const filterValues = {
         company_id: _.isNull(globalSearch.company_id) || !(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
-        date_added:
+        selected_date:
           filterKeys?.filter_keys?.date_added?.length === 1
             ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
             : null,
       };
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
+      );
       form.setFieldsValue(filterValues);
     }
-    // const crrntDate = new Date().toDateString();
-    // form.setFieldsValue({selected_date_ws: moment(crrntDate).format(Common.DATEFORMAT)});
     return () => {
       dispatch(cleargetModelPopUpDataSelection());
     };
@@ -321,6 +337,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               <Button
                 type="dashed"
                 ghost
+                disabled={form.getFieldValue('company_id') === null}
                 onClick={saveConfig}
                 loading={commonLookups.setModelPopUpSelection.loading}
               >
