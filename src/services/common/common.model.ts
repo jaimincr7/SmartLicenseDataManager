@@ -79,9 +79,15 @@ export interface IConfigModelPopUpDataSelection {
   selection: any;
   pop_up_name: string;
   table_name: string;
+  tenant_id?: number;
+  company_id?: number;
+  bu_id?: number;
 }
 
 export interface IGetConfigModelPopUpDataSelection {
   pop_up_name: string;
   table_name: string;
+  tenant_id?: number;
+  company_id?: number;
+  bu_id?: number;
 }
