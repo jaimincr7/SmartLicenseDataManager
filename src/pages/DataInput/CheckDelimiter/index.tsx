@@ -11,7 +11,7 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
   const bulkImport = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const [files, setFiles] = useState([]);
-  const { showModal, handleModalClose } = props;
+  const { showModal, handleModalClose, setDefaultDelimeter } = props;
 
   const [form] = Form.useForm();
 
@@ -26,6 +26,7 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
       };
       arr.push(Obj);
     });
+    setDefaultDelimeter(arr);
     const valueFinal = { csv_file_info: arr };
     dispatch(getCSVExcelColumns(valueFinal));
     handleModalClose();

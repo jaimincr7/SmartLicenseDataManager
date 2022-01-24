@@ -57,6 +57,7 @@ const BulkImport: React.FC = () => {
   const [tableName, setTableName] = useState<string>(table);
   const [withoutUnmappedRecords, setWithoutUnmappedRecords] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
+  const [defaultDelimeter, setDefaultDelimeter] = useState([]);
   const [records, setRecords] = useState<
     Array<{
       index: number;
@@ -261,6 +262,7 @@ const BulkImport: React.FC = () => {
           x.file_mapping.length > 0 ? x.file_mapping.filter((data) => data.is_select == true) : [];
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
+          const defDel = defaultDelimeter.filter((data) => data.original_filename == x.original_filename)[0].delimiter;
           let filteredRecords = dummyRecords.filter(
             (data) => data.filename !== x.filename && data.original_filename !== x.original_filename
           );
@@ -291,7 +293,7 @@ const BulkImport: React.FC = () => {
                 is_public: mappingData.length > 0 ? mappingData[0].is_public : false,
                 key_word: mappingData.length > 0 ? mappingData[0].key_word : null,
                 original_filename: x.original_filename,
-                delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
+                delimiter: defDel && defDel.length ? defDel : ';',
                 table_name: !firstFlag
                   ? mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -818,6 +820,7 @@ const BulkImport: React.FC = () => {
               <CkeckDelimiterModal
                 setRecords={setRecords}
                 records={records}
+                setDefaultDelimeter={setDefaultDelimeter}
                 tableName={tableName}
                 showModal={delimitModalShow}
                 handleModalClose={() => {
