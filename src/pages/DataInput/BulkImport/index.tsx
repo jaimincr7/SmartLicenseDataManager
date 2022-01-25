@@ -365,11 +365,8 @@ const BulkImport: React.FC = () => {
         data.table_name = formUpload?.getFieldValue('table_name');
         data.excel_to_sql_mapping = null;
       }
-      setRecords(dummyRecords);
       setLoading(false);
-      setTimeout(() => {
-        setMapping();
-      }, 200);
+      setMapping(dummyRecords);
     }
   };
 
@@ -618,8 +615,10 @@ const BulkImport: React.FC = () => {
     }
   };
 
-  const setMapping = async () => {
-    const dummyRecords = _.cloneDeep(records);
+  const setMapping = async (dummyRecords = null) => {
+    if(dummyRecords === null){
+      dummyRecords = _.cloneDeep(records);
+    }
     await dummyRecords.map(async (data) => {
       if (data && data.table_name !== undefined) {
         if (data.excel_to_sql_mapping == null) {
@@ -656,8 +655,8 @@ const BulkImport: React.FC = () => {
           });
         }
       }
-      setRecords(dummyRecords);
     });
+    setRecords(dummyRecords);
   };
 
   useEffect(() => {
