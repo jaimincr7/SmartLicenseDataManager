@@ -802,12 +802,13 @@ const BulkImport: React.FC = () => {
                             allowClear
                             optionFilterProp="children"
                             filterOption={(input, option: any) =>
-                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                              option.children?.toString().toLowerCase()?.indexOf(input.toLowerCase()) >= 0
                             }
                             filterSort={(optionA: any, optionB: any) =>
                               optionA.children
-                                ?.toLowerCase()
-                                ?.localeCompare(optionB.children?.toLowerCase())
+                              ?.toString()
+                                .toLowerCase()
+                                ?.localeCompare(optionB.children?.toString().toLowerCase())
                             }
                           >
                             {(bulkImports.getExcelFileMappingLookup.data || [])?.map(
