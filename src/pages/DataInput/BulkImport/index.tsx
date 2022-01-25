@@ -655,8 +655,6 @@ const BulkImport: React.FC = () => {
             }
           });
         }
-      } else {
-        toast.warn('Table Name is required for ' + data.original_filename);
       }
       setRecords(dummyRecords);
     });
