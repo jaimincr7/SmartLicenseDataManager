@@ -521,7 +521,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                       {week == 'Weekly' ? (
                         cron.FrequencyDay.week.map((option: ILookup) => (
                           <Option key={option.id} value={option.id}>
-                            {`${option.id}(${option.name})`}
+                            {`${option.id} (${option.name})`}
                           </Option>
                         ))
                       ) : week == 'Monthly' ? (

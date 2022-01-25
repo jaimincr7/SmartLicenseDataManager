@@ -259,7 +259,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('cron_frequency_day', form),
             dataIndex: 'cron_frequency_day',
             key: 'cron_frequency_day',
-            render: (_,data)  => data.cron_frequency_type == 'Weekly' ? `${data.cron_frequency_day}(${data.day_name})` : data.cron_frequency_day,
+            render: (_,data)  => data.cron_frequency_type == 'Weekly' ? `${data.cron_frequency_day} (${data.day_name})` : data.cron_frequency_day,
             ellipsis: true,
           },
         ],

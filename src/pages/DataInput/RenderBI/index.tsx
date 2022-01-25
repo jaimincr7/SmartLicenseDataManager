@@ -211,7 +211,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             header_row: data.header_row - 1,
             delimiter: data.delimeter ? data.delimiter : ',',
             foreign_key_values: {
-              date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
+              date_added: data.dateAdded ? moment(data.dateAdded).format(Common.DATEFORMAT) : moment(date).format(Common.DATEFORMAT),
             }
           };
           arr.push(Obj);
@@ -235,7 +235,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             : globalSearch.company_id === undefined
               ? null
               : globalSearch?.company_id[0],
-          date_added: date ? date : moment(),
+          date_added: date ? moment(date).format(Common.DATEFORMAT) : moment().format(Common.DATEFORMAT),
         },
       };
       if (val.excel_sheet_with_mapping_details.length === 0) {
