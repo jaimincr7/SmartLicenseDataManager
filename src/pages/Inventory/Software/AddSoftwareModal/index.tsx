@@ -1,5 +1,17 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Select, Spin } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Spin,
+} from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -8,7 +20,7 @@ import { Page } from '../../../../common/constants/pageAction';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
-import { ITabVHost } from '../../../../services/rvTools/tabVHost/tabVHost.model';
+import { ISoftware } from '../../../../services/inventory/software/software.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
@@ -23,18 +35,18 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { getTabVHostById, saveTabVHost } from '../../../../store/rvTools/tabVHost/tabVHost.action';
+import { saveSoftware, getSoftwareById } from '../../../../store/inventory/software/software.action';
 import {
-  clearTabVHostGetById,
-  clearTabVHostMessages,
-  tabVHostSelector,
-} from '../../../../store/rvTools/tabVHost/tabVHost.reducer';
-import { IAddTabVHostProps } from './addTabVHost.model';
+  softwareSelector,
+  clearSoftwareMessages,
+  clearSoftwareGetById,
+} from '../../../../store/inventory/software/software.reducer';
+import { IAddSoftwareProps } from './addSoftware.model';
 
 const { Option } = Select;
 
-const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
-  const tabVHost = useAppSelector(tabVHostSelector);
+const AddSoftwareModal: React.FC<IAddSoftwareProps> = (props) => {
+  const software = useAppSelector(softwareSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -46,7 +58,7 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.TabVHost} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Software} level={1} />
       </>
     );
   }, [isNew]);
@@ -56,34 +68,32 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  let initialValues: ITabVHost = {
+  let initialValues: ISoftware = {
+    tenant_id: null,
     company_id: null,
     bu_id: null,
     source: '',
-    host: '',
-    data_center: '',
-    cluster: '',
-    cpu: null,
-    cores_per_cpu: null,
-    cores: null,
-    domain: '',
-    cpu_model: '',
-    esx_version: '',
-    tenant_id: null,
+    device_name: '',
+    publisher: '',
+    software_title: '',
+    software_version: '',
+    last_scan_date: '',
+    serial_number: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
-    const inputValues: ITabVHost = {
+    const inputValues: ISoftware = {
       ...values,
       id: id ? +id : null,
     };
     if (!isMultiple) {
-      dispatch(saveTabVHost(inputValues));
+      dispatch(saveSoftware(inputValues));
     } else {
       const result = getObjectForUpdateMultiple(
         valuesForSelection,
         inputValues,
-        tabVHost.search.tableName
+        software.search.tableName
       );
       if (result) {
         dispatch(updateMultiple(result));
@@ -115,7 +125,7 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
     form.setFieldsValue({ bu_id: buId });
   };
 
-  const fillValuesOnEdit = async (data) => {
+  const fillValuesOnEdit = async (data: ISoftware) => {
     if (data.tenant_id) {
       await dispatch(getCompanyLookup(data.tenant_id));
     }
@@ -128,32 +138,30 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         source: data.source,
-        data_center: data.data_center,
-        host: data.host,
-        cluster: data.cluster,
-        cpu: data.cpu,
-        cores_per_cpu: data.cores_per_cpu,
-        cores: data.cores,
-        domain: data.domain,
-        cpu_model: data.cpu_model,
-        esx_version: data.esx_version,
+        device_name: data.device_name,
+        publisher: data.publisher,
+        software_title: data.software_title,
+        software_version: data.software_version,
+        last_scan_date: data.last_scan_date,
+        serial_number: data.serial_number,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
   };
 
   useEffect(() => {
-    if (tabVHost.save.messages.length > 0) {
-      if (tabVHost.save.hasErrors) {
-        toast.error(tabVHost.save.messages.join(' '));
+    if (software.save.messages.length > 0) {
+      if (software.save.hasErrors) {
+        toast.error(software.save.messages.join(' '));
       } else {
-        toast.success(tabVHost.save.messages.join(' '));
+        toast.success(software.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearTabVHostMessages());
+      dispatch(clearSoftwareMessages());
     }
-  }, [tabVHost.save.messages]);
+  }, [software.save.messages]);
 
   useEffect(() => {
     if (commonLookups.save.messages.length > 0) {
@@ -169,21 +177,21 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
   }, [commonLookups.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && tabVHost.getById.data) {
-      const data = tabVHost.getById.data;
+    if (+id > 0 && software.getById.data) {
+      const data = software.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [tabVHost.getById.data]);
+  }, [software.getById.data]);
 
   useEffect(() => {
     if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
     if (+id > 0) {
-      dispatch(getTabVHostById(+id));
+      dispatch(getSoftwareById(+id));
     }
     return () => {
-      dispatch(clearTabVHostGetById());
+      dispatch(clearSoftwareGetById());
       dispatch(clearCompanyLookUp());
       dispatch(clearBULookUp());
     };
@@ -223,14 +231,14 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
         onCancel={handleModalClose}
         footer={false}
       >
-        {tabVHost.getById.loading ? (
+        {software.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={tabVHost.getById.loading} />
+            <Spin spinning={software.getById.loading} />
           </div>
         ) : (
           <Form
             form={form}
-            name="addTabVHost"
+            name="addSoftware"
             initialValues={initialValues}
             onFinish={onFinish}
             validateMessages={validateMessages}
@@ -268,15 +276,15 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -308,15 +316,15 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -348,148 +356,16 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'host']} valuePropName="checked" noStyle>
-                      <Checkbox>Host</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Host'
-                  )}
-                  <Form.Item name="host" label="Host" className="m-0" rules={[{ max: 510 }]}>
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'cluster']} valuePropName="checked" noStyle>
-                      <Checkbox>Cluster</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Cluster'
-                  )}
-                  <Form.Item name="cluster" label="Cluster" className="m-0" rules={[{ max: 510 }]}>
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'cpu']} valuePropName="checked" noStyle>
-                      <Checkbox>CPU</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'CPU'
-                  )}
-                  <Form.Item name="cpu" label="CPU" className="m-0" rules={[{ type: 'integer' }]}>
-                    <InputNumber className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'cores_per_cpu']} valuePropName="checked" noStyle>
-                      <Checkbox>Cores per CPU</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Cores per CPU'
-                  )}
-                  <Form.Item
-                    name="cores_per_cpu"
-                    label="Cores per CPU"
-                    className="m-0"
-                    rules={[{ type: 'integer' }]}
-                  >
-                    <InputNumber className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'cores']} valuePropName="checked" noStyle>
-                      <Checkbox>Cores</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Cores'
-                  )}
-                  <Form.Item
-                    name="cores"
-                    label="Cores"
-                    className="m-0"
-                    rules={[{ type: 'integer' }]}
-                  >
-                    <InputNumber className="form-control w-100" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'domain']} valuePropName="checked" noStyle>
-                      <Checkbox>Domain</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Domain'
-                  )}
-                  <Form.Item name="domain" className="m-0" label="Domain" rules={[{ max: 510 }]}>
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'cpu_model']} valuePropName="checked" noStyle>
-                      <Checkbox>CPU Model</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'CPU Model'
-                  )}
-                  <Form.Item
-                    name="cpu_model"
-                    className="m-0"
-                    label="CPU Model"
-                    rules={[{ max: 510 }]}
-                  >
-                    <Input className="form-control" />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'esx_version']} valuePropName="checked" noStyle>
-                      <Checkbox>ESX Version</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'ESX Version'
-                  )}
-                  <Form.Item
-                    name="esx_version"
-                    className="m-0"
-                    label="ESX Version"
-                    rules={[{ max: 510 }]}
-                  >
-                    <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
@@ -502,7 +378,7 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
                   ) : (
                     'Source'
                   )}
-                  <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 510 }]}>
+                  <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -510,19 +386,122 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'data_center']} valuePropName="checked" noStyle>
-                      <Checkbox>Datacenter</Checkbox>
+                    <Form.Item name={['checked', 'device_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Device Name</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Datacenter'
+                    'Device Name'
+                  )}
+                  <Form.Item name="device_name" className="m-0" label="Device Name" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'publisher']} valuePropName="checked" noStyle>
+                      <Checkbox>Publisher</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Publisher'
                   )}
                   <Form.Item
-                    name="data_center"
-                    label="Datacenter"
+                    name="publisher"
+                    label="Publisher"
                     className="m-0"
-                    rules={[{ max: 510 }]}
+                    rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'software_title']} valuePropName="checked" noStyle>
+                      <Checkbox>Software Title</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Software Title'
+                  )}
+                  <Form.Item name="software_title" label="Software Title" className="m-0" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'software_version']} valuePropName="checked" noStyle>
+                      <Checkbox>Software Version</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Software Version'
+                  )}
+                  <Form.Item
+                    name="software_version"
+                    label="Software Version"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item
+                      name={['checked', 'last_scan_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Scan Date</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Scan Date'
+                  )}
+                  <Form.Item
+                    name="last_scan_date"
+                    label="Last Scan Date"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'serial_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Serial Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Serial Number'
+                  )}
+                  <Form.Item
+                    name="serial_number"
+                    label="Serial Number"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item name="date_added" label="Date Added" className="m-0">
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -532,7 +511,7 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={tabVHost.save.loading || commonLookups.save.loading}
+                loading={software.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
@@ -546,4 +525,4 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
     </>
   );
 };
-export default AddTabVHostModal;
+export default AddSoftwareModal;

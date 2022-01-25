@@ -22,7 +22,6 @@ import {
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 import {
   adDevicesSelector,
   clearAdDeviceMessages,
@@ -35,6 +34,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -59,14 +59,23 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const saveConfig = () => {
+    const globalSearch: IInlineSearch = {};
+    for (const key in globalFilters.search) {
+      const element = globalFilters.search[key];
+      globalSearch[key] = element ? [element] : null;
+    }
+    const fieldValues = { ...form.getFieldsValue() };
+    delete fieldValues.date_added;
     const setModelSelection: IConfigModelPopUpDataSelection = {
       id:
         commonLookups.getModelPopUpSelection.id === null
           ? null
           : commonLookups.getModelPopUpSelection.id,
-      selection: JSON.stringify(form.getFieldsValue()),
+      selection: JSON.stringify(fieldValues),
       table_name: tableName,
       pop_up_name: 'ProcessDataSet',
+      company_id: form.getFieldValue('company_id'),
+      bu_id: form.getFieldValue('bu_id'),
     };
     dispatch(configModelPopUpDataSelection(setModelSelection));
   };
@@ -150,23 +159,28 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [commonLookups.setModelPopUpSelection.messages]);
 
   React.useEffect(() => {
-    if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
-      const modelPopUp: IGetConfigModelPopUpDataSelection = {
-        table_name: tableName,
-        pop_up_name: 'ProcessDataSet',
-      };
-      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
-    }
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
+    if (ability.can(Action.ModelDataSeletion, Page.ConfigModelPopUpSelection)) {
+      const modelPopUp: IGetConfigModelPopUpDataSelection = {
+        table_name: tableName,
+        pop_up_name: 'ProcessDataSet',
+        tenant_id: _.isNull(globalSearch.tenant_id) || !(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
+        company_id: _.isNull(globalSearch.company_id) || !(globalSearch.company_id) ? null : globalSearch.company_id[0],
+        bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+      };
+      if(globalSearch.company_id && globalSearch.company_id[0] !== 0)
+      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
+    }
     if (
       globalFilters.search.company_id ||
       Object.keys(commonLookups.getModelPopUpSelection.data).length == 0
-    ) {if(globalSearch.company_id)
-      dispatch(getBULookup(globalSearch.company_id[0]));
+    ) {
+      if (globalSearch.company_id)
+        dispatch(getBULookup(globalSearch.company_id[0]));
       const filterValues = {
         company_id: _.isNull(globalSearch.company_id) || !(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
@@ -230,15 +244,15 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {Object.keys(commonLookups.allCompanyLookup.data).length > 0
                       ? commonLookups.allCompanyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))
                       : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
                   </Select>
                 </Form.Item>
               </div>
@@ -265,15 +279,15 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {Object.keys(commonLookups.buLookup.data).length > 0
                       ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))
                       : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
                   </Select>
                 </Form.Item>
               </div>
@@ -341,6 +355,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 type="dashed"
                 ghost
                 onClick={saveConfig}
+                disabled={form.getFieldValue('company_id') === null}
                 loading={commonLookups.setModelPopUpSelection.loading}
               >
                 Save Configuration

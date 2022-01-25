@@ -106,7 +106,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
-        title: <span className="dragHandler">Data Center</span>,
+        title: <span className="dragHandler">Datacenter</span>,
         column: 'Datacenter',
         sorter: true,
         ellipsis: true,

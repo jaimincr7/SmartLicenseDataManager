@@ -32,6 +32,7 @@ import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.r
 import moment from 'moment';
 import { Common } from '../../../common/constants/common';
 import CkeckDelimiterModal from '../CheckDelimiter';
+import commonService from '../../../services/common/common.service';
 
 const { Option } = Select;
 let getFileMappingTimeOut = null;
@@ -52,11 +53,13 @@ const BulkImport: React.FC = () => {
   let { table } = useParams<{ table: string }>();
   table && (table = decodeURIComponent(table));
   const [count, setCount] = useState({ save: 0, reset: 0 });
+  const [recordLength, setRecordLength] = useState(0);
   const [firstFlag, setFirstFlag] = useState(false);
   const [repeatSheetFlag, setRepeatSheetFlag] = useState(false);
   const [tableName, setTableName] = useState<string>(table);
   const [withoutUnmappedRecords, setWithoutUnmappedRecords] = useState([]);
   const [defaultFileList, setDefaultFileList] = useState<UploadFile[]>([]);
+  const [defaultDelimeter, setDefaultDelimeter] = useState([]);
   const [records, setRecords] = useState<
     Array<{
       index: number;
@@ -261,6 +264,7 @@ const BulkImport: React.FC = () => {
           x.file_mapping.length > 0 ? x.file_mapping.filter((data) => data.is_select == true) : [];
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
+          const defDel = defaultDelimeter.filter((data) => data.original_filename == x.original_filename)[0].delimiter;
           let filteredRecords = dummyRecords.filter(
             (data) => data.filename !== x.filename && data.original_filename !== x.original_filename
           );
@@ -291,7 +295,7 @@ const BulkImport: React.FC = () => {
                 is_public: mappingData.length > 0 ? mappingData[0].is_public : false,
                 key_word: mappingData.length > 0 ? mappingData[0].key_word : null,
                 original_filename: x.original_filename,
-                delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
+                delimiter: defDel && defDel.length ? defDel : ';',
                 table_name: !firstFlag
                   ? mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -361,8 +365,8 @@ const BulkImport: React.FC = () => {
         data.table_name = formUpload?.getFieldValue('table_name');
         data.excel_to_sql_mapping = null;
       }
-      setRecords(dummyRecords);
       setLoading(false);
+      setMapping(dummyRecords);
     }
   };
 
@@ -428,13 +432,13 @@ const BulkImport: React.FC = () => {
     };
   }, [dispatch]);
 
-  const callbackProgress = (currentProgress:number) => {
+  const callbackProgress = (currentProgress: number) => {
     dispatch(setExcelColumnsProgress(currentProgress));
   }
 
   const getFileMappingCall = (formData: any) => {
     setRepeatSheetFlag(true);
-    dispatch(getExcelColumns({file: formData, callbackProgress}));
+    dispatch(getExcelColumns({ file: formData, callbackProgress }));
   };
 
   const handleOnChange = (info) => {
@@ -605,16 +609,64 @@ const BulkImport: React.FC = () => {
         });
       });
       const dummy = _.cloneDeep(dummyRecords);
-      const unmapRec = dummy.filter((data) => data.excel_to_sql_mapping !== null);
+      const unmapRec = dummy.filter((data) => data.currentMapping !== null);
       setWithoutUnmappedRecords(unmapRec);
       setRecords(dummyRecords);
     }
   };
 
+  const setMapping = async (dummyRecords = null) => {
+    if(dummyRecords === null){
+      dummyRecords = _.cloneDeep(records);
+    }
+    await dummyRecords.map(async (data) => {
+      if (data && data.table_name !== undefined) {
+        if (data.excel_to_sql_mapping == null) {
+          await commonService.getTableColumns(data.table_name).then((res) => {
+            if (res) {
+              const response: any = res;
+              const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+              let filterExcelColumns: any = data.columns;
+              const filterTableColumns = response?.filter(
+                (x) => !columnsArray.includes(x.name?.toLowerCase())
+              );
+              if (filterExcelColumns?.length >= data.header_row) {
+                filterExcelColumns = filterExcelColumns[data.header_row - 1];
+              }
+              const ExcelColsSorted = [...filterExcelColumns];
+              ExcelColsSorted.sort();
+
+              const initialValuesData: any = {};
+              const sqlToExcelMapping = [];
+              filterTableColumns.map(function (ele) {
+                initialValuesData[ele.name] =
+                  ExcelColsSorted.filter(
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                      ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                  )[0];
+                sqlToExcelMapping.push({
+                  key: `${ele.name}`,
+                  value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
+                });
+              });
+              data.excel_to_sql_mapping = sqlToExcelMapping;
+            }
+          });
+        }
+      }
+    });
+    setRecords(dummyRecords);
+  };
+
   useEffect(() => {
     const dummyRecords = _.cloneDeep(records);
-    const unmapRec = dummyRecords.filter((data) => data.excel_to_sql_mapping !== null);
+    const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null);
     setWithoutUnmappedRecords(unmapRec);
+    setRecordLength(records.length);
+    if (records.length > recordLength) {
+      setMapping();
+    }
   }, [records]);
 
   return (
@@ -670,11 +722,11 @@ const BulkImport: React.FC = () => {
                           showUploadList={false}
                         >
                           <UploadOutlined />
-                          <span className="ant-upload-text"> 
-                          {bulkImports.getExcelColumns.progress === null
-                          ? ' Click or drag file'
-                          : ` Uploading... (${bulkImports.getExcelColumns.progress}%)`
-                          } 
+                          <span className="ant-upload-text">
+                            {bulkImports.getExcelColumns.progress === null
+                              ? ' Click or drag file'
+                              : ` Uploading... (${bulkImports.getExcelColumns.progress}%)`
+                            }
                           </span>
                         </Dragger>
                       </div>
@@ -750,12 +802,13 @@ const BulkImport: React.FC = () => {
                             allowClear
                             optionFilterProp="children"
                             filterOption={(input, option: any) =>
-                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                              option.children?.toString().toLowerCase()?.indexOf(input.toLowerCase()) >= 0
                             }
                             filterSort={(optionA: any, optionB: any) =>
                               optionA.children
-                                ?.toLowerCase()
-                                ?.localeCompare(optionB.children?.toLowerCase())
+                              ?.toString()
+                                .toLowerCase()
+                                ?.localeCompare(optionB.children?.toString().toLowerCase())
                             }
                           >
                             {(bulkImports.getExcelFileMappingLookup.data || [])?.map(
@@ -818,6 +871,7 @@ const BulkImport: React.FC = () => {
               <CkeckDelimiterModal
                 setRecords={setRecords}
                 records={records}
+                setDefaultDelimeter={setDefaultDelimeter}
                 tableName={tableName}
                 showModal={delimitModalShow}
                 handleModalClose={() => {

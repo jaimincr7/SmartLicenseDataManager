@@ -98,10 +98,10 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                       x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                       ele.name?.toLowerCase()?.replace(/\s/g, '')
                   )[0]
-                  :  (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                      return data.key == ele.name;
-                    })[0]?.value
-                    ;
+                  : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                    return data.key == ele.name;
+                  })[0]?.value
+                ;
             });
             form.setFieldsValue(initialValuesData);
           }
@@ -158,7 +158,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             date_added: moment(),
           };
           filterTableColumns.map(function (ele) {
-            const mapRecord = records.filter((x) => x.index == seqNumber) ;
+            const mapRecord = records.filter((x) => x.index == seqNumber);
             initialValuesData[ele.name] =
               filterExcelColumns?.filter(
                 (x: any) =>
@@ -171,9 +171,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
                 )[0]
                 : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                    return data.key == ele.name;
-                  })[0]?.value
-                  ;
+                  return data.key == ele.name;
+                })[0]?.value
+              ;
           });
           form.setFieldsValue(initialValuesData);
         }
@@ -350,7 +350,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             {(tableColumnState || []).map((col, index: number) => (
               <Col xs={24} md={12} lg={12} xl={8} key={index}>
                 <div className="form-group form-inline">
-                  <label className="label">{col.name}</label>
+                  <label className="label">{col.name}{col.is_nullable == 'NO' ? <span style = {{color: 'red'}}> *</span> : ''}</label>
                   <Form.Item
                     name={col.name}
                     className="m-0 w-100"

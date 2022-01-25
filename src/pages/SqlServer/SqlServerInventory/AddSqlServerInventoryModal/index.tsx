@@ -841,14 +841,14 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'data_center']} valuePropName="checked" noStyle>
-                      <Checkbox>Data Center</Checkbox>
+                      <Checkbox>Datacenter</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Data Center'
+                    'Datacenter'
                   )}
                   <Form.Item
                     name="data_center"
-                    label="Data Center"
+                    label="Datacenter"
                     className="m-0"
                     rules={[{ max: 510 }]}
                   >

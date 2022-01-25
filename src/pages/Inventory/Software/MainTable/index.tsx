@@ -1,18 +1,16 @@
-import { Popconfirm } from 'antd';
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import {  Popconfirm } from 'antd';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
-  clearSpsApiJobsMessages,
-  spsApiJobsSelector,
-} from '../../../../store/sps/spsApiJobs/spsApiJobs.reducer';
+  clearSoftwareMessages,
+  softwareSelector,
+} from '../../../../store/inventory/software/software.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import {
-  deleteSpsApiJobs,
-  searchSpsApiJobs,
-} from '../../../../store/sps/spsApiJobs/spsApiJobs.action';
+import { deleteSoftware, searchSoftware } from '../../../../store/inventory/software/software.action';
 import moment from 'moment';
+import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
-import spsApiJobsService from '../../../../services/sps/spsApiJobs/spsApiJobs.service';
+import softwareService from '../../../../services/inventory/software/software.service';
 import {
   FilterByDateSwap,
   FilterByDropdown,
@@ -21,12 +19,20 @@ import {
 import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
-import { Can } from '../../../../common/ability';
+import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const spsApiJobs = useAppSelector(spsApiJobsSelector);
+  const {
+    setSelectedId,
+    setShowSelectedListModal,
+    setValuesForSelection,
+    isMultiple,
+    setFilterKeys,
+    tableButtons,
+  } = props;
+  const software = useAppSelector(softwareSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -39,14 +45,21 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     },
   }));
 
+  useEffect(() => {
+    if (isMultiple) {
+      dataTableRef?.current.getValuesForSelection();
+    }
+  }, [isMultiple]);
+
   const exportExcelFile = (searchData: ISearch) => {
-    return spsApiJobsService.exportExcelFile(searchData);
+    return softwareService.exportExcelFile(searchData);
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
+    setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
-      spsApiJobs.search.tableName,
+      software.search.tableName,
       form,
       null,
       ObjectForColumnFilter
@@ -54,7 +67,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
-    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter, true);
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -77,13 +90,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
               'tenant_id',
-              spsApiJobs.search.lookups?.tenants?.length > 0
-                ? spsApiJobs.search.lookups?.tenants
+              software.search.lookups?.tenants?.length > 0
+                ? software.search.lookups?.tenants
                 : globalFilters?.globalTenantLookup?.data
             ),
             dataIndex: 'tenant_name',
@@ -96,13 +108,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Company Name</span>,
         column: 'CompanyId',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
               'company_id',
-              spsApiJobs.search.lookups?.companies?.length > 0
-                ? spsApiJobs.search.lookups?.companies
+              software.search.lookups?.companies?.length > 0
+                ? software.search.lookups?.companies
                 : globalFilters?.globalCompanyLookup?.data
             ),
             dataIndex: 'company_name',
@@ -115,13 +126,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         title: <span className="dragHandler">Bu Name</span>,
         column: 'BU_Id',
         sorter: true,
-        ellipsis: true,
         children: [
           {
             title: FilterByDropdown(
               'bu_id',
-              spsApiJobs.search.lookups?.bus?.length > 0
-                ? spsApiJobs.search.lookups?.bus
+              software.search.lookups?.bus?.length > 0
+                ? software.search.lookups?.bus
                 : globalFilters?.globalBULookup?.data
             ),
             dataIndex: 'bu_name',
@@ -130,119 +140,107 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-      // {
-      //   title: <span className="dragHandler">Date</span>,
-      //   column: 'Date',
-      //   sorter: true,
-      //   ellipsis: true,
-      //   children: [
-      //     {
-      //       title: FilterByDateSwapTable('date', spsApiJobs.search.tableName, form),
-      //       dataIndex: 'date',
-      //       key: 'date',
-      //       ellipsis: true,
-      //       render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
-      //     },
-      //   ],
-      // },
       {
-        title: <span className="dragHandler">Call Start</span>,
-        column: 'Call Start',
+        title: <span className="dragHandler">Source</span>,
+        column: 'Source',
         sorter: true,
-        ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('call_start', spsApiJobs.search.tableName, form),
-            dataIndex: 'call_start',
-            key: 'call_start',
-            ellipsis: true,
-            render: (date: Date) =>
-              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Call End</span>,
-        column: 'Call End',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterByDateSwapTable('call_end', spsApiJobs.search.tableName, form),
-            dataIndex: 'call_end',
-            key: 'call_end',
-            ellipsis: true,
-            render: (date: Date) =>
-              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">API Call Id</span>,
-        column: 'API_CallId',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterByDropdown('api_call_id', spsApiJobs.search.lookups?.api_calls),
-            dataIndex: 'api_call_name',
-            key: 'api_call_name',
+            title: FilterBySwap('source', form),
+            dataIndex: 'source',
+            key: 'source',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">API Type Id</span>,
-        column: 'API_TypeId',
+        title: <span className="dragHandler">Device Name</span>,
+        column: 'Device Name',
         sorter: true,
-        ellipsis: true,
         children: [
           {
-            title: FilterByDropdown('api_type_id', spsApiJobs.search.lookups?.api_types),
-            dataIndex: 'api_type_name',
-            key: 'api_type_name',
+            title: FilterBySwap('device_name', form),
+            dataIndex: 'device_name',
+            key: 'device_name',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Status</span>,
-        column: 'Status',
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
         sorter: true,
-        ellipsis: true,
         children: [
           {
-            title: FilterBySwap('status', form),
-            dataIndex: 'status',
-            key: 'status',
+            title: FilterByDateSwapTable('date_added', software.search.tableName, form),
+            dataIndex: 'date_added',
+            key: 'date_added',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Publisher</span>,
+        column: 'Publisher',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('publisher', form),
+            dataIndex: 'publisher',
+            key: 'publisher',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Count</span>,
-        column: 'Count',
+        title: <span className="dragHandler">Software Title</span>,
         sorter: true,
-        ellipsis: true,
+        column: 'Software Title',
         children: [
           {
-            title: FilterBySwap('count', form),
-            dataIndex: 'count',
-            key: 'count',
+            title: FilterBySwap('software_title', form),
+            dataIndex: 'software_title',
+            key: 'software_title',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">API Call Count</span>,
-        column: 'API Call Count',
+        title: <span className="dragHandler">Software Version</span>,
+        column: 'Software Version',
         sorter: true,
-        ellipsis: true,
         children: [
           {
-            title: FilterBySwap('api_call_count', form),
-            dataIndex: 'api_call_count',
-            key: 'api_call_count',
+            title: FilterBySwap('software_version', form),
+            dataIndex: 'software_version',
+            key: 'software_version',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Last Scan Date</span>,
+        column: 'Last Scan Date',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('last_scan_date', form),
+            dataIndex: 'last_scan_date',
+            key: 'last_scan_date',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Serial Number</span>,
+        column: 'Serial Number',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('serial_number', form),
+            dataIndex: 'serial_number',
+            key: 'serial_number',
             ellipsis: true,
           },
         ],
@@ -250,37 +248,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     ];
   };
 
-  const removeSpsApiJobs = (id: number) => {
-    dispatch(deleteSpsApiJobs(id));
+  const removeSoftware = (id: number) => {
+    dispatch(deleteSoftware(id));
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Can I={Action.View} a={Page.SpsApiJobs}>
+      <Can I={Action.Update} a={Page.Software}>
         <a
-          title=""
           className="action-btn"
           onClick={() => {
-            //setSelectedId(data.id);
-            history.push(`/sps/sps-api-jobs-data/${data.id}`);
-          }}
-        >
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
-        </a>
-      </Can>
-      <Can I={Action.Update} a={Page.SpsApiJobs}>
-        <a
-          hidden
-          className="action-btn"
-          onClick={() => {
-            //setSelectedId(data.id);
-            history.push(`/sps/sps-api-jobs-data/${data.id}`);
+            setSelectedId(data.id);
+            history.push(`/inventory-module/inventory-software/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.Delete} a={Page.SpsApiJobs}>
-        <Popconfirm title="Delete Record?" onConfirm={() => removeSpsApiJobs(data.id)}>
+      <Can I={Action.Delete} a={Page.Software}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeSoftware(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -293,17 +278,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={false}
-        //setSelectedId={setSelectedId}
+        showAddButton={ability.can(Action.Add, Page.Software)}
+        setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
-        reduxSelector={spsApiJobsSelector}
-        searchTableData={searchSpsApiJobs}
-        clearTableDataMessages={clearSpsApiJobsMessages}
+        reduxSelector={softwareSelector}
+        searchTableData={searchSoftware}
+        clearTableDataMessages={clearSoftwareMessages}
         setTableColumnSelection={setTableColumnSelection}
-        disableRowSelection={true}
+        setShowSelectedListModal={setShowSelectedListModal}
+        setValuesForSelection={setValuesForSelection}
+        showBulkUpdate={ability.can(Action.Update, Page.Software)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        tableButtons={tableButtons}
       />
     </>
   );
