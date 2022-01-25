@@ -58,7 +58,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
-  //const [emptyMappingFlag, setEmptyMappingFlag] = useState<boolean>(false);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
@@ -87,15 +86,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           const sqlToExcelMapping = [];
           filterTableColumns.map(function (ele) {
             initialValuesData[ele.name] =
-            ExcelColsSorted.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                    ele.name?.toLowerCase()?.replace(/\s+/g, '')
-                )[0];
-              sqlToExcelMapping.push({
-                key: `${ele.name}`,
-                value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
-              });
+              ExcelColsSorted.filter(
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
+              )[0];
+            sqlToExcelMapping.push({
+              key: `${ele.name}`,
+              value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
+            });
           });
           data[0].excel_to_sql_mapping = sqlToExcelMapping;
         }
@@ -242,8 +241,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (val.excel_sheet_with_mapping_details.length === 0) {
         toast.info('Some Tab are lacking mapping concerns.')
       } else {
-        if (isMapped)
+        if (isMapped) {
           dispatch(bulkInsert(val));
+        }
       }
     }
   }, [count.save]);
@@ -409,7 +409,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   useEffect(() => {
     const dummyRecords = _.cloneDeep(records);
-    const unmapRec = dummyRecords.filter((data) => data.excel_to_sql_mapping !== null);
+    const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null);
     setWithoutUnmappedRecords(unmapRec);
     return () => {
       setTableColumnState([]);
@@ -604,7 +604,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         let flagMapping = null;
         data.currentMapping = value;
         selectedRecord.show_mapping.map((data1) => {
-            data1.config_excel_column_mappings.map((data2) => {
+          data1.config_excel_column_mappings.map((data2) => {
             if (data2.sheet_name == value) {
               data.key_word = data1?.key_word;
               data.is_public = data1?.is_public;
@@ -616,7 +616,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.excel_to_sql_mapping = flagMapping;
       }
     });
-    const unmapRec = dummyRecord.filter((data) => data.excel_to_sql_mapping !== null);
+    const unmapRec = dummyRecord.filter((data) => data.currentMapping !== null);
     setWithoutUnmappedRecords(unmapRec);
     setRecords(dummyRecord);
     if (value) {
@@ -672,7 +672,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       }
 
       const dummyWithoutRecords = _.cloneDeep(filteredRecords);
-      const unmapRec = dummyWithoutRecords.filter((data) => data.excel_to_sql_mapping !== null);
+      const unmapRec = dummyWithoutRecords.filter((data) => data.currentMapping !== null);
       setWithoutUnmappedRecords(unmapRec);
       setRecords(filteredRecords);
     }
