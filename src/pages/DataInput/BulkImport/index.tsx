@@ -367,6 +367,9 @@ const BulkImport: React.FC = () => {
       }
       setRecords(dummyRecords);
       setLoading(false);
+      setTimeout(() => {
+        setMapping();
+      }, 200);
     }
   };
 
@@ -432,13 +435,13 @@ const BulkImport: React.FC = () => {
     };
   }, [dispatch]);
 
-  const callbackProgress = (currentProgress:number) => {
+  const callbackProgress = (currentProgress: number) => {
     dispatch(setExcelColumnsProgress(currentProgress));
   }
 
   const getFileMappingCall = (formData: any) => {
     setRepeatSheetFlag(true);
-    dispatch(getExcelColumns({file: formData, callbackProgress}));
+    dispatch(getExcelColumns({ file: formData, callbackProgress }));
   };
 
   const handleOnChange = (info) => {
@@ -619,37 +622,39 @@ const BulkImport: React.FC = () => {
     const dummyRecords = _.cloneDeep(records);
     await dummyRecords.map(async (data) => {
       if (data && data.table_name !== undefined) {
-        if(data.excel_to_sql_mapping == null){await commonService.getTableColumns(data.table_name).then((res) => {
-          if (res) {
-            const response: any = res;
-            const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-            let filterExcelColumns: any = data.columns;
-            const filterTableColumns = response?.filter(
-              (x) => !columnsArray.includes(x.name?.toLowerCase())
-            );
-            if (filterExcelColumns?.length >= data.header_row) {
-              filterExcelColumns = filterExcelColumns[data.header_row - 1];
-            }
-            const ExcelColsSorted = [...filterExcelColumns];
-            ExcelColsSorted.sort();
+        if (data.excel_to_sql_mapping == null) {
+          await commonService.getTableColumns(data.table_name).then((res) => {
+            if (res) {
+              const response: any = res;
+              const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+              let filterExcelColumns: any = data.columns;
+              const filterTableColumns = response?.filter(
+                (x) => !columnsArray.includes(x.name?.toLowerCase())
+              );
+              if (filterExcelColumns?.length >= data.header_row) {
+                filterExcelColumns = filterExcelColumns[data.header_row - 1];
+              }
+              const ExcelColsSorted = [...filterExcelColumns];
+              ExcelColsSorted.sort();
 
-            const initialValuesData: any = {};
-            const sqlToExcelMapping = [];
-            filterTableColumns.map(function (ele) {
-              initialValuesData[ele.name] =
-                ExcelColsSorted.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                    ele.name?.toLowerCase()?.replace(/\s+/g, '')
-                )[0];
-              sqlToExcelMapping.push({
-                key: `${ele.name}`,
-                value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
+              const initialValuesData: any = {};
+              const sqlToExcelMapping = [];
+              filterTableColumns.map(function (ele) {
+                initialValuesData[ele.name] =
+                  ExcelColsSorted.filter(
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                      ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                  )[0];
+                sqlToExcelMapping.push({
+                  key: `${ele.name}`,
+                  value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
+                });
               });
-            });
-            data.excel_to_sql_mapping = sqlToExcelMapping;
-          }
-        });}
+              data.excel_to_sql_mapping = sqlToExcelMapping;
+            }
+          });
+        }
       } else {
         toast.warn('Table Name is required for ' + data.original_filename);
       }
@@ -662,7 +667,7 @@ const BulkImport: React.FC = () => {
     const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null);
     setWithoutUnmappedRecords(unmapRec);
     setRecordLength(records.length);
-    if(records.length > recordLength) {
+    if (records.length > recordLength) {
       setMapping();
     }
   }, [records]);
@@ -720,11 +725,11 @@ const BulkImport: React.FC = () => {
                           showUploadList={false}
                         >
                           <UploadOutlined />
-                          <span className="ant-upload-text"> 
-                          {bulkImports.getExcelColumns.progress === null
-                          ? ' Click or drag file'
-                          : ` Uploading... (${bulkImports.getExcelColumns.progress}%)`
-                          } 
+                          <span className="ant-upload-text">
+                            {bulkImports.getExcelColumns.progress === null
+                              ? ' Click or drag file'
+                              : ` Uploading... (${bulkImports.getExcelColumns.progress}%)`
+                            }
                           </span>
                         </Dragger>
                       </div>

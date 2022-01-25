@@ -380,16 +380,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   }, [bulkImports.getTables.data, table]);
 
-  useEffect(() => {
-    if (!table && innerFormUpload?.getFieldValue('table_name')) {
-      innerFormUpload?.setFieldsValue({ table_name: undefined });
-      setTableColumnState([]);
-      innerFormUpload.resetFields(['upload_file', 'sheet_name', 'header_row']);
-      //setExcelColumns(null);
-      setTableColumns(null);
-    }
-  }, [table]);
-
   const previewData = (csvFlag: boolean, headerValue = 0) => {
     const dummyRecords = csvFlag
       ? bulkImports.getCSVExcelColumns.data[0].excel_sheet_columns[0].columns
