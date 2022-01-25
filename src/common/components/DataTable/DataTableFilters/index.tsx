@@ -22,7 +22,8 @@ export const FilterByDateSwap = (
   tableName: string,
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
-  ObjectForColumnFilter?: {}
+  ObjectForColumnFilter?: {},
+  disableSwitch?: boolean,
 ) => {
   const [dropSearch, setDropSearch] = React.useState(false);
 
@@ -119,7 +120,7 @@ export const FilterByDateSwap = (
         ) : (
           FilterByDropdown(dataIndex, options || [], loading, handleDropSearch, true)
         )}
-        <Button
+        {disableSwitch === true ? (<></>) : (<Button
           onClick={() => {
             if (form.getFieldValue(dataIndex)) {
               form.setFieldsValue({ [dataIndex]: undefined });
@@ -134,7 +135,7 @@ export const FilterByDateSwap = (
             alt=""
             className="ovarlap"
           />
-        </Button>
+        </Button>)}
       </div>
     </>
   );
