@@ -3,10 +3,8 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
-import { IInlineSearch } from '../../../common/models/common';
 import commonService from '../../../services/common/common.service';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
-import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import { IMappingColumnProps } from './MappingColumn.model';
 import _ from 'lodash';
 import moment from 'moment';
@@ -30,7 +28,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     isPublic: is_public ? is_public : false,
     date_added: moment(date),
   };
-  const globalFilters = useAppSelector(globalSearchSelector);
   const dispatch = useAppDispatch();
   const bulkImport = useAppSelector(bulkImportSelector);
 
@@ -38,6 +35,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [excelColumns, setExcelColumns] = useState(null);
   const [loadingTableColumns, setLoadingTableColumns] = useState<boolean>(false);
   const [mappingSeq, setMappingSeq] = useState(null);
+  const [tableColumns, setTableColumns] = useState(null);
   const [localMapping, setLocalMapping] = useState<boolean>(true);
 
   useEffect(() => {
@@ -76,6 +74,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             const filterTableColumns = response?.filter(
               (x) => !columnsArray.includes(x.name?.toLowerCase())
             );
+            setTableColumns(filterTableColumns);
             if (filterExcelColumns?.length >= skipRows) {
               filterExcelColumns = filterExcelColumns[skipRows];
             }
@@ -115,72 +114,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   }, [record.table_name, record.header_row, record.excel_to_sql_mapping]);
 
   useEffect(() => {
-    if (record.table_name) {
-      setLoadingTableColumns(true);
-      commonService.getTableColumns(record.table_name).then((res) => {
-        if (res) {
-          const response: any = res;
-          const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-          let filterExcelColumns: any = record.columns;
-          const filterTableColumns = response?.filter(
-            (x) => !columnsArray.includes(x.name?.toLowerCase())
-          );
-          if (filterExcelColumns?.length >= skipRows) {
-            filterExcelColumns = filterExcelColumns[skipRows];
-          }
-          const ExcelColsSorted = [...filterExcelColumns];
-          ExcelColsSorted.sort();
-          setExcelColumns(ExcelColsSorted);
-          setTableColumnState(filterTableColumns);
-
-          const globalSearch: IInlineSearch = {};
-          for (const key in globalFilters.search) {
-            const element = globalFilters.search[key];
-            globalSearch[key] = element ? [element] : null;
-          }
-
-          const initialValuesData: any = {
-            tenant_id: _.isNull(globalSearch.tenant_id)
-              ? null
-              : globalSearch.tenant_id === undefined
-                ? null
-                : globalSearch?.tenant_id[0],
-            bu_id: _.isNull(globalSearch.bu_id)
-              ? null
-              : globalSearch.bu_id === undefined
-                ? null
-                : globalSearch?.bu_id[0],
-            company_id: _.isNull(globalSearch.company_id)
-              ? null
-              : globalSearch.company_id === undefined
-                ? null
-                : globalSearch?.company_id[0],
-            date_added: moment(),
-          };
-          filterTableColumns.map(function (ele) {
-            const mapRecord = records.filter((x) => x.index == seqNumber);
-            initialValuesData[ele.name] =
-              filterExcelColumns?.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s/g, '')
-              ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
-                ? filterExcelColumns.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                    ele.name?.toLowerCase()?.replace(/\s/g, '')
-                )[0]
-                : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                  return data.key == ele.name;
-                })[0]?.value
-              ;
-          });
-          form.setFieldsValue(initialValuesData);
-        }
-        setLoadingTableColumns(false);
-      });
-    } else {
-      setTableColumnState([]);
+    return () => {
+      setTableColumns(null);
     }
   }, []);
 
@@ -196,7 +131,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     const fieldValues = { ...form.getFieldsValue() };
     delete fieldValues.file_name;
     delete fieldValues.file_type;
-    delete fieldValues.is_public;
+    delete fieldValues.isPublic;
     delete fieldValues.date_added;
     const sqlToExcelMapping = [];
     Object.entries(fieldValues).forEach(([key, value]) => {
@@ -237,25 +172,31 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   };
 
   const setMappingRecords = () => {
+    let validation = false;
     setLocalMapping(false);
     const fieldValues = { ...form.getFieldsValue() };
     delete fieldValues.file_name;
     delete fieldValues.file_type;
-    delete fieldValues.is_public;
+    delete fieldValues.isPublic;
     delete fieldValues.date_added;
     const sqlToExcelMapping = [];
     Object.entries(fieldValues).forEach(([key, value]) => {
-      if (key && value) {
         sqlToExcelMapping.push({
           key: `${key}`,
-          value: `${value}`,
+          value: value === undefined ? '' : `${value}`,
         });
+    });
+    tableColumns.map((ele) => {
+      const name = sqlToExcelMapping.filter((data) => data.key.toLowerCase() == ele.name.toLowerCase())[0];
+      if (ele.is_nullable == 'NO' && name.value == '') {
+        validation = true;
       }
     });
     const dummyrecords = [...records];
     dummyrecords.map((data) => {
       if (data.index == seqNumber) {
         data.excel_to_sql_mapping = sqlToExcelMapping;
+        data.validation = validation;
       }
     });
     setRecords(dummyrecords);
@@ -350,7 +291,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             {(tableColumnState || []).map((col, index: number) => (
               <Col xs={24} md={12} lg={12} xl={8} key={index}>
                 <div className="form-group form-inline">
-                  <label className="label">{col.name}{col.is_nullable == 'NO' ? <span style = {{color: 'red'}}> *</span> : ''}</label>
+                  <label className="label">{col.name}{col.is_nullable == 'NO' ? <span style={{ color: 'red' }}> *</span> : ''}</label>
                   <Form.Item
                     name={col.name}
                     className="m-0 w-100"

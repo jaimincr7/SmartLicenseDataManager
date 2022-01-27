@@ -91,6 +91,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                   x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s+/g, '')
               )[0];
+            data[0].validation = ele.is_nullable && initialValuesData[ele.name] == undefined ? true : data[0].validation;
             sqlToExcelMapping.push({
               key: `${ele.name}`,
               value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
@@ -174,7 +175,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       let isMapped = true;
       if (hideUnmapped === false && withoutUnmappedRecords.length) {
         withoutUnmappedRecords.map((data) => {
-          if (data.excel_to_sql_mapping) {
+          if (data.excel_to_sql_mapping && data.validation !== true) {
             data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
           } else {
             isMapped = false;
@@ -196,7 +197,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         });
       } else {
         records.map((data) => {
-          if (data.excel_to_sql_mapping) {
+          if (data.excel_to_sql_mapping && data.validation !== true) {
             data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
           } else {
             isMapped = false;

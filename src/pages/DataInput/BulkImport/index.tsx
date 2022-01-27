@@ -616,7 +616,7 @@ const BulkImport: React.FC = () => {
   };
 
   const setMapping = async (dummyRecords = null) => {
-    if(dummyRecords === null){
+    if (dummyRecords === null) {
       dummyRecords = _.cloneDeep(records);
     }
     await dummyRecords.map(async (data) => {
@@ -645,6 +645,7 @@ const BulkImport: React.FC = () => {
                       x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
                       ele.name?.toLowerCase()?.replace(/\s+/g, '')
                   )[0];
+                data.validation = ele.is_nullable && initialValuesData[ele.name] == undefined ? true : data.validation;
                 sqlToExcelMapping.push({
                   key: `${ele.name}`,
                   value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
@@ -806,7 +807,7 @@ const BulkImport: React.FC = () => {
                             }
                             filterSort={(optionA: any, optionB: any) =>
                               optionA.children
-                              ?.toString()
+                                ?.toString()
                                 .toLowerCase()
                                 ?.localeCompare(optionB.children?.toString().toLowerCase())
                             }
