@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { IScheduleDate } from '../services/common/common.model';
+import { Moment } from 'moment';
+import { Common } from './constants/common';
 
 export const getPageHeight = () => {
   const header = document.querySelector('.header')?.clientHeight;
@@ -72,3 +74,27 @@ export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
   };
   return getDataScheduleDate;
 };
+
+export const passDateToApi = (date: Moment | string, isTime?: boolean) => {
+  if(isTime) {
+    return moment(date).format(Common.DATETIMEFORMAT);
+  } else {
+    return moment(date).format(Common.DATEFORMAT);
+  }
+};
+
+export const showDateFromApi = (date: Moment | string, isTime?: boolean) => {
+  if(isTime) {
+    return moment(date).utc().format(Common.DATETIMEFORMAT);
+  } else {
+    return moment(date).utc().format(Common.DATEFORMAT);
+  }
+};
+
+export const forEditModal = (date: Moment | string) => {
+    return moment(date).utc();
+};
+
+export const forDisableDate = () => {
+  return moment().endOf('day');
+}

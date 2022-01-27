@@ -44,7 +44,7 @@ import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forDisableDate, forEditModal, getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -97,6 +97,9 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
       ...values,
       id: id ? +id : null,
     };
+    inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date,true);
+    inputValues.last_activated_date = passDateToApi(inputValues.last_activated_date,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveO365ActivationsUserDetail(inputValues));
     } else {
@@ -137,7 +140,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
 
   const disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current > moment().endOf('day');
+    return current && current > forDisableDate();
   };
 
   const fillValuesOnEdit = async (data: IO365ActivationsUserDetail) => {
@@ -154,14 +157,14 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         report_refresh_date: _.isNull(data.report_refresh_date)
           ? null
-          : moment(data.report_refresh_date),
+          : forEditModal(data.report_refresh_date),
         user_principal_name: data.user_principal_name,
         display_name: data.display_name,
         product_type: data.product_type,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         last_activated_date: _.isNull(data.last_activated_date)
           ? null
-          : moment(data.last_activated_date),
+          : forEditModal(data.last_activated_date),
         window: data.window,
         mac: data.mac,
         windows_10_mobile: data.windows_10_mobile,
@@ -420,7 +423,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
                     'Report Refresh Date'
                   )}
                   <Form.Item name="report_refresh_date" label="Report Refresh Date" className="m-0">
-                    <DatePicker className="form-control w-100" />
+                    <DatePicker className="form-control w-100" showTime/>
                   </Form.Item>
                 </div>
               </Col>
