@@ -91,7 +91,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                   x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
                   ele.name?.toLowerCase()?.replace(/\s+/g, '')
               )[0];
-            data[0].validation = ele.is_nullable && initialValuesData[ele.name] == undefined ? true : data[0].validation;
+            data[0].validation = ele.is_nullable == "NO" && initialValuesData[ele.name] == undefined ? true : data[0].validation;
             sqlToExcelMapping.push({
               key: `${ele.name}`,
               value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
