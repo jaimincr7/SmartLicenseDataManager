@@ -15,6 +15,7 @@ import {
   clearSaveExcelData,
 } from '../../../store/bulkImport/bulkImport.reducer';
 import { Common } from '../../../common/constants/common';
+import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
@@ -162,7 +163,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       ],
     };
 
-    dispatch(saveExcelFileMapping(excelMappingObj));
+    if(record.validation) {
+      toast.warn('Please check required Fields once');
+    } else {
+      dispatch(saveExcelFileMapping(excelMappingObj));
+    }
   };
 
   const onFinish = (values: any) => {
