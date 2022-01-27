@@ -41,10 +41,9 @@ import {
 } from '../../../../store/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.action';
 import { IO365ActivationsUserDetail } from '../../../../services/o365/o365ActivationsUserDetail/o365ActivationsUserDetail.model';
 import { validateMessages } from '../../../../common/constants/common';
-import moment from 'moment';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { forDisableDate, forEditModal, getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
+import { forDisableDate, forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -89,7 +88,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
     android: null,
     activated_on_shared_computer: false,
     tenant_id: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
