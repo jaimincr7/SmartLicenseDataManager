@@ -423,7 +423,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
                     'Report Refresh Date'
                   )}
                   <Form.Item name="report_refresh_date" label="Report Refresh Date" className="m-0">
-                    <DatePicker className="form-control w-100" showTime/>
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
