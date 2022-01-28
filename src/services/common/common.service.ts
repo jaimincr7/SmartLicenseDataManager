@@ -106,6 +106,20 @@ class CommonService {
     });
   }
 
+  public async getSoftwareNormalizationLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-software-normalization/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async getOSNormalizationLookup(): Promise<IApiResponse<ILookup>> {
+    const url = `/cmdb-os-normalization/lookup`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getAgreementTypesLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/agreement-types/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

@@ -65,6 +65,14 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  softwareNormalizationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
+  osNormalizationLookup: {
+    data: ILookup[];
+    loading: boolean;
+  };
   agreementTypesLookup: {
     data: ILookup[];
     loading: boolean;
