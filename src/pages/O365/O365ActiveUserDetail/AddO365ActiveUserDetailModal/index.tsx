@@ -216,7 +216,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
         share_point_license_assign_date: _.isNull(data.share_point_license_assign_date)
           ? null
           : forEditModal(data.share_point_license_assign_date),
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
         skype_for_business_license_assign_date: _.isNull(
           data.skype_for_business_license_assign_date
         )
