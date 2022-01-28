@@ -169,7 +169,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
           : forEditModal(data.last_activity_date),
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
         item_count: data.item_count,
         storage_used_byte: data.storage_used_byte,
         issue_warning_quota_byte: data.issue_warning_quota_byte,
