@@ -177,7 +177,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
-            render: (date: Moment) => (!_.isNull(date) ? showDateFromApi(date,true) : ''),
+            render: (date: Moment) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
