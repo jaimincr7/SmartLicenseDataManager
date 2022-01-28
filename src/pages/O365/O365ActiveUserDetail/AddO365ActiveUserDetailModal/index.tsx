@@ -40,10 +40,9 @@ import {
 } from '../../../../store/o365/o365ActiveUserDetail/o365ActiveUserDetail.action';
 import { IO365ActiveUserDetail } from '../../../../services/o365/o365ActiveUserDetail/o365ActiveUserDetail.model';
 import { validateMessages } from '../../../../common/constants/common';
-import moment from 'moment';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forDisableDate, forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -100,7 +99,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
     yammer_license_assign_date: null,
     teams_license_assign_date: null,
     assigned_products: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -108,6 +107,20 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
       ...values,
       id: id ? +id : null,
     };
+    inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date, true);
+    inputValues.exchange_last_activity_date = passDateToApi(inputValues.exchange_last_activity_date, true);
+    inputValues.one_drive_last_activity_date = passDateToApi(inputValues.one_drive_last_activity_date, true);
+    inputValues.share_point_last_activity_date = passDateToApi(inputValues.share_point_last_activity_date, true);
+    inputValues.skype_for_business_last_activity_date = passDateToApi(inputValues.skype_for_business_last_activity_date, true);
+    inputValues.yammer_last_activity_date = passDateToApi(inputValues.yammer_last_activity_date, true);
+    inputValues.teams_last_activity_date = passDateToApi(inputValues.teams_last_activity_date, true);
+    inputValues.exchange_license_assign_date = passDateToApi(inputValues.exchange_license_assign_date, true);
+    inputValues.one_drive_license_assign_date = passDateToApi(inputValues.one_drive_license_assign_date, true);
+    inputValues.share_point_license_assign_date = passDateToApi(inputValues.share_point_license_assign_date, true);
+    inputValues.skype_for_business_license_assign_date = passDateToApi(inputValues.skype_for_business_license_assign_date, true);
+    inputValues.yammer_license_assign_date = passDateToApi(inputValues.yammer_license_assign_date, true);
+    inputValues.teams_license_assign_date = passDateToApi(inputValues.teams_license_assign_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveO365ActiveUserDetail(inputValues));
     } else {
@@ -148,7 +161,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
 
   const disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current > moment().endOf('day');
+    return current && current > forDisableDate();
   };
 
   const fillValuesOnEdit = async (data: IO365ActiveUserDetail) => {
@@ -165,7 +178,7 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         report_refresh_date: _.isNull(data.report_refresh_date)
           ? null
-          : moment(data.report_refresh_date),
+          : forEditModal(data.report_refresh_date),
         user_principal_name: data.user_principal_name,
         display_name: data.display_name,
         is_deleted: data.is_deleted,
@@ -178,43 +191,43 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
         has_teams_license: data.has_teams_license,
         exchange_last_activity_date: _.isNull(data.exchange_last_activity_date)
           ? null
-          : moment(data.exchange_last_activity_date),
+          : forEditModal(data.exchange_last_activity_date),
         one_drive_last_activity_date: _.isNull(data.one_drive_last_activity_date)
           ? null
-          : moment(data.one_drive_last_activity_date),
+          : forEditModal(data.one_drive_last_activity_date),
         share_point_last_activity_date: _.isNull(data.share_point_last_activity_date)
           ? null
-          : moment(data.share_point_last_activity_date),
+          : forEditModal(data.share_point_last_activity_date),
         skype_for_business_last_activity_date: _.isNull(data.skype_for_business_last_activity_date)
           ? null
-          : moment(data.skype_for_business_last_activity_date),
+          : forEditModal(data.skype_for_business_last_activity_date),
         yammer_last_activity_date: _.isNull(data.yammer_last_activity_date)
           ? null
-          : moment(data.yammer_last_activity_date),
+          : forEditModal(data.yammer_last_activity_date),
         teams_last_activity_date: _.isNull(data.teams_last_activity_date)
           ? null
-          : moment(data.teams_last_activity_date),
+          : forEditModal(data.teams_last_activity_date),
         exchange_license_assign_date: _.isNull(data.exchange_license_assign_date)
           ? null
-          : moment(data.exchange_license_assign_date),
+          : forEditModal(data.exchange_license_assign_date),
         one_drive_license_assign_date: _.isNull(data.one_drive_license_assign_date)
           ? null
-          : moment(data.one_drive_license_assign_date),
+          : forEditModal(data.one_drive_license_assign_date),
         share_point_license_assign_date: _.isNull(data.share_point_license_assign_date)
           ? null
-          : moment(data.share_point_license_assign_date),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+          : forEditModal(data.share_point_license_assign_date),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         skype_for_business_license_assign_date: _.isNull(
           data.skype_for_business_license_assign_date
         )
           ? null
-          : moment(data.skype_for_business_license_assign_date),
+          : forEditModal(data.skype_for_business_license_assign_date),
         yammer_license_assign_date: _.isNull(data.yammer_license_assign_date)
           ? null
-          : moment(data.yammer_license_assign_date),
+          : forEditModal(data.yammer_license_assign_date),
         teams_license_assign_date: _.isNull(data.teams_last_activity_date)
           ? null
-          : moment(data.teams_last_activity_date),
+          : forEditModal(data.teams_last_activity_date),
         assigned_products: data.assigned_products,
       };
       form.setFieldsValue(initialValues);
@@ -347,15 +360,15 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -387,15 +400,15 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -427,15 +440,15 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>

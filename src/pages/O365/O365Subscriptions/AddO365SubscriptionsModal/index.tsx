@@ -11,13 +11,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IO365Subscriptions } from '../../../../services/o365/o365Subscriptions/o365Subscriptions.model';
@@ -83,7 +82,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
     price: null,
     currency_id: null,
     valid_qty: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -91,6 +90,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveO365Subscriptions(inputValues));
     } else {
@@ -144,7 +144,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
         license_id: _.isNull(data.license_id) ? null : data.license_id,
         price: data.price,
         currency_id: _.isNull(data.currency_id) ? null : data.currency_id,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         valid_qty: data.valid_qty,
       };
       form.setFieldsValue(initialValues);

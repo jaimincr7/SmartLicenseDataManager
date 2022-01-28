@@ -41,10 +41,9 @@ import {
 } from '../../../../store/o365/o365M365AppsUsageUserDetail/o365M365AppsUsageUserDetail.action';
 import { IO365M365AppsUsageUserDetail } from '../../../../services/o365/o365M365AppsUsageUserDetail/o365M365AppsUsageUserDetail.model';
 import { validateMessages } from '../../../../common/constants/common';
-import moment from 'moment';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forDisableDate, forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -119,7 +118,7 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
     is_active_on_power_point_web: false,
     is_active_on_one_note_web: false,
     is_active_on_teams_web: false,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -127,6 +126,10 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
       ...values,
       id: id ? +id : null,
     };
+    inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date,true);
+    inputValues.last_activity_date = passDateToApi(inputValues.last_activity_date,true);
+    inputValues.last_activation_date = passDateToApi(inputValues.last_activation_date,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveO365M365AppsUsageUserDetail(inputValues));
     } else {
@@ -167,7 +170,7 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
 
   const disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current > moment().endOf('day');
+    return current && current > forDisableDate();
   };
 
   const fillValuesOnEdit = async (data: IO365M365AppsUsageUserDetail) => {
@@ -184,16 +187,16 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         report_refresh_date: _.isNull(data.report_refresh_date)
           ? null
-          : moment(data.report_refresh_date),
+          : forEditModal(data.report_refresh_date),
         user_principal_name: data.user_principal_name,
 
         last_activation_date: _.isNull(data.last_activation_date)
           ? null
-          : moment(data.last_activation_date),
+          : forEditModal(data.last_activation_date),
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
-          : moment(data.last_activity_date),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+          : forEditModal(data.last_activity_date),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         report_period: data.report_period,
         is_active_on_windows: data.is_active_on_windows,
         is_active_on_mac: data.is_active_on_mac,

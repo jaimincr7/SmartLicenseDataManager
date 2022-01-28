@@ -85,7 +85,7 @@ export const passDateToApi = (date: Moment | string, isTime?: boolean) => {
   }
 };
 
-export const showDateFromApi = (date: Moment | string, isTime?: boolean) => {
+export const showDateFromApi = (date: Moment | string | Date, isTime?: boolean) => {
   if(isTime) {
     return moment(date).utc().format(Common.DATETIMEFORMAT);
   } else {
@@ -97,10 +97,10 @@ export const forEditModal = (date: Moment | string) => {
     return moment(date).utc();
 };
 
-export const forDisableDate = () => {
-  return moment().endOf('day');
-};
-
 export const getSimpleDate = () => {
   return moment();
+};
+
+export const forDisableDate = () => {
+  return moment().endOf('day');
 };

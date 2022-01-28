@@ -42,10 +42,9 @@ import { IO365Reservations } from '../../../../services/o365/o365Reservations/o3
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
-import moment from 'moment';
 
 const { Option } = Select;
 
@@ -86,7 +85,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
     usage_date: '',
     usage_country: '',
     status: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -94,6 +93,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveO365Reservations(inputValues));
     } else {
@@ -144,7 +144,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         reservation_id: data.reservation_id,
         license_id: data.license_id,
         organization: data.organization,
