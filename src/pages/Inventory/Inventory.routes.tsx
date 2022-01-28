@@ -4,6 +4,7 @@ import ability from '../../common/ability';
 import { Action, Page } from '../../common/constants/pageAction';
 import Device from './Device';
 import DeviceState from './DeviceState';
+import Hardware from './Hardware';
 import Inventory from './Inventory';
 import Software from './Software';
 
@@ -35,6 +36,14 @@ const InventoryRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.Software) && (
           <Route exact path={`${match.path}/inventory-software/:id`} component={Software} />
+        )}
+
+        {/* Hardware */}
+        {ability.can(Action.View, Page.Hardware) && (
+          <Route exact path={`${match.path}/inventory-hardware`} component={Hardware} />
+        )}
+        {ability.can(Action.View, Page.Hardware) && (
+          <Route exact path={`${match.path}/inventory-hardware/:id`} component={Hardware} />
         )}
 
         {/* Devices State */}

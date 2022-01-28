@@ -1,9 +1,7 @@
 import { Checkbox, Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import moment from 'moment';
 import { AlignType } from 'rc-table/lib/interface';
-import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
   FilterByBooleanDropDown,
@@ -27,6 +25,7 @@ import {
 } from '../../../../store/o365/o365MailboxUsage/o365MailboxUsage.reducer';
 import o365MailboxUsageService from '../../../../services/o365/o365MailboxUsage/o365MailboxUsage.service';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { showDateFromApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -155,7 +154,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -199,7 +198,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -213,7 +212,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'created_date',
             key: 'created_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -244,7 +243,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'last_activity_date',
             key: 'last_activity_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },

@@ -13,13 +13,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forDisableDate, forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IO365MailboxUsage } from '../../../../services/o365/o365MailboxUsage/o365MailboxUsage.model';
@@ -92,7 +91,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
     deleted_item_count: null,
     deleted_item_size_byte: null,
     report_period: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -100,6 +99,10 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
       ...values,
       id: id ? +id : null,
     };
+    inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date, true);
+    inputValues.last_activity_date = passDateToApi(inputValues.last_activity_date, true);
+    inputValues.created_date = passDateToApi(inputValues.created_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveO365MailboxUsage(inputValues));
     } else {
@@ -140,7 +143,7 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
 
   const disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current > moment().endOf('day');
+    return current && current > forDisableDate();
   };
 
   const fillValuesOnEdit = async (data: IO365MailboxUsage) => {
@@ -157,16 +160,16 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         report_refresh_date: _.isNull(data.report_refresh_date)
           ? null
-          : moment(data.report_refresh_date),
+          : forEditModal(data.report_refresh_date),
         user_principal_name: data.user_principal_name,
         display_name: data.display_name,
         is_deleted: data.is_deleted,
         deleted_date: data.deleted_date,
-        created_date: _.isNull(data.created_date) ? null : moment(data.created_date),
+        created_date: _.isNull(data.created_date) ? null : forEditModal(data.created_date),
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
-          : moment(data.last_activity_date),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+          : forEditModal(data.last_activity_date),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         item_count: data.item_count,
         storage_used_byte: data.storage_used_byte,
         issue_warning_quota_byte: data.issue_warning_quota_byte,
@@ -306,15 +309,15 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -346,15 +349,15 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -386,15 +389,15 @@ const AddO365MailboxUsageModal: React.FC<IAddO365MailboxUsageProps> = (props) =>
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>

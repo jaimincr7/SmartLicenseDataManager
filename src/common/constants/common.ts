@@ -2,7 +2,8 @@ import { IDropDownOption } from './../models/common';
 import { Messages } from './messages';
 
 export const Common = {
-  DATEFORMAT: 'yyyy-MM-DD',
+  DATEFORMAT: 'YYYY-MM-DD',
+  DATETIMEFORMAT: 'YYYY-MM-DD HH:mm:ss',
 };
 
 export const DEFAULT_PAGE_SIZE = 10;

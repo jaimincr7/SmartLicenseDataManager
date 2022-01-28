@@ -146,6 +146,38 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Software Normalization</span>,
+        column: 'SoftwareNormalizationId',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'software_normalization_id',
+                 inventory.search.lookups?.software_normalizations
+            ),
+            dataIndex: 'software_normalization',
+            key: 'software_normalization',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Operating System Normalization</span>,
+        column: 'OperatingSystemNormalizationId',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDropdown(
+              'operating_system_normalization_id',
+                inventory.search.lookups?.operating_system_normalizations
+            ),
+            dataIndex: 'operating_system_normalization',
+            key: 'operating_system_normalization',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Source</span>,
         column: 'Source',
         sorter: true,
@@ -403,6 +435,71 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterBySwap('last_sw_scan', form),
             dataIndex: 'last_sw_scan',
             key: 'last_sw_scan',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">OS</span>,
+        column: 'OS',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('os', form),
+            dataIndex: 'os',
+            key: 'os',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Instance Count</span>,
+        column: 'Instance Count',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('instance_count', form),
+            dataIndex: 'instance_count',
+            key: 'instance_count',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Quantity</span>,
+        column: 'Quantity',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('quantity', form),
+            dataIndex: 'quantity',
+            key: 'quantity',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Exclude</span>,
+        column: 'Exclude',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('exclude', form),
+            dataIndex: 'exclude',
+            key: 'exclude',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">On Server</span>,
+        column: 'On Server',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('on_server', form),
+            dataIndex: 'on_server',
+            key: 'on_server',
             ellipsis: true,
           },
         ],

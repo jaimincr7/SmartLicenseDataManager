@@ -4,6 +4,7 @@ import {
   Col,
   DatePicker,
   Form,
+  Input,
   InputNumber,
   Modal,
   Row,
@@ -11,21 +12,20 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
+import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
-import { IO365Subscriptions } from '../../../../services/o365/o365Subscriptions/o365Subscriptions.model';
+import { IHardware } from '../../../../services/inventory/hardware/hardware.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
   getCompanyLookup,
-  getCurrencyLookup,
-  getO365ProductsLookup,
   getTenantLookup,
   updateMultiple,
 } from '../../../../store/common/common.action';
@@ -36,21 +36,18 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { saveHardware, getHardwareById } from '../../../../store/inventory/hardware/hardware.action';
 import {
-  getO365SubscriptionsById,
-  saveO365Subscriptions,
-} from '../../../../store/o365/o365Subscriptions/o365Subscriptions.action';
-import {
-  clearO365SubscriptionsGetById,
-  clearO365SubscriptionsMessages,
-  o365SubscriptionsSelector,
-} from '../../../../store/o365/o365Subscriptions/o365Subscriptions.reducer';
-import { IAddO365SubscriptionsProps } from './addO365Subscriptions.model';
+  hardwareSelector,
+  clearHardwareMessages,
+  clearHardwareGetById,
+} from '../../../../store/inventory/hardware/hardware.reducer';
+import { IAddHardwareProps } from './addHardware.model';
 
 const { Option } = Select;
 
-const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) => {
-  const o365Subscriptions = useAppSelector(o365SubscriptionsSelector);
+const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
+  const hardware = useAppSelector(hardwareSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -58,46 +55,52 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
   const { id, showModal, handleModalClose, refreshDataTable, isMultiple, valuesForSelection } =
     props;
 
-  const isNew: boolean = id || commonLookups.save.loading ? false : true;
+  const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '}
-        <BreadCrumbs pageName={Page.O365Subscriptions} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Hardware} level={1} />
       </>
     );
   }, [isNew]);
-
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
   }, [isNew]);
 
   const [form] = Form.useForm();
 
-  let initialValues: IO365Subscriptions = {
+  let initialValues: IHardware = {
     tenant_id: null,
     company_id: null,
     bu_id: null,
-    license_id: null,
-    price: null,
-    currency_id: null,
-    valid_qty: null,
-    date_added: getSimpleDate(),
+    source: '',
+    device_name: '',
+    serial_number: '',
+    last_scan_date: '',
+    manufacturer: '',
+    model: '',
+    operating_system: '',
+    processor_type: '',
+    number_of_processors: null,
+    cores_per_processor: null,
+    last_logged_on_user: '',
+    location: '',
+    is_virtual: '',
+    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
-    const inputValues: IO365Subscriptions = {
+    const inputValues: IHardware = {
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
-      dispatch(saveO365Subscriptions(inputValues));
+      dispatch(saveHardware(inputValues));
     } else {
       const result = getObjectForUpdateMultiple(
         valuesForSelection,
         inputValues,
-        o365Subscriptions.search.tableName
+        hardware.search.tableName
       );
       if (result) {
         dispatch(updateMultiple(result));
@@ -129,7 +132,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
     form.setFieldsValue({ bu_id: buId });
   };
 
-  const fillValuesOnEdit = async (data) => {
+  const fillValuesOnEdit = async (data: IHardware) => {
     if (data.tenant_id) {
       await dispatch(getCompanyLookup(data.tenant_id));
     }
@@ -141,28 +144,37 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-        license_id: _.isNull(data.license_id) ? null : data.license_id,
-        price: data.price,
-        currency_id: _.isNull(data.currency_id) ? null : data.currency_id,
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
-        valid_qty: data.valid_qty,
+        source: data.source,
+        device_name: data.device_name,
+        serial_number: data.serial_number,
+        last_scan_date: data.last_scan_date,
+        manufacturer: data.manufacturer,
+        model: data.model,
+        operating_system: data.operating_system,
+        processor_type: data.processor_type,
+        number_of_processors: _.isNull(data.number_of_processors) ? null : data.number_of_processors,
+        cores_per_processor: _.isNull(data.cores_per_processor) ? null : data.cores_per_processor,
+        last_logged_on_user: data.last_logged_on_user,
+        location: data.location,
+        is_virtual: data.is_virtual,
+        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
   };
 
   useEffect(() => {
-    if (o365Subscriptions.save.messages.length > 0) {
-      if (o365Subscriptions.save.hasErrors) {
-        toast.error(o365Subscriptions.save.messages.join(' '));
+    if (hardware.save.messages.length > 0) {
+      if (hardware.save.hasErrors) {
+        toast.error(hardware.save.messages.join(' '));
       } else {
-        toast.success(o365Subscriptions.save.messages.join(' '));
+        toast.success(hardware.save.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearO365SubscriptionsMessages());
+      dispatch(clearHardwareMessages());
     }
-  }, [o365Subscriptions.save.messages]);
+  }, [hardware.save.messages]);
 
   useEffect(() => {
     if (commonLookups.save.messages.length > 0) {
@@ -178,23 +190,21 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
   }, [commonLookups.save.messages]);
 
   useEffect(() => {
-    if (+id > 0 && o365Subscriptions.getById.data) {
-      const data = o365Subscriptions.getById.data;
+    if (+id > 0 && hardware.getById.data) {
+      const data = hardware.getById.data;
       fillValuesOnEdit(data);
     }
-  }, [o365Subscriptions.getById.data]);
+  }, [hardware.getById.data]);
 
   useEffect(() => {
     if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
-    dispatch(getCurrencyLookup());
-    dispatch(getO365ProductsLookup());
     if (+id > 0) {
-      dispatch(getO365SubscriptionsById(+id));
+      dispatch(getHardwareById(+id));
     }
     return () => {
-      dispatch(clearO365SubscriptionsGetById());
+      dispatch(clearHardwareGetById());
       dispatch(clearCompanyLookUp());
       dispatch(clearBULookUp());
     };
@@ -234,14 +244,14 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
         onCancel={handleModalClose}
         footer={false}
       >
-        {o365Subscriptions.getById.loading ? (
+        {hardware.getById.loading ? (
           <div className="spin-loader">
-            <Spin spinning={o365Subscriptions.getById.loading} />
+            <Spin spinning={hardware.getById.loading} />
           </div>
         ) : (
           <Form
             form={form}
-            name="addO365Subscriptions"
+            name="addHardware"
             initialValues={initialValues}
             onFinish={onFinish}
             validateMessages={validateMessages}
@@ -264,7 +274,6 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
                   >
                     <Select
                       onChange={handleTenantChange}
-                      loading={commonLookups.tenantLookup.loading}
                       allowClear
                       showSearch
                       optionFilterProp="children"
@@ -276,18 +285,19 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
+                      loading={commonLookups.tenantLookup.loading}
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -319,15 +329,15 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -344,45 +354,6 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
                   <Form.Item name="bu_id" className="m-0" label="BU">
                     <Select
                       onChange={handleBUChange}
-                      loading={commonLookups.buLookup.loading}
-                      showSearch
-                      optionFilterProp="children"
-                      filterOption={(input, option: any) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }
-                      filterSort={(optionA: any, optionB: any) =>
-                        optionA.children
-                          ?.toLowerCase()
-                          ?.localeCompare(optionB.children?.toLowerCase())
-                      }
-                    >
-                      {Object.keys(commonLookups.buLookup.data).length > 0
-                        ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
-                        : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
-                    </Select>
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'currency_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Currency</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Currency'
-                  )}
-                  <Form.Item name="currency_id" className="m-0" label="Currency">
-                    <Select
-                      loading={commonLookups.currencyLookup.loading}
                       allowClear
                       showSearch
                       optionFilterProp="children"
@@ -394,13 +365,67 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
                           ?.toLowerCase()
                           ?.localeCompare(optionB.children?.toLowerCase())
                       }
+                      loading={commonLookups.buLookup.loading}
                     >
-                      {commonLookups.currencyLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
+                      {Object.keys(commonLookups.buLookup.data).length > 0
+                        ? commonLookups.buLookup.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
+                        : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'source']} valuePropName="checked" noStyle>
+                      <Checkbox>Source</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Source'
+                  )}
+                  <Form.Item name="source" label="Source" className="m-0" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'device_name']} valuePropName="checked" noStyle>
+                      <Checkbox>Device Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Device Name'
+                  )}
+                  <Form.Item name="device_name" className="m-0" label="Device Name" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'serial_number']} valuePropName="checked" noStyle>
+                      <Checkbox>Serial Number</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Serial Number'
+                  )}
+                  <Form.Item
+                    name="serial_number"
+                    label="Serial Number"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
@@ -421,72 +446,189 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'license_id']} valuePropName="checked" noStyle>
-                      <Checkbox>Product</Checkbox>
+                    <Form.Item
+                      name={['checked', 'last_scan_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
+                      <Checkbox>Last Scan Date</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Product'
+                    'Last Scan Date'
                   )}
-                  <Form.Item name="license_id" className="m-0" label="Product">
-                    <Select
-                      loading={commonLookups.o365ProductsLookup.loading}
-                      allowClear
-                      showSearch
-                      dropdownClassName="value-box-select"
-                      optionFilterProp="children"
-                      filterOption={(input, option: any) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }
-                      filterSort={(optionA: any, optionB: any) =>
-                        optionA.children
-                          ?.toLowerCase()
-                          ?.localeCompare(optionB.children?.toLowerCase())
-                      }
-                    >
-                      {commonLookups.o365ProductsLookup.data.map((option: ILookup) => (
-                        <Option key={option.id} value={option.id}>
-                          {option.name}
-                        </Option>
-                      ))}
-                    </Select>
+                  <Form.Item
+                    name="last_scan_date"
+                    label="Last Scan Date"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'price']} valuePropName="checked" noStyle>
-                      <Checkbox>Price</Checkbox>
+                    <Form.Item name={['checked', 'manufacturer']} valuePropName="checked" noStyle>
+                      <Checkbox>Manufacturer</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Price'
+                    'Manufacturer'
                   )}
                   <Form.Item
-                    name="price"
-                    label="Price"
+                    name="manufacturer"
+                    label="Manufacturer"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'model']} valuePropName="checked" noStyle>
+                      <Checkbox>Model</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Model'
+                  )}
+                  <Form.Item name="model" label="Model" className="m-0" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'operating_system']} valuePropName="checked" noStyle>
+                      <Checkbox>Operating System</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Operating System'
+                  )}
+                  <Form.Item
+                    name="operating_system"
+                    label="Operating System"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'processor_type']} valuePropName="checked" noStyle>
+                      <Checkbox>Processor Type</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Processor Type'
+                  )}
+                  <Form.Item
+                    name="processor_type"
+                    label="Processor Type"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'number_of_processors']} valuePropName="checked" noStyle>
+                      <Checkbox>Number of Processors</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Number of Processors'
+                  )}
+                  <Form.Item
+                    name="number_of_processors"
+                    label="Number of Processors"
                     className="m-0"
                     rules={[{ type: 'number' }]}
                   >
-                    <InputNumber min={0} className="form-control w-100" />
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'valid_qty']} valuePropName="checked" noStyle>
-                      <Checkbox>Valid Qty</Checkbox>
+                    <Form.Item name={['checked', 'cores_per_processor']} valuePropName="checked" noStyle>
+                      <Checkbox>Cores per Processor</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Valid Qty'
+                    'Cores per Processor'
                   )}
                   <Form.Item
-                    name="valid_qty"
-                    label="Valid Qty"
+                    name="cores_per_processor"
+                    label="Cores per Processor"
                     className="m-0"
-                    rules={[{ type: 'integer' }]}
+                    rules={[{ type: 'number' }]}
                   >
-                    <InputNumber min={0} className="form-control w-100" />
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'last_logged_on_user']} valuePropName="checked" noStyle>
+                      <Checkbox>Last Logged On User</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Last Logged On User'
+                  )}
+                  <Form.Item
+                    name="last_logged_on_user"
+                    label="Last Logged On User"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'location']} valuePropName="checked" noStyle>
+                      <Checkbox>Location</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Location'
+                  )}
+                  <Form.Item
+                    name="location"
+                    label="Location"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'is_virtual']} valuePropName="checked" noStyle>
+                      <Checkbox>Is Virtual</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Is Virtual'
+                  )}
+                  <Form.Item
+                    name="is_virtual"
+                    label="Is Virtual"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
@@ -496,7 +638,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
                 key="submit"
                 type="primary"
                 htmlType="submit"
-                loading={o365Subscriptions.save.loading || commonLookups.save.loading}
+                loading={hardware.save.loading || commonLookups.save.loading}
               >
                 {submitButtonText}
               </Button>
@@ -510,4 +652,4 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
     </>
   );
 };
-export default AddO365SubscriptionsModal;
+export default AddHardwareModal;

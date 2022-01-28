@@ -68,6 +68,8 @@ import {
   getTablesForDelete,
   getApiTypeV2Lookup,
   getOAuthV2IdLookup,
+  getSoftwareNormalizationLookup,
+  getOSNormalizationLookup,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -142,6 +144,14 @@ export const initialState: ICommonState = {
     messages: [],
   },
   sqlServerLicenseLookup: {
+    data: [],
+    loading: false,
+  },
+  softwareNormalizationLookup: {
+    data: [],
+    loading: false,
+  },
+  osNormalizationLookup: {
     data: [],
     loading: false,
   },
@@ -578,6 +588,24 @@ export const commonSlice = createSlice({
     [getSqlServerLicenseLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.sqlServerLicenseLookup.data = action.payload;
       state.sqlServerLicenseLookup.loading = false;
+    },
+
+    // Software Normal. lookup
+    [getSoftwareNormalizationLookup.pending.type]: (state) => {
+      state.softwareNormalizationLookup.loading = true;
+    },
+    [getSoftwareNormalizationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.softwareNormalizationLookup.data = action.payload;
+      state.softwareNormalizationLookup.loading = false;
+    },
+
+    // OS Normal. lookup
+    [getOSNormalizationLookup.pending.type]: (state) => {
+      state.osNormalizationLookup.loading = true;
+    },
+    [getOSNormalizationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
+      state.osNormalizationLookup.data = action.payload;
+      state.osNormalizationLookup.loading = false;
     },
 
     // Agreement Types lookup

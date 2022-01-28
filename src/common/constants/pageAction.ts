@@ -151,6 +151,7 @@ export enum Page {
   Software = 'inventory-software',
   Device = 'device',
   DeviceState = 'device-states',
+  Hardware = "inventory-hardware",
 }
 export enum Action {
   View = 'view',

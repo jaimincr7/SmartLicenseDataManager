@@ -1,4 +1,4 @@
-import { Table, Form, Button, Checkbox, Popover } from 'antd';
+import { Table, Form, Button, Checkbox, Popover, Popconfirm } from 'antd';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { toast } from 'react-toastify';
@@ -333,7 +333,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       }
     });
     const searchData = getSearchData(pagination, true);
-    const exportData = { ...searchData, export_column_details };
+    const exportData = { ...searchData, export_column_details, total_records: reduxStoreData.search.count };
 
     return exportExcelFile(exportData).then((res) => {
       if (res && res?.data?.body?.messages) {
@@ -649,14 +649,25 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             </Can>
           )}
           {!hideExportButton && (
-            <Button
-              onClick={downloadExcel}
-              icon={<FileExcelOutlined />}
-              loading={loading}
-              disabled={reduxStoreData.search.count === 0}
-            >
-              Export
-            </Button>
+            reduxStoreData.search.count > 50000 ? (
+              <Popconfirm
+                title="Do you want to export file?"
+                onConfirm={downloadExcel}
+              >
+                <Button
+                  icon={<FileExcelOutlined />}
+                  loading={loading}
+                >
+                  Export
+                </Button>
+              </Popconfirm>) : (<Button
+                onClick={downloadExcel}
+                icon={<FileExcelOutlined />}
+                loading={loading}
+                disabled={reduxStoreData.search.count === 0}
+              >
+                Export
+              </Button>)
           )}
           {hideShowHideButton ? (
             <></>

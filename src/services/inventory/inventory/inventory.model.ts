@@ -26,6 +26,13 @@ export interface IInventory {
   last_sw_scan?: string;
   date_installed?: string | Moment;
   is_virtual?: boolean;
+  software_normalization_id?: number;
+  operating_system_normalization_id?: number;
+  os?: string;
+  instance_count?: number;
+  quantity?: number;
+  exclude?: string;
+  on_server?: string;
   date_added?: string | Moment;
 }
 

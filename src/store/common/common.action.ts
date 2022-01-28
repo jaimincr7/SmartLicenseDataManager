@@ -134,6 +134,20 @@ export const getSqlServerLicenseLookup = createAsyncThunk('getSqlServerLicenseLo
   return response.data;
 });
 
+export const getSoftwareNormalizationLookup = createAsyncThunk('getSoftwareNormalizationLookup', async () => {
+  const response = await commonService.getSoftwareNormalizationLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
+export const getOSNormalizationLookup = createAsyncThunk('getOSNormalizationLookup', async () => {
+  const response = await commonService.getOSNormalizationLookup().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const getAgreementTypesLookup = createAsyncThunk('getAgreementTypesLookup', async () => {
   const response = await commonService.getAgreementTypesLookup().then((res) => {
     return res.body;

@@ -2,16 +2,15 @@ import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
-  clearO365ReservationsMessages,
-  o365ReservationsSelector,
-} from '../../../../store/o365/o365Reservations/o365Reservations.reducer';
+  clearHardwareMessages,
+  hardwareSelector,
+} from '../../../../store/inventory/hardware/hardware.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import {
-  deleteO365Reservations,
-  searchO365Reservations,
-} from '../../../../store/o365/o365Reservations/o365Reservations.action';
+import { deleteHardware, searchHardware } from '../../../../store/inventory/hardware/hardware.action';
+import moment from 'moment';
+import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
-import o365ReservationsService from '../../../../services/o365/o365Reservations/o365Reservations.service';
+import hardwareService from '../../../../services/inventory/hardware/hardware.service';
 import {
   FilterByDateSwap,
   FilterByDropdown,
@@ -23,7 +22,6 @@ import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { showDateFromApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -31,10 +29,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setShowSelectedListModal,
     setValuesForSelection,
     isMultiple,
-    tableButtons,
     setFilterKeys,
+    tableButtons,
   } = props;
-  const o365Reservations = useAppSelector(o365ReservationsSelector);
+  const hardware = useAppSelector(hardwareSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
   const history = useHistory();
@@ -54,14 +52,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }, [isMultiple]);
 
   const exportExcelFile = (searchData: ISearch) => {
-    return o365ReservationsService.exportExcelFile(searchData);
+    return hardwareService.exportExcelFile(searchData);
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
     setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
-      o365Reservations.search.tableName,
+      hardware.search.tableName,
       form,
       null,
       ObjectForColumnFilter
@@ -96,8 +94,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDropdown(
               'tenant_id',
-              o365Reservations.search.lookups?.tenants?.length > 0
-                ? o365Reservations.search.lookups?.tenants
+              hardware.search.lookups?.tenants?.length > 0
+                ? hardware.search.lookups?.tenants
                 : globalFilters?.globalTenantLookup?.data
             ),
             dataIndex: 'tenant_name',
@@ -114,8 +112,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDropdown(
               'company_id',
-              o365Reservations.search.lookups?.companies?.length > 0
-                ? o365Reservations.search.lookups?.companies
+              hardware.search.lookups?.companies?.length > 0
+                ? hardware.search.lookups?.companies
                 : globalFilters?.globalCompanyLookup?.data
             ),
             dataIndex: 'company_name',
@@ -132,12 +130,38 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDropdown(
               'bu_id',
-              o365Reservations.search.lookups?.bus?.length > 0
-                ? o365Reservations.search.lookups?.bus
+              hardware.search.lookups?.bus?.length > 0
+                ? hardware.search.lookups?.bus
                 : globalFilters?.globalBULookup?.data
             ),
             dataIndex: 'bu_name',
             key: 'bu_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Source</span>,
+        column: 'Source',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('source', form),
+            dataIndex: 'source',
+            key: 'source',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Device Name</span>,
+        column: 'Device Name',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('device_name', form),
+            dataIndex: 'device_name',
+            key: 'device_name',
             ellipsis: true,
           },
         ],
@@ -148,140 +172,153 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('date_added', o365Reservations.search.tableName, form),
+            title: FilterByDateSwapTable('date_added', hardware.search.tableName, form),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
           },
         ],
       },
       {
-        title: <span className="dragHandler">Reservation ID</span>,
-        column: 'Reservation ID',
+        title: <span className="dragHandler">Serial Number</span>,
+        column: 'Serial Number',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('reservation_id', form),
-            dataIndex: 'reservation_id',
-            key: 'reservation_id',
+            title: FilterBySwap('serial_number', form),
+            dataIndex: 'serial_number',
+            key: 'serial_number',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">License ID</span>,
-        column: 'License ID',
+        title: <span className="dragHandler">Manufacturer</span>,
+        column: 'Manufacturer',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('license_id', form),
-            dataIndex: 'license_id',
-            key: 'license_id',
+            title: FilterBySwap('manufacturer', form),
+            dataIndex: 'manufacturer',
+            key: 'manufacturer',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Organization</span>,
-        column: 'Organization',
+        title: <span className="dragHandler">Model</span>,
         sorter: true,
+        column: 'Model',
         children: [
           {
-            title: FilterBySwap('organization', form),
-            dataIndex: 'organization',
-            key: 'organization',
+            title: FilterBySwap('model', form),
+            dataIndex: 'model',
+            key: 'model',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Service</span>,
-        column: 'Service',
+        title: <span className="dragHandler">Operating System</span>,
+        column: 'Operating System',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('service', form),
-            dataIndex: 'service',
-            key: 'service',
+            title: FilterBySwap('operating_system', form),
+            dataIndex: 'operating_system',
+            key: 'operating_system',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Licenses</span>,
-        column: 'Licenses',
+        title: <span className="dragHandler">Processor Type</span>,
+        column: 'Processor Type',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('licenses', form),
-            dataIndex: 'licenses',
-            key: 'licenses',
+            title: FilterBySwap('processor_type', form),
+            dataIndex: 'processor_type',
+            key: 'processor_type',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Action</span>,
-        column: 'Action',
+        title: <span className="dragHandler">Number of Processors</span>,
+        column: 'Number of Processors',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('action', form),
-            dataIndex: 'action',
-            key: 'action',
+            title: FilterBySwap('number_of_processors', form),
+            dataIndex: 'number_of_processors',
+            key: 'number_of_processors',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Requestor</span>,
-        column: 'Requestor',
+        title: <span className="dragHandler">Cores per Processor</span>,
+        column: 'Cores per Processor',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('requestor', form),
-            dataIndex: 'requestor',
-            key: 'requestor',
+            title: FilterBySwap('cores_per_processor', form),
+            dataIndex: 'cores_per_processor',
+            key: 'cores_per_processor',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Usage Date</span>,
-        column: 'Usage Date',
+        title: <span className="dragHandler">Last Scan Date</span>,
+        column: 'Last Scan Date',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('usage_date', form),
-            dataIndex: 'usage_date',
-            key: 'usage_date',
+            title: FilterBySwap('last_scan_date', form),
+            dataIndex: 'last_scan_date',
+            key: 'last_scan_date',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Usage Country</span>,
-        column: 'Usage Country',
+        title: <span className="dragHandler">Last Logged On User</span>,
+        column: 'Last Logged On User',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('usage_country', form),
-            dataIndex: 'usage_country',
-            key: 'usage_country',
+            title: FilterBySwap('last_logged_on_user', form),
+            dataIndex: 'last_logged_on_user',
+            key: 'last_logged_on_user',
             ellipsis: true,
           },
         ],
       },
       {
-        title: <span className="dragHandler">Status</span>,
-        column: 'Status',
+        title: <span className="dragHandler">Location</span>,
+        column: 'Location',
         sorter: true,
         children: [
           {
-            title: FilterBySwap('status', form),
-            dataIndex: 'status',
-            key: 'status',
+            title: FilterBySwap('location', form),
+            dataIndex: 'location',
+            key: 'location',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Is Virtual</span>,
+        column: 'Is Virtual',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('is_virtual', form),
+            dataIndex: 'is_virtual',
+            key: 'is_virtual',
             ellipsis: true,
           },
         ],
@@ -289,24 +326,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     ];
   };
 
-  const removeO365Reservations = (id: number) => {
-    dispatch(deleteO365Reservations(id));
+  const removeHardware = (id: number) => {
+    dispatch(deleteHardware(id));
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Can I={Action.Update} a={Page.O365Reservations}>
+      <Can I={Action.Update} a={Page.Hardware}>
         <a
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/o365/o365-reservations/${data.id}`);
+            history.push(`/inventory-module/inventory-hardware/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
         </a>
       </Can>
-      <Can I={Action.Delete} a={Page.O365Reservations}>
-        <Popconfirm title="Delete Record?" onConfirm={() => removeO365Reservations(data.id)}>
+      <Can I={Action.Delete} a={Page.Hardware}>
+        <Popconfirm title="Delete Record?" onConfirm={() => removeHardware(data.id)}>
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>
@@ -319,18 +356,18 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={ability.can(Action.Add, Page.O365Reservations)}
+        showAddButton={ability.can(Action.Add, Page.Hardware)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
-        reduxSelector={o365ReservationsSelector}
-        searchTableData={searchO365Reservations}
-        clearTableDataMessages={clearO365ReservationsMessages}
+        reduxSelector={hardwareSelector}
+        searchTableData={searchHardware}
+        clearTableDataMessages={clearHardwareMessages}
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
-        showBulkUpdate={ability.can(Action.Update, Page.O365Reservations)}
+        showBulkUpdate={ability.can(Action.Update, Page.Hardware)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         tableButtons={tableButtons}
       />
