@@ -18,7 +18,7 @@ import {
   cmdbSoftwareNormalizationSelector,
   setTableColumnSelection,
 } from '../../../../store/cmdb/softwareNormalization/softwareNormalization.reducer';
-import SoftwareNormalizationService from '../../../../services/cmdb/osNormalization/osNormalization.service';
+import SoftwareNormalizationService from '../../../../services/cmdb/softwareNormalization/softwareNormalization.service';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {

@@ -40,10 +40,9 @@ import { IO365Users } from '../../../../services/o365/o365Users/o365Users.model'
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import moment from 'moment';
 
 const { Option } = Select;
 
@@ -149,7 +148,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
     m365_apps_one_note: false,
     m365_apps_teams: false,
     assigned_plans: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -157,6 +156,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveO365Users(inputValues));
     } else {
@@ -207,7 +207,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         alternate_email_addresses: data.alternate_email_addresses,
         block_credential: data.block_credential,
         city: data.city,

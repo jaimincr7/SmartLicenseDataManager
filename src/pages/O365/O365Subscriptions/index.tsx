@@ -190,6 +190,7 @@ const O365Subscriptions: React.FC<IO365SubscriptionsProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
           tableName={o365Subscriptions.search.tableName}
         />
       )}

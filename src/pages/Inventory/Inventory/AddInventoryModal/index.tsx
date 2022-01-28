@@ -27,6 +27,8 @@ import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   getBULookup,
   getCompanyLookup,
+  getOSNormalizationLookup,
+  getSoftwareNormalizationLookup,
   getTenantLookup,
   updateMultiple,
 } from '../../../../store/common/common.action';
@@ -97,6 +99,13 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
     last_sw_scan: null,
     date_installed: null,
     is_virtual: false,
+    software_normalization_id: null,
+    operating_system_normalization_id: null,
+    os: '',
+    instance_count: null,
+    quantity: null,
+    exclude: '',
+    on_server: '',
     date_added: moment(),
   };
 
@@ -175,6 +184,13 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
         last_sw_scan: data.last_sw_scan,
         is_virtual: data.is_virtual,
         date_installed: _.isNull(data.date_installed) ? null : moment(data.date_installed),
+        software_normalization_id: _.isNull(data.software_normalization_id) ? null : data.software_normalization_id,
+        operating_system_normalization_id: _.isNull(data.operating_system_normalization_id) ? null : data.operating_system_normalization_id,
+        os: data.os,
+        instance_count: _.isNull(data.instance_count) ? null : data.instance_count,
+        quantity: _.isNull(data.quantity) ? null : data.quantity,
+        exclude: data.exclude,
+        on_server: data.on_server,
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
@@ -218,6 +234,8 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
     if (Object.keys(globalFilters?.globalTenantLookup?.data).length == 0) {
       dispatch(getTenantLookup());
     }
+    dispatch(getSoftwareNormalizationLookup());
+    dispatch(getOSNormalizationLookup());
     if (+id > 0) {
       dispatch(getInventoryById(+id));
     }
@@ -307,15 +325,15 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -347,15 +365,15 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -396,6 +414,74 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                               {option.name}
                             </Option>
                           ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'software_normalization_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Software Normalization</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Software Normalization'
+                  )}
+                  <Form.Item name="software_normalization_id" className="m-0" label="Software Normalization">
+                    <Select
+                      allowClear
+                      dropdownClassName="value-box-select"
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={commonLookups.buLookup.loading}
+                    >
+                      {commonLookups?.softwareNormalizationLookup?.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'operating_system_normalization_id']} valuePropName="checked" noStyle>
+                      <Checkbox>Operating System Normalization</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Operating System Normalization'
+                  )}
+                  <Form.Item name="operating_system_normalization_id" className="m-0" label="Operating System Normalization">
+                    <Select
+                      allowClear
+                      dropdownClassName="value-box-select"
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={commonLookups.buLookup.loading}
+                    >
+                      {commonLookups?.osNormalizationLookup?.data.map((option: ILookup) => (
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -764,6 +850,101 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     rules={[{ max: 255 }]}
                   >
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'os']} valuePropName="checked" noStyle>
+                      <Checkbox>OS</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'OS'
+                  )}
+                  <Form.Item
+                    name="os"
+                    label="OS"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'exclude']} valuePropName="checked" noStyle>
+                      <Checkbox>Exclude</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Exclude'
+                  )}
+                  <Form.Item
+                    name="exclude"
+                    label="Exclude"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'on_server']} valuePropName="checked" noStyle>
+                      <Checkbox>On Server</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'On Server'
+                  )}
+                  <Form.Item
+                    name="on_server"
+                    label="On Server"
+                    className="m-0"
+                    rules={[{ max: 10 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'instance_count']} valuePropName="checked" noStyle>
+                      <Checkbox>Instance Count</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Instance Count'
+                  )}
+                  <Form.Item
+                    name="instance_count"
+                    label="Instance Count"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'quantity']} valuePropName="checked" noStyle>
+                      <Checkbox>Quantity</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Quantity'
+                  )}
+                  <Form.Item
+                    name="quantity"
+                    label="Quantity"
+                    className="m-0"
+                    rules={[{ type: 'number' }]}
+                  >
+                    <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

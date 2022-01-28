@@ -22,9 +22,8 @@ import {
   setTableColumnSelection,
 } from '../../../../store/o365/o365Subscriptions/o365Subscriptions.reducer';
 import o365SubscriptionsService from '../../../../services/o365/o365Subscriptions/o365Subscriptions.service';
-import { Common } from '../../../../common/constants/common';
-import moment from 'moment';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { showDateFromApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -153,7 +152,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },

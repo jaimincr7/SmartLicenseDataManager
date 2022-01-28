@@ -117,6 +117,7 @@ import spsApiCallReducer from './sps/spsAPICall/spsApiCall.reducer';
 import inventoryReducer from './inventory/inventory/inventory.reducer';
 import deviceReducer from './inventory/device/device.reducer';
 import softwareReducer from './inventory/software/software.reducer';
+import hardwareReducer from './inventory/hardware/hardware.reducer';
 import deviceStateReducer from './inventory/deviceState/deviceState.reducer';
 import spsApiBaseUrlReducer from './sps/apiBaseUrl/apiBaseUrl.reducer';
 import spsApiOauthUrlInjectionSiteReducer from './sps/apiOauthUrlInjectionSite/apiOauthUrlInjectionSite.reducer';
@@ -270,6 +271,7 @@ export const rootReducer = combineReducers({
   inventory: inventoryReducer,
   device: deviceReducer,
   software: softwareReducer,
+  hardware: hardwareReducer,
   deviceState: deviceStateReducer,
 
   //SPS
