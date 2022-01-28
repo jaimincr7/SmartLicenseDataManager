@@ -144,7 +144,7 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
         expired_licenses: data.expired_licenses,
         assigned_licenses: data.assigned_licenses,
         status_message: data.status_message,
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
       };
       form.setFieldsValue(initialValues);
     }

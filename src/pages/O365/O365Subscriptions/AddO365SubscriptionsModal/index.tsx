@@ -144,7 +144,7 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
         license_id: _.isNull(data.license_id) ? null : data.license_id,
         price: data.price,
         currency_id: _.isNull(data.currency_id) ? null : data.currency_id,
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
         valid_qty: data.valid_qty,
       };
       form.setFieldsValue(initialValues);

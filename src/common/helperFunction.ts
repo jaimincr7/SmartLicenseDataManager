@@ -78,23 +78,35 @@ export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
 //Thee Helper Functions are for Date and related thing
 
 export const passDateToApi = (date: Moment | string, isTime?: boolean) => {
-  if(isTime) {
+  if (isTime) {
     return moment(date).format(Common.DATETIMEFORMAT);
   } else {
     return moment(date).format(Common.DATEFORMAT);
   }
 };
 
-export const showDateFromApi = (date: Moment | string | Date, isTime?: boolean) => {
-  if(isTime) {
-    return moment(date).utc().format(Common.DATETIMEFORMAT);
+export const showDateFromApi = (date: Moment | string | Date, isTime?: boolean, isLocal?: boolean) => {
+  if (isLocal) {
+    if (isTime) {
+      return moment(date).local().format(Common.DATETIMEFORMAT);
+    } else {
+      return moment(date).local().format(Common.DATEFORMAT);
+    }
   } else {
-    return moment(date).utc().format(Common.DATEFORMAT);
+    if (isTime) {
+      return moment(date).utc().format(Common.DATETIMEFORMAT);
+    } else {
+      return moment(date).utc().format(Common.DATEFORMAT);
+    }
   }
 };
 
-export const forEditModal = (date: Moment | string) => {
+export const forEditModal = (date: Moment | string, inLocal?: boolean) => {
+  if (inLocal) {
+    return moment(date).local();
+  } else {
     return moment(date).utc();
+  }
 };
 
 export const getSimpleDate = () => {
