@@ -13,13 +13,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { getObjectForUpdateMultiple, getSimpleDate, passDateToApi, forEditModal } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { IAdDevices } from '../../../../services/ad/adDevices/adDevices.model';
 import { ILookup } from '../../../../services/common/common.model';
@@ -101,7 +100,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
     qualified: false,
     domain: '',
     description: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -109,6 +108,10 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.last_logon_date = passDateToApi(inputValues.last_logon_date, true);
+    inputValues.password_last_set = passDateToApi(inputValues.password_last_set, true);
+    inputValues.when_created = passDateToApi(inputValues.when_created, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveAdDevice(inputValues));
     } else {
@@ -167,18 +170,18 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
         enabled: data.enabled,
         iPv4_address: data.iPv4_address,
         last_logon: data.last_logon,
-        last_logon_date: _.isNull(data.last_logon_date) ? null : moment(data.last_logon_date),
+        last_logon_date: _.isNull(data.last_logon_date) ? null : (data.last_logon_date),
         last_logon_timestamp: data.last_logon_timestamp,
         name: data.name,
         object_class: data.object_class,
         object_guid: data.object_guid,
         password_expired: data.password_expired,
-        password_last_set: _.isNull(data.password_last_set) ? null : moment(data.password_last_set),
+        password_last_set: _.isNull(data.password_last_set) ? null : forEditModal(data.password_last_set),
         password_never_expires: data.password_never_expires,
         sam_account_name: data.sam_account_name,
         sid: data.sid,
         user_principal_name: data.user_principal_name,
-        when_created: _.isNull(data.when_created) ? null : moment(data.when_created),
+        when_created: _.isNull(data.when_created) ? null : forEditModal(data.when_created),
         exclusion: data.exclusion,
         exclusion_id: data.exclusion_id,
         inventoried: data.inventoried,
@@ -186,7 +189,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
         qualified: data.qualified,
         domain: data.domain,
         description: data.description,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -318,15 +321,15 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -358,15 +361,15 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -398,15 +401,15 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
