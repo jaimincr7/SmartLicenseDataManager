@@ -190,6 +190,7 @@ const O365Reservations: React.FC<IO365ReservationsProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
           tableName={o365Reservations.search.tableName}
         />
       )}

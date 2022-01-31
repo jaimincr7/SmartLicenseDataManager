@@ -214,6 +214,7 @@ const O365OneDriveUsage: React.FC<IO365OneDriveUsageProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
           tableName={o365OneDriveUsage.search.tableName}
         />
       )}

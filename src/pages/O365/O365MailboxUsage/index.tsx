@@ -212,6 +212,7 @@ const O365MailboxUsage: React.FC<IO365MailboxUsageProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
           tableName={mailBoxUsage.search.tableName}
         />
       )}
