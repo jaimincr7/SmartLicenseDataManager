@@ -10,14 +10,13 @@ import {
   Row,
   Spin,
 } from 'antd';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IAzureAPIVmSizes } from '../../../../services/azure/azureAPIVmSizes/azureAPIVmSizes.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
@@ -65,7 +64,7 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
     resource_disk_size_in_gb: null,
     memory_in_gb: null,
     max_data_disk_count: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: IAzureAPIVmSizes) => {
@@ -73,6 +72,7 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveAzureAPIVmSizes(inputValues));
     } else {
@@ -96,7 +96,7 @@ const AddAzureAPIVmSizesModal: React.FC<IAddAzureAPIVmSizesProps> = (props) => {
         resource_disk_size_in_gb: data.resource_disk_size_in_gb,
         memory_in_gb: data.memory_in_gb,
         max_data_disk_count: data.max_data_disk_count,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
