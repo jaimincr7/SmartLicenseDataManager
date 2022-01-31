@@ -11,7 +11,6 @@ import {
   Select,
   Spin,
 } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -42,7 +41,7 @@ import {
   getCmsPurchaseLineItemById,
   saveCmsPurchaseLineItem,
 } from '../../../../store/cms/purchaseLineItem/purchaseLineItem.action';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -86,6 +85,8 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
       ...values,
       id: id ? +id : null,
     };
+    inputValues.start_date = passDateToApi(inputValues.start_date, true);
+    inputValues.end_date = passDateToApi(inputValues.end_date, true);
     if (!isMultiple) {
       dispatch(saveCmsPurchaseLineItem(inputValues));
     } else {
@@ -114,9 +115,8 @@ const AddCmsPurchaseLineItemModal: React.FC<IAddCmsPurchaseLineItemProps> = (pro
         category_extended_id: _.isNull(data.category_extended_id)
           ? null
           : data.category_extended_id,
-        start_date: _.isNull(data.start_date) ? null : moment(data.start_date),
-        end_date: _.isNull(data.end_date) ? null : moment(data.end_date),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        start_date: _.isNull(data.start_date) ? null : forEditModal(data.start_date),
+        end_date: _.isNull(data.end_date) ? null : forEditModal(data.end_date),
       };
       form.setFieldsValue(initialValues);
     }
