@@ -207,7 +207,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         alternate_email_addresses: data.alternate_email_addresses,
         block_credential: data.block_credential,
         city: data.city,

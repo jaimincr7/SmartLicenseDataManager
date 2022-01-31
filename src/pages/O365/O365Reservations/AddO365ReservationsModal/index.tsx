@@ -144,7 +144,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
         tenant_id: _.isNull(data.tenant_id) ? null : data.tenant_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         reservation_id: data.reservation_id,
         license_id: data.license_id,
         organization: data.organization,
