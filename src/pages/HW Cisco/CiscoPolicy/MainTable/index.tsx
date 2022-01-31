@@ -11,8 +11,6 @@ import {
   deleteCiscoPolicy,
   searchCiscoPolicy,
 } from '../../../../store/hwCisco/ciscoPolicy/ciscoPolicy.action';
-import moment from 'moment';
-import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import ciscoPolicyService from '../../../../services/hwCisco/ciscoPolicy/ciscoPolicy.service';
 import {
@@ -27,6 +25,7 @@ import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { showDateFromApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -155,7 +154,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -169,7 +168,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'quote_begin_date',
             key: 'quote_begin_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -183,7 +182,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'quote_end_date',
             key: 'quote_end_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -197,7 +196,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'coverage_expiration',
             key: 'coverage_expiration',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -211,7 +210,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'start_date',
             key: 'start_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -225,7 +224,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'end_date',
             key: 'end_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -239,7 +238,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'second_start_date',
             key: 'second_start_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -253,7 +252,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'second_end_date',
             key: 'second_end_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },

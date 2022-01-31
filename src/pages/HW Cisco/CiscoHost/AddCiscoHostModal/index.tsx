@@ -12,13 +12,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoHost } from '../../../../services/hwCisco/ciscoHost/ciscoHost.model';
@@ -94,7 +93,7 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
     stack: null,
     previous_host_name: '',
     network_device_type: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -102,6 +101,7 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveCiscoHost(inputValues));
     } else {
@@ -170,7 +170,7 @@ const AddCiscoHostModal: React.FC<IAddCiscoHostProps> = (props) => {
         stack: data.stack,
         previous_host_name: data.previous_host_name,
         network_device_type: data.network_device_type,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

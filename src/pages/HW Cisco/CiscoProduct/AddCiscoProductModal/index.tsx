@@ -13,13 +13,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoProduct } from '../../../../services/hwCisco/ciscoProduct/ciscoProduct.model';
@@ -115,7 +114,7 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
     hardware_bill_to: '',
     po: '',
     so: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -123,6 +122,11 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.ship_date = passDateToApi(inputValues.ship_date, true);
+    inputValues.date_data_added = passDateToApi(inputValues.date_data_added, true);
+    inputValues.last_update_date = passDateToApi(inputValues.last_update_date, true);
+    inputValues.warranty_end_date = passDateToApi(inputValues.last_update_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveCiscoProduct(inputValues));
     } else {
@@ -199,19 +203,19 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
         discovery_system_status: data.discovery_system_status,
         notes: data.notes,
         corrective_action: data.corrective_action,
-        ship_date: _.isNull(data.ship_date) ? null : moment(data.ship_date),
+        ship_date: _.isNull(data.ship_date) ? null : forEditModal(data.ship_date),
         product_quantity: data.product_quantity,
-        date_data_added: _.isNull(data.date_data_added) ? null : moment(data.date_data_added),
+        date_data_added: _.isNull(data.date_data_added) ? null : forEditModal(data.date_data_added),
         original_data_source: data.original_data_source,
         last_update_data_source: data.last_update_data_source,
-        last_update_date: _.isNull(data.last_update_date) ? null : moment(data.last_update_date),
+        last_update_date: _.isNull(data.last_update_date) ? null : forEditModal(data.last_update_date),
         smart_account: data.smart_account,
         warranty_type: data.warranty_type,
-        warranty_end_date: _.isNull(data.warranty_end_date) ? null : moment(data.warranty_end_date),
+        warranty_end_date: _.isNull(data.warranty_end_date) ? null : forEditModal(data.warranty_end_date),
         hardware_bill_to: data.hardware_bill_to,
         po: data.po,
         so: data.so,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

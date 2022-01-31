@@ -13,13 +13,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoPolicy } from '../../../../services/hwCisco/ciscoPolicy/ciscoPolicy.model';
@@ -140,7 +139,7 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
     service_billing_frequency: '',
     service_monthly_cost: null,
     sample: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -148,6 +147,14 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.quote_begin_date = passDateToApi(inputValues.quote_begin_date, true);
+    inputValues.quote_end_date = passDateToApi(inputValues.quote_end_date, true);
+    inputValues.coverage_expiration = passDateToApi(inputValues.coverage_expiration, true);
+    inputValues.start_date = passDateToApi(inputValues.start_date, true);
+    inputValues.end_date = passDateToApi(inputValues.end_date, true);
+    inputValues.second_start_date = passDateToApi(inputValues.second_start_date, true);
+    inputValues.second_end_date = passDateToApi(inputValues.second_end_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveCiscoPolicy(inputValues));
     } else {
@@ -207,8 +214,8 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
         minor_follow_parent: data.minor_follow_parent,
         quote_group: data.quote_group,
         quote_service_level: data.quote_service_level,
-        quote_begin_date: _.isNull(data.quote_begin_date) ? null : moment(data.quote_begin_date),
-        quote_end_date: _.isNull(data.quote_end_date) ? null : moment(data.quote_end_date),
+        quote_begin_date: _.isNull(data.quote_begin_date) ? null : forEditModal(data.quote_begin_date),
+        quote_end_date: _.isNull(data.quote_end_date) ? null : forEditModal(data.quote_end_date),
         quote_eos: data.quote_eos,
         service_level_compare: data.service_level,
         quote_price: data.quote_price,
@@ -234,15 +241,15 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
         coverage_declined_reason: data.coverage_declined_reason,
         coverage_expiration: _.isNull(data.coverage_expiration)
           ? null
-          : moment(data.coverage_expiration),
+          : forEditModal(data.coverage_expiration),
         product_quantity: data.product_quantity,
         service_indicator: data.service_indicator,
         service_level: data.service_level,
         service_level_desc: data.service_level_desc,
         contract_status: data.contract_status,
         contract_number: data.contract_number,
-        start_date: _.isNull(data.start_date) ? null : moment(data.start_date),
-        end_date: _.isNull(data.end_date) ? null : moment(data.end_date),
+        start_date: _.isNull(data.start_date) ? null : forEditModal(data.start_date),
+        end_date: _.isNull(data.end_date) ? null : forEditModal(data.end_date),
         service_vendor: data.service_vendor,
         maintenance_price: data.maintenance_price,
         maintenance_po: data.maintenance_po,
@@ -252,8 +259,8 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
         second_service_level_desc: data.second_service_level_desc,
         second_contract_status: data.second_contract_status,
         second_contract_number: data.second_contract_number,
-        second_start_date: _.isNull(data.second_start_date) ? null : moment(data.second_start_date),
-        second_end_date: _.isNull(data.second_end_date) ? null : moment(data.second_end_date),
+        second_start_date: _.isNull(data.second_start_date) ? null : forEditModal(data.second_start_date),
+        second_end_date: _.isNull(data.second_end_date) ? null : forEditModal(data.second_end_date),
         second_svc_vendor: data.second_svc_vendor,
         second_maintenance_price: data.second_maintenance_price,
         second_maintenance_po: data.second_maintenance_po,
@@ -264,7 +271,7 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
         service_billing_frequency: data.service_billing_frequency,
         service_monthly_cost: data.service_monthly_cost,
         sample: data.sample,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
