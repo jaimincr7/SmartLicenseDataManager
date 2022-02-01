@@ -264,7 +264,9 @@ const BulkImport: React.FC = () => {
           x.file_mapping.length > 0 ? x.file_mapping.filter((data) => data.is_select == true) : [];
         setRecords((records) => {
           const dummyRecords = _.cloneDeep(records);
-          const defDel = defaultDelimeter.filter((data) => data.original_filename == x.original_filename)[0].delimiter;
+          const defDel = defaultDelimeter.filter(
+            (data) => data.original_filename == x.original_filename
+          )[0]?.delimiter;
           let filteredRecords = dummyRecords.filter(
             (data) => data.filename !== x.filename && data.original_filename !== x.original_filename
           );
