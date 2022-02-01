@@ -5,6 +5,7 @@ import { Action, Page } from '../../common/constants/pageAction';
 import TabVCluster from './TabVCluster';
 import TabVHost from './TabVHost';
 import TabVInfo from './TabVInfo';
+import TabVLicense from './TabVLicense';
 
 const RVToolsRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -34,6 +35,14 @@ const RVToolsRoutes: React.FC = () => {
         )}
         {ability.can(Action.View, Page.TabVInfo) && (
           <Route exact path={`${match.path}/tab-v-info`} component={TabVInfo} />
+        )}
+
+        {/* Tab-V-License */}
+        {ability.can(Action.View, Page.TabVLicense) && (
+          <Route exact path={`${match.path}/v-license/:id`} component={TabVLicense} />
+        )}
+        {ability.can(Action.View, Page.TabVLicense) && (
+          <Route exact path={`${match.path}/v-license`} component={TabVLicense} />
         )}
 
         {/* keep least always */}
