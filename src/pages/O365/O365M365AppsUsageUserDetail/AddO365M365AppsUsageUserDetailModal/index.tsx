@@ -196,7 +196,7 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
           : forEditModal(data.last_activity_date),
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         report_period: data.report_period,
         is_active_on_windows: data.is_active_on_windows,
         is_active_on_mac: data.is_active_on_mac,

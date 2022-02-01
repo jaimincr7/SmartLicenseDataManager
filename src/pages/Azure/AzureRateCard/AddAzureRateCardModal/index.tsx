@@ -25,11 +25,10 @@ import {
   azureRateCardSelector,
 } from '../../../../store/azure/azureRateCard/azureRateCard.reducer';
 import { IAddAzureRateCardProps } from './addAzureRateCard.model';
-import moment from 'moment';
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { updateMultiple } from '../../../../store/common/common.action';
 import {
   clearMultipleUpdateMessages,
@@ -70,7 +69,7 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
     meter_sub_category: '',
     meter_tags: '',
     unit: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: IAzureRateCard) => {
@@ -78,6 +77,8 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.effective_date = passDateToApi(inputValues.effective_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveAzureRateCard(inputValues));
     } else {
@@ -100,8 +101,8 @@ const AddAzureRateCardModal: React.FC<IAddAzureRateCardProps> = (props) => {
         meter_sub_category: data.meter_sub_category,
         meter_region: data.meter_region,
         meter_name: data.meter_name,
-        effective_date: _.isNull(data.effective_date) ? null : moment(data.effective_date),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        effective_date: _.isNull(data.effective_date) ? null : forEditModal(data.effective_date),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         included_quantity: data.included_quantity,
         meter_rates: data.meter_rates,
         meter_status: data.meter_status,

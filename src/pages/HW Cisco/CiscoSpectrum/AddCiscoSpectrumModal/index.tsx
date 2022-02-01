@@ -12,13 +12,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoSpectrum } from '../../../../services/hwCisco/ciscoSpectrum/ciscoSpectrum.model';
@@ -94,7 +93,7 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
     violated_ncm_policies: null,
     topology_container_tooltip: '',
     creation_time: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -102,6 +101,7 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveCiscoSpectrum(inputValues));
     } else {
@@ -170,7 +170,7 @@ const AddCiscoSpectrumModal: React.FC<IAddCiscoSpectrumProps> = (props) => {
         violated_ncm_policies: data.violated_ncm_policies,
         topology_container_tooltip: data.topology_container_tooltip,
         creation_time: data.creation_time,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

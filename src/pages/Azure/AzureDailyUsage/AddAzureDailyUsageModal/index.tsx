@@ -44,7 +44,7 @@ import moment from 'moment';
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
@@ -159,7 +159,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
     growth: null,
     month_name: '',
     tenant_id: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
     product_id: '',
     resource_group_name: '',
     resource_id: '',
@@ -187,6 +187,11 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
       extended_cost: Number(values.extended_cost),
       id: id ? +id : null,
     };
+    inputValues.date = passDateToApi(inputValues.date, true);
+    inputValues.billing_period_start_date = passDateToApi(inputValues.billing_period_start_date, true);
+    inputValues.billing_period_end_date = passDateToApi(inputValues.billing_period_end_date, true);
+    inputValues.exchange_rate_date = passDateToApi(inputValues.exchange_rate_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveAzureDailyUsage(inputValues));
     } else {
@@ -243,7 +248,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         subscription_id: data.subscription_id,
         subscription_guid: data.subscription_guid,
         subscription_name: data.subscription_name,
-        date: _.isNull(data.date) ? null : moment(data.date),
+        date: _.isNull(data.date) ? null : forEditModal(data.date),
         month: data.month,
         day: data.day,
         year: data.year,
@@ -277,11 +282,11 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         billing_account_name: data.billing_account_name,
         billing_period_start_date: _.isNull(data.billing_period_start_date)
           ? null
-          : moment(data.billing_period_start_date),
+          : forEditModal(data.billing_period_start_date),
         billing_period_end_date: _.isNull(data.billing_period_end_date)
           ? null
-          : moment(data.billing_period_end_date),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+          : forEditModal(data.billing_period_end_date),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         billing_profile_id: data.billing_profile_id,
         billing_profile_name: data.billing_profile_name,
         part_number: data.part_number,
@@ -337,7 +342,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
         payg_cost_in_billing_currency: _.isNull(data.bu_id) ? null : data.bu_id,
         payg_cost_in_usd: _.isNull(data.payg_cost_in_usd) ? null : data.payg_cost_in_usd,
         exchange_rate_pricing_to_billing: _.isNull(data.exchange_rate_pricing_to_billing) ? null : data.exchange_rate_pricing_to_billing,
-        exchange_rate_date: _.isNull(data.exchange_rate_date) ? null : moment(data.exchange_rate_date),
+        exchange_rate_date: _.isNull(data.exchange_rate_date) ? null : forEditModal(data.exchange_rate_date),
         cost: _.isNull(data.cost) ? null : data.cost,
         environment: data.environment,
         environment_tags: data.environment_tags,

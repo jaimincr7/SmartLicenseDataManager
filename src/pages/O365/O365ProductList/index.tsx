@@ -190,6 +190,7 @@ const O365ProductList: React.FC<IO365ProductListProps> = (props) => {
           showModal={processModalVisible}
           handleModalClose={() => setProcessModalVisible(false)}
           refreshDataTable={() => refreshDataTable()}
+          filterKeys={filterKeys}
           tableName={o365ProductList.search.tableName}
         />
       )}

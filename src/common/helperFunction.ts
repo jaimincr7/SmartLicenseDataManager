@@ -85,27 +85,27 @@ export const passDateToApi = (date: Moment | string, isTime?: boolean) => {
   }
 };
 
-export const showDateFromApi = (date: Moment | string | Date, isTime?: boolean, isLocal?: boolean) => {
-  if (isLocal) {
-    if (isTime) {
-      return moment(date).local().format(Common.DATETIMEFORMAT);
-    } else {
-      return moment(date).local().format(Common.DATEFORMAT);
-    }
-  } else {
+export const showDateFromApi = (date: Moment | string | Date, isTime?: boolean) => {
+  if (date.toString().includes('T')) {
     if (isTime) {
       return moment(date).utc().format(Common.DATETIMEFORMAT);
     } else {
       return moment(date).utc().format(Common.DATEFORMAT);
     }
+  } else {
+    if (isTime) {
+      return moment(date).local().format(Common.DATETIMEFORMAT);
+    } else {
+      return moment(date).local().format(Common.DATEFORMAT);
+    }
   }
 };
 
-export const forEditModal = (date: Moment | string, inLocal?: boolean) => {
-  if (inLocal) {
-    return moment(date).local();
-  } else {
+export const forEditModal = (date: Moment | string) => {
+  if (date.toString().includes('T')) {
     return moment(date).utc();
+  } else {
+    return moment(date).local();
   }
 };
 

@@ -12,13 +12,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoSNTC } from '../../../../services/hwCisco/ciscoSNTC/ciscoSNTC.model';
@@ -140,7 +139,7 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
     sn_recognized: '',
     device_diagnostics_supported: '',
     relationship: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -148,6 +147,12 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.warranty_start = passDateToApi(inputValues.warranty_start, true);
+    inputValues.warranty_end = passDateToApi(inputValues.warranty_end, true);
+    inputValues.ship_date = passDateToApi(inputValues.ship_date, true);
+    inputValues.hw_l_do_s = passDateToApi(inputValues.hw_l_do_s, true);
+    inputValues.collection_date = passDateToApi(inputValues.collection_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveCiscoSNTC(inputValues));
     } else {
@@ -225,8 +230,8 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
         service_program: data.service_program,
         bill_to_customer: data.bill_to_customer,
         warranty_type: data.warranty_type,
-        warranty_start: _.isNull(data.warranty_start) ? null : moment(data.warranty_start),
-        warranty_end: _.isNull(data.warranty_end) ? null : moment(data.warranty_end),
+        warranty_start: _.isNull(data.warranty_start) ? null : forEditModal(data.warranty_start),
+        warranty_end: _.isNull(data.warranty_end) ? null : forEditModal(data.warranty_end),
         snmp_sys_location: data.snmp_sys_location,
         installed_at_site_id: data.installed_at_site_id,
         installed_at_site: data.installed_at_site,
@@ -237,7 +242,7 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
         installed_at_postal_code: data.installed_at_postal_code,
         installed_at_country: data.installed_at_country,
         ship_to_address: data.ship_to_address,
-        ship_date: _.isNull(data.ship_date) ? null : moment(data.ship_date),
+        ship_date: _.isNull(data.ship_date) ? null : forEditModal(data.ship_date),
         sw_type: data.sw_type,
         sw_version: data.sw_version,
         feature_set: data.feature_set,
@@ -248,21 +253,21 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
         running_config: data.running_config,
         startup_config: data.startup_config,
         hw_alerts: data.hw_alerts,
-        hw_l_do_s: _.isNull(data.hw_l_do_s) ? null : moment(data.hw_l_do_s),
+        hw_l_do_s: _.isNull(data.hw_l_do_s) ? null : forEditModal(data.hw_l_do_s),
         sw_alerts: data.sw_alerts,
         security_advisory_psirt: data.security_advisory_psirt,
         field_notices: data.field_notices,
         customer: data.customer,
         inventory: data.inventory,
         segment: data.segment,
-        collection_date: _.isNull(data.collection_date) ? null : moment(data.collection_date),
+        collection_date: _.isNull(data.collection_date) ? null : forEditModal(data.collection_date),
         appliance_id: data.appliance_id,
         imported_by: data.imported_by,
         imported_file: data.imported_file,
         sn_recognized: data.sn_recognized,
         device_diagnostics_supported: data.device_diagnostics_supported,
         relationship: data.relationship,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

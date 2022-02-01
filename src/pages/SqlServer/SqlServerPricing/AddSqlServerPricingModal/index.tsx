@@ -11,13 +11,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerPricing } from '../../../../services/sqlServer/sqlServerPricing/sqlServerPricing.model';
@@ -82,7 +81,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
     price: null,
     currency_id: sqlServerPricing.search.currency_id ? sqlServerPricing.search.currency_id : null,
     agreement_type_id: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -90,6 +89,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveSqlServerPricing(inputValues));
     } else {
@@ -143,7 +143,7 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
         agreement_type_id: _.isNull(data.agreement_type_id) ? null : data.agreement_type_id,
         currency_id: _.isNull(data.currency_id) ? null : data.currency_id,
         license_id: _.isNull(data.license_id) ? null : data.license_id,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         price: data.price,
       };
       form.setFieldsValue(initialValues);

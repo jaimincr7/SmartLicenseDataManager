@@ -12,8 +12,6 @@ import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import moment from 'moment';
-import { Common } from '../../../../common/constants/common';
 import {
   clearCmsPurchaseLineItemMessages,
   cmsPurchaseLineItemSelector,
@@ -24,6 +22,7 @@ import {
   searchCmsPurchaseLineItem,
 } from '../../../../store/cms/purchaseLineItem/purchaseLineItem.action';
 import purchaseLineItemService from '../../../../services/cms/purchaseLineItem/purchaseLineItem.service';
+import { showDateFromApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -156,7 +155,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'start_date',
             key: 'start_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
@@ -170,7 +169,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'end_date',
             key: 'end_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },

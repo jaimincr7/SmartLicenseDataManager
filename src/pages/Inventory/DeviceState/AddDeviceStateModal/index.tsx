@@ -12,7 +12,6 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -81,7 +80,6 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
     start_position: null,
     exact_match: false,
     entire_field: false,
-    date_added: moment(),
   };
 
   const onFinish = (values: any) => {
@@ -144,7 +142,6 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
         start_position: data.start_position,
         exact_match: data.exact_match,
         entire_field: data.entire_field,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

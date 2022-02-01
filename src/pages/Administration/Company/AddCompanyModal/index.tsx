@@ -12,7 +12,6 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -36,7 +35,7 @@ import {
   companySelector,
 } from '../../../../store/master/company/company.reducer';
 import { IAddCompanyProps } from './addCompany.model';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { clearGlobalCompanyLookUp } from '../../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
@@ -74,7 +73,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
     phone: '',
     fax: '',
     email: null,
-    joined_date: moment(),
+    joined_date: getSimpleDate(),
     active: false,
   };
 
@@ -83,6 +82,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.joined_date = passDateToApi(inputValues.joined_date,true);
     dispatch(clearGlobalCompanyLookUp());
     if (!isMultiple) {
       dispatch(saveCompany(inputValues));
@@ -112,7 +112,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
         fax: data.fax,
         email: data.email,
         active: data.active,
-        joined_date: _.isNull(data.joined_date) ? null : moment(data.joined_date),
+        joined_date: _.isNull(data.joined_date) ? null : forEditModal(data.joined_date),
       };
       form.setFieldsValue(initialValues);
     }

@@ -2,9 +2,11 @@ import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import {
+  FilterByDateSwap,
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
+import _ from 'lodash';
 import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
@@ -20,6 +22,7 @@ import {
   deleteCmsContractAgreementAttachment,
   searchCmsContractAgreementAttachment,
 } from '../../../../store/cms/contractAgreementAttachment/contractAgreementAttachment.action';
+import { showDateFromApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -59,6 +62,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       null,
       ObjectForColumnFilter
     );
+  };
+
+  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
+    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
   };
 
   const getTableColumns = (form) => {
@@ -106,6 +113,20 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'user_name',
             key: 'user_name',
             ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
+        sorter: true,
+        children: [
+          {
+            title: FilterByDateSwapTable('date_added', cmsContractAgreementAttachment.search.tableName, form),
+            dataIndex: 'date_added',
+            key: 'date_added',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },
