@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITabVLicense } from '../../../../services/rvTools/tabVLicense/tabVLicense.model';
@@ -82,6 +82,7 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
     features: '',
     vi_sdk_server: '',
     vi_sdk_uuid: '',
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -89,6 +90,7 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveTabVLicense(inputValues));
     } else {
@@ -150,6 +152,7 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
         features: data.features,
         vi_sdk_server: data.vi_sdk_server,
         vi_sdk_uuid: data.vi_sdk_uuid,
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
