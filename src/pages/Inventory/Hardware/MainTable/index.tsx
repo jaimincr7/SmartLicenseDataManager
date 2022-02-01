@@ -7,8 +7,6 @@ import {
 } from '../../../../store/inventory/hardware/hardware.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { deleteHardware, searchHardware } from '../../../../store/inventory/hardware/hardware.action';
-import moment from 'moment';
-import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import hardwareService from '../../../../services/inventory/hardware/hardware.service';
 import {
@@ -22,6 +20,7 @@ import DataTable from '../../../../common/components/DataTable';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { showDateFromApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -176,7 +175,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },

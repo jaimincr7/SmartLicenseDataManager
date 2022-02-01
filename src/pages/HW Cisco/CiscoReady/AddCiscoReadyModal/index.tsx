@@ -13,13 +13,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoReady } from '../../../../services/hwCisco/ciscoReady/ciscoReady.model';
@@ -137,7 +136,7 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
     mapped_to_c1: '',
     auto_renewal_flag: '',
     configuration: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -145,6 +144,11 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.covered_line_start_date = passDateToApi(inputValues.covered_line_start_date, true);
+    inputValues.covered_line_end_date = passDateToApi(inputValues.covered_line_end_date, true);
+    inputValues.ship_date = passDateToApi(inputValues.ship_date, true);
+    inputValues.ship_date = passDateToApi(inputValues.ship_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (inputValues.mapped_to_swss) {
       inputValues.mapped_to_swss = 'Y';
     } else {
@@ -219,16 +223,16 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
         item_quantity: data.item_quantity,
         covered_line_start_date: _.isNull(data.covered_line_start_date)
           ? null
-          : moment(data.covered_line_start_date),
+          : forEditModal(data.covered_line_start_date),
         covered_line_end_date: _.isNull(data.covered_line_end_date)
           ? null
-          : moment(data.covered_line_end_date),
+          : forEditModal(data.covered_line_end_date),
         covered_line_end_date_fy_fq: data.covered_line_end_date_fy_fq,
         contract_type: data.contract_type,
         service_brand_code: data.service_brand_code,
         contract_number: data.contract_number,
         subscription_reference_id: data.subscription_reference_id,
-        ship_date: _.isNull(data.ship_date) ? null : moment(data.ship_date),
+        ship_date: _.isNull(data.ship_date) ? null : forEditModal(data.ship_date),
         end_of_product_sale_date: data.end_of_product_sale_date,
         end_of_software_maintenance_date: data.end_of_software_maintenance_date,
         last_date_of_support: data.last_date_of_support,
@@ -269,7 +273,7 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
         mapped_to_c1: _.isEqual(data.mapped_to_c1, 'Y') ? true : false,
         auto_renewal_flag: data.auto_renewal_flag,
         configuration: data.configuration,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

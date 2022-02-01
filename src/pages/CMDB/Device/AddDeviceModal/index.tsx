@@ -12,13 +12,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ICmdbDevice } from '../../../../services/cmdb/device/device.model';
 import { ILookup } from '../../../../services/common/common.model';
@@ -97,6 +96,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.last_updated = passDateToApi(inputValues.last_updated,true);
     if (!isMultiple) {
       dispatch(saveCmdbDevice(inputValues));
     } else {
@@ -115,7 +115,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
     if (data) {
       initialValues = {
         source: data.source,
-        last_updated: _.isNull(data.last_updated) ? null : moment(data.last_updated),
+        last_updated: _.isNull(data.last_updated) ? null : forEditModal(data.last_updated),
         computer_name: data.computer_name,
         type: data.type,
         manufacturer: data.manufacturer,

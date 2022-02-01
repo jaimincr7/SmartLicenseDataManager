@@ -1,8 +1,6 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import moment from 'moment';
-import { Common } from '../../../../common/constants/common';
 import _ from 'lodash';
 import {
   FilterByDateSwap,
@@ -24,6 +22,7 @@ import {
   setTableColumnSelection,
 } from '../../../../store/cmdb/software/software.reducer';
 import softwareService from '../../../../services/cmdb/software/software.service';
+import { showDateFromApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const {
@@ -173,7 +172,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'installed_date',
             key: 'installed_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },

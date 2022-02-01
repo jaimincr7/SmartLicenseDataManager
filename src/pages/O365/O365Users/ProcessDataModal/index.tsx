@@ -297,7 +297,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Added</label>
+                <label className="label">Selected Date</label>
                 <Form.Item name="selected_date" className="m-0" label="Selected Added">
                   <Select
                     placeholder="Select Date"

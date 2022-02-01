@@ -36,6 +36,7 @@ export enum Page {
   TabVCluster = 'tab-v-cluster',
   TabVHost = 'tab-v-host',
   TabVInfo = 'tab-v-info',
+  TabVLicense = "v-license",
 
   AzureDailyUsage = 'azure-daily-usage',
   AzureRateCard = 'azure-rate-card',

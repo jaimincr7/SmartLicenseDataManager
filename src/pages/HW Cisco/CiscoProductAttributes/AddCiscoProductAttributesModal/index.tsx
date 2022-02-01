@@ -12,13 +12,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoProductAttributes } from '../../../../services/hwCisco/ciscoProductAttributes/ciscoProductAttributes.model';
@@ -98,7 +97,7 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
     no_coverage_reason: '',
     hardware_list_price: null,
     maintenance_list_price: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -106,6 +105,10 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
       ...values,
       id: id ? +id : null,
     };
+    inputValues.l_do_sales = passDateToApi(inputValues.l_do_sales, true);
+    inputValues.l_do_support = passDateToApi(inputValues.l_do_support, true);
+    inputValues.date_confirmed = passDateToApi(inputValues.date_confirmed, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveCiscoProductAttributes(inputValues));
     } else {
@@ -159,11 +162,11 @@ const AddCiscoProductAttributesModal: React.FC<IAddCiscoProductAttributesProps> 
         source: data.source,
         product_id: data.product_id,
         product_description: data.product_description,
-        l_do_sales: _.isNull(data.l_do_sales) ? null : moment(data.l_do_sales),
-        l_do_support: _.isNull(data.l_do_support) ? null : moment(data.l_do_support),
+        l_do_sales: _.isNull(data.l_do_sales) ? null : forEditModal(data.l_do_sales),
+        l_do_support: _.isNull(data.l_do_support) ? null : forEditModal(data.l_do_support),
         l_do_s_category: data.l_do_s_category,
-        date_confirmed: _.isNull(data.date_confirmed) ? null : moment(data.date_confirmed),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_confirmed: _.isNull(data.date_confirmed) ? null : forEditModal(data.date_confirmed),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         date_source: data.date_source,
         asset_type: data.asset_type,
         product_type: data.product_type,

@@ -13,13 +13,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { IAdUser } from '../../../../services/ad/adUsers/adUsers.model';
 import { ILookup } from '../../../../services/common/common.model';
@@ -104,7 +103,7 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
     o365_licenses: '',
     domain: '',
     exchangeActiveMailbox: false,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -112,6 +111,11 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.last_logon_date = passDateToApi(inputValues.last_logon_date, true);
+    inputValues.password_last_set = passDateToApi(inputValues.password_last_set, true);
+    inputValues.when_created = passDateToApi(inputValues.when_created, true);
+    inputValues.whenChanged = passDateToApi(inputValues.whenChanged, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveAdUser(inputValues));
     } else {
@@ -169,21 +173,21 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
         enabled: data.enabled,
         given_name: data.given_name,
         last_logon: data.last_logon,
-        last_logon_date: _.isNull(data.last_logon_date) ? null : moment(data.last_logon_date),
+        last_logon_date: _.isNull(data.last_logon_date) ? null : forEditModal(data.last_logon_date),
         locked_out: data.locked_out,
         name: data.name,
         object_class: data.object_class,
         object_guid: data.object_guid,
-        password_last_set: _.isNull(data.password_last_set) ? null : moment(data.password_last_set),
+        password_last_set: _.isNull(data.password_last_set) ? null : forEditModal(data.password_last_set),
         password_never_expires: data.password_never_expires,
         password_not_required: data.password_not_required,
         sam_account_name: data.sam_account_name,
         sid: data.sid,
         surname: data.surname,
         user_principal_name: data.user_principal_name,
-        whenChanged: _.isNull(data.whenChanged) ? null : moment(data.whenChanged),
-        when_created: _.isNull(data.when_created) ? null : moment(data.when_created),
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        whenChanged: _.isNull(data.whenChanged) ? null : forEditModal(data.whenChanged),
+        when_created: _.isNull(data.when_created) ? null : forEditModal(data.when_created),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         exclusion: data.exclusion,
         exclusion_id: data.exclusion_id,
         last_logon_timestamp: data.last_logon_timestamp,
@@ -324,15 +328,15 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -369,15 +373,15 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -414,15 +418,15 @@ const AddAdUserModal: React.FC<IAddAdUsersProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>

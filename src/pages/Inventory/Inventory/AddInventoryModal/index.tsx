@@ -13,13 +13,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IInventory } from '../../../../services/inventory/inventory/inventory.model';
@@ -106,7 +105,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
     quantity: null,
     exclude: '',
     on_server: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -114,6 +113,8 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_installed = passDateToApi(inputValues.date_installed, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveInventory(inputValues));
     } else {
@@ -183,7 +184,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
         last_hw_scan: data.last_hw_scan,
         last_sw_scan: data.last_sw_scan,
         is_virtual: data.is_virtual,
-        date_installed: _.isNull(data.date_installed) ? null : moment(data.date_installed),
+        date_installed: _.isNull(data.date_installed) ? null : forEditModal(data.date_installed),
         software_normalization_id: _.isNull(data.software_normalization_id) ? null : data.software_normalization_id,
         operating_system_normalization_id: _.isNull(data.operating_system_normalization_id) ? null : data.operating_system_normalization_id,
         os: data.os,
@@ -191,7 +192,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
         quantity: _.isNull(data.quantity) ? null : data.quantity,
         exclude: data.exclude,
         on_server: data.on_server,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -405,15 +406,15 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -444,10 +445,10 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                       loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups?.softwareNormalizationLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -478,10 +479,10 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                       loading={commonLookups.buLookup.loading}
                     >
                       {commonLookups?.osNormalizationLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </div>

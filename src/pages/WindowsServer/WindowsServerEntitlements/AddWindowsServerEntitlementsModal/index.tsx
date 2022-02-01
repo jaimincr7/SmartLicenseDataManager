@@ -11,13 +11,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerEntitlements } from '../../../../services/windowsServer/windowsServerEntitlements/windowsServerEntitlements.model';
@@ -81,7 +80,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
     qty_02: 0,
     qty_03: 0,
     tenant_id: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -89,6 +88,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveWindowsServerEntitlements(inputValues));
     } else {
@@ -143,7 +143,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
         qty_01: data.qty_01,
         qty_02: data.qty_02,
         qty_03: data.qty_03,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

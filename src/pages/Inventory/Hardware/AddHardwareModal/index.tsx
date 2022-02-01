@@ -12,13 +12,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IHardware } from '../../../../services/inventory/hardware/hardware.model';
@@ -86,7 +85,7 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
     last_logged_on_user: '',
     location: '',
     is_virtual: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -94,6 +93,7 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveHardware(inputValues));
     } else {
@@ -157,7 +157,7 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
         last_logged_on_user: data.last_logged_on_user,
         location: data.location,
         is_virtual: data.is_virtual,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

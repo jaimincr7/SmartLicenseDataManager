@@ -155,7 +155,7 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
         last_activity_date: _.isNull(data.last_activity_date)
           ? null
           : forEditModal(data.last_activity_date),
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         site_url: data.site_url,
         is_deleted: data.is_deleted,
         file_count: data.file_count,

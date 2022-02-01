@@ -11,6 +11,16 @@ function Sidebar() {
   const location = useLocation();
   const defaultSubmenu: string = location.pathname.split('/')[1];
   const userDetails = useAppSelector(userSelector);
+  const [openKeys, setOpenKeys] = React.useState([`${defaultSubmenu}`]);
+
+  const onOpenChange = keys => {
+    const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
+    if (keys.indexOf(latestOpenKey) === -1) {
+      setOpenKeys(keys);
+    } else {
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+    }
+  };
 
   window.addEventListener('click', function (e) {
     if (
@@ -59,7 +69,8 @@ function Sidebar() {
       <Scrollbars renderThumbVertical={(props) => <div {...props} className="track-vartical" />}>
         <Menu
           // defaultSelectedKeys={['/']}
-          defaultOpenKeys={[`${defaultSubmenu}`]}
+          openKeys={openKeys}
+          onOpenChange={onOpenChange}
           mode="inline"
           selectedKeys={[location.pathname]}
         >

@@ -333,7 +333,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       }
     });
     const searchData = getSearchData(pagination, true);
-    const exportData = { ...searchData, export_column_details, total_records: reduxStoreData.search.count };
+    searchData.is_lookup = false;
+    searchData.limit = 0;
+    const exportData = { ...searchData, export_column_details, total_records: reduxStoreData.search.count, table_name: reduxStoreData.search.tableName };
 
     return exportExcelFile(exportData).then((res) => {
       if (res && res?.data?.body?.messages) {

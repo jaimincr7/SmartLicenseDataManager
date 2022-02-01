@@ -12,13 +12,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoIB } from '../../../../services/hwCisco/ciscoIB/ciscoIB.model';
@@ -145,7 +144,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
     end_of_software_availability_date: '',
     end_of_software_license_availability_date: '',
     end_of_software_date: '',
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -160,6 +159,11 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
         values.covered_line_end_date === '' ? null : values.covered_line_end_date,
       last_date_of_support: values.last_date_of_support === '' ? null : values.last_date_of_support,
     };
+    inputValues.best_available_ship_date = passDateToApi(inputValues.best_available_ship_date, true);
+    inputValues.covered_line_start_date = passDateToApi(inputValues.covered_line_start_date, true);
+    inputValues.covered_line_end_date = passDateToApi(inputValues.covered_line_end_date, true);
+    inputValues.last_date_of_support = passDateToApi(inputValues.last_date_of_support, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveCiscoIB(inputValues));
     } else {
@@ -241,7 +245,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
         ship_to_customer_name: data.ship_to_customer_name,
         best_available_ship_date: _.isNull(data.best_available_ship_date)
           ? null
-          : moment(data.best_available_ship_date),
+          : forEditModal(data.best_available_ship_date),
         shipped_within_5_years: data.shipped_within_5_years,
         gu_id: data.gu_id,
         gu_name: data.gu_name,
@@ -265,15 +269,15 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
         product_coverage_line_number: data.product_coverage_line_number,
         covered_line_start_date: _.isNull(data.covered_line_start_date)
           ? null
-          : moment(data.covered_line_start_date),
+          : forEditModal(data.covered_line_start_date),
         covered_line_end_date: _.isNull(data.covered_line_end_date)
           ? null
-          : moment(data.covered_line_end_date),
+          : forEditModal(data.covered_line_end_date),
         expiration_range: data.expiration_range,
         termination_date: data.termination_date,
         last_date_of_support: _.isNull(data.last_date_of_support)
           ? null
-          : moment(data.last_date_of_support),
+          : forEditModal(data.last_date_of_support),
         l_do_s_category: data.l_do_s_category,
         warranty_type: data.warranty_type,
         warranty_end_date: data.warranty_end_date,
@@ -290,7 +294,7 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
         end_of_software_availability_date: data.end_of_software_availability_date,
         end_of_software_license_availability_date: data.end_of_software_license_availability_date,
         end_of_software_date: data.end_of_software_date,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

@@ -160,7 +160,7 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
         user_principal_name: data.user_principal_name,
         display_name: data.display_name,
         product_type: data.product_type,
-        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added,true),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         last_activated_date: _.isNull(data.last_activated_date)
           ? null
           : forEditModal(data.last_activated_date),

@@ -31,6 +31,7 @@ import globalTableColumnSelectionReducer from './administration/globalTableColum
 import tabVClusterReducer from './rvTools/tabVCluster/tabVCluster.reducer';
 import tabVHostReducer from './rvTools/tabVHost/tabVHost.reducer';
 import tabVInfoReducer from './rvTools/tabVInfo/tabVInfo.reducer';
+import tabVLicenseReducer from './rvTools/tabVLicense/tabVLicense.reducer';
 import currencyReducer from './master/currency/currency.reducer';
 import azureDailyUsageReducer from './azure/azureDailyUsage/azureDailyUsage.reducer';
 import azureRateCardReducer from './azure/azureRateCard/azureRateCard.reducer';
@@ -180,6 +181,7 @@ export const rootReducer = combineReducers({
   tabVCluster: tabVClusterReducer,
   tabVHost: tabVHostReducer,
   tabVInfo: tabVInfoReducer,
+  tabVLicense: tabVLicenseReducer,
 
   // Azure
   azureDailyUsage: azureDailyUsageReducer,

@@ -1,5 +1,4 @@
 import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -35,7 +34,7 @@ import {
   getCmsPurchaseById,
   saveCmsPurchase,
 } from '../../../../store/cms/purchase/purchase.action';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -73,7 +72,7 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
     purchase_order_number: '',
     spend_type_id: null,
     purchase_contact_id: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -81,6 +80,8 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.purchase_date = passDateToApi(inputValues.purchase_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveCmsPurchase(inputValues));
     } else {
@@ -135,11 +136,11 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
         contract_agreement_id: _.isNull(data.contract_agreement_id)
           ? null
           : data.contract_agreement_id,
-        purchase_date: _.isNull(data.purchase_date) ? null : moment(data.purchase_date),
+        purchase_date: _.isNull(data.purchase_date) ? null : forEditModal(data.purchase_date),
         purchase_order_number: data.purchase_order_number,
         spend_type_id: _.isNull(data.spend_type_id) ? null : data.spend_type_id,
         purchase_contact_id: _.isNull(data.purchase_contact_id) ? null : data.purchase_contact_id,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
@@ -275,15 +276,15 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -320,15 +321,15 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -365,15 +366,15 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>

@@ -1,5 +1,4 @@
 import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -31,7 +30,7 @@ import {
   saveCmsContractAgreementAttachment,
 } from '../../../../store/cms/contractAgreementAttachment/contractAgreementAttachment.action';
 import { ILookup } from '../../../../services/common/common.model';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -65,7 +64,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
     file_path: '',
     file_name: '',
     user_id: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -73,6 +72,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveCmsContractAgreementAttachment(inputValues));
     } else {
@@ -97,7 +97,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
         file_path: data.file_path,
         file_name: data.file_name,
         user_id: _.isNull(data.user_id) ? null : data.user_id,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
