@@ -145,6 +145,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     });
 
     if (sqlToExcelMapping.length === 0) {
+      toast.warn('Select some fields.')
       return false;
     }
     const excelMappingObj: ISaveExcelMapping = {
@@ -163,7 +164,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       ],
     };
 
-    if(record.validation) {
+    const currentRec = records.filter((data) => data.index == seqNumber);
+    if(currentRec && currentRec?.length && currentRec[0]?.validation) {
       toast.warn('Please check required Fields once');
     } else {
       dispatch(saveExcelFileMapping(excelMappingObj));
