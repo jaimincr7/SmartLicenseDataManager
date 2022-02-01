@@ -1,5 +1,4 @@
 import { Button, Checkbox, Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
@@ -29,7 +28,7 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddCmdbSoftwareProps } from './addSoftware.model';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
@@ -77,6 +76,7 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
+    inputValues.installed_date = passDateToApi(inputValues.installed_date,true);
     if (!isMultiple) {
       dispatch(saveCmdbSoftware(inputValues));
     } else {
@@ -97,7 +97,7 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
         name: data.name,
         version: data.version,
         edition: data.edition,
-        installed_date: _.isNull(data.installed_date) ? null : moment(data.installed_date),
+        installed_date: _.isNull(data.installed_date) ? null : forEditModal(data.installed_date),
         uninstall_string: data.uninstall_string,
         file_name: data.file_name,
         file_path: data.file_path,

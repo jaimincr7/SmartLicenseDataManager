@@ -11,13 +11,12 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerPricing } from '../../../../services/windowsServer/windowsServerPricing/windowsServerPricing.model';
@@ -84,7 +83,7 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
       ? windowsServerPricing.search.currency_id
       : null,
     agreement_type_id: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -92,6 +91,7 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added,true);
     if (!isMultiple) {
       dispatch(saveWindowsServerPricing(inputValues));
     } else {
@@ -146,7 +146,7 @@ const AddWindowsServerPricingModal: React.FC<IAddWindowsServerPricingProps> = (p
         currency_id: _.isNull(data.currency_id) ? null : data.currency_id,
         license_id: _.isNull(data.license_id) ? null : data.license_id,
         price: data.price,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
