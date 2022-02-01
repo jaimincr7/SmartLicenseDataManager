@@ -2,6 +2,7 @@ import {
   Button,
   Checkbox,
   Col,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -11,7 +12,7 @@ import {
   Spin,
 } from 'antd';
 import _ from 'lodash';
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
@@ -402,6 +403,20 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                   )}
                   <Form.Item name="name" label="Name" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item name="date_added" label="Date Added" className="m-0">
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
