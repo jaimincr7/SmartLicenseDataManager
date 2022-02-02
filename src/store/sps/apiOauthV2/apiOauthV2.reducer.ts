@@ -59,7 +59,7 @@ export const spsApiOauthV2Slice = createSlice({
     },
     clearSpsApiOauthV2Data: (state) => {
       state.save.data = null;
-    },    
+    },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
     },

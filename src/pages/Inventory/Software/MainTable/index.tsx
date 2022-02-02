@@ -1,4 +1,4 @@
-import {  Popconfirm } from 'antd';
+import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
   setTableColumnSelection,
@@ -6,7 +6,10 @@ import {
   softwareSelector,
 } from '../../../../store/inventory/software/software.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { deleteSoftware, searchSoftware } from '../../../../store/inventory/software/software.action';
+import {
+  deleteSoftware,
+  searchSoftware,
+} from '../../../../store/inventory/software/software.action';
 import _ from 'lodash';
 import softwareService from '../../../../services/inventory/software/software.service';
 import {

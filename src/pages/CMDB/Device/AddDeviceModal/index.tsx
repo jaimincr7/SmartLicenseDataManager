@@ -17,7 +17,11 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ICmdbDevice } from '../../../../services/cmdb/device/device.model';
 import { ILookup } from '../../../../services/common/common.model';
@@ -96,7 +100,7 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    inputValues.last_updated = passDateToApi(inputValues.last_updated,true);
+    inputValues.last_updated = passDateToApi(inputValues.last_updated, true);
     if (!isMultiple) {
       dispatch(saveCmdbDevice(inputValues));
     } else {

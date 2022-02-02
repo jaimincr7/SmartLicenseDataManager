@@ -16,7 +16,10 @@ import {
   deleteDatasetSelector,
 } from '../../../../store/master/deleteDataset/deleteDataset.reducer';
 import deleteDatasetService from '../../../../services/master/deleteDataset/deleteDataset.service';
-import { deleteDeleteDataset, searchDeleteDataset } from '../../../../store/master/deleteDataset/deleteDataset.action';
+import {
+  deleteDeleteDataset,
+  searchDeleteDataset,
+} from '../../../../store/master/deleteDataset/deleteDataset.action';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
@@ -51,7 +54,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, deleteDataset.search.tableName, form, null, ObjectForColumnFilter);
+    return FilterWithSwapOption(
+      dataIndex,
+      deleteDataset.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
   };
 
   const getTableColumns = (form) => {
@@ -103,7 +112,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('is_date_available', deleteDataset.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'is_date_available',
+              deleteDataset.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'is_date_available',
             key: 'is_date_available',
             ellipsis: true,

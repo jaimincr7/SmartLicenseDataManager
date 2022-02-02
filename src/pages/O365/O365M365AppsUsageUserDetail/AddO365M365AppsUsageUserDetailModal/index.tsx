@@ -43,7 +43,13 @@ import { IO365M365AppsUsageUserDetail } from '../../../../services/o365/o365M365
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { forDisableDate, forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forDisableDate,
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -126,10 +132,10 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
       ...values,
       id: id ? +id : null,
     };
-    inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date,true);
-    inputValues.last_activity_date = passDateToApi(inputValues.last_activity_date,true);
-    inputValues.last_activation_date = passDateToApi(inputValues.last_activation_date,true);
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date, true);
+    inputValues.last_activity_date = passDateToApi(inputValues.last_activity_date, true);
+    inputValues.last_activation_date = passDateToApi(inputValues.last_activation_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveO365M365AppsUsageUserDetail(inputValues));
     } else {

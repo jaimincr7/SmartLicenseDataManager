@@ -5,7 +5,10 @@ import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import { ITabVLicenseProps } from './tabVLicense.model';
-import { clearTabVLicense, tabVLicenseSelector } from '../../../store/rvTools/tabVLicense/tabVLicense.reducer';
+import {
+  clearTabVLicense,
+  tabVLicenseSelector,
+} from '../../../store/rvTools/tabVLicense/tabVLicense.reducer';
 import AddTabVLicenseModal from './AddTabVLicenseModal';
 import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
@@ -52,7 +55,9 @@ const TabVLicense: React.FC<ITabVLicenseProps> = (props) => {
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(`/data-input/bulk-import/${encodeURIComponent(tabVLicense.search.tableName)}`)
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(tabVLicense.search.tableName)}`
+            )
           }
           icon={
             <em className="anticon">

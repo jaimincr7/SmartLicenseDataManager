@@ -3,7 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody } from '../../../common/models/common';
 import { IDeleteDataset } from '../../../services/master/deleteDataset/deleteDataset.model';
 import { RootState } from '../../app.model';
-import { deleteDeleteDataset, getDeleteDatasetById, saveDeleteDataset, searchDeleteDataset } from './deleteDataset.action';
+import {
+  deleteDeleteDataset,
+  getDeleteDatasetById,
+  saveDeleteDataset,
+  searchDeleteDataset,
+} from './deleteDataset.action';
 import { IDeleteDatasetState } from './deleteDataset.model';
 
 export const initialState: IDeleteDatasetState = {
@@ -104,7 +109,10 @@ export const deleteDatasetSlice = createSlice({
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveDeleteDataset.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveDeleteDataset.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
@@ -119,7 +127,10 @@ export const deleteDatasetSlice = createSlice({
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteDeleteDataset.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteDeleteDataset.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
@@ -135,8 +146,12 @@ export const deleteDatasetSlice = createSlice({
 export const deleteDatasetSelector = (state: RootState) => state.deleteDataset;
 
 // Actions
-export const { clearDeleteDataset, clearDeleteDatasetMessages, clearDeleteDatasetGetById, setTableColumnSelection } =
-  deleteDatasetSlice.actions;
+export const {
+  clearDeleteDataset,
+  clearDeleteDatasetMessages,
+  clearDeleteDatasetGetById,
+  setTableColumnSelection,
+} = deleteDatasetSlice.actions;
 
 // The reducer
 export default deleteDatasetSlice.reducer;

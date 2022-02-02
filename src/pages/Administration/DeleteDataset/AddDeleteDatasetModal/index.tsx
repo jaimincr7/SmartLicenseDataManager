@@ -11,7 +11,10 @@ import {
   clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { getDeleteDatasetById, saveDeleteDataset } from '../../../../store/master/deleteDataset/deleteDataset.action';
+import {
+  getDeleteDatasetById,
+  saveDeleteDataset,
+} from '../../../../store/master/deleteDataset/deleteDataset.action';
 import { updateMultiple } from '../../../../store/common/common.action';
 import {
   clearDeleteDatasetGetById,
@@ -167,7 +170,11 @@ const AddDeleteDatasetModal: React.FC<IAddDeleteDatasetProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'store_procedure_name']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'store_procedure_name']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Stored Procedure Name</Checkbox>
                     </Form.Item>
                   ) : (
@@ -190,7 +197,11 @@ const AddDeleteDatasetModal: React.FC<IAddDeleteDatasetProps> = (props) => {
                   </Form.Item>
                   &nbsp; &nbsp;
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'is_date_available']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'is_date_available']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Is Date Available</Checkbox>
                     </Form.Item>
                   ) : (

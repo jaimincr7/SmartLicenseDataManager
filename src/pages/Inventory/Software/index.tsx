@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import { clearSoftware, softwareSelector } from '../../../store/inventory/software/software.reducer';
+import {
+  clearSoftware,
+  softwareSelector,
+} from '../../../store/inventory/software/software.reducer';
 import { ISoftwareProps } from './software.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';

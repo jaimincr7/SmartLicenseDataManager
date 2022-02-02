@@ -5,7 +5,9 @@ import { IDeleteDataset, ISearchDeleteDataset } from './deleteDataset.model';
 class DeleteDatasetService {
   ENDPOINT = '/config-delete-data-set';
 
-  public async searchDeleteDataset(searchParams?: ISearchDeleteDataset): Promise<IApiResponse<ISearchResponse<IDeleteDataset>>> {
+  public async searchDeleteDataset(
+    searchParams?: ISearchDeleteDataset
+  ): Promise<IApiResponse<ISearchResponse<IDeleteDataset>>> {
     const url = `${this.ENDPOINT}/search`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;

@@ -1,7 +1,4 @@
-import {
-  ISearchSoftware,
-  ISoftware,
-} from '../../../services/inventory/software/software.model';
+import { ISearchSoftware, ISoftware } from '../../../services/inventory/software/software.model';
 import inventoryService from '../../../services/inventory/software/software.service';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 

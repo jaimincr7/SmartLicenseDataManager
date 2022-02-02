@@ -5,7 +5,9 @@ import { IConfigO365Products, ISearchConfigO365Products } from './configO365Prod
 class ConfigO365ProductsService {
   ENDPOINT = '/config-o365-products';
 
-  public async searchConfigO365Products(searchParams?: ISearchConfigO365Products): Promise<IApiResponse<ISearchResponse<IConfigO365Products>>> {
+  public async searchConfigO365Products(
+    searchParams?: ISearchConfigO365Products
+  ): Promise<IApiResponse<ISearchResponse<IConfigO365Products>>> {
     const url = `${this.ENDPOINT}/search`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;

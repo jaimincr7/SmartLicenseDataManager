@@ -11,7 +11,10 @@ import {
   clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
-import { getConfigO365ProductsById, saveConfigO365Products } from '../../../../store/master/configO365Products/configO365Products.action';
+import {
+  getConfigO365ProductsById,
+  saveConfigO365Products,
+} from '../../../../store/master/configO365Products/configO365Products.action';
 import { updateMultiple } from '../../../../store/common/common.action';
 import {
   clearConfigO365ProductsGetById,
@@ -159,12 +162,7 @@ const AddConfigO365ProductsModal: React.FC<IAddConfigO365ProductsProps> = (props
                   ) : (
                     'Products'
                   )}
-                  <Form.Item
-                    name="product"
-                    label="Products"
-                    className="m-0"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="product" label="Products" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -197,12 +195,7 @@ const AddConfigO365ProductsModal: React.FC<IAddConfigO365ProductsProps> = (props
                   ) : (
                     'Units'
                   )}
-                  <Form.Item
-                    name="units"
-                    label="Units"
-                    className="m-0"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="units" label="Units" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -213,7 +206,11 @@ const AddConfigO365ProductsModal: React.FC<IAddConfigO365ProductsProps> = (props
                     <Switch className="form-control" />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'enterprise_product']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'enterprise_product']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Enterprise Product</Checkbox>
                     </Form.Item>
                   ) : (

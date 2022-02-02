@@ -152,7 +152,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDropdown(
               'software_normalization_id',
-                 inventory.search.lookups?.software_normalizations
+              inventory.search.lookups?.software_normalizations
             ),
             dataIndex: 'software_normalization',
             key: 'software_normalization',
@@ -168,7 +168,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDropdown(
               'operating_system_normalization_id',
-                inventory.search.lookups?.operating_system_normalizations
+              inventory.search.lookups?.operating_system_normalizations
             ),
             dataIndex: 'operating_system_normalization',
             key: 'operating_system_normalization',

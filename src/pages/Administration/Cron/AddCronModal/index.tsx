@@ -94,9 +94,9 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     company_id: null,
     bu_id: null,
     tenant_id: null,
-    cron_frequency_type: "Weekly",
+    cron_frequency_type: 'Weekly',
     cron_frequency_day: presentDay,
-    cron_frequency_time: moment().add(5,'minutes'),
+    cron_frequency_time: moment().add(5, 'minutes'),
     start_schedular: true,
     date_added: moment(),
     time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -165,7 +165,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
           : moment(data.cron_frequency_time),
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         start_schedular: data.status === 'Running' ? true : false,
-        time_zone: data.time_zone
+        time_zone: data.time_zone,
       };
       if (data.cron_frequency_type) {
         setWeek(data.cron_frequency_type);
@@ -530,7 +530,9 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                             {option.name}
                           </Option>
                         ))
-                      ) : <></>}
+                      ) : (
+                        <></>
+                      )}
                     </Select>
                   </Form.Item>
                 </div>
@@ -564,11 +566,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'time_zone']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'time_zone']} valuePropName="checked" noStyle>
                       <Checkbox>Time Zone</Checkbox>
                     </Form.Item>
                   ) : (
@@ -580,7 +578,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     className="m-0"
                     rules={[{ required: !isMultiple }]}
                   >
-                    <Input className="form-control" disabled={true}/>
+                    <Input className="form-control" disabled={true} />
                   </Form.Item>
                 </div>
               </Col>

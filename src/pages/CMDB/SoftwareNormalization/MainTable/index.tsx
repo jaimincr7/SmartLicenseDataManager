@@ -1,9 +1,7 @@
 import { Popconfirm } from 'antd';
 import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import {
-  FilterWithSwapOption,
-} from '../../../../common/components/DataTable/DataTableFilters';
+import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
 import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
@@ -174,7 +172,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.CmdbSoftwareNormalization}>
-        <Popconfirm title="Delete Record?" onConfirm={() => removeCmdbSoftwareNormalization(data.id)}>
+        <Popconfirm
+          title="Delete Record?"
+          onConfirm={() => removeCmdbSoftwareNormalization(data.id)}
+        >
           <a href="#" title="" className="action-btn">
             <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
           </a>

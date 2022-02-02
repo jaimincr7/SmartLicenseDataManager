@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/app.hooks';
-import { clearHardware, hardwareSelector } from '../../../store/inventory/hardware/hardware.reducer';
+import {
+  clearHardware,
+  hardwareSelector,
+} from '../../../store/inventory/hardware/hardware.reducer';
 import { IHardwareProps } from './hardware.model';
 import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';

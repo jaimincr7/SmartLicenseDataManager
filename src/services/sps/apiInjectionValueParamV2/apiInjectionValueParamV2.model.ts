@@ -7,8 +7,8 @@ export interface ISpsApiInjectionValueParamV2 {
   oauth_id: number;
   injection_values: [
     {
-      injection_param_id: number,
-      value: string,
+      injection_param_id: number;
+      value: string;
     }
   ];
   date_added?: string | Moment;

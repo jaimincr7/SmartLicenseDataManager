@@ -18,7 +18,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoPolicy } from '../../../../services/hwCisco/ciscoPolicy/ciscoPolicy.model';
@@ -214,7 +219,9 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
         minor_follow_parent: data.minor_follow_parent,
         quote_group: data.quote_group,
         quote_service_level: data.quote_service_level,
-        quote_begin_date: _.isNull(data.quote_begin_date) ? null : forEditModal(data.quote_begin_date),
+        quote_begin_date: _.isNull(data.quote_begin_date)
+          ? null
+          : forEditModal(data.quote_begin_date),
         quote_end_date: _.isNull(data.quote_end_date) ? null : forEditModal(data.quote_end_date),
         quote_eos: data.quote_eos,
         service_level_compare: data.service_level,
@@ -259,7 +266,9 @@ const AddCiscoPolicyModal: React.FC<IAddCiscoPolicyProps> = (props) => {
         second_service_level_desc: data.second_service_level_desc,
         second_contract_status: data.second_contract_status,
         second_contract_number: data.second_contract_number,
-        second_start_date: _.isNull(data.second_start_date) ? null : forEditModal(data.second_start_date),
+        second_start_date: _.isNull(data.second_start_date)
+          ? null
+          : forEditModal(data.second_start_date),
         second_end_date: _.isNull(data.second_end_date) ? null : forEditModal(data.second_end_date),
         second_svc_vendor: data.second_svc_vendor,
         second_maintenance_price: data.second_maintenance_price,

@@ -63,25 +63,19 @@ export const configModelPopUpDataSelection = createAsyncThunk(
   }
 );
 
-export const getApiTypeV2Lookup = createAsyncThunk(
-  'getApiTypeV2Lookup',
-  async (data: any) => {
-    const response = await commonService.getApiTypeV2Lookup(data).then((res) => {
-      return res.body;
-    });
-    return response.data;
-  }
-);
+export const getApiTypeV2Lookup = createAsyncThunk('getApiTypeV2Lookup', async (data: any) => {
+  const response = await commonService.getApiTypeV2Lookup(data).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
 
-export const getOAuthV2IdLookup = createAsyncThunk(
-  'getOAuthV2IdLookup',
-  async (data: any) => {
-    const response = await commonService.getOAuthV2IdLookup(data).then((res) => {
-      return res.body;
-    });
-    return response.data;
-  }
-);
+export const getOAuthV2IdLookup = createAsyncThunk('getOAuthV2IdLookup', async (data: any) => {
+  const response = await commonService.getOAuthV2IdLookup(data).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
 
 export const getConfigModelPopUpDataSelection = createAsyncThunk(
   'getConfigModelPopUpDataSelection',
@@ -134,12 +128,15 @@ export const getSqlServerLicenseLookup = createAsyncThunk('getSqlServerLicenseLo
   return response.data;
 });
 
-export const getSoftwareNormalizationLookup = createAsyncThunk('getSoftwareNormalizationLookup', async () => {
-  const response = await commonService.getSoftwareNormalizationLookup().then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
+export const getSoftwareNormalizationLookup = createAsyncThunk(
+  'getSoftwareNormalizationLookup',
+  async () => {
+    const response = await commonService.getSoftwareNormalizationLookup().then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const getOSNormalizationLookup = createAsyncThunk('getOSNormalizationLookup', async () => {
   const response = await commonService.getOSNormalizationLookup().then((res) => {

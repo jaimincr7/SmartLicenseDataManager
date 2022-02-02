@@ -30,7 +30,12 @@ import {
   saveCmsContractAgreementAttachment,
 } from '../../../../store/cms/contractAgreementAttachment/contractAgreementAttachment.action';
 import { ILookup } from '../../../../services/common/common.model';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -72,7 +77,7 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveCmsContractAgreementAttachment(inputValues));
     } else {

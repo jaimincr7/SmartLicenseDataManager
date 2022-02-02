@@ -3,7 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ITabVLicense } from '../../../services/rvTools/tabVLicense/tabVLicense.model';
 import { RootState } from '../../app.model';
-import { searchTabVLicense, getTabVLicenseById, saveTabVLicense, deleteTabVLicense } from './tabVLicense.action';
+import {
+  searchTabVLicense,
+  getTabVLicenseById,
+  saveTabVLicense,
+  deleteTabVLicense,
+} from './tabVLicense.action';
 import { ITabVLicenseState } from './tabVLicense.model';
 
 export const initialState: ITabVLicenseState = {
@@ -60,7 +65,10 @@ export const tabVLicenseSlice = createSlice({
     [searchTabVLicense.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchTabVLicense.fulfilled.type]: (state, action: PayloadAction<ISearchResponse<ITabVLicense>>) => {
+    [searchTabVLicense.fulfilled.type]: (
+      state,
+      action: PayloadAction<ISearchResponse<ITabVLicense>>
+    ) => {
       const { search_result, ...rest } = action.payload;
       state.search.data = search_result.records;
       state.search.count = search_result.total_count;
@@ -121,7 +129,10 @@ export const tabVLicenseSlice = createSlice({
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteTabVLicense.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteTabVLicense.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;

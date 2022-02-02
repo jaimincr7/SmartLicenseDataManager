@@ -16,10 +16,7 @@ import {
   clearCmdbSoftwareNormalizationMessages,
   cmdbSoftwareNormalizationSelector,
 } from '../../../../store/cmdb/softwareNormalization/softwareNormalization.reducer';
-import {
-  getTenantLookup,
-  updateMultiple,
-} from '../../../../store/common/common.action';
+import { getTenantLookup, updateMultiple } from '../../../../store/common/common.action';
 import {
   clearMultipleUpdateMessages,
   commonSelector,
@@ -41,7 +38,8 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.CmdbSoftwareNormalization} level={1} />
+        {isNew ? 'Add ' : 'Edit '}{' '}
+        <BreadCrumbs pageName={Page.CmdbSoftwareNormalization} level={1} />
       </>
     );
   }, [isNew]);
@@ -203,7 +201,12 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
                   ) : (
                     'Licensable'
                   )}
-                  <Form.Item name="licensable" className="m-0" label="Licensable" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="licensable"
+                    className="m-0"
+                    label="Licensable"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -225,11 +228,7 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'product']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'product']} valuePropName="checked" noStyle>
                       <Checkbox>Product</Checkbox>
                     </Form.Item>
                   ) : (
@@ -249,12 +248,7 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
                   ) : (
                     'Edition'
                   )}
-                  <Form.Item
-                    name="edition"
-                    className="m-0"
-                    label="Edition"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="edition" className="m-0" label="Edition" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -268,12 +262,7 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
                   ) : (
                     'Version'
                   )}
-                  <Form.Item
-                    name="version"
-                    className="m-0"
-                    label="Version"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="version" className="m-0" label="Version" rules={[{ max: 255 }]}>
                     <Input className="form-control w-100" />
                   </Form.Item>
                 </div>

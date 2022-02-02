@@ -7,4 +7,4 @@ export interface IDeleteDataset {
   is_date_available: boolean;
 }
 
-export interface ISearchDeleteDataset extends ISearch { }
+export interface ISearchDeleteDataset extends ISearch {}

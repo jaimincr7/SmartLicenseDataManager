@@ -5,7 +5,10 @@ import React from 'react';
 import AddConfigO365ProductsModal from './AddConfigO365ProductsModal';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
-import { configO365ProductsSelector, clearConfigO365Products } from '../../../store/master/configO365Products/configO365Products.reducer';
+import {
+  configO365ProductsSelector,
+  clearConfigO365Products,
+} from '../../../store/master/configO365Products/configO365Products.reducer';
 import { Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
@@ -48,7 +51,11 @@ const ConfigO365Products: React.FC<IConfigO365ProductsProps> = (props) => {
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(`/data-input/configO365Productslk-import/${encodeURIComponent(configO365Products.search.tableName)}`)
+            history.push(
+              `/data-input/configO365Productslk-import/${encodeURIComponent(
+                configO365Products.search.tableName
+              )}`
+            )
           }
           icon={
             <em className="anticon">

@@ -24,7 +24,7 @@ class SPSApiCallService {
   public async callApi(data: ICallAPI): Promise<any> {
     const url = `${this.ENDPOINT}/call-api`;
 
-    return request({ url, method: 'POST' , data: data }).then((res) => {
+    return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
     // const cancelTokenSource = axios.CancelToken.source();
@@ -56,7 +56,7 @@ class SPSApiCallService {
   public async callAllApi(searchParams?: ICallAllApi): Promise<IApiResponse<{}>> {
     const url = `${this.ENDPOINT}/call-all-api`;
 
-    return request({ url, method: 'POST' , data: searchParams }).then((res) => {
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
 

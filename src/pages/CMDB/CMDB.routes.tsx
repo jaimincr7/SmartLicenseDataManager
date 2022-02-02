@@ -83,7 +83,11 @@ const CmdbRoutes: React.FC = () => {
 
         {/* Os Normalization */}
         {ability.can(Action.View, Page.CmdbOsNormalization) && (
-          <Route exact path={`${match.path}/cmdb-os-normalization/:id`} component={OsNormalization} />
+          <Route
+            exact
+            path={`${match.path}/cmdb-os-normalization/:id`}
+            component={OsNormalization}
+          />
         )}
         {ability.can(Action.View, Page.CmdbOsNormalization) && (
           <Route exact path={`${match.path}/cmdb-os-normalization`} component={OsNormalization} />
@@ -91,10 +95,18 @@ const CmdbRoutes: React.FC = () => {
 
         {/* Software Normalization */}
         {ability.can(Action.View, Page.CmdbSoftwareNormalization) && (
-          <Route exact path={`${match.path}/cmdb-software-normalization/:id`} component={SoftwareNormalization} />
+          <Route
+            exact
+            path={`${match.path}/cmdb-software-normalization/:id`}
+            component={SoftwareNormalization}
+          />
         )}
         {ability.can(Action.View, Page.CmdbSoftwareNormalization) && (
-          <Route exact path={`${match.path}/cmdb-software-normalization`} component={SoftwareNormalization} />
+          <Route
+            exact
+            path={`${match.path}/cmdb-software-normalization`}
+            component={SoftwareNormalization}
+          />
         )}
 
         {/* User */}

@@ -3,12 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ISoftware } from '../../../services/inventory/software/software.model';
 import { RootState } from '../../app.model';
-import {
-  deleteSoftware,
-  getSoftwareById,
-  saveSoftware,
-  searchSoftware,
-} from './software.action';
+import { deleteSoftware, getSoftwareById, saveSoftware, searchSoftware } from './software.action';
 import { ISoftwareState } from './software.model';
 
 export const initialState: ISoftwareState = {
@@ -149,8 +144,12 @@ export const softwareSlice = createSlice({
 export const softwareSelector = (state: RootState) => state.software;
 
 // Actions
-export const { clearSoftware, clearSoftwareMessages, clearSoftwareGetById, setTableColumnSelection } =
-  softwareSlice.actions;
+export const {
+  clearSoftware,
+  clearSoftwareMessages,
+  clearSoftwareGetById,
+  setTableColumnSelection,
+} = softwareSlice.actions;
 
 // The reducer
 export default softwareSlice.reducer;

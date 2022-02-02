@@ -38,9 +38,18 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     if (globalFilters.search.tenant_id && globalFilters.search.tenant_id !== 0) {
       if (globalFilters.search.company_id && globalFilters.search.company_id !== 0) {
         if (globalFilters.search.bu_id && globalFilters.search.bu_id !== 0) {
-          return signal + `rp:paramTenantId=${globalFilters.search.tenant_id}` + `&rp:paramCompanyId=${globalFilters.search.company_id}` + `&rp:paramBU_Id=${globalFilters.search.bu_id}`
+          return (
+            signal +
+            `rp:paramTenantId=${globalFilters.search.tenant_id}` +
+            `&rp:paramCompanyId=${globalFilters.search.company_id}` +
+            `&rp:paramBU_Id=${globalFilters.search.bu_id}`
+          );
         }
-        return signal + `rp:paramTenantId=${globalFilters.search.tenant_id}` + `&rp:paramCompanyId=${globalFilters.search.company_id}`;
+        return (
+          signal +
+          `rp:paramTenantId=${globalFilters.search.tenant_id}` +
+          `&rp:paramCompanyId=${globalFilters.search.company_id}`
+        );
       }
       return signal + `rp:paramTenantId=${globalFilters.search.tenant_id}`;
     }
@@ -74,7 +83,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
         setReportConfig({ ...reportConfig, embedUrl: embedUrlString + string });
       }, 200);
     }
-  }, [globalFilters.search])
+  }, [globalFilters.search]);
 
   return (
     <div className="sqlServer">
@@ -87,7 +96,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
         </div>
       </div>
       <div className="main-card">
-        {(reportConfig.embedUrl && reportConfig.id) ? (
+        {reportConfig.embedUrl && reportConfig.id ? (
           <div style={{ height: height }}>
             <PowerBIEmbed
               embedConfig={reportConfig}

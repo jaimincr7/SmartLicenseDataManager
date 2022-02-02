@@ -17,7 +17,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ITabVLicense } from '../../../../services/rvTools/tabVLicense/tabVLicense.model';
@@ -35,7 +40,10 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { getTabVLicenseById, saveTabVLicense } from '../../../../store/rvTools/tabVLicense/tabVLicense.action';
+import {
+  getTabVLicenseById,
+  saveTabVLicense,
+} from '../../../../store/rvTools/tabVLicense/tabVLicense.action';
 import {
   clearTabVLicenseGetById,
   clearTabVLicenseMessages,
@@ -91,7 +99,7 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveTabVLicense(inputValues));
     } else {
@@ -285,15 +293,15 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -325,15 +333,15 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -365,15 +373,15 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -443,12 +451,7 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                   ) : (
                     'Labels'
                   )}
-                  <Form.Item
-                    name="labels"
-                    label="Labels"
-                    className="m-0"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="labels" label="Labels" className="m-0" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -462,7 +465,12 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                   ) : (
                     'Cost Unit'
                   )}
-                  <Form.Item name="cost_unit" label="Cost Unit" className="m-0" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="cost_unit"
+                    label="Cost Unit"
+                    className="m-0"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -476,7 +484,12 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                   ) : (
                     'Total'
                   )}
-                  <Form.Item name="total" className="m-0" label="Total" rules={[{ type: 'number' }]}>
+                  <Form.Item
+                    name="total"
+                    className="m-0"
+                    label="Total"
+                    rules={[{ type: 'number' }]}
+                  >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -490,12 +503,7 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                   ) : (
                     'Used'
                   )}
-                  <Form.Item
-                    name="used"
-                    className="m-0"
-                    label="Used"
-                    rules={[{ type: 'number' }]}
-                  >
+                  <Form.Item name="used" className="m-0" label="Used" rules={[{ type: 'number' }]}>
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -503,7 +511,11 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'expiration_date']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'expiration_date']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Expiration Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -547,7 +559,12 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
                   ) : (
                     'VI SDK Server'
                   )}
-                  <Form.Item name="vi_sdk_server" className="m-0" label="VI SDK Server" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="vi_sdk_server"
+                    className="m-0"
+                    label="VI SDK Server"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>

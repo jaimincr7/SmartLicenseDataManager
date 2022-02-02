@@ -18,17 +18,14 @@ import {
   clearCronJobSchedularMessages,
   commonSelector,
 } from '../../../store/common/common.reducer';
-import { RedoOutlined, FileExcelOutlined } from '@ant-design/icons';
+import { FileExcelOutlined } from '@ant-design/icons';
 import {
   getCronJobStatus,
-  manageCronJobApi,
   saveTableColumnSelection,
 } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
 import { spsApiCallSelector } from '../../../store/sps/spsAPICall/spsApiCall.reducer';
-import { Can } from '../../ability';
-import { Action, Page } from '../../constants/pageAction';
 import { startAll } from '../../../store/master/cron/cron.action';
 
 let pageLoaded = false;
@@ -57,7 +54,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     setNumberOfRecords,
     disableRowSelection,
     setObjectForColumnFilter,
-    isCronJobApiButton,
     isStartSchedulaAllApi,
     hideShowHideButton,
     type_id,
@@ -335,7 +331,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const searchData = getSearchData(pagination, true);
     searchData.is_lookup = false;
     searchData.limit = 0;
-    const exportData = { ...searchData, export_column_details, total_records: reduxStoreData.search.count, table_name: reduxStoreData.search.tableName };
+    const exportData = {
+      ...searchData,
+      export_column_details,
+      total_records: reduxStoreData.search.count,
+      table_name: reduxStoreData.search.tableName,
+    };
 
     return exportExcelFile(exportData).then((res) => {
       if (res && res?.data?.body?.messages) {
@@ -351,10 +352,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     });
   };
 
-  const startSchedule = () => {
-    dispatch(manageCronJobApi());
-  };
-
   // Table columns
   let columns = [
     ...(getTableColumns(form) || []),
@@ -367,8 +364,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -639,38 +637,23 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
           {tableButtons ? tableButtons() : () => <></>}
-          {isCronJobApiButton && (
-            <Can I={Action.RunCronJob} a={Page.Cron}>
-              <Button
-                onClick={startSchedule}
-                loading={common.manageCronJob.loading}
-                icon={<RedoOutlined style={{ color: 'blue' }} />}
-              >
-                Enable Scheduler
-              </Button>
-            </Can>
-          )}
-          {!hideExportButton && (
-            reduxStoreData.search.count > 50000 ? (
-              <Popconfirm
-                title="Do you want to export file?"
-                onConfirm={downloadExcel}
-              >
-                <Button
-                  icon={<FileExcelOutlined />}
-                  loading={loading}
-                >
+          {!hideExportButton &&
+            (reduxStoreData.search.count > 50000 ? (
+              <Popconfirm title="Do you want to export file?" onConfirm={downloadExcel}>
+                <Button icon={<FileExcelOutlined />} loading={loading}>
                   Export
                 </Button>
-              </Popconfirm>) : (<Button
+              </Popconfirm>
+            ) : (
+              <Button
                 onClick={downloadExcel}
                 icon={<FileExcelOutlined />}
                 loading={loading}
                 disabled={reduxStoreData.search.count === 0}
               >
                 Export
-              </Button>)
-          )}
+              </Button>
+            ))}
           {hideShowHideButton ? (
             <></>
           ) : (

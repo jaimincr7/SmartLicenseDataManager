@@ -23,7 +23,6 @@ function Sidebar() {
       } else {
         setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
       }
-      //}
     }
   };
 

@@ -42,7 +42,7 @@ class SoftwareService {
       return res.data;
     });
   }
-  
+
   public async exportExcelFile(searchParams?: ISearchSoftware): Promise<any> {
     const url = `all-service-module/export-excel`;
     return request({

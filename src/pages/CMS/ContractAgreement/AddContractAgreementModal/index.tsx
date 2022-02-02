@@ -34,7 +34,11 @@ import {
   saveCmsContractAgreement,
 } from '../../../../store/cms/contractAgreement/contractAgreement.action';
 import { ILookup } from '../../../../services/common/common.model';
-import { forEditModal, getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -138,7 +142,9 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         start_date: _.isNull(data.start_date) ? null : forEditModal(data.start_date),
         end_date: _.isNull(data.end_date) ? null : forEditModal(data.end_date),
-        transaction_date: _.isNull(data.transaction_date) ? null : forEditModal(data.transaction_date),
+        transaction_date: _.isNull(data.transaction_date)
+          ? null
+          : forEditModal(data.transaction_date),
         publisher_id: _.isNull(data.publisher_id) ? null : data.publisher_id,
         vendor_id: _.isNull(data.vendor_id) ? null : data.vendor_id,
         contract_number: data.contract_number,
@@ -295,15 +301,15 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -340,15 +346,15 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -385,15 +391,15 @@ const AddCmsContractAgreementModal: React.FC<IAddCmsContractAgreementProps> = (p
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>

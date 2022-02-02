@@ -53,7 +53,9 @@ const CmdbSoftwareNormalization: React.FC<ICmdbSoftwareNormalizationProps> = (pr
           className="btn-icon"
           onClick={() =>
             history.push(
-              `/data-input/bulk-import/${encodeURIComponent(CmdbSoftwareNormalization.search.tableName)}`
+              `/data-input/bulk-import/${encodeURIComponent(
+                CmdbSoftwareNormalization.search.tableName
+              )}`
             )
           }
           icon={

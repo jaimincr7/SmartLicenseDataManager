@@ -1,6 +1,9 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import { ISearchCmdbSoftwareNormalization, ICmdbSoftwareNormalization } from './softwareNormalization.model';
+import {
+  ISearchCmdbSoftwareNormalization,
+  ICmdbSoftwareNormalization,
+} from './softwareNormalization.model';
 
 class CmdbSoftwareNormalizationService {
   ENDPOINT = '/cmdb-software-normalization';

@@ -23,7 +23,7 @@ export const FilterByDateSwap = (
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
   ObjectForColumnFilter?: {},
-  disableSwitch?: boolean,
+  disableSwitch?: boolean
 ) => {
   const [dropSearch, setDropSearch] = React.useState(false);
 
@@ -120,22 +120,26 @@ export const FilterByDateSwap = (
         ) : (
           FilterByDropdown(dataIndex, options || [], loading, handleDropSearch, true)
         )}
-        {disableSwitch === true ? (<></>) : (<Button
-          onClick={() => {
-            if (form.getFieldValue(dataIndex)) {
-              form.setFieldsValue({ [dataIndex]: undefined });
-            }
-            setSwap(!swap);
-          }}
-          className={`filter-btn ${swap ? '' : 'active'}`}
-        >
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/images/ic-switch-white.svg`}
-            alt=""
-            className="ovarlap"
-          />
-        </Button>)}
+        {disableSwitch === true ? (
+          <></>
+        ) : (
+          <Button
+            onClick={() => {
+              if (form.getFieldValue(dataIndex)) {
+                form.setFieldsValue({ [dataIndex]: undefined });
+              }
+              setSwap(!swap);
+            }}
+            className={`filter-btn ${swap ? '' : 'active'}`}
+          >
+            <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/images/ic-switch-white.svg`}
+              alt=""
+              className="ovarlap"
+            />
+          </Button>
+        )}
       </div>
     </>
   );
