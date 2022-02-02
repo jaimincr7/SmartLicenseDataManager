@@ -48,7 +48,7 @@ function Sidebar() {
     }
   });
 
-  const renderMenu = (childMenu: any, key = '-') => {
+  const renderMenu = (childMenu: any, key = '|') => {
     if (childMenu?.childMenus?.length > 0) {
       return (
         <SubMenu
