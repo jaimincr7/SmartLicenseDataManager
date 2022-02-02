@@ -23,13 +23,11 @@ export interface ICronData {
   company_id: number;
   bu_id: number;
   tenant_id: number;
-  cron_frequency_type: string;
-  cron_frequency_day: number;
-  cron_frequency_time?: string | Moment;
+  frequency_type: string;
+  start_date?: string | Moment;
   date_added?: string | Moment;
   start_schedular?: boolean;
   status?: string;
-  time_zone?: string;
 }
 
 export interface ISearchAPI extends ICron {
