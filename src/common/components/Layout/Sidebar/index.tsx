@@ -13,16 +13,16 @@ function Sidebar() {
   const userDetails = useAppSelector(userSelector);
   const [openKeys, setOpenKeys] = React.useState([`${defaultSubmenu}`]);
 
-  const onOpenChange = keys => {
-    const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
-      if (keys.indexOf(latestOpenKey) === -1) {
+  const onOpenChange = (keys) => {
+    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+    if (keys.indexOf(latestOpenKey) === -1) {
       setOpenKeys(keys);
     } else {
-        if((latestOpenKey?.match(/!/g) || []).length > 1) {
-          setOpenKeys([...openKeys,latestOpenKey]);
-        } else {
-          setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-        }
+      if ((latestOpenKey?.match(/!/g) || []).length > 1) {
+        setOpenKeys([...openKeys, latestOpenKey]);
+      } else {
+        setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+      }
       //}
     }
   };
