@@ -18,7 +18,17 @@ function Sidebar() {
     if (keys.indexOf(latestOpenKey) === -1) {
       setOpenKeys(keys);
     } else {
-      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+      let childMenu = null;
+      const latestname = latestOpenKey.toString();
+      const menuName = latestname.split('-', latestname.length - 1)[0];
+      const parentmenuName = keys[0].split('-', keys.length - 1)[0];
+      const tempData = userDetails.getMenuRight?.sideBarData.filter((data) => data.name == parentmenuName);
+      childMenu = tempData[0]?.childMenus?.filter((data) => data.name == menuName);
+      if (childMenu && childMenu?.length) {
+        setOpenKeys(latestOpenKey ? [latestOpenKey, keys[0]] : []);
+      } else {
+        setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+      }
     }
   };
 
@@ -70,6 +80,7 @@ function Sidebar() {
         <Menu
           // defaultSelectedKeys={['/']}
           openKeys={openKeys}
+          defaultOpenKeys={[`${defaultSubmenu}`]}
           onOpenChange={onOpenChange}
           mode="inline"
           selectedKeys={[location.pathname]}
