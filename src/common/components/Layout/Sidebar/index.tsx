@@ -15,20 +15,15 @@ function Sidebar() {
 
   const onOpenChange = keys => {
     const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
-    if (keys.indexOf(latestOpenKey) === -1) {
+      if (keys.indexOf(latestOpenKey) === -1) {
       setOpenKeys(keys);
     } else {
-      let childMenu = null;
-      const latestname = latestOpenKey.toString();
-      const menuName = latestname.split('-', latestname.length - 1)[0];
-      const parentmenuName = keys[0].split('-', keys.length - 1)[0];
-      const tempData = userDetails.getMenuRight?.sideBarData.filter((data) => data.name == parentmenuName);
-      childMenu = tempData[0]?.childMenus?.filter((data) => data.name == menuName);
-      if (childMenu && childMenu?.length) {
-        setOpenKeys(latestOpenKey ? [latestOpenKey, keys[0]] : []);
-      } else {
-        setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-      }
+        if((latestOpenKey?.match(/!/g) || []).length > 1) {
+          setOpenKeys([...openKeys,latestOpenKey]);
+        } else {
+          setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+        }
+      //}
     }
   };
 
@@ -48,7 +43,7 @@ function Sidebar() {
     }
   });
 
-  const renderMenu = (childMenu: any, key = '|') => {
+  const renderMenu = (childMenu: any, key = '-') => {
     if (childMenu?.childMenus?.length > 0) {
       return (
         <SubMenu
@@ -60,7 +55,7 @@ function Sidebar() {
           }
           title={childMenu?.description}
         >
-          {childMenu.childMenus?.map((menu, index: number) => renderMenu(menu, `${key}-${index}`))}
+          {childMenu.childMenus?.map((menu, index: number) => renderMenu(menu, `${key}!${index}`))}
         </SubMenu>
       );
     } else if (childMenu.parent_menu_id) {
@@ -94,7 +89,7 @@ function Sidebar() {
             </Link>
           </Menu.Item>
           {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any, index: number) =>
-            renderMenu(menuDetail, `-${index}`)
+            renderMenu(menuDetail, `!${index}`)
           )}
         </Menu>
       </Scrollbars>
