@@ -12,6 +12,7 @@ let socket;
 export enum SocketNotificationType {
   FilePath,
   Message,
+  Error
 }
 
 export const SocketIO = React.memo(() => {
@@ -57,6 +58,14 @@ export const SocketIO = React.memo(() => {
                         break;
                       case SocketNotificationType.Message:
                         toast.info(message.message);
+                        break;
+                      case SocketNotificationType.Error:
+                        if(message?.data){
+                          const info = JSON.parse(message.data);
+                          if(info.status && info?.body?.errors && Array.isArray(info?.body?.errors)){
+                            toast.info(`${info.status} - ${info.body.errors.join(' ')}`);
+                          }
+                        }
                         break;
                       default:
                         toast.info(message);
