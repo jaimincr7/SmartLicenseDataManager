@@ -32,10 +32,10 @@ class SpsApiInjectionValueParamService {
   }
 
   public async saveSpsApiInjectionValueParamV2(data: ISpsApiInjectionValueParamV2): Promise<any> {
-      const url = `${this.ENDPOINT}`;
-      return request({ url, method: 'POST', data: data }).then((res) => {
-        return res.data;
-      });
+    const url = `${this.ENDPOINT}`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
+      return res.data;
+    });
   }
 
   public async deleteSpsApiInjectionValueParamV2(id: number): Promise<any> {
@@ -46,7 +46,7 @@ class SpsApiInjectionValueParamService {
   }
 
   public async exportExcelFile(searchParams?: ISearchSpsApiInjectionValueParamV2): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

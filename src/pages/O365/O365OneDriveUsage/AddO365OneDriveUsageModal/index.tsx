@@ -41,7 +41,13 @@ import {
 } from '../../../../store/o365/o365OneDriveUsage/o365OneDriveUsage.action';
 import { IO365OneDriveUsage } from '../../../../services/o365/o365OneDriveUsage/o365OneDriveUsage.model';
 import { validateMessages } from '../../../../common/constants/common';
-import { forDisableDate, forEditModal, getObjectForUpdateMultiple, passDateToApi, getSimpleDate } from '../../../../common/helperFunction';
+import {
+  forDisableDate,
+  forEditModal,
+  getObjectForUpdateMultiple,
+  passDateToApi,
+  getSimpleDate,
+} from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -294,15 +300,15 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -334,15 +340,15 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -374,15 +380,15 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>

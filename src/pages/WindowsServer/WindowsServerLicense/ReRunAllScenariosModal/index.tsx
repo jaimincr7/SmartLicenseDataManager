@@ -3,8 +3,16 @@ import { useEffect } from 'react';
 import _ from 'lodash';
 import { ILookup } from '../../../../services/common/common.model';
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
-import { getAllCompanyLookup, getBULookup, getScheduleDate } from '../../../../store/common/common.action';
-import { clearBULookUp, clearDateLookup, commonSelector } from '../../../../store/common/common.reducer';
+import {
+  getAllCompanyLookup,
+  getBULookup,
+  getScheduleDate,
+} from '../../../../store/common/common.action';
+import {
+  clearBULookUp,
+  clearDateLookup,
+  commonSelector,
+} from '../../../../store/common/common.reducer';
 import { IReRunAllScenariosModalProps } from './reRunAllScenarios.model';
 import { reRunAllScenarios } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.action';
 import { toast } from 'react-toastify';
@@ -91,18 +99,25 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if(globalSearch.company_id)
-    dispatch(getBULookup(globalSearch.company_id[0]));
+    if (globalSearch.company_id) dispatch(getBULookup(globalSearch.company_id[0]));
     const filterValues = {
-      company_id: _.isNull(globalSearch.company_id) || globalSearch.company_id == undefined ? null : globalSearch.company_id[0],
-      bu_id: _.isNull(globalSearch.bu_id) || globalSearch.bu_id == undefined ? null : globalSearch.bu_id[0],
+      company_id:
+        _.isNull(globalSearch.company_id) || globalSearch.company_id == undefined
+          ? null
+          : globalSearch.company_id[0],
+      bu_id:
+        _.isNull(globalSearch.bu_id) || globalSearch.bu_id == undefined
+          ? null
+          : globalSearch.bu_id[0],
       selected_date:
         filterKeys?.filter_keys?.date_added?.length === 1
           ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
           : null,
     };
     dispatch(
-      getScheduleDate(getScheduleDateHelperLookup(filterValues, windowsServersLicense.search.tableName))
+      getScheduleDate(
+        getScheduleDateHelperLookup(filterValues, windowsServersLicense.search.tableName)
+      )
     );
     form.setFieldsValue(filterValues);
   }, []);

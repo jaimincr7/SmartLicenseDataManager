@@ -3,7 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody } from '../../../common/models/common';
 import { IConfigO365Products } from '../../../services/master/configO365Products/configO365Products.model';
 import { RootState } from '../../app.model';
-import { deleteConfigO365Products, getConfigO365ProductsById, saveConfigO365Products, searchConfigO365Products } from './configO365Products.action';
+import {
+  deleteConfigO365Products,
+  getConfigO365ProductsById,
+  saveConfigO365Products,
+  searchConfigO365Products,
+} from './configO365Products.action';
 import { IConfigO365ProductsState } from './configO365Products.model';
 
 export const initialState: IConfigO365ProductsState = {
@@ -89,7 +94,10 @@ export const configO365ProductsSlice = createSlice({
     [getConfigO365ProductsById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getConfigO365ProductsById.fulfilled.type]: (state, action: PayloadAction<IConfigO365Products>) => {
+    [getConfigO365ProductsById.fulfilled.type]: (
+      state,
+      action: PayloadAction<IConfigO365Products>
+    ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
@@ -104,7 +112,10 @@ export const configO365ProductsSlice = createSlice({
       state.save.loading = true;
       state.save.messages = [];
     },
-    [saveConfigO365Products.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveConfigO365Products.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
@@ -119,7 +130,10 @@ export const configO365ProductsSlice = createSlice({
       state.delete.loading = true;
       state.delete.messages = [];
     },
-    [deleteConfigO365Products.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [deleteConfigO365Products.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.delete.loading = false;
       state.delete.hasErrors = false;
       state.delete.messages = action.payload.messages;
@@ -135,8 +149,12 @@ export const configO365ProductsSlice = createSlice({
 export const configO365ProductsSelector = (state: RootState) => state.configO365Products;
 
 // Actions
-export const { clearConfigO365Products, clearConfigO365ProductsMessages, clearConfigO365ProductsGetById, setTableColumnSelection } =
-  configO365ProductsSlice.actions;
+export const {
+  clearConfigO365Products,
+  clearConfigO365ProductsMessages,
+  clearConfigO365ProductsGetById,
+  setTableColumnSelection,
+} = configO365ProductsSlice.actions;
 
 // The reducer
 export default configO365ProductsSlice.reducer;

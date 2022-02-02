@@ -17,7 +17,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IO365ProductList } from '../../../../services/o365/o365ProductList/o365ProductList.model';
@@ -88,7 +93,7 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveO365ProductList(inputValues));
     } else {

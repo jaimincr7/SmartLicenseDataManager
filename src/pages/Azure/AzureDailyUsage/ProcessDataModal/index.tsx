@@ -114,21 +114,30 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       const modelPopUp: IGetConfigModelPopUpDataSelection = {
         table_name: tableName,
         pop_up_name: 'ProcessDataSet',
-        tenant_id: _.isNull(globalSearch.tenant_id) || !(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
-        company_id: _.isNull(globalSearch.company_id) || !(globalSearch.company_id) ? null : globalSearch.company_id[0],
-        bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+        tenant_id:
+          _.isNull(globalSearch.tenant_id) || !globalSearch.tenant_id
+            ? null
+            : globalSearch.tenant_id[0],
+        company_id:
+          _.isNull(globalSearch.company_id) || !globalSearch.company_id
+            ? null
+            : globalSearch.company_id[0],
+        bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
       };
-      if(globalSearch.company_id && globalSearch.company_id[0] !== 0)
-      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
+      if (globalSearch.company_id && globalSearch.company_id[0] !== 0)
+        dispatch(getConfigModelPopUpDataSelection(modelPopUp));
     }
     if (
       globalFilters.search.company_id ||
       Object.keys(commonLookups.getModelPopUpSelection.data).length == 0
-    ) {if(globalSearch.company_id)
-      dispatch(getBULookup(globalSearch.company_id[0]));
+    ) {
+      if (globalSearch.company_id) dispatch(getBULookup(globalSearch.company_id[0]));
       const initialValues = {
-        company_id: _.isNull(globalSearch.company_id) || !(globalSearch.company_id) ? null : globalSearch.company_id[0],
-        bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
+        company_id:
+          _.isNull(globalSearch.company_id) || !globalSearch.company_id
+            ? null
+            : globalSearch.company_id[0],
+        bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
         date_added:
           filterKeys?.filter_keys?.date_added?.length === 1
             ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)

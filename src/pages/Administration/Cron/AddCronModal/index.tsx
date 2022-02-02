@@ -4,17 +4,15 @@ import {
   Col,
   DatePicker,
   Form,
-  Input,
   Modal,
   Row,
   Select,
   Spin,
   Switch,
-  TimePicker,
 } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
@@ -35,7 +33,7 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { updateMultiple } from '../../../../store/common/common.action';
-import { getCronById, getFrequencyDay, saveCron } from '../../../../store/master/cron/cron.action';
+import { getCronById, saveCron } from '../../../../store/master/cron/cron.action';
 import {
   clearCronGetById,
   clearCronMessages,
@@ -53,7 +51,6 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
-  const [week, setWeek] = useState('Weekly');
 
   const {
     id,
@@ -80,13 +77,10 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   const [form] = Form.useForm();
 
   const onSelChange = (value: string) => {
-    setWeek(value);
     if (value === 'Daily') {
       form.setFieldsValue({ cron_frequency_day: null });
     }
   };
-
-  const presentDay = new Date().getDay();
 
   let initialValues: ICronData = {
     id: null,
@@ -94,12 +88,10 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     company_id: null,
     bu_id: null,
     tenant_id: null,
-    cron_frequency_type: "Weekly",
-    cron_frequency_day: presentDay,
-    cron_frequency_time: moment().add(5,'minutes'),
+    frequency_type: 'Weekly',
+    start_date: moment().add(5, 'minutes'),
     start_schedular: true,
     date_added: moment(),
-    time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 
   const onFinish = (values: any) => {
@@ -158,18 +150,13 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         api_group_id: _.isNull(data.api_group_id) ? null : data.api_group_id,
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
-        cron_frequency_type: data.cron_frequency_type,
-        cron_frequency_day: _.isNull(data.cron_frequency_day) ? null : data.cron_frequency_day,
-        cron_frequency_time: _.isNull(data.cron_frequency_time)
+        frequency_type: data.frequency_type,
+        start_date: _.isNull(data.start_date)
           ? null
-          : moment(data.cron_frequency_time),
+          : moment(data.start_date),
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         start_schedular: data.status === 'Running' ? true : false,
-        time_zone: data.time_zone
       };
-      if (data.cron_frequency_type) {
-        setWeek(data.cron_frequency_type);
-      }
       form.setFieldsValue(initialValues);
     }
   };
@@ -210,7 +197,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
   useEffect(() => {
     dispatch(getTenantLookup());
     dispatch(getSpsApiGroupLookup());
-    dispatch(getFrequencyDay());
+    //dispatch(getFrequencyDay());
     if (+id > 0) {
       dispatch(getCronById(+id));
     }
@@ -303,15 +290,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -348,15 +335,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -393,15 +380,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                            <Option key={option.id} value={option.id}>
-                              {option.name}
-                            </Option>
-                          ))}
+                          <Option key={option.id} value={option.id}>
+                            {option.name}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -448,7 +435,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item
-                      name={['checked', 'cron_frequency_type']}
+                      name={['checked', 'frequency_type']}
                       valuePropName="checked"
                       noStyle
                     >
@@ -458,7 +445,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     'Frequency Type'
                   )}
                   <Form.Item
-                    name="cron_frequency_type"
+                    name="frequency_type"
                     label="Frequency Type"
                     className="m-0"
                     rules={[{ required: !isMultiple }]}
@@ -484,7 +471,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-              <Col xs={24} sm={12} md={8}>
+              {/* <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item
@@ -530,57 +517,37 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                             {option.name}
                           </Option>
                         ))
-                      ) : <></>}
+                      ) : (
+                        <></>
+                      )}
                     </Select>
                   </Form.Item>
                 </div>
-              </Col>
+              </Col> */}
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item
-                      name={['checked', 'cron_frequency_time']}
+                      name={['checked', 'start_date']}
                       valuePropName="checked"
                       noStyle
                     >
-                      <Checkbox>Frequency Time</Checkbox>
+                      <Checkbox>Start Date</Checkbox>
                     </Form.Item>
                   ) : (
-                    'Frequency Time'
+                    'Start Date'
                   )}
                   <Form.Item
-                    name="cron_frequency_time"
-                    label="Frequency Time"
+                    name="start_date"
+                    label="Start Date"
                     className="m-0"
                     rules={[{ required: !isMultiple }]}
                   >
-                    <TimePicker
+                    <DatePicker
+                      showTime
                       className="form-control w-100"
                       defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}
                     />
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'time_zone']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>Time Zone</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Time Zone'
-                  )}
-                  <Form.Item
-                    name="time_zone"
-                    label="Time Zone"
-                    className="m-0"
-                    rules={[{ required: !isMultiple }]}
-                  >
-                    <Input className="form-control" disabled={true}/>
                   </Form.Item>
                 </div>
               </Col>

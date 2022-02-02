@@ -28,7 +28,12 @@ import { IAddAzureRateCardProps } from './addAzureRateCard.model';
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { updateMultiple } from '../../../../store/common/common.action';
 import {
   clearMultipleUpdateMessages,

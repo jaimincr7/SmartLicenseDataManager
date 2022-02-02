@@ -16,7 +16,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerEntitlements } from '../../../../services/windowsServer/windowsServerEntitlements/windowsServerEntitlements.model';
@@ -88,7 +93,7 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveWindowsServerEntitlements(inputValues));
     } else {

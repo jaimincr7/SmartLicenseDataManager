@@ -42,7 +42,12 @@ import { IO365Reservations } from '../../../../services/o365/o365Reservations/o3
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -93,7 +98,7 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveO365Reservations(inputValues));
     } else {

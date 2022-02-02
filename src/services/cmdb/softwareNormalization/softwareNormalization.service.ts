@@ -1,6 +1,9 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import { ISearchCmdbSoftwareNormalization, ICmdbSoftwareNormalization } from './softwareNormalization.model';
+import {
+  ISearchCmdbSoftwareNormalization,
+  ICmdbSoftwareNormalization,
+} from './softwareNormalization.model';
 
 class CmdbSoftwareNormalizationService {
   ENDPOINT = '/cmdb-software-normalization';
@@ -44,12 +47,11 @@ class CmdbSoftwareNormalizationService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCmdbSoftwareNormalization): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',
       data: searchParams,
-      responseType: 'blob' as 'json',
     }).then((res) => {
       return res;
     });

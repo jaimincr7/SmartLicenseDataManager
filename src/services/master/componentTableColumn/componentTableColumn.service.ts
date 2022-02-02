@@ -47,7 +47,7 @@ class ConfigComponentTableColumnService {
   }
 
   public async exportExcelFile(searchParams?: ISearchConfigComponentTableColumn): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

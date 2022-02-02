@@ -81,7 +81,7 @@ const BulkImport: React.FC = () => {
     header_row: 1,
     table_name: table,
     hide_unmapped: true,
-    date_added: moment()
+    date_added: moment(),
   };
 
   const uploadFile = async (options) => {
@@ -116,8 +116,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                      (data) => data.sheet_name == sheet.sheet
+                    )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -191,8 +191,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                      (data) => data.sheet_name == sheet.sheet
+                    )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -277,8 +277,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                  (data) => data.sheet_name == sheet.sheet
-                )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                 : [];
             if (mappingData.length) {
               formUpload.setFieldsValue({ hide_unmapped: false });
@@ -305,8 +305,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                    ? orgFile[0].table_name
-                    : tableName,
+                  ? orgFile[0].table_name
+                  : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -332,8 +332,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                    ? orgFile[0].excel_to_sql_mapping
-                    : null,
+                  ? orgFile[0].excel_to_sql_mapping
+                  : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -436,7 +436,7 @@ const BulkImport: React.FC = () => {
 
   const callbackProgress = (currentProgress: number) => {
     dispatch(setExcelColumnsProgress(currentProgress));
-  }
+  };
 
   const getFileMappingCall = (formData: any) => {
     setRepeatSheetFlag(true);
@@ -641,16 +641,21 @@ const BulkImport: React.FC = () => {
               const initialValuesData: any = {};
               const sqlToExcelMapping = [];
               filterTableColumns.map(function (ele) {
-                initialValuesData[ele.name] =
-                  ExcelColsSorted.filter(
-                    (x: any) =>
-                      x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                      ele.name?.toLowerCase()?.replace(/\s+/g, '')
-                  )[0];
-                data.validation = ele.is_nullable == "NO" && initialValuesData[ele.name] == undefined ? true : data.validation;
+                initialValuesData[ele.name] = ExcelColsSorted.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                    ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                )[0];
+                data.validation =
+                  ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
+                    ? true
+                    : data.validation;
                 sqlToExcelMapping.push({
                   key: `${ele.name}`,
-                  value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
+                  value:
+                    initialValuesData[ele.name] == undefined
+                      ? ''
+                      : `${initialValuesData[ele.name]}`,
                 });
               });
               data.excel_to_sql_mapping = sqlToExcelMapping;
@@ -728,8 +733,7 @@ const BulkImport: React.FC = () => {
                           <span className="ant-upload-text">
                             {bulkImports.getExcelColumns.progress === null
                               ? ' Click or drag file'
-                              : ` Uploading... (${bulkImports.getExcelColumns.progress}%)`
-                            }
+                              : ` Uploading... (${bulkImports.getExcelColumns.progress}%)`}
                           </span>
                         </Dragger>
                       </div>
@@ -785,7 +789,7 @@ const BulkImport: React.FC = () => {
                   </Col>
                   <Col xs={24} sm={12} md={4}>
                     <div className="form-group form-inline-pt m-0">
-                      <Form.Item name="hide_unmapped" className="m-0" valuePropName="checked" >
+                      <Form.Item name="hide_unmapped" className="m-0" valuePropName="checked">
                         <Switch className="form-control" onChange={onSwitchChange} />
                       </Form.Item>
                       <label className="label">Show All Tabs</label>
@@ -805,7 +809,10 @@ const BulkImport: React.FC = () => {
                             allowClear
                             optionFilterProp="children"
                             filterOption={(input, option: any) =>
-                              option.children?.toString().toLowerCase()?.indexOf(input.toLowerCase()) >= 0
+                              option.children
+                                ?.toString()
+                                .toLowerCase()
+                                ?.indexOf(input.toLowerCase()) >= 0
                             }
                             filterSort={(optionA: any, optionB: any) =>
                               optionA.children

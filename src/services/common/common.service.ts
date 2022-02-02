@@ -426,17 +426,23 @@ class CommonService {
     const headers = { Accept: 'multipart/form-data' };
     const url = `/app/read-excel-file`;
     return request({
-      url, method: 'POST', data: file, headers: headers, onUploadProgress: data => {
+      url,
+      method: 'POST',
+      data: file,
+      headers: headers,
+      onUploadProgress: (data) => {
         if (callbackProgress) {
           const current = Math.round((100 * data.loaded) / data.total);
           callbackProgress(current);
         }
-      }
-    }).then((res) => {
-      return res.data;
-    }).finally(()=>{
-      callbackProgress(null);
-    });
+      },
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .finally(() => {
+        callbackProgress(null);
+      });
   }
 
   public async getCSVExcelColumns(file: any): Promise<IApiResponse<any>> {
@@ -458,7 +464,7 @@ class CommonService {
   public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
     const url = `/app/table-column/${
       tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
-      }`;
+    }`;
     return request({ url, method: 'GET' }).then((res) => {
       if (res.data?.body.data?.identity_column) {
         const response = res.data?.body.data?.column_data.filter(

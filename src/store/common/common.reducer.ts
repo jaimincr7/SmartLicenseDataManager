@@ -516,7 +516,7 @@ export const commonSlice = createSlice({
       state.OauthIdV2.loading = true;
     },
     [getOAuthV2IdLookup.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      const {id} = action.payload;
+      const { id } = action.payload;
       state.OauthIdV2.data = id;
       state.OauthIdV2.loading = false;
     },

@@ -16,7 +16,10 @@ import {
   configO365ProductsSelector,
 } from '../../../../store/master/configO365Products/configO365Products.reducer';
 import configO365ProductsService from '../../../../services/master/configO365Products/configO365Products.service';
-import { deleteConfigO365Products, searchConfigO365Products } from '../../../../store/master/configO365Products/configO365Products.action';
+import {
+  deleteConfigO365Products,
+  searchConfigO365Products,
+} from '../../../../store/master/configO365Products/configO365Products.action';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
@@ -51,7 +54,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    return FilterWithSwapOption(dataIndex, configO365Products.search.tableName, form, null, ObjectForColumnFilter);
+    return FilterWithSwapOption(
+      dataIndex,
+      configO365Products.search.tableName,
+      form,
+      null,
+      ObjectForColumnFilter
+    );
   };
 
   const getTableColumns = (form) => {
@@ -116,7 +125,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('enterprise_product', configO365Products.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'enterprise_product',
+              configO365Products.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'enterprise_product',
             key: 'enterprise_product',
             ellipsis: true,
@@ -141,7 +154,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('component_only', configO365Products.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'component_only',
+              configO365Products.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'component_only',
             key: 'component_only',
             ellipsis: true,
@@ -166,7 +183,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByBooleanDropDown('hide', configO365Products.search.tableName, ObjectForColumnFilter),
+            title: FilterByBooleanDropDown(
+              'hide',
+              configO365Products.search.tableName,
+              ObjectForColumnFilter
+            ),
             dataIndex: 'hide',
             key: 'hide',
             ellipsis: true,

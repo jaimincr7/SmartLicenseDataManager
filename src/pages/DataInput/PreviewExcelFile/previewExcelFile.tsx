@@ -89,8 +89,9 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     dataRecords.map((data) => {
       if (data.index == seqNumber) {
         data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
-        'csv' || data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
-        'txt'
+          'csv' ||
+        data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
+          'txt'
           ? setShowDelimiter(true)
           : setShowDelimiter(false);
       }

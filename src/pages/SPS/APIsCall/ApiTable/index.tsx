@@ -34,7 +34,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       {
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
-        
+
         children: [
           {
             // title: FilterByDropdown(
@@ -49,7 +49,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       {
         title: <span className="dragHandler">Company Name</span>,
         column: 'CompanyId',
-        
+
         children: [
           {
             // title: FilterByDropdown(
@@ -64,7 +64,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       {
         title: <span className="dragHandler">Bu Name</span>,
         column: 'BU_Id',
-        
+
         children: [
           {
             // title: FilterByDropdown(
@@ -79,7 +79,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       {
         title: <span className="dragHandler">API Type</span>,
         column: 'API_TypeId',
-        
+
         children: [
           {
             //title: FilterByDropdown('api_type_id', spsApiOauthV2.search.lookups?.sps_api_types),
@@ -92,7 +92,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       // {
       //   title: <span className="dragHandler">UID</span>,
       //   column: 'UID',
-      //   
+      //
       //   children: [
       //     {
       //       //title: FilterBySwap('uid', form),
@@ -105,7 +105,7 @@ const ApiTable: React.ForwardRefRenderFunction<unknown, IApiTableProps> = (props
       {
         title: <span className="dragHandler">Active</span>,
         column: 'Active',
-        
+
         children: [
           {
             // title: FilterByBooleanDropDown(

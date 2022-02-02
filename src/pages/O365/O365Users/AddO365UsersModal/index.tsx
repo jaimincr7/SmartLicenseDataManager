@@ -40,7 +40,12 @@ import { IO365Users } from '../../../../services/o365/o365Users/o365Users.model'
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
@@ -156,7 +161,7 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveO365Users(inputValues));
     } else {

@@ -94,7 +94,10 @@ export const cmdbSoftwareNormalizationSlice = createSlice({
     [getCmdbSoftwareNormalizationById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getCmdbSoftwareNormalizationById.fulfilled.type]: (state, action: PayloadAction<ICmdbSoftwareNormalization>) => {
+    [getCmdbSoftwareNormalizationById.fulfilled.type]: (
+      state,
+      action: PayloadAction<ICmdbSoftwareNormalization>
+    ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
@@ -117,7 +120,10 @@ export const cmdbSoftwareNormalizationSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCmdbSoftwareNormalization.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCmdbSoftwareNormalization.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = true;
       state.save.messages = action.payload.errors;
@@ -148,7 +154,8 @@ export const cmdbSoftwareNormalizationSlice = createSlice({
 });
 
 // A selector
-export const cmdbSoftwareNormalizationSelector = (state: RootState) => state.cmdbSoftwareNormalization;
+export const cmdbSoftwareNormalizationSelector = (state: RootState) =>
+  state.cmdbSoftwareNormalization;
 
 // Actions
 export const {

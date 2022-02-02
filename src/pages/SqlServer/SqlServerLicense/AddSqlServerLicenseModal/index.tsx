@@ -56,8 +56,15 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { id, showModal, handleModalClose, refreshDataTable, filterKeys, isMultiple, valuesForSelection } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    filterKeys,
+    isMultiple,
+    valuesForSelection,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -203,9 +210,9 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
           selected_date:
-          filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0])
-            : null,
+            filterKeys?.filter_keys?.date_added?.length === 1
+              ? moment(filterKeys.filter_keys.date_added[0])
+              : null,
         };
         form.setFieldsValue(initlValues);
       }
@@ -214,20 +221,34 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
 
   const onAgreementChange = (e) => {
     const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === e);
-    const text1 = form.getFieldValue('opt_default_to_enterprise_on_hosts') === true ? 'DC on Host' : 'Cost Optimized';
-    const text2 = form.getFieldValue('opt_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod';
+    const text1 =
+      form.getFieldValue('opt_default_to_enterprise_on_hosts') === true
+        ? 'DC on Host'
+        : 'Cost Optimized';
+    const text2 =
+      form.getFieldValue('opt_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod';
     form.setFieldsValue({ notes: agreementName[0]?.name + ' - ' + text1 + ' - ' + text2 });
   };
 
   const defaultToEntHostChange = (e) => {
-    if (form.getFieldValue('opt_agreement_type') !== null && form.getFieldValue('opt_agreement_type') !== undefined) {
-      const text2 = form.getFieldValue('opt_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod'; 
+    if (
+      form.getFieldValue('opt_agreement_type') !== null &&
+      form.getFieldValue('opt_agreement_type') !== undefined
+    ) {
+      const text2 =
+        form.getFieldValue('opt_exclude_non_prod') === true
+          ? 'Exclude Non-Prod'
+          : 'Include Non-Prod';
       if (e === true) {
-        const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+          (data) => data.id === form.getFieldValue('opt_agreement_type')
+        );
         const notes = agreementName[0]?.name + ' - ' + 'DC on Host';
         form.setFieldsValue({ notes: notes + ' - ' + text2 });
       } else {
-        const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+          (data) => data.id === form.getFieldValue('opt_agreement_type')
+        );
         const notes = agreementName[0]?.name + ' - ' + 'Cost Optimized';
         form.setFieldsValue({ notes: notes + ' - ' + text2 });
       }
@@ -235,9 +256,17 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
   };
 
   const onExcludeChange = (e) => {
-    if (form.getFieldValue('opt_agreement_type') !== null && form.getFieldValue('opt_agreement_type') !== undefined) {
-      const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
-      const optstring = form.getFieldValue('opt_default_to_enterprise_on_hosts') === true ? 'DC on Host' : 'Cost Optimized';
+    if (
+      form.getFieldValue('opt_agreement_type') !== null &&
+      form.getFieldValue('opt_agreement_type') !== undefined
+    ) {
+      const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+        (data) => data.id === form.getFieldValue('opt_agreement_type')
+      );
+      const optstring =
+        form.getFieldValue('opt_default_to_enterprise_on_hosts') === true
+          ? 'DC on Host'
+          : 'Cost Optimized';
       if (e === true) {
         const notes = agreementName[0]?.name + ' - ' + optstring + ' - ' + 'Exclude Non-Prod';
         form.setFieldsValue({ notes: notes });
@@ -271,7 +300,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
             validateMessages={validateMessages}
           >
             <Row gutter={[30, 15]} className="form-label-hide">
-            <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
                     <Form.Item name={['checked', 'company_id']} valuePropName="checked" noStyle>
@@ -342,15 +371,15 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -436,11 +465,19 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="opt_exclude_non_prod" className="m-0 mr-1" valuePropName="checked">
+                  <Form.Item
+                    name="opt_exclude_non_prod"
+                    className="m-0 mr-1"
+                    valuePropName="checked"
+                  >
                     <Switch className="form-control" onChange={onExcludeChange} />
                   </Form.Item>
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'opt_exclude_non_prod']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'opt_exclude_non_prod']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Exclude Non-Prod</Checkbox>
                     </Form.Item>
                   ) : (

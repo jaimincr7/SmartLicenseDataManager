@@ -17,7 +17,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IHardware } from '../../../../services/inventory/hardware/hardware.model';
@@ -35,7 +40,10 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { saveHardware, getHardwareById } from '../../../../store/inventory/hardware/hardware.action';
+import {
+  saveHardware,
+  getHardwareById,
+} from '../../../../store/inventory/hardware/hardware.action';
 import {
   hardwareSelector,
   clearHardwareMessages,
@@ -93,7 +101,7 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveHardware(inputValues));
     } else {
@@ -152,7 +160,9 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
         model: data.model,
         operating_system: data.operating_system,
         processor_type: data.processor_type,
-        number_of_processors: _.isNull(data.number_of_processors) ? null : data.number_of_processors,
+        number_of_processors: _.isNull(data.number_of_processors)
+          ? null
+          : data.number_of_processors,
         cores_per_processor: _.isNull(data.cores_per_processor) ? null : data.cores_per_processor,
         last_logged_on_user: data.last_logged_on_user,
         location: data.location,
@@ -289,15 +299,15 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -329,15 +339,15 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -369,15 +379,15 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -405,7 +415,12 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
                   ) : (
                     'Device Name'
                   )}
-                  <Form.Item name="device_name" className="m-0" label="Device Name" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="device_name"
+                    className="m-0"
+                    label="Device Name"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -446,11 +461,7 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'last_scan_date']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'last_scan_date']} valuePropName="checked" noStyle>
                       <Checkbox>Last Scan Date</Checkbox>
                     </Form.Item>
                   ) : (
@@ -502,7 +513,11 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'operating_system']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'operating_system']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Operating System</Checkbox>
                     </Form.Item>
                   ) : (
@@ -540,7 +555,11 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'number_of_processors']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'number_of_processors']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Number of Processors</Checkbox>
                     </Form.Item>
                   ) : (
@@ -559,7 +578,11 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'cores_per_processor']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'cores_per_processor']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Cores per Processor</Checkbox>
                     </Form.Item>
                   ) : (
@@ -578,7 +601,11 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'last_logged_on_user']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'last_logged_on_user']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Last Logged On User</Checkbox>
                     </Form.Item>
                   ) : (

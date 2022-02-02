@@ -67,7 +67,11 @@ const AdministrationRoutes: React.FC = () => {
           <Route exact path={`${match.path}/config-o365-products`} component={ConfigO365Products} />
         )}
         {ability.can(Action.View, Page.ConfigO365Products) && (
-          <Route exact path={`${match.path}/config-o365-products/:id`} component={ConfigO365Products} />
+          <Route
+            exact
+            path={`${match.path}/config-o365-products/:id`}
+            component={ConfigO365Products}
+          />
         )}
 
         {/* DeleteDataset */}
@@ -75,7 +79,11 @@ const AdministrationRoutes: React.FC = () => {
           <Route exact path={`${match.path}/config-delete-data-set`} component={DeleteDataset} />
         )}
         {ability.can(Action.View, Page.DeleteDataset) && (
-          <Route exact path={`${match.path}/config-delete-data-set/:id`} component={DeleteDataset} />
+          <Route
+            exact
+            path={`${match.path}/config-delete-data-set/:id`}
+            component={DeleteDataset}
+          />
         )}
 
         {/* Tenant */}

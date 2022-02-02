@@ -49,9 +49,9 @@ class HardwareService {
       return res.data;
     });
   }
-  
+
   public async exportExcelFile(searchParams?: ISearchHardware): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

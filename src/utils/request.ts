@@ -69,7 +69,7 @@ export const setResponseError = (history) => {
       const e = Array.isArray(error.response?.data.body.errors)
         ? error.response.data.body.errors.join(' ')
         : error.response?.data.body.errors;
-      if(error && error?.response && error?.response?.status){
+      if (error && error?.response && error?.response?.status) {
         switch (error.response.status) {
           // Authorization Failed Response can add other status codes here to manage error Logging
           case 401:

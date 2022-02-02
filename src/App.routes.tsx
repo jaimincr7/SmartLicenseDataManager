@@ -49,7 +49,7 @@ function AppRoutes() {
         </Switch>
       </UnauthenticatedTemplate>
       <AuthenticatedTemplate>
-        <SocketIO/>
+        <SocketIO />
         <Switch>
           <Route path="/login">
             <Redirect to="/" />

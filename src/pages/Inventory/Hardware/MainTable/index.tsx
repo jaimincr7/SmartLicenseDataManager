@@ -6,7 +6,10 @@ import {
   hardwareSelector,
 } from '../../../../store/inventory/hardware/hardware.reducer';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { deleteHardware, searchHardware } from '../../../../store/inventory/hardware/hardware.action';
+import {
+  deleteHardware,
+  searchHardware,
+} from '../../../../store/inventory/hardware/hardware.action';
 import _ from 'lodash';
 import hardwareService from '../../../../services/inventory/hardware/hardware.service';
 import {

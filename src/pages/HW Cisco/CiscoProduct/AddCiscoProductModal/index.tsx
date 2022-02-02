@@ -18,7 +18,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoProduct } from '../../../../services/hwCisco/ciscoProduct/ciscoProduct.model';
@@ -208,10 +213,14 @@ const AddCiscoProductModal: React.FC<IAddCiscoProductProps> = (props) => {
         date_data_added: _.isNull(data.date_data_added) ? null : forEditModal(data.date_data_added),
         original_data_source: data.original_data_source,
         last_update_data_source: data.last_update_data_source,
-        last_update_date: _.isNull(data.last_update_date) ? null : forEditModal(data.last_update_date),
+        last_update_date: _.isNull(data.last_update_date)
+          ? null
+          : forEditModal(data.last_update_date),
         smart_account: data.smart_account,
         warranty_type: data.warranty_type,
-        warranty_end_date: _.isNull(data.warranty_end_date) ? null : forEditModal(data.warranty_end_date),
+        warranty_end_date: _.isNull(data.warranty_end_date)
+          ? null
+          : forEditModal(data.warranty_end_date),
         hardware_bill_to: data.hardware_bill_to,
         po: data.po,
         so: data.so,

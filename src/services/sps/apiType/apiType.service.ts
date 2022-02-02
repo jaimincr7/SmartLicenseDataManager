@@ -44,7 +44,7 @@ class SpsApiTypeService {
   }
 
   public async exportExcelFile(searchParams?: ISearchSpsApiType): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

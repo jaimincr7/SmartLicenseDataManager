@@ -17,7 +17,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ICiscoIB } from '../../../../services/hwCisco/ciscoIB/ciscoIB.model';
@@ -159,7 +164,10 @@ const AddCiscoIBModal: React.FC<IAddCiscoIBProps> = (props) => {
         values.covered_line_end_date === '' ? null : values.covered_line_end_date,
       last_date_of_support: values.last_date_of_support === '' ? null : values.last_date_of_support,
     };
-    inputValues.best_available_ship_date = passDateToApi(inputValues.best_available_ship_date, true);
+    inputValues.best_available_ship_date = passDateToApi(
+      inputValues.best_available_ship_date,
+      true
+    );
     inputValues.covered_line_start_date = passDateToApi(inputValues.covered_line_start_date, true);
     inputValues.covered_line_end_date = passDateToApi(inputValues.covered_line_end_date, true);
     inputValues.last_date_of_support = passDateToApi(inputValues.last_date_of_support, true);

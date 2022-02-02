@@ -144,7 +144,6 @@ export const hardwareSlice = createSlice({
       state.delete.hasErrors = true;
     },
 
-    
     // Process Data
     [processDataHardware.pending.type]: (state) => {
       state.processData.loading = true;
@@ -169,8 +168,12 @@ export const hardwareSlice = createSlice({
 export const hardwareSelector = (state: RootState) => state.hardware;
 
 // Actions
-export const { clearHardware, clearHardwareMessages, clearHardwareGetById, setTableColumnSelection } =
-  hardwareSlice.actions;
+export const {
+  clearHardware,
+  clearHardwareMessages,
+  clearHardwareGetById,
+  setTableColumnSelection,
+} = hardwareSlice.actions;
 
 // The reducer
 export default hardwareSlice.reducer;

@@ -43,7 +43,13 @@ import { IO365ActivationsUserDetail } from '../../../../services/o365/o365Activa
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { forDisableDate, forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forDisableDate,
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -96,9 +102,9 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
       ...values,
       id: id ? +id : null,
     };
-    inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date,true);
-    inputValues.last_activated_date = passDateToApi(inputValues.last_activated_date,true);
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date, true);
+    inputValues.last_activated_date = passDateToApi(inputValues.last_activated_date, true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveO365ActivationsUserDetail(inputValues));
     } else {

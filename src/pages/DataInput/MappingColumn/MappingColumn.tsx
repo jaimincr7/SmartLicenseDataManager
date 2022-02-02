@@ -20,7 +20,8 @@ import { toast } from 'react-toastify';
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, date } = props;
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, date } =
+    props;
 
   const [form] = Form.useForm();
   const initialValues = {
@@ -94,14 +95,13 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
                 ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                   ? filterExcelColumns.filter(
-                    (x: any) =>
-                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                      ele.name?.toLowerCase()?.replace(/\s/g, '')
-                  )[0]
+                      (x: any) =>
+                        x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                        ele.name?.toLowerCase()?.replace(/\s/g, '')
+                    )[0]
                   : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                    return data.key == ele.name;
-                  })[0]?.value
-                ;
+                      return data.key == ele.name;
+                    })[0]?.value;
             });
             form.setFieldsValue(initialValuesData);
           }
@@ -117,7 +117,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   useEffect(() => {
     return () => {
       setTableColumns(null);
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -145,7 +145,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     });
 
     if (sqlToExcelMapping.length === 0) {
-      toast.warn('Select some fields.')
+      toast.warn('Select some fields.');
       return false;
     }
     const excelMappingObj: ISaveExcelMapping = {
@@ -165,7 +165,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     };
 
     const currentRec = records.filter((data) => data.index == seqNumber);
-    if(currentRec && currentRec?.length && currentRec[0]?.validation) {
+    if (currentRec && currentRec?.length && currentRec[0]?.validation) {
       toast.warn('Please check required Fields once');
     } else {
       dispatch(saveExcelFileMapping(excelMappingObj));
@@ -188,13 +188,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     delete fieldValues.date_added;
     const sqlToExcelMapping = [];
     Object.entries(fieldValues).forEach(([key, value]) => {
-        sqlToExcelMapping.push({
-          key: `${key}`,
-          value: value === undefined ? '' : `${value}`,
-        });
+      sqlToExcelMapping.push({
+        key: `${key}`,
+        value: value === undefined ? '' : `${value}`,
+      });
     });
     tableColumns.map((ele) => {
-      const name = sqlToExcelMapping.filter((data) => data.key.toLowerCase() == ele.name.toLowerCase())[0];
+      const name = sqlToExcelMapping.filter(
+        (data) => data.key.toLowerCase() == ele.name.toLowerCase()
+      )[0];
       if (ele.is_nullable == 'NO' && name.value == '') {
         validation = true;
       }
@@ -298,7 +300,10 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             {(tableColumnState || []).map((col, index: number) => (
               <Col xs={24} md={12} lg={12} xl={8} key={index}>
                 <div className="form-group form-inline">
-                  <label className="label">{col.name}{col.is_nullable == 'NO' ? <span style={{ color: 'red' }}> *</span> : ''}</label>
+                  <label className="label">
+                    {col.name}
+                    {col.is_nullable == 'NO' ? <span style={{ color: 'red' }}> *</span> : ''}
+                  </label>
                   <Form.Item
                     name={col.name}
                     className="m-0 w-100"

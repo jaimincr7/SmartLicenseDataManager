@@ -54,8 +54,15 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { id, showModal, handleModalClose, refreshDataTable, filterKeys, isMultiple, valuesForSelection } =
-    props;
+  const {
+    id,
+    showModal,
+    handleModalClose,
+    refreshDataTable,
+    filterKeys,
+    isMultiple,
+    valuesForSelection,
+  } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
@@ -186,9 +193,9 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
           bu_id: _.isNull(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
           selected_date:
-          filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0])
-            : null,
+            filterKeys?.filter_keys?.date_added?.length === 1
+              ? moment(filterKeys.filter_keys.date_added[0])
+              : null,
         };
         form.setFieldsValue(initlValues);
       }
@@ -197,20 +204,34 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
 
   const onAgreementChange = (e) => {
     const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === e);
-    const text1 = form.getFieldValue('opt_default_to_data_center_on_hosts') === true ? 'DC on Host' : 'Cost Optimized';
-    const text2 = form.getFieldValue('opt_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod';
+    const text1 =
+      form.getFieldValue('opt_default_to_data_center_on_hosts') === true
+        ? 'DC on Host'
+        : 'Cost Optimized';
+    const text2 =
+      form.getFieldValue('opt_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod';
     form.setFieldsValue({ notes: agreementName[0]?.name + ' - ' + text1 + ' - ' + text2 });
   };
 
   const defaultToEntHostChange = (e) => {
-    if (form.getFieldValue('opt_agreement_type') !== null && form.getFieldValue('opt_agreement_type') !== undefined) {
-      const text2 = form.getFieldValue('opt_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod'; 
+    if (
+      form.getFieldValue('opt_agreement_type') !== null &&
+      form.getFieldValue('opt_agreement_type') !== undefined
+    ) {
+      const text2 =
+        form.getFieldValue('opt_exclude_non_prod') === true
+          ? 'Exclude Non-Prod'
+          : 'Include Non-Prod';
       if (e === true) {
-        const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+          (data) => data.id === form.getFieldValue('opt_agreement_type')
+        );
         const notes = agreementName[0]?.name + ' - ' + 'DC on Host';
         form.setFieldsValue({ notes: notes + ' - ' + text2 });
       } else {
-        const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+          (data) => data.id === form.getFieldValue('opt_agreement_type')
+        );
         const notes = agreementName[0]?.name + ' - ' + 'Cost Optimized';
         form.setFieldsValue({ notes: notes + ' - ' + text2 });
       }
@@ -218,9 +239,17 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
   };
 
   const onExcludeChange = (e) => {
-    if (form.getFieldValue('opt_agreement_type') !== null && form.getFieldValue('opt_agreement_type') !== undefined) {
-      const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === form.getFieldValue('opt_agreement_type'));
-      const optstring = form.getFieldValue('opt_default_to_data_center_on_hosts') === true ? 'DC on Host' : 'Cost Optimized';
+    if (
+      form.getFieldValue('opt_agreement_type') !== null &&
+      form.getFieldValue('opt_agreement_type') !== undefined
+    ) {
+      const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+        (data) => data.id === form.getFieldValue('opt_agreement_type')
+      );
+      const optstring =
+        form.getFieldValue('opt_default_to_data_center_on_hosts') === true
+          ? 'DC on Host'
+          : 'Cost Optimized';
       if (e === true) {
         const notes = agreementName[0]?.name + ' - ' + optstring + ' - ' + 'Exclude Non-Prod';
         form.setFieldsValue({ notes: notes });
@@ -377,7 +406,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                     className="m-0 mr-1"
                     valuePropName="checked"
                   >
-                    <Switch className="form-control" onChange={defaultToEntHostChange}/>
+                    <Switch className="form-control" onChange={defaultToEntHostChange} />
                   </Form.Item>
                   {isMultiple ? (
                     <Form.Item
@@ -399,7 +428,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                     className="m-0 mr-1"
                     valuePropName="checked"
                   >
-                    <Switch className="form-control" onChange={onExcludeChange}/>
+                    <Switch className="form-control" onChange={onExcludeChange} />
                   </Form.Item>
                   {isMultiple ? (
                     <Form.Item

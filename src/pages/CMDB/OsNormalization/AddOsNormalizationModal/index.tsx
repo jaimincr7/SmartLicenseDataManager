@@ -186,7 +186,11 @@ const AddCmdbOsNormalizationModal: React.FC<IAddCmdbOsNormalizationProps> = (pro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'operating_system_raw']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'operating_system_raw']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Operating System</Checkbox>
                     </Form.Item>
                   ) : (
@@ -211,7 +215,12 @@ const AddCmdbOsNormalizationModal: React.FC<IAddCmdbOsNormalizationProps> = (pro
                   ) : (
                     'Device Type'
                   )}
-                  <Form.Item name="device_type" className="m-0" label="Device Type" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="device_type"
+                    className="m-0"
+                    label="Device Type"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -233,11 +242,7 @@ const AddCmdbOsNormalizationModal: React.FC<IAddCmdbOsNormalizationProps> = (pro
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'publisher']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'publisher']} valuePropName="checked" noStyle>
                       <Checkbox>Publisher</Checkbox>
                     </Form.Item>
                   ) : (
@@ -257,12 +262,7 @@ const AddCmdbOsNormalizationModal: React.FC<IAddCmdbOsNormalizationProps> = (pro
                   ) : (
                     'Edition'
                   )}
-                  <Form.Item
-                    name="edition"
-                    className="m-0"
-                    label="Edition"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="edition" className="m-0" label="Edition" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
@@ -295,12 +295,7 @@ const AddCmdbOsNormalizationModal: React.FC<IAddCmdbOsNormalizationProps> = (pro
                   ) : (
                     'Version'
                   )}
-                  <Form.Item
-                    name="version"
-                    className="m-0"
-                    label="Version"
-                    rules={[{ max: 255 }]}
-                  >
+                  <Form.Item name="version" className="m-0" label="Version" rules={[{ max: 255 }]}>
                     <Input className="form-control w-100" />
                   </Form.Item>
                 </div>

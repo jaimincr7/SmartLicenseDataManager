@@ -42,7 +42,13 @@ import { IO365ActiveUserDetail } from '../../../../services/o365/o365ActiveUserD
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
-import { forDisableDate, forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forDisableDate,
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 
@@ -108,18 +114,54 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
       id: id ? +id : null,
     };
     inputValues.report_refresh_date = passDateToApi(inputValues.report_refresh_date, true);
-    inputValues.exchange_last_activity_date = passDateToApi(inputValues.exchange_last_activity_date, true);
-    inputValues.one_drive_last_activity_date = passDateToApi(inputValues.one_drive_last_activity_date, true);
-    inputValues.share_point_last_activity_date = passDateToApi(inputValues.share_point_last_activity_date, true);
-    inputValues.skype_for_business_last_activity_date = passDateToApi(inputValues.skype_for_business_last_activity_date, true);
-    inputValues.yammer_last_activity_date = passDateToApi(inputValues.yammer_last_activity_date, true);
-    inputValues.teams_last_activity_date = passDateToApi(inputValues.teams_last_activity_date, true);
-    inputValues.exchange_license_assign_date = passDateToApi(inputValues.exchange_license_assign_date, true);
-    inputValues.one_drive_license_assign_date = passDateToApi(inputValues.one_drive_license_assign_date, true);
-    inputValues.share_point_license_assign_date = passDateToApi(inputValues.share_point_license_assign_date, true);
-    inputValues.skype_for_business_license_assign_date = passDateToApi(inputValues.skype_for_business_license_assign_date, true);
-    inputValues.yammer_license_assign_date = passDateToApi(inputValues.yammer_license_assign_date, true);
-    inputValues.teams_license_assign_date = passDateToApi(inputValues.teams_license_assign_date, true);
+    inputValues.exchange_last_activity_date = passDateToApi(
+      inputValues.exchange_last_activity_date,
+      true
+    );
+    inputValues.one_drive_last_activity_date = passDateToApi(
+      inputValues.one_drive_last_activity_date,
+      true
+    );
+    inputValues.share_point_last_activity_date = passDateToApi(
+      inputValues.share_point_last_activity_date,
+      true
+    );
+    inputValues.skype_for_business_last_activity_date = passDateToApi(
+      inputValues.skype_for_business_last_activity_date,
+      true
+    );
+    inputValues.yammer_last_activity_date = passDateToApi(
+      inputValues.yammer_last_activity_date,
+      true
+    );
+    inputValues.teams_last_activity_date = passDateToApi(
+      inputValues.teams_last_activity_date,
+      true
+    );
+    inputValues.exchange_license_assign_date = passDateToApi(
+      inputValues.exchange_license_assign_date,
+      true
+    );
+    inputValues.one_drive_license_assign_date = passDateToApi(
+      inputValues.one_drive_license_assign_date,
+      true
+    );
+    inputValues.share_point_license_assign_date = passDateToApi(
+      inputValues.share_point_license_assign_date,
+      true
+    );
+    inputValues.skype_for_business_license_assign_date = passDateToApi(
+      inputValues.skype_for_business_license_assign_date,
+      true
+    );
+    inputValues.yammer_license_assign_date = passDateToApi(
+      inputValues.yammer_license_assign_date,
+      true
+    );
+    inputValues.teams_license_assign_date = passDateToApi(
+      inputValues.teams_license_assign_date,
+      true
+    );
     inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveO365ActiveUserDetail(inputValues));
@@ -360,15 +402,15 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -400,15 +442,15 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -440,15 +482,15 @@ const AddO365ActiveUserDetailModal: React.FC<IAddO365ActiveUserDetailProps> = (p
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>

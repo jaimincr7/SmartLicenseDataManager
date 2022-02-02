@@ -48,7 +48,7 @@ class WindowsServerLicenseService {
   }
 
   public async exportExcelFile(searchParams?: ISearchWindowsServerLicense): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

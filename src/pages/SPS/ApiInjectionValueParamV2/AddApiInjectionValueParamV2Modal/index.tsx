@@ -35,7 +35,10 @@ import {
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { getSpsApiOauthV2ById } from '../../../../store/sps/apiOauthV2/apiOauthV2.action';
-import { clearSpsApiOauthV2, spsApiOauthV2Selector } from '../../../../store/sps/apiOauthV2/apiOauthV2.reducer';
+import {
+  clearSpsApiOauthV2,
+  spsApiOauthV2Selector,
+} from '../../../../store/sps/apiOauthV2/apiOauthV2.reducer';
 
 const { Option } = Select;
 
@@ -72,12 +75,13 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
 
   const onFinish = (values: any) => {
     const inputValues: ISpsApiInjectionValueParamV2 = {
-      oauth_id: +id > 0 ? spsApiInjectionValueParamV2.getById.data.oauth_id : commonLookups.OauthIdV2.data,
+      oauth_id:
+        +id > 0 ? spsApiInjectionValueParamV2.getById.data.oauth_id : commonLookups.OauthIdV2.data,
       injection_values: [
         {
           injection_param_id: values.injection_param_id,
           value: values.value,
-        }
+        },
       ],
     };
     if (!isMultiple) {
@@ -110,7 +114,7 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
         };
         await dispatch(getApiTypeV2Lookup(dataDD));
       }
-      if(data.api_type_id) {
+      if (data.api_type_id) {
         await dispatch(getSpsApiUrlInjectionV2Lookup(data.api_type_id));
       }
       initialValues = {
@@ -271,15 +275,15 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -293,8 +297,12 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
                   ) : (
                     'Company'
                   )}
-                  <Form.Item name="company_id" className="m-0" label="Company" rules={[{ required: !isMultiple }]}>
-
+                  <Form.Item
+                    name="company_id"
+                    className="m-0"
+                    label="Company"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleCompanyChange}
                       allowClear
@@ -312,15 +320,15 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -334,7 +342,12 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
                   ) : (
                     'BU'
                   )}
-                  <Form.Item name="bu_id" className="m-0" label="BU" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="bu_id"
+                    className="m-0"
+                    label="BU"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       onChange={handleBUChange}
                       loading={commonLookups.buLookup.loading}
@@ -352,15 +365,15 @@ const AddSpsApiInjectionValueParamV2Modal: React.FC<IAddSpsApiInjectionValuePara
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>

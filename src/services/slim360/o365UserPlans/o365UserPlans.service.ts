@@ -44,7 +44,7 @@ class Slim360O365UserPlansService {
   }
 
   public async exportExcelFile(searchParams?: ISearchSlim360O365UserPlans): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

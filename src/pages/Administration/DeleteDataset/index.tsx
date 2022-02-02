@@ -5,7 +5,10 @@ import React from 'react';
 import AddDeleteDatasetModal from './AddDeleteDatasetModal';
 import { useHistory } from 'react-router-dom';
 import MainTable from './MainTable';
-import { deleteDatasetSelector, clearDeleteDataset } from '../../../store/master/deleteDataset/deleteDataset.reducer';
+import {
+  deleteDatasetSelector,
+  clearDeleteDataset,
+} from '../../../store/master/deleteDataset/deleteDataset.reducer';
 import { Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
@@ -48,7 +51,9 @@ const DeleteDataset: React.FC<IDeleteDatasetProps> = (props) => {
         <Button
           className="btn-icon"
           onClick={() =>
-            history.push(`/data-input/bulk-import/${encodeURIComponent(deleteDataset.search.tableName)}`)
+            history.push(
+              `/data-input/bulk-import/${encodeURIComponent(deleteDataset.search.tableName)}`
+            )
           }
           icon={
             <em className="anticon">

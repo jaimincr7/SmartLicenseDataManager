@@ -10,4 +10,4 @@ export interface IConfigO365Products {
   hide?: boolean;
 }
 
-export interface ISearchConfigO365Products extends ISearch { }
+export interface ISearchConfigO365Products extends ISearch {}

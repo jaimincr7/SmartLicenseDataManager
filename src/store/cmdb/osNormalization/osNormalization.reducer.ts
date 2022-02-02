@@ -94,7 +94,10 @@ export const cmdbOsNormalizationSlice = createSlice({
     [getCmdbOsNormalizationById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getCmdbOsNormalizationById.fulfilled.type]: (state, action: PayloadAction<ICmdbOsNormalization>) => {
+    [getCmdbOsNormalizationById.fulfilled.type]: (
+      state,
+      action: PayloadAction<ICmdbOsNormalization>
+    ) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
@@ -117,7 +120,10 @@ export const cmdbOsNormalizationSlice = createSlice({
       state.save.hasErrors = false;
       state.save.messages = action.payload.messages;
     },
-    [saveCmdbOsNormalization.rejected.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [saveCmdbOsNormalization.rejected.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.save.loading = false;
       state.save.hasErrors = true;
       state.save.messages = action.payload.errors;

@@ -44,7 +44,7 @@ class CmdbUserService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCmdbUser): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

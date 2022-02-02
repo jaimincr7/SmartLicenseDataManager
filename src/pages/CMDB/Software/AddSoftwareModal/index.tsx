@@ -28,7 +28,11 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IAddCmdbSoftwareProps } from './addSoftware.model';
-import { forEditModal, getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
@@ -76,7 +80,7 @@ const AddCmdbSoftwareModal: React.FC<IAddCmdbSoftwareProps> = (props) => {
       ...values,
       id: id ? +id : null,
     };
-    inputValues.installed_date = passDateToApi(inputValues.installed_date,true);
+    inputValues.installed_date = passDateToApi(inputValues.installed_date, true);
     if (!isMultiple) {
       dispatch(saveCmdbSoftware(inputValues));
     } else {

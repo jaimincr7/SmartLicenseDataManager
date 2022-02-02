@@ -85,16 +85,19 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           const initialValuesData: any = {};
           const sqlToExcelMapping = [];
           filterTableColumns.map(function (ele) {
-            initialValuesData[ele.name] =
-              ExcelColsSorted.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
-              )[0];
-            data[0].validation = ele.is_nullable == "NO" && initialValuesData[ele.name] == undefined ? true : data[0].validation;
+            initialValuesData[ele.name] = ExcelColsSorted.filter(
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s+/g, '')
+            )[0];
+            data[0].validation =
+              ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
+                ? true
+                : data[0].validation;
             sqlToExcelMapping.push({
               key: `${ele.name}`,
-              value: initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
+              value:
+                initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
             });
           });
           data[0].excel_to_sql_mapping = sqlToExcelMapping;
@@ -176,7 +179,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (hideUnmapped === false && withoutUnmappedRecords.length) {
         withoutUnmappedRecords.map((data) => {
           if (data.excel_to_sql_mapping && data.validation !== true) {
-            data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
+            data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter(
+              (data) => data.key !== 'Source'
+            );
           } else {
             isMapped = false;
             toast.error('Select configurations for ' + data.original_filename);
@@ -191,14 +196,16 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             delimiter: data.delimeter ? data.delimiter : ',',
             foreign_key_values: {
               date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
-            }
+            },
           };
           arr.push(Obj);
         });
       } else {
         records.map((data) => {
           if (data.excel_to_sql_mapping && data.validation !== true) {
-            data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter((data) => data.key !== 'Source');
+            data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter(
+              (data) => data.key !== 'Source'
+            );
           } else {
             isMapped = false;
             toast.error('Select configurations for ' + data.original_filename);
@@ -212,8 +219,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             header_row: data.header_row - 1,
             delimiter: data.delimeter ? data.delimiter : ',',
             foreign_key_values: {
-              date_added: data.dateAdded ? moment(data.dateAdded).format(Common.DATEFORMAT) : moment(date).format(Common.DATEFORMAT),
-            }
+              date_added: data.dateAdded
+                ? moment(data.dateAdded).format(Common.DATEFORMAT)
+                : moment(date).format(Common.DATEFORMAT),
+            },
           };
           arr.push(Obj);
         });
@@ -224,23 +233,25 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           tenant_id: _.isNull(globalSearch.tenant_id)
             ? null
             : globalSearch.tenant_id === undefined
-              ? null
-              : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
           bu_id: _.isNull(globalSearch.bu_id)
             ? null
             : globalSearch.bu_id === undefined
-              ? null
-              : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
           company_id: _.isNull(globalSearch.company_id)
             ? null
             : globalSearch.company_id === undefined
-              ? null
-              : globalSearch?.company_id[0],
-          date_added: date ? moment(date).format(Common.DATEFORMAT) : moment().format(Common.DATEFORMAT),
+            ? null
+            : globalSearch?.company_id[0],
+          date_added: date
+            ? moment(date).format(Common.DATEFORMAT)
+            : moment().format(Common.DATEFORMAT),
         },
       };
       if (val.excel_sheet_with_mapping_details.length === 0) {
-        toast.info('Some Tab are lacking mapping concerns.')
+        toast.info('Some Tab are lacking mapping concerns.');
       } else {
         if (isMapped) {
           dispatch(bulkInsert(val));
@@ -305,18 +316,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-            ? null
-            : globalSearch?.tenant_id[0],
+          ? null
+          : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-            ? null
-            : globalSearch?.bu_id[0],
+          ? null
+          : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-            ? null
-            : globalSearch?.company_id[0],
+          ? null
+          : globalSearch?.company_id[0],
         date_added: moment(),
       };
       filterTableColumns.map(function (ele) {
@@ -327,10 +338,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s+/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -376,7 +387,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (currentTable.length > 0) {
         innerFormUpload.setFieldsValue({ table_name: currentTable[0].name });
         //setLoadingTableColumns(true);
-
       }
     }
   }, [bulkImports.getTables.data, table]);

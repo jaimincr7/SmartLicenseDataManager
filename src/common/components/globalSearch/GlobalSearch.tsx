@@ -80,10 +80,10 @@ const GlobalSearch: React.FC<IGlobalSearchProps> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(form.getFieldValue('tenant_id')) {
+    if (form.getFieldValue('tenant_id')) {
       dispatch(getGlobalCompanyLookup(form.getFieldValue('tenant_id')));
     }
-    if(form.getFieldValue('company_id')) {
+    if (form.getFieldValue('company_id')) {
       dispatch(getGlobalBULookup(form.getFieldValue('company_id')));
     }
   }, []);

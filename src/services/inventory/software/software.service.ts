@@ -42,9 +42,9 @@ class SoftwareService {
       return res.data;
     });
   }
-  
+
   public async exportExcelFile(searchParams?: ISearchSoftware): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

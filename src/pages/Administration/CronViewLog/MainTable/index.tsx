@@ -119,22 +119,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'run_date',
             key: 'run_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : ''),
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Next Run Date</span>,
-        column: 'NextRunDate',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterByDateSwapTable('next_run_date', cronViewLog.search.tableName, form),
-            dataIndex: 'next_run_date',
-            key: 'next_run_date',
-            ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
           },
         ],
       },
@@ -149,7 +135,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'complete_date',
             key: 'complete_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
           },
         ],
       },
@@ -164,7 +151,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             dataIndex: 'log_date',
             key: 'log_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
           },
         ],
       },

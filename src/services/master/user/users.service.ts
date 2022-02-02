@@ -51,7 +51,7 @@ class UserService {
   }
 
   public async exportExcelFile(searchParams?: ISearchUser): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',
