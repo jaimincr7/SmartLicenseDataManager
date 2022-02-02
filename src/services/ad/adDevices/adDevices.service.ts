@@ -55,7 +55,7 @@ class AdDevicesService {
   }
 
   public async exportExcelFile(searchParams?: ISearchAdDevices): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

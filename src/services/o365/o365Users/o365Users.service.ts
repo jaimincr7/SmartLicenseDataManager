@@ -54,7 +54,7 @@ class O365UsersService {
   }
 
   public async exportExcelFile(searchParams?: ISearchO365Users): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

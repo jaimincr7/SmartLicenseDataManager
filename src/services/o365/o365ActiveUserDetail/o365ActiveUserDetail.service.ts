@@ -44,7 +44,7 @@ class O365ActiveUserDetailService {
   }
 
   public async exportExcelFile(searchParams?: ISearchO365ActiveUserDetail): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

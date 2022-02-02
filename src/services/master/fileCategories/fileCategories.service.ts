@@ -44,7 +44,7 @@ class ConfigFileCategoriesService {
   }
 
   public async exportExcelFile(searchParams?: ISearchConfigFileCategories): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

@@ -49,7 +49,7 @@ class SpsApiOauthIdUrlInjectionSiteService {
   }
 
   public async exportExcelFile(searchParams?: ISearchSpsApiOauthIdUrlInjectionSite): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

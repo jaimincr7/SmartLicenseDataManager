@@ -44,7 +44,7 @@ class TabVHostService {
   }
 
   public async exportExcelFile(searchParams?: ISearchTabVHost): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

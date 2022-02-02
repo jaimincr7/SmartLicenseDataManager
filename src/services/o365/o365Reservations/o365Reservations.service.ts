@@ -44,7 +44,7 @@ class O365ReservationsService {
   }
 
   public async exportExcelFile(searchParams?: ISearchO365Reservations): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

@@ -47,7 +47,7 @@ class O365M365AppsUsageUserDetailService {
   }
 
   public async exportExcelFile(searchParams?: ISearchO365M365AppsUsageUserDetail): Promise<any> {
-    const url = `${this.ENDPOINT}/search`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',
