@@ -10,6 +10,7 @@ import O365OneDriveUsage from './O365OneDriveUsage';
 import O365ProductList from './O365ProductList';
 import O365Reservations from './O365Reservations';
 import O365Subscriptions from './O365Subscriptions';
+import O365SubscribedSkus from './O365SubscribedSkus';
 import O365Users from './O365Users';
 // import O365Reservations from './O365Reservations';
 // import O365Users from './O365Users';
@@ -123,6 +124,19 @@ const O365Routes: React.FC = () => {
         {ability.can(Action.View, Page.O365Subscriptions) && (
           <Route exact path={`${match.path}/o365-subscriptions`} component={O365Subscriptions} />
         )}
+
+        {/* SubscribedSkus */}
+        {ability.can(Action.View, Page.O365SubscribedSkus) && (
+          <Route
+            exact
+            path={`${match.path}/o365-subscribed-skus/:id`}
+            component={O365SubscribedSkus}
+          />
+        )}
+        {ability.can(Action.View, Page.O365SubscribedSkus) && (
+          <Route exact path={`${match.path}/o365-subscribed-skus`} component={O365SubscribedSkus} />
+        )}
+
         {/* keep least always */}
         <Route path={`${match.path}/*`}>
           <Redirect to={`/404`} />

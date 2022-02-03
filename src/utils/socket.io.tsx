@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 import config from './config';
 import { userSelector } from '../store/administration/administration.reducer';
+import axios from 'axios';
+import { axiosConfig, requestInterceptor } from './request';
 
 let tryToConnect = 0;
 let socket;
@@ -18,15 +20,25 @@ export enum SocketNotificationType {
 export const SocketIO = React.memo(() => {
   const userDetails = useAppSelector(userSelector);
 
+  const httpRequest = axios.create(axiosConfig);
+  httpRequest.interceptors.request.use(requestInterceptor);
+
   const connectSocket = () => {
     if (userDetails?.activeAccount?.username && tryToConnect < 5) {
       tryToConnect++;
       try {
         commonService
-          .getJwtTokenForSocket()
-          .catch(() => null)
+          .getJwtTokenForSocket(httpRequest)
+          .catch(() => {
+            setTimeout(() => {
+              connectSocket();
+            }, 10000);
+          })
           .then((res) => {
             if (res) {
+              if(socket){
+                socket.off();
+              }
               socket = io(config.baseApi, {
                 extraHeaders: {
                   Authorization: res.body.data,
@@ -76,7 +88,6 @@ export const SocketIO = React.memo(() => {
 
                 socket.on('disconnect', () => {
                   // console.info('Socket is disconnected');
-                  socket.off();
                   setTimeout(() => {
                     connectSocket();
                   }, 10000);
@@ -89,11 +100,24 @@ export const SocketIO = React.memo(() => {
             }
           });
       } catch (error) {
-        socket.off();
         setTimeout(() => {
           connectSocket();
         }, 10000);
       }
+    }else {
+      toast.info(
+        () => (
+            <a
+              href={`${window.location.href}`}
+              style={{ color: '#fefefe' }}
+            >
+              Background notification may not working.
+              <strong> Click here </strong>
+                to reload the page.
+            </a>
+        ),
+        { autoClose: false }
+      );
     }
   };
 

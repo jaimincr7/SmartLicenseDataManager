@@ -52,7 +52,7 @@ const AddBUModal: React.FC<IAddBUProps> = (props) => {
     tenant_id: null,
     company_id: null,
     name: '',
-    active: false,
+    active: true,
   };
 
   const onFinish = (values: any) => {
