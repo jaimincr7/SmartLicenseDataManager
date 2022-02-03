@@ -10,6 +10,7 @@ import { axiosConfig, requestInterceptor } from './request';
 
 let tryToConnect = 0;
 let socket;
+let socketTimeout;
 
 export enum SocketNotificationType {
   FilePath,
@@ -30,7 +31,10 @@ export const SocketIO = React.memo(() => {
         commonService
           .getJwtTokenForSocket(httpRequest)
           .catch(() => {
-            setTimeout(() => {
+            if(socketTimeout){
+              clearTimeout(socketTimeout);
+            }
+            socketTimeout = setTimeout(() => {
               connectSocket();
             }, 10000);
           })
@@ -88,24 +92,33 @@ export const SocketIO = React.memo(() => {
 
                 socket.on('disconnect', () => {
                   // console.info('Socket is disconnected');
-                  setTimeout(() => {
+                  if(socketTimeout){
+                    clearTimeout(socketTimeout);
+                  }
+                  socketTimeout = setTimeout(() => {
                     connectSocket();
                   }, 10000);
                 });
 
                 socket.on('connect', () => {
                   tryToConnect = 0;
+                  if(socketTimeout){
+                    clearTimeout(socketTimeout);
+                  }
                   // console.info('Socket is connect');
                 });
               }
             }
           });
       } catch (error) {
-        setTimeout(() => {
+        if(socketTimeout){
+          clearTimeout(socketTimeout);
+        }
+        socketTimeout = setTimeout(() => {
           connectSocket();
         }, 10000);
       }
-    }else {
+    }else if(tryToConnect >= 5){
       toast.info(
         () => (
             <a
