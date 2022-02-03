@@ -79,7 +79,7 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
     fax: '',
     email: null,
     joined_date: getSimpleDate(),
-    active: false,
+    active: true,
   };
 
   const onFinish = (values: any) => {
@@ -228,6 +228,25 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
+                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
+                      <Checkbox>Company Name</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Company Name'
+                  )}
+                  <Form.Item
+                    name="name"
+                    label="Company Name"
+                    className="m-0"
+                    rules={[{ required: !isMultiple, max: 200 }]}
+                  >
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
                     <Form.Item name={['checked', 'currency_id']} valuePropName="checked" noStyle>
                       <Checkbox>Currency</Checkbox>
                     </Form.Item>
@@ -255,25 +274,6 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
                         </Option>
                       ))}
                     </Select>
-                  </Form.Item>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group m-0">
-                  {isMultiple ? (
-                    <Form.Item name={['checked', 'name']} valuePropName="checked" noStyle>
-                      <Checkbox>Company Name</Checkbox>
-                    </Form.Item>
-                  ) : (
-                    'Company Name'
-                  )}
-                  <Form.Item
-                    name="name"
-                    label="Company Name"
-                    className="m-0"
-                    rules={[{ required: !isMultiple, max: 200 }]}
-                  >
-                    <Input className="form-control" />
                   </Form.Item>
                 </div>
               </Col>
