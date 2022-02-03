@@ -5,41 +5,45 @@ import { Action, Page } from '../common/constants/pageAction';
 import authService from '../services/auth/auth.service';
 import config from './config';
 
-const request = axios.create({
+export const axiosConfig = {
   baseURL: config.baseApi, // url = base url + request url
   timeout: 4 * 60 * 1000, // 4 minutes
   headers: {
     Accept: 'application/json',
   },
   // withCredentials: true
-});
+}
 
-// Request interceptors Customize based on your need
-request.interceptors.request.use(
-  async (config) => {
-    // Add X-Access-Token header to every request, you can add other custom headers here
-    const authToken = await authService.getAuthToken();
-    if (authToken) {
-      // Add token to auth
-      config.headers['Authorization'] = `Bearer ${authToken}`;
-    }
+const request = axios.create(axiosConfig);
 
-    // convert empty string to null for all add/edit data
-    if (config.method === 'put' || config.method === 'post') {
-      if (config.data) {
-        for (const key in config.data) {
-          if (Object.prototype.hasOwnProperty.call(config.data, key)) {
-            const element = config.data[key];
-            if (typeof element === 'string' && element === '') {
-              config.data[key] = null;
-            }
+export const requestInterceptor = async (config) => {
+  // Add X-Access-Token header to every request, you can add other custom headers here
+  const authToken = await authService.getAuthToken();
+  if (authToken) {
+    // Add token to auth
+    config.headers['Authorization'] = `Bearer ${authToken}`;
+  }
+
+  // convert empty string to null for all add/edit data
+  if (config.method === 'put' || config.method === 'post') {
+    if (config.data) {
+      for (const key in config.data) {
+        if (Object.prototype.hasOwnProperty.call(config.data, key)) {
+          const element = config.data[key];
+          if (typeof element === 'string' && element === '') {
+            config.data[key] = null;
           }
         }
       }
     }
+  }
 
-    return config;
-  },
+  return config;
+};
+
+// Request interceptors Customize based on your need
+request.interceptors.request.use(
+  requestInterceptor,
   (error) => {
     alert(error);
     Promise.reject(error);
