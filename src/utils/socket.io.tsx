@@ -93,9 +93,10 @@ export const SocketIO = React.memo(() => {
                   }, 10000);
                 });
 
-                // socket.on('connect', () => {
-                //   console.info('Socket is connect');
-                // });
+                socket.on('connect', () => {
+                  tryToConnect = 0;
+                  // console.info('Socket is connect');
+                });
               }
             }
           });
