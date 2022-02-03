@@ -36,7 +36,7 @@ export enum Page {
   TabVCluster = 'tab-v-cluster',
   TabVHost = 'tab-v-host',
   TabVInfo = 'tab-v-info',
-  TabVLicense = 'v-license',
+  TabVLicense = "v-license",
 
   AzureDailyUsage = 'azure-daily-usage',
   AzureRateCard = 'azure-rate-card',
@@ -46,6 +46,7 @@ export enum Page {
   DeleteData = 'delete-data-set',
   ConfigExcelFileMapping = 'config-excel-file-mapping',
 
+  O365SubscribedSkus = "o365-subscribed-skus",
   O365ActivationsUserDetail = 'o365-activations-user-detail',
   O365ActiveUserDetail = 'o365-active-user-detail',
   O365M365AppsUsageUserDetail = 'o365-m365-apps-usage-user-detail',
@@ -86,8 +87,8 @@ export enum Page {
   CmdbUser = 'cmdb-user',
   CmdbUserMap = 'cmdb-user-map',
   CmdbExclusion = 'cmdb-exclusion',
-  CmdbOsNormalization = 'cmdb-os-normalization',
-  CmdbSoftwareNormalization = 'cmdb-software-normalization',
+  CmdbOsNormalization = "cmdb-os-normalization",
+  CmdbSoftwareNormalization = "cmdb-software-normalization",
 
   ConfigComponent = 'config-component',
   ConfigComponentTableColumn = 'config-component-table-column',
@@ -111,7 +112,7 @@ export enum Page {
   ConfigWindowsServerVersions = 'config-windows-server-versions',
   ConfigWindowsServerLicense = 'config-windows-server-license',
   ConfigModelPopUpSelection = 'config-model-pop-up-data-selection',
-  DeleteDataset = 'config-delete-data-set',
+  DeleteDataset = "config-delete-data-set",
 
   //Slim360
   Slim360O365Licenses = 'slim360-o365-licenses',
@@ -146,13 +147,13 @@ export enum Page {
   CronViewLogData = 'sps-cron-job-log',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
-  ConfigO365Products = 'config-o365-products',
+  ConfigO365Products = "config-o365-products",
 
   Inventory = 'inventory',
   Software = 'inventory-software',
   Device = 'device',
   DeviceState = 'device-states',
-  Hardware = 'inventory-hardware',
+  Hardware = "inventory-hardware",
 }
 export enum Action {
   View = 'view',
