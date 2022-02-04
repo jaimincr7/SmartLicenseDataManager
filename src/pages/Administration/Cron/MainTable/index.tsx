@@ -243,15 +243,30 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Frequency Day</span>,
-        column: 'Frequency Day',
-        sorter: true,
+        title: <span className="dragHandler">Week Day</span>,
+        column: 'Week Day',
+        sorter: false,
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('frequency_day', form),
+            //title: FilterBySwap('start_date', form),
+            dataIndex: 'start_date',
+            key: 'start_date',
+            render: (_, data) => (data.frequency_type == 'Weekly' ? moment(data.start_date).format('dddd') : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Month Day</span>,
+        column: 'Month Day',
+        sorter: false,
+        ellipsis: true,
+        children: [
+          {
+            //title: FilterBySwap('start_date', form),
             dataIndex: 'frequency_day',
             key: 'frequency_day',
+            render: (_, data) => (data.frequency_type == 'Monthly' ? data.frequency_day : ''),
           },
         ],
       },
@@ -277,11 +292,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       id: data.id,
       sps_api_query_param: data.start_date
         ? [
-            {
-              startTime: data.start_date,
-              endTime: data.stop_date,
-            },
-          ]
+          {
+            startTime: data.start_date,
+            endTime: data.stop_date,
+          },
+        ]
         : [],
     };
     dispatch(startApi(startApiData));
