@@ -65,10 +65,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
-  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
-    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
-  };
-
   const getTableColumns = (form) => {
     return [
       {
@@ -133,7 +129,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('joined_date', company.search.tableName, form),
+            title: FilterByDateSwap('joined_date', company.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'joined_date',
             key: 'joined_date',
             ellipsis: true,
