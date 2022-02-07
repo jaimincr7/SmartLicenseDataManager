@@ -198,7 +198,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterWithSwapOption(
+            title: FilterByDateSwap(
               'start_date',
               cron.search.tableName,
               form,
@@ -220,7 +220,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('stop_date', cron.search.tableName, form),
+            title: FilterByDateSwap('stop_date', cron.search.tableName, form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'stop_date',
             key: 'stop_date',
             ellipsis: true,
@@ -243,15 +245,30 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Frequency Day</span>,
-        column: 'Frequency Day',
-        sorter: true,
+        title: <span className="dragHandler">Week Day</span>,
+        column: 'Week Day',
+        sorter: false,
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('frequency_day', form),
+            //title: FilterBySwap('start_date', form),
+            dataIndex: 'start_date',
+            key: 'start_date',
+            render: (_, data) => (data.frequency_type == 'Weekly' ? moment(data.start_date).format('dddd') : ''),
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Month Day</span>,
+        column: 'Month Day',
+        sorter: false,
+        ellipsis: true,
+        children: [
+          {
+            //title: FilterBySwap('start_date', form),
             dataIndex: 'frequency_day',
             key: 'frequency_day',
+            render: (_, data) => (data.frequency_type == 'Monthly' ? data.frequency_day : ''),
           },
         ],
       },
@@ -269,6 +286,23 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      {
+        title: <span className="dragHandler">Next Run Date</span>,
+        column: 'nextRunDate',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDateSwap('next_run_date', cron.search.tableName, form, null,
+              ObjectForColumnFilter,
+              true),
+            dataIndex: 'next_run_date',
+            key: 'next_run_date',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : ''),
+          },
+        ],
+      },
     ];
   };
 
@@ -277,11 +311,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       id: data.id,
       sps_api_query_param: data.start_date
         ? [
-            {
-              startTime: data.start_date,
-              endTime: data.stop_date,
-            },
-          ]
+          {
+            startTime: data.start_date,
+            endTime: data.stop_date,
+          },
+        ]
         : [],
     };
     dispatch(startApi(startApiData));

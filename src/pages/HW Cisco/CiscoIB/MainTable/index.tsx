@@ -159,11 +159,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'best_available_ship_date',
               ciscoIB.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'best_available_ship_date',
             key: 'best_available_ship_date',
             ellipsis: true,
@@ -177,7 +178,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('covered_line_start_date', ciscoIB.search.tableName, form),
+            title: FilterByDateSwap('covered_line_start_date', ciscoIB.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'covered_line_start_date',
             key: 'covered_line_start_date',
             ellipsis: true,
@@ -191,7 +194,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('covered_line_end_date', ciscoIB.search.tableName, form),
+            title: FilterByDateSwap('covered_line_end_date', ciscoIB.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'covered_line_end_date',
             key: 'covered_line_end_date',
             ellipsis: true,
@@ -205,7 +210,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwapTable('last_date_of_support', ciscoIB.search.tableName, form),
+            title: FilterByDateSwap('last_date_of_support', ciscoIB.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'last_date_of_support',
             key: 'last_date_of_support',
             ellipsis: true,

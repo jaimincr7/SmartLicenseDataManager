@@ -193,11 +193,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'report_refresh_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
@@ -226,11 +227,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'exchange_last_activity_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'exchange_last_activity_date',
             key: 'exchange_last_activity_date',
             ellipsis: true,
@@ -245,11 +247,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'one_drive_last_activity_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'one_drive_last_activity_date',
             key: 'one_drive_last_activity_date',
             ellipsis: true,
@@ -264,11 +267,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'share_point_last_activity_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'share_point_last_activity_date',
             key: 'share_point_last_activity_date',
             ellipsis: true,
@@ -283,11 +287,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'skype_for_business_last_activity_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'skype_for_business_last_activity_date',
             key: 'skype_for_business_last_activity_date',
             ellipsis: true,
@@ -302,11 +307,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'yammer_last_activity_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'yammer_last_activity_date',
             key: 'yammer_last_activity_date',
             ellipsis: true,
@@ -321,11 +327,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'teams_last_activity_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'teams_last_activity_date',
             key: 'teams_last_activity_date',
             ellipsis: true,
@@ -340,11 +347,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'exchange_license_assign_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'exchange_license_assign_date',
             key: 'exchange_license_assign_date',
             ellipsis: true,
@@ -359,11 +367,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'one_drive_license_assign_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'one_drive_license_assign_date',
             key: 'one_drive_license_assign_date',
             ellipsis: true,
@@ -378,11 +387,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'share_point_license_assign_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'share_point_license_assign_date',
             key: 'share_point_license_assign_date',
             ellipsis: true,
@@ -397,11 +407,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'skype_for_business_license_assign_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'skype_for_business_license_assign_date',
             key: 'skype_for_business_license_assign_date',
             ellipsis: true,
@@ -416,11 +427,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'yammer_license_assign_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'yammer_license_assign_date',
             key: 'yammer_license_assign_date',
             ellipsis: true,
@@ -435,11 +447,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'teams_license_assign_date',
               o365ActiveUserDetail.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'teams_license_assign_date',
             key: 'teams_license_assign_date',
             ellipsis: true,

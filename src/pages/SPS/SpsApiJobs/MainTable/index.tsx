@@ -53,10 +53,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
-  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
-    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter, true);
-  };
-
   const getTableColumns = (form) => {
     return [
       {
@@ -152,7 +148,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('call_start', spsApiJobs.search.tableName, form),
+            title: FilterByDateSwap('call_start', spsApiJobs.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'call_start',
             key: 'call_start',
             ellipsis: true,
@@ -168,7 +166,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('call_end', spsApiJobs.search.tableName, form),
+            title: FilterByDateSwap('call_end', spsApiJobs.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'call_end',
             key: 'call_end',
             ellipsis: true,

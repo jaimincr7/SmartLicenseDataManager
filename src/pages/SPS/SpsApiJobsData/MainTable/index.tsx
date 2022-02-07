@@ -57,10 +57,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
-  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
-    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
-  };
-
   const getTableColumns = (form) => {
     return [
       {
@@ -112,7 +108,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('api_call_start', spsApiJobsData.search.tableName, form),
+            title: FilterByDateSwap('api_call_start', spsApiJobsData.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'api_call_start',
             key: 'api_call_start',
             ellipsis: true,
@@ -128,7 +126,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('api_call_end', spsApiJobsData.search.tableName, form),
+            title: FilterByDateSwap('api_call_end', spsApiJobsData.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'api_call_end',
             key: 'api_call_end',
             ellipsis: true,
@@ -144,11 +144,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'insert_data_start',
               spsApiJobsData.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'insert_data_start',
             key: 'insert_data_start',
             ellipsis: true,
@@ -163,7 +164,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('processed', spsApiJobsData.search.tableName, form),
+            title: FilterByDateSwap('processed', spsApiJobsData.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'processed',
             key: 'processed',
             ellipsis: true,

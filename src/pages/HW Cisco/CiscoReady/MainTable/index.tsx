@@ -167,11 +167,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'covered_line_start_date',
               ciscoReady.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'covered_line_start_date',
             key: 'covered_line_start_date',
             ellipsis: true,
@@ -186,11 +187,12 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable(
+            title: FilterByDateSwap(
               'covered_line_end_date',
               ciscoReady.search.tableName,
-              form
-            ),
+              form, null,
+              ObjectForColumnFilter,
+              true),
             dataIndex: 'covered_line_end_date',
             key: 'covered_line_end_date',
             ellipsis: true,
@@ -205,7 +207,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('ship_date', ciscoReady.search.tableName, form),
+            title: FilterByDateSwap('ship_date', ciscoReady.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'ship_date',
             key: 'ship_date',
             ellipsis: true,

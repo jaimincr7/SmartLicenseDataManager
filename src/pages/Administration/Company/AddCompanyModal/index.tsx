@@ -169,6 +169,14 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    if(commonLookups.currencyLookup.data && commonLookups.currencyLookup.data.length) {
+      const usdRecord = commonLookups.currencyLookup.data.filter((data) => data.name.toLowerCase() == 'usd');
+      if(usdRecord && usdRecord.length)
+      form.setFieldsValue({currency_id: usdRecord[0].id});
+    }
+  }, [commonLookups.currencyLookup.data]);
+
   return (
     <>
       <Modal
