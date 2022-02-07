@@ -201,7 +201,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             header_row: data.header_row - 1,
             delimiter: data.delimeter ? data.delimiter : ',',
             foreign_key_values: {
-              date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
+              date_added: data.date ? data.date : moment(date).format(Common.DATEFORMAT),
             },
           };
           arr.push(Obj);
@@ -231,8 +231,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             header_row: data.header_row - 1,
             delimiter: data.delimeter ? data.delimiter : ',',
             foreign_key_values: {
-              date_added: data.dateAdded
-                ? moment(data.dateAdded).format(Common.DATEFORMAT)
+              date_added: data.date
+                ? moment(data.date).format(Common.DATEFORMAT)
                 : moment(date).format(Common.DATEFORMAT),
             },
           };
@@ -699,13 +699,12 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //         data.show_mapping
   //       }
   //     });
-
   //     setRecords(dummyRecords);
   // }
-  const onDateChange = (selectedReord: any,e) => {
+  const onDateChange = (selectedReord: any, e) => {
     const dummyRecords = _.cloneDeep(records);
     dummyRecords.map((data) => {
-      if(selectedReord.index == data.index) {
+      if (selectedReord.index == data.index) {
         data.date = e;
       }
     });
@@ -788,15 +787,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       title: 'Date Added',
       dataIndex: 'date',
       key: 'date',
-      render: (data,selectedData) => (
+      render: (data, selectedData) => (
         <>
-          <Form.Item name="date_added" label="Date Added" className="m-0" initialValue={date}>
-            <DatePicker
-              className="form-control"
-              onChange={(e) => onDateChange(selectedData, e)}
-              placeholder="Select Date Added"
-            />
-          </Form.Item>
+          <DatePicker
+            style={{ width: '115px' }}
+            value={moment(selectedData.date)}
+            className="form-control"
+            onChange={(e) => onDateChange(selectedData, e)}
+            placeholder="Select Date Added"
+          />
         </>
       )
     },
