@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Row, Select, Spin, Switch } from 'antd';
+import { Button, Col, Form, Input, Row, Select, Spin, Switch } from 'antd';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Can } from '../../../common/ability';
@@ -7,20 +7,18 @@ import commonService from '../../../services/common/common.service';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { IMappingColumnProps } from './MappingColumn.model';
 import _ from 'lodash';
-import moment from 'moment';
 import { saveExcelFileMapping } from '../../../store/bulkImport/bulkImport.action';
 import { ISaveExcelMapping } from '../../../services/bulkImport/bulkImport.model';
 import {
   bulkImportSelector,
   clearSaveExcelData,
 } from '../../../store/bulkImport/bulkImport.reducer';
-import { Common } from '../../../common/constants/common';
 import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, date } =
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public } =
     props;
 
   const [form] = Form.useForm();
@@ -28,7 +26,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     file_name: fileName,
     file_type: fileType,
     isPublic: is_public ? is_public : false,
-    date_added: moment(date),
   };
   const dispatch = useAppDispatch();
   const bulkImport = useAppSelector(bulkImportSelector);
@@ -39,10 +36,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [mappingSeq, setMappingSeq] = useState(null);
   const [tableColumns, setTableColumns] = useState(null);
   const [localMapping, setLocalMapping] = useState<boolean>(true);
-
-  useEffect(() => {
-    form.setFieldsValue({ date_added: moment(date) });
-  }, [date]);
 
   useEffect(() => {
     if (
@@ -230,15 +223,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     setRecords(dummyrecords);
   };
 
-  const onDateChange = (e) => {
-    const dummyrecords = [...records];
-    dummyrecords.map((data) => {
-      if (data.index == seqNumber) {
-        data.dateAdded = moment(e).format(Common.DATEFORMAT);
-      }
-    });
-    setRecords(dummyrecords);
-  };
+  // const onDateChange = (e) => {
+  //   const dummyrecords = [...records];
+  //   dummyrecords.map((data) => {
+  //     if (data.index == seqNumber) {
+  //       data.dateAdded = moment(e).format(Common.DATEFORMAT);
+  //     }
+  //   });
+  //   setRecords(dummyrecords);
+  // };
 
   return (
     <>
@@ -265,18 +258,18 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               </Form.Item>
             </div>
           </Col>
-          <Col xs={24} sm={12} md={8}>
+          {/*<Col xs={24} sm={12} md={8}>
             <div className="form-group m-0">
               <label className="label">Date Added</label>
-              <Form.Item name="date_added" label="Date Added" className="m-0">
+               <Form.Item name="date_added" label="Date Added" className="m-0">
                 <DatePicker
                   className="form-control"
                   onChange={onDateChange}
                   placeholder="Select Date Added"
                 />
-              </Form.Item>
+              </Form.Item> 
             </div>
-          </Col>
+          </Col>*/}
           <Can I={Action.Select} a={Page.ConfigExcelFileMapping}>
             {}
             <Col xs={24} sm={12} md={8}>

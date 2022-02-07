@@ -1,4 +1,4 @@
-import { Button, Form, Popconfirm, Select, Table, TreeSelect } from 'antd';
+import { Button, DatePicker, Form, Popconfirm, Select, Table, TreeSelect } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
@@ -702,6 +702,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   //     setRecords(dummyRecords);
   // }
+  const onDateChange = (selectedReord: any,e) => {
+    const dummyRecords = _.cloneDeep(records);
+    dummyRecords.map((data) => {
+      if(selectedReord.index == data.index) {
+        data.date = e;
+      }
+    });
+    setRecords(dummyRecords);
+  };
 
   const columns = [
     {
@@ -776,6 +785,22 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       ),
     },
     {
+      title: 'Date Added',
+      dataIndex: 'date',
+      key: 'date',
+      render: (data,selectedData) => (
+        <>
+          <Form.Item name="date_added" label="Date Added" className="m-0" initialValue={date}>
+            <DatePicker
+              className="form-control"
+              onChange={(e) => onDateChange(selectedData, e)}
+              placeholder="Select Date Added"
+            />
+          </Form.Item>
+        </>
+      )
+    },
+    {
       title: 'Action',
       dataIndex: 'key',
       key: 'key',
@@ -834,7 +859,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               is_public={record.is_public}
               tableName={record?.table_name}
               seqNumber={record?.index}
-              date={date}
             ></MappingColumn>
           ),
         }}
