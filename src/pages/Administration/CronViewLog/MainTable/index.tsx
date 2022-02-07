@@ -45,11 +45,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       ObjectForColumnFilter
     );
   };
-
-  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
-    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
-  };
-
+  
   const getTableColumns = (form) => {
     return [
       {
@@ -115,7 +111,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('run_date', cronViewLog.search.tableName, form),
+            title: FilterByDateSwap('run_date', cronViewLog.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'run_date',
             key: 'run_date',
             ellipsis: true,
@@ -131,7 +129,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('complete_date', cronViewLog.search.tableName, form),
+            title: FilterByDateSwap('complete_date', cronViewLog.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'complete_date',
             key: 'complete_date',
             ellipsis: true,
@@ -147,7 +147,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('log_date', cronViewLog.search.tableName, form),
+            title: FilterByDateSwap('log_date', cronViewLog.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true),
             dataIndex: 'log_date',
             key: 'log_date',
             ellipsis: true,

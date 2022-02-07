@@ -198,7 +198,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterWithSwapOption(
+            title: FilterByDateSwap(
               'start_date',
               cron.search.tableName,
               form,
