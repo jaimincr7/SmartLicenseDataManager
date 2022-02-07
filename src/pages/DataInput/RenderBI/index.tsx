@@ -199,7 +199,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             original_file_name: data.original_filename,
             sheet_name: data.sheet,
             header_row: data.header_row - 1,
-            delimiter: data.delimeter ? data.delimiter : ',',
+            delimiter: data.delimiter ? data.delimiter : ',',
             foreign_key_values: {
               date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
             },
@@ -229,7 +229,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             original_file_name: data.original_filename,
             sheet_name: data.sheet,
             header_row: data.header_row - 1,
-            delimiter: data.delimeter ? data.delimiter : ',',
+            delimiter: data.delimiter ? data.delimiter : ',',
             foreign_key_values: {
               date_added: data.dateAdded
                 ? moment(data.dateAdded).format(Common.DATEFORMAT)
