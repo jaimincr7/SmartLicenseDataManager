@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { IDetailDataTableProps } from './detailDataTable.model';
-import moment from 'moment';
 import _ from 'lodash';
 import { AlignType } from 'rc-table/lib/interface';
 import DataTable from '../../../../../common/components/DataTable';
@@ -16,9 +15,9 @@ import {
   setTableColumnSelection,
   sqlServerLicenseDetailSelector,
 } from '../../../../../store/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.reducer';
-import { Common } from '../../../../../common/constants/common';
 import { ISearchSqlServerLicenseDetail } from '../../../../../services/sqlServer/sqlServerLicenseDetail/sqlServerLicenseDetail.model';
 import { Checkbox } from 'antd';
+import { passDateToApi } from '../../../../../common/helperFunction';
 
 const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
   const { licenseId } = props;
@@ -87,7 +86,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? passDateToApi(date) : ''),
           },
         ],
       },

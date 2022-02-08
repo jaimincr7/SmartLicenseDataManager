@@ -87,7 +87,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
   // const disabledDate = (current) => {
   //   // Can not select days before today and today
-  //   return current && current > moment().endOf('day');
+  //   return current && current > .endOf('day');
   // };
 
   useEffect(() => {

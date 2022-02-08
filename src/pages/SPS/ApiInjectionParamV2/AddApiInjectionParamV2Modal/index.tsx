@@ -1,5 +1,4 @@
 import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -93,7 +92,6 @@ const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> 
         param_id: data.param_id,
         is_masked: data.is_masked,
         api_type_ids: _.isNull(typeIds) ? null : typeIds,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

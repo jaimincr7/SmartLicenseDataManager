@@ -6,13 +6,14 @@ import React from 'react';
 import commonService from '../../../../services/common/common.service';
 import moment from 'moment';
 import { Common } from '../../../constants/common';
+import { forDropDown, getOnlyTime, getSimpleDate } from '../../../helperFunction';
 
 const { RangePicker } = DatePicker;
 
 export const FilterByDate = (dataIndex: string) => (
   <>
     <Form.Item name={dataIndex} className="m-0 filter-input lg">
-      <RangePicker defaultPickerValue={[moment().utc(), moment().utc()]} />
+      <RangePicker defaultPickerValue={[getSimpleDate(true), getSimpleDate(true)]} />
     </Form.Item>
   </>
 );
@@ -23,7 +24,8 @@ export const FilterByDateSwap = (
   form: any,
   getColumnLookup?: (index: string) => Promise<any>,
   ObjectForColumnFilter?: {},
-  disableSwitch?: boolean
+  disableSwitch?: boolean,
+  timeToUtc?: boolean,
 ) => {
   const [dropSearch, setDropSearch] = React.useState(false);
 
@@ -114,11 +116,15 @@ export const FilterByDateSwap = (
     <>
       <div className="input-filter-group">
         {swap ? (
-          <Form.Item name={dataIndex} className="m-0 filter-input lg">
-            <RangePicker defaultPickerValue={[moment().utc(), moment().utc()]} />
-          </Form.Item>
+          timeToUtc ? (<Form.Item name={dataIndex} className="m-0 filter-input lg">
+            <RangePicker defaultPickerValue={[getSimpleDate().set({ h: 0, m: 0, s: 0, ms: 0 }), getSimpleDate().set({ h: 23, m: 59, s: 59, ms: 999 })]} />
+          </Form.Item>) : (
+            <Form.Item name={dataIndex} className="m-0 filter-input lg">
+              <RangePicker defaultPickerValue={[getSimpleDate().set({ h: 0, m: 0, s: 0, ms: 0 }).utc(), getSimpleDate().set({ h: 23, m: 59, s: 59, ms: 999 }).utc()]} />
+            </Form.Item>
+          )
         ) : (
-          FilterByDropdown(dataIndex, options || [], loading, handleDropSearch, true)
+          FilterByDropdown(dataIndex, options || [], loading, handleDropSearch, true, false, false, timeToUtc)
         )}
         {disableSwitch === true ? (
           <></>
@@ -164,7 +170,8 @@ export const FilterByDropdown = (
   setDropSearch?: (e: any) => void,
   isDateDropDown?: boolean,
   isTime?: boolean,
-  wantColumnLengthOpt?: boolean
+  wantColumnLengthOpt?: boolean,
+  timeToUtc?: boolean,
 ) => (
   <>
     <Form.Item name={dataIndex} className={`m-0 filter-input ${wantColumnLengthOpt ? 'sm' : ''}`}>
@@ -191,13 +198,21 @@ export const FilterByDropdown = (
       >
         {(loading ? [] : dropdownOptions).map((option: IDropDownOption) => (
           <Select.Option key={`${option.name}-${option.id}`} value={option.id}>
-            {isDateDropDown
-              ? moment(option.name).format(Common.DATEFORMAT)?.toString() == 'Invalid date'
-                ? 'NULL'
-                : moment(option.name).format(Common.DATEFORMAT)?.toString()
-              : isTime
-              ? moment(option.name).format('HH:MM:SS').toString()
-              : option.name?.toString()}
+            {timeToUtc === true ? (
+              isDateDropDown
+                ? moment(option.name).format(Common.DATEFORMAT)?.toString() == 'Invalid date'
+                  ? 'NULL'
+                  : moment(option.name).format(Common.DATEFORMAT)
+                : isTime
+                  ? moment(option.name).utc().format('HH:MM:SS').toString()
+                  : option.name?.toString()) :
+              (isDateDropDown
+                ? forDropDown(option.name) == 'Invalid date'
+                  ? 'NULL'
+                  : forDropDown(option.name)
+                : isTime
+                  ? getOnlyTime(option.name)
+                  : option.name?.toString())}
           </Select.Option>
         ))}
       </Select>
@@ -281,8 +296,8 @@ export const FilterByBooleanDropDown = (
               {option.name?.toString() === 'true'
                 ? 'Yes'
                 : option.name?.toString() === 'false'
-                ? 'No'
-                : 'NULL'}
+                  ? 'No'
+                  : 'NULL'}
             </Select.Option>
           ))}
         </Select>
@@ -298,7 +313,7 @@ export const FilterWithSwapOption = (
   getColumnLookup?: (index: string) => Promise<any>,
   ObjectForColumnFilter?: {},
   isTime?: boolean,
-  wantColumnLengthOpt?: boolean
+  wantColumnLengthOpt?: boolean,
 ) => {
   const [swap, setSwap] = useState<boolean>(true);
   const [dropSearch, setDropSearch] = React.useState(false);
@@ -380,14 +395,14 @@ export const FilterWithSwapOption = (
         {swap
           ? FilterByInput(dataIndex, wantColumnLengthOpt)
           : FilterByDropdown(
-              dataIndex,
-              options || [],
-              loading,
-              handleDropSearch,
-              false,
-              isTime,
-              wantColumnLengthOpt
-            )}
+            dataIndex,
+            options || [],
+            loading,
+            handleDropSearch,
+            false,
+            isTime,
+            wantColumnLengthOpt,
+          )}
         <Button onClick={() => setSwap(!swap)} className={`filter-btn ${swap ? '' : 'active'}`}>
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-switch.svg`} alt="" />
           <img

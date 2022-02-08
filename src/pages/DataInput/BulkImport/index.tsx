@@ -33,6 +33,7 @@ import moment from 'moment';
 import { Common } from '../../../common/constants/common';
 import CkeckDelimiterModal from '../CheckDelimiter';
 import commonService from '../../../services/common/common.service';
+import { getSimpleDate } from '../../../common/helperFunction';
 
 const { Option } = Select;
 let getFileMappingTimeOut = null;
@@ -75,13 +76,13 @@ const BulkImport: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [delimitModalShow, setDelimitModalShow] = useState(false);
   const [delimitFlag, setDelimitFlag] = useState(true);
-  const [date, setDate] = useState(moment().format(Common.DATEFORMAT));
+  const [date, setDate] = useState(getSimpleDate().format(Common.DATEFORMAT));
 
   const formUploadInitialValues = {
     header_row: 1,
     table_name: table,
     hide_unmapped: true,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const uploadFile = async (options) => {

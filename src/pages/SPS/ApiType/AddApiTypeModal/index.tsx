@@ -1,5 +1,4 @@
 import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -81,7 +80,6 @@ const AddSpsApiTypeModal: React.FC<IAddSpsApiTypeProps> = (props) => {
         url: data.url,
         api_group_id: _.isNull(data.api_group_id) ? null : data.api_group_id,
         base_urls: data.base_urls,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

@@ -30,7 +30,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { getScheduleDateHelperLookup, getSimpleDate } from '../../../../common/helperFunction';
 import {
   clearHardwareMessages,
   hardwareSelector,
@@ -51,7 +51,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: moment(),
+    selected_date: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -107,11 +107,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearConfigModelPopUpDataSelection());
     }
   }, [commonLookups.setModelPopUpSelection.messages]);
-
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current && current > moment().endOf('day');
-  // };
 
   useEffect(() => {
     if (hardware.processData.messages.length > 0) {

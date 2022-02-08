@@ -1,6 +1,4 @@
 import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Spin, Switch } from 'antd';
-import moment from 'moment';
-import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -83,7 +81,6 @@ const AddConfigOnlineProductsModal: React.FC<IAddConfigOnlineProductsProps> = (p
         price: data.price,
         units: data.units,
         enterprise_product: data.enterprise_product,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

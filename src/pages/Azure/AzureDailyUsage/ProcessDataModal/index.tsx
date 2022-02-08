@@ -93,11 +93,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     form.setFieldsValue(data);
   };
 
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current && current > moment().endOf('day');
-  // };
-
   useEffect(() => {
     if (commonLookups.getModelPopUpSelection.data !== {}) {
       getConfigData(commonLookups.getModelPopUpSelection.data);

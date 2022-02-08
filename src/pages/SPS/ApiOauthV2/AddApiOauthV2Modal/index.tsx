@@ -1,5 +1,4 @@
 import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -189,7 +188,6 @@ const AddSpsApiOauthV2Modal: React.FC<IAddSpsApiOauthV2Props> = (props) => {
         base_url_id: _.isNull(data.base_url_id) ? null : data.base_url_id,
         consent: data.consent,
         active: data.active,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

@@ -120,9 +120,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     Object.keys(inlineSearchFilterObj)?.forEach((key) => {
       const val = inlineSearchFilterObj[key];
       if (val?.length === 2 && typeof val[0] === 'object' && moment(val[0]).isValid()) {
-        inlineSearchFilterObj[key] = {
-          start_date: val[0],
-          end_date: val[1],
+          inlineSearchFilterObj[key] = {
+          start_date: moment(val[0]),
+          end_date: moment(val[1]),
         };
       }
     });

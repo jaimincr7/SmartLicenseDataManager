@@ -183,7 +183,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('date_added', cron.search.tableName, form),
+            title: FilterByDateSwap('date_added', cron.search.tableName, form, null,
+            ObjectForColumnFilter,
+            false,
+            true),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,

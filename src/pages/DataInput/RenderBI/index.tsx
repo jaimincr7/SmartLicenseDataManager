@@ -26,6 +26,7 @@ import { IInlineSearch } from '../../../common/models/common';
 import { toast } from 'react-toastify';
 import bulkImportService from '../../../services/bulkImport/bulkImport.service';
 import { Common } from '../../../common/constants/common';
+import { getSimpleDate } from '../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -259,7 +260,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               : globalSearch?.company_id[0],
           date_added: date
             ? moment(date).format(Common.DATEFORMAT)
-            : moment().format(Common.DATEFORMAT),
+            : getSimpleDate().format(Common.DATEFORMAT),
         },
       };
       if (val.excel_sheet_with_mapping_details.length === 0) {
@@ -340,7 +341,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           : globalSearch.company_id === undefined
             ? null
             : globalSearch?.company_id[0],
-        date_added: moment(),
+        date_added: getSimpleDate(),
       };
       filterTableColumns.map(function (ele) {
         initialValuesData[ele.name] =

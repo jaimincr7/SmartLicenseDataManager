@@ -77,7 +77,7 @@ export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
 
 //Thee Helper Functions are for Date and related thing
 
-export const passDateToApi = (date: Moment | string, isTime?: boolean) => {
+export const passDateToApi = (date: Moment | string | Date, isTime?: boolean) => {
   if (isTime) {
     return moment(date).format(Common.DATETIMEFORMAT);
   } else {
@@ -109,10 +109,26 @@ export const forEditModal = (date: Moment | string) => {
   }
 };
 
-export const getSimpleDate = () => {
-  return moment();
+export const forDropDown = (date: Moment | string) => {
+  if (date.toString().includes('T')) {
+    return moment(date).utc().format(Common.DATEFORMAT).toString();
+  } else {
+    return moment(date).local().format(Common.DATEFORMAT).toString();
+  }
+};
+
+export const getSimpleDate = (isUTC?: boolean) => {
+  if (isUTC === true) {
+    return moment().utc();
+  } else {
+    return moment();
+  }
 };
 
 export const forDisableDate = () => {
   return moment().endOf('day');
+};
+
+export const getOnlyTime = (date: any) => {
+  return moment(date).format('HH:MM:SS').toString();
 };
