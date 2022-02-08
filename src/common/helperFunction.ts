@@ -132,3 +132,7 @@ export const forDisableDate = () => {
 export const getOnlyTime = (date: any) => {
   return moment(date).format('HH:MM:SS').toString();
 };
+
+export const getandReturn = (date: any) => {
+  return moment(date);
+};

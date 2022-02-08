@@ -15,7 +15,7 @@ import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { validateMessages } from '../../../../common/constants/common';
-import { getObjectForUpdateMultiple, passDateToApi } from '../../../../common/helperFunction';
+import { forEditModal, getandReturn, getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerLicense } from '../../../../services/windowsServer/windowsServerLicense/windowsServerLicense.model';
@@ -125,7 +125,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
         opt_default_to_data_center_on_hosts: data.opt_default_to_data_center_on_hosts,
         opt_exclude_non_prod: data.opt_exclude_non_prod,
         opt_entitlements: data.opt_entitlements,
-        selected_date: _.isNull(data.selected_date) ? null : passDateToApi(data.selected_date),
+        selected_date: _.isNull(data.selected_date) ? null : forEditModal(data.selected_date),
       };
       form.setFieldsValue(initialValues);
     }
@@ -193,7 +193,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
           selected_date:
             filterKeys?.filter_keys?.date_added?.length === 1
-              ? passDateToApi(filterKeys.filter_keys.date_added[0])
+              ? getandReturn(filterKeys.filter_keys.date_added[0])
               : null,
         };
         form.setFieldsValue(initlValues);

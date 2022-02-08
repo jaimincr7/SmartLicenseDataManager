@@ -6,6 +6,7 @@ import {
 } from '../../../../store/master/cronViewLog/cronViewLog.reducer';
 import { useAppSelector } from '../../../../store/app.hooks';
 import { searchCronViewLog } from '../../../../store/master/cronViewLog/cronViewLog.action';
+import moment from 'moment';
 import _ from 'lodash';
 import {
   FilterByDateSwap,
@@ -18,7 +19,6 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { IMainTable } from './mainTable.model';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { passDateToApi } from '../../../../common/helperFunction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { job_id } = props;
@@ -113,12 +113,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('run_date', cronViewLog.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
             dataIndex: 'run_date',
             key: 'run_date',
             ellipsis: true,
             render: (date: Date) =>
-              !_.isNull(date) ? passDateToApi(date,true) : '',
+              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
           },
         ],
       },
@@ -131,15 +132,34 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('complete_date', cronViewLog.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
             dataIndex: 'complete_date',
             key: 'complete_date',
             ellipsis: true,
             render: (date: Date) =>
-              !_.isNull(date) ? passDateToApi(date,true) : '',
+              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
           },
         ],
       },
+      // {
+      //   title: <span className="dragHandler">Log Date</span>,
+      //   column: 'LogDate',
+      //   sorter: true,
+      //   ellipsis: true,
+      //   children: [
+      //     {
+      //       title: FilterByDateSwap('log_date', cronViewLog.search.tableName, form, null,
+      //       ObjectForColumnFilter,
+      //       true),
+      //       dataIndex: 'log_date',
+      //       key: 'log_date',
+      //       ellipsis: true,
+      //       render: (date: Date) =>
+      //         !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
+      //     },
+      //   ],
+      // },
     ];
   };
 
