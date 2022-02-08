@@ -117,10 +117,10 @@ export const FilterByDateSwap = (
       <div className="input-filter-group">
         {swap ? (
           timeToUtc ? (<Form.Item name={dataIndex} className="m-0 filter-input lg">
-            <RangePicker defaultPickerValue={[getSimpleDate().set({ h: 0, m: 0, s: 0, ms: 0 }), getSimpleDate().set({ h: 23, m: 59, s: 59, ms: 999 })]} />
+            <RangePicker defaultPickerValue={[getSimpleDate().set({ h: 23, m: 59, s: 59, ms: 999 }), getSimpleDate().set({ h: 0, m: 0, s: 0, ms: 0 })]} />
           </Form.Item>) : (
             <Form.Item name={dataIndex} className="m-0 filter-input lg">
-              <RangePicker defaultPickerValue={[getSimpleDate().set({ h: 0, m: 0, s: 0, ms: 0 }).utc(), getSimpleDate().set({ h: 23, m: 59, s: 59, ms: 999 }).utc()]} />
+              <RangePicker defaultPickerValue={[getSimpleDate().set({ h: 23, m: 59, s: 59, ms: 999 }), getSimpleDate().set({ h: 0, m: 0, s: 0, ms: 0 })]} />
             </Form.Item>
           )
         ) : (
