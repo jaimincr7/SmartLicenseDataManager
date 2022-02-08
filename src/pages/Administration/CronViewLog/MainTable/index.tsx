@@ -113,6 +113,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('run_date', cronViewLog.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
             dataIndex: 'run_date',
             key: 'run_date',
@@ -131,6 +132,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('complete_date', cronViewLog.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
             dataIndex: 'complete_date',
             key: 'complete_date',
@@ -149,6 +151,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('log_date', cronViewLog.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
             dataIndex: 'log_date',
             key: 'log_date',

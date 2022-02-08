@@ -150,6 +150,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('call_start', spsApiJobs.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
             dataIndex: 'call_start',
             key: 'call_start',
@@ -168,6 +169,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('call_end', spsApiJobs.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
             dataIndex: 'call_end',
             key: 'call_end',
