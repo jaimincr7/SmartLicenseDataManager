@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { getObjectForUpdateMultiple, getSimpleDate } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISlim360O365Licenses } from '../../../../services/slim360/o365Licenses/o365Licenses.model';
@@ -105,7 +105,7 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
     current_year_committed: null,
     current_avg_price: null,
     current_purchase_cost: null,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {

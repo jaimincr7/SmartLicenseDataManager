@@ -1,5 +1,4 @@
 import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin, Switch } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -75,7 +74,6 @@ const AddCmsVendorModal: React.FC<IAddCmsVendorProps> = (props) => {
         description: data.description,
         vendor: _.isNull(data.vendor) ? null : data.vendor,
         publisher: _.isNull(data.publisher) ? null : data.publisher,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

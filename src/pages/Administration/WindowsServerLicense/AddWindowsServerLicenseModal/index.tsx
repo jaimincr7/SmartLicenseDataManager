@@ -11,7 +11,6 @@ import {
   Spin,
   Switch,
 } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -115,7 +114,6 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
         includes_sa: data.includes_sa,
         includes_system_center: data.includes_system_center,
         includes_windows_server: data.includes_windows_server,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

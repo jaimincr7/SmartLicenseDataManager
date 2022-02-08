@@ -13,13 +13,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerInventory } from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.model';
@@ -107,7 +106,7 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
     vCPU: null,
     ha_enabled: false,
     azure_hosted: false,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -194,7 +193,7 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
         vCPU: data.vCPU,
         ha_enabled: data.ha_enabled,
         azure_hosted: data.azure_hosted,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

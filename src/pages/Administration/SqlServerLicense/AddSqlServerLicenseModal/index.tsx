@@ -11,7 +11,6 @@ import {
   Spin,
   Switch,
 } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -114,7 +113,6 @@ const AddConfigSqlServerLicenseModal: React.FC<IAddConfigSqlServerLicenseProps> 
         alternate_license_type: data.alternate_license_type,
         includes_sa: data.includes_sa,
         server_mobility_rights: data.server_mobility_rights,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }
