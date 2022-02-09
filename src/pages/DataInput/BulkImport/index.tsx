@@ -117,8 +117,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -192,8 +192,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -278,8 +278,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                  (data) => data.sheet_name == sheet.sheet
+                )
                 : [];
             if (mappingData.length) {
               formUpload.setFieldsValue({ hide_unmapped: false });
@@ -306,8 +306,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                  ? orgFile[0].table_name
-                  : tableName,
+                    ? orgFile[0].table_name
+                    : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -333,8 +333,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                  ? orgFile[0].excel_to_sql_mapping
-                  : null,
+                    ? orgFile[0].excel_to_sql_mapping
+                    : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -534,6 +534,11 @@ const BulkImport: React.FC = () => {
 
   const dateChange = (e) => {
     setDate(moment(e).format(Common.DATEFORMAT));
+    if (records && records.length) {
+      const dummyRecords = _.cloneDeep(records);
+      dummyRecords.map((data) => data.date = e);
+      setRecords(dummyRecords);
+    }
   };
 
   const onCancel = () => {

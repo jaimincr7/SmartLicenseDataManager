@@ -703,13 +703,15 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //     setRecords(dummyRecords);
   // }
   const onDateChange = (selectedReord: any, e) => {
-    const dummyRecords = _.cloneDeep(records);
-    dummyRecords.map((data) => {
-      if (selectedReord.index == data.index) {
-        data.date = e;
-      }
-    });
-    setRecords(dummyRecords);
+    if (e) {
+      const dummyRecords = _.cloneDeep(records);
+      dummyRecords.map((data) => {
+        if (selectedReord.index == data.index) {
+          data.date = e;
+        }
+      });
+      setRecords(dummyRecords);
+    }
   };
 
   const columns = [
