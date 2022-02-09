@@ -1,4 +1,4 @@
-import { Button, Form, Popconfirm, Select, Table, TreeSelect } from 'antd';
+import { Button, DatePicker, Form, Popconfirm, Select, Table, TreeSelect } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import {
@@ -202,7 +202,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             header_row: data.header_row - 1,
             delimiter: data.delimiter ? data.delimiter : ',',
             foreign_key_values: {
-              date_added: data.dateAdded ? data.dateAdded : moment(date).format(Common.DATEFORMAT),
+              date_added: data.date ? data.date : moment(date).format(Common.DATEFORMAT),
             },
           };
           arr.push(Obj);
@@ -232,8 +232,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             header_row: data.header_row - 1,
             delimiter: data.delimiter ? data.delimiter : ',',
             foreign_key_values: {
-              date_added: data.dateAdded
-                ? moment(data.dateAdded).format(Common.DATEFORMAT)
+              date_added: data.date
+                ? moment(data.date).format(Common.DATEFORMAT)
                 : moment(date).format(Common.DATEFORMAT),
             },
           };
@@ -700,9 +700,17 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   //         data.show_mapping
   //       }
   //     });
-
   //     setRecords(dummyRecords);
   // }
+  const onDateChange = (selectedReord: any, e) => {
+    const dummyRecords = _.cloneDeep(records);
+    dummyRecords.map((data) => {
+      if (selectedReord.index == data.index) {
+        data.date = e;
+      }
+    });
+    setRecords(dummyRecords);
+  };
 
   const columns = [
     {
@@ -777,6 +785,22 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       ),
     },
     {
+      title: 'Date Added',
+      dataIndex: 'date',
+      key: 'date',
+      render: (data, selectedData) => (
+        <>
+          <DatePicker
+            style={{ width: '115px' }}
+            value={moment(selectedData.date)}
+            className="form-control"
+            onChange={(e) => onDateChange(selectedData, e)}
+            placeholder="Select Date Added"
+          />
+        </>
+      )
+    },
+    {
       title: 'Action',
       dataIndex: 'key',
       key: 'key',
@@ -835,7 +859,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               is_public={record.is_public}
               tableName={record?.table_name}
               seqNumber={record?.index}
-              date={date}
             ></MappingColumn>
           ),
         }}
