@@ -202,7 +202,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             header_row: data.header_row - 1,
             delimiter: data.delimiter ? data.delimiter : ',',
             foreign_key_values: {
-              date_added: data.date ? data.date : moment(date).format(Common.DATEFORMAT),
+              date_added: data.date ? moment(data.date).format(Common.DATEFORMAT) : moment(date).format(Common.DATEFORMAT),
             },
           };
           arr.push(Obj);
