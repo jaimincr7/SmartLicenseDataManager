@@ -20,7 +20,6 @@ import {
 } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import {
-  getCronJobStatus,
   saveTableColumnSelection,
 } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
@@ -262,7 +261,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         toast.error(common.manageCronJob?.messages.join(' '));
       } else {
         toast.success(common.manageCronJob?.messages.join(' '));
-        dispatch(getCronJobStatus());
       }
       dispatch(clearCronJobSchedularMessages());
     }

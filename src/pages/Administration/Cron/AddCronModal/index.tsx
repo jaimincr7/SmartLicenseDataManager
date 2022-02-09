@@ -76,12 +76,6 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  const onSelChange = (value: string) => {
-    if (value === 'Daily') {
-      form.setFieldsValue({ cron_frequency_day: null });
-    }
-  };
-
   let initialValues: ICronData = {
     id: null,
     api_group_id: null,
@@ -451,7 +445,6 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     rules={[{ required: !isMultiple }]}
                   >
                     <Select
-                      onChange={onSelChange}
                       allowClear
                       showSearch
                       optionFilterProp="children"

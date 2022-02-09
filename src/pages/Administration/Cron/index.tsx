@@ -74,7 +74,7 @@ const Cron: React.FC<ICronProps> = (props) => {
           isMultiple={false}
           handleModalClose={() => {
             setAddModalVisible(false);
-            history.push('/administration/schedule-api-data');
+            history.push('/administration/sps-scheduler');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
@@ -87,7 +87,7 @@ const Cron: React.FC<ICronProps> = (props) => {
           isMultiple={true}
           handleModalClose={() => {
             setShowSelectedListModal(false);
-            history.push('/administration/schedule-api-data');
+            history.push('/administration/sps-scheduler');
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}

@@ -53,10 +53,7 @@ import {
   getSpsApiTypeLookup,
   getSpsApiGroupLookup,
   updateMultiple,
-  getCronFormula,
   getScheduleDate,
-  getCronJobStatus,
-  manageCronJobApi,
   configModelPopUpDataSelection,
   getConfigModelPopUpDataSelection,
   getSpsApiBaseUrl,
@@ -419,33 +416,6 @@ export const commonSlice = createSlice({
       state.tenantLookup.loading = false;
     },
 
-    // Cron Job Status
-    [getCronJobStatus.pending.type]: (state) => {
-      state.cronJobStatus.loading = true;
-    },
-    [getCronJobStatus.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
-      state.cronJobStatus.data = action.payload;
-      state.cronJobStatus.loading = false;
-    },
-
-    // Manage Cron Job Api
-    [manageCronJobApi.pending.type]: (state) => {
-      state.manageCronJob.loading = true;
-      state.manageCronJob.messages = [];
-    },
-    [manageCronJobApi.fulfilled.type]: (
-      state,
-      action: PayloadAction<IApiResponseBody<unknown>>
-    ) => {
-      state.manageCronJob.loading = false;
-      state.manageCronJob.hasErrors = false;
-      state.manageCronJob.messages = action.payload.messages;
-    },
-    [manageCronJobApi.rejected.type]: (state) => {
-      state.manageCronJob.loading = false;
-      state.manageCronJob.hasErrors = true;
-    },
-
     // Model Pop Up Selection
     [configModelPopUpDataSelection.pending.type]: (state) => {
       state.setModelPopUpSelection.loading = true;
@@ -491,15 +461,6 @@ export const commonSlice = createSlice({
     [getCompanyLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.companyLookup.data = action.payload;
       state.companyLookup.loading = false;
-    },
-
-    // Cron Job Formula
-    [getCronFormula.pending.type]: (state) => {
-      state.cronFormula.loading = true;
-    },
-    [getCronFormula.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
-      state.cronFormula.data = action.payload;
-      state.cronFormula.loading = false;
     },
 
     // Api Type V2
