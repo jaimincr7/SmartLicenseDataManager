@@ -27,7 +27,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   const extraSearchData = {
-    crone_job_data_id: job_id,
+    scheduler_id: job_id,
   };
 
   useImperativeHandle(ref, () => ({
@@ -64,14 +64,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       },
       {
         title: <span className="dragHandler">Schedule Api Id</span>,
-        column: 'CronDataId',
+        column: 'SchedulerId',
         sorter: true,
         ellipsis: true,
         children: [
           {
-            title: FilterBySwap('cron_data_id', form),
-            dataIndex: 'cron_data_id',
-            key: 'cron_data_id',
+            title: FilterBySwap('scheduler_id', form),
+            dataIndex: 'scheduler_id',
+            key: 'scheduler_id',
             ellipsis: true,
           },
         ],
@@ -105,17 +105,32 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
-        title: <span className="dragHandler">Run Date</span>,
-        column: 'RunDate',
+        title: <span className="dragHandler">Comment</span>,
+        column: 'Comment',
         sorter: true,
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('run_date', cronViewLog.search.tableName, form, null,
+            title: FilterBySwap('comment', form),
+            dataIndex: 'comment',
+            key: 'comment',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'DateAdded',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDateSwap('date_added', cronViewLog.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
-            dataIndex: 'run_date',
-            key: 'run_date',
+            dataIndex: 'date_added',
+            key: 'date_added',
             ellipsis: true,
             render: (date: Date) =>
               !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
@@ -131,27 +146,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('complete_date', cronViewLog.search.tableName, form, null,
             ObjectForColumnFilter,
+            true,
             true),
             dataIndex: 'complete_date',
             key: 'complete_date',
-            ellipsis: true,
-            render: (date: Date) =>
-              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
-          },
-        ],
-      },
-      {
-        title: <span className="dragHandler">Log Date</span>,
-        column: 'LogDate',
-        sorter: true,
-        ellipsis: true,
-        children: [
-          {
-            title: FilterByDateSwap('log_date', cronViewLog.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
-            dataIndex: 'log_date',
-            key: 'log_date',
             ellipsis: true,
             render: (date: Date) =>
               !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',

@@ -20,10 +20,9 @@ import {
   clearWindowsServerLicenseReRunAllScenariosMessages,
   windowsServerLicenseSelector,
 } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.reducer';
-import moment from 'moment';
-import { Common, validateMessages } from '../../../../common/constants/common';
+import { validateMessages } from '../../../../common/constants/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { getScheduleDateHelperLookup, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 
 const { Option } = Select;
@@ -111,7 +110,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
           : globalSearch.bu_id[0],
       selected_date:
         filterKeys?.filter_keys?.date_added?.length === 1
-          ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+          ? passDateToApi(filterKeys.filter_keys.date_added[0])
           : null,
     };
     dispatch(
@@ -208,10 +207,10 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
                     }
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
+                      <Option key={option} value={passDateToApi(option)}>
+                        {passDateToApi(option)?.toString() == 'Invalid date'
                           ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
+                          : passDateToApi(option)}
                       </Option>
                     ))}
                   </Select>

@@ -1,5 +1,4 @@
 import { Button, Checkbox, Col, Form, Modal, Row, Select, Spin, Switch } from 'antd';
-import moment from 'moment';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -81,7 +80,6 @@ const AddConfigExclusionLocationModal: React.FC<IAddConfigExclusionLocationProps
           ? null
           : data.component_table_column_id,
         is_excludable: data.is_excludable,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

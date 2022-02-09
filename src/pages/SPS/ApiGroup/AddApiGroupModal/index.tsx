@@ -1,6 +1,4 @@
 import { Button, Checkbox, Col, Form, Input, Modal, Row, Spin } from 'antd';
-import moment from 'moment';
-import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -75,7 +73,6 @@ const AddSpsApiGroupModal: React.FC<IAddSpsApiGroupProps> = (props) => {
       initialValues = {
         name: data.name,
         stored_procedure_post_process: data.stored_procedure_post_process,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

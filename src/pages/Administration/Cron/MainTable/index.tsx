@@ -70,10 +70,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
-  const FilterByDateSwapTable = (dataIndex: string, tableName: string, form: any) => {
-    return FilterByDateSwap(dataIndex, tableName, form, null, ObjectForColumnFilter);
-  };
-
   const getTableColumns = (form) => {
     return [
       {
@@ -168,7 +164,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('date_modified', cron.search.tableName, form),
+            title: FilterByDateSwap('date_modified', cron.search.tableName, form, null,
+            ObjectForColumnFilter,
+            false),
             dataIndex: 'date_modified',
             key: 'date_modified',
             ellipsis: true,
@@ -183,7 +181,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwapTable('date_added', cron.search.tableName, form),
+            title: FilterByDateSwap('date_added', cron.search.tableName, form, null,
+            ObjectForColumnFilter,
+            false),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -204,6 +204,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               form,
               null,
               ObjectForColumnFilter,
+              true,
               true
             ),
             dataIndex: 'start_date',
@@ -222,6 +223,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('stop_date', cron.search.tableName, form, null,
               ObjectForColumnFilter,
+              true,
               true),
             dataIndex: 'stop_date',
             key: 'stop_date',
@@ -295,6 +297,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           {
             title: FilterByDateSwap('next_run_date', cron.search.tableName, form, null,
               ObjectForColumnFilter,
+              true,
               true),
             dataIndex: 'next_run_date',
             key: 'next_run_date',
@@ -381,7 +384,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           title=""
           className="action-btn"
           onClick={() => {
-            history.push(`/administration/schedule-api-log/${data.id}`);
+            history.push(`/administration/sps-scheduler-log/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
@@ -394,7 +397,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         <a
           className="action-btn"
           onClick={() => {
-            history.push(`/administration/schedule-api-data/${data.id}`);
+            history.push(`/administration/sps-scheduler/${data.id}`);
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />

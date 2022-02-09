@@ -143,8 +143,8 @@ export enum Page {
   SpsApiTokenConfigOptionsV2 = 'sps-api-token-config-options-v2',
   SpsApiInjectionValueParamV2 = 'sps-api-injection-value-v2',
 
-  Cron = 'sps-cron-job-data',
-  CronViewLogData = 'sps-cron-job-log',
+  Cron = 'sps-scheduler',
+  CronViewLogData = 'sps-scheduler-log',
 
   ConfigSPSColMapping = 'config-sps-api-column-mapping',
   ConfigO365Products = "config-o365-products",

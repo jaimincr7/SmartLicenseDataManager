@@ -33,6 +33,7 @@ import moment from 'moment';
 import { Common } from '../../../common/constants/common';
 import CkeckDelimiterModal from '../CheckDelimiter';
 import commonService from '../../../services/common/common.service';
+import { getSimpleDate } from '../../../common/helperFunction';
 
 const { Option } = Select;
 let getFileMappingTimeOut = null;
@@ -75,13 +76,13 @@ const BulkImport: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [delimitModalShow, setDelimitModalShow] = useState(false);
   const [delimitFlag, setDelimitFlag] = useState(true);
-  const [date, setDate] = useState(moment().format(Common.DATEFORMAT));
+  const [date, setDate] = useState(getSimpleDate().format(Common.DATEFORMAT));
 
   const formUploadInitialValues = {
     header_row: 1,
     table_name: table,
     hide_unmapped: true,
-    date_added: moment(),
+    date_added: getSimpleDate(),
   };
 
   const uploadFile = async (options) => {
@@ -116,8 +117,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -191,8 +192,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -277,8 +278,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                  (data) => data.sheet_name == sheet.sheet
+                )
                 : [];
             if (mappingData.length) {
               formUpload.setFieldsValue({ hide_unmapped: false });
@@ -305,8 +306,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                  ? orgFile[0].table_name
-                  : tableName,
+                    ? orgFile[0].table_name
+                    : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -332,8 +333,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                  ? orgFile[0].excel_to_sql_mapping
-                  : null,
+                    ? orgFile[0].excel_to_sql_mapping
+                    : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -533,6 +534,11 @@ const BulkImport: React.FC = () => {
 
   const dateChange = (e) => {
     setDate(moment(e).format(Common.DATEFORMAT));
+    if (records && records.length) {
+      const dummyRecords = _.cloneDeep(records);
+      dummyRecords.map((data) => data.date = e);
+      setRecords(dummyRecords);
+    }
   };
 
   const onCancel = () => {

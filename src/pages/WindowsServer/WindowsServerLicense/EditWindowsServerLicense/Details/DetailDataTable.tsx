@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { IDetailDataTableProps } from './detailDataTable.model';
-import moment from 'moment';
 import _ from 'lodash';
 import DataTable from '../../../../../common/components/DataTable';
 import {
@@ -16,10 +15,10 @@ import {
   setTableColumnSelection,
   windowsServerLicenseDetailSelector,
 } from '../../../../../store/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.reducer';
-import { Common } from '../../../../../common/constants/common';
 import { ISearchWindowsServerLicenseDetail } from '../../../../../services/windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.model';
 import { Checkbox } from 'antd';
 import { globalSearchSelector } from '../../../../../store/globalSearch/globalSearch.reducer';
+import { showDateFromApi } from '../../../../../common/helperFunction';
 
 const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
   const { licenseId } = props;
@@ -89,7 +88,7 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATEFORMAT) : ''),
+            render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
       },

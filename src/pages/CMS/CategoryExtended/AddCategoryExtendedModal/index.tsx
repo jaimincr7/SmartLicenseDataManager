@@ -1,6 +1,4 @@
 import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin } from 'antd';
-import moment from 'moment';
-import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -80,7 +78,6 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
       initialValues = {
         category_id: data.category_id,
         name: data.name,
-        date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
       };
       form.setFieldsValue(initialValues);
     }

@@ -3,7 +3,7 @@ import request from '../../../utils/request';
 import { ICronViewLog, ISearchCronViewLog } from './cronViewLog.model';
 
 class CronViewLogService {
-  ENDPOINT = '/sps-cron-job-log';
+  ENDPOINT = '/sps-scheduler-log';
 
   public async searchCronViewLog(
     searchParams?: ISearchCronViewLog

@@ -1,5 +1,4 @@
 import { Button, Col, Form, Modal, Row, Select } from 'antd';
-import moment from 'moment';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import {
@@ -25,12 +24,12 @@ import {
   commonSelector,
 } from '../../../store/common/common.reducer';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
-import { Common, validateMessages } from '../../constants/common';
+import { validateMessages } from '../../constants/common';
 import { IInlineSearch } from '../../models/common';
 import { IDeleteDatasetModalProps } from './deleteDatasetModal.model';
 import _ from 'lodash';
 import React from 'react';
-import { getScheduleDateHelperLookup } from '../../helperFunction';
+import { forDropDown, getScheduleDateHelperLookup, passDateToApi } from '../../helperFunction';
 import ability, { Can } from '../../ability';
 import { Action, Page } from '../../constants/pageAction';
 
@@ -103,11 +102,6 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
     }
     form.setFieldsValue(data);
   };
-
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current && current > moment().endOf('day');
-  // };
 
   useEffect(() => {
     if (common.deleteDataset.messages.length > 0) {
@@ -200,7 +194,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
         bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
         date_added:
           filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            ? passDateToApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
       dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));
@@ -319,9 +313,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
                     >
                       {commonLookups.getScheduledDate.data.map((option: any) => (
                         <Option key={option} value={option}>
-                          {moment(option)?.toString() == 'Invalid date'
+                          {forDropDown(option) == 'Invalid date'
                             ? 'NULL'
-                            : moment(option).format(Common.DATEFORMAT)}
+                            : forDropDown(option)}
                         </Option>
                       ))}
                     </Select>

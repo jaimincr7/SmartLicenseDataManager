@@ -1,6 +1,5 @@
 import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
@@ -23,7 +22,7 @@ import {
   usersSelector,
 } from '../../../../store/master/users/users.reducer';
 import { IAddUserProps } from './addUser.model';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -109,9 +108,9 @@ const AddUserModal: React.FC<IAddUserProps> = (props) => {
         source: data.source,
         password_hash: data.password_hash,
         password_salt: data.password_salt,
-        insert_date: _.isNull(data.insert_date) ? null : moment(data.insert_date),
+        insert_date: _.isNull(data.insert_date) ? null : forEditModal(data.insert_date),
         insert_user_id: data.insert_user_id,
-        update_date: _.isNull(data.update_date) ? null : moment(data.update_date),
+        update_date: _.isNull(data.update_date) ? null : forEditModal(data.update_date),
         update_user_id: data.update_user_id,
         is_active: data.is_active,
         mobile_phone_number: data.mobile_phone_number,
