@@ -34,7 +34,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { getScheduleDateHelperLookup, getSimpleDate } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -51,7 +51,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: moment(),
+    selected_date: getSimpleDate(),
     update_device_states_inc_non_prod: false,
     update_device_states_by_keyword: false,
     x_ref_ad: false,
@@ -108,11 +108,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearConfigModelPopUpDataSelection());
     }
   }, [commonLookups.setModelPopUpSelection.messages]);
-
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current && current > moment().endOf('day');
-  // };
 
   useEffect(() => {
     if (inventory.processData.messages.length > 0) {

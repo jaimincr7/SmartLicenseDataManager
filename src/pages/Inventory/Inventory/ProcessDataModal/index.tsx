@@ -31,7 +31,7 @@ import {
 import { toast } from 'react-toastify';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { getScheduleDateHelperLookup, getSimpleDate } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
@@ -63,7 +63,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     is_selected_date_ws: true,
     is_selected_date_ss: true,
     is_selected_date_device: true,
-    selected_date: moment(),
+    selected_date: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -131,11 +131,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(clearConfigModelPopUpDataSelection());
     }
   }, [commonLookups.setModelPopUpSelection.messages]);
-
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current && current > moment().endOf('day');
-  // };
 
   useEffect(() => {
     if (inventory.processData.messages.length > 0) {
