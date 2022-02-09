@@ -145,7 +145,7 @@ const AdministrationRoutes: React.FC = () => {
           <Route exact path={`${match.path}/sps-scheduler`} component={Cron} />
         )}
         {ability.can(Action.View, Page.User) && (
-          <Route exact path={`${match.path}/scheduler/:id`} component={Cron} />
+          <Route exact path={`${match.path}/sps-scheduler/:id`} component={Cron} />
         )}
 
         {/* {ability.can(Action.View, Page.Cron) && ( */}
