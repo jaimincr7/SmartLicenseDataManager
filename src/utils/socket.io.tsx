@@ -122,12 +122,16 @@ export const SocketIO = React.memo(() => {
       toast.info(
         () => (
             <a
-              href={`${window.location.href}`}
+              href='#'
+              onClick={()=>{
+                tryToConnect = 0;
+                connectSocket();
+              }}
               style={{ color: '#fefefe' }}
             >
               Background notification may not working.
               <strong> Click here </strong>
-                to reload the page.
+                to reconnect now.
             </a>
         ),
         { autoClose: false }
