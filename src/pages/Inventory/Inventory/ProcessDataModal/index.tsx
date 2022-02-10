@@ -29,9 +29,8 @@ import {
   inventorySelector,
 } from '../../../../store/inventory/inventory/inventory.reducer';
 import { toast } from 'react-toastify';
-import { Common, validateMessages } from '../../../../common/constants/common';
-import moment from 'moment';
-import { getScheduleDateHelperLookup, getSimpleDate } from '../../../../common/helperFunction';
+import { validateMessages } from '../../../../common/constants/common';
+import { forDropDown, getScheduleDateHelperLookup, getSimpleDate, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
@@ -67,6 +66,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
+    values.selected_date = passDateToApi(values.selected_date, false);
     dispatch(processDataInventory(values));
   };
 
@@ -159,7 +159,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), inventory.search.tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
         )
       );
       dispatch(
@@ -223,11 +223,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
         date_added:
           filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
       dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(filterValues, inventory.search.tableName))
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
       );
       dispatch(
         getScheduleDateforWindowsServer(
@@ -241,8 +241,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       );
       form.setFieldsValue(filterValues);
     }
-    // const crrntDate = new Date().toDateString();
-    // form.setFieldsValue({selected_date_ws: moment(crrntDate).format(Common.DATEFORMAT)});
     return () => {
       dispatch(cleargetModelPopUpDataSelection());
     };
@@ -349,10 +347,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                     }
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
+                      <Option key={option} value={showDateFromApi(option)}>
+                        {forDropDown(option) == 'Invalid date'
                           ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
+                          : showDateFromApi(option)}
                       </Option>
                     ))}
                   </Select>
@@ -380,70 +378,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 </Form.Item>
               </div>
             </Col>
-            {/*<Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Selected Date Sql Server</label>
-                <Form.Item name="selected_date_ss" className="m-0" label="Selected Date Sql Server">
-                  <Select
-                    placeholder="Select Date"
-                    loading={commonLookups.getScheduledDateforSql.loading}
-                    allowClear
-                    showSearch
-                    optionFilterProp="children"
-                    filterOption={(input, option: any) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                    filterSort={(optionA: any, optionB: any) =>
-                      optionA.children
-                        ?.toLowerCase()
-                        ?.localeCompare(optionB.children?.toLowerCase())
-                    }
-                  >
-                    {commonLookups.getScheduledDateforSql.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
-                          ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </div>
-            </Col> */}
-            {/* <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Selected Date Windows Server</label>
-                <Form.Item
-                  name="selected_date_ws"
-                  className="m-0"
-                  label="Selected Date Windows Server"
-                >
-                  <Select
-                    placeholder="Select Date"
-                    loading={commonLookups.getScheduledDateforWindows.loading}
-                    allowClear
-                    showSearch
-                    optionFilterProp="children"
-                    filterOption={(input, option: any) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                    filterSort={(optionA: any, optionB: any) =>
-                      optionA.children
-                        ?.toLowerCase()
-                        ?.localeCompare(optionB.children?.toLowerCase())
-                    }
-                  >
-                    {commonLookups.getScheduledDateforWindows.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
-                          ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </div>
-            </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
                 <Form.Item name="is_selected_date_device" className="m-0" valuePropName="checked">

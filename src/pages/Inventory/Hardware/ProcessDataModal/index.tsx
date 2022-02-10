@@ -23,14 +23,13 @@ import {
 import { IProcessDataModalProps } from './processData.model';
 import { processDataHardware } from '../../../../store/inventory/hardware/hardware.action';
 import { toast } from 'react-toastify';
-import { Common, validateMessages } from '../../../../common/constants/common';
-import moment from 'moment';
+import { validateMessages } from '../../../../common/constants/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { getScheduleDateHelperLookup, getSimpleDate } from '../../../../common/helperFunction';
+import { getScheduleDateHelperLookup, passDateToApi, getandReturn } from '../../../../common/helperFunction';
 import {
   clearHardwareMessages,
   hardwareSelector,
@@ -51,7 +50,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: getSimpleDate(),
+    selected_date: null,
   };
 
   const onFinish = (values: any) => {
@@ -59,6 +58,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       ...values,
       table_name: tableName,
     };
+    finalValues.selected_date = passDateToApi(finalValues.selected_date, false);
     dispatch(processDataHardware(finalValues));
   };
 
@@ -183,7 +183,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
         selected_date:
           filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            ? getandReturn(filterKeys.filter_keys.date_added[0])
             : null,
       };
       dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));

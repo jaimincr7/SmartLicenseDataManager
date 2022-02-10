@@ -19,12 +19,11 @@ import {
   clearSqlServerLicenseReRunAllScenariosMessages,
   sqlServerLicenseSelector,
 } from '../../../../store/sqlServer/sqlServerLicense/sqlServerLicense.reducer';
-import moment from 'moment';
 import _ from 'lodash';
-import { Common, validateMessages } from '../../../../common/constants/common';
+import { validateMessages } from '../../../../common/constants/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { forDropDown, getScheduleDateHelperLookup, showDateFromApi, getandReturn } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -98,7 +97,8 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
       const element = globalFilters.search[key];
       globalSearch[key] = element ? [element] : null;
     }
-    if (globalSearch.company_id !== undefined) dispatch(getBULookup(globalSearch.company_id[0]));
+    if (globalSearch.company_id !== undefined && globalSearch.company_id !== null)
+      dispatch(getBULookup(globalSearch.company_id[0]));
     const filterValues = {
       company_id:
         _.isNull(globalSearch.company_id) || globalSearch.company_id == undefined
@@ -110,7 +110,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
           : globalSearch.bu_id[0],
       selected_date:
         filterKeys?.filter_keys?.date_added?.length === 1
-          ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+          ? getandReturn(filterKeys.filter_keys.date_added[0]).format('YYYY-MM-DD')
           : null,
     };
     dispatch(
@@ -205,10 +205,10 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
                     }
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
+                      <Option key={option} value={showDateFromApi(option)}>
+                        {forDropDown(option) == 'Invalid date'
                           ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
+                          : showDateFromApi(option)}
                       </Option>
                     ))}
                   </Select>

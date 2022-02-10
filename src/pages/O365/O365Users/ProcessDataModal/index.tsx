@@ -22,14 +22,13 @@ import {
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 import {
   o365UsersSelector,
   clearO365ProcessDataMessages,
 } from '../../../../store/o365/o365Users/o365Users.reducer';
 import { processDataO365 } from '../../../../store/o365/o365Users/o365Users.action';
-import { Common, validateMessages } from '../../../../common/constants/common';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { validateMessages } from '../../../../common/constants/common';
+import { forDropDown, getScheduleDateHelperLookup, showDateFromApi } from '../../../../common/helperFunction';
 import _ from 'lodash';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
@@ -192,7 +191,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
         selected_date:
           filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
       dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));
@@ -316,10 +315,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                     }
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
+                      <Option key={option} value={showDateFromApi(option)}>
+                        {forDropDown(option) == 'Invalid date'
                           ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
+                          : showDateFromApi(option)}
                       </Option>
                     ))}
                   </Select>

@@ -692,16 +692,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  // const clearMapping = (curR,e) => {
-  //   const dummyRecords = _.cloneDeep(records);
-  //     dummyRecords.map((data) => {
-  //       if(data.index == curR.index) {
-  //         data.excel_to_sql_mapping= null;
-  //         data.show_mapping
-  //       }
-  //     });
-  //     setRecords(dummyRecords);
-  // }
   const onDateChange = (selectedReord: any, e) => {
     if (e) {
       const dummyRecords = _.cloneDeep(records);
@@ -793,7 +783,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       render: (data, selectedData) => (
         <>
           <DatePicker
-            style={{ width: '115px' }}
+            style={{ width: '130px' }}
             value={moment(selectedData.date)}
             className="form-control"
             onChange={(e) => onDateChange(selectedData, e)}

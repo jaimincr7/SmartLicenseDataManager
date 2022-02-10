@@ -306,6 +306,24 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      {
+        title: <span className="dragHandler">Last Run Date</span>,
+        column: 'lastRunDate',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDateSwap('last_run_date', cron.search.tableName, form, null,
+              ObjectForColumnFilter,
+              true,
+              true),
+            dataIndex: 'last_run_date',
+            key: 'last_run_date',
+            ellipsis: true,
+            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : ''),
+          },
+        ],
+      },
     ];
   };
 

@@ -29,8 +29,7 @@ import {
 } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.reducer';
 import { toast } from 'react-toastify';
 import { Common, validateMessages } from '../../../../common/constants/common';
-import moment from 'moment';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { getandReturn, getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import _ from 'lodash';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
@@ -205,7 +204,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
         date_added:
           filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            ? getandReturn(filterKeys.filter_keys.date_added[0]).format('YYYY-MM-DD')
             : null,
       };
       dispatch(
@@ -328,10 +327,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                     }
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
+                      <Option key={option} value={getandReturn(option).format(Common.DATEFORMAT)}>
+                        {getandReturn(option)?.toString() == 'Invalid date'
                           ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
+                          : getandReturn(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}
                   </Select>

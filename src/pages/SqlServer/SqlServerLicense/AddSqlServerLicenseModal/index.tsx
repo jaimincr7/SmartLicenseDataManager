@@ -12,13 +12,12 @@ import {
   Switch,
 } from 'antd';
 import _ from 'lodash';
-import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, showDateFromApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerLicense } from '../../../../services/sqlServer/sqlServerLicense/sqlServerLicense.model';
@@ -143,7 +142,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
         opt_cluster_logic: data.opt_cluster_logic,
         opt_exclude_non_prod: data.opt_exclude_non_prod,
         opt_entitlements: data.opt_entitlements,
-        selected_date: _.isNull(data.selected_date) ? null : moment(data.selected_date),
+        selected_date: _.isNull(data.selected_date) ? null : forEditModal(data.selected_date),
       };
       form.setFieldsValue(initialValues);
     }
@@ -211,7 +210,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
           selected_date:
             filterKeys?.filter_keys?.date_added?.length === 1
-              ? moment(filterKeys.filter_keys.date_added[0])
+              ? showDateFromApi(filterKeys.filter_keys.date_added[0])
               : null,
         };
         form.setFieldsValue(initlValues);

@@ -40,7 +40,6 @@ import {
   azureDailyUsageSelector,
 } from '../../../../store/azure/azureDailyUsage/azureDailyUsage.reducer';
 import { IAddAzureDailyUsageProps } from './addAzureDailyUsage.model';
-import moment from 'moment';
 import { validateMessages } from '../../../../common/constants/common';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { Page } from '../../../../common/constants/pageAction';
@@ -735,10 +734,10 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                       className="form-control w-100"
                       onChange={(value) => {
                         form.setFieldsValue({
-                          day: Number(moment(value).format('D')),
-                          month: Number(moment(value).format('M')),
-                          month_name: value ? moment(value).format('MMMM') : '',
-                          year: Number(moment(value).format('YYYY')),
+                          day: Number(forEditModal(value).format('D')),
+                          month: Number(forEditModal(value).format('M')),
+                          month_name: value ? forEditModal(value).format('MMMM') : '',
+                          year: Number(forEditModal(value).format('YYYY')),
                         });
                       }}
                     />
@@ -1365,6 +1364,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="billing_period_start_date"
                     label="Billing Period Start Date"
                     className="m-0"
+                    rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -1387,6 +1387,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                     name="billing_period_end_date"
                     label="Billing Period End Date"
                     className="m-0"
+                    rules={[{ required: !isMultiple }]}
                   >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
@@ -2357,7 +2358,7 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   ) : (
                     'Exchange Rate Date'
                   )}
-                  <Form.Item name="exchange_rate_date" label="Exchange Rate Date" className="m-0">
+                  <Form.Item name="exchange_rate_date" label="Exchange Rate Date" className="m-0" rules={[{ required: !isMultiple }]}>
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>

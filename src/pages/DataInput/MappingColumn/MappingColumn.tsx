@@ -223,16 +223,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     setRecords(dummyrecords);
   };
 
-  // const onDateChange = (e) => {
-  //   const dummyrecords = [...records];
-  //   dummyrecords.map((data) => {
-  //     if (data.index == seqNumber) {
-  //       data.dateAdded = moment(e).format(Common.DATEFORMAT);
-  //     }
-  //   });
-  //   setRecords(dummyrecords);
-  // };
-
   return (
     <>
       <Form form={form} name="saveMapping" initialValues={initialValues}>
