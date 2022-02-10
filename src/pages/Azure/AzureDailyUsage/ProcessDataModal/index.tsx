@@ -22,13 +22,12 @@ import {
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 import {
   azureDailyUsageSelector,
   clearAzureDailyUsageMessages,
 } from '../../../../store/azure/azureDailyUsage/azureDailyUsage.reducer';
-import { Common, validateMessages } from '../../../../common/constants/common';
-import { getScheduleDateHelperLookup } from '../../../../common/helperFunction';
+import { validateMessages } from '../../../../common/constants/common';
+import { forDropDown, getScheduleDateHelperLookup, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import React from 'react';
 import { IInlineSearch } from '../../../../common/models/common';
@@ -135,7 +134,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
         date_added:
           filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
       dispatch(
@@ -313,9 +312,9 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={option}>
-                        {moment(option)?.toString() == 'Invalid date'
+                        {forDropDown(option) == 'Invalid date'
                           ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
+                          : passDateToApi(option)}
                       </Option>
                     ))}
                   </Select>
