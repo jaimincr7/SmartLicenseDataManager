@@ -29,7 +29,6 @@ import {
 } from '../../../../store/windowsServer/windowsServerInventory/windowsServerInventory.reducer';
 import { toast } from 'react-toastify';
 import { Common, validateMessages } from '../../../../common/constants/common';
-import moment from 'moment';
 import { getandReturn, getScheduleDateHelperLookup } from '../../../../common/helperFunction';
 import _ from 'lodash';
 import { IInlineSearch } from '../../../../common/models/common';
@@ -328,10 +327,10 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                     }
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
-                      <Option key={option} value={moment(option).format(Common.DATEFORMAT)}>
-                        {moment(option)?.toString() == 'Invalid date'
+                      <Option key={option} value={getandReturn(option).format(Common.DATEFORMAT)}>
+                        {getandReturn(option)?.toString() == 'Invalid date'
                           ? 'NULL'
-                          : moment(option).format(Common.DATEFORMAT)}
+                          : getandReturn(option).format(Common.DATEFORMAT)}
                       </Option>
                     ))}
                   </Select>

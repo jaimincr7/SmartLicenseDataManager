@@ -159,7 +159,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), inventory.search.tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
         )
       );
       dispatch(
@@ -227,7 +227,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             : null,
       };
       dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(filterValues, inventory.search.tableName))
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
       );
       dispatch(
         getScheduleDateforWindowsServer(
