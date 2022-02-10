@@ -27,14 +27,14 @@ import {
   inventorySelector,
 } from '../../../../store/inventory/inventory/inventory.reducer';
 import { toast } from 'react-toastify';
-import { Common, validateMessages } from '../../../../common/constants/common';
+import { validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { getScheduleDateHelperLookup, getSimpleDate } from '../../../../common/helperFunction';
+import { getScheduleDateHelperLookup, passDateToApi } from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -51,7 +51,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: getSimpleDate(),
+    selected_date: null,
     update_device_states_inc_non_prod: false,
     update_device_states_by_keyword: false,
     x_ref_ad: false,
@@ -60,6 +60,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
+    values.selected_date = passDateToApi(values.selected_date, false);
     dispatch(processDataInventory(values));
   };
 
@@ -184,7 +185,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
         selected_date:
           filterKeys?.filter_keys?.date_added?.length === 1
-            ? moment(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            ? moment(filterKeys.filter_keys.date_added[0])
             : null,
       };
       dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));

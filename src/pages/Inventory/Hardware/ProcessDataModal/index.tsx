@@ -30,7 +30,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { getScheduleDateHelperLookup, getSimpleDate } from '../../../../common/helperFunction';
+import { getScheduleDateHelperLookup, passDateToApi } from '../../../../common/helperFunction';
 import {
   clearHardwareMessages,
   hardwareSelector,
@@ -51,7 +51,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: getSimpleDate(),
+    selected_date: null,
   };
 
   const onFinish = (values: any) => {
@@ -59,6 +59,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       ...values,
       table_name: tableName,
     };
+    finalValues.selected_date = passDateToApi(finalValues.selected_date, false);
     dispatch(processDataHardware(finalValues));
   };
 

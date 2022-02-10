@@ -31,7 +31,7 @@ import {
 import { toast } from 'react-toastify';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import moment from 'moment';
-import { getScheduleDateHelperLookup, getSimpleDate } from '../../../../common/helperFunction';
+import { getScheduleDateHelperLookup, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
@@ -67,6 +67,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
+    values.selected_date = passDateToApi(values.selected_date, false);
     dispatch(processDataInventory(values));
   };
 
