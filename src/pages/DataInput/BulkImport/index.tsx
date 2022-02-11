@@ -85,6 +85,7 @@ const BulkImport: React.FC = () => {
     date_added: getSimpleDate(),
   };
 
+
   const uploadFile = async (options) => {
     const { onSuccess, file } = options;
     const formData = new FormData();
@@ -422,9 +423,17 @@ const BulkImport: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const data = {
+      tenant_id: globalLookups.search.tenant_id ? globalLookups.search.tenant_id : null,
+      company_id: globalLookups.search.company_id ? globalLookups.search.company_id : null,
+      bu_id: globalLookups.search.bu_id ? globalLookups.search.bu_id : null,
+    };
+    dispatch(getExcelFileMappingLookup(data));
+  }, [globalLookups.search.bu_id, globalLookups.search.company_id, globalLookups.search.tenant_id])
+
+  useEffect(() => {
     if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
       dispatch(getTables());
-      dispatch(getExcelFileMappingLookup());
     }
     if (!table) {
       dispatch(getTablesForImport());
@@ -617,7 +626,7 @@ const BulkImport: React.FC = () => {
         });
       });
       const dummy = _.cloneDeep(dummyRecords);
-      const unmapRec = dummy.filter((data) => data.currentMapping !== null);
+      const unmapRec = dummy.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
       setWithoutUnmappedRecords(unmapRec);
       setRecords(dummyRecords);
     }
@@ -675,7 +684,7 @@ const BulkImport: React.FC = () => {
 
   useEffect(() => {
     const dummyRecords = _.cloneDeep(records);
-    const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null);
+    const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
     setWithoutUnmappedRecords(unmapRec);
     setRecordLength(records.length);
     if (records.length > recordLength) {
@@ -812,6 +821,7 @@ const BulkImport: React.FC = () => {
                               changeFileMapping(option);
                             }}
                             showSearch
+                            dropdownClassName="value-box-select"
                             allowClear
                             optionFilterProp="children"
                             filterOption={(input, option: any) =>
