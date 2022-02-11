@@ -120,10 +120,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   };
 
-  //const handleSheetChange = () => {
-  //   setFormFields();
-  // };
-
   // const getDummyMapping = (currentSheetName: string, columns: any) => {
   //   setEmptyMappingFlag(true);
   //   const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
@@ -423,7 +419,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   useEffect(() => {
     const dummyRecords = _.cloneDeep(records);
-    const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null);
+    const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
     setWithoutUnmappedRecords(unmapRec);
     return () => {
       setTableColumnState([]);
@@ -437,32 +433,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const removeFileMapping = (id: number) => {
     dispatch(deleteFileMapping(id));
   };
-
-  // useEffect(() => {
-  //   if (bulkImports.deleteColumnMapping.messages.length > 0) {
-  //     if (bulkImports.deleteColumnMapping.hasErrors) {
-  //       toast.error(bulkImports.deleteColumnMapping.messages.join(' '));
-  //     } else {
-  //       toast.success(bulkImports.deleteColumnMapping.messages.join(' '));
-  //       setSavedExcelMapping([]);
-  //       getExcelMappingColumns();
-  //     }
-  //     dispatch(clearDeleteMessages());
-  //   }
-  // }, [bulkImports.deleteColumnMapping.messages]);
-
-  // useEffect(() => {
-  //   if (bulkImports.deleteFileMapping.messages.length > 0) {
-  //     if (bulkImports.deleteFileMapping.hasErrors) {
-  //       toast.error(bulkImports.deleteFileMapping.messages.join(' '));
-  //     } else {
-  //       toast.success(bulkImports.deleteFileMapping.messages.join(' '));
-  //       setSavedExcelMapping([]);
-  //       getExcelMappingColumns();
-  //     }
-  //     dispatch(clearDeleteMessages());
-  //   }
-  // }, [bulkImports.deleteFileMapping.messages]);
 
   const geChildDropdown = (excelMappings: any, currentRecord: any) => {
     const chidDropdown = [];
@@ -485,7 +455,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             </Popconfirm>
           </>
         ),
-        value: m.sheet_name,
+        value: `${m.sheet_name}!${m.id}`,
       });
     });
 
@@ -607,11 +577,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     }
   }, [savedExcelMapping]);
 
-  // useEffect(() => {
-  //   getExcelMappingColumns();
-  // }, [innerFormUpload?.getFieldValue('table_name'), fileData?.original_filename]);
-
   const onChange = (selectedRecord: any, value: any) => {
+    const sheetNameV = value ? value.split('!')[0] : null;
+    const idV = value ? value.split('!')[1] : null;
     const dummyRecord = _.cloneDeep(records);
     dummyRecord.map((data) => {
       if (data.index == selectedRecord.index) {
@@ -619,7 +587,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.currentMapping = value;
         selectedRecord.show_mapping.map((data1) => {
           data1.config_excel_column_mappings.map((data2) => {
-            if (data2.sheet_name == value) {
+            if (data2.sheet_name == sheetNameV && data2.id == idV) {
               data.key_word = data1?.key_word;
               data.is_public = data1?.is_public;
               data.table_name = data2.table_name;
@@ -630,7 +598,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.excel_to_sql_mapping = flagMapping;
       }
     });
-    const unmapRec = dummyRecord.filter((data) => data.currentMapping !== null);
+    const unmapRec = dummyRecord.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
     setWithoutUnmappedRecords(unmapRec);
     setRecords(dummyRecord);
     if (value) {
@@ -686,7 +654,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       }
 
       const dummyWithoutRecords = _.cloneDeep(filteredRecords);
-      const unmapRec = dummyWithoutRecords.filter((data) => data.currentMapping !== null);
+      const unmapRec = dummyWithoutRecords.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
       setWithoutUnmappedRecords(unmapRec);
       setRecords(filteredRecords);
     }

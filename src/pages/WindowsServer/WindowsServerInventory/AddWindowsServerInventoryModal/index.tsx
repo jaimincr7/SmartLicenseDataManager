@@ -2,6 +2,7 @@ import {
   Button,
   Checkbox,
   Col,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -17,7 +18,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerInventory } from '../../../../services/windowsServer/windowsServerInventory/windowsServerInventory.model';
@@ -104,6 +105,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
     sc_agent: false,
     sc_version: null,
     market: null,
+    date_added: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
@@ -111,6 +113,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
       ...values,
       id: id ? +id : null,
     };
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveWindowsServerInventory(inputValues));
     } else {
@@ -189,6 +192,7 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
         sc_exempt: data.exempt,
         sc_server: data.sc_server,
         sc_agent: data.sc_agent,
+        date_added: _.isNull(data.date_added) ? null : forEditModal(data.date_added),
         sc_version: data.sc_version,
       };
       form.setFieldsValue(initialValues);
@@ -411,6 +415,20 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
                             </Option>
                           ))}
                     </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'date_added']} valuePropName="checked" noStyle>
+                      <Checkbox>Date Added</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Date Added'
+                  )}
+                  <Form.Item name="date_added" label="Date Added" className="m-0">
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>

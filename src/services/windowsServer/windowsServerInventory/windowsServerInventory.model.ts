@@ -1,4 +1,5 @@
 import { ISearch } from '../../../common/models/common';
+import { Moment } from 'moment';
 
 export interface IWindowsServerInventory {
   id?: number;
@@ -34,6 +35,7 @@ export interface IWindowsServerInventory {
   sc_agent?: boolean;
   sc_version?: string;
   market?: string;
+  date_added?: string | Moment;
 }
 
 export interface ISearchWindowsServerInventory extends ISearch {

@@ -144,8 +144,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const searchData = getSearchData(page, false);
     searchData;
     if (setObjectForColumnFilter) {
+      const filterDate = {
+        ...searchData.filter_keys,
+        ...extraSearchData
+      }
       setObjectForColumnFilter({
-        filter_keys: searchData.filter_keys,
+        filter_keys: filterDate,
         keyword: searchData.keyword,
         limit: searchData.limit,
         offset: searchData.offset,

@@ -39,9 +39,9 @@ class BulkImportService {
     });
   }
 
-  public async getExcelFileMappingLookup(): Promise<any> {
+  public async getExcelFileMappingLookup(data: any): Promise<any> {
     const url = `/config-excel-file-mapping/lookup`;
-    return request({ url, method: 'GET' }).then((res) => {
+    return request({ url, method: 'POST',data: data }).then((res) => {
       return res.data;
     });
   }
