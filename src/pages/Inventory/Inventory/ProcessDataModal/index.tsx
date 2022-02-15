@@ -1,5 +1,5 @@
-import { Button, Col, DatePicker, Form, Modal, Row, Select, Switch } from 'antd';
-import React, { useEffect } from 'react';
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Switch } from 'antd';
+import React, { useEffect, useState } from 'react';
 import {
   IConfigModelPopUpDataSelection,
   IGetConfigModelPopUpDataSelection,
@@ -8,6 +8,7 @@ import {
 import { useAppSelector, useAppDispatch } from '../../../../store/app.hooks';
 import {
   configModelPopUpDataSelection,
+  getAgreementTypesLookup,
   getAllCompanyLookup,
   getBULookup,
   getConfigModelPopUpDataSelection,
@@ -39,16 +40,13 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
-// const currentDate = new Date();
-// const date = currentDate.getDate();
-// const month = currentDate.getMonth() + 1;
-// const year = currentDate.getFullYear();
-
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const inventory = useAppSelector(inventorySelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
+  const [sql, setSql] = useState(false);
+  const [windows, setWindows] = useState(false);
 
   const { showModal, handleModalClose, filterKeys, tableName, refreshDataTable } = props;
 
@@ -58,15 +56,46 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     company_id: null,
     bu_id: null,
     date_added: null,
-    include_sc: false,
-    is_selected_date_ws: true,
-    is_selected_date_ss: true,
-    is_selected_date_device: true,
-    selected_date: getSimpleDate(),
+    device_extract: false,
+    normalize: true,
+    sql_extract: false,
+    windows_extract: false,
+    sql_agreement_type: null,
+    sql_exclude_non_prod: false,
+    sql_cluster_logic: false,
+    sql_default_to_enterprise_on_hosts: false,
+    sql_entitlements: false,
+    sql_notes: '',
+    windows_include_sc: false,
+    windows_agreement_type: null,
+    windows_exclude_non_prod: false,
+    windows_default_to_data_center_on_hosts: false,
+    windows_entitlements: false,
+    windows_notes: '',
+    selected_date_extract: getSimpleDate(),
   };
 
   const onFinish = (values: any) => {
-    values.selected_date = passDateToApi(values.selected_date, false);
+    values.selected_date_extract = passDateToApi(values.selected_date_extract, false);
+    values.date_added = passDateToApi(values.date_added, false);
+    values = sql === false ? {
+      ...values,
+      sql_agreement_type: null,
+      sql_exclude_non_prod: false,
+      sql_cluster_logic: false,
+      sql_default_to_enterprise_on_hosts: false,
+      sql_entitlements: false,
+      sql_notes: '',
+    } : values;
+    values = windows === false ? {
+      ...values,
+      windows_include_sc: false,
+      windows_agreement_type: null,
+      windows_exclude_non_prod: false,
+      windows_default_to_data_center_on_hosts: false,
+      windows_entitlements: false,
+      windows_notes: '',
+    } : values;
     dispatch(processDataInventory(values));
   };
 
@@ -78,7 +107,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     }
     const fieldValues = { ...form.getFieldsValue() };
     delete fieldValues.date_added;
-    delete fieldValues.selected_date;
+    delete fieldValues.selected_date_extract;
     const setModelSelection: IConfigModelPopUpDataSelection = {
       id:
         commonLookups.getModelPopUpSelection.id === null
@@ -179,8 +208,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     form.setFieldsValue({ bu_id: buId });
   };
 
+  const sqlChange = () => {
+    setSql(!sql);
+  };
+
+  const windowsChange = () => {
+    setWindows(!windows);
+  };
+
   useEffect(() => {
     dispatch(getAllCompanyLookup());
+    dispatch(getAgreementTypesLookup());
     return () => {
       dispatch(clearBULookUp());
       dispatch(clearDateLookup());
@@ -245,6 +283,122 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       dispatch(cleargetModelPopUpDataSelection());
     };
   }, []);
+
+  const onAgreementChange = (e) => {
+    const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === e);
+    const text1 =
+      form.getFieldValue('sql_default_to_enterprise_on_hosts') === true
+        ? 'DC on Host'
+        : 'Cost Optimized';
+    const text2 =
+      form.getFieldValue('sql_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod';
+    form.setFieldsValue({ sql_notes: agreementName[0]?.name + ' - ' + text1 + ' - ' + text2 });
+  };
+
+  const onWindowsAgreementChange = (e) => {
+    const agreementName = commonLookups.agreementTypesLookup.data?.filter((data) => data.id === e);
+    const text1 =
+      form.getFieldValue('windows_default_to_data_center_on_hosts') === true
+        ? 'DC on Host'
+        : 'Cost Optimized';
+    const text2 =
+      form.getFieldValue('windows_exclude_non_prod') === true ? 'Exclude Non-Prod' : 'Include Non-Prod';
+    form.setFieldsValue({ windows_notes: agreementName[0]?.name + ' - ' + text1 + ' - ' + text2 });
+  };
+
+  const defaultToEntHostChange = (e) => {
+    if (
+      form.getFieldValue('sql_agreement_type') !== null &&
+      form.getFieldValue('sql_agreement_type') !== undefined
+    ) {
+      const text2 =
+        form.getFieldValue('sql_exclude_non_prod') === true
+          ? 'Exclude Non-Prod'
+          : 'Include Non-Prod';
+      if (e === true) {
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+          (data) => data.id === form.getFieldValue('sql_agreement_type')
+        );
+        const notes = agreementName[0]?.name + ' - ' + 'DC on Host';
+        form.setFieldsValue({ sql_notes: notes + ' - ' + text2 });
+      } else {
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+          (data) => data.id === form.getFieldValue('sql_agreement_type')
+        );
+        const notes = agreementName[0]?.name + ' - ' + 'Cost Optimized';
+        form.setFieldsValue({ sql_notes: notes + ' - ' + text2 });
+      }
+    }
+  };
+
+  const defaultWindowsToEntHostChange = (e) => {
+    if (
+      form.getFieldValue('windows_agreement_type') !== null &&
+      form.getFieldValue('windows_agreement_type') !== undefined
+    ) {
+      const text2 =
+        form.getFieldValue('windows_exclude_non_prod') === true
+          ? 'Exclude Non-Prod'
+          : 'Include Non-Prod';
+      if (e === true) {
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+          (data) => data.id === form.getFieldValue('windows_agreement_type')
+        );
+        const notes = agreementName[0]?.name + ' - ' + 'DC on Host';
+        form.setFieldsValue({ windows_notes: notes + ' - ' + text2 });
+      } else {
+        const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+          (data) => data.id === form.getFieldValue('windows_agreement_type')
+        );
+        const notes = agreementName[0]?.name + ' - ' + 'Cost Optimized';
+        form.setFieldsValue({ windows_notes: notes + ' - ' + text2 });
+      }
+    }
+  };
+
+  const onExcludeChange = (e) => {
+    if (
+      form.getFieldValue('sql_agreement_type') !== null &&
+      form.getFieldValue('sql_agreement_type') !== undefined
+    ) {
+      const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+        (data) => data.id === form.getFieldValue('sql_agreement_type')
+      );
+      const optstring =
+        form.getFieldValue('sql_default_to_enterprise_on_hosts') === true
+          ? 'DC on Host'
+          : 'Cost Optimized';
+      if (e === true) {
+        const notes = agreementName[0]?.name + ' - ' + optstring + ' - ' + 'Exclude Non-Prod';
+        form.setFieldsValue({ sql_notes: notes });
+      } else {
+        const notes = agreementName[0]?.name + ' - ' + optstring + ' - ' + 'Include Non-Prod';
+        form.setFieldsValue({ sql_notes: notes });
+      }
+    }
+  };
+
+  const onWindowsExcludeChange = (e) => {
+    if (
+      form.getFieldValue('windows_agreement_type') !== null &&
+      form.getFieldValue('windows_agreement_type') !== undefined
+    ) {
+      const agreementName = commonLookups.agreementTypesLookup.data?.filter(
+        (data) => data.id === form.getFieldValue('windows_agreement_type')
+      );
+      const optstring =
+        form.getFieldValue('windows_default_to_data_center_on_hosts') === true
+          ? 'DC on Host'
+          : 'Cost Optimized';
+      if (e === true) {
+        const notes = agreementName[0]?.name + ' - ' + optstring + ' - ' + 'Exclude Non-Prod';
+        form.setFieldsValue({ windows_notes: notes });
+      } else {
+        const notes = agreementName[0]?.name + ' - ' + optstring + ' - ' + 'Include Non-Prod';
+        form.setFieldsValue({ windows_notes: notes });
+      }
+    }
+  };
 
   return (
     <>
@@ -330,7 +484,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Date Added</label>
-                <Form.Item name="date_added" className="m-0" label="Date Added">
+                <Form.Item name="date_added" className="m-0" label="Date Added" rules={[{ required: true }]}>
                   <Select
                     placeholder="Select Date"
                     loading={commonLookups.getScheduledDate.loading}
@@ -357,60 +511,198 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                 </Form.Item>
               </div>
             </Col>
-            {/* <Col xs={24} sm={12} md={8}>
-              <div className="form-group m-0">
-                <label className="label">Date Added</label>
-                <Form.Item
-                  name="date_added"
-                  label="Date Added"
-                  className="m-0"
-                  rules={[{ required: true }]}
-                >
-                  <DatePicker className="w-100" disabledDate={disabledDate} />
-                </Form.Item>
-              </div>
-            </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date</label>
-                <Form.Item name="selected_date" label="Selected Date" className="m-0">
+                <label className="label">Selected Date Extract</label>
+                <Form.Item name="selected_date_extract" label="Selected Date" className="m-0"  rules={[{ required: true }]}>
                   <DatePicker className="w-100" />
                 </Form.Item>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="is_selected_date_device" className="m-0" valuePropName="checked">
+                <Form.Item name="normalize" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">Device</label>
+                <label className="label">Normalize</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="is_selected_date_ss" className="m-0" valuePropName="checked">
+                <Form.Item name="device_extract" className="m-0" valuePropName="checked">
                   <Switch className="form-control" />
                 </Form.Item>
-                <label className="label">Sql Server</label>
+                <label className="label">Device Extract</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="is_selected_date_ws" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
+                <Form.Item name="sql_extract" className="m-0" valuePropName="checked">
+                  <Switch className="form-control" onChange={sqlChange} />
                 </Form.Item>
-                <label className="label">Windows Server</label>
+                <label className="label">Sql Extract</label>
               </div>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
-                <Form.Item name="include_sc" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" />
+                <Form.Item name="windows_extract" className="m-0" valuePropName="checked">
+                  <Switch className="form-control" onChange={windowsChange} />
                 </Form.Item>
-                <label className="label">Include System Center</label>
+                <label className="label">Windows Extract</label>
               </div>
             </Col>
           </Row>
+          <hr />
+          {sql ?
+            <><Row gutter={[30, 15]} className="form-label-hide">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">SQL Agreement Type</label>
+                  <Form.Item name="sql_agreement_type" className="m-0" rules={[{ required: sql }]}>
+                    <Select
+                      loading={commonLookups.agreementTypesLookup.loading}
+                      onChange={onAgreementChange}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.agreementTypesLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="sql_exclude_non_prod" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" onChange={onExcludeChange} />
+                  </Form.Item>
+                  <label className="label">Sql Exclude Non Prod</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="sql_cluster_logic" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  <label className="label">Sql Cluster Logic</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="sql_default_to_enterprise_on_hosts" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" onChange={defaultToEntHostChange} />
+                  </Form.Item>
+                  <label className="label">Sql Default to Enterprise on Hosts</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="sql_entitlements" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  <label className="label">Sql Entitlements</label>
+                </div>
+              </Col>
+              <Col xs={24}>
+                <div className="form-group m-0">
+                  <label className="label">Sql Notes</label>
+                  <Form.Item
+                    name="sql_notes"
+                    className="m-0"
+                  >
+                    <Input.TextArea className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+            </Row><hr /></> : <></>}
+
+          {windows ?
+            <><Row gutter={[30, 15]} className="form-label-hide">
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  <label className="label">windows Agreement Type</label>
+                  <Form.Item name="windows_agreement_type" className="m-0" rules={[{ required: windows }]}>
+                    <Select
+                      loading={commonLookups.agreementTypesLookup.loading}
+                      onChange={onWindowsAgreementChange}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.agreementTypesLookup.data.map((option: ILookup) => (
+                        <Option key={option.id} value={option.id}>
+                          {option.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="windows_exclude_non_prod" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" onChange={onWindowsExcludeChange} />
+                  </Form.Item>
+                  <label className="label">windows Exclude Non Prod</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="windows_include_sc" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  <label className="label">Windows Include SC</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="windows_default_to_data_center_on_hosts" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" onChange={defaultWindowsToEntHostChange} />
+                  </Form.Item>
+                  <label className="label">Windows Default to Enterprise on Hosts</label>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group form-inline-pt m-0">
+                  <Form.Item name="windows_entitlements" className="m-0" valuePropName="checked">
+                    <Switch className="form-control" />
+                  </Form.Item>
+                  <label className="label">Windows Entitlements</label>
+                </div>
+              </Col>
+              <Col xs={24}>
+                <div className="form-group m-0">
+                  <label className="label">Windows Notes</label>
+                  <Form.Item
+                    name="windows_notes"
+                    className="m-0"
+                  >
+                    <Input.TextArea className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+            </Row><hr /></> : <></>}
+
           <div className="btns-block modal-footer pt-lg">
             <Button
               key="submit"

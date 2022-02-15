@@ -11,7 +11,7 @@ const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
   const history = useHistory();
   const dataTableRef = useRef(null);
 
-  const { id: job_id } = useParams<{ id?: string }>();
+  const { id: api_job_id } = useParams<{ id?: string }>();
 
   {
     /*const refreshDataTable = () => {
@@ -41,7 +41,7 @@ const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
         </div>
       </div>
       <div className="main-card">
-        <MainTable ref={dataTableRef} job_id={+job_id} />
+        <MainTable ref={dataTableRef} api_job_id={+api_job_id} />
       </div>
     </div>
   );
