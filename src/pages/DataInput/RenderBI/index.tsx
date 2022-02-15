@@ -55,6 +55,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   //const [excelColumns, setExcelColumns] = useState(null);
   const [maxHeaderRow, setMaxHeaderRow] = useState(1);
+  const [maxColumn, setColumn] = useState(10);
   const [tableColumns, setTableColumns] = useState(null);
   const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
@@ -375,7 +376,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (bulkImports.getExcelColumns.data?.length > 0) {
       setFormFields();
       // const sheet_name = bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns[0]?.sheet;
-      // maxHeaderRow = bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
       //   (e) => e.sheet === sheet_name
       // )?.columns?.length;
     }
@@ -410,8 +410,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
     if (csvFlag) {
+      setColumn(dummyRecords[0]?.length);
       setMaxHeaderRow(dummyRecords?.length);
     } else {
+      setColumn(dummyRecords[0].columns[0]?.length);
       setMaxHeaderRow(dummyRecords[0].columns?.length);
     }
     innerFormUpload.setFieldsValue({ header_row: headerValue });
@@ -968,7 +970,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                             min={1}
                             className="form-control w-100"
                             onChange={setFormFields}
-                            max={maxHeaderRow}
                           />
                         </Form.Item>
                       </div>
@@ -1272,6 +1273,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         <PreviewExcel
           showModal={showManageExcel}
           maxCount={maxHeaderRow}
+          maxColumn={maxColumn}
           handleModalClose={() => {
             setShowManageExcel(false);
           }}
