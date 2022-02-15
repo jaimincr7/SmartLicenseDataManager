@@ -55,7 +55,7 @@ class AzureDailyUsageService {
   }
 
   public async exportExcelFile(searchParams?: ISearchAzureDailyUsage): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',

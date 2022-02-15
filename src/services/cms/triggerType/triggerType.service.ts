@@ -44,7 +44,7 @@ class CmsTriggerTypeService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCmsTriggerType): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',
