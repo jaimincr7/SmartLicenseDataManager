@@ -63,6 +63,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
   const [curRecordMap, setCurRecordMap] = useState(null);
+  const [primaryDate, setPrimaryDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
@@ -662,13 +664,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const onDateChange = (selectedReord: any, e) => {
     if (e) {
-      const dummyRecords = _.cloneDeep(records);
-      dummyRecords.map((data) => {
-        if (selectedReord.index == data.index) {
-          data.date = e;
-        }
-      });
-      setRecords(dummyRecords);
+      setPrimaryDate(e);
+      setSelectedDate(selectedReord.index);
     }
   };
 
@@ -807,6 +804,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               setRecords={setRecords}
               record={record}
               records={records}
+              primaryDate={primaryDate}
+              selectedDate={selectedDate}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
               fileName={
                 record?.key_word === null
