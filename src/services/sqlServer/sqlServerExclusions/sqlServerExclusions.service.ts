@@ -70,7 +70,7 @@ class SqlServerExclusionsService {
       ...data,
       debug: false,
     };
-    const url = `${this.ENDPOINT}/process-data`;
+    const url = `back-ground-processes/sql-server-exclusions-process-data`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });

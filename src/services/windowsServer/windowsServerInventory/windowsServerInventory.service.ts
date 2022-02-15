@@ -48,7 +48,7 @@ class WindowsServerInventoryService {
   }
 
   public async processData(data: IProcessData): Promise<any> {
-    const url = `${this.ENDPOINT}/process-data`;
+    const url = `back-ground-processes/windows-server-inventory-process-data`;
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
