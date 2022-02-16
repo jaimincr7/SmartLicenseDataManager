@@ -12,7 +12,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import ProcessDataModal from '../Inventory/ProcessDataModal';
+import ProcessDataModal from './ProcessDataModal';
 
 const Device: React.FC<IDeviceProps> = (props) => {
   const device = useAppSelector(deviceSelector);

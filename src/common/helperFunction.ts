@@ -75,7 +75,7 @@ export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
   return getDataScheduleDate;
 };
 
-//Thee Helper Functions are for Date and related thing
+//The Helper Functions are for Date and related thing
 
 export const passDateToApi = (date: Moment | string | Date, isTime?: boolean) => {
   if (isTime) {
