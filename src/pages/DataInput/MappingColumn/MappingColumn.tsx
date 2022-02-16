@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, primaryDate, selectedDate } =
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, primaryDate, selectedDate, date } =
     props;
 
   const [form] = Form.useForm();
@@ -68,6 +68,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     });
     setRecords(dummyRecord);
   }, [primaryDate]);
+
+  useEffect(() => {
+    setReRenderFlag(false);
+    const dummyRecord = _.cloneDeep(records);
+    dummyRecord.map((data) => {
+        data.date = date;
+    });
+    setRecords(dummyRecord);
+  }, [date]);
 
   useEffect(() => {
     if (localMapping && reRenderFlag) {

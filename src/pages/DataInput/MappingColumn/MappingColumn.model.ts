@@ -11,4 +11,5 @@ export interface IMappingColumnProps {
   onExcelMapping?: (values: any) => void;
   primaryDate?: any;
   selectedDate?: number;
+  date?: any;
 }

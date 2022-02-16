@@ -125,7 +125,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   // const getDummyMapping = (currentSheetName: string, columns: any) => {
   //   setEmptyMappingFlag(true);
-  //   const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
   //   const filterExcelColumns: any = columns[0];
   //   const filterTableColumns = tableColumnState.filter(
   //     (x) => !columnsArray.includes(x.name?.toLowerCase())
@@ -806,6 +805,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               setRecords={setRecords}
               record={record}
               records={records}
+              date={date}
               primaryDate={primaryDate}
               selectedDate={selectedDate}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
@@ -1167,7 +1167,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                           </div>
                         </Col>
                       )}
-                      {removedColumns.some((x) => x.name?.toLowerCase() === 'date added') && (
                         <Col xs={24} sm={12} md={8}>
                           <div className="form-group m-0">
                             <label className="label">Date Added</label>
