@@ -47,7 +47,7 @@ class O365ActivationsUserDetailService {
   }
 
   public async exportExcelFile(searchParams?: ISearchO365ActivationsUserDetail): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

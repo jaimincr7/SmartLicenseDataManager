@@ -479,7 +479,7 @@ class CommonService {
 
   public async deleteDataset(data: IDeleteDataset): Promise<any> {
     const inputValues = { ...data, debug: false };
-    const url = `/back-ground-processes/delete-dataset`;
+    const url = `/app/delete-dataset`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });

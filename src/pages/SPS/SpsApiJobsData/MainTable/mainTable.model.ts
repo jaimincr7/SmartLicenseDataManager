@@ -1,4 +1,4 @@
 export interface IMainTable {
-  api_job_id?: number;
+  job_id?: number;
   tableButtons?: () => JSX.Element;
 }

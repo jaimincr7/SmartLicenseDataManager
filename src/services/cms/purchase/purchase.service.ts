@@ -44,7 +44,7 @@ class CmsPurchaseService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCmsPurchase): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

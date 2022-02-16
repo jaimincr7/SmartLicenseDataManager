@@ -44,7 +44,7 @@ class AgreementTypesService {
   }
 
   public async exportExcelFile(searchParams?: ISearchAgreementTypes): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

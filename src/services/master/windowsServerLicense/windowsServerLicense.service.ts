@@ -47,7 +47,7 @@ class ConfigWindowsServerLicenseService {
   }
 
   public async exportExcelFile(searchParams?: ISearchConfigWindowsServerLicense): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

@@ -21,13 +21,13 @@ import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { api_job_id } = props;
+  const { job_id } = props;
   const cronViewLog = useAppSelector(cronViewLogSelector);
   const dataTableRef = useRef(null);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   const extraSearchData = {
-    scheduler_id: api_job_id,
+    scheduler_id: job_id,
   };
 
   useImperativeHandle(ref, () => ({

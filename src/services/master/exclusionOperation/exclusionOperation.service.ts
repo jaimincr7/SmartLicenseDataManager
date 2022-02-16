@@ -47,7 +47,7 @@ class ConfigExclusionOperationService {
   }
 
   public async exportExcelFile(searchParams?: ISearchConfigExclusionOperation): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',
