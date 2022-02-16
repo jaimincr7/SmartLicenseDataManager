@@ -44,7 +44,7 @@ class CmdbExclusionService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCmdbExclusion): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',

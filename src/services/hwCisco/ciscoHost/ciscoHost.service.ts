@@ -44,7 +44,7 @@ class CiscoHostService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCiscoHost): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',

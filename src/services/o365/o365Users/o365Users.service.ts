@@ -47,14 +47,14 @@ class O365UsersService {
     const inputValues = {
       ...data,
     };
-    const url = `${this.ENDPOINT}/process-data`;
+    const url = `back-ground-processes/o365-users-process-data`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }
 
   public async exportExcelFile(searchParams?: ISearchO365Users): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',

@@ -27,14 +27,14 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const { job_id } = props;
+  const { api_job_id } = props;
   const dispatch = useAppDispatch();
   const spsApiJobsData = useAppSelector(spsApiJobsDataSelector);
   const dataTableRef = useRef(null);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
   const extraSearchData = {
-    job_id: job_id,
+    api_job_id: api_job_id,
   };
 
   useImperativeHandle(ref, () => ({

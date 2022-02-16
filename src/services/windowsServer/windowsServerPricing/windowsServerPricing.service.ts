@@ -44,7 +44,7 @@ class WindowsServerPricingService {
   }
 
   public async exportExcelFile(searchParams?: ISearchWindowsServerPricing): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',
