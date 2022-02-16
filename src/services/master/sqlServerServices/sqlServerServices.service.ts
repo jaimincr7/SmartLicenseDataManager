@@ -47,7 +47,7 @@ class ConfigSqlServerServicesService {
   }
 
   public async exportExcelFile(searchParams?: ISearchConfigSqlServerServices): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

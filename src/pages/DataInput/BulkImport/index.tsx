@@ -543,6 +543,11 @@ const BulkImport: React.FC = () => {
 
   const dateChange = (e) => {
     setDate(moment(e).format(Common.DATEFORMAT));
+    if (records && records.length) {
+      const dummyRecords = _.cloneDeep(records);
+      dummyRecords.map((data) => data.date = e);
+      setRecords(dummyRecords);
+    }
   };
 
   const onCancel = () => {

@@ -49,7 +49,7 @@ class CmsContractAgreementAttachmentService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCmsContractAgreementAttachment): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

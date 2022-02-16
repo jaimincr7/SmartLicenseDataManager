@@ -48,14 +48,14 @@ class AdDevicesService {
       ...data,
       debug: false,
     };
-    const url = `back-ground-processes/ad-device-process-data`;
+    const url = `${this.ENDPOINT}/process-data`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
   }
 
   public async exportExcelFile(searchParams?: ISearchAdDevices): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

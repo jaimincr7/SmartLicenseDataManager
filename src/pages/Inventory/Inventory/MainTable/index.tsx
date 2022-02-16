@@ -154,8 +154,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
               'software_normalization_id',
               inventory.search.lookups?.software_normalizations
             ),
-            dataIndex: 'software_normalization_name',
-            key: 'software_normalization_name',
+            dataIndex: 'software_normalization',
+            key: 'software_normalization',
             ellipsis: true,
           },
         ],

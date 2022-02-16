@@ -11,7 +11,7 @@ const CronViewLog: React.FC<ICronViewLogProps> = () => {
   const dataTableRef = useRef(null);
   const history = useHistory();
 
-  const { id: api_job_id } = useParams<{ id?: string }>();
+  const { id: job_id } = useParams<{ id?: string }>();
 
   return (
     <div className="sps">
@@ -35,7 +35,7 @@ const CronViewLog: React.FC<ICronViewLogProps> = () => {
         </div>
       </div>
       <div className="main-card">
-        <MainTable ref={dataTableRef} api_job_id={+api_job_id} />
+        <MainTable ref={dataTableRef} job_id={+job_id} />
       </div>
     </div>
   );
