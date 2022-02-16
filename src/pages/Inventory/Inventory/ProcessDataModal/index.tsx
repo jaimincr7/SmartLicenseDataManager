@@ -632,7 +632,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             <><Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
-                  <label className="label">windows Agreement Type</label>
+                  <label className="label">Windows Agreement Type</label>
                   <Form.Item name="windows_agreement_type" className="m-0" rules={[{ required: windows }]}>
                     <Select
                       loading={commonLookups.agreementTypesLookup.loading}
@@ -660,7 +660,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="windows_exclude_non_prod" className="m-0" valuePropName="checked">
+                  <Form.Item name="Windows_exclude_non_prod" className="m-0" valuePropName="checked">
                     <Switch className="form-control" onChange={onWindowsExcludeChange} />
                   </Form.Item>
                   <label className="label">windows Exclude Non Prod</label>
