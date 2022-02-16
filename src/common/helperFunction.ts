@@ -75,7 +75,7 @@ export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
   return getDataScheduleDate;
 };
 
-//Thee Helper Functions are for Date and related thing
+//The Helper Functions are for Date and related thing
 
 export const passDateToApi = (date: Moment | string | Date, isTime?: boolean) => {
   if (isTime) {
@@ -86,7 +86,7 @@ export const passDateToApi = (date: Moment | string | Date, isTime?: boolean) =>
 };
 
 export const showDateFromApi = (date: Moment | string | Date, isTime?: boolean) => {
-  if (date.toString().includes('T')) {
+  if (date?.toString().includes('T')) {
     if (isTime) {
       return moment(date).utc().format(Common.DATETIMEFORMAT);
     } else {
@@ -102,7 +102,7 @@ export const showDateFromApi = (date: Moment | string | Date, isTime?: boolean) 
 };
 
 export const forEditModal = (date: Moment | string) => {
-  if (date.toString().includes('T')) {
+  if (date?.toString().includes('T')) {
     return moment(date).utc();
   } else {
     return moment(date).local();
