@@ -15,7 +15,7 @@ import MainTable from './MainTable';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import ProcessDataModal from '../Inventory/ProcessDataModal';
+import ProcessDataModal from '../Device/ProcessDataModal';
 
 const DeviceState: React.FC<IDeviceStateProps> = (props) => {
   const deviceState = useAppSelector(deviceStateSelector);
