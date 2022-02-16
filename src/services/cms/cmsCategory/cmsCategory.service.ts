@@ -44,7 +44,7 @@ class CmsCategoryService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCmsCategory): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

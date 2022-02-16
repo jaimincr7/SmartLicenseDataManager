@@ -44,7 +44,7 @@ class SqlServerOverridesService {
   }
 
   public async exportExcelFile(searchParams?: ISearchSqlServerOverrides): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

@@ -44,7 +44,7 @@ class CmdbOperatingSystemService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCmdbOperatingSystem): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

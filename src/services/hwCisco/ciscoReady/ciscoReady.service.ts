@@ -44,7 +44,7 @@ class CiscoReadyService {
   }
 
   public async exportExcelFile(searchParams?: ISearchCiscoReady): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

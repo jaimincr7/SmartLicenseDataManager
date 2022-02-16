@@ -48,7 +48,7 @@ class SqlServerLicenseService {
   }
 
   public async exportExcelFile(searchParams?: ISearchSqlServerLicense): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

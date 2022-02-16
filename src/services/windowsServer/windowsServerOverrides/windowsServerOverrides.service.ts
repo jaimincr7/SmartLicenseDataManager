@@ -47,7 +47,7 @@ class WindowsServerOverridesService {
   }
 
   public async exportExcelFile(searchParams?: ISearchWindowsServerOverrides): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

@@ -44,14 +44,14 @@ class HardwareService {
   }
 
   public async processData(data: IProcessData): Promise<any> {
-    const url = `back-ground-processes/inventory-hardware-process-data`;
+    const url = `${this.ENDPOINT}/process-data`;
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }
 
   public async exportExcelFile(searchParams?: ISearchHardware): Promise<any> {
-    const url = `back-ground-processes/export-excel`;
+    const url = `all-service-module/export-excel`;
     return request({
       url,
       method: 'POST',

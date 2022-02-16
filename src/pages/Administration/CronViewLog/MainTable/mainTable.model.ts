@@ -1,3 +1,3 @@
 export interface IMainTable {
-  api_job_id?: number;
+  job_id?: number;
 }
