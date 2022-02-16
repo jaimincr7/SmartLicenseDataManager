@@ -55,6 +55,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   //const [excelColumns, setExcelColumns] = useState(null);
   const [maxHeaderRow, setMaxHeaderRow] = useState(1);
+  const [maxColumn, setColumn] = useState(10);
   const [tableColumns, setTableColumns] = useState(null);
   const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
@@ -63,6 +64,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
   const [curRecordMap, setCurRecordMap] = useState(null);
+  const [primaryDate, setPrimaryDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
@@ -373,7 +376,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (bulkImports.getExcelColumns.data?.length > 0) {
       setFormFields();
       // const sheet_name = bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns[0]?.sheet;
-      // maxHeaderRow = bulkImports.getExcelColumns.data[selectedRowId - 1]?.excel_sheet_columns?.find(
       //   (e) => e.sheet === sheet_name
       // )?.columns?.length;
     }
@@ -408,8 +410,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     currentExcelData?.splice(0, headerValue - 1 > 0 ? headerValue - 1 : 0);
     setExcelPreviewData(currentExcelData);
     if (csvFlag) {
+      setColumn(dummyRecords[0]?.length);
       setMaxHeaderRow(dummyRecords?.length);
     } else {
+      setColumn(dummyRecords[0].columns[0]?.length);
       setMaxHeaderRow(dummyRecords[0].columns?.length);
     }
     innerFormUpload.setFieldsValue({ header_row: headerValue });
@@ -662,13 +666,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const onDateChange = (selectedReord: any, e) => {
     if (e) {
-      const dummyRecords = _.cloneDeep(records);
-      dummyRecords.map((data) => {
-        if (selectedReord.index == data.index) {
-          data.date = e;
-        }
-      });
-      setRecords(dummyRecords);
+      setPrimaryDate(e);
+      setSelectedDate(selectedReord.index);
     }
   };
 
@@ -807,6 +806,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               setRecords={setRecords}
               record={record}
               records={records}
+              primaryDate={primaryDate}
+              selectedDate={selectedDate}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
               fileName={
                 record?.key_word === null
@@ -969,7 +970,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
                             min={1}
                             className="form-control w-100"
                             onChange={setFormFields}
-                            max={maxHeaderRow}
                           />
                         </Form.Item>
                       </div>
@@ -1273,6 +1273,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         <PreviewExcel
           showModal={showManageExcel}
           maxCount={maxHeaderRow}
+          maxColumn={maxColumn}
           handleModalClose={() => {
             setShowManageExcel(false);
           }}

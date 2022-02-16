@@ -26,7 +26,7 @@ class AdUsersService {
       ...data,
       debug: false,
     };
-    const url = `${this.ENDPOINT}/process-data`;
+    const url = `back-ground-processes/ad-users-process-data`;
     return request({ url, method: 'POST', data: inputValues }).then((res) => {
       return res.data;
     });
@@ -55,7 +55,7 @@ class AdUsersService {
   }
 
   public async exportExcelFile(searchParams?: ISearchAdUsers): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',

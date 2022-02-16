@@ -44,7 +44,7 @@ class Slim360O365LicensesService {
   }
 
   public async exportExcelFile(searchParams?: ISearchSlim360O365Licenses): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',
