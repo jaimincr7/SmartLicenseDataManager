@@ -13,7 +13,7 @@ export interface ISpsApiJobsData {
 }
 
 export interface ISearchSpsApiJobsData extends ISearch {
-  job_id?: any;
+  api_job_id?: any;
 }
 
 export interface ICallAPI {

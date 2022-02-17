@@ -19,7 +19,7 @@ import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.r
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public } =
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, primaryDate, selectedDate, date } =
     props;
 
   const [form] = Form.useForm();
@@ -38,6 +38,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   const [mappingSeq, setMappingSeq] = useState(null);
   const [tableColumns, setTableColumns] = useState(null);
   const [localMapping, setLocalMapping] = useState<boolean>(true);
+  const [reRenderFlag, setReRenderFlag] = useState<boolean>(true);
 
   useEffect(() => {
     if (
@@ -60,7 +61,27 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   }, [bulkImport.saveExcelFileMapping.data]);
 
   useEffect(() => {
-    if (localMapping) {
+    setReRenderFlag(false);
+    const dummyRecord = _.cloneDeep(records);
+    dummyRecord.map((data) => {
+      if (data.index == selectedDate) {
+        data.date = primaryDate;
+      }
+    });
+    setRecords(dummyRecord);
+  }, [primaryDate]);
+
+  useEffect(() => {
+    setReRenderFlag(false);
+    const dummyRecord = _.cloneDeep(records);
+    dummyRecord.map((data) => {
+        data.date = date;
+    });
+    setRecords(dummyRecord);
+  }, [date]);
+
+  useEffect(() => {
+    if (localMapping && reRenderFlag) {
       if (record.table_name) {
         setLoadingTableColumns(true);
         commonService.getTableColumns(record.table_name).then((res) => {
@@ -108,11 +129,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             });
             const tempRecord = records.filter((data) => data.index == seqNumber);
 
-           if(tempRecord[0]?.excel_to_sql_mapping == null) {
+            if (tempRecord[0]?.excel_to_sql_mapping == null) {
               const dummyrecords = _.cloneDeep(records);
               dummyrecords.map((data) => {
                 if (data.index == seqNumber) {
-                    data.excel_to_sql_mapping = sqlToExcelMapping;
+                  data.excel_to_sql_mapping = sqlToExcelMapping;
                 }
               });
               setRecords(dummyrecords);
@@ -126,6 +147,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
       }
     }
     setLocalMapping(true);
+    setReRenderFlag(true);
   }, [record.table_name, record.header_row, record.excel_to_sql_mapping]);
 
   useEffect(() => {

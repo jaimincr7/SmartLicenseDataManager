@@ -44,7 +44,7 @@ class ConfigLicenseUnitsService {
   }
 
   public async exportExcelFile(searchParams?: ISearchConfigLicenseUnits): Promise<any> {
-    const url = `all-service-module/export-excel`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',

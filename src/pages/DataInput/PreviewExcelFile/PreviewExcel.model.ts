@@ -9,6 +9,7 @@ export interface IPreviewExcel {
   setDelimitFlag?: (data: any) => void;
   setExcelPreviewData?: (data: any) => void;
   maxCount: number;
+  maxColumn: number;
   seqNumber?: number;
   firstFlag?: boolean;
   setFirstFlag?: (data: boolean) => void;
