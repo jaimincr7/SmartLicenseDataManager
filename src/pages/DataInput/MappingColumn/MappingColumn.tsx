@@ -14,6 +14,7 @@ import {
   clearSaveExcelData,
 } from '../../../store/bulkImport/bulkImport.reducer';
 import { toast } from 'react-toastify';
+import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
@@ -29,6 +30,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   };
   const dispatch = useAppDispatch();
   const bulkImport = useAppSelector(bulkImportSelector);
+  const globalLookups = useAppSelector(globalSearchSelector);
 
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [excelColumns, setExcelColumns] = useState(null);
@@ -48,7 +50,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         if (data.index == record.index) {
           data.currentMapping =
             bulkImport.saveExcelFileMapping.data && bulkImport.saveExcelFileMapping.data !== null
-              ? bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.sheet_name
+              ? bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.sheet_name + '!' + bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.id
               : null;
           data.show_mapping = [...data.show_mapping, bulkImport.saveExcelFileMapping.data];
         }
@@ -184,6 +186,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     }
     const excelMappingObj: ISaveExcelMapping = {
       id: parentId,
+      tenant_id: globalLookups.search.tenant_id ? globalLookups.search.tenant_id : null,
+      company_id: globalLookups.search.company_id ? globalLookups.search.company_id : null,
+      bu_id: globalLookups.search.bu_id ? globalLookups.search.bu_id : null,
       file_type: filetype,
       key_word: filename,
       is_public: isPublic,

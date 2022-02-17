@@ -415,8 +415,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       setColumn(dummyRecords[0].columns[0]?.length);
       setMaxHeaderRow(dummyRecords[0].columns?.length);
     }
-    innerFormUpload.setFieldsValue({ header_row: headerValue });
-    setFormFields();
   };
   // End: set tables for import
 

@@ -28,6 +28,9 @@ export interface IConfigColMapping {
 
 export interface ISaveExcelMapping {
   id?: number;
+  tenant_id: number;
+  company_id: number;
+  bu_id: number;
   file_type: string;
   key_word: string;
   is_public: boolean;

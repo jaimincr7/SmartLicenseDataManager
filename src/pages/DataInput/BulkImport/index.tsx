@@ -153,7 +153,7 @@ const BulkImport: React.FC = () => {
                     x.file_mapping && x.file_mapping.length > 0
                       ? mappingData.length > 0
                         ? mappingSheet.length > 0
-                          ? mappingSheet[0]?.sheet_name
+                          ? mappingSheet[0]?.sheet_name + '!' + mappingSheet[0]?.id
                           : ''
                         : ''
                       : null,
@@ -229,7 +229,7 @@ const BulkImport: React.FC = () => {
                       x.file_mapping && x.file_mapping.length > 0
                         ? mappingData.length > 0
                           ? mappingSheet.length > 0
-                            ? mappingSheet[0]?.sheet_name
+                            ? mappingSheet[0]?.sheet_name + '!' + mappingSheet[0]?.id
                             : ''
                           : ''
                         : null,
@@ -321,7 +321,7 @@ const BulkImport: React.FC = () => {
                   x.file_mapping && x.file_mapping.length > 0
                     ? mappingData.length > 0
                       ? mappingSheet.length > 0
-                        ? mappingSheet[0]?.sheet_name
+                        ? mappingSheet[0]?.sheet_name + '!' + mappingSheet[0]?.id
                         : ''
                       : ''
                     : null,
@@ -464,14 +464,7 @@ const BulkImport: React.FC = () => {
     if (file.status === 'removed') {
       if (fileList?.length === 0) {
         dispatch(clearExcelColumns());
-        //setExcelColumnState([]);
-        //setDefaultFile(null);
-      } //else {
-      // const result = excelColumnState.filter((o) =>
-      //   fileList.some(({ name }) => o.original_filename === name)
-      // );
-      // setExcelColumnState(result);
-      //}
+      } 
     } else if (file.status === 'done') {
       const formData = new FormData();
       fileList?.forEach((ele) => {
@@ -611,7 +604,7 @@ const BulkImport: React.FC = () => {
           data1.header_row = 1;
           data1.table_name = null;
           if (data.sheet_name == data1.sheet) {
-            data1.currentMapping = data.sheet_name;
+            data1.currentMapping = data.sheet_name ;
             data1.excel_to_sql_mapping = JSON.parse(data.mapping);
             data1.header_row = data.header_row + 1;
             data1.table_name = data.table_name;
