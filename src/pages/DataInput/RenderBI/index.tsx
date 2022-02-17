@@ -620,7 +620,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           selectedRowId - 1
         ]?.excel_sheet_columns?.find(
           (e) => e.sheet === innerFormUpload?.getFieldValue('sheet_name')
-        ).columns;
+        )?.columns;
         if (filterExcelColumns?.length >= skipRows) {
           filterExcelColumns = filterExcelColumns[skipRows];
         }
