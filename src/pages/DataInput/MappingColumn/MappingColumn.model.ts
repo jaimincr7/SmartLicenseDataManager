@@ -9,7 +9,6 @@ export interface IMappingColumnProps {
   is_public?: boolean;
   setRecords?: (data: any) => void;
   onExcelMapping?: (values: any) => void;
-  primaryDate?: any;
-  selectedDate?: number;
-  date?: any;
+  dateChangeFlag?: boolean;
+  setDateChangeFlag?: (value: boolean) => void;
 }

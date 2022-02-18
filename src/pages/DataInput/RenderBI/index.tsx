@@ -46,6 +46,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     hideUnmapped,
     withoutUnmappedRecords,
     setWithoutUnmappedRecords,
+    dateChangeFlag,
+    setDateChangeFlag,
+    setExpandedRecords,
+    expandedRecords
   } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -64,8 +68,6 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
   const [curRecordMap, setCurRecordMap] = useState(null);
-  const [primaryDate, setPrimaryDate] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
 
   const changedTableData = async (currRecord: any, tableName: string) => {
     const dummyRecords = _.cloneDeep(records);
@@ -665,8 +667,16 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const onDateChange = (selectedReord: any, e) => {
     if (e) {
-      setPrimaryDate(e);
-      setSelectedDate(selectedReord.index);
+      if (expandedRecords !== null) {
+        setDateChangeFlag(false);
+      }
+      const dummyRecord = _.cloneDeep(records);
+      dummyRecord.map((data) => {
+        if (data.index == selectedReord.index) {
+          data.date = e;
+        }
+      });
+      setRecords(dummyRecord);
     }
   };
 
@@ -800,14 +810,12 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         columns={columns}
         loading={records.length == 0}
         expandable={{
+          onExpandedRowsChange: (record) => { setExpandedRecords(record); },
           expandedRowRender: (record) => (
             <MappingColumn
               setRecords={setRecords}
               record={record}
               records={records}
-              date={date}
-              primaryDate={primaryDate}
-              selectedDate={selectedDate}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
               fileName={
                 record?.key_word === null
@@ -820,6 +828,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               is_public={record.is_public}
               tableName={record?.table_name}
               seqNumber={record?.index}
+              dateChangeFlag={dateChangeFlag}
+              setDateChangeFlag={setDateChangeFlag}
             ></MappingColumn>
           ),
         }}

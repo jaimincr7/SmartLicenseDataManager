@@ -77,6 +77,8 @@ const BulkImport: React.FC = () => {
   const [delimitModalShow, setDelimitModalShow] = useState(false);
   const [delimitFlag, setDelimitFlag] = useState(true);
   const [date, setDate] = useState(getSimpleDate().format(Common.DATEFORMAT));
+  const [dateChangeFlag, setDateChangeFlag] = useState(true);
+  const [expandedRecords, setExpandedRecords] = useState(null);
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -135,6 +137,7 @@ const BulkImport: React.FC = () => {
                   is_public: mappingData.length > 0 ? mappingData[0].is_public : false,
                   key_word: mappingData.length > 0 ? mappingData[0].key_word : null,
                   delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
+                  date: date,
                   table_name:
                     mappingData.length > 0
                       ? mappingSheet.length > 0
@@ -211,6 +214,7 @@ const BulkImport: React.FC = () => {
                     is_public: mappingData.length > 0 ? mappingData[0].is_public : false,
                     key_word: mappingData.length > 0 ? mappingData[0].key_word : null,
                     delimiter: mappingData.length > 0 ? mappingData[0].delimiter : null,
+                    date: date,
                     table_name:
                       mappingData.length > 0
                         ? mappingSheet.length > 0
@@ -300,6 +304,7 @@ const BulkImport: React.FC = () => {
                 key_word: mappingData.length > 0 ? mappingData[0].key_word : null,
                 original_filename: x.original_filename,
                 delimiter: defDel && defDel.length ? defDel : ';',
+                date: date,
                 table_name: !firstFlag
                   ? mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -535,7 +540,15 @@ const BulkImport: React.FC = () => {
   };
 
   const dateChange = (e) => {
+    if(expandedRecords !== null) {
+      setDateChangeFlag(false);
+    }
     setDate(moment(e).format(Common.DATEFORMAT));
+    const dummyRecord = _.cloneDeep(records);
+    dummyRecord.map((data) => {
+      data.date = e;
+    });
+    setRecords(dummyRecord);
   };
 
   const onCancel = () => {
@@ -872,6 +885,10 @@ const BulkImport: React.FC = () => {
                   hideUnmapped={hideUnmapped}
                   withoutUnmappedRecords={withoutUnmappedRecords}
                   setWithoutUnmappedRecords={setWithoutUnmappedRecords}
+                  dateChangeFlag={dateChangeFlag}
+                  setDateChangeFlag={setDateChangeFlag}
+                  setExpandedRecords={setExpandedRecords}
+                  expandedRecords={expandedRecords}
                 ></RenderBI>
                 <br />
                 <hr />
