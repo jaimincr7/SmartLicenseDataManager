@@ -22,9 +22,9 @@ import {
 } from '../../../../store/common/common.reducer';
 import { IProcessDataModalProps } from './processData.model';
 import {
-  clearInventoryMessages,
-  inventorySelector,
-} from '../../../../store/inventory/inventory/inventory.reducer';
+  clearDeviceMessages,
+  deviceSelector,
+} from '../../../../store/inventory/device/device.reducer';
 import { toast } from 'react-toastify';
 import { Common, validateMessages } from '../../../../common/constants/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
@@ -38,7 +38,7 @@ import { processDataDevice } from '../../../../store/inventory/device/device.act
 const { Option } = Select;
 
 const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
-  const inventory = useAppSelector(inventorySelector);
+  const device = useAppSelector(deviceSelector);
   const commonLookups = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
@@ -110,17 +110,17 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   }, [commonLookups.setModelPopUpSelection.messages]);
 
   useEffect(() => {
-    if (inventory.processData.messages.length > 0) {
-      if (inventory.processData.hasErrors) {
-        toast.error(inventory.processData.messages.join(' '));
+    if (device.processData.messages.length > 0) {
+      if (device.processData.hasErrors) {
+        toast.error(device.processData.messages.join(' '));
       } else {
-        toast.warning(inventory.processData.messages.join(' '));
+        toast.warning(device.processData.messages.join(' '));
         handleModalClose();
         refreshDataTable();
       }
-      dispatch(clearInventoryMessages());
+      dispatch(clearDeviceMessages());
     }
-  }, [inventory.processData.messages]);
+  }, [device.processData.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null });
@@ -324,7 +324,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               key="submit"
               type="primary"
               htmlType="submit"
-              loading={inventory.processData.loading}
+              loading={device.processData.loading}
             >
               Process
             </Button>
