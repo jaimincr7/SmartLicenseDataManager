@@ -469,7 +469,7 @@ const BulkImport: React.FC = () => {
     if (file.status === 'removed') {
       if (fileList?.length === 0) {
         dispatch(clearExcelColumns());
-      } 
+      }
     } else if (file.status === 'done') {
       const formData = new FormData();
       fileList?.forEach((ele) => {
@@ -540,7 +540,7 @@ const BulkImport: React.FC = () => {
   };
 
   const dateChange = (e) => {
-    if(expandedRecords !== null && expandedRecords?.length > 0) {
+    if (expandedRecords !== null && expandedRecords?.length > 0) {
       setDateChangeFlag(false);
     }
     setDate(moment(e).format(Common.DATEFORMAT));
@@ -607,17 +607,22 @@ const BulkImport: React.FC = () => {
   };
 
   const changeFileMapping = (value) => {
+
     const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
     const selectedRecord = dummyRecord.filter((data) => data.key_word === value);
     const dummyRecords = _.cloneDeep(records);
+    dummyRecords.map((data) => {
+      data.currentMapping = null;
+      data.header_row = 1;
+      data.table_name = null;
+    });
+
     if (selectedRecord.length) {
       selectedRecord[0].config_excel_column_mappings?.map((data) => {
         dummyRecords.map((data1) => {
-          data1.currentMapping = null;
-          data1.header_row = 1;
-          data1.table_name = null;
+
           if (data.sheet_name == data1.sheet) {
-            data1.currentMapping = data.sheet_name ;
+            data1.currentMapping = data.sheet_name;
             data1.excel_to_sql_mapping = JSON.parse(data.mapping);
             data1.header_row = data.header_row + 1;
             data1.table_name = data.table_name;
