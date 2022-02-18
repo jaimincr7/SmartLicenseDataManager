@@ -540,7 +540,7 @@ const BulkImport: React.FC = () => {
   };
 
   const dateChange = (e) => {
-    if(expandedRecords !== null) {
+    if(expandedRecords !== null && expandedRecords?.length > 0) {
       setDateChangeFlag(false);
     }
     setDate(moment(e).format(Common.DATEFORMAT));

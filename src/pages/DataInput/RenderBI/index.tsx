@@ -667,7 +667,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const onDateChange = (selectedReord: any, e) => {
     if (e) {
-      if (expandedRecords !== null) {
+      if (expandedRecords !== null && expandedRecords?.length > 0) {
         setDateChangeFlag(false);
       }
       const dummyRecord = _.cloneDeep(records);
