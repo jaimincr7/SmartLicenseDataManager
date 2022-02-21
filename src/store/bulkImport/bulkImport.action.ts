@@ -57,7 +57,7 @@ export const getTableColumns = createAsyncThunk('getTableColumns', async (tableN
 
 export const getExcelColumns = createAsyncThunk('getExcelColumns', async (data: any) => {
   const response = await commonService
-    .getExcelColumns(data.file, data.callbackProgress)
+    .getExcelColumns(data.file, data.callbackProgress,data.tenantID,data.companyID,data.buID)
     .then((res) => {
       return res.body;
     });
