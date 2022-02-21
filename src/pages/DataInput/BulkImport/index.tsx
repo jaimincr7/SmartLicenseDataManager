@@ -455,7 +455,10 @@ const BulkImport: React.FC = () => {
 
   const getFileMappingCall = (formData: any) => {
     setRepeatSheetFlag(true);
-    dispatch(getExcelColumns({ file: formData, callbackProgress }));
+    const tenantID = globalLookups.search.tenant_id ? globalLookups.search.tenant_id : null;
+    const companyID = globalLookups.search.company_id ? globalLookups.search.company_id : null;
+    const buID = globalLookups.search.bu_id ? globalLookups.search.bu_id : null;
+    dispatch(getExcelColumns({ file: formData, callbackProgress, tenantID, companyID, buID }));
   };
 
   const handleOnChange = (info) => {

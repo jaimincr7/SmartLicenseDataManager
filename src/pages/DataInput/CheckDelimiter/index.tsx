@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/app.hooks';
 import { getCSVExcelColumns } from '../../../store/bulkImport/bulkImport.action';
 import { bulkImportSelector } from '../../../store/bulkImport/bulkImport.reducer';
+import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import { ICheckDelimeterProps } from './checkDelimiter.model';
 
 const { Option } = Select;
 
 const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
+  const globalLookups = useAppSelector(globalSearchSelector);
   const bulkImport = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
   const [files, setFiles] = useState([]);
@@ -27,7 +29,12 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
       arr.push(Obj);
     });
     setDefaultDelimeter(arr);
-    const valueFinal = { csv_file_info: arr };
+    const global_dd = {
+      tenant_id: globalLookups.search.tenant_id ? globalLookups.search.tenant_id : null,
+      company_id: globalLookups.search.company_id ? globalLookups.search.company_id : null,
+      bu_id: globalLookups.search.bu_id ? globalLookups.search.bu_id : null,
+    };
+    const valueFinal = { csv_file_info: arr, global_dd };
     dispatch(getCSVExcelColumns(valueFinal));
     handleModalClose();
   };

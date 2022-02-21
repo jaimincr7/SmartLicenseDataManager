@@ -10,6 +10,7 @@ import {
   clearCSVExcelColumns,
 } from '../../../store/bulkImport/bulkImport.reducer';
 import { toast } from 'react-toastify';
+import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 
 const { Option } = Select;
 
@@ -38,6 +39,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     pageSize: DEFAULT_PAGE_SIZE,
     showSizeChanger: true,
   });
+  const globalLookups = useAppSelector(globalSearchSelector);
 
   const checkDelimiter = () => {
     setDelimitFlag(false);
@@ -50,7 +52,12 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         delimiter: form.getFieldValue('deli_meter'),
       },
     ];
-    const Obj = { csv_file_info: arr };
+    const global_dd = {
+      tenant_id: globalLookups.search.tenant_id ? globalLookups.search.tenant_id : null,
+      company_id: globalLookups.search.company_id ? globalLookups.search.company_id : null,
+      bu_id: globalLookups.search.bu_id ? globalLookups.search.bu_id : null,
+    };
+    const Obj = { csv_file_info: arr, global_dd };
     dispatch(getCSVExcelColumns(Obj));
   };
 
