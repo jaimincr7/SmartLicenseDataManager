@@ -511,6 +511,11 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       const data = dummyRecord[index];
       if (data.index == curRecordMap.index) {
         let response = null;
+        const global_dd = {
+          tenant_id: globalFilters.search.tenant_id ? globalFilters.search.tenant_id : null,
+          company_id: globalFilters.search.company_id ? globalFilters.search.company_id : null,
+          bu_id: globalFilters.search.bu_id ? globalFilters.search.bu_id : null,
+        };
         await bulkImportService
           .getExcelFileMapping({
             table_name: curRecordMap.table_name,
@@ -518,6 +523,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             file_type: curRecordMap?.original_filename.slice(
               ((curRecordMap?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
             ),
+            global_dd
           })
           .then((res) => {
             response = res?.body?.data;

@@ -401,9 +401,18 @@ class CommonService {
     });
   }
 
-  public async getExcelColumns(file: any, callbackProgress?: any): Promise<IApiResponse<any>> {
+  public async getExcelColumns(file: any, callbackProgress?: any,tenant_id?: number,company_id?: number,bu_id?: number): Promise<IApiResponse<any>> {
     const headers = { Accept: 'multipart/form-data' };
-    const url = `/app/read-excel-file`;
+    let url = `/app/read-excel-file`;
+    if(tenant_id !== null) {
+      url = `/app/read-excel-file?tenant_id=${tenant_id}`;
+      if(company_id !== null) {
+        url = `/app/read-excel-file?tenant_id=${tenant_id}&company_id=${company_id}`;
+        if(bu_id !== null) {
+          url = `/app/read-excel-file?tenant_id=${tenant_id}&company_id=${company_id}&bu_id=${bu_id}`;
+        }
+      }
+    }
     return request({
       url,
       method: 'POST',

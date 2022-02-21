@@ -3,7 +3,6 @@ import request from '../../utils/request';
 import {
   IDataTable,
   IDataTableForImport,
-  IGetExcelMapping,
   IImportDataTable,
   ISaveExcelMapping,
 } from './bulkImport.model';
@@ -32,7 +31,7 @@ class BulkImportService {
     });
   }
 
-  public async getExcelFileMapping(data: IGetExcelMapping): Promise<any> {
+  public async getExcelFileMapping(data: any): Promise<any> {
     const url = `/config-excel-file-mapping/mapping`;
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
