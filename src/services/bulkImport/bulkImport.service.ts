@@ -3,7 +3,6 @@ import request from '../../utils/request';
 import {
   IDataTable,
   IDataTableForImport,
-  IGetExcelMapping,
   IImportDataTable,
   ISaveExcelMapping,
 } from './bulkImport.model';
