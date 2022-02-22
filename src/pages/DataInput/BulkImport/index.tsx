@@ -570,7 +570,7 @@ const BulkImport: React.FC = () => {
     currentIndex = 1;
     setTableName(tbName);
   };
-console.log(hideUnmapped);
+  
   const dropdownMenu = (
     <div className="checkbox-list-wrapper">
       <ul className="checkbox-list">
