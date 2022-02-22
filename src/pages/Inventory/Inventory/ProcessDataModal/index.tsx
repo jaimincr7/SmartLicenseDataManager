@@ -141,6 +141,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         )
       );
     }
+    if(data.sql_extract) {
+      setSql(data.sql_extract);
+    }
+    if(data.windows_extract) {
+      setWindows(data.windows_extract);
+    }
     form.setFieldsValue(data);
   };
 
