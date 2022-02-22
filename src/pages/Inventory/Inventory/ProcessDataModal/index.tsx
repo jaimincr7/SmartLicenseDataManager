@@ -141,6 +141,12 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         )
       );
     }
+    if (data.sql_extract) {
+      setSql(data.sql_extract);
+    }
+    if (data.windows_extract) {
+      setWindows(data.windows_extract);
+    }
     form.setFieldsValue(data);
   };
 
@@ -514,7 +520,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date Extract</label>
-                <Form.Item name="selected_date_extract" label="Selected Date" className="m-0"  rules={[{ required: true }]}>
+                <Form.Item name="selected_date_extract" label="Selected Date" className="m-0" rules={[{ required: true }]}>
                   <DatePicker className="w-100" />
                 </Form.Item>
               </div>
@@ -541,14 +547,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   <Switch className="form-control" onChange={sqlChange} />
                 </Form.Item>
                 <label className="label">Sql Extract</label>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <div className="form-group form-inline-pt m-0">
-                <Form.Item name="windows_extract" className="m-0" valuePropName="checked">
-                  <Switch className="form-control" onChange={windowsChange} />
-                </Form.Item>
-                <label className="label">Windows Extract</label>
               </div>
             </Col>
           </Row>
@@ -628,6 +626,19 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </Col>
             </Row><hr /></> : <></>}
 
+          <Row gutter={[30, 15]} className="form-label-hide">
+            <Col xs={24} sm={12} md={8}>
+              <div className="form-group form-inline-pt m-0">
+                <Form.Item name="windows_extract" className="m-0" valuePropName="checked">
+                  <Switch className="form-control" onChange={windowsChange} />
+                </Form.Item>
+                <label className="label">Windows Extract</label>
+              </div>
+            </Col>
+            <br />
+          </Row>
+          <hr />
+
           {windows ?
             <><Row gutter={[30, 15]} className="form-label-hide">
               <Col xs={24} sm={12} md={8}>
@@ -660,7 +671,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="Windows_exclude_non_prod" className="m-0" valuePropName="checked">
+                  <Form.Item name="windows_exclude_non_prod" className="m-0" valuePropName="checked">
                     <Switch className="form-control" onChange={onWindowsExcludeChange} />
                   </Form.Item>
                   <label className="label">Windows Exclude Non Prod</label>
