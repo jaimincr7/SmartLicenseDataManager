@@ -559,14 +559,18 @@ const BulkImport: React.FC = () => {
     //setExcelColumnState([]);
     setCount({ save: 0, reset: 0 });
     const tbName = formUpload?.getFieldValue('table_name');
+    const date1 = formUpload?.getFieldValue('date_added');
     formUpload.resetFields();
     formUpload.setFieldsValue({ table_name: tbName });
+    formUpload.setFieldsValue({ date_added: date1 });
+    setHideUnmapped(true);
+    setDate(date1);
     setDefaultFileList([]);
     setRecords([]);
     currentIndex = 1;
     setTableName(tbName);
   };
-
+  
   const dropdownMenu = (
     <div className="checkbox-list-wrapper">
       <ul className="checkbox-list">
