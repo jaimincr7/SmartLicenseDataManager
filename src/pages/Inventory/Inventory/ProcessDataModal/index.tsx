@@ -660,7 +660,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
               </Col>
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="Windows_exclude_non_prod" className="m-0" valuePropName="checked">
+                  <Form.Item name="windows_exclude_non_prod" className="m-0" valuePropName="checked">
                     <Switch className="form-control" onChange={onWindowsExcludeChange} />
                   </Form.Item>
                   <label className="label">Windows Exclude Non Prod</label>
