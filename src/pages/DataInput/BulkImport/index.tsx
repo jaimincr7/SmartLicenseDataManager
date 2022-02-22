@@ -472,7 +472,7 @@ const BulkImport: React.FC = () => {
     if (file.status === 'removed') {
       if (fileList?.length === 0) {
         dispatch(clearExcelColumns());
-      } 
+      }
     } else if (file.status === 'done') {
       const formData = new FormData();
       fileList?.forEach((ele) => {
@@ -543,7 +543,7 @@ const BulkImport: React.FC = () => {
   };
 
   const dateChange = (e) => {
-    if(expandedRecords !== null && expandedRecords?.length > 0) {
+    if (expandedRecords !== null && expandedRecords?.length > 0) {
       setDateChangeFlag(false);
     }
     setDate(moment(e).format(Common.DATEFORMAT));
@@ -563,13 +563,14 @@ const BulkImport: React.FC = () => {
     formUpload.resetFields();
     formUpload.setFieldsValue({ table_name: tbName });
     formUpload.setFieldsValue({ date_added: date1 });
+    setHideUnmapped(true);
     setDate(date1);
     setDefaultFileList([]);
     setRecords([]);
     currentIndex = 1;
     setTableName(tbName);
   };
-
+console.log(hideUnmapped);
   const dropdownMenu = (
     <div className="checkbox-list-wrapper">
       <ul className="checkbox-list">
@@ -623,7 +624,7 @@ const BulkImport: React.FC = () => {
           data1.header_row = 1;
           data1.table_name = null;
           if (data.sheet_name == data1.sheet) {
-            data1.currentMapping = data.sheet_name ;
+            data1.currentMapping = data.sheet_name;
             data1.excel_to_sql_mapping = JSON.parse(data.mapping);
             data1.header_row = data.header_row + 1;
             data1.table_name = data.table_name;
