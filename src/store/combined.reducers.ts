@@ -22,6 +22,7 @@ import windowsServerLicenseReducer from './windowsServer/windowsServerLicense/wi
 import windowsServerLicenseDetailReducer from './windowsServer/windowsServerLicenseDetail/windowsServerLicenseDetail.reducer';
 import menuReducer from './administration/menu/menu.reducer';
 import excelFileMappingReducer from './master/excelFileMapping/excelFileMapping.reducer';
+import excelColumnMappingReducer from './master/excelColumnMapping/excelColumnMapping.reducer';
 import tenantReducer from './master/tenant/tenant.reducer';
 import companyReducer from './master/company/company.reducer';
 import buReducer from './master/bu/bu.reducer';
@@ -264,6 +265,7 @@ export const rootReducer = combineReducers({
   configWindowsServerVersions: configWindowsServerVersionsReducer,
   configWindowsServerLicense: configWindowsServerLicenseReducer,
   excelFileMapping: excelFileMappingReducer,
+  excelColumnMapping: excelColumnMappingReducer,
 
   //Slim360
   slim360O365Licenses: slim360O365LicensesReducer,

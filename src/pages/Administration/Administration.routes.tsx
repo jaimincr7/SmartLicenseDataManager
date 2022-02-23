@@ -41,6 +41,7 @@ import CronViewLog from './CronViewLog';
 import DeleteDataset from './DeleteDataset';
 import ConfigO365Products from './ConfigO365Products';
 import ExcelFileMapping from './ExcleFileMapping';
+import ExcelColumnMapping from './ExcelColumnMapping';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -260,6 +261,22 @@ const AdministrationRoutes: React.FC = () => {
             exact
             path={`${match.path}/config-excel-file-mapping`}
             component={ExcelFileMapping}
+          />
+        )}
+
+        {/* Excel Column Mapping */}
+        {ability.can(Action.View, Page.ExcelColumnMapping) && (
+          <Route
+            exact
+            path={`${match.path}/config-excel-column-mapping/:id`}
+            component={ExcelColumnMapping}
+          />
+        )}
+        {ability.can(Action.View, Page.ExcelColumnMapping) && (
+          <Route
+            exact
+            path={`${match.path}/config-excel-column-mapping`}
+            component={ExcelColumnMapping}
           />
         )}
 

@@ -155,6 +155,8 @@ export enum Page {
   DeviceState = 'device-states',
   Hardware = "inventory-hardware",
   ExcelFileMapping = 'config-excel-file-mapping',
+  ExcelColumnMapping = 'config-excel-column-mapping', 
+  
 }
 export enum Action {
   View = 'view',

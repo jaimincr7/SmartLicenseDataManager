@@ -228,15 +228,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
   const tableAction = (_, data: any) => (
     <div className="btns-block">
-      <Can I={Action.Update} a={Page.ExcelFileMapping}>
+      <Can I={Action.View} a={Page.ExcelColumnMapping}>
         <a
           className="action-btn"
           onClick={() => {
             setSelectedId(data.id);
-            history.push(`/sql-server/exclusions/${data.id}`);
+            history.push(`/administration/config-excel-column-mapping/${data.id}`);
           }}
         >
-          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-edit.svg`} alt="" />
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
         </a>
       </Can>
       <Can I={Action.Delete} a={Page.ExcelFileMapping}>
@@ -253,9 +253,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     <>
       <DataTable
         ref={dataTableRef}
-        showAddButton={ability.can(Action.Add, Page.ExcelFileMapping)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
+        showAddButton={false}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
         reduxSelector={excelFileMappingSelector}
