@@ -21,7 +21,7 @@ import {
 import { IMainTable, ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
-import ability, { Can } from '../../../../common/ability';
+import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 
@@ -157,19 +157,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
-      {
-        title: <span className="dragHandler">Created By</span>,
-        column: 'CreatedBy',
-        sorter: true,
-        children: [
-          {
-            title: FilterBySwap('created_by', form),
-            dataIndex: 'created_by',
-            key: 'created_by',
-            ellipsis: true,
-          },
-        ],
-      },
+      // {
+      //   title: <span className="dragHandler">Created By</span>,
+      //   column: 'CreatedBy',
+      //   sorter: true,
+      //   children: [
+      //     {
+      //       title: FilterBySwap('created_by', form),
+      //       dataIndex: 'created_by',
+      //       key: 'created_by',
+      //       ellipsis: true,
+      //     },
+      //   ],
+      // },
       {
         title: <span className="dragHandler">File Type</span>,
         column: 'FileType',
@@ -264,7 +264,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
-        showBulkUpdate={ability.can(Action.Update, Page.ExcelFileMapping)}
+        showBulkUpdate={false}
         setObjectForColumnFilter={setObjectForColumnFilter}
         tableButtons={tableButtons}
       />

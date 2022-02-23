@@ -16,7 +16,7 @@ import {
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import DataTable from '../../../../common/components/DataTable';
-import ability, { Can } from '../../../../common/ability';
+import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { IMainTable } from './mainTable.model';
 
@@ -158,7 +158,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         disableRowSelection={true}
         showAddButton={false}
         extraSearchData={extraSearchData}
-        showBulkUpdate={ability.can(Action.Update, Page.ExcelColumnMapping)}
+        showBulkUpdate={false}
         setObjectForColumnFilter={setObjectForColumnFilter}
         isExcelColumnMapping={true}
       />
