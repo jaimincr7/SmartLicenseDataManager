@@ -36,4 +36,7 @@ export interface IDataTable {
 
   //For SPS API CALL MODAL[TO PASS TYPE ID FOR SPS API OAUTH]
   type_id?: number;
+
+  //For Excel Column Mapping Filter Keys
+  isExcelColumnMapping?: boolean;
 }
