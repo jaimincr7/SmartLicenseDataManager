@@ -44,7 +44,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, tableName, filterKeys, refreshDataTable } = props;
+  const { showModal, handleModalClose, tableName, filterKeys } = props;
 
   const [form] = Form.useForm();
 
@@ -111,7 +111,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       } else {
         toast.warning(o365Users.processData.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearO365ProcessDataMessages());
     }

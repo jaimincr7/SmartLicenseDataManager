@@ -41,7 +41,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, tableName, refreshDataTable } = props;
+  const { showModal, handleModalClose, tableName } = props;
 
   const [form] = Form.useForm();
 
@@ -91,7 +91,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       } else {
         toast.warning(sqlServerExclusions.processData.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearSqlServerExclusionsMessages());
     }
