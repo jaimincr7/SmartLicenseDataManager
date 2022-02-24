@@ -447,7 +447,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <>
             {' '}
             {m.sheet_name}
-            <Popconfirm
+            {currentRecord.isPublic === true ? <></> : (<Popconfirm
               title={`Delete ${m.sheet_name} Mapping?`}
               onConfirm={() => {
                 removeColumnMapping(m.id);
@@ -457,7 +457,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               <a href="#" title="" className="deleteMap-btn">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
               </a>
-            </Popconfirm>
+            </Popconfirm>)}
           </>
         ),
         value: `${m.sheet_name}!${m.id}`,
@@ -475,7 +475,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <>
             {' '}
             {m.key_word}{' '}
-            <Popconfirm
+            {curRecord?.isPublic === true ? <></> : (<Popconfirm
               title={`Delete ${m.key_word} Mapping?`}
               onConfirm={() => {
                 removeFileMapping(m.id);
@@ -485,7 +485,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               <a href="#" title="" className="deleteMap-btn">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
               </a>
-            </Popconfirm>
+            </Popconfirm>)}
           </>
         ),
         disabled: true,
