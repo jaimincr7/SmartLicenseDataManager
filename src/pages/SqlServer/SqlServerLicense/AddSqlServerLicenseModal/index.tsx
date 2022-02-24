@@ -69,7 +69,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.SqlServerLicenseDetail} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.SqlServerLicense} level={1} />
       </>
     );
   }, [isNew]);
