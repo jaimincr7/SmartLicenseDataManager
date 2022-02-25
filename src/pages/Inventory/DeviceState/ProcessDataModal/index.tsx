@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Modal, Row, Select, Switch } from 'antd';
+import { Button, Col, Form, Modal, Row, Select, Switch } from 'antd';
 import React, { useEffect } from 'react';
 import {
   IConfigModelPopUpDataSelection,
@@ -32,7 +32,7 @@ import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { getandReturn, getScheduleDateHelperLookup, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import { forDropDown, getandReturn, getScheduleDateHelperLookup, getSimpleDate, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
 import { processDataDeviceState } from '../../../../store/inventory/deviceState/deviceState.action';
 
 const { Option } = Select;
@@ -283,12 +283,42 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
+                <label className="label">Selected Date</label>
+                <Form.Item name="selected_date" className="m-0" label="Selected Date" rules={[{ required: true }]}>
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDate.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDate.data.map((option: any) => (
+                      <Option key={option} value={showDateFromApi(option)}>
+                        {forDropDown(option) == 'Invalid date'
+                          ? 'NULL'
+                          : showDateFromApi(option)}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </Col>
+            {/* <Col xs={24} sm={12} md={8}>
+              <div className="form-group m-0">
                 <label className="label">Selected Date </label>
                 <Form.Item name="selected_date" label="Selected Date " className="m-0">
                   <DatePicker className="w-100" />
                 </Form.Item>
               </div>
-            </Col>
+            </Col> */}
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
                 <Form.Item
