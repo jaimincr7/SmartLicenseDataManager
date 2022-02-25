@@ -26,7 +26,7 @@ import {
   deviceSelector,
 } from '../../../../store/inventory/device/device.reducer';
 import { toast } from 'react-toastify';
-import { Common, validateMessages } from '../../../../common/constants/common';
+import { validateMessages } from '../../../../common/constants/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
@@ -176,7 +176,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
         selected_date:
           filterKeys?.filter_keys?.date_added?.length === 1
-            ? getandReturn(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
+            ? getandReturn(filterKeys.filter_keys.date_added[0])
             : null,
       };
       dispatch(
