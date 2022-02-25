@@ -181,6 +181,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
           filterKeys={filterKeys}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+          tableName={license.search.tableName}
         />
       )}
       {showSelectedListModal && (

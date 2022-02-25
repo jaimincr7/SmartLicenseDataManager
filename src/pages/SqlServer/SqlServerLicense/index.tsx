@@ -181,6 +181,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
           filterKeys={filterKeys}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+          tableName={sqlServerLicense.search.tableName}
         />
       )}
       {showSelectedListModal && (

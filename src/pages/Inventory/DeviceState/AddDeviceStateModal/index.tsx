@@ -61,7 +61,7 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Device} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.DeviceState} level={1} />
       </>
     );
   }, [isNew]);
