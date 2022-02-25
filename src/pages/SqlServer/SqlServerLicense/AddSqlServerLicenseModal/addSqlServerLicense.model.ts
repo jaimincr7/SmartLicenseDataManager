@@ -6,4 +6,5 @@ export interface IAddSqlServerLicenseProps {
   refreshDataTable: () => void;
   valuesForSelection?: any[];
   filterKeys?: any;
+  tableName?: string;
 }

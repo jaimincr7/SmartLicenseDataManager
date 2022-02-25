@@ -2,7 +2,6 @@ import {
   Button,
   Checkbox,
   Col,
-  DatePicker,
   Form,
   Input,
   Modal,
@@ -15,7 +14,7 @@ import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { validateMessages } from '../../../../common/constants/common';
-import { forEditModal, getandReturn, getObjectForUpdateMultiple } from '../../../../common/helperFunction';
+import { forDropDown, forEditModal, getandReturn, getObjectForUpdateMultiple, getScheduleDateHelperLookup, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerLicense } from '../../../../services/windowsServer/windowsServerLicense/windowsServerLicense.model';
@@ -25,11 +24,13 @@ import {
   getAllCompanyLookup,
   getBULookup,
   getCompanyLookup,
+  getScheduleDate,
   updateMultiple,
 } from '../../../../store/common/common.action';
 import {
   clearBULookUp,
   clearCompanyLookUp,
+  clearDateLookup,
   clearMultipleUpdateMessages,
   commonSelector,
 } from '../../../../store/common/common.reducer';
@@ -61,6 +62,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
     filterKeys,
     isMultiple,
     valuesForSelection,
+    tableName
   } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -85,6 +87,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
   };
 
   const onFinish = (values: IWindowsServerLicense) => {
+    values.selected_date = passDateToApi(values.selected_date, false);
     if (!isMultiple) {
       dispatch(saveWindowsServerLicense(values));
     } else {
@@ -109,6 +112,16 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
   };
 
   const handleBUChange = (buId: number) => {
+    if (!buId) {
+      dispatch(clearDateLookup());
+    }
+    if (buId) {
+      dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
+        )
+      );
+    }
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -196,6 +209,9 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
               ? getandReturn(filterKeys.filter_keys.date_added[0])
               : null,
         };
+        dispatch(
+          getScheduleDate(getScheduleDateHelperLookup(initlValues, tableName))
+        );
         form.setFieldsValue(initlValues);
       }
     }
@@ -469,13 +485,30 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                   ) : (
                     'Selected Date'
                   )}
-                  <Form.Item
-                    name="selected_date"
-                    label="Selected Date"
-                    className="m-0"
-                    rules={[{ required: !isMultiple }]}
-                  >
-                    <DatePicker className="w-100" />
+                  <Form.Item name="selected_date" className="m-0" label="Selected Date" rules={[{ required: !isMultiple }]}>
+                    <Select
+                      placeholder="Select Date"
+                      loading={commonLookups.getScheduledDate.loading}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                    >
+                      {commonLookups.getScheduledDate.data.map((option: any) => (
+                        <Option key={option} value={showDateFromApi(option)}>
+                          {forDropDown(option) == 'Invalid date'
+                            ? 'NULL'
+                            : showDateFromApi(option)}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </div>
               </Col>
