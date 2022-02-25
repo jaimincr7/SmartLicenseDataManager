@@ -191,6 +191,34 @@ const DetailDataTable: React.FC<IDetailDataTableProps> = (props) => {
         ],
       },
       {
+        title: <span className="dragHandler">License Product Name</span>,
+        column: 'License Product Name',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('license_product_name', form),
+            dataIndex: 'license_product_name',
+            key: 'license_product_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
+        title: <span className="dragHandler">Assigned License Product Name</span>,
+        column: 'Assigned License Product Name',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterBySwap('assigned_license_product_name', form),
+            dataIndex: 'assigned_license_product_name',
+            key: 'assigned_license_product_name',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Cores</span>,
         column: 'Cores',
         sorter: true,
