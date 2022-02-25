@@ -58,7 +58,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    values.selected_date = passDateToApi(values.selected_date,true);
+    values.selected_date = passDateToApi(values.selected_date, true);
     values.table_name = tableName;
     dispatch(processDataDeviceState(values));
   };
@@ -88,6 +88,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const getConfigData = async (data: any) => {
     if (data.company_id) {
       await dispatch(getBULookup(data.company_id));
+    }
+    if (data.bu_id) {
+      await dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+      );
     }
     form.setFieldsValue(data);
   };
@@ -136,7 +141,13 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (!buId) {
       dispatch(clearDateLookup());
     }
-
+    if (buId) {
+      dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
+        )
+      );
+    }
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -162,8 +173,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
         company_id: _.isNull(globalSearch.company_id) || !(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
       };
-      if(globalSearch.company_id && globalSearch.company_id[0] !== 0)
-      dispatch(getConfigModelPopUpDataSelection(modelPopUp));
+      if (globalSearch.company_id && globalSearch.company_id[0] !== 0)
+        dispatch(getConfigModelPopUpDataSelection(modelPopUp));
     }
     if (
       globalFilters.search.company_id ||
