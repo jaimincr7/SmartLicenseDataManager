@@ -58,7 +58,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    values.selected_date = passDateToApi(values.selected_date, true);
+    values.selected_date = passDateToApi(values.selected_date, false);
     values.table_name = tableName;
     dispatch(processDataDeviceState(values));
   };
