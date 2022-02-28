@@ -120,6 +120,8 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
     };
     inputValues.date_installed = passDateToApi(inputValues.date_installed, true);
     inputValues.date_added = passDateToApi(inputValues.date_added, true);
+    inputValues.last_sw_scan = passDateToApi(inputValues.last_sw_scan, true);
+    inputValues.last_hw_scan = passDateToApi(inputValues.last_hw_scan, true);
     if (!isMultiple) {
       dispatch(saveInventory(inputValues));
     } else {
@@ -186,8 +188,8 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
         cores_per_processor: data.cores_per_processor,
         core_count: data.core_count,
         username: data.username,
-        last_hw_scan: data.last_hw_scan,
-        last_sw_scan: data.last_sw_scan,
+        last_hw_scan: _.isNull(data.last_hw_scan) ? null : forEditModal(data.last_hw_scan),
+        last_sw_scan: _.isNull(data.last_sw_scan) ? null : forEditModal(data.last_sw_scan),
         is_virtual: data.is_virtual,
         date_installed: _.isNull(data.date_installed) ? null : forEditModal(data.date_installed),
         software_normalization_id: _.isNull(data.software_normalization_id)
@@ -856,7 +858,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     className="m-0"
                     rules={[{ max: 255 }]}
                   >
-                    <Input className="form-control" />
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
@@ -875,7 +877,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                     className="m-0"
                     rules={[{ max: 255 }]}
                   >
-                    <Input className="form-control" />
+                    <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
               </Col>
