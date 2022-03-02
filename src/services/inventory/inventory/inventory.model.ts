@@ -22,8 +22,8 @@ export interface IInventory {
   cores_per_processor?: number;
   core_count?: number;
   username?: string;
-  last_hw_scan?: string;
-  last_sw_scan?: string;
+  last_hw_scan?: string | Moment;
+  last_sw_scan?: string | Moment;
   date_installed?: string | Moment;
   is_virtual?: boolean;
   software_normalization_id?: number;

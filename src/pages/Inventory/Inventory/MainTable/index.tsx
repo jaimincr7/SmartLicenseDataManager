@@ -418,7 +418,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('last_hw_scan', form),
+            title: FilterByDateSwapTable('last_hw_scan', inventory.search.tableName, form),
             dataIndex: 'last_hw_scan',
             key: 'last_hw_scan',
             ellipsis: true,
@@ -431,7 +431,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterBySwap('last_sw_scan', form),
+            title: FilterByDateSwapTable('last_sw_scan', inventory.search.tableName, form),
             dataIndex: 'last_sw_scan',
             key: 'last_sw_scan',
             ellipsis: true,
