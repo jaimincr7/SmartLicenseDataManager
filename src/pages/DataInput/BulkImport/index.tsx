@@ -869,7 +869,7 @@ const BulkImport: React.FC = () => {
           </div>
           <br />
           <br />
-          {bulkImports.getExcelColumns.loading ? (
+          {bulkImports.getExcelColumns.loading && records?.length == 0 ? (
             <div className="spin-loader">
               <Spin spinning={true} />
             </div>
