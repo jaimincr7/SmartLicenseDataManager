@@ -71,26 +71,29 @@ function Sidebar() {
   return (
     <aside className="main-navigation">
       <Scrollbars renderThumbVertical={(props) => <div {...props} className="track-vartical" />}>
-        <Menu
-          // defaultSelectedKeys={['/']}
-          openKeys={openKeys}
-          defaultOpenKeys={[`${defaultSubmenu}`]}
-          onOpenChange={onOpenChange}
-          mode="inline"
-          selectedKeys={[location.pathname]}
-        >
-          <Menu.Item
-            key="/"
-            icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard.svg`} alt="" />}
+        <div className="sidebar-main">
+          <Menu
+            // defaultSelectedKeys={['/']}
+            openKeys={openKeys}
+            defaultOpenKeys={[`${defaultSubmenu}`]}
+            onOpenChange={onOpenChange}
+            mode="inline"
+            selectedKeys={[location.pathname]}
           >
-            <Link to="/" title="Dashboard">
-              Dashboard
-            </Link>
-          </Menu.Item>
-          {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any, index: number) =>
-            renderMenu(menuDetail, `!${index}`)
-          )}
-        </Menu>
+            <Menu.Item
+              key="/"
+              icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-dashboard.svg`} alt="" />}
+            >
+              <Link to="/" title="Dashboard">
+                Dashboard
+              </Link>
+            </Menu.Item>
+            {userDetails.getMenuRight?.sideBarData?.map((menuDetail: any, index: number) =>
+              renderMenu(menuDetail, `!${index}`)
+            )}
+          </Menu>
+          <div className="sidebar-version">Version: 1.0.0</div>
+        </div>
       </Scrollbars>
     </aside>
   );
