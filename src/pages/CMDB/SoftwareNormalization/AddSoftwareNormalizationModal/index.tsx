@@ -56,6 +56,7 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
     product: '',
     edition: '',
     version: '',
+    publisher: '',
   };
 
   const onFinish = (values: any) => {
@@ -86,6 +87,7 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
         product: data.product,
         edition: data.edition,
         version: data.version,
+        publisher: data.publisher,
       };
       form.setFieldsValue(initialValues);
     }
@@ -249,6 +251,20 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
                     'Edition'
                   )}
                   <Form.Item name="edition" className="m-0" label="Edition" rules={[{ max: 255 }]}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'publisher']} valuePropName="checked" noStyle>
+                      <Checkbox>Publisher</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'Publisher'
+                  )}
+                  <Form.Item name="publisher" className="m-0" label="Publisher" rules={[{ max: 255 }]}>
                     <Input className="form-control" />
                   </Form.Item>
                 </div>
