@@ -50,6 +50,8 @@ import {
 } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
+import BreadCrumbs from '../../../../common/components/Breadcrumbs';
+import { Page } from '../../../../common/constants/pageAction';
 
 const { Option } = Select;
 
@@ -64,7 +66,11 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
 
   const isNew: boolean = id || isMultiple ? false : true;
   const title = useMemo(() => {
-    return isNew ? 'Add OneDrive Usage' : 'Edit OneDrive Usage';
+    return (
+      <>
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.O365OneDriveUsage} level={1} />
+      </>
+    );
   }, [isNew]);
   const submitButtonText = useMemo(() => {
     return isNew ? 'Save' : 'Update';
