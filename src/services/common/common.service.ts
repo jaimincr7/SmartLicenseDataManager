@@ -394,7 +394,7 @@ class CommonService {
   }
 
   public async errorLog(obj: any): Promise<IApiResponse<any>> {
-    const url = `/app/error-log`;
+    const url = `/error-log`;
     const data = obj;
     return request({ url, method: 'POST', data }).then((res) => {
       return res.data;

@@ -19,6 +19,7 @@ class ErrorBoundary extends React.PureComponent<IErrorBoundaryProps, IErrorBound
   }
 
   componentDidCatch(error: Error, errorInfo: string | ErrorInfo) {
+    toast.error('Oops! Something went wrong.');
     const json = {
       error: error.message,
       errorStack: errorInfo
@@ -33,7 +34,7 @@ class ErrorBoundary extends React.PureComponent<IErrorBoundaryProps, IErrorBound
 
   render() {
     if (this.state.hasError) {
-      toast.error('Oops! Something went wrong.Please check error log for more information.');
+      toast.error('Please check error log for more information.');
     }
     return this.props.children;
   }
