@@ -71,6 +71,7 @@ const WindowsServerLicense: React.FC<IWindowsServerLicenseProps> = (props) => {
       </Can>
       <Can I={Action.RunAllLicenseScenario} a={Page.WindowsServerLicense}>
         <Button
+          disabled={license.search.loading}
           onClick={() => {
             setRunAllScenariosModalVisible(true);
           }}

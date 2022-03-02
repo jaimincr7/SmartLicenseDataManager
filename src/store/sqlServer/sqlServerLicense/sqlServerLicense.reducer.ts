@@ -57,6 +57,7 @@ export const sqlServerLicenseSlice = createSlice({
     },
     clearSqlServerLicenseMessages: (state) => {
       state.save.messages = [];
+      state.reRunAllScenarios.messages = [];
       state.delete.messages = [];
     },
     clearSqlServerLicenseGetById: (state) => {

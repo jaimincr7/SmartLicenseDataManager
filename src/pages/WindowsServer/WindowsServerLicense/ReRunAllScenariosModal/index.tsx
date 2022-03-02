@@ -14,7 +14,7 @@ import {
   commonSelector,
 } from '../../../../store/common/common.reducer';
 import { IReRunAllScenariosModalProps } from './reRunAllScenarios.model';
-import { reRunAllScenarios } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.action';
+import { reRunAllScenariosWindows } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.action';
 import { toast } from 'react-toastify';
 import {
   clearWindowsServerLicenseReRunAllScenariosMessages,
@@ -44,20 +44,20 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
   };
 
   const onFinish = (values: any) => {
-    dispatch(reRunAllScenarios(values));
+    dispatch(reRunAllScenariosWindows(values));
   };
 
   useEffect(() => {
-    if (windowsServersLicense.reRunAllScenarios.messages.length > 0) {
-      if (windowsServersLicense.reRunAllScenarios.hasErrors) {
-        toast.error(windowsServersLicense.reRunAllScenarios.messages.join(' '));
+    if (windowsServersLicense.reRunAllScenariosWindows.messages.length > 0) {
+      if (windowsServersLicense.reRunAllScenariosWindows.hasErrors) {
+        toast.error(windowsServersLicense.reRunAllScenariosWindows.messages.join(' '));
       } else {
-        toast.success(windowsServersLicense.reRunAllScenarios.messages.join(' '));
+        toast.warning(windowsServersLicense.reRunAllScenariosWindows.messages.join(' '));
         handleModalClose();
       }
       dispatch(clearWindowsServerLicenseReRunAllScenariosMessages());
     }
-  }, [windowsServersLicense.reRunAllScenarios.messages]);
+  }, [windowsServersLicense.reRunAllScenariosWindows.messages]);
 
   const handleCompanyChange = (companyId: number) => {
     form.setFieldsValue({ company_id: companyId, bu_id: null, selected_date: null });
@@ -223,7 +223,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
               key="submit"
               type="primary"
               htmlType="submit"
-              loading={windowsServersLicense.reRunAllScenarios.loading}
+              loading={windowsServersLicense.reRunAllScenariosWindows.loading}
             >
               Process
             </Button>
