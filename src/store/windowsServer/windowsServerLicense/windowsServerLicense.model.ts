@@ -26,7 +26,7 @@ export interface IWindowsServerLicenseState {
     hasErrors: boolean;
     messages: string[];
   };
-  reRunAllScenarios: {
+  reRunAllScenariosWindows: {
     loading: boolean;
     hasErrors: boolean;
     messages: string[];

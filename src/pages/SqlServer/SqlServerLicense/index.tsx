@@ -71,6 +71,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
       </Can>
       <Can I={Action.RunAllLicenseScenario} a={Page.SqlServerLicense}>
         <Button
+          disabled={sqlServerLicense.search.loading}
           onClick={() => {
             setRunAllScenariosModalVisible(true);
           }}

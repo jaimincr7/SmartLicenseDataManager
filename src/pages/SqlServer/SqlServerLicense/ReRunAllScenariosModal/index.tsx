@@ -52,7 +52,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
       if (sqlServersLicense.reRunAllScenarios.hasErrors) {
         toast.error(sqlServersLicense.reRunAllScenarios.messages.join(' '));
       } else {
-        toast.success(sqlServersLicense.reRunAllScenarios.messages.join(' '));
+        toast.warning(sqlServersLicense.reRunAllScenarios.messages.join(' '));
         handleModalClose();
       }
       dispatch(clearSqlServerLicenseReRunAllScenariosMessages());

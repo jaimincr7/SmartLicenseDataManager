@@ -9,6 +9,7 @@ export interface ICmdbSoftwareNormalization {
   product?: string;
   edition?: string;
   version?: string;
+  publisher?: string;
   date_added?: string | Moment;
 }
 

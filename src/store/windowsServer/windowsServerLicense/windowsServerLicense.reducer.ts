@@ -6,7 +6,7 @@ import { RootState } from '../../app.model';
 import {
   deleteWindowsServerLicense,
   getWindowsServerLicenseById,
-  reRunAllScenarios,
+  reRunAllScenariosWindows,
   saveWindowsServerLicense,
   searchWindowsServerLicense,
 } from './windowsServerLicense.action';
@@ -41,7 +41,7 @@ export const initialState: IWindowsServerLicenseState = {
     hasErrors: false,
     messages: [],
   },
-  reRunAllScenarios: {
+  reRunAllScenariosWindows: {
     loading: false,
     hasErrors: false,
     messages: [],
@@ -57,13 +57,14 @@ export const windowsServerLicenseSlice = createSlice({
     },
     clearWindowsServerLicenseMessages: (state) => {
       state.save.messages = [];
+      state.reRunAllScenariosWindows.messages = [];
       state.delete.messages = [];
     },
     clearWindowsServerLicenseGetById: (state) => {
       state.getById.data = null;
     },
     clearWindowsServerLicenseReRunAllScenariosMessages: (state) => {
-      state.reRunAllScenarios.messages = [];
+      state.reRunAllScenariosWindows.messages = [];
     },
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
@@ -158,21 +159,21 @@ export const windowsServerLicenseSlice = createSlice({
     },
 
     // Re-run all scenario
-    [reRunAllScenarios.pending.type]: (state) => {
-      state.reRunAllScenarios.loading = true;
-      state.reRunAllScenarios.messages = [];
+    [reRunAllScenariosWindows.pending.type]: (state) => {
+      state.reRunAllScenariosWindows.loading = true;
+      state.reRunAllScenariosWindows.messages = [];
     },
-    [reRunAllScenarios.fulfilled.type]: (
+    [reRunAllScenariosWindows.fulfilled.type]: (
       state,
       action: PayloadAction<IApiResponseBody<unknown>>
     ) => {
-      state.reRunAllScenarios.loading = false;
-      state.reRunAllScenarios.hasErrors = false;
-      state.reRunAllScenarios.messages = action.payload.messages;
+      state.reRunAllScenariosWindows.loading = false;
+      state.reRunAllScenariosWindows.hasErrors = false;
+      state.reRunAllScenariosWindows.messages = action.payload.messages;
     },
-    [reRunAllScenarios.rejected.type]: (state) => {
-      state.reRunAllScenarios.loading = false;
-      state.reRunAllScenarios.hasErrors = true;
+    [reRunAllScenariosWindows.rejected.type]: (state) => {
+      state.reRunAllScenariosWindows.loading = false;
+      state.reRunAllScenariosWindows.hasErrors = true;
     },
   },
 });

@@ -56,8 +56,8 @@ export const deleteWindowsServerLicense = createAsyncThunk(
   }
 );
 
-export const reRunAllScenarios = createAsyncThunk(
-  'reRunAllScenarios',
+export const reRunAllScenariosWindows = createAsyncThunk(
+  'reRunAllScenariosWindows',
   async (data: IReRunAllScenarios) => {
     const response = await windowsServerLicenseService.reRunAllScenarios(data).then((res) => {
       return res.body;
