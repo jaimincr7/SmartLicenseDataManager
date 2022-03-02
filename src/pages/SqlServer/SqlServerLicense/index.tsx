@@ -71,6 +71,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
       </Can>
       <Can I={Action.RunAllLicenseScenario} a={Page.SqlServerLicense}>
         <Button
+          disabled={sqlServerLicense.search.loading}
           onClick={() => {
             setRunAllScenariosModalVisible(true);
           }}
@@ -181,6 +182,7 @@ const SqlServerLicense: React.FC<ISqlServerLicenseProps> = (props) => {
           filterKeys={filterKeys}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+          tableName={sqlServerLicense.search.tableName}
         />
       )}
       {showSelectedListModal && (

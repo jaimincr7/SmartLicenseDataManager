@@ -6,4 +6,5 @@ export interface IAddWindowsServerLicenseProps {
   refreshDataTable: () => void;
   valuesForSelection?: any[];
   filterKeys?: any;
+  tableName?: string;
 }
