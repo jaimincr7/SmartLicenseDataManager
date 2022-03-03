@@ -10,7 +10,7 @@ import { Button } from 'antd';
 import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
-import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import PurgeDataModal from './PurgeDataModal';
 
 const Company: React.FC<ICompanyProps> = (props) => {
   const company = useAppSelector(companySelector);
@@ -24,7 +24,6 @@ const Company: React.FC<ICompanyProps> = (props) => {
   const [id, setId] = React.useState(0);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
-  const [filterKeys, setFilterKeys] = React.useState({});
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
@@ -76,7 +75,7 @@ const Company: React.FC<ICompanyProps> = (props) => {
             </em>
           }
         >
-          Delete Dataset
+          Purge Data
         </Button>
       </Can>
     </>
@@ -128,7 +127,6 @@ const Company: React.FC<ICompanyProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
-          setFilterKeys={setFilterKeys}
           tableButtons={tableButtons}
         />
       </div>
@@ -158,12 +156,11 @@ const Company: React.FC<ICompanyProps> = (props) => {
         />
       )}
       {deleteModalVisible && (
-        <DeleteDatasetModal
+        <PurgeDataModal
           showModal={deleteModalVisible}
           handleModalClose={() => setDeleteModalVisible(false)}
           tableName={company.search.tableName}
           refreshDataTable={() => refreshDataTable()}
-          filterKeys={filterKeys}
         />
       )}
     </div>

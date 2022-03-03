@@ -21,6 +21,13 @@ export const getCompanyById = createAsyncThunk('getCompanyById', async (id: numb
   return response.data;
 });
 
+export const purgeCompanyById = createAsyncThunk('purgeCompanyById', async (id: number) => {
+  const response = await companyService.purgeCompanyById(id).then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
+
 export const saveCompany = createAsyncThunk('saveCompany', async (data: ICompany) => {
   const response = await companyService.saveCompany(data).then((res) => {
     return res.body;

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ICompany } from '../../../services/master/company/company.model';
 import { RootState } from '../../app.model';
-import { deleteCompany, getCompanyById, saveCompany, searchCompany } from './company.action';
+import { deleteCompany, getCompanyById, purgeCompanyById, saveCompany, searchCompany } from './company.action';
 import { ICompanyState } from './company.model';
 
 export const initialState: ICompanyState = {
@@ -35,6 +35,11 @@ export const initialState: ICompanyState = {
     hasErrors: false,
     messages: [],
   },
+  purge: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
 };
 
 export const companySlice = createSlice({
@@ -47,6 +52,7 @@ export const companySlice = createSlice({
     clearCompanyMessages: (state) => {
       state.save.messages = [];
       state.delete.messages = [];
+      state.purge.messages = [];
     },
     clearCompanyGetById: (state) => {
       state.getById.data = null;
@@ -130,6 +136,22 @@ export const companySlice = createSlice({
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },
+
+    // Purge
+    [purgeCompanyById.pending.type]: (state) => {
+      state.purge.loading = true;
+      state.purge.messages = [];
+    },
+    [purgeCompanyById.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.purge.loading = false;
+      state.purge.hasErrors = false;
+      state.purge.messages = action.payload.messages;
+    },
+    [purgeCompanyById.rejected.type]: (state) => {
+      state.purge.loading = false;
+      state.purge.hasErrors = true;
+    },
+
   },
 });
 
