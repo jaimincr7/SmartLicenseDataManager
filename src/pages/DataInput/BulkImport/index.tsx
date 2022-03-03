@@ -87,7 +87,6 @@ const BulkImport: React.FC = () => {
     date_added: getSimpleDate(),
   };
 
-
   const uploadFile = async (options) => {
     const { onSuccess, file } = options;
     const formData = new FormData();
@@ -120,8 +119,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                      (data) => data.sheet_name == sheet.sheet
+                    )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -196,8 +195,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                      (data) => data.sheet_name == sheet.sheet
+                    )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -283,8 +282,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                  (data) => data.sheet_name == sheet.sheet
-                )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                 : [];
             if (mappingData.length) {
               formUpload.setFieldsValue({ hide_unmapped: false });
@@ -312,8 +311,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                    ? orgFile[0].table_name
-                    : tableName,
+                  ? orgFile[0].table_name
+                  : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -339,8 +338,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                    ? orgFile[0].excel_to_sql_mapping
-                    : null,
+                  ? orgFile[0].excel_to_sql_mapping
+                  : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -434,7 +433,7 @@ const BulkImport: React.FC = () => {
       bu_id: globalLookups.search.bu_id ? globalLookups.search.bu_id : null,
     };
     dispatch(getExcelFileMappingLookup(data));
-  }, [globalLookups.search.bu_id, globalLookups.search.company_id, globalLookups.search.tenant_id])
+  }, [globalLookups.search.bu_id, globalLookups.search.company_id, globalLookups.search.tenant_id]);
 
   useEffect(() => {
     if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
@@ -570,7 +569,7 @@ const BulkImport: React.FC = () => {
     currentIndex = 1;
     setTableName(tbName);
   };
-  
+
   const dropdownMenu = (
     <div className="checkbox-list-wrapper">
       <ul className="checkbox-list">
@@ -614,7 +613,6 @@ const BulkImport: React.FC = () => {
   };
 
   const changeFileMapping = (value) => {
-
     const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
     const selectedRecord = dummyRecord.filter((data) => data.key_word === value);
     const dummyRecords = _.cloneDeep(records);
@@ -627,7 +625,6 @@ const BulkImport: React.FC = () => {
     if (selectedRecord.length) {
       selectedRecord[0].config_excel_column_mappings?.map((data) => {
         dummyRecords.map((data1) => {
-
           if (data.sheet_name == data1.sheet) {
             data1.currentMapping = data.sheet_name;
             data1.excel_to_sql_mapping = JSON.parse(data.mapping);
@@ -639,7 +636,9 @@ const BulkImport: React.FC = () => {
         });
       });
       const dummy = _.cloneDeep(dummyRecords);
-      const unmapRec = dummy.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
+      const unmapRec = dummy.filter(
+        (data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null
+      );
       setWithoutUnmappedRecords(unmapRec);
       setRecords(dummyRecords);
     }
@@ -697,7 +696,9 @@ const BulkImport: React.FC = () => {
 
   useEffect(() => {
     const dummyRecords = _.cloneDeep(records);
-    const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
+    const unmapRec = dummyRecords.filter(
+      (data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null
+    );
     setWithoutUnmappedRecords(unmapRec);
     setRecordLength(records.length);
     if (records.length > recordLength) {
@@ -926,7 +927,7 @@ const BulkImport: React.FC = () => {
           <div className="btns-block">
             {Object.values(globalLookups.search)?.filter((x) => x > 0)?.length < 3 ? (
               <Popover
-                content={<>Please select global filter and Date Added first!</>}
+                content={<>Please select Global Filters and &apos;Date Added&apos; first!</>}
                 trigger="click"
               >
                 <Button
