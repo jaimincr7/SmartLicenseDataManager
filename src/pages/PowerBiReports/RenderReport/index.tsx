@@ -55,8 +55,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
     }
   };
 
-  const { name } = match.params;
-  useEffect(() => {
+  const configure = () => {
     setReportConfig({ ...reportConfig, id: '' });
     configurationService.getReportDetail(name).then(async (res) => {
       if (res && res.body?.data) {
@@ -73,6 +72,11 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
         updateHeight();
       }
     });
+  }
+
+  const { name } = match.params;
+  useEffect(() => {
+    configure();
   }, [match.params]);
 
   useEffect(() => {
@@ -84,6 +88,15 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
       }, 200);
     }
   }, [globalFilters.search]);
+
+  const eventHandlersMap = new Map([
+    [
+      "error",
+      function () {
+        configure();
+      }
+    ]
+  ]);
 
   return (
     <div className="sqlServer">
@@ -100,6 +113,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
           <div style={{ height: height }}>
             <PowerBIEmbed
               embedConfig={reportConfig}
+              eventHandlers = { eventHandlersMap }
               cssClassName={'report-style-class'}
               getEmbeddedComponent={async (embedObject: Embed) => {
                 setEmbeddedReport(embedObject as Report);
