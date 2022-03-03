@@ -21,6 +21,13 @@ class CompanyService {
     });
   }
 
+  public async purgeCompanyById(id: number): Promise<any> {
+    const url = `${this.ENDPOINT}/delete-company-data/${id}`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async saveCompany(data: ICompany): Promise<any> {
     const { id, ...restData } = data;
     if (id > 0) {
