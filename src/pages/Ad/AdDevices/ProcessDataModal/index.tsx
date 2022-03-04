@@ -54,6 +54,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
+    values.table_name = tableName;
     dispatch(processDataAdDevice(values));
   };
 
@@ -124,7 +125,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), adDevices.search.tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
         )
       );
     } else {
@@ -192,7 +193,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             : null,
       };
       dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(filterValues, adDevices.search.tableName))
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
       );
       form.setFieldsValue(filterValues);
     }

@@ -15,6 +15,7 @@ import {
   adUsersExclusionsSelector,
   clearAdUsersExclusion,
 } from '../../../store/ad/adUsersExclusions/adUsersExclusions.reducer';
+import ProcessDataModal from '../AdUsers/ProcessDataModal';
 
 const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
   const adUsersExclusions = useAppSelector(adUsersExclusionsSelector);
@@ -26,6 +27,7 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
 
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
@@ -69,6 +71,20 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.AdUsersExclusions}>
+        <Button
+          className="btn-icon"
+          disabled={adUsersExclusions.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
       <Can I={Action.DeleteData} a={Page.AdUsersExclusions}>
@@ -180,6 +196,14 @@ const AdUsersExclusions: React.FC<IAdUsersExclusionsProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={adUsersExclusions.search.tableName}
         />
       )}
       {deleteModalVisible && (
