@@ -43,7 +43,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const globalFilters = useAppSelector(globalSearchSelector);
 
-  const { showModal, handleModalClose, filterKeys, tableName, refreshDataTable } = props;
+  const { showModal, handleModalClose, filterKeys, tableName } = props;
 
   const [form] = Form.useForm();
 
@@ -54,6 +54,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
+    values.table_name = tableName;
     dispatch(processDataAdDevice(values));
   };
 
@@ -104,7 +105,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       } else {
         toast.warning(adDevices.processData.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearAdDeviceMessages());
     }
@@ -124,7 +124,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), adDevices.search.tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
         )
       );
     } else {
@@ -192,7 +192,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             : null,
       };
       dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(filterValues, adDevices.search.tableName))
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
       );
       form.setFieldsValue(filterValues);
     }

@@ -48,7 +48,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const [sql, setSql] = useState(false);
   const [windows, setWindows] = useState(false);
 
-  const { showModal, handleModalClose, filterKeys, tableName, refreshDataTable } = props;
+  const { showModal, handleModalClose, filterKeys, tableName } = props;
 
   const [form] = Form.useForm();
 
@@ -174,7 +174,6 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       } else {
         toast.warning(inventory.processData.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearInventoryMessages());
     }

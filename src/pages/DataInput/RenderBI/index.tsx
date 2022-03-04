@@ -49,7 +49,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     dateChangeFlag,
     setDateChangeFlag,
     setExpandedRecords,
-    expandedRecords
+    expandedRecords,
   } = props;
   const bulkImports = useAppSelector(bulkImportSelector);
   const dispatch = useAppDispatch();
@@ -180,7 +180,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       if (hideUnmapped === false && withoutUnmappedRecords.length) {
         withoutUnmappedRecords.map((data) => {
           if (data.excel_to_sql_mapping && data.validation !== true) {
-            const excelData = data.excel_to_sql_mapping.filter((data) => data.value !== "");
+            const excelData = data.excel_to_sql_mapping.filter((data) => data.value !== '');
             if (excelData.length > 0) {
               data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter(
                 (data) => data.key !== 'Source'
@@ -202,7 +202,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             header_row: data.header_row - 1,
             delimiter: data.delimiter ? data.delimiter : ',',
             foreign_key_values: {
-              date_added: data.date ? moment(data.date).format(Common.DATEFORMAT) : moment(date).format(Common.DATEFORMAT),
+              date_added: data.date
+                ? moment(data.date).format(Common.DATEFORMAT)
+                : moment(date).format(Common.DATEFORMAT),
             },
           };
           arr.push(Obj);
@@ -210,7 +212,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       } else {
         records.map((data) => {
           if (data.excel_to_sql_mapping && data.validation !== true) {
-            const excelData = data.excel_to_sql_mapping.filter((data) => data.value !== "");
+            const excelData = data.excel_to_sql_mapping.filter((data) => data.value !== '');
             if (excelData.length > 0) {
               data.excel_to_sql_mapping = data.excel_to_sql_mapping?.filter(
                 (data) => data.key !== 'Source'
@@ -246,18 +248,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           tenant_id: _.isNull(globalSearch.tenant_id)
             ? null
             : globalSearch.tenant_id === undefined
-              ? null
-              : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
           bu_id: _.isNull(globalSearch.bu_id)
             ? null
             : globalSearch.bu_id === undefined
-              ? null
-              : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
           company_id: _.isNull(globalSearch.company_id)
             ? null
             : globalSearch.company_id === undefined
-              ? null
-              : globalSearch?.company_id[0],
+            ? null
+            : globalSearch?.company_id[0],
           date_added: date
             ? moment(date).format(Common.DATEFORMAT)
             : getSimpleDate().format(Common.DATEFORMAT),
@@ -329,18 +331,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-            ? null
-            : globalSearch?.tenant_id[0],
+          ? null
+          : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-            ? null
-            : globalSearch?.bu_id[0],
+          ? null
+          : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-            ? null
-            : globalSearch?.company_id[0],
+          ? null
+          : globalSearch?.company_id[0],
         date_added: getSimpleDate(),
       };
       filterTableColumns.map(function (ele) {
@@ -351,10 +353,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-              (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s+/g, '')
-            )[0]
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
+              )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -424,7 +426,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   useEffect(() => {
     const dummyRecords = _.cloneDeep(records);
-    const unmapRec = dummyRecords.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
+    const unmapRec = dummyRecords.filter(
+      (data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null
+    );
     setWithoutUnmappedRecords(unmapRec);
     return () => {
       setTableColumnState([]);
@@ -447,17 +451,21 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <>
             {' '}
             {m.sheet_name}
-            <Popconfirm
-              title={`Delete ${m.sheet_name} Mapping?`}
-              onConfirm={() => {
-                removeColumnMapping(m.id);
-                setCurRecordMap(currentRecord);
-              }}
-            >
-              <a href="#" title="" className="deleteMap-btn">
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-              </a>
-            </Popconfirm>
+            {currentRecord.isPublic === true ? (
+              <></>
+            ) : (
+              <Popconfirm
+                title={`Delete ${m.sheet_name} Mapping?`}
+                onConfirm={() => {
+                  removeColumnMapping(m.id);
+                  setCurRecordMap(currentRecord);
+                }}
+              >
+                <a href="#" title="" className="deleteMap-btn">
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                </a>
+              </Popconfirm>
+            )}
           </>
         ),
         value: `${m.sheet_name}!${m.id}`,
@@ -475,17 +483,21 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           <>
             {' '}
             {m.key_word}{' '}
-            <Popconfirm
-              title={`Delete ${m.key_word} Mapping?`}
-              onConfirm={() => {
-                removeFileMapping(m.id);
-                setCurRecordMap(curRecord);
-              }}
-            >
-              <a href="#" title="" className="deleteMap-btn">
-                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
-              </a>
-            </Popconfirm>
+            {curRecord?.isPublic === true ? (
+              <></>
+            ) : (
+              <Popconfirm
+                title={`Delete ${m.key_word} Mapping?`}
+                onConfirm={() => {
+                  removeFileMapping(m.id);
+                  setCurRecordMap(curRecord);
+                }}
+              >
+                <a href="#" title="" className="deleteMap-btn">
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/ic-delete.svg`} alt="" />
+                </a>
+              </Popconfirm>
+            )}
           </>
         ),
         disabled: true,
@@ -523,7 +535,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             file_type: curRecordMap?.original_filename.slice(
               ((curRecordMap?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2
             ),
-            global_dd
+            global_dd,
           })
           .then((res) => {
             response = res?.body?.data;
@@ -609,7 +621,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         data.excel_to_sql_mapping = flagMapping;
       }
     });
-    const unmapRec = dummyRecord.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
+    const unmapRec = dummyRecord.filter(
+      (data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null
+    );
     setWithoutUnmappedRecords(unmapRec);
     setRecords(dummyRecord);
     if (value) {
@@ -652,6 +666,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   const deleteSelected = (index: number, fileName: string) => {
     if (index >= 0) {
+      toast.success('Tab deleted successfully');
       const dummyRecords = _.cloneDeep(records);
       let flag = false;
       const filteredRecords = dummyRecords.filter((data) => data.index !== index);
@@ -665,7 +680,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       }
 
       const dummyWithoutRecords = _.cloneDeep(filteredRecords);
-      const unmapRec = dummyWithoutRecords.filter((data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null);
+      const unmapRec = dummyWithoutRecords.filter(
+        (data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null
+      );
       setWithoutUnmappedRecords(unmapRec);
       setRecords(filteredRecords);
     }
@@ -772,7 +789,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             placeholder="Select Date Added"
           />
         </>
-      )
+      ),
     },
     {
       title: 'Action',
@@ -816,7 +833,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         columns={columns}
         loading={records.length == 0}
         expandable={{
-          onExpandedRowsChange: (record) => { setExpandedRecords(record); },
+          onExpandedRowsChange: (record) => {
+            setExpandedRecords(record);
+          },
           expandedRowRender: (record) => (
             <MappingColumn
               setRecords={setRecords}

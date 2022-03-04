@@ -43,11 +43,9 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
   const {
     showModal,
     handleModalClose,
-    refreshDataTable,
     tableName,
     isDateAvailable,
     filterKeys,
-    isDeleteDataSet,
   } = props;
 
   const [form] = Form.useForm();
@@ -110,7 +108,6 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
       } else {
         toast.warning(common.deleteDataset.messages.join(' '));
         handleModalClose();
-        if (isDeleteDataSet !== true) refreshDataTable();
       }
       dispatch(clearDeleteDatasetMessages());
     }

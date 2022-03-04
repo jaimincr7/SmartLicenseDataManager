@@ -393,6 +393,14 @@ class CommonService {
     });
   }
 
+  public async errorLog(obj: any): Promise<IApiResponse<any>> {
+    const url = `/error-log`;
+    const data = obj;
+    return request({ url, method: 'POST', data }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getColumnLookup(obj: {}): Promise<IApiResponse<any>> {
     const url = `/app/column-lookup`;
     const data = obj;

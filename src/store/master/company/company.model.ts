@@ -26,4 +26,9 @@ export interface ICompanyState {
     hasErrors: boolean;
     messages: string[];
   };
+  purge: {
+    loading: boolean;
+    hasErrors: boolean;
+    messages: string[];
+  };
 }

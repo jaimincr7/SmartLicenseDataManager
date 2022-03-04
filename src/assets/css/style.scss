@@ -1129,6 +1129,21 @@ textarea.ant-input {
   visibility: visible;
 }
 
+//Show Version in Side Bar
+
+ .sidebar-main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .sidebar-version {
+    margin-top: auto;
+    padding-bottom: 10px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
 // toggle, show menu-----------
 .toggle-menu .main-navigation {
   left: -220px;

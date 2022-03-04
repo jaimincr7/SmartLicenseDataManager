@@ -36,7 +36,7 @@ const AddConfigO365ProductsModal: React.FC<IAddConfigO365ProductsProps> = (props
   const title = useMemo(() => {
     return (
       <>
-        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.Bu} level={1} />
+        {isNew ? 'Add ' : 'Edit '} <BreadCrumbs pageName={Page.ConfigO365Products} level={1} />
       </>
     );
   }, [isNew]);

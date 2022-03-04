@@ -56,6 +56,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     isStartSchedulaAllApi,
     hideShowHideButton,
     type_id,
+    isExcelColumnMapping,
   } = props;
 
   const tableFilter = useRef({
@@ -160,6 +161,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       });
     }
     //setCallColumnApi(true);
+    if(isExcelColumnMapping === true) {
+      searchData.filter_keys = { ...searchData.filter_keys ,...extraSearchData };
+    }
     dispatch(searchTableData(searchData));
   };
   useImperativeHandle(ref, () => ({
@@ -224,6 +228,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       fetchTableData({ ...pagination, current: 1 });
     }
   }, [globalFilters.search]);
+
   React.useEffect(() => {
     const isGlobalSearchExist: boolean = globalSearchExist === undefined ? true : globalSearchExist;
     if (!isGlobalSearchExist) {

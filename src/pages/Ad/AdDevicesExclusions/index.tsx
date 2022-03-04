@@ -15,6 +15,7 @@ import { Can } from '../../../common/ability';
 import { Action, Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import ProcessDataModal from '../AdDevices/ProcessDataModal';
 
 const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   const adDevicesExclusions = useAppSelector(adDevicesExclusionsSelector);
@@ -27,6 +28,7 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
   const [addModalVisible, setAddModalVisible] = React.useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [processModalVisible, setProcessModalVisible] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   const [id, setId] = React.useState(0);
@@ -69,6 +71,20 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
           }
         >
           Import
+        </Button>
+      </Can>
+      <Can I={Action.ProcessData} a={Page.ADExclusions}>
+        <Button
+          className="btn-icon"
+          disabled={adDevicesExclusions.search.loading}
+          onClick={() => setProcessModalVisible(true)}
+          icon={
+            <em className="anticon">
+              <img src={`${process.env.PUBLIC_URL}/assets/images/ic-process-data.svg`} alt="" />
+            </em>
+          }
+        >
+          Process Data
         </Button>
       </Can>
       <Can I={Action.DeleteData} a={Page.ADExclusions}>
@@ -180,6 +196,14 @@ const AdDevicesExclusions: React.FC<IAdDevicesExclusionsProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+        />
+      )}
+      {processModalVisible && (
+        <ProcessDataModal
+          showModal={processModalVisible}
+          handleModalClose={() => setProcessModalVisible(false)}
+          refreshDataTable={() => refreshDataTable()}
+          tableName={adDevicesExclusions.search.tableName}
         />
       )}
       {deleteModalVisible && (

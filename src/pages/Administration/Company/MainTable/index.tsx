@@ -30,7 +30,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     tableButtons,
-    setFilterKeys,
   } = props;
   const company = useAppSelector(companySelector);
   const dispatch = useAppDispatch();
@@ -55,7 +54,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const FilterBySwap = (dataIndex: string, form) => {
-    setFilterKeys(ObjectForColumnFilter);
     return FilterWithSwapOption(
       dataIndex,
       company.search.tableName,
