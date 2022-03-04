@@ -175,7 +175,7 @@ const AddAdDeviceModal: React.FC<IAddAdDeviceProps> = (props) => {
         enabled: data.enabled,
         iPv4_address: data.iPv4_address,
         last_logon: data.last_logon,
-        last_logon_date: _.isNull(data.last_logon_date) ? null : data.last_logon_date,
+        last_logon_date: _.isNull(data.last_logon_date) ? null : forEditModal(data.last_logon_date),
         last_logon_timestamp: data.last_logon_timestamp,
         name: data.name,
         object_class: data.object_class,
