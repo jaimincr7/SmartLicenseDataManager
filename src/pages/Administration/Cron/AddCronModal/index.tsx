@@ -284,15 +284,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -329,15 +329,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -374,15 +374,15 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -563,24 +563,28 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
                   </Form.Item>
                 </div>
               </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className="form-group form-inline-pt m-0">
-                  <Form.Item name="start_schedular" className="m-0 mr-1" valuePropName="checked">
-                    <Switch className="form-control" />
-                  </Form.Item>
-                  {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'start_schedular']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>Enable</Checkbox>
+              {isMultiple === true ? (
+                <></>
+              ) : (
+                <Col xs={24} sm={12} md={8}>
+                  <div className="form-group form-inline-pt m-0">
+                    <Form.Item name="start_schedular" className="m-0 mr-1" valuePropName="checked">
+                      <Switch className="form-control" />
                     </Form.Item>
-                  ) : (
-                    'Enable'
-                  )}
-                </div>
-              </Col>
+                    {isMultiple ? (
+                      <Form.Item
+                        name={['checked', 'start_schedular']}
+                        valuePropName="checked"
+                        noStyle
+                      >
+                        <Checkbox>Enable</Checkbox>
+                      </Form.Item>
+                    ) : (
+                      'Enable'
+                    )}
+                  </div>
+                </Col>
+              )}
             </Row>
             <div className="btns-block modal-footer">
               <Button
