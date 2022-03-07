@@ -75,7 +75,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Id</span>,
         column: 'Id',
-        sorter: true,
+        sorter: (a, b) => a.id - b.id,
         ellipsis: true,
         children: [
           {
@@ -89,7 +89,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">API Group</span>,
         column: 'ApiGroupId',
-        sorter: true,
+        sorter: (a, b) => a.api_group_name.localeCompare(b.api_group_name),
         ellipsis: true,
         children: [
           {
@@ -103,7 +103,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Tenant Name</span>,
         column: 'TenantId',
-        sorter: true,
+        sorter: (a, b) => a.tenant_name.localeCompare(b.tenant_name),
         ellipsis: true,
         children: [
           {
@@ -122,7 +122,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Company Name</span>,
         column: 'CompanyId',
-        sorter: true,
+        sorter: (a, b) => a.company_name.localeCompare(b.company_name),
         ellipsis: true,
         children: [
           {
@@ -141,7 +141,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Bu Name</span>,
         column: 'BU_Id',
-        sorter: true,
+        sorter: (a, b) => a.bu_name.localeCompare(b.bu_name),
         ellipsis: true,
         children: [
           {
@@ -160,13 +160,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Date Modified</span>,
         column: 'Date Modified',
-        sorter: true,
+        sorter: (a, b) => moment(a.date_modified, Common.DATEFORMAT).diff(moment(b.date_modified, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
             title: FilterByDateSwap('date_modified', cron.search.tableName, form, null,
-            ObjectForColumnFilter,
-            false),
+              ObjectForColumnFilter,
+              false),
             dataIndex: 'date_modified',
             key: 'date_modified',
             ellipsis: true,
@@ -177,13 +177,13 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Date Added</span>,
         column: 'Date Added',
-        sorter: true,
+        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
             title: FilterByDateSwap('date_added', cron.search.tableName, form, null,
-            ObjectForColumnFilter,
-            false),
+              ObjectForColumnFilter,
+              false),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -194,7 +194,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Start Date</span>,
         column: 'Start Date',
-        sorter: true,
+        sorter: (a, b) => moment(a.date_added, Common.DATETIMEFORMAT).diff(moment(b.date_added, Common.DATETIMEFORMAT)),
         ellipsis: true,
         children: [
           {
@@ -217,7 +217,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Stop Date</span>,
         column: 'StopDate',
-        sorter: true,
+        sorter: (a, b) => moment(a.date_added, Common.DATETIMEFORMAT).diff(moment(b.date_added, Common.DATETIMEFORMAT)),
         ellipsis: true,
         children: [
           {
@@ -235,7 +235,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Frequency Type</span>,
         column: 'Frequency Type',
-        sorter: true,
+        sorter: (a, b) => a.frequency_type.localeCompare(b.frequency_type),
         ellipsis: true,
         children: [
           {
@@ -249,7 +249,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Week Day</span>,
         column: 'Week Day',
-        sorter: false,
+        sorter: (a, b) => a.start_date.localeCompare(b.start_date),
         ellipsis: true,
         children: [
           {
@@ -263,7 +263,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Month Day</span>,
         column: 'Month Day',
-        sorter: false,
+        sorter: (a, b) => a.frequency_day - b.frequency_day,
         ellipsis: true,
         children: [
           {
@@ -277,7 +277,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Status</span>,
         column: 'Status',
-        sorter: true,
+        sorter: (a, b) => a.status.localeCompare(b.status),
         ellipsis: true,
         children: [
           {
@@ -291,7 +291,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Next Run Date</span>,
         column: 'nextRunDate',
-        sorter: true,
+        sorter: (a, b) => moment(a.date_added, Common.DATETIMEFORMAT).diff(moment(b.date_added, Common.DATETIMEFORMAT)),
         ellipsis: true,
         children: [
           {
@@ -309,7 +309,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Last Run Date</span>,
         column: 'lastRunDate',
-        sorter: true,
+        sorter: (a, b) => moment(a.date_added, Common.DATETIMEFORMAT).diff(moment(b.date_added, Common.DATETIMEFORMAT)),
         ellipsis: true,
         children: [
           {
