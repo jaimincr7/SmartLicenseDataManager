@@ -503,7 +503,7 @@ class CommonService {
   }
 
   public async updateMultiple(searchParams?: IBulkUpdate): Promise<any> {
-    const url = `/app/bulk-update`;
+    const url = `/back-ground-processes/bulk-update`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });
