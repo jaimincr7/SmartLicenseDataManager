@@ -1,9 +1,10 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Menu, Tooltip } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useLocation } from 'react-router-dom';
 import { userSelector } from '../../../../store/administration/administration.reducer';
 import { useAppSelector } from '../../../../store/app.hooks';
+import Version from '../../../../pages/Version';
 
 const { SubMenu } = Menu;
 
@@ -92,7 +93,11 @@ function Sidebar() {
               renderMenu(menuDetail, `!${index}`)
             )}
           </Menu>
-          <div className="sidebar-version">Version: 1.0.0</div>
+          <div className="sidebar-version">
+            <Tooltip placement="rightTop" overlayClassName="custom-tooltip" title={<Version />}>
+              <span>Version: 1.0.0</span>
+            </Tooltip>
+          </div>
         </div>
       </Scrollbars>
     </aside>
