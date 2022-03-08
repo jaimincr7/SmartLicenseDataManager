@@ -104,7 +104,6 @@ function Sidebar() {
               wrapClassName="custom-modal"
               title="M360 Version"
               centered
-              bodyStyle={{backgroundColor: 'grey'}}
               visible={showVersionModal}
               onCancel={() => setShowVersionModal(false)}
               footer={false}

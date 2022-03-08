@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Markdown from 'markdown-to-jsx';
+import './version/version.css';
 
 function Version() {
     const file_name = 'version.md';
@@ -15,7 +16,7 @@ function Version() {
     });
 
     return (
-            <div className="container">
+            <div className="container-version">
                 <Markdown>
                     {post}
                 </Markdown>
