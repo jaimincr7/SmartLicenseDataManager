@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Tooltip } from 'antd';
+import { Menu, Modal } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Link, useLocation } from 'react-router-dom';
 import { userSelector } from '../../../../store/administration/administration.reducer';
@@ -13,6 +13,7 @@ function Sidebar() {
   const defaultSubmenu: string = location.pathname.split('/')[1];
   const userDetails = useAppSelector(userSelector);
   const [openKeys, setOpenKeys] = React.useState([`${defaultSubmenu}`]);
+  const [showVersionModal, setShowVersionModal] = React.useState(false);
 
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
@@ -94,11 +95,24 @@ function Sidebar() {
             )}
           </Menu>
           <div className="sidebar-version">
-            <Tooltip placement="rightTop" overlayClassName="custom-tooltip" title={<Version />}>
-              <span>Version: 1.0.0</span>
-            </Tooltip>
+            <span onClick={() => setShowVersionModal(true)}>Version: 1.0.0</span>
           </div>
         </div>
+        {
+          showVersionModal && (
+            <Modal
+              wrapClassName="custom-modal"
+              title="M360 Version"
+              centered
+              bodyStyle={{backgroundColor: 'grey'}}
+              visible={showVersionModal}
+              onCancel={() => setShowVersionModal(false)}
+              footer={false}
+            >
+              <Version />
+            </Modal>
+          )
+        }
       </Scrollbars>
     </aside>
   );
