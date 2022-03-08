@@ -1141,6 +1141,11 @@ textarea.ant-input {
     color: #fff;
     font-size: 14px;
     text-align: center;
+    cursor: pointer;
+    hr {
+      width: 80%;
+      border-width: 1px;
+    }
   }
 }
 
