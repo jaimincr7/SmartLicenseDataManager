@@ -1,8 +1,5 @@
 ![M360](/assets/images/logov2.png)
 
-# **Application Name**
-**Synapse 360**
-
 # **Description**
 
 [MetrixData 360](https://metrixdata360.com) is a professional Software Asset Management company that helps organizations optimize their software licensing and cloud environments.
