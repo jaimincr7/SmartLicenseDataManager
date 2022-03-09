@@ -68,7 +68,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         toast.error(spsApis.callApi.messages.join(' '));
       } else {
         toast.warning(spsApis.callApi.messages.join(' '));
-        dataTableRef?.current.refreshData();
       }
       dispatch(clearCallApiMessages());
     } else if (spsApis.callAllApi.messages.length > 0) {
@@ -76,7 +75,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         toast.error(spsApis.callAllApi.messages.join(' '));
       } else {
         toast.warning(spsApis.callAllApi.messages.join(' '));
-        dataTableRef?.current.refreshData();
       }
       dispatch(clearCallApiMessages());
     }
