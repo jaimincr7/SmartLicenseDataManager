@@ -130,8 +130,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const searchData: ISearch = {
       is_lookup: true,
       is_column_selection: !pageLoaded,
-      limit: page.pageSize,
-      offset: (page.current - 1) * page.pageSize,
+      limit: isStartSchedulaAllApi === true ? undefined : page.pageSize,
+      offset: isStartSchedulaAllApi === true ? undefined : (page.current - 1) * page.pageSize,
       ...(rest || {}),
       filter_keys: type_id ? { api_type_id: type_id } : inlineSearchFilterObj,
       is_export_to_excel: isExportToExcel,
@@ -161,8 +161,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       });
     }
     //setCallColumnApi(true);
-    if(isExcelColumnMapping === true) {
-      searchData.filter_keys = { ...searchData.filter_keys ,...extraSearchData };
+    if (isExcelColumnMapping === true) {
+      searchData.filter_keys = { ...searchData.filter_keys, ...extraSearchData };
     }
     dispatch(searchTableData(searchData));
   };
@@ -240,16 +240,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   // Start: Pagination ans Sorting
   const handleTableChange = (paginating, filters, sorter) => {
-    tableFilter.current = {
-      ...tableFilter.current,
-      order_by:
-        sorter.field ||
-        sorter.column?.children[0]?.dataIndex ||
-        (defaultOrderBy ? defaultOrderBy : 'id'),
-      order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
-    };
-    setPagination(paginating);
-    fetchTableData(paginating);
+    if (!isStartSchedulaAllApi) {
+      tableFilter.current = {
+        ...tableFilter.current,
+        order_by:
+          sorter.field ||
+          sorter.column?.children[0]?.dataIndex ||
+          (defaultOrderBy ? defaultOrderBy : 'id'),
+        order_direction: (sorter.order === 'ascend' ? 'ASC' : 'DESC') as orderByType,
+      };
+      setPagination(paginating);
+      fetchTableData(paginating);
+    }
   };
 
   React.useEffect(() => {
@@ -371,9 +373,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${
-                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                }`}
+                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                  }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img

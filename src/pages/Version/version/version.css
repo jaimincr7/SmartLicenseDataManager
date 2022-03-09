@@ -1,0 +1,9 @@
+
+.container-version li {
+    list-style-type: disc;
+}
+
+.container-version ul {
+    margin-left: 25px;
+    margin-bottom: 10px;
+}
