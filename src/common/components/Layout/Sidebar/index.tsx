@@ -96,7 +96,7 @@ function Sidebar() {
           </Menu>
           <div className="sidebar-version">
             <hr />
-            <span onClick={() => setShowVersionModal(true)}>Version: 1.0.0</span>
+            <span onClick={() => setShowVersionModal(true)}>Version: 1.6.0</span>
           </div>
         </div>
         {

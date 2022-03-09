@@ -16,6 +16,7 @@ export interface ISpsApi {
   enabled: boolean;
   is_system_defined: boolean;
   is_mapping?: boolean;
+  api_data_format?: string;
 }
 
 export interface ISearchAPI extends ISpsApi {
