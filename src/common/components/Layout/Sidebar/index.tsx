@@ -5,6 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { userSelector } from '../../../../store/administration/administration.reducer';
 import { useAppSelector } from '../../../../store/app.hooks';
 import Version from '../../../../pages/Version';
+import { Can } from '../../../ability';
+import { Action, Page } from '../../../constants/pageAction';
 
 const { SubMenu } = Menu;
 
@@ -94,10 +96,12 @@ function Sidebar() {
               renderMenu(menuDetail, `!${index}`)
             )}
           </Menu>
-          <div className="sidebar-version">
-            <hr />
-            <span onClick={() => setShowVersionModal(true)}>Version: 1.6.0</span>
-          </div>
+          <Can I={Action.View} a={Page.Version}>
+            <div className="sidebar-version">
+              <hr />
+              <span onClick={() => setShowVersionModal(true)}>Version: 1.6.0</span>
+            </div>
+          </Can>
         </div>
         {
           showVersionModal && (
