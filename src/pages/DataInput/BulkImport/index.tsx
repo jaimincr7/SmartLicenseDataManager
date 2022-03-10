@@ -614,12 +614,12 @@ const BulkImport: React.FC = () => {
   };
 
   const changeFileMapping = (value) => {
+    setMappings([]);
+    formUpload.setFieldsValue({tab_mapping: null});
     const keyword = value?.split('|')[0];
     const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
     const selectedRecord = dummyRecord.filter((data) => data.key_word === keyword);
-    if (value === undefined || value === null) {
-      setMappings([]);
-    } else {
+    if (value !== undefined && value !== null) {
       setMappings(selectedRecord[0]?.config_excel_column_mappings);
     }
     const dummyRecords = _.cloneDeep(records);
