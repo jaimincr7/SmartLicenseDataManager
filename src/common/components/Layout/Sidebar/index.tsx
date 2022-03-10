@@ -103,7 +103,7 @@ function Sidebar() {
           showVersionModal && (
             <Modal
               wrapClassName="custom-modal"
-              title="M360 Version"
+              title="Synapse 360"
               centered
               visible={showVersionModal}
               onCancel={() => setShowVersionModal(false)}
