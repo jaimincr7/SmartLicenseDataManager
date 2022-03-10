@@ -117,6 +117,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">API Data Format</span>,
+        column: 'ApiDataFormat',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('api_data_format', form),
+            dataIndex: 'api_data_format',
+            key: 'api_data_format',
+            ellipsis: true,
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Stored Procedure</span>,
         column: 'StoredProcedure',
         sorter: true,

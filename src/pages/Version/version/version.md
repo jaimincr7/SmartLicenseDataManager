@@ -2,7 +2,7 @@
 
 # **Description**
 
-[M360](https://metrixdata360.com) is Software Assets Management and Professional
+[MetrixData 360](https://metrixdata360.com) is a professional Software Asset Management company that helps organizations optimize their software licensing and cloud environments.
 
 ## **1.6.0**
 

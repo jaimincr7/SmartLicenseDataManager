@@ -5,6 +5,7 @@ import {
   bulkInsert,
   deleteColumnMapping,
   deleteFileMapping,
+  getExcelFileMappingLookup,
   getTables,
   getTablesForImport,
 } from '../../../store/bulkImport/bulkImport.action';
@@ -248,18 +249,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           tenant_id: _.isNull(globalSearch.tenant_id)
             ? null
             : globalSearch.tenant_id === undefined
-            ? null
-            : globalSearch?.tenant_id[0],
+              ? null
+              : globalSearch?.tenant_id[0],
           bu_id: _.isNull(globalSearch.bu_id)
             ? null
             : globalSearch.bu_id === undefined
-            ? null
-            : globalSearch?.bu_id[0],
+              ? null
+              : globalSearch?.bu_id[0],
           company_id: _.isNull(globalSearch.company_id)
             ? null
             : globalSearch.company_id === undefined
-            ? null
-            : globalSearch?.company_id[0],
+              ? null
+              : globalSearch?.company_id[0],
           date_added: date
             ? moment(date).format(Common.DATEFORMAT)
             : getSimpleDate().format(Common.DATEFORMAT),
@@ -331,18 +332,18 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         tenant_id: _.isNull(globalSearch.tenant_id)
           ? null
           : globalSearch.tenant_id === undefined
-          ? null
-          : globalSearch?.tenant_id[0],
+            ? null
+            : globalSearch?.tenant_id[0],
         bu_id: _.isNull(globalSearch.bu_id)
           ? null
           : globalSearch.bu_id === undefined
-          ? null
-          : globalSearch?.bu_id[0],
+            ? null
+            : globalSearch?.bu_id[0],
         company_id: _.isNull(globalSearch.company_id)
           ? null
           : globalSearch.company_id === undefined
-          ? null
-          : globalSearch?.company_id[0],
+            ? null
+            : globalSearch?.company_id[0],
         date_added: getSimpleDate(),
       };
       filterTableColumns.map(function (ele) {
@@ -353,10 +354,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               ele.name?.toLowerCase()?.replace(/\s+/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
-                (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
-              )[0]
+              (x: any) =>
+                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s+/g, '')
+            )[0]
             : '';
       });
       form.setFieldsValue(initialValuesData);
@@ -512,6 +513,12 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   useEffect(() => {
     if (bulkImports.saveExcelFileMapping.messages.length > 0) {
       toast.success(bulkImports.saveExcelFileMapping.messages.join(' '));
+      const data = {
+        tenant_id: globalFilters.search.tenant_id ? globalFilters.search.tenant_id : null,
+        company_id: globalFilters.search.company_id ? globalFilters.search.company_id : null,
+        bu_id: globalFilters.search.bu_id ? globalFilters.search.bu_id : null,
+      };
+      dispatch(getExcelFileMappingLookup(data));
       dispatch(clearBulkImportMessages());
       setSavedExcelMapping([]);
     }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
 import {
@@ -11,7 +12,9 @@ import {
 } from './common.model';
 
 class CommonService {
-  public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
+    cancelTokenSource = null;
+
+    public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/tenant/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
@@ -409,36 +412,59 @@ class CommonService {
     });
   }
 
-  public async getExcelColumns(file: any, callbackProgress?: any,tenant_id?: number,company_id?: number,bu_id?: number): Promise<IApiResponse<any>> {
+  public async getExcelColumns(file: any, callbackProgress?: any, tenant_id?: number, company_id?: number, bu_id?: number): Promise<IApiResponse<any>> {
+    this.cancelTokenSource = axios.CancelToken.source();
     const headers = { Accept: 'multipart/form-data' };
     let url = `/app/read-excel-file`;
-    if(tenant_id !== null) {
+    if (tenant_id !== null) {
       url = `/app/read-excel-file?tenant_id=${tenant_id}`;
-      if(company_id !== null) {
+      if (company_id !== null) {
         url = `/app/read-excel-file?tenant_id=${tenant_id}&company_id=${company_id}`;
-        if(bu_id !== null) {
+        if (bu_id !== null) {
           url = `/app/read-excel-file?tenant_id=${tenant_id}&company_id=${company_id}&bu_id=${bu_id}`;
         }
       }
     }
-    return request({
-      url,
-      method: 'POST',
-      data: file,
-      headers: headers,
-      onUploadProgress: (data) => {
-        if (callbackProgress) {
-          const current = Math.round((100 * data.loaded) / data.total);
-          callbackProgress(current);
-        }
-      },
-    })
-      .then((res) => {
-        return res.data;
+
+    return new Promise((resolve, reject) => {
+      //  if (cancelTokenSource !== null) {
+      //    console.log(cancelTokenSource);
+      //    callbackProgress(null);
+      //    cancelTokenSource.cancel();
+      //    reject();
+      //  }
+      // setTimeout(() => {
+      //   // Cancel request
+      //   cancelTokenSource.cancel();
+      //   reject();
+      // }, 5 * 1000);
+
+      request({
+        url,
+        method: 'POST',
+        data: file,
+        headers: headers,
+        cancelToken: this.cancelTokenSource.token,
+        onUploadProgress: (data) => {
+          if (callbackProgress) {
+            const current = Math.round((100 * data.loaded) / data.total);
+            callbackProgress(current);
+          }
+        },
       })
-      .finally(() => {
-        callbackProgress(null);
-      });
+        .then((res) => {
+          return res.data;
+        })
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((data) => {
+          reject(data);
+        })
+        .finally(() => {
+          callbackProgress(null);
+        });
+    });
   }
 
   public async getCSVExcelColumns(file: any): Promise<IApiResponse<any>> {
@@ -458,9 +484,8 @@ class CommonService {
 
   // Bulk import
   public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
-    const url = `/app/table-column/${
-      tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
-    }`;
+    const url = `/app/table-column/${tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
+      }`;
     return request({ url, method: 'GET' }).then((res) => {
       if (res.data?.body.data?.identity_column) {
         const response = res.data?.body.data?.column_data.filter(

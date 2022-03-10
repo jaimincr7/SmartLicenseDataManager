@@ -62,6 +62,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
     stored_procedure: '',
     enabled: false,
     is_system_defined: true,
+    api_data_format: 'Json',
   };
 
   const onFinish = (values: any) => {
@@ -94,6 +95,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
         sps_input_type_id: _.isNull(data.sps_input_type_id) ? null : data.sps_input_type_id,
         stored_procedure: data.stored_procedure,
         enabled: data.enabled,
+        api_data_format: data.api_data_forrmat,
         is_system_defined: data.is_system_defined,
       };
       form.setFieldsValue(initialValues);
@@ -326,6 +328,40 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
                   )}
                 </div>
               </Col>
+              <Col xs={24} sm={12} md={8}>
+                <div className="form-group m-0">
+                  {isMultiple ? (
+                    <Form.Item name={['checked', 'api_data_format']} valuePropName="checked" noStyle>
+                      <Checkbox>API Data Format</Checkbox>
+                    </Form.Item>
+                  ) : (
+                    'API Data Format'
+                  )}
+                  <Form.Item
+                    name="api_data_format"
+                    className="m-0"
+                    label="API Data Format"
+                  >
+                    <Select
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option: any) =>
+                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      filterSort={(optionA: any, optionB: any) =>
+                        optionA.children
+                          ?.toLowerCase()
+                          ?.localeCompare(optionB.children?.toLowerCase())
+                      }
+                      loading={commonLookups.spsApiTypes.loading}
+                    >
+                      <Option value="Json">JSON</Option>
+                      <Option value="File">FILE</Option>
+                    </Select>
+                  </Form.Item>
+                </div>
+              </Col>
+
               <Col xs={24}>
                 <div className="m-0">
                   {isMultiple ? (

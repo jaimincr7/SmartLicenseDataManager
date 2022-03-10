@@ -78,6 +78,7 @@ const BulkImport: React.FC = () => {
   const [delimitFlag, setDelimitFlag] = useState(true);
   const [date, setDate] = useState(getSimpleDate().format(Common.DATEFORMAT));
   const [dateChangeFlag, setDateChangeFlag] = useState(true);
+  const [mappings, setMappings] = useState([]);
   const [expandedRecords, setExpandedRecords] = useState(null);
 
   const formUploadInitialValues = {
@@ -119,8 +120,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -195,8 +196,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -282,8 +283,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                  (data) => data.sheet_name == sheet.sheet
+                )
                 : [];
             if (mappingData.length) {
               formUpload.setFieldsValue({ hide_unmapped: false });
@@ -311,8 +312,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                  ? orgFile[0].table_name
-                  : tableName,
+                    ? orgFile[0].table_name
+                    : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -338,8 +339,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                  ? orgFile[0].excel_to_sql_mapping
-                  : null,
+                    ? orgFile[0].excel_to_sql_mapping
+                    : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -556,6 +557,9 @@ const BulkImport: React.FC = () => {
   const onCancel = () => {
     dispatch(clearExcelColumns());
     //setExcelColumnState([]);
+    if (bulkImports.getExcelColumns.progress !== null && commonService.cancelTokenSource !== null) {
+      commonService.cancelTokenSource.cancel();
+    }
     setCount({ save: 0, reset: 0 });
     const tbName = formUpload?.getFieldValue('table_name');
     const date1 = formUpload?.getFieldValue('date_added');
@@ -613,8 +617,14 @@ const BulkImport: React.FC = () => {
   };
 
   const changeFileMapping = (value) => {
+    setMappings([]);
+    formUpload.setFieldsValue({tab_mapping: null});
+    const keyword = value?.split('|')[0];
     const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
-    const selectedRecord = dummyRecord.filter((data) => data.key_word === value);
+    const selectedRecord = dummyRecord.filter((data) => data.key_word === keyword);
+    if (value !== undefined && value !== null) {
+      setMappings(selectedRecord[0]?.config_excel_column_mappings);
+    }
     const dummyRecords = _.cloneDeep(records);
     dummyRecords.map((data) => {
       data.currentMapping = null;
@@ -641,6 +651,33 @@ const BulkImport: React.FC = () => {
       );
       setWithoutUnmappedRecords(unmapRec);
       setRecords(dummyRecords);
+    }
+  };
+
+  const changeTabMapping = (value) => {
+    if (value === undefined) {
+      const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
+      const keyValue = dummyRecord.filter((data) => data.id === mappings[0]?.excel_file_mapping_id)[0];
+      changeFileMapping(keyValue?.key_word+'|'+keyValue?.file_type);
+    } else {
+      const dummyRecord = _.cloneDeep(mappings);
+      const selectedRecord = dummyRecord.filter((data) => data.sheet_name === value);
+      const dummyRecords = _.cloneDeep(records);
+
+      if (selectedRecord.length > 0) {
+        dummyRecords.map((data1) => {
+          data1.currentMapping = selectedRecord[0].sheet_name;
+          data1.excel_to_sql_mapping = JSON.parse(selectedRecord[0].mapping);
+          data1.header_row = selectedRecord[0].header_row + 1;
+          data1.table_name = selectedRecord[0].table_name;
+        });
+        const dummy = _.cloneDeep(dummyRecords);
+        const unmapRec = dummy.filter(
+          (data) => data.currentMapping !== null && data.excel_to_sql_mapping !== null
+        );
+        setWithoutUnmappedRecords(unmapRec);
+        setRecords(dummyRecords);
+      }
     }
   };
 
@@ -853,9 +890,47 @@ const BulkImport: React.FC = () => {
                           >
                             {(bulkImports.getExcelFileMappingLookup.data || [])?.map(
                               (option: any, index: number) => (
-                                <Option key={index} value={option.key_word}>
+                                <Option key={index} value={option.key_word + '|' + option.file_type}>
                                   {option.key_word}
                                   <span className="value-badge">{option.file_type}</span>
+                                </Option>
+                              )
+                            )}
+                          </Select>
+                        </Form.Item>
+                      </div>
+                    </Col>
+                  )}
+                  {mappings?.length > 0 && (
+                    <Col xs={24} md={8}>
+                      <div className="form-group m-0">
+                        <label className="label">Tab Mapping</label>
+                        <Form.Item name={'tab_mapping'} className="m-0">
+                          <Select
+                            onChange={(option) => {
+                              changeTabMapping(option);
+                            }}
+                            showSearch
+                            dropdownClassName="value-box-select"
+                            allowClear
+                            optionFilterProp="children"
+                            filterOption={(input, option: any) =>
+                              option.children
+                                ?.toString()
+                                .toLowerCase()
+                                ?.indexOf(input.toLowerCase()) >= 0
+                            }
+                            filterSort={(optionA: any, optionB: any) =>
+                              optionA.children
+                                ?.toString()
+                                .toLowerCase()
+                                ?.localeCompare(optionB.children?.toString().toLowerCase())
+                            }
+                          >
+                            {(mappings || [])?.map(
+                              (option: any, index: number) => (
+                                <Option key={index} value={option.sheet_name}>
+                                  {option.sheet_name}
                                 </Option>
                               )
                             )}
