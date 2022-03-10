@@ -613,8 +613,9 @@ const BulkImport: React.FC = () => {
   };
 
   const changeFileMapping = (value) => {
+    const keyword = value?.split('|')[0];
     const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
-    const selectedRecord = dummyRecord.filter((data) => data.key_word === value);
+    const selectedRecord = dummyRecord.filter((data) => data.key_word === keyword);
     const dummyRecords = _.cloneDeep(records);
     dummyRecords.map((data) => {
       data.currentMapping = null;
@@ -853,7 +854,7 @@ const BulkImport: React.FC = () => {
                           >
                             {(bulkImports.getExcelFileMappingLookup.data || [])?.map(
                               (option: any, index: number) => (
-                                <Option key={index} value={option.key_word}>
+                                <Option key={index} value={option.key_word+'|'+option.file_type}>
                                   {option.key_word}
                                   <span className="value-badge">{option.file_type}</span>
                                 </Option>
