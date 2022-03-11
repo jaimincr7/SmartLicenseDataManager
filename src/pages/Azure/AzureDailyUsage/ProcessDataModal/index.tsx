@@ -137,11 +137,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
-      dispatch(
-        getScheduleDate(
-          getScheduleDateHelperLookup(initialValues, azureDailyUsage.search.tableName)
-        )
-      );
+      if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+        dispatch(
+          getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName))
+        );
+      }
       form.setFieldsValue(initialValues);
     }
     return () => {

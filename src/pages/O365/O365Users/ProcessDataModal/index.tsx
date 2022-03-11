@@ -193,7 +193,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
-      dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));
+      if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+        dispatch(
+          getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
+        );
+      }
       form.setFieldsValue(filterValues);
     }
     return () => {
