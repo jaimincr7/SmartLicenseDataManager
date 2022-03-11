@@ -99,7 +99,6 @@ export const bulkImportSlice = createSlice({
       state.saveExcelFileMapping.messages = [];
       state.deleteColumnMapping.messages = [];
       state.deleteFileMapping.messages = [];
-      state.getExcelFileMappingLookup.data = [];
     },
     clearDeleteMessages: (state) => {
       state.deleteColumnMapping.messages = [];
