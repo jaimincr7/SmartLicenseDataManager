@@ -4,6 +4,11 @@
 
 [MetrixData 360](https://metrixdata360.com) is a professional Software Asset Management company that helps organizations optimize their software licensing and cloud environments.
 
+## **1.6.1**
+- Added fav-icon for Synapse 360 app.
+- Added meta-data description for Synapse 360 app.
+- Functionality added to choose File's Tab mapping in Bulk Import.
+
 ## **1.6.0**
 
 - Update All functionality in all page.
