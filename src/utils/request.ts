@@ -75,6 +75,7 @@ export const setResponseError = (history) => {
           environment: 'FE',
           json: JSON.stringify(json)
         };
+        if(obj !== undefined && obj !== null)
         commonService.errorLog(obj);
         return;
         //history.push('/500');
