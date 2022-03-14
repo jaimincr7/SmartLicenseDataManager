@@ -575,7 +575,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       );
 
       const updatedColumns = sortedOrder?.map((a) =>
-        tableColumns.find((x) => (x.column ? x.column === a : x.title === a))
+        tableColumns.find((x) => (x.column ? x.column.toString().toLowerCase() === a.toString().toLowerCase() : x.title === a))
       );
       setTableColumns(updatedColumns);
     }

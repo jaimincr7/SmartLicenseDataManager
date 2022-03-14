@@ -7,7 +7,6 @@ import {
   deleteFileMapping,
   getExcelFileMappingLookup,
   getTables,
-  getTablesForImport,
 } from '../../../store/bulkImport/bulkImport.action';
 import {
   clearExcelColumns,
@@ -389,9 +388,9 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     if (!(bulkImports.getTables.data && bulkImports.getTables.data.length > 0)) {
       dispatch(getTables());
     }
-    if (!table) {
-      dispatch(getTablesForImport());
-    }
+    // if (!table) {
+    //   dispatch(getTablesForImport());
+    // }
   }, [dispatch]);
 
   useEffect(() => {
