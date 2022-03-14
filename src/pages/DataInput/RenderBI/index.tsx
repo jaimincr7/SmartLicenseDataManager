@@ -7,7 +7,6 @@ import {
   deleteFileMapping,
   getExcelFileMappingLookup,
   getTables,
-  getTablesForImport,
 } from '../../../store/bulkImport/bulkImport.action';
 import {
   clearExcelColumns,
