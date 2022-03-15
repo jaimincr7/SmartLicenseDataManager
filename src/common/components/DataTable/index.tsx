@@ -82,6 +82,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
   const [indeterminate, setIndeterminate] = React.useState(false);
   const [checkAll, setCheckAll] = React.useState(false);
+  const isMounted = React.useRef(true);
   const [isDragged, setIsDragged] = React.useState(false);
   const [tableColumns, setTableColumns] = React.useState([]);
   const [selectedRowList, setSelectedRowList] = React.useState([]);
@@ -167,9 +168,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     dispatch(searchTableData(searchData));
   };
   useImperativeHandle(ref, () => ({
-    refreshData() {
-      fetchTableData();
-    },
+      refreshData() {
+        if (isMounted.current)
+        fetchTableData();
+      },
     getValuesForSelection() {
       const inlineSearchFilter = _.pickBy(tableFilter.current.filter_keys, function (value) {
         return !(
@@ -203,6 +205,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   React.useEffect(() => {
     return () => {
+      isMounted.current = false;
       //For RowSelection in Table
       pageLoaded = false;
       tableFilter.current = {
@@ -644,7 +647,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block tabel-search">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
-          {tableButtons ? tableButtons() : () => <></>}
+          {tableButtons ? tableButtons() : (<></>)}
           {!hideExportButton &&
             (reduxStoreData.search.count > 50000 ? (
               <Popconfirm title="Do you want to export file?" onConfirm={downloadExcel}>
