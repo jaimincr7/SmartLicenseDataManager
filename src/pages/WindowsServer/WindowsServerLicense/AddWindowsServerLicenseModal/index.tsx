@@ -215,9 +215,11 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
               ? getandReturn(filterKeys.filter_keys.date_added[0])
               : null,
         };
-        dispatch(
-          getScheduleDate(getScheduleDateHelperLookup(initlValues, tableName))
-        );
+        if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+          dispatch(
+            getScheduleDate(getScheduleDateHelperLookup(initlValues, tableName))
+          );
+        }
         form.setFieldsValue(initlValues);
       }
     }

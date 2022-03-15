@@ -113,11 +113,13 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
           ? passDateToApi(filterKeys.filter_keys.date_added[0])
           : null,
     };
-    dispatch(
-      getScheduleDate(
-        getScheduleDateHelperLookup(filterValues, windowsServersLicense.search.tableName)
-      )
-    );
+    if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+      dispatch(
+        getScheduleDate(
+          getScheduleDateHelperLookup(filterValues, windowsServersLicense.search.tableName)
+        )
+      );
+    }
     form.setFieldsValue(filterValues);
   }, []);
 

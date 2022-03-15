@@ -113,9 +113,11 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
           ? getandReturn(filterKeys.filter_keys.date_added[0]).format('YYYY-MM-DD')
           : null,
     };
-    dispatch(
-      getScheduleDate(getScheduleDateHelperLookup(filterValues, sqlServersLicense.search.tableName))
-    );
+    if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(filterValues, sqlServersLicense.search.tableName))
+      );
+    }
     form.setFieldsValue(filterValues);
   }, []);
 
