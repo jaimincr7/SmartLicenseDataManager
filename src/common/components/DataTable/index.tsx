@@ -82,7 +82,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   const [inlineSearch, setInlineSearch] = useState<IInlineSearch>({});
   const [indeterminate, setIndeterminate] = React.useState(false);
   const [checkAll, setCheckAll] = React.useState(false);
-  const isMounted = React.useRef(true);
   const [isDragged, setIsDragged] = React.useState(false);
   const [tableColumns, setTableColumns] = React.useState([]);
   const [selectedRowList, setSelectedRowList] = React.useState([]);
@@ -169,7 +168,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
   useImperativeHandle(ref, () => ({
       refreshData() {
-        if (isMounted.current)
         fetchTableData();
       },
     getValuesForSelection() {
@@ -205,7 +203,6 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
   React.useEffect(() => {
     return () => {
-      isMounted.current = false;
       //For RowSelection in Table
       pageLoaded = false;
       tableFilter.current = {
