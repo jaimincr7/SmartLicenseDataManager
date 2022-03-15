@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forDropDown, forEditModal, getandReturn, getObjectForUpdateMultiple, getScheduleDateHelperLookup, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
+import { forDropDown, forEditModal, getObjectForUpdateMultiple, getScheduleDateHelperLookup, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerLicense } from '../../../../services/windowsServer/windowsServerLicense/windowsServerLicense.model';
@@ -212,7 +212,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
           tenant_id: _.isNull(globalSearch.tenant_id) ? null : globalSearch.tenant_id[0],
           selected_date:
             filterKeys?.filter_keys?.date_added?.length === 1
-              ? getandReturn(filterKeys.filter_keys.date_added[0])
+              ? showDateFromApi(filterKeys.filter_keys.date_added[0])
               : null,
         };
         if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
