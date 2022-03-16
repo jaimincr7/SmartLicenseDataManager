@@ -574,10 +574,25 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         }
       );
 
-      const updatedColumns = sortedOrder?.map((a) =>
+      const remainingColumns = [];
+      let updatedColumns = sortedOrder?.map((a) =>
         tableColumns.find((x) => (x.column ? x.column.toString().toLowerCase() === a.toString().toLowerCase() : x.title === a))
       );
-      setTableColumns(updatedColumns);
+      updatedColumns = updatedColumns.filter((data) => data !== undefined);
+      for (const key in tableColumns) {
+        const element = tableColumns[key];
+        const flagColumn = updatedColumns.filter((x) => x?.column.toString().toLowerCase() === element?.column.toString().toLowerCase());
+        if (flagColumn && flagColumn.length < 1) {
+          remainingColumns.push(element);
+        }
+      }
+      let updatedVar = [];
+      if (remainingColumns.length) {
+        updatedVar = [...remainingColumns, ...updatedColumns];
+        setTableColumns(updatedVar);
+      } else {
+        setTableColumns(updatedColumns);
+      }
     }
   }, [reduxStoreData?.tableColumnSelection?.column_orders]);
 
