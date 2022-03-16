@@ -324,8 +324,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             }
           }
         });
+        const inlineSearchFilter = _.pickBy(tableFilter.filter_keys, function (value) {
+          return !(
+            value === undefined ||
+            value === '' ||
+            _.isNull(value) ||
+            (Array.isArray(value) && value.length === 0)
+          );
+        });
         const cllApiObj: ICallAllApi = {
-          filter_keys: tableFilter.filter_keys,
+          filter_keys: inlineSearchFilter,
           keyword: tableFilter.keyword,
           sps_api_query_param: {},
         };
