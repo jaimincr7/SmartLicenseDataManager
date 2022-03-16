@@ -21,9 +21,9 @@ import { ISearch } from '../../../../common/models/common';
 import DataTable from '../../../../common/components/DataTable';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { Popconfirm } from 'antd';
+import { Popconfirm, Popover } from 'antd';
 import { ICallAPI } from '../../../../services/sps/spsApiJobsData/spsApiJobsData.model';
-import { ReloadOutlined } from '@ant-design/icons';
+import { ReloadOutlined , InfoCircleOutlined } from '@ant-design/icons';
 import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
@@ -109,9 +109,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         children: [
           {
             title: FilterByDateSwap('api_call_start', spsApiJobsData.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true,
-            true),
+              ObjectForColumnFilter,
+              true,
+              true),
             dataIndex: 'api_call_start',
             key: 'api_call_start',
             ellipsis: true,
@@ -128,9 +128,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         children: [
           {
             title: FilterByDateSwap('api_call_end', spsApiJobsData.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true,
-            true),
+              ObjectForColumnFilter,
+              true,
+              true),
             dataIndex: 'api_call_end',
             key: 'api_call_end',
             ellipsis: true,
@@ -168,9 +168,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         children: [
           {
             title: FilterByDateSwap('processed', spsApiJobsData.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true,
-            true),
+              ObjectForColumnFilter,
+              true,
+              true),
             dataIndex: 'processed',
             key: 'processed',
             ellipsis: true,
@@ -217,9 +217,22 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
+  const renderInfoButton = () => {
+    return (
+      <a href="#" title="" className="action-btn">
+        <InfoCircleOutlined />
+      </a>
+    );
+  };
+
   const tableAction = (_, data: any) => (
     <div className="btns-block">
       {data.status !== 'Success' && renderActionButton(data)}
+      {data.status !== 'Success' && (
+        <Popover content={data.json} trigger="hover">
+          {renderInfoButton()}
+        </Popover>
+      )}
       <Can I={Action.Delete} a={Page.SpsApiJobs}>
         <Popconfirm title="Delete Record?">
           <a href="#" title="" className="action-btn">

@@ -194,6 +194,7 @@ const DeleteDatasetModal: React.FC<IDeleteDatasetModalProps> = (props) => {
             ? passDateToApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
+      if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1)
       dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));
       form.setFieldsValue(filterValues);
     }

@@ -102,7 +102,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     }
     form.setFieldsValue(data);
   };
-  
+
   useEffect(() => {
     if (windowsServerInventory.processData.messages.length > 0) {
       if (windowsServerInventory.processData.hasErrors) {
@@ -206,11 +206,13 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? getandReturn(filterKeys.filter_keys.date_added[0]).format('YYYY-MM-DD')
             : null,
       };
-      dispatch(
-        getScheduleDate(
-          getScheduleDateHelperLookup(filterValues, windowsServerInventory.search.tableName)
-        )
-      );
+      if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+        dispatch(
+          getScheduleDate(
+            getScheduleDateHelperLookup(filterValues, windowsServerInventory.search.tableName)
+          )
+        );
+      }
       form.setFieldsValue(filterValues);
     }
     return () => {

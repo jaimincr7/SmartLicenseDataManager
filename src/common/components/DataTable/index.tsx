@@ -167,9 +167,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     dispatch(searchTableData(searchData));
   };
   useImperativeHandle(ref, () => ({
-    refreshData() {
-      fetchTableData();
-    },
+      refreshData() {
+        fetchTableData();
+      },
     getValuesForSelection() {
       const inlineSearchFilter = _.pickBy(tableFilter.current.filter_keys, function (value) {
         return !(
@@ -575,7 +575,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       );
 
       const updatedColumns = sortedOrder?.map((a) =>
-        tableColumns.find((x) => (x.column ? x.column === a : x.title === a))
+        tableColumns.find((x) => (x.column ? x.column.toString().toLowerCase() === a.toString().toLowerCase() : x.title === a))
       );
       setTableColumns(updatedColumns);
     }
@@ -644,7 +644,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block tabel-search">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
-          {tableButtons ? tableButtons() : () => <></>}
+          {tableButtons ? tableButtons() : (<></>)}
           {!hideExportButton &&
             (reduxStoreData.search.count > 50000 ? (
               <Popconfirm title="Do you want to export file?" onConfirm={downloadExcel}>

@@ -95,7 +95,7 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
         sps_input_type_id: _.isNull(data.sps_input_type_id) ? null : data.sps_input_type_id,
         stored_procedure: data.stored_procedure,
         enabled: data.enabled,
-        api_data_format: data.api_data_forrmat,
+        api_data_format: _.isNull(data.api_data_format) ? 'Json' : data.api_data_format,
         is_system_defined: data.is_system_defined,
       };
       form.setFieldsValue(initialValues);

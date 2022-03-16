@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import ability from '../common/ability';
 import { Action, Page } from '../common/constants/pageAction';
 import authService from '../services/auth/auth.service';
+import commonService from '../services/common/common.service';
 import config from './config';
 
 export const axiosConfig = {
@@ -67,7 +68,17 @@ export const setResponseError = (history) => {
       }
       if (!error.response) {
         toast.error('Please check your internet connection.');
-        history.push('/500');
+        const json = {
+          error: error,
+        };
+        const obj = {
+          environment: 'FE',
+          json: JSON.stringify(json)
+        };
+        if(obj !== undefined && obj !== null)
+        commonService.errorLog(obj);
+        return;
+        //history.push('/500');
       }
       // Log somewhere
       const e = Array.isArray(error.response?.data.body.errors)
