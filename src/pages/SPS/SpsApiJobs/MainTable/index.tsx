@@ -127,6 +127,25 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ],
       },
       {
+        title: <span className="dragHandler">Date Added</span>,
+        column: 'Date Added',
+        sorter: true,
+        ellipsis: true,
+        children: [
+          {
+            title: FilterByDateSwap('date', spsApiJobs.search.tableName, form, null,
+            ObjectForColumnFilter,
+            true,
+            true),
+            dataIndex: 'date',
+            key: 'date',
+            ellipsis: true,
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '',
+          },
+        ],
+      },
+      {
         title: <span className="dragHandler">Call Start</span>,
         column: 'Call Start',
         sorter: true,
