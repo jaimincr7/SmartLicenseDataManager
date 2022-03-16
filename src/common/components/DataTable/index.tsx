@@ -564,7 +564,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   useEffect(() => {
-    if (reduxStoreData?.tableColumnSelection?.column_orders && isDragged) {
+    if (reduxStoreData?.tableColumnSelection?.column_orders) {
       const sortedOrder = Object.keys(reduxStoreData?.tableColumnSelection?.column_orders)?.sort(
         function (a, b) {
           return (
