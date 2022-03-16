@@ -99,7 +99,7 @@ function Sidebar() {
           <Can I={Action.View} a={Page.Version}>
             <div className="sidebar-version">
               <hr />
-              <span onClick={() => setShowVersionModal(true)}>Version: 1.6.1</span>
+              <span onClick={() => setShowVersionModal(true)}>Version: 1.6.2</span>
             </div>
           </Can>
         </div>

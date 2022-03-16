@@ -80,6 +80,7 @@ const BulkImport: React.FC = () => {
   const [dateChangeFlag, setDateChangeFlag] = useState(true);
   const [mappings, setMappings] = useState([]);
   const [expandedRecords, setExpandedRecords] = useState(null);
+  const [columnTableArray, setColumnTableArray] = useState<any>([]);
 
   const formUploadInitialValues = {
     header_row: 1,
@@ -365,7 +366,7 @@ const BulkImport: React.FC = () => {
     }
   }, [bulkImports.getCSVExcelColumns.data, bulkImports.getCSVExcelColumns.csvFiles]);
 
-  const updateRecords = () => {
+  const updateRecords = async () => {
     if (formUpload?.getFieldValue('table_name')) {
       const dummyRecords = _.cloneDeep(records);
       setLoading(true);
@@ -374,6 +375,10 @@ const BulkImport: React.FC = () => {
         data.table_name = formUpload?.getFieldValue('table_name');
         data.excel_to_sql_mapping = null;
       }
+      await commonService.getTableColumns(formUpload?.getFieldValue('table_name')).then((res) => {
+        if (res)
+          setColumnTableArray(res);
+      });
       setLoading(false);
       setMapping(dummyRecords);
     }
@@ -693,12 +698,11 @@ const BulkImport: React.FC = () => {
     if (dummyRecords === null) {
       dummyRecords = _.cloneDeep(records);
     }
-    await dummyRecords.map(async (data) => {
+    await dummyRecords.map((data) => {
       if (data && data.table_name !== undefined) {
         if (data.excel_to_sql_mapping == null) {
-          await commonService.getTableColumns(data.table_name).then((res) => {
-            if (res) {
-              const response: any = res;
+            if (columnTableArray) {
+              const response: any = columnTableArray;
               const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
               let filterExcelColumns: any = data.columns;
               const filterTableColumns = response?.filter(
@@ -732,7 +736,6 @@ const BulkImport: React.FC = () => {
               });
               data.excel_to_sql_mapping = sqlToExcelMapping;
             }
-          });
         }
       }
     });
