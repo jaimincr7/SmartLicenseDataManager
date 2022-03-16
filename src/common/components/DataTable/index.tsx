@@ -167,9 +167,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     dispatch(searchTableData(searchData));
   };
   useImperativeHandle(ref, () => ({
-      refreshData() {
-        fetchTableData();
-      },
+    refreshData() {
+      fetchTableData();
+    },
     getValuesForSelection() {
       const inlineSearchFilter = _.pickBy(tableFilter.current.filter_keys, function (value) {
         return !(
@@ -564,7 +564,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
   };
 
   useEffect(() => {
-    if (reduxStoreData?.tableColumnSelection?.column_orders) {
+    if (reduxStoreData?.tableColumnSelection?.column_orders && isDragged) {
       const sortedOrder = Object.keys(reduxStoreData?.tableColumnSelection?.column_orders)?.sort(
         function (a, b) {
           return (
