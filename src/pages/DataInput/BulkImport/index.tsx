@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, DatePicker, Form, message, Popover, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin, Switch } from 'antd';
 import { useHistory, useParams } from 'react-router-dom';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { Page } from '../../../common/constants/pageAction';
@@ -765,12 +765,12 @@ const BulkImport: React.FC = () => {
     const dummyRecords = _.cloneDeep(records);
     const duplicateFile = dummyRecords?.filter((data) => data.original_filename === file?.name);
     if (duplicateFile && duplicateFile.length) {
-      message.error(file?.name + ' File Name already exist');
+      toast.error(file?.name + ' File Name already exist');
       return false;
     }
     const isJpgOrPng = type === 'xls' || type === 'xlsx' || type === 'csv' || type === 'txt';
     if (!isJpgOrPng) {
-      message.error('You can only upload XLS/XLSX/CSV/TXT file!');
+      toast.error('You can only upload XLS/XLSX/CSV/TXT file!');
       return false;
     }
     return isJpgOrPng;
