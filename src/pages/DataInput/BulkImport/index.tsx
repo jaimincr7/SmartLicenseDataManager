@@ -384,9 +384,9 @@ const BulkImport: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    updateRecords();
-  }, [formUpload?.getFieldValue('table_name')]);
+  // useEffect(() => {
+  //   updateRecords();
+  // }, [formUpload?.getFieldValue('table_name')]);
 
   useEffect(() => {
     if (bulkImports.bulkInsert.messages.length > 0 && (count.save > 0 || count.reset > 0)) {
@@ -431,6 +431,9 @@ const BulkImport: React.FC = () => {
       bu_id: globalLookups.search.bu_id ? globalLookups.search.bu_id : null,
     };
     dispatch(getExcelFileMappingLookup(data));
+    if(tableName) {
+      updateRecords();
+    }
     return () => {
       dispatch(clearGetTableColumns());
       dispatch(clearBulkImport());
@@ -824,6 +827,7 @@ const BulkImport: React.FC = () => {
                           loading={bulkImports.getTables.loading || loading}
                           onChange={(name: string) => {
                             setTableName(name);
+                            updateRecords();
                           }}
                           showSearch
                           allowClear
