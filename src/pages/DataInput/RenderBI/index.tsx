@@ -305,7 +305,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
       let filterExcelColumns: any = bulkImports.getExcelColumns.data[
         selectedRowId - 1
-      ]?.excel_sheet_columns.find((e) => e.sheet === currentSheetName).columns;
+      ]?.excel_sheet_columns?.find((e) => e.sheet === currentSheetName)?.columns;
       const filterTableColumns = tableColumnState.filter(
         (x) => !columnsArray.includes(x.name?.toLowerCase())
       );
