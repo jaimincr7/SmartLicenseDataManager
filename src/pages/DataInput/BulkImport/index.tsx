@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, DatePicker, Form, Popover, Row, Select, Spin, Switch } from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, message, Popover, Row, Select, Spin, Switch } from 'antd';
 import { useHistory, useParams } from 'react-router-dom';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { Page } from '../../../common/constants/pageAction';
@@ -431,7 +431,7 @@ const BulkImport: React.FC = () => {
       bu_id: globalLookups.search.bu_id ? globalLookups.search.bu_id : null,
     };
     dispatch(getExcelFileMappingLookup(data));
-    if(tableName) {
+    if (tableName) {
       updateRecords();
     }
     return () => {
@@ -482,6 +482,7 @@ const BulkImport: React.FC = () => {
 
     const updatedFileList = [];
     fileList?.forEach((element) => {
+      if(records?.filter((data) => data.original_filename === element.originFileObj).length === 0)
       updatedFileList?.push(element.originFileObj ? element.originFileObj : element);
     });
     setDefaultFileList(updatedFileList);
@@ -704,41 +705,41 @@ const BulkImport: React.FC = () => {
     await dummyRecords.map((data) => {
       if (data && data.table_name !== undefined) {
         if (data.excel_to_sql_mapping == null) {
-            if (columnTableArray) {
-              const response: any = columnTableArray;
-              const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-              let filterExcelColumns: any = data.columns;
-              const filterTableColumns = response?.filter(
-                (x) => !columnsArray.includes(x.name?.toLowerCase())
-              );
-              if (filterExcelColumns?.length >= data.header_row) {
-                filterExcelColumns = filterExcelColumns[data.header_row - 1];
-              }
-              const ExcelColsSorted = [...filterExcelColumns];
-              ExcelColsSorted.sort();
-
-              const initialValuesData: any = {};
-              const sqlToExcelMapping = [];
-              filterTableColumns.map(function (ele) {
-                initialValuesData[ele.name] = ExcelColsSorted.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                    ele.name?.toLowerCase()?.replace(/\s+/g, '')
-                )[0];
-                data.validation =
-                  ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
-                    ? true
-                    : data.validation;
-                sqlToExcelMapping.push({
-                  key: `${ele.name}`,
-                  value:
-                    initialValuesData[ele.name] == undefined
-                      ? ''
-                      : `${initialValuesData[ele.name]}`,
-                });
-              });
-              data.excel_to_sql_mapping = sqlToExcelMapping;
+          if (columnTableArray) {
+            const response: any = columnTableArray;
+            const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+            let filterExcelColumns: any = data.columns;
+            const filterTableColumns = response?.filter(
+              (x) => !columnsArray.includes(x.name?.toLowerCase())
+            );
+            if (filterExcelColumns?.length >= data.header_row) {
+              filterExcelColumns = filterExcelColumns[data.header_row - 1];
             }
+            const ExcelColsSorted = [...filterExcelColumns];
+            ExcelColsSorted.sort();
+
+            const initialValuesData: any = {};
+            const sqlToExcelMapping = [];
+            filterTableColumns.map(function (ele) {
+              initialValuesData[ele.name] = ExcelColsSorted.filter(
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
+              )[0];
+              data.validation =
+                ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
+                  ? true
+                  : data.validation;
+              sqlToExcelMapping.push({
+                key: `${ele.name}`,
+                value:
+                  initialValuesData[ele.name] == undefined
+                    ? ''
+                    : `${initialValuesData[ele.name]}`,
+              });
+            });
+            data.excel_to_sql_mapping = sqlToExcelMapping;
+          }
         }
       }
     });
@@ -756,6 +757,24 @@ const BulkImport: React.FC = () => {
       setMapping();
     }
   }, [records]);
+
+  function beforeUpload(file) {
+    const type = file?.name?.slice(
+      ((file?.name.lastIndexOf('.') - 1) >>> 0) + 2
+    );
+    const dummyRecords = _.cloneDeep(records);
+    const duplicateFile = dummyRecords?.filter((data) => data.original_filename === file?.name);
+    if (duplicateFile && duplicateFile.length) {
+      message.error(file?.name + ' File Name already exist');
+      return false;
+    }
+    const isJpgOrPng = type === 'xls' || type === 'xlsx' || type === 'csv' || type === 'txt';
+    if (!isJpgOrPng) {
+      message.error('You can only upload XLS/XLSX/CSV/TXT file!');
+      return false;
+    }
+    return isJpgOrPng;
+  }
 
   return (
     <>
@@ -801,6 +820,7 @@ const BulkImport: React.FC = () => {
                     <Form.Item name={'upload_file'} className="m-0">
                       <div className="upload-file">
                         <Dragger
+                          beforeUpload={beforeUpload}
                           accept=".xls,.xlsx,.csv,.txt"
                           customRequest={uploadFile}
                           multiple={true}
@@ -816,6 +836,9 @@ const BulkImport: React.FC = () => {
                               : ` Uploading... (${bulkImports.getExcelColumns.progress}%)`}
                           </span>
                         </Dragger>
+                        <span style={{ color: 'red', textAlign: 'center' }}>
+                          {'File Type Supported: .xls,.xlsx,.csv,.txt'}
+                        </span>
                       </div>
                     </Form.Item>
                   </Col>
