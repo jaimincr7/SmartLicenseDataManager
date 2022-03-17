@@ -194,7 +194,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Start Date</span>,
         column: 'Start Date',
-        sorter: (a, b) => moment(a.date_added, Common.DATETIMEFORMAT).diff(moment(b.date_added, Common.DATETIMEFORMAT)),
+        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
@@ -217,7 +217,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Stop Date</span>,
         column: 'StopDate',
-        sorter: (a, b) => moment(a.date_added, Common.DATETIMEFORMAT).diff(moment(b.date_added, Common.DATETIMEFORMAT)),
+        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
@@ -291,7 +291,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Next Run Date</span>,
         column: 'nextRunDate',
-        sorter: (a, b) => moment(a.date_added, Common.DATETIMEFORMAT).diff(moment(b.date_added, Common.DATETIMEFORMAT)),
+        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
@@ -309,7 +309,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       {
         title: <span className="dragHandler">Last Run Date</span>,
         column: 'lastRunDate',
-        sorter: (a, b) => moment(a.date_added, Common.DATETIMEFORMAT).diff(moment(b.date_added, Common.DATETIMEFORMAT)),
+        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
