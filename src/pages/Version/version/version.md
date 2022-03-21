@@ -6,6 +6,7 @@
 
 ## **1.6.2**
 - Added a functionality for tracking of 'Long Running Background Process' and send email to administrator for that particular instance.
+- Add all api in ready state on call all.
 
 ## **1.6.1**
 - Added fav-icon for Synapse 360 app.
