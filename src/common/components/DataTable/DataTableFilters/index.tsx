@@ -55,6 +55,8 @@ export const FilterByDateSwap = (
   }, [swap]);
 
   React.useEffect(() => {
+    if(dataIndex === 'date_added')
+    setSwap(false);
     if (!swap) {
       if (getColumnLookup) {
         setLoading(true);
