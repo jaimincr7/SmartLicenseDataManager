@@ -39,4 +39,7 @@ export interface IDataTable {
 
   //For Excel Column Mapping Filter Keys
   isExcelColumnMapping?: boolean;
+
+  //Is From SPS API Jobs Id ?
+  isSpsApiJobsId?: boolean;
 }

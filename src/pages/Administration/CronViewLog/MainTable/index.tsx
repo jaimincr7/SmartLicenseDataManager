@@ -19,10 +19,12 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { IMainTable } from './mainTable.model';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
+import { useHistory } from 'react-router-dom';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { api_job_id } = props;
   const cronViewLog = useAppSelector(cronViewLogSelector);
+  const history = useHistory();
   const dataTableRef = useRef(null);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
 
@@ -45,7 +47,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       ObjectForColumnFilter
     );
   };
-  
+
   const getTableColumns = (form) => {
     return [
       {
@@ -126,9 +128,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         children: [
           {
             title: FilterByDateSwap('date_added', cronViewLog.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true,
-            true),
+              ObjectForColumnFilter,
+              true,
+              true),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -145,9 +147,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         children: [
           {
             title: FilterByDateSwap('complete_date', cronViewLog.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true,
-            true),
+              ObjectForColumnFilter,
+              true,
+              true),
             dataIndex: 'complete_date',
             key: 'complete_date',
             ellipsis: true,
@@ -169,6 +171,16 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
 
   const tableAction = (_, data: any) => (
     <div className="btns-block">
+      {data.api_job_id !== null ? (
+        <a
+          title=""
+          className="action-btn"
+          onClick={() => {
+            history.push(`/sps/sps-api-jobs?job_id=${data.api_job_id}`);
+          }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
+        </a>) : (<></>)}
       <Can I={Action.Error} a={Page.CronViewLogData}>
         {!(
           data.status == 'Success' ||

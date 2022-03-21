@@ -18,12 +18,13 @@ import {
   FilterByDropdown,
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
-import { IMainTable, ISearch } from '../../../../common/models/common';
+import { ISearch } from '../../../../common/models/common';
 import { useHistory } from 'react-router-dom';
 import DataTable from '../../../../common/components/DataTable';
 import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
+import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const spsApiJobs = useAppSelector(spsApiJobsSelector);
@@ -32,6 +33,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const history = useHistory();
   const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
+  const {job_id} = props;
+
+  const extraSearchData = {
+    id: job_id,
+  };
 
   useImperativeHandle(ref, () => ({
     refreshData() {
@@ -300,7 +306,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       <DataTable
         ref={dataTableRef}
         showAddButton={false}
+        extraSearchData={extraSearchData}
         //setSelectedId={setSelectedId}
+        isSpsApiJobsId={job_id > 0 ? true : false}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
