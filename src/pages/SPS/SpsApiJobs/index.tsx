@@ -13,11 +13,15 @@ import BreadCrumbs from '../../../common/components/Breadcrumbs';
 import { Can } from '../../../common/ability';
 import { Button } from 'antd';
 import DeleteDatasetModal from '../../../common/components/DeleteDatasetModal';
+import { useHistory } from 'react-router-dom';
 
 const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
   const spsApiJobs = useAppSelector(spsApiJobsSelector);
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const dataTableRef = useRef(null);
+  const queryParams = new URLSearchParams(window.location.search)
+  const job_id = queryParams.get("job_id")
 
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
@@ -59,9 +63,23 @@ const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
         <div className="right-title">
           <GlobalSearch />
         </div>
+        <div className="btns-block">
+          <Button
+            className="btn-icon"
+            type="primary"
+            onClick={() => history.goBack()}
+            icon={
+              <em className="anticon">
+                <img src={`${process.env.PUBLIC_URL}/assets/images/ic-left-arrow.svg`} alt="" />
+              </em>
+            }
+          >
+            Back
+          </Button>
+        </div>
       </div>
       <div className="main-card">
-        <MainTable ref={dataTableRef} tableButtons={tableButtons} />
+        <MainTable ref={dataTableRef} tableButtons={tableButtons} job_id={+job_id} />
       </div>
       {deleteModalVisible && (
         <DeleteDatasetModal

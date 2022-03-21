@@ -57,6 +57,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     hideShowHideButton,
     type_id,
     isExcelColumnMapping,
+    isSpsApiJobsId
   } = props;
 
   const tableFilter = useRef({
@@ -162,6 +163,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     }
     //setCallColumnApi(true);
     if (isExcelColumnMapping === true) {
+      searchData.filter_keys = { ...searchData.filter_keys, ...extraSearchData };
+    }
+    //For Sps Api Jobs Filter
+    if (isSpsApiJobsId === true) {
       searchData.filter_keys = { ...searchData.filter_keys, ...extraSearchData };
     }
     dispatch(searchTableData(searchData));
