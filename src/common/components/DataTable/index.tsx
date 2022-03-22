@@ -58,7 +58,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     type_id,
     isExcelColumnMapping,
     isSpsApiJobsId,
-    setDropDownFlag
+    setDropDownFlag,
+    dropDownFlag,
+    filterKeysDD
   } = props;
 
   const tableFilter = useRef({
@@ -641,7 +643,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               );
               const Obj = {
                 isLookup: !pageLoaded,
-                filterKeys: inlineSearchFilter,
+                filterKeys: dropDownFlag === true ? {...filterKeysDD} : inlineSearchFilter,
                 is_export_to_excel: !pageLoaded,
                 limit: 10,
                 offset: 0,

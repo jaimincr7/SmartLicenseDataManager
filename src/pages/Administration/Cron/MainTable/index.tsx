@@ -37,6 +37,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
   const [dropDownFlag, setDropDownFlag] = useState(false);
+  const [filterKeysID, setFilterKeysID] = useState({});
 
   const {
     setSelectedId,
@@ -53,7 +54,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }));
 
   useEffect(() => {
-    if (isMultiple) {
+    if (isMultiple && dropDownFlag === false) {
       dataTableRef?.current.getValuesForSelection();
     }
   }, [isMultiple]);
@@ -81,7 +82,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     searchRecords.map((data) => {
       filterIds.push(data.id);
     });
-    setObjectForColumnFilter(ObjectForColumnFilter: {...ObjectForColumnFilter,filter_keys: {id: filterIds}});
+    setFilterKeysID({ id: filterIds });
+    setValuesForSelection({ ...ObjectForColumnFilter, selectedIds: filterIds });
+    setFilterKeys({ ...ObjectForColumnFilter, filter_keys: { id: filterIds } });
     dispatch(searchWeekDays(searchRecords));
   };
 
@@ -442,8 +445,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
-  console.log(ObjectForColumnFilter);
-
   const removeCron = (id: number) => {
     dispatch(deleteCron(id));
   };
@@ -492,6 +493,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setSelectedId={setSelectedId}
         tableAction={tableAction}
         setDropDownFlag={setDropDownFlag}
+        dropDownFlag={dropDownFlag}
+        filterKeysDD={filterKeysID}
         hideExportButton={true}
         getTableColumns={getTableColumns}
         reduxSelector={cronSelector}

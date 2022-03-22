@@ -99,7 +99,8 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
       const result = getObjectForUpdateMultiple(
         valuesForSelection,
         inputValues,
-        cron.search.tableName
+        cron.search.tableName,
+        true
       );
       if (result) {
         dispatch(updateMultiple(result));

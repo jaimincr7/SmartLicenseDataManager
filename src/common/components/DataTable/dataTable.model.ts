@@ -45,4 +45,7 @@ export interface IDataTable {
 
   //For Schedule API week day drop down
   setDropDownFlag?: (val: boolean) => void;
+  dropDownFlag?: boolean;
+  filterKeysDD?: any;
+
 }
