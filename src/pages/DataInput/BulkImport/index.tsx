@@ -570,6 +570,16 @@ const BulkImport: React.FC = () => {
   const onCancel = () => {
     dispatch(clearExcelColumns());
     //setExcelColumnState([]);
+    if (records.length) {
+      const fileName = [];
+      const dummyRecord = _.cloneDeep(records);
+      dummyRecord.map((data) => {
+        if (fileName.indexOf(data.filename) === -1) {
+          fileName.push(data.filename);
+        }
+      });
+      commonService.deleteFileForBulkImport(fileName);
+    }
     if (bulkImports.getExcelColumns.progress !== null && commonService.cancelTokenSource !== null) {
       commonService.cancelTokenSource.cancel();
     }
@@ -701,41 +711,41 @@ const BulkImport: React.FC = () => {
     await dummyRecords.map((data) => {
       if (data && data.table_name !== undefined) {
         if (data.excel_to_sql_mapping == null) {
-            if (columnTableArray) {
-              const response: any = columnTableArray;
-              const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
-              let filterExcelColumns: any = data.columns;
-              const filterTableColumns = response?.filter(
-                (x) => !columnsArray.includes(x.name?.toLowerCase())
-              );
-              if (filterExcelColumns?.length >= data.header_row) {
-                filterExcelColumns = filterExcelColumns[data.header_row - 1];
-              }
-              const ExcelColsSorted = [...filterExcelColumns];
-              ExcelColsSorted.sort();
-
-              const initialValuesData: any = {};
-              const sqlToExcelMapping = [];
-              filterTableColumns.map(function (ele) {
-                initialValuesData[ele.name] = ExcelColsSorted.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                    ele.name?.toLowerCase()?.replace(/\s+/g, '')
-                )[0];
-                data.validation =
-                  ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
-                    ? true
-                    : data.validation;
-                sqlToExcelMapping.push({
-                  key: `${ele.name}`,
-                  value:
-                    initialValuesData[ele.name] == undefined
-                      ? ''
-                      : `${initialValuesData[ele.name]}`,
-                });
-              });
-              data.excel_to_sql_mapping = sqlToExcelMapping;
+          if (columnTableArray) {
+            const response: any = columnTableArray;
+            const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
+            let filterExcelColumns: any = data.columns;
+            const filterTableColumns = response?.filter(
+              (x) => !columnsArray.includes(x.name?.toLowerCase())
+            );
+            if (filterExcelColumns?.length >= data.header_row) {
+              filterExcelColumns = filterExcelColumns[data.header_row - 1];
             }
+            const ExcelColsSorted = [...filterExcelColumns];
+            ExcelColsSorted.sort();
+
+            const initialValuesData: any = {};
+            const sqlToExcelMapping = [];
+            filterTableColumns.map(function (ele) {
+              initialValuesData[ele.name] = ExcelColsSorted.filter(
+                (x: any) =>
+                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
+              )[0];
+              data.validation =
+                ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
+                  ? true
+                  : data.validation;
+              sqlToExcelMapping.push({
+                key: `${ele.name}`,
+                value:
+                  initialValuesData[ele.name] == undefined
+                    ? ''
+                    : `${initialValuesData[ele.name]}`,
+              });
+            });
+            data.excel_to_sql_mapping = sqlToExcelMapping;
+          }
         }
       }
     });

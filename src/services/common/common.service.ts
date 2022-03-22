@@ -475,9 +475,12 @@ class CommonService {
     });
   }
 
-  public async deleteFileForBulkImport(fileName: string): Promise<IApiResponse<any>> {
-    const url = `/app/delete-file/${fileName}`;
-    return request({ url, method: 'GET' }).then((res) => {
+  public async deleteFileForBulkImport(fileName: string[]): Promise<IApiResponse<any>> {
+    const data = {
+      files: fileName
+    };
+    const url = `/app/delete-file/`;
+    return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
   }
