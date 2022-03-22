@@ -42,4 +42,7 @@ export interface IDataTable {
 
   //Is From SPS API Jobs Id ?
   isSpsApiJobsId?: boolean;
+
+  //For Schedule API week day drop down
+  setDropDownFlag?: (val: boolean) => void;
 }

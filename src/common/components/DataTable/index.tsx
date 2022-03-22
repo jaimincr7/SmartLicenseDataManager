@@ -57,7 +57,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     hideShowHideButton,
     type_id,
     isExcelColumnMapping,
-    isSpsApiJobsId
+    isSpsApiJobsId,
+    setDropDownFlag
   } = props;
 
   const tableFilter = useRef({
@@ -300,6 +301,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     fetchTableData({ ...pagination, current: 1 });
   };
   const onReset = () => {
+    setDropDownFlag(false);
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];

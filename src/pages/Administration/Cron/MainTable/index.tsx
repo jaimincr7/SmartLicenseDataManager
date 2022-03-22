@@ -36,6 +36,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const history = useHistory();
   const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
+  const [dropDownFlag, setDropDownFlag] = useState(false);
 
   const {
     setSelectedId,
@@ -73,8 +74,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const searchWeekDay = (event) => {
+    setDropDownFlag(true);
     const dummyRecords = _.cloneDeep(cron.search.data);
     const searchRecords = dummyRecords.filter((data) => moment(data.start_date).format('dddd') === event);
+    const filterIds = [];
+    searchRecords.map((data) => {
+      filterIds.push(data.id);
+    });
+    setObjectForColumnFilter(ObjectForColumnFilter: {...ObjectForColumnFilter,filter_keys: {id: filterIds}});
     dispatch(searchWeekDays(searchRecords));
   };
 
@@ -88,6 +95,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             onChange={(event) => searchWeekDay(event)}
             allowClear
             showSearch
+            disabled={dropDownFlag}
             optionFilterProp="children"
             filterOption={(input, option: any) =>
               option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >=
@@ -434,6 +442,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
+  console.log(ObjectForColumnFilter);
+
   const removeCron = (id: number) => {
     dispatch(deleteCron(id));
   };
@@ -481,6 +491,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showAddButton={ability.can(Action.Add, Page.Cron)}
         setSelectedId={setSelectedId}
         tableAction={tableAction}
+        setDropDownFlag={setDropDownFlag}
         hideExportButton={true}
         getTableColumns={getTableColumns}
         reduxSelector={cronSelector}
