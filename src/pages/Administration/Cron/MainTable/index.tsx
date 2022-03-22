@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Form, Popconfirm, Select } from 'antd';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import _ from 'lodash';
@@ -8,7 +8,7 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
-import { setTableColumnSelection } from '../../../../store/master/cron/cron.reducer';
+import { searchWeekDays, setTableColumnSelection } from '../../../../store/master/cron/cron.reducer';
 import {
   deleteCron,
   searchCron,
@@ -26,6 +26,8 @@ import { Common } from '../../../../common/constants/common';
 import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import { IStartApi } from '../../../../services/master/cron/cron.model';
 import { toast } from 'react-toastify';
+
+const { Option } = Select;
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const cron = useAppSelector(cronSelector);
@@ -67,6 +69,47 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       form,
       null,
       ObjectForColumnFilter
+    );
+  };
+
+  const searchWeekDay = (event) => {
+    const dummyRecords = _.cloneDeep(cron.search.data);
+    const searchRecords = dummyRecords.filter((data) => moment(data.start_date).format('dddd') === event);
+    dispatch(searchWeekDays(searchRecords));
+  };
+
+  const FilterByWeekDay = () => {
+    return (
+      <div className="input-filter-group">
+        <Form.Item name={'week_day'} className="m-0 filter-input sm">
+          <Select
+            placeholder="Select"
+            maxTagCount="responsive"
+            onChange={(event) => searchWeekDay(event)}
+            allowClear
+            showSearch
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >=
+              0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children
+                ?.toString()
+                ?.toLowerCase()
+                ?.localeCompare(optionB.children?.toString()?.toLowerCase())
+            }
+          >
+            <Option value="Monday">Monday</Option>
+            <Option value="Tuesday">Tuesday</Option>
+            <Option value="Wednesday">Wednesday</Option>
+            <Option value="Thursday">Thursday</Option>
+            <Option value="Friday">Friday</Option>
+            <Option value="Saturday">Saturday</Option>
+            <Option value="Sunday">Sunday</Option>
+          </Select>
+        </Form.Item>
+      </div>
     );
   };
 
@@ -253,7 +296,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            //title: FilterBySwap('start_date', form),
+            title: FilterByWeekDay(),
             dataIndex: 'start_date',
             key: 'start_date',
             render: (_, data) => (data.frequency_type == 'Weekly' ? moment(data.start_date).format('dddd') : ''),
