@@ -215,6 +215,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           },
         ],
       },
+      {
+        title: <span className="dragHandler">License ID</span>,
+        column: 'License_Id',
+        sorter: true,
+        children: [
+          {
+            title: FilterBySwap('license_id', form),
+            dataIndex: 'license_id',
+            key: 'license_id',
+            ellipsis: true,
+          },
+        ],
+      },
     ];
   };
 
