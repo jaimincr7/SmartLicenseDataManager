@@ -304,6 +304,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     fetchTableData({ ...pagination, current: 1 });
   };
   const onReset = () => {
+    if(setDropDownFlag)
     setDropDownFlag(false);
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
