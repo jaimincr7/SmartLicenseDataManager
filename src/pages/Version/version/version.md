@@ -4,6 +4,10 @@
 
 [MetrixData 360](https://metrixdata360.com) is a professional Software Asset Management company that helps organizations optimize their software licensing and cloud environments.
 
+## **1.6.2**
+- Added a functionality for tracking of 'Long Running Background Process' and send email to administrator for that particular instance.
+- Add all api in ready state on 'Call All'.
+
 ## **1.6.1**
 - Added fav-icon for Synapse 360 app.
 - Added meta-data description for Synapse 360 app.
