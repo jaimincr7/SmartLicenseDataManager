@@ -574,6 +574,16 @@ const BulkImport: React.FC = () => {
   const onCancel = () => {
     dispatch(clearExcelColumns());
     //setExcelColumnState([]);
+    if (records.length) {
+      const fileName = [];
+      const dummyRecord = _.cloneDeep(records);
+      dummyRecord.map((data) => {
+        if (fileName.indexOf(data.filename) === -1) {
+          fileName.push(data.filename);
+        }
+      });
+      commonService.deleteFileForBulkImport(fileName);
+    }
     if (bulkImports.getExcelColumns.progress !== null && commonService.cancelTokenSource !== null) {
       commonService.cancelTokenSource.cancel();
     }

@@ -431,6 +431,16 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
     );
     setWithoutUnmappedRecords(unmapRec);
     return () => {
+      // if (records.length) {
+      //   const fileName = [];
+      //   const dummyRecord = _.cloneDeep(records);
+      //   dummyRecord.map((data) => {
+      //     if (fileName.indexOf(data.filename) === -1) {
+      //       fileName.push(data.filename);
+      //     }
+      //   });
+      //   commonService.deleteFileForBulkImport(fileName);
+      // }
       setTableColumnState([]);
     };
   }, []);
@@ -682,7 +692,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         }
       });
       if (!flag) {
-        commonService.deleteFileForBulkImport(fileName);
+        commonService.deleteFileForBulkImport([fileName]);
       }
 
       const dummyWithoutRecords = _.cloneDeep(filteredRecords);
