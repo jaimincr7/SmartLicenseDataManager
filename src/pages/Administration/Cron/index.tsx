@@ -21,6 +21,7 @@ const Cron: React.FC<ICronProps> = (props) => {
   const [id, setId] = React.useState(0);
   const [filterKeys, setFilterKeys] = React.useState({});
   const [showSelectedListModal, setShowSelectedListModal] = React.useState(false);
+  const [dropDownFlag, setDropDownFlag] = React.useState(false);
   const [valuesForSelection, setValuesForSelection] = React.useState(null);
 
   useEffect(() => {
@@ -65,6 +66,8 @@ const Cron: React.FC<ICronProps> = (props) => {
             setId(id);
             setAddModalVisible(true);
           }}
+          dropDownFlag={dropDownFlag}
+          setDropDownFlag={setDropDownFlag}
         />
       </div>
       {addModalVisible && (
@@ -91,6 +94,7 @@ const Cron: React.FC<ICronProps> = (props) => {
           }}
           id={id}
           refreshDataTable={() => refreshDataTable()}
+          setDropDownFlag={setDropDownFlag}
         />
       )}
     </div>

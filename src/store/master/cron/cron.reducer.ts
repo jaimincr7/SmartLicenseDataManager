@@ -80,6 +80,9 @@ export const cronSlice = createSlice({
     setTableColumnSelection: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
       state.tableColumnSelection.columns = action.payload;
     },
+    searchWeekDays: (state, data: any) => {
+      state.search.data = data.payload;
+    },
   },
   extraReducers: {
     // Search
@@ -219,7 +222,7 @@ export const cronSlice = createSlice({
 export const cronSelector = (state: RootState) => state.cron;
 
 // Actions
-export const { clearCron, clearCronMessages, clearCronGetById, setTableColumnSelection } =
+export const { clearCron, clearCronMessages, clearCronGetById, setTableColumnSelection, searchWeekDays } =
   cronSlice.actions;
 
 // The reducer

@@ -57,7 +57,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     hideShowHideButton,
     type_id,
     isExcelColumnMapping,
-    isSpsApiJobsId
+    isSpsApiJobsId,
+    setDropDownFlag,
+    dropDownFlag,
+    filterKeysDD,
+    filterRecordsForLocalSearch,
   } = props;
 
   const tableFilter = useRef({
@@ -300,6 +304,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     fetchTableData({ ...pagination, current: 1 });
   };
   const onReset = () => {
+    if(setDropDownFlag)
+    setDropDownFlag(false);
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
@@ -639,7 +645,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               );
               const Obj = {
                 isLookup: !pageLoaded,
-                filterKeys: inlineSearchFilter,
+                filterKeys: dropDownFlag === true ? {...filterKeysDD} : inlineSearchFilter,
                 is_export_to_excel: !pageLoaded,
                 limit: 10,
                 offset: 0,
@@ -647,6 +653,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                 order_direction: tableFilter.current.order_direction,
                 keyword: tableFilter.current.keyword,
               };
+              setDropDownFlag(false);
               dispatch(startAll(Obj));
             } else {
               onRowSelection();
@@ -708,7 +715,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               disabled={reduxStoreData.search.count == 0}
             >
               {Object.keys(selectedRowList).length <= 1
-                ? `Update All (${reduxStoreData.search.count})`
+                ? `Update All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length :reduxStoreData.search.count})`
                 : `Update Selected (${Object.keys(selectedRowList).length - 1})`}
             </Button>
           )}
@@ -734,7 +741,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               '-' +
               (record['oauth_id'] ? record['oauth_id'] : '')
             }
-            dataSource={reduxStoreData.search.data}
+            dataSource={dropDownFlag === true ? filterRecordsForLocalSearch : reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
             loading={
               reduxStoreData.search.loading ||
@@ -743,7 +750,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               reduxStoreData?.callApi?.loading ||
               reduxStoreData?.runJobData?.loading
             }
-            pagination={{
+            pagination={isStartSchedulaAllApi ? false :
+              {
               ...pagination,
               pageSizeOptions: ['10', '100', '500', '1000'],
               showSizeChanger: true,

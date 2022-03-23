@@ -6,4 +6,5 @@ export interface IAddCronProps {
   refreshDataTable: () => void;
   valuesForSelection?: any[];
   filterKeys?: any;
+  setDropDownFlag?: (val: boolean) => void;
 }
