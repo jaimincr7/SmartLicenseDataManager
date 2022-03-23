@@ -652,6 +652,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                 order_direction: tableFilter.current.order_direction,
                 keyword: tableFilter.current.keyword,
               };
+              setDropDownFlag(false);
               dispatch(startAll(Obj));
             } else {
               onRowSelection();
@@ -748,7 +749,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               reduxStoreData?.callApi?.loading ||
               reduxStoreData?.runJobData?.loading
             }
-            pagination={{
+            pagination={isStartSchedulaAllApi ? false :
+              {
               ...pagination,
               pageSizeOptions: ['10', '100', '500', '1000'],
               showSizeChanger: true,

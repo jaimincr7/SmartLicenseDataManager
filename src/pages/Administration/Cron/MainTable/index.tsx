@@ -20,23 +20,22 @@ import { globalSearchSelector } from '../../../../store/globalSearch/globalSearc
 import { useHistory } from 'react-router-dom';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { IMainTable } from '../../../../common/models/common';
 import moment from 'moment';
 import { Common } from '../../../../common/constants/common';
 import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import { IStartApi } from '../../../../services/master/cron/cron.model';
 import { toast } from 'react-toastify';
+import { IMainTableCron } from './mainTable';
 
 const { Option } = Select;
 
-const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
+const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (props, ref) => {
   const cron = useAppSelector(cronSelector);
   const dataTableRef = useRef(null);
   const dispatch = useAppDispatch();
   const history = useHistory();
   const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
-  const [dropDownFlag, setDropDownFlag] = useState(false);
   const [filterKeysID, setFilterKeysID] = useState({});
   const [filterRecords, setFilterRecords] = useState([]);
 
@@ -47,6 +46,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     setValuesForSelection,
     isMultiple,
     setFilterKeys,
+    dropDownFlag,
+    setDropDownFlag
   } = props;
 
   useImperativeHandle(ref, () => ({
@@ -76,6 +77,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
     );
   };
 
+  //For Searching in Week Day...
   const searchWeekDay = (event) => {
     if (event !== undefined) {
       setDropDownFlag(true);
@@ -125,6 +127,86 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             <Option value="Friday">Friday</Option>
             <Option value="Saturday">Saturday</Option>
             <Option value="Sunday">Sunday</Option>
+          </Select>
+        </Form.Item>
+      </div>
+    );
+  };
+
+  //For Searching in Month Day...
+  const searchMonthDay = (event) => {
+    if (event !== undefined) {
+      setDropDownFlag(true);
+      const dummyRecords = _.cloneDeep(cron.search.data);
+      const searchRecords = dummyRecords.filter((data) => data.month_day_name === +event);
+      const filterIds = [];
+      searchRecords.map((data) => {
+        filterIds.push(data.id);
+      });
+      setFilterKeysID({ id: filterIds });
+      setValuesForSelection({ ...ObjectForColumnFilter, selectedIds: filterIds });
+      setFilterKeys({ ...ObjectForColumnFilter, filter_keys: { id: filterIds } });
+      setFilterRecords(searchRecords);
+    } else {
+      setDropDownFlag(false);
+    }
+    //dispatch(searchWeekDays(searchRecords));
+  };
+
+  const FilterByMonthDay = () => {
+    return (
+      <div className="input-filter-group">
+        <Form.Item name={'month_day'} className="m-0 filter-input sm">
+          <Select
+            placeholder="Select"
+            maxTagCount="responsive"
+            onChange={(event) => searchMonthDay(event)}
+            allowClear
+            showSearch
+            //disabled={dropDownFlag}
+            optionFilterProp="children"
+            filterOption={(input, option: any) =>
+              option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >=
+              0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA.children
+                ?.toString()
+                ?.toLowerCase()
+                ?.localeCompare(optionB.children?.toString()?.toLowerCase())
+            }
+          >
+            <Option value="1">1</Option>
+            <Option value="2">2</Option>
+            <Option value="3">3</Option>
+            <Option value="4">4</Option>
+            <Option value="5">5</Option>
+            <Option value="6">6</Option>
+            <Option value="7">7</Option>
+            <Option value="8">8</Option>
+            <Option value="9">9</Option>
+            <Option value="10">10</Option>
+            <Option value="11">11</Option>
+            <Option value="12">12</Option>
+            <Option value="13">13</Option>
+            <Option value="14">14</Option>
+            <Option value="15">15</Option>
+            <Option value="16">16</Option>
+            <Option value="17">17</Option>
+            <Option value="18">18</Option>
+            <Option value="19">19</Option>
+            <Option value="20">20</Option>
+            <Option value="21">21</Option>
+            <Option value="22">22</Option>
+            <Option value="23">23</Option>
+            <Option value="24">24</Option>
+            <Option value="25">25</Option>
+            <Option value="26">26</Option>
+            <Option value="27">27</Option>
+            <Option value="28">28</Option>
+            <Option value="29">29</Option>
+            <Option value="30">30</Option>
+            <Option value="31">31</Option>
           </Select>
         </Form.Item>
       </div>
@@ -328,7 +410,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            //title: FilterBySwap('start_date', form),
+            title: FilterByMonthDay(),
             dataIndex: 'frequency_day',
             key: 'frequency_day',
             render: (_, data) => (data.frequency_type == 'Monthly' ? data.frequency_day : ''),

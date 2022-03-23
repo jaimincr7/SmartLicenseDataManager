@@ -60,6 +60,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     refreshDataTable,
     isMultiple,
     valuesForSelection,
+    setDropDownFlag
   } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -96,6 +97,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     if (!isMultiple) {
       dispatch(saveCron(inputValues));
     } else {
+      setDropDownFlag(false);
       const result = getObjectForUpdateMultiple(
         valuesForSelection,
         inputValues,
