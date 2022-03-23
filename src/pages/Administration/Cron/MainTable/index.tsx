@@ -8,7 +8,7 @@ import {
   FilterWithSwapOption,
 } from '../../../../common/components/DataTable/DataTableFilters';
 import DataTable from '../../../../common/components/DataTable';
-import { searchWeekDays, setTableColumnSelection } from '../../../../store/master/cron/cron.reducer';
+import { setTableColumnSelection } from '../../../../store/master/cron/cron.reducer';
 import {
   deleteCron,
   searchCron,
@@ -38,6 +38,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
   const [dropDownFlag, setDropDownFlag] = useState(false);
   const [filterKeysID, setFilterKeysID] = useState({});
+  const [filterRecords, setFilterRecords] = useState([]);
+
 
   const {
     setSelectedId,
@@ -75,17 +77,22 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   };
 
   const searchWeekDay = (event) => {
-    setDropDownFlag(true);
-    const dummyRecords = _.cloneDeep(cron.search.data);
-    const searchRecords = dummyRecords.filter((data) => moment(data.start_date).format('dddd') === event);
-    const filterIds = [];
-    searchRecords.map((data) => {
-      filterIds.push(data.id);
-    });
-    setFilterKeysID({ id: filterIds });
-    setValuesForSelection({ ...ObjectForColumnFilter, selectedIds: filterIds });
-    setFilterKeys({ ...ObjectForColumnFilter, filter_keys: { id: filterIds } });
-    dispatch(searchWeekDays(searchRecords));
+    if (event !== undefined) {
+      setDropDownFlag(true);
+      const dummyRecords = _.cloneDeep(cron.search.data);
+      const searchRecords = dummyRecords.filter((data) => moment(data.start_date).format('dddd') === event);
+      const filterIds = [];
+      searchRecords.map((data) => {
+        filterIds.push(data.id);
+      });
+      setFilterKeysID({ id: filterIds });
+      setValuesForSelection({ ...ObjectForColumnFilter, selectedIds: filterIds });
+      setFilterKeys({ ...ObjectForColumnFilter, filter_keys: { id: filterIds } });
+      setFilterRecords(searchRecords);
+    } else {
+      setDropDownFlag(false);
+    }
+    //dispatch(searchWeekDays(searchRecords));
   };
 
   const FilterByWeekDay = () => {
@@ -98,7 +105,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             onChange={(event) => searchWeekDay(event)}
             allowClear
             showSearch
-            disabled={dropDownFlag}
+            //disabled={dropDownFlag}
             optionFilterProp="children"
             filterOption={(input, option: any) =>
               option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >=
@@ -495,6 +502,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setDropDownFlag={setDropDownFlag}
         dropDownFlag={dropDownFlag}
         filterKeysDD={filterKeysID}
+        filterRecordsForLocalSearch={filterRecords}
         hideExportButton={true}
         getTableColumns={getTableColumns}
         reduxSelector={cronSelector}

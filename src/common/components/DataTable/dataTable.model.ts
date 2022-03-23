@@ -47,5 +47,5 @@ export interface IDataTable {
   setDropDownFlag?: (val: boolean) => void;
   dropDownFlag?: boolean;
   filterKeysDD?: any;
-
+  filterRecordsForLocalSearch?: any[];
 }

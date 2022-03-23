@@ -60,7 +60,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     isSpsApiJobsId,
     setDropDownFlag,
     dropDownFlag,
-    filterKeysDD
+    filterKeysDD,
+    filterRecordsForLocalSearch,
   } = props;
 
   const tableFilter = useRef({
@@ -712,7 +713,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               disabled={reduxStoreData.search.count == 0}
             >
               {Object.keys(selectedRowList).length <= 1
-                ? `Update All (${reduxStoreData.search.count})`
+                ? `Update All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length :reduxStoreData.search.count})`
                 : `Update Selected (${Object.keys(selectedRowList).length - 1})`}
             </Button>
           )}
@@ -738,7 +739,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               '-' +
               (record['oauth_id'] ? record['oauth_id'] : '')
             }
-            dataSource={reduxStoreData.search.data}
+            dataSource={dropDownFlag === true ? filterRecordsForLocalSearch : reduxStoreData.search.data}
             columns={isDragged ? tableColumns : getColumns()}
             loading={
               reduxStoreData.search.loading ||
