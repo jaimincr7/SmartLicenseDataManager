@@ -277,6 +277,17 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
 
   useEffect(() => {
     if (count.reset > 0) {
+      if (records.length) {
+        debugger;
+        const fileName = [];
+        const dummyRecord = _.cloneDeep(records);
+        dummyRecord.map((data) => {
+          if (fileName.indexOf(data.filename) === -1) {
+            fileName.push(data.filename);
+          }
+        });
+        commonService.deleteFileForBulkImport(fileName);
+      }
       resetPage();
       setRecords([]);
     }
