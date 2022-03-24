@@ -1070,6 +1070,16 @@ const BulkImport: React.FC = () => {
                 setMappings([]);
                 setCount({ save: 0, reset: count.reset + 1 });
                 onCancel();
+                if (records.length) {
+                  const fileName = [];
+                  const dummyRecord = _.cloneDeep(records);
+                  dummyRecord.map((data) => {
+                    if (fileName.indexOf(data.filename) === -1) {
+                      fileName.push(data.filename);
+                    }
+                  });
+                  commonService.deleteFileForBulkImport(fileName);
+                }
               }}
             >
               Cancel
