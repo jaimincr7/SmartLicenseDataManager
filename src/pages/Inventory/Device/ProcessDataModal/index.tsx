@@ -91,7 +91,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     }
     if (data.bu_id) {
       await dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), 'Device'))
       );
     }
     form.setFieldsValue(data);
@@ -143,7 +143,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), 'Device')
         )
       );
     }
@@ -191,7 +191,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       };
       if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
         dispatch(
-          getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
+          getScheduleDate(getScheduleDateHelperLookup(filterValues, 'Device'))
         );
       }
       form.setFieldsValue(filterValues);
