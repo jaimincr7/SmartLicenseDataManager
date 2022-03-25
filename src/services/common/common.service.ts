@@ -502,7 +502,7 @@ class CommonService {
   }
 
   public async bulkInsert(data: IBulkInsertDataset): Promise<IApiResponse<any>> {
-    const url = `/app/bulk-insert`;
+    const url = `/back-ground-processes/bulk-insert`;
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
     });
