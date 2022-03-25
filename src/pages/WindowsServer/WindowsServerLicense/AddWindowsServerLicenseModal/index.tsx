@@ -14,7 +14,7 @@ import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
-import { validateMessages } from '../../../../common/constants/common';
+import { TableNames, validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { forDropDown, forEditModal, getObjectForUpdateMultiple, getScheduleDateHelperLookup, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
@@ -64,7 +64,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
     filterKeys,
     isMultiple,
     valuesForSelection,
-    tableName
+    //tableName
   } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -124,7 +124,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), TableNames.WindowsServer)
         )
       );
     }
@@ -217,7 +217,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
         };
         if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
           dispatch(
-            getScheduleDate(getScheduleDateHelperLookup(initlValues, tableName))
+            getScheduleDate(getScheduleDateHelperLookup(initlValues, TableNames.WindowsServer))
           );
         }
         form.setFieldsValue(initlValues);

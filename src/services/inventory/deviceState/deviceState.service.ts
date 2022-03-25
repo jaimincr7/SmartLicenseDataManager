@@ -51,7 +51,7 @@ class DeviceStateService {
   }
 
   public async exportExcelFile(searchParams?: ISearchDeviceState): Promise<any> {
-    const url = `device/search`;
+    const url = `back-ground-processes/export-excel`;
     return request({
       url,
       method: 'POST',
