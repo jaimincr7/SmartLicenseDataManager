@@ -14,7 +14,7 @@ import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
-import { validateMessages } from '../../../../common/constants/common';
+import { TableNames, validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
 import { forDropDown, forEditModal, getObjectForUpdateMultiple, getScheduleDateHelperLookup, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
@@ -64,7 +64,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
     filterKeys,
     isMultiple,
     valuesForSelection,
-    tableName
+    //tableName
   } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -130,7 +130,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), TableNames.SqlServer)
         )
       );
     }
@@ -228,7 +228,7 @@ const AddSqlServerLicenseModal: React.FC<IAddSqlServerLicenseProps> = (props) =>
         };
         if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
           dispatch(
-            getScheduleDate(getScheduleDateHelperLookup(initlValues, tableName))
+            getScheduleDate(getScheduleDateHelperLookup(initlValues, TableNames.SqlServer))
           );
         }
         form.setFieldsValue(initlValues);

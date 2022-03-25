@@ -36,6 +36,11 @@ export const validateMessages = {
   },
 };
 
+export const TableNames = {
+  SqlServer: 'SQL Server',
+  WindowsServer: 'Windows Server',
+}
+
 export const allDateColumns = [
   'date_added',
   'quote_begin_date',

@@ -50,7 +50,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: getSimpleDate().format(Common.DATEFORMAT),
+    date_added: getSimpleDate().format(Common.DATEFORMAT),
     update_device_states_inc_non_prod: false,
     update_device_states_by_keyword: false,
     x_ref_ad: false,
@@ -58,7 +58,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   };
 
   const onFinish = (values: any) => {
-    values.selected_date = passDateToApi(values.selected_date, false);
+    values.date_added = passDateToApi(values.date_added, false);
     values.table_name = tableName;
     dispatch(processDataDevice(values));
   };
@@ -70,7 +70,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       globalSearch[key] = element ? [element] : null;
     }
     const fieldValues = { ...form.getFieldsValue() };
-    delete fieldValues.selected_date;
+    delete fieldValues.date_added;
     const setModelSelection: IConfigModelPopUpDataSelection = {
       id:
         commonLookups.getModelPopUpSelection.id === null
@@ -91,7 +91,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     }
     if (data.bu_id) {
       await dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), 'Device'))
       );
     }
     form.setFieldsValue(data);
@@ -143,7 +143,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (buId) {
       dispatch(
         getScheduleDate(
-          getScheduleDateHelperLookup(form.getFieldsValue(), tableName)
+          getScheduleDateHelperLookup(form.getFieldsValue(), 'Device')
         )
       );
     }
@@ -184,14 +184,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       const filterValues = {
         company_id: _.isNull(globalSearch.company_id) || !(globalSearch.company_id) ? null : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) || !(globalSearch.bu_id) ? null : globalSearch.bu_id[0],
-        selected_date:
+        date_added:
           filterKeys?.filter_keys?.date_added?.length === 1
             ? getandReturn(filterKeys.filter_keys.date_added[0]).format(Common.DATEFORMAT)
             : null,
       };
       if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
         dispatch(
-          getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
+          getScheduleDate(getScheduleDateHelperLookup(filterValues, 'Device'))
         );
       }
       form.setFieldsValue(filterValues);
@@ -285,7 +285,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date</label>
-                <Form.Item name="selected_date" className="m-0" label="Selected Date" rules={[{ required: true }]}>
+                <Form.Item name="date_added" className="m-0" label="Selected Date" rules={[{ required: true }]}>
                   <Select
                     placeholder="Select Date"
                     loading={commonLookups.getScheduledDate.loading}
@@ -315,7 +315,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             {/* <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date </label>
-                <Form.Item name="selected_date" label="Selected Date " className="m-0" rules={[{ required: true }]}>
+                <Form.Item name="date_added" label="Selected Date " className="m-0" rules={[{ required: true }]}>
                   <DatePicker className="w-100" />
                 </Form.Item>
               </div>

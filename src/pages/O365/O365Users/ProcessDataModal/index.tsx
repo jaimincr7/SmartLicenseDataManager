@@ -51,14 +51,14 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: null,
+    date_added: null,
   };
 
   const onFinish = (values: any) => {
     const finalProcessData: IProcessData = {
       company_id: values.company_id,
       bu_id: values.bu_id,
-      selected_date: values.selected_date,
+      date_added: values.date_added,
       table_name: tableName,
     };
     dispatch(processDataO365(finalProcessData));
@@ -71,7 +71,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
       globalSearch[key] = element ? [element] : null;
     }
     const fieldValues = { ...form.getFieldsValue() };
-    delete fieldValues.selected_date;
+    delete fieldValues.date_added;
     const setModelSelection: IConfigModelPopUpDataSelection = {
       id:
         commonLookups.getModelPopUpSelection.id === null
@@ -188,7 +188,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? null
             : globalSearch.company_id[0],
         bu_id: _.isNull(globalSearch.bu_id) || !globalSearch.bu_id ? null : globalSearch.bu_id[0],
-        selected_date:
+        date_added:
           filterKeys?.filter_keys?.date_added?.length === 1
             ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
@@ -301,7 +301,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
                 <label className="label">Selected Date</label>
-                <Form.Item name="selected_date" className="m-0" label="Selected Added">
+                <Form.Item name="date_added" className="m-0" label="Selected Added">
                   <Select
                     placeholder="Select Date"
                     loading={commonLookups.getScheduledDate.loading}

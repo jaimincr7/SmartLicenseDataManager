@@ -86,7 +86,7 @@ export interface IO365Users {
 export interface IProcessData {
   company_id?: number;
   bu_id?: number;
-  selected_date?: any;
+  date_added?: any;
   table_name?: string;
 }
 
