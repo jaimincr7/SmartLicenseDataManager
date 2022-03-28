@@ -16,7 +16,8 @@ export const getPageHeight = () => {
 export const getObjectForUpdateMultiple = (
   valuesForSelection: any,
   inputValues: any,
-  tableName: string
+  tableName: string,
+  isDummyDropDown?: boolean
 ) => {
   const Obj: any = {
     ...valuesForSelection,
@@ -34,15 +35,17 @@ export const getObjectForUpdateMultiple = (
     toast.error('Please select at least 1 field to update');
     return;
   }
-  Object.keys(Obj.filterKeys)?.forEach((key) => {
-    const val = Obj.filterKeys[key];
-    if (val?.length === 2 && typeof val[0] === 'object' && moment(val[0]).isValid()) {
-      Obj.filterKeys[key] = {
-        start_date: val[0],
-        end_date: val[1],
-      };
-    }
-  });
+  if (isDummyDropDown !== true) {
+    Object.keys(Obj.filterKeys)?.forEach((key) => {
+      const val = Obj.filterKeys[key];
+      if (val?.length === 2 && typeof val[0] === 'object' && moment(val[0]).isValid()) {
+        Obj.filterKeys[key] = {
+          start_date: val[0],
+          end_date: val[1],
+        };
+      }
+    });
+  }
   const objectForSelection = {
     table_name: tableName,
     update_data: bu1,
@@ -55,7 +58,11 @@ export const getObjectForUpdateMultiple = (
     current_user: {},
     order_direction: Obj.order_direction,
   };
-  objectForSelection['selectedIds'] = rowList.selectedRowList;
+  if (isDummyDropDown === true) {
+    objectForSelection['selectedIds'] = Obj.selectedIds;
+  } else {
+    objectForSelection['selectedIds'] = rowList.selectedRowList;
+  }
   return objectForSelection;
 };
 
