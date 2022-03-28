@@ -260,7 +260,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         />
 
         <div className="btns-block modal-footer">
-          <Popconfirm title="Your mapping drop down will be over-written.Move forward?" onConfirm={() => submitHeaderRow(form.getFieldsValue())}>
+          <Popconfirm title="Your mapping drop down will be over-written.Please re-check your mapping details after confirming" onConfirm={() => submitHeaderRow(form.getFieldsValue())}>
             <Button key="submit" type="primary" htmlType="submit">
               Ok
             </Button>
