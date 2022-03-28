@@ -78,10 +78,15 @@ export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
 //The Helper Functions are for Date and related thing
 
 export const passDateToApi = (date: Moment | string | Date, isTime?: boolean) => {
-  if (isTime) {
-    return moment(date).format(Common.DATETIMEFORMAT);
+  if(date !== null)
+  {
+    if (isTime) {
+      return moment(date).format(Common.DATETIMEFORMAT);
+    } else {
+      return moment(date).format(Common.DATEFORMAT);
+    }
   } else {
-    return moment(date).format(Common.DATEFORMAT);
+    return null;
   }
 };
 
