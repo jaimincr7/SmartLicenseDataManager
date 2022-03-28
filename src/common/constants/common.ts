@@ -39,6 +39,7 @@ export const validateMessages = {
 export const TableNames = {
   SqlServer: 'SQL Server',
   WindowsServer: 'Windows Server',
+  Device: 'Device',
 }
 
 export const allDateColumns = [
