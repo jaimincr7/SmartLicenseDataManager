@@ -109,7 +109,6 @@ const AddSpsApiOauthUrlInjectionSiteModal: React.FC<IAddSpsApiOauthUrlInjectionS
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

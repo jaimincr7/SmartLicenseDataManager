@@ -168,7 +168,6 @@ const AddSqlServerExclusionsModal: React.FC<IAddSqlServerExclusionsProps> = (pro
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }
