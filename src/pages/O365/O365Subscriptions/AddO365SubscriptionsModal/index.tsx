@@ -176,7 +176,6 @@ const AddO365SubscriptionsModal: React.FC<IAddO365SubscriptionsProps> = (props) 
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

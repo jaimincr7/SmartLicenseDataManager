@@ -108,7 +108,6 @@ const AddConfigO365ProductsModal: React.FC<IAddConfigO365ProductsProps> = (props
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

@@ -117,7 +117,6 @@ const AddSpsApiInjectionParamV2Modal: React.FC<IAddSpsApiInjectionParamV2Props> 
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

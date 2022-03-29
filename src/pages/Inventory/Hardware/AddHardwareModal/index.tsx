@@ -193,7 +193,6 @@ const AddHardwareModal: React.FC<IAddHardwareProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

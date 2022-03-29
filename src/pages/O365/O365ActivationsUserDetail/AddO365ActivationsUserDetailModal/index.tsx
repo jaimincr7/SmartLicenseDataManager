@@ -201,7 +201,6 @@ const AddO365ActivationsUserDetailModal: React.FC<IAddO365ActivationsUserDetailP
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

@@ -219,7 +219,6 @@ const AddSqlServerInventoryModal: React.FC<IAddSqlServerInventoryProps> = (props
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

@@ -128,7 +128,6 @@ const AddCmsContractAgreementAttachmentModal: React.FC<IAddCmsContractAgreementA
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

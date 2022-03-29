@@ -171,7 +171,6 @@ const AddCmsPurchaseModal: React.FC<IAddCmsPurchaseProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

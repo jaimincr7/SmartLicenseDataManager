@@ -175,7 +175,6 @@ const AddSqlServerPricingModal: React.FC<IAddSqlServerPricingProps> = (props) =>
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

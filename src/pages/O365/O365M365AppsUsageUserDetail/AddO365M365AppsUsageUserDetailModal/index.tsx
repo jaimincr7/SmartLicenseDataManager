@@ -263,7 +263,6 @@ const AddO365M365AppsUsageUserDetailModal: React.FC<IAddO365M365AppsUsageUserDet
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

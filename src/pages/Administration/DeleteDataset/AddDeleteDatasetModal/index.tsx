@@ -102,7 +102,6 @@ const AddDeleteDatasetModal: React.FC<IAddDeleteDatasetProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }
