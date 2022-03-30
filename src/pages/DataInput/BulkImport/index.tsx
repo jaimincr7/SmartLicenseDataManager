@@ -723,8 +723,8 @@ const BulkImport: React.FC = () => {
             filterTableColumns.map(function (ele) {
               initialValuesData[ele.name] = ExcelColsSorted.filter(
                 (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s/g, '')
               )[0];
               data.validation =
                 ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
