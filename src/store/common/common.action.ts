@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITableColumnSelection } from '../../common/models/common';
 import {
+  IBulkDelete,
   IBulkUpdate,
   IConfigModelPopUpDataSelection,
   IDeleteDataset,
@@ -455,6 +456,13 @@ export const getCmsContractAgreementLookup = createAsyncThunk(
 
 export const updateMultiple = createAsyncThunk('updateMultiple', async (data: IBulkUpdate) => {
   const response = await commonService.updateMultiple(data).then((res) => {
+    return res.body;
+  });
+  return response;
+});
+
+export const bulkDelete = createAsyncThunk('bulkDelete', async (data: IBulkDelete) => {
+  const response = await commonService.bulkDelete(data).then((res) => {
     return res.body;
   });
   return response;

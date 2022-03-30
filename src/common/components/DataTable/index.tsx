@@ -20,12 +20,14 @@ import {
 } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
 import {
+  bulkDelete,
   saveTableColumnSelection,
 } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
 import { spsApiCallSelector } from '../../../store/sps/spsAPICall/spsApiCall.reducer';
 import { startAll } from '../../../store/master/cron/cron.action';
+import { IBulkDelete } from '../../../services/common/common.model';
 
 let pageLoaded = false;
 
@@ -304,8 +306,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     fetchTableData({ ...pagination, current: 1 });
   };
   const onReset = () => {
-    if(setDropDownFlag)
-    setDropDownFlag(false);
+    if (setDropDownFlag)
+      setDropDownFlag(false);
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
@@ -624,6 +626,33 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     }
   };
 
+  const bulkDeleteData = () => {
+    const inlineSearchFilter = _.pickBy(tableFilter.current.filter_keys, function (value) {
+      return !(
+        value === undefined ||
+        value === '' ||
+        _.isNull(value) ||
+        (Array.isArray(value) && value.length === 0)
+      );
+    });
+    const Obj : IBulkDelete = {
+      filter_keys: inlineSearchFilter,
+      is_export_to_excel: !pageLoaded,
+      limit: 10,
+      offset: 0,
+      order_by: tableFilter.current.order_by,
+      order_direction: tableFilter.current.order_direction,
+      keyword: tableFilter.current.keyword,
+      table_name: reduxStoreData.search.tableName,
+    };
+    const list : any = {
+      ...selectedRowList
+    };
+    const data  = list?.selectedRowList?.map((x) => x = x?.split('-')[0]);
+    Obj['selectedIds'] = data;
+    dispatch(bulkDelete(Obj));
+  };
+
   const renderCallApiButton = () => {
     if (showCallApiBtn) {
       return (
@@ -645,7 +674,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               );
               const Obj = {
                 isLookup: !pageLoaded,
-                filterKeys: dropDownFlag === true ? {...filterKeysDD} : inlineSearchFilter,
+                filterKeys: dropDownFlag === true ? { ...filterKeysDD } : inlineSearchFilter,
                 is_export_to_excel: !pageLoaded,
                 limit: 10,
                 offset: 0,
@@ -706,6 +735,17 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             </Popover>
           )}
           {renderCallApiButton()}
+          <Button
+            type="primary"
+            onClick={() => {
+              bulkDeleteData();
+            }}
+            disabled={reduxStoreData.search.count == 0}
+          >
+            {Object.keys(selectedRowList).length <= 1
+                ? `Delete All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length : reduxStoreData.search.count})`
+                : `Delete Selected (${Object.keys(selectedRowList).length - 1})`}
+          </Button>
           {showBulkUpdate && (
             <Button
               type="primary"
@@ -715,7 +755,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               disabled={reduxStoreData.search.count == 0}
             >
               {Object.keys(selectedRowList).length <= 1
-                ? `Update All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length :reduxStoreData.search.count})`
+                ? `Update All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length : reduxStoreData.search.count})`
                 : `Update Selected (${Object.keys(selectedRowList).length - 1})`}
             </Button>
           )}
@@ -752,12 +792,12 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             }
             pagination={isStartSchedulaAllApi ? false :
               {
-              ...pagination,
-              pageSizeOptions: ['10', '100', '500', '1000'],
-              showSizeChanger: true,
-              total: reduxStoreData.search.count,
-              showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-            }}
+                ...pagination,
+                pageSizeOptions: ['10', '100', '500', '1000'],
+                showSizeChanger: true,
+                total: reduxStoreData.search.count,
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+              }}
             onChange={handleTableChange}
             className="custom-table"
             sortDirections={['ascend', 'descend']}
