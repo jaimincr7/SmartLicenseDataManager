@@ -93,8 +93,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           filterTableColumns.map(function (ele) {
             initialValuesData[ele.name] = ExcelColsSorted.filter(
               (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
             )[0];
             data[0].validation =
               ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
@@ -349,13 +349,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         initialValuesData[ele.name] =
           filterExcelColumns?.filter(
             (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-              ele.name?.toLowerCase()?.replace(/\s+/g, '')
+              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+              ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
               (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
             )[0]
             : '';
       });

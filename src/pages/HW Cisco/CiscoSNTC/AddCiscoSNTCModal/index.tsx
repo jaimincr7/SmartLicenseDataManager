@@ -305,7 +305,6 @@ const AddCiscoSNTCModal: React.FC<IAddCiscoSNTCProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

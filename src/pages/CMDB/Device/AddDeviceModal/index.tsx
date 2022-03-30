@@ -165,7 +165,6 @@ const AddCmdbDeviceModal: React.FC<IAddCmdbDeviceProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

@@ -143,7 +143,6 @@ const AddCompanyModal: React.FC<IAddCompanyProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

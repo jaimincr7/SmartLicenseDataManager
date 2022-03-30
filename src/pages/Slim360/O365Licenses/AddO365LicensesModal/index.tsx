@@ -219,7 +219,6 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

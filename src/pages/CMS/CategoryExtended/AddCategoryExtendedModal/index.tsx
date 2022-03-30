@@ -103,7 +103,6 @@ const AddCmsCategoryExtendedModal: React.FC<IAddCmsCategoryExtendedProps> = (pro
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

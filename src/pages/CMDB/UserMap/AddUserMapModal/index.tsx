@@ -111,7 +111,6 @@ const AddCmdbUserMapModal: React.FC<IAddCmdbUserMapProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

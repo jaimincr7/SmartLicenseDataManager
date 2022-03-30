@@ -187,7 +187,6 @@ const AddTabVLicenseModal: React.FC<IAddTabVLicenseProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

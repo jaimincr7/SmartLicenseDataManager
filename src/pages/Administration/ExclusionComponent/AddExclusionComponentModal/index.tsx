@@ -117,7 +117,6 @@ const AddConfigExclusionComponentModal: React.FC<IAddConfigExclusionComponentPro
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

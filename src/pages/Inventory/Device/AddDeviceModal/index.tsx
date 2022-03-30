@@ -193,7 +193,6 @@ const AddDeviceModal: React.FC<IAddDeviceProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

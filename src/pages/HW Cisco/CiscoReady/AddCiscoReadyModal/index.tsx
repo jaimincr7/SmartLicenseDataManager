@@ -304,7 +304,6 @@ const AddCiscoReadyModal: React.FC<IAddCiscoReadyProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }
