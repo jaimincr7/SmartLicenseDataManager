@@ -67,6 +67,7 @@ import {
   getOAuthV2IdLookup,
   getSoftwareNormalizationLookup,
   getOSNormalizationLookup,
+  bulkDelete,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -329,6 +330,11 @@ export const initialState: ICommonState = {
     hasErrors: false,
     messages: [],
   },
+  bulkDelete: {
+    loading: false,
+    hasErrors: false,
+    messages: [],
+  },
   saveTableColumnSelection: {
     loading: false,
     hasErrors: false,
@@ -380,6 +386,9 @@ export const commonSlice = createSlice({
     },
     clearSpsApiTypesLookup: (state) => {
       state.spsApiTypes.data = [];
+    },
+    clearBulkDeleteMessage: (state) => {
+      state.bulkDelete.messages = [];
     },
     clearSpsApiGroupsLookup: (state) => {
       state.spsApiGroups.data = [];
@@ -1031,6 +1040,21 @@ export const commonSlice = createSlice({
       state.deleteDataset.hasErrors = true;
     },
 
+    // Delete Bulk Dataset
+    [bulkDelete.pending.type]: (state) => {
+      state.bulkDelete.loading = true;
+      state.bulkDelete.messages = [];
+    },
+    [bulkDelete.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+      state.bulkDelete.loading = false;
+      state.bulkDelete.hasErrors = false;
+      state.bulkDelete.messages = action.payload.messages;
+    },
+    [bulkDelete.rejected.type]: (state) => {
+      state.bulkDelete.loading = false;
+      state.bulkDelete.hasErrors = true;
+    },
+
     // Save Table Column Selection
     [saveTableColumnSelection.pending.type]: (state) => {
       state.saveTableColumnSelection.loading = true;
@@ -1090,6 +1114,7 @@ export const {
   cleargetModelPopUpDataSelection,
   clearSpsApiOAuthLookup,
   clearSpsApiUrlInjectionLookup,
+  clearBulkDeleteMessage,
 } = commonSlice.actions;
 
 // The reducer

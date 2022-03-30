@@ -15,6 +15,7 @@ import {
   orderByType,
 } from '../../../common/models/common';
 import {
+  clearBulkDeleteMessage,
   clearCronJobSchedularMessages,
   commonSelector,
 } from '../../../store/common/common.reducer';
@@ -276,6 +277,17 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       dispatch(clearTableDataMessages());
     }
   }, [reduxStoreData?.delete?.messages]);
+
+  React.useEffect(() => {
+    if (common.bulkDelete?.messages && common.bulkDelete?.messages.length > 0) {
+      if (common.bulkDelete.hasErrors) {
+        toast.error(common.bulkDelete?.messages.join(' '));
+      } else {
+        toast.warn(common.bulkDelete?.messages.join(' '));
+      }
+      dispatch(clearBulkDeleteMessage());
+    }
+  }, [common?.bulkDelete?.messages]);
 
   React.useEffect(() => {
     if (common.manageCronJob?.messages && common.manageCronJob?.messages.length > 0) {
@@ -635,7 +647,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
         (Array.isArray(value) && value.length === 0)
       );
     });
-    const Obj : IBulkDelete = {
+    const Obj: IBulkDelete = {
       filter_keys: inlineSearchFilter,
       is_export_to_excel: !pageLoaded,
       limit: 10,
@@ -645,10 +657,10 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       keyword: tableFilter.current.keyword,
       table_name: reduxStoreData.search.tableName,
     };
-    const list : any = {
+    const list: any = {
       ...selectedRowList
     };
-    const data  = list?.selectedRowList?.map((x) => x = x?.split('-')[0]);
+    const data = list?.selectedRowList?.map((x) => x = x?.split('-')[0]);
     Obj['selectedIds'] = data;
     dispatch(bulkDelete(Obj));
   };
@@ -735,17 +747,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             </Popover>
           )}
           {renderCallApiButton()}
-          <Button
-            type="primary"
-            onClick={() => {
-              bulkDeleteData();
-            }}
-            disabled={reduxStoreData.search.count == 0}
-          >
-            {Object.keys(selectedRowList).length <= 1
+          <Popconfirm title="Delete Record?" onConfirm={() => bulkDeleteData()}>
+            <Button
+              type="primary"
+              disabled={reduxStoreData.search.count == 0}
+            >
+              {Object.keys(selectedRowList).length <= 1
                 ? `Delete All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length : reduxStoreData.search.count})`
                 : `Delete Selected (${Object.keys(selectedRowList).length - 1})`}
-          </Button>
+            </Button>
+          </Popconfirm>
           {showBulkUpdate && (
             <Button
               type="primary"
