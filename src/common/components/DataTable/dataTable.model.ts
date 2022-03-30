@@ -48,4 +48,7 @@ export interface IDataTable {
   dropDownFlag?: boolean;
   filterKeysDD?: any;
   filterRecordsForLocalSearch?: any[];
+
+  //Show Delete Button
+  showDelete?: boolean;
 }

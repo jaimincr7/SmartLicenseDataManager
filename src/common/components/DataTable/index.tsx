@@ -65,6 +65,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     dropDownFlag,
     filterKeysDD,
     filterRecordsForLocalSearch,
+    showDelete,
   } = props;
 
   const tableFilter = useRef({
@@ -747,7 +748,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             </Popover>
           )}
           {renderCallApiButton()}
-          <Popconfirm title="Delete Record?" onConfirm={() => bulkDeleteData()}>
+          {showDelete !== false  &&(<Popconfirm title="Delete Record?" onConfirm={() => bulkDeleteData()}>
             <Button
               type="primary"
               disabled={reduxStoreData.search.count == 0}
@@ -756,7 +757,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
                 ? `Delete All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length : reduxStoreData.search.count})`
                 : `Delete Selected (${Object.keys(selectedRowList).length - 1})`}
             </Button>
-          </Popconfirm>
+          </Popconfirm>)}
           {showBulkUpdate && (
             <Button
               type="primary"

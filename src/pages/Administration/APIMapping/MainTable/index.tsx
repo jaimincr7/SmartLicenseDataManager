@@ -149,6 +149,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         hideExportButton={true}
         disableRowSelection={true}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        showDelete={false}
       />
     </>
   );
