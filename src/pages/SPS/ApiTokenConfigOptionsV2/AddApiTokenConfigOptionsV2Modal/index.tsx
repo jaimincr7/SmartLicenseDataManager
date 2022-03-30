@@ -122,7 +122,6 @@ const AddSpsApiTokenConfigOptionsV2Modal: React.FC<IAddSpsApiTokenConfigOptionsV
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

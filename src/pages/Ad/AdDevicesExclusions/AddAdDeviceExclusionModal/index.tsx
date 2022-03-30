@@ -174,7 +174,6 @@ const AddAdDevicesExclusionsModal: React.FC<IAddAdDevicesExclusionsProps> = (pro
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

@@ -174,7 +174,6 @@ const AddWindowsServerEntitlementsModal: React.FC<IAddWindowsServerEntitlementsP
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

@@ -74,6 +74,19 @@ export interface IBulkUpdate {
   order_direction: string;
 }
 
+export interface IBulkDelete {
+  table_name: string;
+  filter_keys: any;
+  is_export_to_excel: boolean;
+  is_column_selection?: boolean;
+  keyword: string;
+  limit: number;
+  offset: number;
+  order_by: string;
+  order_direction: string;
+  export_column_details?: any;
+}
+
 export interface IConfigModelPopUpDataSelection {
   id: number;
   selection: any;

@@ -189,7 +189,6 @@ const AddO365SubscribedSkusModal: React.FC<IAddO365SubscribedSkusProps> = (props
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

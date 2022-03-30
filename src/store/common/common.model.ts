@@ -26,6 +26,11 @@ export interface ICommonState {
     hasErrors: boolean;
     loading: boolean;
   };
+  bulkDelete: {
+    messages: string[];
+    hasErrors: boolean;
+    loading: boolean;
+  };
   setModelPopUpSelection: {
     messages: string[];
     hasErrors: boolean;

@@ -200,7 +200,6 @@ const AddO365OneDriveUsageModal: React.FC<IAddO365OneDriveUsageProps> = (props) 
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

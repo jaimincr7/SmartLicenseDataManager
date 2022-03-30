@@ -178,7 +178,6 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

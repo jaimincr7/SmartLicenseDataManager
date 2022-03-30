@@ -175,7 +175,6 @@ const AddO365ProductListModal: React.FC<IAddO365ProductListProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

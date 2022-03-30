@@ -219,7 +219,6 @@ const AddWindowsServerInventoryModal: React.FC<IAddWindowsServerInventoryProps> 
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

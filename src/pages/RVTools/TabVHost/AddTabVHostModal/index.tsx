@@ -162,7 +162,6 @@ const AddTabVHostModal: React.FC<IAddTabVHostProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

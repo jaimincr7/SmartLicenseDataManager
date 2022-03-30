@@ -139,7 +139,6 @@ const AddConfigWindowsServerLicenseModal: React.FC<IAddConfigWindowsServerLicens
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }
