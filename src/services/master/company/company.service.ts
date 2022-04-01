@@ -22,7 +22,7 @@ class CompanyService {
   }
 
   public async purgeCompanyById(id: number): Promise<any> {
-    const url = `${this.ENDPOINT}/delete-company-data/${id}`;
+    const url = `back-ground-processes/purge-company-data/${id}`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
     });
