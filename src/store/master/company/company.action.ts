@@ -25,7 +25,7 @@ export const purgeCompanyById = createAsyncThunk('purgeCompanyById', async (id: 
   const response = await companyService.purgeCompanyById(id).then((res) => {
     return res.body;
   });
-  return response.data;
+  return response;
 });
 
 export const saveCompany = createAsyncThunk('saveCompany', async (data: ICompany) => {
