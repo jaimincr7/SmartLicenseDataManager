@@ -249,6 +249,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         globalSearchExist={false}
         ref={dataTableRef}
         showAddButton={false}
+        showDelete={false}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
