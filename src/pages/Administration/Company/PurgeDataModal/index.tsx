@@ -56,7 +56,7 @@ const DeleteDatasetModal: React.FC<IPurgeDataModalProps> = (props) => {
     <>
       <Modal
         wrapClassName="custom-modal"
-        title="Delete Dataset"
+        title="Purge Data"
         centered
         visible={showModal}
         onCancel={handleModalClose}
