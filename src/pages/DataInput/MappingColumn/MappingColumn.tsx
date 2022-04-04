@@ -84,6 +84,19 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             const sqlToExcelMapping = [];
             filterTableColumns.map(function (ele) {
               const mapRecord = records.filter((x) => x.index == seqNumber);
+              let latest = [];
+              if (mapRecord && mapRecord.length) {
+                mapRecord[0].excel_to_sql_mapping?.map((data) => {
+                  if (filterExcelColumns?.includes(data.value)) {
+                    latest.push(data);
+                  } else {
+                    data.value = '';
+                    latest.push(data);
+                  }
+                });
+                mapRecord[0].excel_to_sql_mapping = latest;
+                latest = [];
+              }
               initialValuesData[ele.name] =
                 filterExcelColumns?.filter(
                   (x: any) =>
@@ -96,7 +109,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                       ele.name?.toLowerCase()?.replace(/\s/g, '')
                   )[0]
                   : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                    return data.key == ele.name;
+                    return (data.key == ele.name);
                   })[0]?.value;
               sqlToExcelMapping.push({
                 key: `${ele.name}`,
@@ -105,6 +118,15 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     ? ''
                     : `${initialValuesData[ele.name]}`,
               });
+            });
+            Object.entries(initialValuesData).forEach(([key, value]) => {
+              if (value === undefined) {
+                initialValuesData[key] = filterExcelColumns.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    key?.toLowerCase()?.replace(/\s/g, '')
+                )[0] + '@';
+              }
             });
             const tempRecord = records.filter((data) => data.index == seqNumber);
 
@@ -267,7 +289,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             </div>
           </Col>*/}
           <Can I={Action.Select} a={Page.ConfigExcelFileMapping}>
-            {}
+            { }
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
                 <Form.Item name="isPublic" className="m-0" valuePropName="checked">
@@ -316,6 +338,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     name={col.name}
                     className="m-0 w-100"
                     label={col.name}
+                    validateStatus={form.getFieldValue(col.name) == "" ? "error" : form.getFieldValue(col.name).includes('@') ? "warning" : ""}
                     rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
                   >
                     <Select
