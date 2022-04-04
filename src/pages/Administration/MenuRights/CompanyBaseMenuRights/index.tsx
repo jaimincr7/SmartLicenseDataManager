@@ -235,6 +235,7 @@ const CompanyBaseMenuRights: React.FC<IMenuRights> = () => {
                   onClick={() => {
                     form.submit();
                   }}
+                  disabled={reduxStoreData.getMenuRightsByCompanyId.data?.menus == null}
                   loading={reduxStoreData.saveCompanyMenuAccessRights.loading}
                 >
                   Save

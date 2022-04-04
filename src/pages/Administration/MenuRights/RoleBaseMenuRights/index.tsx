@@ -233,6 +233,7 @@ const RoleBaseMenuRights: React.FC<IMenuRights> = () => {
                   onClick={() => {
                     form.submit();
                   }}
+                  disabled={reduxStoreData.getMenuRightsByRoleId.data?.menus == null}
                   loading={reduxStoreData.saveMenuAccessRights.loading}
                 >
                   Save

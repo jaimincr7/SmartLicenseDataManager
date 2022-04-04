@@ -263,6 +263,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
     handleSelector: '.ant-table-row',
   };
 
+  console.log('---------reduxStoreData.getMenuAccessRights.data?.menus',reduxStoreData.getMenuAccessRights.data?.menus);
   return (
     <div className="menuRights">
       <div className="title-block">
@@ -291,6 +292,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
                   onClick={() => {
                     form.submit();
                   }}
+                  disabled={reduxStoreData.getMenuAccessRights.data?.menus == undefined }
                   loading={reduxStoreData.saveAddRemoveMenuAccessRights.loading}
                 >
                   Save
