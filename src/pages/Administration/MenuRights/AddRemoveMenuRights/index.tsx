@@ -263,7 +263,6 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
     handleSelector: '.ant-table-row',
   };
 
-  console.log('---------reduxStoreData.getMenuAccessRights.data?.menus',reduxStoreData.getMenuAccessRights.data?.menus);
   return (
     <div className="menuRights">
       <div className="title-block">
