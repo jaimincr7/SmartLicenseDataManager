@@ -837,7 +837,7 @@ const BulkImport: React.FC = () => {
                           </span>
                         </Dragger>
                         <span style={{ color: 'red', textAlign: 'center' }}>
-                          {'File Type Supported: .xls,.xlsx,.csv,.txt'}
+                          {'File Type Supported: [.xls, .xlsx, .csv, .txt]'}
                         </span>
                       </div>
                     </Form.Item>

@@ -213,9 +213,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -322,9 +322,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -379,9 +379,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -517,9 +517,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -545,9 +545,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -573,9 +573,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -601,9 +601,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -655,9 +655,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
