@@ -596,6 +596,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
         setShowSelectedListModal={setShowSelectedListModal}
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.Cron)}
+        showDelete={false}
         showCallApiBtn={true}
         isStartSchedulaAllApi={true}
       />
