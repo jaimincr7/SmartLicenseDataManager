@@ -185,6 +185,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setTableColumnSelection={setTableColumnSelection}
         setObjectForColumnFilter={setObjectForColumnFilter}
         tableButtons={tableButtons}
+        showDelete={false}
       />
     </>
   );

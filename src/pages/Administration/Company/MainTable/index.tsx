@@ -305,6 +305,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showBulkUpdate={ability.can(Action.Update, Page.Company)}
         setObjectForColumnFilter={setObjectForColumnFilter}
+        showDelete={false}
         tableButtons={tableButtons}
       />
     </>

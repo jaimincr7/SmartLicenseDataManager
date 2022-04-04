@@ -122,6 +122,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ref={dataTableRef}
         showAddButton={ability.can(Action.Add, Page.CmsCategory)}
         setSelectedId={setSelectedId}
+        showDelete={false}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}

@@ -358,6 +358,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
         reduxSelector={usersSelector}
+        showDelete={false}
         searchTableData={searchUser}
         clearTableDataMessages={clearUserMessages}
         setTableColumnSelection={setTableColumnSelection}

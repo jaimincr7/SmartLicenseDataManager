@@ -169,6 +169,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         showBulkUpdate={ability.can(Action.Update, Page.ConfigComponentTableColumn)}
         setObjectForColumnFilter={setObjectForColumnFilter}
         globalSearchExist={false}
+        showDelete={false}
         tableButtons={tableButtons}
       />
     </>
