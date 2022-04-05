@@ -86,23 +86,23 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             filterTableColumns.map(function (ele) {
               const mapRecord = records.filter((x) => x.index == seqNumber);
               const latest = [];
-                if (mapRecord && mapRecord.length) {
-                  mapRecord[0].excel_to_sql_mapping?.map((data) => {
-                    if (filterExcelColumns?.includes(data.value)) {
-                      latest.push(data);
-                    } else {
-                      const dummyTableColumn = _.cloneDeep(tableColumnLocal);
-                      dummyTableColumn?.map((data1) => {
-                        if (data1.name == data.key)
-                          data1.validateStatus = "warning";
-                      });
-                      tableColumnLocal = dummyTableColumn;
-                      setTableColumnState(dummyTableColumn);
-                    }
-                  });
-                  //mapRecord[0].excel_to_sql_mapping = latest;
-                  //latest = [];
-                }
+              if (mapRecord && mapRecord.length) {
+                mapRecord[0].excel_to_sql_mapping?.map((data) => {
+                  if (filterExcelColumns?.includes(data.value)) {
+                    latest.push(data);
+                  } else {
+                    const dummyTableColumn = _.cloneDeep(tableColumnLocal);
+                    dummyTableColumn?.map((data1) => {
+                      if (data1.name == data.key)
+                        data1.validateStatus = "warning";
+                    });
+                    tableColumnLocal = dummyTableColumn;
+                    setTableColumnState(dummyTableColumn);
+                  }
+                });
+                //mapRecord[0].excel_to_sql_mapping = latest;
+                //latest = [];
+              }
               initialValuesData[ele.name] =
                 filterExcelColumns?.filter(
                   (x: any) =>
@@ -125,22 +125,22 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     : `${initialValuesData[ele.name]}`,
               });
             });
-              Object.entries(initialValuesData).forEach(([key, value]) => {
-                if (value === undefined) {
-                  const dummyTableColumn = _.cloneDeep(tableColumnLocal);
-                  dummyTableColumn?.map((data) => {
-                    if (data.name == key && data.validateStatus !== "warning")
-                      data.validateStatus = "success";
-                  });
-                  tableColumnLocal = dummyTableColumn;
-                  setTableColumnState(dummyTableColumn);
-                  initialValuesData[key] = filterExcelColumns.filter(
-                    (x: any) =>
-                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                      key?.toLowerCase()?.replace(/\s/g, '')
-                  )[0];
-                }
-              });
+            Object.entries(initialValuesData).forEach(([key, value]) => {
+              if (value === undefined) {
+                const dummyTableColumn = _.cloneDeep(tableColumnLocal);
+                dummyTableColumn?.map((data) => {
+                  if (data.name == key && data.validateStatus !== "warning")
+                    data.validateStatus = "success";
+                });
+                tableColumnLocal = dummyTableColumn;
+                setTableColumnState(dummyTableColumn);
+                initialValuesData[key] = filterExcelColumns.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    key?.toLowerCase()?.replace(/\s/g, '')
+                )[0];
+              }
+            });
             const tempRecord = records.filter((data) => data.index == seqNumber);
 
             if (tempRecord[0]?.excel_to_sql_mapping == null) {
@@ -349,9 +349,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   </label>
                   <Form.Item
                     name={col.name}
-                    className="m-0 w-100"
+                    style = {{border: col.validateStatus == 'success' ? '1px solid rgb(0,180,0)' : ''}}
                     label={col.name}
-                    hasFeedback={col.validateStatus == "success"}
                     validateStatus={col.validateStatus}
                     rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
                   >
