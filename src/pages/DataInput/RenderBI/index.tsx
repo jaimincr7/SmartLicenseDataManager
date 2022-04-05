@@ -858,6 +858,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             <MappingColumn
               setRecords={setRecords}
               record={record}
+              count={count}
               records={records}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
               fileName={

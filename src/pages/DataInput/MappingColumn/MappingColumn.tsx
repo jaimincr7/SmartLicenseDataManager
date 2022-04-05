@@ -18,8 +18,9 @@ import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.r
 
 const { Option } = Select;
 
+
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, dateChangeFlag, setDateChangeFlag } =
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, count, is_public, dateChangeFlag, setDateChangeFlag } =
     props;
 
   const [form] = Form.useForm();
@@ -60,7 +61,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   }, [bulkImport.saveExcelFileMapping.data]);
 
   useEffect(() => {
-    if (localMapping && dateChangeFlag) {
+    if (localMapping && dateChangeFlag && !(count.save > 0)) {
       if (record.table_name) {
         setLoadingTableColumns(true);
         commonService.getTableColumns(record.table_name).then((res) => {
@@ -126,7 +127,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               });
             });
             Object.entries(initialValuesData).forEach(([key, value]) => {
-              if (value === undefined) {
+              if (value === undefined  ) {
                 const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                 dummyTableColumn?.map((data) => {
                   if (data.name == key && data.validateStatus !== "warning")
@@ -153,6 +154,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               setRecords(dummyrecords);
             }
             form.setFieldsValue(initialValuesData);
+            setTimeout(() => {
+              setMappingRecords();              
+            }, );
           }
           setLoadingTableColumns(false);
         });
@@ -246,11 +250,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         value: value === undefined ? '' : `${value}`,
       });
     });
-    tableColumns.map((ele) => {
+    tableColumns?.map((ele) => {
       const name = sqlToExcelMapping.filter(
         (data) => data.key.toLowerCase() == ele.name.toLowerCase()
       )[0];
-      if (ele.is_nullable == 'NO' && name.value == '') {
+      if (ele.is_nullable == 'NO' && name?.value == '') {
         validation = true;
       }
     });
@@ -349,7 +353,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   </label>
                   <Form.Item
                     name={col.name}
-                    style = {{border: col.validateStatus == 'success' ? '1px solid rgb(0,180,0)' : ''}}
+                    style={{ border: col.validateStatus == 'success' ? '1px solid rgb(0,180,0)' : '' }}
                     label={col.name}
                     validateStatus={col.validateStatus}
                     rules={[{ required: col.is_nullable === 'NO' ? true : false }]}

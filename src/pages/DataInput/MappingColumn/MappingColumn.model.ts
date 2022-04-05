@@ -10,5 +10,6 @@ export interface IMappingColumnProps {
   setRecords?: (data: any) => void;
   onExcelMapping?: (values: any) => void;
   dateChangeFlag?: boolean;
+  count: { [key: string]: number };
   setDateChangeFlag?: (value: boolean) => void;
 }
