@@ -86,7 +86,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             filterTableColumns.map(function (ele) {
               const mapRecord = records.filter((x) => x.index == seqNumber);
               const latest = [];
-              if (record.header_row <= 1) {
                 if (mapRecord && mapRecord.length) {
                   mapRecord[0].excel_to_sql_mapping?.map((data) => {
                     if (filterExcelColumns?.includes(data.value)) {
@@ -95,7 +94,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                       const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                       dummyTableColumn?.map((data1) => {
                         if (data1.name == data.key)
-                          data1.validateStatus = "error";
+                          data1.validateStatus = "warning";
                       });
                       tableColumnLocal = dummyTableColumn;
                       setTableColumnState(dummyTableColumn);
@@ -104,7 +103,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   //mapRecord[0].excel_to_sql_mapping = latest;
                   //latest = [];
                 }
-              }
               initialValuesData[ele.name] =
                 filterExcelColumns?.filter(
                   (x: any) =>
@@ -127,13 +125,12 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     : `${initialValuesData[ele.name]}`,
               });
             });
-            if (record.header_row <= 1) {
               Object.entries(initialValuesData).forEach(([key, value]) => {
                 if (value === undefined) {
                   const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                   dummyTableColumn?.map((data) => {
-                    if (data.name == key && data.validateStatus !== "error")
-                      data.validateStatus = "warning";
+                    if (data.name == key && data.validateStatus !== "warning")
+                      data.validateStatus = "success";
                   });
                   tableColumnLocal = dummyTableColumn;
                   setTableColumnState(dummyTableColumn);
@@ -144,7 +141,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   )[0];
                 }
               });
-            }
             const tempRecord = records.filter((data) => data.index == seqNumber);
 
             if (tempRecord[0]?.excel_to_sql_mapping == null) {
@@ -355,6 +351,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     name={col.name}
                     className="m-0 w-100"
                     label={col.name}
+                    hasFeedback={col.validateStatus == "success"}
                     validateStatus={col.validateStatus}
                     rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
                   >
