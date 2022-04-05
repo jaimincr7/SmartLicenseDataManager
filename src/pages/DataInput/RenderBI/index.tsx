@@ -315,8 +315,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       // const removedColumns = tableColumnState.filter((x) =>
       //   columnsArray.includes(x.name?.toLowerCase())
       // );
-      const ExcelColsSorted = [...filterExcelColumns];
-      ExcelColsSorted.sort();
+      if (filterExcelColumns && filterExcelColumns?.length) {
+        const ExcelColsSorted = [...filterExcelColumns];
+        ExcelColsSorted.sort();
+      }
       //setExcelColumns(ExcelColsSorted);
       setTableColumns(filterTableColumns);
       //setRemovedColumns(removedColumns);
@@ -856,6 +858,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             <MappingColumn
               setRecords={setRecords}
               record={record}
+              count={count}
               records={records}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
               fileName={

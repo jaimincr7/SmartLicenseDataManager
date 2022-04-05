@@ -18,8 +18,9 @@ import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.r
 
 const { Option } = Select;
 
+
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, dateChangeFlag, setDateChangeFlag } =
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, count, is_public, dateChangeFlag, setDateChangeFlag } =
     props;
 
   const [form] = Form.useForm();
@@ -60,7 +61,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   }, [bulkImport.saveExcelFileMapping.data]);
 
   useEffect(() => {
-    if (localMapping && dateChangeFlag) {
+    if (localMapping && dateChangeFlag && !(count.save > 0)) {
       if (record.table_name) {
         setLoadingTableColumns(true);
         commonService.getTableColumns(record.table_name).then((res) => {
@@ -71,6 +72,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             const filterTableColumns = response?.filter(
               (x) => !columnsArray.includes(x.name?.toLowerCase())
             );
+            let tableColumnLocal = filterTableColumns;
             setTableColumns(filterTableColumns);
             if (filterExcelColumns?.length >= skipRows) {
               filterExcelColumns = filterExcelColumns[skipRows];
@@ -84,19 +86,37 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             const sqlToExcelMapping = [];
             filterTableColumns.map(function (ele) {
               const mapRecord = records.filter((x) => x.index == seqNumber);
+              const latest = [];
+              if (mapRecord && mapRecord.length) {
+                mapRecord[0].excel_to_sql_mapping?.map((data) => {
+                  if (filterExcelColumns?.includes(data.value)) {
+                    latest.push(data);
+                  } else {
+                    const dummyTableColumn = _.cloneDeep(tableColumnLocal);
+                    dummyTableColumn?.map((data1) => {
+                      if (data1.name == data.key)
+                        data1.validateStatus = "warning";
+                    });
+                    tableColumnLocal = dummyTableColumn;
+                    setTableColumnState(dummyTableColumn);
+                  }
+                });
+                //mapRecord[0].excel_to_sql_mapping = latest;
+                //latest = [];
+              }
               initialValuesData[ele.name] =
                 filterExcelColumns?.filter(
                   (x: any) =>
                     x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
-                ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
+                ).length > 0 && latest == null
                   ? filterExcelColumns.filter(
                     (x: any) =>
                       x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                       ele.name?.toLowerCase()?.replace(/\s/g, '')
                   )[0]
-                  : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                    return data.key == ele.name;
+                  : (latest || []).filter((data) => {
+                    return (data.key == ele.name);
                   })[0]?.value;
               sqlToExcelMapping.push({
                 key: `${ele.name}`,
@@ -105,6 +125,22 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     ? ''
                     : `${initialValuesData[ele.name]}`,
               });
+            });
+            Object.entries(initialValuesData).forEach(([key, value]) => {
+              if (value === undefined  ) {
+                const dummyTableColumn = _.cloneDeep(tableColumnLocal);
+                dummyTableColumn?.map((data) => {
+                  if (data.name == key && data.validateStatus !== "warning")
+                    data.validateStatus = "success";
+                });
+                tableColumnLocal = dummyTableColumn;
+                setTableColumnState(dummyTableColumn);
+                initialValuesData[key] = filterExcelColumns.filter(
+                  (x: any) =>
+                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                    key?.toLowerCase()?.replace(/\s/g, '')
+                )[0];
+              }
             });
             const tempRecord = records.filter((data) => data.index == seqNumber);
 
@@ -118,6 +154,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               setRecords(dummyrecords);
             }
             form.setFieldsValue(initialValuesData);
+            setTimeout(() => {
+              setMappingRecords();              
+            }, );
           }
           setLoadingTableColumns(false);
         });
@@ -211,11 +250,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         value: value === undefined ? '' : `${value}`,
       });
     });
-    tableColumns.map((ele) => {
+    tableColumns?.map((ele) => {
       const name = sqlToExcelMapping.filter(
         (data) => data.key.toLowerCase() == ele.name.toLowerCase()
       )[0];
-      if (ele.is_nullable == 'NO' && name.value == '') {
+      if (ele.is_nullable == 'NO' && name?.value == '') {
         validation = true;
       }
     });
@@ -267,7 +306,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             </div>
           </Col>*/}
           <Can I={Action.Select} a={Page.ConfigExcelFileMapping}>
-            {}
+            { }
             <Col xs={24} sm={12} md={8}>
               <div className="form-group form-inline-pt m-0">
                 <Form.Item name="isPublic" className="m-0" valuePropName="checked">
@@ -314,8 +353,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   </label>
                   <Form.Item
                     name={col.name}
-                    className="m-0 w-100"
+                    style={{ border: col.validateStatus == 'success' ? '1px solid rgb(0,180,0)' : '' }}
                     label={col.name}
+                    validateStatus={col.validateStatus}
                     rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
                   >
                     <Select
