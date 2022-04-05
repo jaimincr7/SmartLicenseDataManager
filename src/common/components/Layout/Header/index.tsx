@@ -84,6 +84,7 @@ const profileMenu = () => {
           Logout
         </a>
       </Menu.Item>
+      <hr/>
       {processes.map((data) => (
         <Menu.Item key={data.name}>
           <span >
