@@ -71,6 +71,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             const filterTableColumns = response?.filter(
               (x) => !columnsArray.includes(x.name?.toLowerCase())
             );
+            let tableColumnLocal = filterTableColumns;
             setTableColumns(filterTableColumns);
             if (filterExcelColumns?.length >= skipRows) {
               filterExcelColumns = filterExcelColumns[skipRows];
@@ -84,31 +85,38 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             const sqlToExcelMapping = [];
             filterTableColumns.map(function (ele) {
               const mapRecord = records.filter((x) => x.index == seqNumber);
-              let latest = [];
-              if (mapRecord && mapRecord.length) {
-                mapRecord[0].excel_to_sql_mapping?.map((data) => {
-                  if (filterExcelColumns?.includes(data.value)) {
-                    latest.push(data);
-                  } else {
-                    data.value = '';
-                    latest.push(data);
-                  }
-                });
-                mapRecord[0].excel_to_sql_mapping = latest;
-                latest = [];
+              const latest = [];
+              if (record.header_row <= 1) {
+                if (mapRecord && mapRecord.length) {
+                  mapRecord[0].excel_to_sql_mapping?.map((data) => {
+                    if (filterExcelColumns?.includes(data.value)) {
+                      latest.push(data);
+                    } else {
+                      const dummyTableColumn = _.cloneDeep(tableColumnLocal);
+                      dummyTableColumn?.map((data1) => {
+                        if (data1.name == data.key)
+                          data1.validateStatus = "error";
+                      });
+                      tableColumnLocal = dummyTableColumn;
+                      setTableColumnState(dummyTableColumn);
+                    }
+                  });
+                  //mapRecord[0].excel_to_sql_mapping = latest;
+                  //latest = [];
+                }
               }
               initialValuesData[ele.name] =
                 filterExcelColumns?.filter(
                   (x: any) =>
                     x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
-                ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
+                ).length > 0 && latest == null
                   ? filterExcelColumns.filter(
                     (x: any) =>
                       x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                       ele.name?.toLowerCase()?.replace(/\s/g, '')
                   )[0]
-                  : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
+                  : (latest || []).filter((data) => {
                     return (data.key == ele.name);
                   })[0]?.value;
               sqlToExcelMapping.push({
@@ -119,15 +127,24 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     : `${initialValuesData[ele.name]}`,
               });
             });
-            Object.entries(initialValuesData).forEach(([key, value]) => {
-              if (value === undefined) {
-                initialValuesData[key] = filterExcelColumns.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                    key?.toLowerCase()?.replace(/\s/g, '')
-                )[0] + '@';
-              }
-            });
+            if (record.header_row <= 1) {
+              Object.entries(initialValuesData).forEach(([key, value]) => {
+                if (value === undefined) {
+                  const dummyTableColumn = _.cloneDeep(tableColumnLocal);
+                  dummyTableColumn?.map((data) => {
+                    if (data.name == key && data.validateStatus !== "error")
+                      data.validateStatus = "warning";
+                  });
+                  tableColumnLocal = dummyTableColumn;
+                  setTableColumnState(dummyTableColumn);
+                  initialValuesData[key] = filterExcelColumns.filter(
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                      key?.toLowerCase()?.replace(/\s/g, '')
+                  )[0];
+                }
+              });
+            }
             const tempRecord = records.filter((data) => data.index == seqNumber);
 
             if (tempRecord[0]?.excel_to_sql_mapping == null) {
@@ -338,7 +355,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     name={col.name}
                     className="m-0 w-100"
                     label={col.name}
-                    validateStatus={form.getFieldValue(col.name) == "" ? "error" : form.getFieldValue(col.name).includes('@') ? "warning" : ""}
+                    validateStatus={col.validateStatus}
                     rules={[{ required: col.is_nullable === 'NO' ? true : false }]}
                   >
                     <Select
