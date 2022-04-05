@@ -68,6 +68,7 @@ import {
   getSoftwareNormalizationLookup,
   getOSNormalizationLookup,
   bulkDelete,
+  getProccessRunning,
 } from './common.action';
 import { ICommonState } from './common.model';
 
@@ -146,6 +147,10 @@ export const initialState: ICommonState = {
     loading: false,
   },
   softwareNormalizationLookup: {
+    data: [],
+    loading: false,
+  },
+  processRunning: {
     data: [],
     loading: false,
   },
@@ -567,6 +572,15 @@ export const commonSlice = createSlice({
     [getSoftwareNormalizationLookup.fulfilled.type]: (state, action: PayloadAction<ILookup[]>) => {
       state.softwareNormalizationLookup.data = action.payload;
       state.softwareNormalizationLookup.loading = false;
+    },
+
+    // Back Ground Proccesses
+    [getProccessRunning.pending.type]: (state) => {
+      state.processRunning.loading = true;
+    },
+    [getProccessRunning.fulfilled.type]: (state, action: PayloadAction<any[]>) => {
+      state.processRunning.data = action.payload;
+      state.processRunning.loading = false;
     },
 
     // OS Normal. lookup

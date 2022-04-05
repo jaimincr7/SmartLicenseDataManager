@@ -103,6 +103,13 @@ class CommonService {
     });
   }
 
+  public async getProccessRunning(): Promise<IApiResponse<ILookup>> {
+    const url = `/back-ground-processes/get-pending-back-ground-process-details`;
+    return request({ url, method: 'GET' }).then((res) => {
+      return res.data;
+    });
+  }
+
   public async getSoftwareNormalizationLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/cmdb-software-normalization/lookup`;
     return request({ url, method: 'GET' }).then((res) => {

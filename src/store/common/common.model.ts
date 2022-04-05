@@ -74,6 +74,10 @@ export interface ICommonState {
     data: ILookup[];
     loading: boolean;
   };
+  processRunning: {
+    data: any[];
+    loading: boolean;
+  };
   osNormalizationLookup: {
     data: ILookup[];
     loading: boolean;
