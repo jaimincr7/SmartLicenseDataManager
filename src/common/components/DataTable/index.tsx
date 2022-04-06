@@ -153,9 +153,16 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     const searchData = getSearchData(page, false);
     searchData;
     if (setObjectForColumnFilter) {
-      const filterDate = {
-        ...searchData.filter_keys,
-        ...extraSearchData
+      let filterDate;
+      if(isSpsApiJobsId || isExcelColumnMapping) {
+        filterDate = {
+          ...searchData.filter_keys,
+          ...extraSearchData
+        }
+      } else {
+        filterDate = {
+          ...searchData.filter_keys,
+        }
       }
       setObjectForColumnFilter({
         filter_keys: filterDate,
