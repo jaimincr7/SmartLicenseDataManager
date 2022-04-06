@@ -96,7 +96,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   } else {
                     const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                     dummyTableColumn?.map((data1) => {
-                      if (data1.name == data.key && mapRecord[0]?.currentMapping !== null)
+                      if (data1.name == data.key && mapRecord[0]?.currentMapping )
                         data1.validateStatus = "warning";
                     });
                     tableColumnLocal = dummyTableColumn;
@@ -133,7 +133,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               if (value === undefined && !(filterExcelColumns?.includes(value))) {
                 const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                 dummyTableColumn?.map((data) => {
-                  if (data.name == key && data.validateStatus !== "warning" && mapRecord && mapRecord.length && mapRecord[0].currentMapping !== null)
+                  if (data.name == key && data.validateStatus !== "warning" && mapRecord && mapRecord.length && mapRecord[0].currentMapping )
                     data.validateStatus = "success";
                 });
                 tableColumnLocal = dummyTableColumn;
