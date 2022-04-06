@@ -33,9 +33,7 @@ window.addEventListener(
 
 const profileMenu = () => {
   const instance = msalInstance;
-  const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
-  const [processes, setProcesses] = useState([]);
 
   function handleLogout(instance) {
     dispatch(clearGlobalSearch());
@@ -43,6 +41,24 @@ const profileMenu = () => {
       toast.error(e.message);
     });
   }
+
+  return (
+    <Menu>
+      <Menu.Item
+        key="1"
+        icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-logout.svg`} alt="" />}
+      >
+        <a onClick={() => handleLogout(instance)} title="Logout">
+          Logout
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+};
+
+const backgroundProcesses = () => {
+  const common = useAppSelector(commonSelector);
+  const [processes, setProcesses] = useState([]);
 
   useEffect(() => {
     const dummyResult = _.cloneDeep(common.processRunning.data);
@@ -68,33 +84,13 @@ const profileMenu = () => {
 
   return (
     <Menu>
-      {/* <Menu.Item
-        key="0"
-        icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-user.svg`} alt="" />}
-      >
-        <a href="#" title="My Profile">
-          My Profile
-        </a>
-      </Menu.Item> */}
-      <Menu.Item
-        key="1"
-        icon={<img src={`${process.env.PUBLIC_URL}/assets/images/ic-logout.svg`} alt="" />}
-      >
-        <a onClick={() => handleLogout(instance)} title="Logout">
-          Logout
-        </a>
-      </Menu.Item>
-      <hr/>
       {processes.map((data) => (
-        <Menu.Item key={data.name}>
+        <Menu.Item key={data.name} className="auto-cursor">
           <span >
             {data.name} - [{data.count}]
           </span>
         </Menu.Item>
       ))}
-      {/* <a>
-          <Progress percent={100} steps={5} size="small" strokeColor="#52c41a" />
-        </a> */}
     </Menu>
   );
 };
@@ -121,8 +117,16 @@ function Header() {
           <span className="line"></span>
         </div>
         <div className="profile-wrapper right-list">
+        <Dropdown overlay={backgroundProcesses()} trigger={['click']} overlayClassName="profile-dropdown">
+            <a href="#" title="" className="profile-block" onClick={() => { checkProcess(); }}>
+              <em className="dp">
+                {/* <img src={`${process.env.PUBLIC_URL}/assets/images/dp.jpg`} alt="" /> */}
+              </em>
+              <span className="username">Background Processes</span>
+            </a>
+          </Dropdown>
           <Dropdown overlay={profileMenu()} trigger={['click']} overlayClassName="profile-dropdown">
-            <a href="#" title="" className="profile-block" onClick={(e) => { e.preventDefault(); checkProcess(); }}>
+            <a href="#" title="" className="profile-block" onClick={(e) => { e.preventDefault(); }}>
               <em className="dp">
                 {/* <img src={`${process.env.PUBLIC_URL}/assets/images/dp.jpg`} alt="" /> */}
               </em>
