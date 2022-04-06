@@ -168,7 +168,6 @@ const AddWindowsServerExclusionsModal: React.FC<IAddWindowsServerExclusionsProps
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

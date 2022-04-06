@@ -108,7 +108,6 @@ const AddConfigComponentTableColumnModal: React.FC<IAddConfigComponentTableColum
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

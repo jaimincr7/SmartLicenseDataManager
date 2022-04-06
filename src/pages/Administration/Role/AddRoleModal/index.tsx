@@ -116,7 +116,6 @@ const AddRoleModal: React.FC<IAddRoleProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

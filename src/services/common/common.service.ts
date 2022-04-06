@@ -2,6 +2,7 @@ import axios from 'axios';
 import { IApiResponse, ITableColumnSelection } from '../../common/models/common';
 import request from '../../utils/request';
 import {
+  IBulkDelete,
   IBulkInsertDataset,
   IBulkUpdate,
   IConfigModelPopUpDataSelection,
@@ -532,6 +533,13 @@ class CommonService {
 
   public async updateMultiple(searchParams?: IBulkUpdate): Promise<any> {
     const url = `/back-ground-processes/bulk-update`;
+    return request({ url, method: 'POST', data: searchParams }).then((res) => {
+      return res.data;
+    });
+  }
+
+  public async bulkDelete(searchParams?: IBulkDelete): Promise<any> {
+    const url = `/back-ground-processes/bulk-delete`;
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;
     });

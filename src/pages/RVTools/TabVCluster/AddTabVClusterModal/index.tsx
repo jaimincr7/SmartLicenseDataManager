@@ -195,7 +195,6 @@ const AddTabVClusterModal: React.FC<IAddTabVClusterProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

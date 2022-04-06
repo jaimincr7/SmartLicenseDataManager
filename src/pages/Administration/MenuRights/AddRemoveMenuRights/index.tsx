@@ -291,6 +291,7 @@ const MenuAccessRights: React.FC<IMenuRights> = () => {
                   onClick={() => {
                     form.submit();
                   }}
+                  disabled={reduxStoreData.getMenuAccessRights.data?.menus == undefined }
                   loading={reduxStoreData.saveAddRemoveMenuAccessRights.loading}
                 >
                   Save

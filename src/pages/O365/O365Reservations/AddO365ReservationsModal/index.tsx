@@ -185,7 +185,6 @@ const AddO365ReservationsModal: React.FC<IAddO365ReservationsProps> = (props) =>
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

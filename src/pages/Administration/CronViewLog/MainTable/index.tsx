@@ -203,6 +203,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       <DataTable
         globalSearchExist={false}
         ref={dataTableRef}
+        showDelete={false}
         showAddButton={false}
         hideExportButton={true}
         tableAction={tableAction}

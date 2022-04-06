@@ -64,6 +64,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
+  const [flagForMappingHighlights, setFlagForMappingHighlights] = useState<boolean>(true);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
@@ -93,8 +94,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           filterTableColumns.map(function (ele) {
             initialValuesData[ele.name] = ExcelColsSorted.filter(
               (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
             )[0];
             data[0].validation =
               ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
@@ -315,8 +316,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
       // const removedColumns = tableColumnState.filter((x) =>
       //   columnsArray.includes(x.name?.toLowerCase())
       // );
-      const ExcelColsSorted = [...filterExcelColumns];
-      ExcelColsSorted.sort();
+      if (filterExcelColumns && filterExcelColumns?.length) {
+        const ExcelColsSorted = [...filterExcelColumns];
+        ExcelColsSorted.sort();
+      }
       //setExcelColumns(ExcelColsSorted);
       setTableColumns(filterTableColumns);
       //setRemovedColumns(removedColumns);
@@ -349,13 +352,13 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
         initialValuesData[ele.name] =
           filterExcelColumns?.filter(
             (x: any) =>
-              x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-              ele.name?.toLowerCase()?.replace(/\s+/g, '')
+              x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+              ele.name?.toLowerCase()?.replace(/\s/g, '')
           ).length > 0
             ? filterExcelColumns.filter(
               (x: any) =>
-                x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                ele.name?.toLowerCase()?.replace(/\s/g, '')
             )[0]
             : '';
       });
@@ -856,7 +859,10 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             <MappingColumn
               setRecords={setRecords}
               record={record}
+              count={count}
               records={records}
+              flagForMappingHighlights={flagForMappingHighlights}
+              setFlagForMappingHighlights={setFlagForMappingHighlights}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
               fileName={
                 record?.key_word === null
@@ -1327,6 +1333,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           handleModalClose={() => {
             setShowManageExcel(false);
           }}
+          setFlagForMappingHighlights={setFlagForMappingHighlights}
           dataRecords={records}
           setRecords={setRecords}
           setDelimitFlag={setDelimitFlag}

@@ -306,6 +306,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
       <DataTable
         ref={dataTableRef}
         showAddButton={false}
+        showDelete={false}
         extraSearchData={extraSearchData}
         //setSelectedId={setSelectedId}
         isSpsApiJobsId={job_id > 0 ? true : false}

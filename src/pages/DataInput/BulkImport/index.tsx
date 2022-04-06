@@ -723,8 +723,8 @@ const BulkImport: React.FC = () => {
             filterTableColumns.map(function (ele) {
               initialValuesData[ele.name] = ExcelColsSorted.filter(
                 (x: any) =>
-                  x?.toString()?.toLowerCase()?.replace(/\s+/g, '') ===
-                  ele.name?.toLowerCase()?.replace(/\s+/g, '')
+                  x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                  ele.name?.toLowerCase()?.replace(/\s/g, '')
               )[0];
               data.validation =
                 ele.is_nullable == 'NO' && initialValuesData[ele.name] == undefined
@@ -837,7 +837,7 @@ const BulkImport: React.FC = () => {
                           </span>
                         </Dragger>
                         <span style={{ color: 'red', textAlign: 'center' }}>
-                          {'File Type Supported: .xls,.xlsx,.csv,.txt'}
+                          {'File Type Supported: [.xls, .xlsx, .csv, .txt]'}
                         </span>
                       </div>
                     </Form.Item>

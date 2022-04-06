@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import {
   setTableColumnSelection,
   clearSpsApiJobsDataMessages,
@@ -25,6 +25,7 @@ import { Popconfirm, Popover } from 'antd';
 import { ICallAPI } from '../../../../services/sps/spsApiJobsData/spsApiJobsData.model';
 import { ReloadOutlined , InfoCircleOutlined } from '@ant-design/icons';
 import { IMainTable } from './mainTable.model';
+import { toast } from 'react-toastify';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
   const { api_job_id } = props;
@@ -46,6 +47,17 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const exportExcelFile = (searchData: ISearch) => {
     return spsApiJobsDataService.exportExcelFile(searchData);
   };
+
+  useEffect(() => {
+    if (spsApiJobsData.runJobData.messages.length > 0) {
+      if (spsApiJobsData.runJobData.hasErrors) {
+        toast.error(spsApiJobsData.runJobData.messages.join(' '));
+      } else {
+        toast.success(spsApiJobsData.runJobData.messages.join(' '));
+      }
+      dispatch(clearSpsApiJobsDataMessages());
+    }
+  }, [spsApiJobsData.runJobData.messages]);
 
   const FilterBySwap = (dataIndex: string, form) => {
     return FilterWithSwapOption(
@@ -249,6 +261,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         globalSearchExist={false}
         ref={dataTableRef}
         showAddButton={false}
+        showDelete={false}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}

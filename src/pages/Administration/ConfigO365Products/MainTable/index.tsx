@@ -136,9 +136,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -165,9 +165,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -194,9 +194,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (value: boolean) =>
               !_.isNull(value) ? (
                 value ? (
-                  <Checkbox defaultChecked disabled />
+                  <Checkbox checked disabled />
                 ) : (
-                  <Checkbox defaultChecked={false} disabled />
+                  <Checkbox checked={false} disabled />
                 )
               ) : (
                 ''
@@ -242,6 +242,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         setValuesForSelection={setValuesForSelection}
         showAddButton={ability.can(Action.Add, Page.Bu)}
         showBulkUpdate={ability.can(Action.Update, Page.Bu)}
+        showDelete={false}
         globalSearchExist={false}
         setSelectedId={setSelectedId}
         tableAction={tableAction}

@@ -122,7 +122,6 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

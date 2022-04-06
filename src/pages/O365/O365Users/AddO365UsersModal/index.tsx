@@ -312,7 +312,6 @@ const AddO365UsersModal: React.FC<IAddO365UsersProps> = (props) => {
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

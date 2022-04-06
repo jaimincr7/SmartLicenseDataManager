@@ -107,7 +107,6 @@ const AddConfigWindowsServerVersionsModal: React.FC<IAddConfigWindowsServerVersi
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

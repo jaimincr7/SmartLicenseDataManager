@@ -1,4 +1,4 @@
-import { Button, Col, Form, InputNumber, Modal, Row, Select, Table } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Popconfirm, Row, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
@@ -29,7 +29,9 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     seqNumber,
     firstFlag,
     setFirstFlag,
+    setFlagForMappingHighlights,
   } = props;
+
   const [columns, setColumns] = useState([]);
   const dispatch = useAppDispatch();
   const [showDelimiter, setShowDelimiter] = useState(false);
@@ -88,7 +90,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     header_row: headerRowCount,
     deli_meter:
       dataRecords.filter((data) => data.index == seqNumber).length > 0 &&
-      dataRecords.filter((data) => data.index == seqNumber)[0].delimiter !== null
+        dataRecords.filter((data) => data.index == seqNumber)[0].delimiter !== null
         ? dataRecords.filter((data) => data.index == seqNumber)[0].delimiter
         : ',',
   };
@@ -98,7 +100,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       if (data.index == seqNumber) {
         data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
           'csv' ||
-        data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
+          data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
           'txt'
           ? setShowDelimiter(true)
           : setShowDelimiter(false);
@@ -145,12 +147,14 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   };
 
   const submitHeaderRow = (values: any) => {
+    setFlagForMappingHighlights(false);
     const dummyRecords = _.cloneDeep(dataRecords);
     dummyRecords.map((data) => {
       if (data.index == seqNumber) {
         data.header_row = values.header_row;
         data.delimiter = values.deli_meter;
         data.excel_to_sql_mapping = null;
+        //data.currentMapping = null;
       }
     });
     setRecords(dummyRecords);
@@ -260,9 +264,11 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         />
 
         <div className="btns-block modal-footer">
-          <Button key="submit" type="primary" htmlType="submit">
-            Ok
-          </Button>
+          <Popconfirm title="Your mapping drop down will be over-written.Please re-check your mapping details after confirming" onConfirm={() => submitHeaderRow(form.getFieldsValue())}>
+            <Button key="submit" type="primary" htmlType="submit">
+              Ok
+            </Button>
+          </Popconfirm>
         </div>
       </Form>
     </Modal>

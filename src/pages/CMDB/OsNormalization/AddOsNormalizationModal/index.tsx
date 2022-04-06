@@ -119,7 +119,6 @@ const AddCmdbOsNormalizationModal: React.FC<IAddCmdbOsNormalizationProps> = (pro
       } else {
         toast.warn(commonLookups.save.messages.join(' '));
         handleModalClose();
-        refreshDataTable();
       }
       dispatch(clearMultipleUpdateMessages());
     }

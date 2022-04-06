@@ -13,4 +13,5 @@ export interface IPreviewExcel {
   seqNumber?: number;
   firstFlag?: boolean;
   setFirstFlag?: (data: boolean) => void;
+  setFlagForMappingHighlights?: (data: boolean) => void;
 }

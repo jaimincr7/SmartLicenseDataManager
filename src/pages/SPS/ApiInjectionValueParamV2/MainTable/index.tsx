@@ -281,6 +281,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         globalSearchExist={false}
         showAddButton={ability.can(Action.Add, Page.SpsApiInjectionValueParamV2)}
         setSelectedId={setSelectedId}
+        showDelete={false}
         tableAction={tableAction}
         exportExcelFile={exportExcelFile}
         getTableColumns={getTableColumns}
