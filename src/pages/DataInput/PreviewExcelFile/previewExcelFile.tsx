@@ -151,6 +151,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         data.header_row = values.header_row;
         data.delimiter = values.deli_meter;
         data.excel_to_sql_mapping = null;
+        //data.currentMapping = null;
       }
     });
     setRecords(dummyRecords);

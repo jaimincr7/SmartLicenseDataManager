@@ -61,8 +61,11 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
   }, [bulkImport.saveExcelFileMapping.data]);
 
   useEffect(() => {
+    const dataMapRecord = records.filter((x) => x.index == seqNumber);
     if (localMapping && dateChangeFlag && !(count.save > 0)) {
-      if (record.table_name) {
+      if (dataMapRecord && dataMapRecord?.length && dataMapRecord[0].table_name) {
+        debugger;
+        console.log('---------',record);
         setLoadingTableColumns(true);
         commonService.getTableColumns(record.table_name).then((res) => {
           if (res) {
@@ -81,12 +84,13 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             ExcelColsSorted.sort();
             setExcelColumns(ExcelColsSorted);
             setTableColumnState(filterTableColumns);
+            const dummyDatas = _.cloneDeep(records);
 
             const initialValuesData: any = {};
             const sqlToExcelMapping = [];
             filterTableColumns.map(function (ele) {
-              const mapRecord = records.filter((x) => x.index == seqNumber);
               const latest = [];
+              const mapRecord = dummyDatas.filter((x) => x.index == seqNumber);
               if (mapRecord && mapRecord.length) {
                 mapRecord[0].excel_to_sql_mapping?.map((data) => {
                   if (filterExcelColumns?.includes(data.value)) {
@@ -94,7 +98,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   } else {
                     const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                     dummyTableColumn?.map((data1) => {
-                      if (data1.name == data.key)
+                      if (data1.name == data.key && mapRecord[0]?.currentMapping !== null)
                         data1.validateStatus = "warning";
                     });
                     tableColumnLocal = dummyTableColumn;
@@ -126,11 +130,12 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     : `${initialValuesData[ele.name]}`,
               });
             });
+            const mapRecord = dummyDatas.filter((x) => x.index == seqNumber);
             Object.entries(initialValuesData).forEach(([key, value]) => {
-              if (value === undefined  ) {
+              if (value === undefined && !(filterExcelColumns?.includes(value))) {
                 const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                 dummyTableColumn?.map((data) => {
-                  if (data.name == key && data.validateStatus !== "warning")
+                  if (data.name == key && data.validateStatus !== "warning" && mapRecord && mapRecord.length && mapRecord[0].currentMapping !== null)
                     data.validateStatus = "success";
                 });
                 tableColumnLocal = dummyTableColumn;
@@ -155,8 +160,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             }
             form.setFieldsValue(initialValuesData);
             setTimeout(() => {
-              setMappingRecords();              
-            }, );
+              setMappingRecords();
+            });
           }
           setLoadingTableColumns(false);
         });
