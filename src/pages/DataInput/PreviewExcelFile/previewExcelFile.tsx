@@ -29,7 +29,9 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     seqNumber,
     firstFlag,
     setFirstFlag,
+    setFlagForMappingHighlights,
   } = props;
+
   const [columns, setColumns] = useState([]);
   const dispatch = useAppDispatch();
   const [showDelimiter, setShowDelimiter] = useState(false);
@@ -145,12 +147,14 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   };
 
   const submitHeaderRow = (values: any) => {
+    setFlagForMappingHighlights(false);
     const dummyRecords = _.cloneDeep(dataRecords);
     dummyRecords.map((data) => {
       if (data.index == seqNumber) {
         data.header_row = values.header_row;
         data.delimiter = values.deli_meter;
         data.excel_to_sql_mapping = null;
+        //data.currentMapping = null;
       }
     });
     setRecords(dummyRecords);

@@ -64,6 +64,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
   const [headerRowCount, setHeaderRowCount] = useState(1);
   const [excelPreviewData, setExcelPreviewData] = useState<any>();
   const [showManageExcel, setShowManageExcel] = useState<boolean>(false);
+  const [flagForMappingHighlights, setFlagForMappingHighlights] = useState<boolean>(true);
   const [tableColumnState, setTableColumnState] = useState<any>([]);
   const [savedExcelMapping, setSavedExcelMapping] = useState<any>([]);
   const [selectedRowId, setSelectedRowId] = useState<any>();
@@ -860,6 +861,8 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
               record={record}
               count={count}
               records={records}
+              flagForMappingHighlights={flagForMappingHighlights}
+              setFlagForMappingHighlights={setFlagForMappingHighlights}
               skipRows={record?.header_row > 0 ? record?.header_row - 1 : 0}
               fileName={
                 record?.key_word === null
@@ -1330,6 +1333,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
           handleModalClose={() => {
             setShowManageExcel(false);
           }}
+          setFlagForMappingHighlights={setFlagForMappingHighlights}
           dataRecords={records}
           setRecords={setRecords}
           setDelimitFlag={setDelimitFlag}
