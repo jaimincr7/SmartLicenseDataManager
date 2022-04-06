@@ -20,7 +20,7 @@ const { Option } = Select;
 
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, count, is_public, dateChangeFlag, setDateChangeFlag } =
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, count, is_public, dateChangeFlag, setDateChangeFlag, setFlagForMappingHighlights, flagForMappingHighlights } =
     props;
 
   const [form] = Form.useForm();
@@ -64,8 +64,6 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     const dataMapRecord = records.filter((x) => x.index == seqNumber);
     if (localMapping && dateChangeFlag && !(count.save > 0)) {
       if (dataMapRecord && dataMapRecord?.length && dataMapRecord[0].table_name) {
-        debugger;
-        console.log('---------',record);
         setLoadingTableColumns(true);
         commonService.getTableColumns(record.table_name).then((res) => {
           if (res) {
@@ -159,9 +157,12 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               setRecords(dummyrecords);
             }
             form.setFieldsValue(initialValuesData);
-            setTimeout(() => {
-              setMappingRecords();
-            });
+            if(flagForMappingHighlights !== false)
+            {
+              setTimeout(() => {
+                setMappingRecords();
+              });
+            }
           }
           setLoadingTableColumns(false);
         });
@@ -171,6 +172,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
     }
     setDateChangeFlag(true);
     setLocalMapping(true);
+    setFlagForMappingHighlights(true);
   }, [record.table_name, record.header_row, record.excel_to_sql_mapping]);
 
   useEffect(() => {

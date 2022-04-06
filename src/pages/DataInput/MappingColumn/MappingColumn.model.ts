@@ -12,4 +12,6 @@ export interface IMappingColumnProps {
   dateChangeFlag?: boolean;
   count: { [key: string]: number };
   setDateChangeFlag?: (value: boolean) => void;
+  setFlagForMappingHighlights?:(value: boolean) => void;
+  flagForMappingHighlights?: boolean;
 }
