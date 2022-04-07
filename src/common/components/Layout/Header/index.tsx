@@ -102,6 +102,7 @@ const backgroundProcesses = () => {
       <Can I={Action.View} a={Page.BackgroundProcesses}>
         <Button
           type="primary"
+          style={{marginLeft: '10px',marginBottom: '3px'}}
           onClick={() => history.push('/administration/back-ground-processes')}
         >
           More Info
