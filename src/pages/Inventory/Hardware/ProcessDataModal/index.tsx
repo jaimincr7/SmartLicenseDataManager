@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Modal, Row, Select } from 'antd';
+import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import React, { useEffect } from 'react';
 import {
   IConfigModelPopUpDataSelection,
@@ -23,7 +23,7 @@ import {
 import { IProcessDataModalProps } from './processData.model';
 import { processDataHardware } from '../../../../store/inventory/hardware/hardware.action';
 import { toast } from 'react-toastify';
-import { validateMessages } from '../../../../common/constants/common';
+import { Common, validateMessages } from '../../../../common/constants/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
@@ -33,6 +33,9 @@ import {
   getScheduleDateHelperLookup,
   passDateToApi,
   getandReturn,
+  showDateFromApi,
+  forDropDown,
+  getSimpleDate,
 } from '../../../../common/helperFunction';
 import {
   clearHardwareMessages,
@@ -54,7 +57,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const initialValues = {
     company_id: null,
     bu_id: null,
-    selected_date: null,
+    selected_date: getSimpleDate().format(Common.DATEFORMAT),
   };
 
   const onFinish = (values: any) => {
@@ -91,6 +94,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
   const getConfigData = async (data: any) => {
     if (data.company_id) {
       await dispatch(getBULookup(data.company_id));
+    }
+    if (data.bu_id) {
+      await dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+      );
     }
     form.setFieldsValue(data);
   };
@@ -138,7 +146,11 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     if (!buId) {
       dispatch(clearDateLookup());
     }
-
+    if (buId) {
+      dispatch(
+        getScheduleDate(getScheduleDateHelperLookup(form.getFieldsValue(), tableName))
+      );
+    }
     form.setFieldsValue({ bu_id: buId });
   };
 
@@ -282,9 +294,34 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
-                <label className="label">Selected Date </label>
-                <Form.Item name="selected_date" label="Selected Date " className="m-0">
-                  <DatePicker className="w-100" />
+                <label className="label">Selected Date</label>
+                <Form.Item
+                  name="selected_date"
+                  className="m-0"
+                  label="Selected Date"
+                  rules={[{ required: true }]}
+                >
+                  <Select
+                    placeholder="Select Date"
+                    loading={commonLookups.getScheduledDate.loading}
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option: any) =>
+                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    filterSort={(optionA: any, optionB: any) =>
+                      optionA.children
+                        ?.toLowerCase()
+                        ?.localeCompare(optionB.children?.toLowerCase())
+                    }
+                  >
+                    {commonLookups.getScheduledDate.data.map((option: any) => (
+                      <Option key={option} value={showDateFromApi(option)}>
+                        {forDropDown(option) == 'Invalid date' ? 'NULL' : showDateFromApi(option)}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </div>
             </Col>
