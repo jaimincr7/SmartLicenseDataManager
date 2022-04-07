@@ -264,7 +264,12 @@ const AddCmdbSoftwareNormalizationModal: React.FC<IAddCmdbSoftwareNormalizationP
                   ) : (
                     'Publisher'
                   )}
-                  <Form.Item name="publisher" className="m-0" label="Publisher" rules={[{ max: 255 }]}>
+                  <Form.Item
+                    name="publisher"
+                    className="m-0"
+                    label="Publisher"
+                    rules={[{ max: 255 }]}
+                  >
                     <Input className="form-control" />
                   </Form.Item>
                 </div>

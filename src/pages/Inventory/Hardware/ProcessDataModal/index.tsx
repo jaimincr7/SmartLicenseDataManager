@@ -29,7 +29,11 @@ import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
 import ability, { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
-import { getScheduleDateHelperLookup, passDateToApi, getandReturn } from '../../../../common/helperFunction';
+import {
+  getScheduleDateHelperLookup,
+  passDateToApi,
+  getandReturn,
+} from '../../../../common/helperFunction';
 import {
   clearHardwareMessages,
   hardwareSelector,
@@ -185,10 +189,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? getandReturn(filterKeys.filter_keys.date_added[0])
             : null,
       };
-      if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
-        dispatch(
-          getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
-        );
+      if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+        dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));
       }
       form.setFieldsValue(filterValues);
     }

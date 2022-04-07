@@ -4,7 +4,10 @@ import { toast } from 'react-toastify';
 import { IPurgeDataModalProps } from './purgeDataModal.model';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
-import { clearCompanyMessages, companySelector } from '../../../../store/master/company/company.reducer';
+import {
+  clearCompanyMessages,
+  companySelector,
+} from '../../../../store/master/company/company.reducer';
 import { getAllCompanyLookup } from '../../../../store/common/common.action';
 import { purgeCompanyById } from '../../../../store/master/company/company.action';
 import { ILookup } from '../../../../services/common/common.model';
@@ -17,10 +20,7 @@ const DeleteDatasetModal: React.FC<IPurgeDataModalProps> = (props) => {
   const common = useAppSelector(commonSelector);
   const dispatch = useAppDispatch();
 
-  const {
-    showModal,
-    handleModalClose,
-  } = props;
+  const { showModal, handleModalClose } = props;
 
   const [form] = Form.useForm();
 
@@ -62,12 +62,7 @@ const DeleteDatasetModal: React.FC<IPurgeDataModalProps> = (props) => {
         onCancel={handleModalClose}
         footer={false}
       >
-        <Form
-          form={form}
-          name="deleteDataset"
-          initialValues={initialValues}
-          onFinish={onFinish}
-        >
+        <Form form={form} name="deleteDataset" initialValues={initialValues} onFinish={onFinish}>
           <Row gutter={[30, 15]} className="form-label-hide">
             <Col xs={24} sm={12} md={8}>
               <div className="form-group m-0">
@@ -105,13 +100,8 @@ const DeleteDatasetModal: React.FC<IPurgeDataModalProps> = (props) => {
             </Col>
           </Row>
           <div className="btns-block modal-footer">
-            <Button
-              key="submit"
-              type="primary"
-              htmlType="submit"
-              loading={company.purge.loading}
-            >
-              Purge 
+            <Button key="submit" type="primary" htmlType="submit" loading={company.purge.loading}>
+              Purge
             </Button>
             <Button key="back" onClick={handleModalClose}>
               Cancel

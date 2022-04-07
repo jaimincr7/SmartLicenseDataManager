@@ -3,7 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IApiResponseBody, ISearchResponse } from '../../../common/models/common';
 import { ICompany } from '../../../services/master/company/company.model';
 import { RootState } from '../../app.model';
-import { deleteCompany, getCompanyById, purgeCompanyById, saveCompany, searchCompany } from './company.action';
+import {
+  deleteCompany,
+  getCompanyById,
+  purgeCompanyById,
+  saveCompany,
+  searchCompany,
+} from './company.action';
 import { ICompanyState } from './company.model';
 
 export const initialState: ICompanyState = {
@@ -142,7 +148,10 @@ export const companySlice = createSlice({
       state.purge.loading = true;
       state.purge.messages = [];
     },
-    [purgeCompanyById.fulfilled.type]: (state, action: PayloadAction<IApiResponseBody<unknown>>) => {
+    [purgeCompanyById.fulfilled.type]: (
+      state,
+      action: PayloadAction<IApiResponseBody<unknown>>
+    ) => {
       state.purge.loading = false;
       state.purge.hasErrors = false;
       state.purge.messages = action.payload.messages;
@@ -151,7 +160,6 @@ export const companySlice = createSlice({
       state.purge.loading = false;
       state.purge.hasErrors = true;
     },
-
   },
 });
 

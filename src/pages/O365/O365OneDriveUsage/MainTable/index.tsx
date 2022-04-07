@@ -167,9 +167,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDateSwap(
               'report_refresh_date',
               o365OneDriveUsage.search.tableName,
-              form, null,
+              form,
+              null,
               ObjectForColumnFilter,
-              true),
+              true
+            ),
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
@@ -212,9 +214,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDateSwap(
               'last_activity_date',
               o365OneDriveUsage.search.tableName,
-              form, null,
+              form,
+              null,
               ObjectForColumnFilter,
-              true),
+              true
+            ),
             dataIndex: 'last_activity_date',
             key: 'last_activity_date',
             ellipsis: true,

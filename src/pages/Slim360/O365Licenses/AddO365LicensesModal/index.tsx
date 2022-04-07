@@ -17,7 +17,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISlim360O365Licenses } from '../../../../services/slim360/o365Licenses/o365Licenses.model';
@@ -324,15 +329,15 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
                     >
                       {Object.keys(globalFilters?.globalTenantLookup?.data).length > 0
                         ? globalFilters?.globalTenantLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : commonLookups.tenantLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -369,15 +374,15 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
                     >
                       {Object.keys(commonLookups.companyLookup.data).length > 0
                         ? commonLookups.companyLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalCompanyLookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>
@@ -409,15 +414,15 @@ const AddSlim360O365LicensesModal: React.FC<IAddSlim360O365LicensesProps> = (pro
                     >
                       {Object.keys(commonLookups.buLookup.data).length > 0
                         ? commonLookups.buLookup.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))
                         : globalFilters?.globalBULookup?.data.map((option: ILookup) => (
-                          <Option key={option.id} value={option.id}>
-                            {option.name}
-                          </Option>
-                        ))}
+                            <Option key={option.id} value={option.id}>
+                              {option.name}
+                            </Option>
+                          ))}
                     </Select>
                   </Form.Item>
                 </div>

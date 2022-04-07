@@ -1,14 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Row,
-  Spin,
-} from 'antd';
+import { Button, Checkbox, Col, Form, Input, InputNumber, Modal, Row, Spin } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -42,7 +32,6 @@ import { Page } from '../../../../common/constants/pageAction';
 import { getObjectForUpdateMultiple } from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
-
 
 const AddExcelColumnMappingModal: React.FC<IAddExcelColumnMappingProps> = (props) => {
   const excelColumnMapping = useAppSelector(excelColumnMappingSelector);
@@ -93,11 +82,13 @@ const AddExcelColumnMappingModal: React.FC<IAddExcelColumnMappingProps> = (props
       }
     }
   };
-  
+
   const fillValuesOnEdit = async (data: IExcelColumnMapping) => {
     if (data) {
       initialValues = {
-        excel_file_mapping_id: _.isNull(data.excel_file_mapping_id) ? null : data.excel_file_mapping_id,
+        excel_file_mapping_id: _.isNull(data.excel_file_mapping_id)
+          ? null
+          : data.excel_file_mapping_id,
         sheet_name: data.sheet_name,
         header_row: _.isNull(data.header_row) ? null : data.header_row,
         mapping: data.mapping,
@@ -197,7 +188,11 @@ const AddExcelColumnMappingModal: React.FC<IAddExcelColumnMappingProps> = (props
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'excel_file_mapping_id']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'excel_file_mapping_id']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Excel File Mapping Id</Checkbox>
                     </Form.Item>
                   ) : (

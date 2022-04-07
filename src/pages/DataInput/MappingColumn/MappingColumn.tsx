@@ -19,8 +19,18 @@ import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.r
 const { Option } = Select;
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, is_public, dateChangeFlag, setDateChangeFlag } =
-    props;
+  const {
+    record,
+    skipRows,
+    fileName,
+    fileType,
+    seqNumber,
+    records,
+    setRecords,
+    is_public,
+    dateChangeFlag,
+    setDateChangeFlag,
+  } = props;
 
   const [form] = Form.useForm();
   const initialValues = {
@@ -49,7 +59,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         if (data.index == record.index) {
           data.currentMapping =
             bulkImport.saveExcelFileMapping.data && bulkImport.saveExcelFileMapping.data !== null
-              ? bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.sheet_name + '!' + bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.id
+              ? bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.sheet_name +
+                '!' +
+                bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.id
               : null;
           data.show_mapping = [...data.show_mapping, bulkImport.saveExcelFileMapping.data];
         }
@@ -91,19 +103,17 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     ele.name?.toLowerCase()?.replace(/\s/g, '')
                 ).length > 0 && mapRecord[0]?.excel_to_sql_mapping == null
                   ? filterExcelColumns.filter(
-                    (x: any) =>
-                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                      ele.name?.toLowerCase()?.replace(/\s/g, '')
-                  )[0]
+                      (x: any) =>
+                        x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                        ele.name?.toLowerCase()?.replace(/\s/g, '')
+                    )[0]
                   : (mapRecord[0]?.excel_to_sql_mapping || []).filter((data) => {
-                    return data.key == ele.name;
-                  })[0]?.value;
+                      return data.key == ele.name;
+                    })[0]?.value;
               sqlToExcelMapping.push({
                 key: `${ele.name}`,
                 value:
-                  initialValuesData[ele.name] == undefined
-                    ? ''
-                    : `${initialValuesData[ele.name]}`,
+                  initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
               });
             });
             const tempRecord = records.filter((data) => data.index == seqNumber);

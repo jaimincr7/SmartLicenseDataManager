@@ -61,7 +61,7 @@ export const getObjectForUpdateMultiple = (
   if (isDummyDropDown === true) {
     objectForSelection['selectedIds'] = Obj.selectedIds;
   } else {
-    rowList.selectedRowList = rowList.selectedRowList.map((data) => data = data.split('-')[0]);
+    rowList.selectedRowList = rowList.selectedRowList.map((data) => (data = data.split('-')[0]));
     objectForSelection['selectedIds'] = rowList.selectedRowList;
   }
   return objectForSelection;
@@ -86,8 +86,7 @@ export const getScheduleDateHelperLookup = (form: any, tableName: string) => {
 //The Helper Functions are for Date and related thing
 
 export const passDateToApi = (date: Moment | string | Date, isTime?: boolean) => {
-  if(date !== null)
-  {
+  if (date !== null) {
     if (isTime) {
       return moment(date).format(Common.DATETIMEFORMAT);
     } else {

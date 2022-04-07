@@ -23,7 +23,12 @@ import _ from 'lodash';
 import { validateMessages } from '../../../../common/constants/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
-import { forDropDown, getScheduleDateHelperLookup, showDateFromApi, getandReturn } from '../../../../common/helperFunction';
+import {
+  forDropDown,
+  getScheduleDateHelperLookup,
+  showDateFromApi,
+  getandReturn,
+} from '../../../../common/helperFunction';
 
 const { Option } = Select;
 
@@ -115,7 +120,9 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
     };
     if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
       dispatch(
-        getScheduleDate(getScheduleDateHelperLookup(filterValues, sqlServersLicense.search.tableName))
+        getScheduleDate(
+          getScheduleDateHelperLookup(filterValues, sqlServersLicense.search.tableName)
+        )
       );
     }
     form.setFieldsValue(filterValues);
@@ -208,9 +215,7 @@ const ReRunAllScenariosModal: React.FC<IReRunAllScenariosModalProps> = (props) =
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={showDateFromApi(option)}>
-                        {forDropDown(option) == 'Invalid date'
-                          ? 'NULL'
-                          : showDateFromApi(option)}
+                        {forDropDown(option) == 'Invalid date' ? 'NULL' : showDateFromApi(option)}
                       </Option>
                     ))}
                   </Select>

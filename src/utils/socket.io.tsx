@@ -15,7 +15,7 @@ let socketTimeout;
 export enum SocketNotificationType {
   FilePath,
   Message,
-  Error
+  Error,
 }
 
 export const SocketIO = React.memo(() => {
@@ -31,7 +31,7 @@ export const SocketIO = React.memo(() => {
         commonService
           .getJwtTokenForSocket(httpRequest)
           .catch(() => {
-            if(socketTimeout){
+            if (socketTimeout) {
               clearTimeout(socketTimeout);
             }
             socketTimeout = setTimeout(() => {
@@ -40,7 +40,7 @@ export const SocketIO = React.memo(() => {
           })
           .then((res) => {
             if (res) {
-              if(socket){
+              if (socket) {
                 socket.off();
               }
               socket = io(config.baseApi, {
@@ -76,9 +76,13 @@ export const SocketIO = React.memo(() => {
                         toast.info(message.message);
                         break;
                       case SocketNotificationType.Error:
-                        if(message?.data){
+                        if (message?.data) {
                           const info = JSON.parse(message.data);
-                          if(info.status && info?.body?.errors && Array.isArray(info?.body?.errors)){
+                          if (
+                            info.status &&
+                            info?.body?.errors &&
+                            Array.isArray(info?.body?.errors)
+                          ) {
                             toast.info(`${info.status} - ${info.body.errors.join(' ')}`);
                           }
                         }
@@ -92,7 +96,7 @@ export const SocketIO = React.memo(() => {
 
                 socket.on('disconnect', () => {
                   // console.info('Socket is disconnected');
-                  if(socketTimeout){
+                  if (socketTimeout) {
                     clearTimeout(socketTimeout);
                   }
                   socketTimeout = setTimeout(() => {
@@ -102,7 +106,7 @@ export const SocketIO = React.memo(() => {
 
                 socket.on('connect', () => {
                   tryToConnect = 0;
-                  if(socketTimeout){
+                  if (socketTimeout) {
                     clearTimeout(socketTimeout);
                   }
                   // console.info('Socket is connect');
@@ -111,28 +115,28 @@ export const SocketIO = React.memo(() => {
             }
           });
       } catch (error) {
-        if(socketTimeout){
+        if (socketTimeout) {
           clearTimeout(socketTimeout);
         }
         socketTimeout = setTimeout(() => {
           connectSocket();
         }, 10000);
       }
-    }else if(tryToConnect >= 5){
+    } else if (tryToConnect >= 5) {
       toast.info(
         () => (
-            <a
-              href='#'
-              onClick={()=>{
-                tryToConnect = 0;
-                connectSocket();
-              }}
-              style={{ color: '#fefefe' }}
-            >
-              Background notification may not working.
-              <strong> Click here </strong>
-                to reconnect now.
-            </a>
+          <a
+            href="#"
+            onClick={() => {
+              tryToConnect = 0;
+              connectSocket();
+            }}
+            style={{ color: '#fefefe' }}
+          >
+            Background notification may not working.
+            <strong> Click here </strong>
+            to reconnect now.
+          </a>
         ),
         { autoClose: false }
       );

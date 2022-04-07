@@ -33,7 +33,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   const history = useHistory();
   const globalFilters = useAppSelector(globalSearchSelector);
   const [ObjectForColumnFilter, setObjectForColumnFilter] = useState({});
-  const {job_id} = props;
+  const { job_id } = props;
 
   const extraSearchData = {
     id: job_id,
@@ -139,10 +139,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('date', spsApiJobs.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true,
-            true),
+            title: FilterByDateSwap(
+              'date',
+              spsApiJobs.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true,
+              true
+            ),
             dataIndex: 'date',
             key: 'date',
             ellipsis: true,
@@ -158,10 +163,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('call_start', spsApiJobs.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true,
-            true),
+            title: FilterByDateSwap(
+              'call_start',
+              spsApiJobs.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true,
+              true
+            ),
             dataIndex: 'call_start',
             key: 'call_start',
             ellipsis: true,
@@ -177,10 +187,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('call_end', spsApiJobs.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true,
-            true),
+            title: FilterByDateSwap(
+              'call_end',
+              spsApiJobs.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true,
+              true
+            ),
             dataIndex: 'call_end',
             key: 'call_end',
             ellipsis: true,

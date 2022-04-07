@@ -121,8 +121,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                      (data) => data.sheet_name == sheet.sheet
+                    )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -197,8 +197,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                      (data) => data.sheet_name == sheet.sheet
+                    )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -284,8 +284,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                  (data) => data.sheet_name == sheet.sheet
-                )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                 : [];
             if (mappingData.length) {
               formUpload.setFieldsValue({ hide_unmapped: false });
@@ -313,8 +313,8 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                    ? orgFile[0].table_name
-                    : tableName,
+                  ? orgFile[0].table_name
+                  : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
@@ -340,8 +340,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                    ? orgFile[0].excel_to_sql_mapping
-                    : null,
+                  ? orgFile[0].excel_to_sql_mapping
+                  : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -376,8 +376,7 @@ const BulkImport: React.FC = () => {
         data.excel_to_sql_mapping = null;
       }
       await commonService.getTableColumns(formUpload?.getFieldValue('table_name')).then((res) => {
-        if (res)
-          setColumnTableArray(res);
+        if (res) setColumnTableArray(res);
       });
       setLoading(false);
       setMapping(dummyRecords);
@@ -482,8 +481,8 @@ const BulkImport: React.FC = () => {
 
     const updatedFileList = [];
     fileList?.forEach((element) => {
-      if(records?.filter((data) => data.original_filename === element.originFileObj).length === 0)
-      updatedFileList?.push(element.originFileObj ? element.originFileObj : element);
+      if (records?.filter((data) => data.original_filename === element.originFileObj).length === 0)
+        updatedFileList?.push(element.originFileObj ? element.originFileObj : element);
     });
     setDefaultFileList(updatedFileList);
     if (file.status === 'removed') {
@@ -674,7 +673,9 @@ const BulkImport: React.FC = () => {
   const changeTabMapping = (value) => {
     if (value === undefined) {
       const dummyRecord = _.cloneDeep(bulkImports.getExcelFileMappingLookup.data);
-      const keyValue = dummyRecord.filter((data) => data.id === mappings[0]?.excel_file_mapping_id)[0];
+      const keyValue = dummyRecord.filter(
+        (data) => data.id === mappings[0]?.excel_file_mapping_id
+      )[0];
       changeFileMapping(keyValue?.key_word + '|' + keyValue?.file_type);
     } else {
       const dummyRecord = _.cloneDeep(mappings);
@@ -733,9 +734,7 @@ const BulkImport: React.FC = () => {
               sqlToExcelMapping.push({
                 key: `${ele.name}`,
                 value:
-                  initialValuesData[ele.name] == undefined
-                    ? ''
-                    : `${initialValuesData[ele.name]}`,
+                  initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
               });
             });
             data.excel_to_sql_mapping = sqlToExcelMapping;
@@ -759,9 +758,7 @@ const BulkImport: React.FC = () => {
   }, [records]);
 
   function beforeUpload(file) {
-    const type = file?.name?.slice(
-      ((file?.name.lastIndexOf('.') - 1) >>> 0) + 2
-    );
+    const type = file?.name?.slice(((file?.name.lastIndexOf('.') - 1) >>> 0) + 2);
     const dummyRecords = _.cloneDeep(records);
     const duplicateFile = dummyRecords?.filter((data) => data.original_filename === file?.name);
     if (duplicateFile && duplicateFile.length) {
@@ -928,7 +925,10 @@ const BulkImport: React.FC = () => {
                           >
                             {(bulkImports.getExcelFileMappingLookup.data || [])?.map(
                               (option: any, index: number) => (
-                                <Option key={index} value={option.key_word + '|' + option.file_type}>
+                                <Option
+                                  key={index}
+                                  value={option.key_word + '|' + option.file_type}
+                                >
                                   {option.key_word}
                                   <span className="value-badge">{option.file_type}</span>
                                 </Option>
@@ -965,13 +965,11 @@ const BulkImport: React.FC = () => {
                                 ?.localeCompare(optionB.children?.toString().toLowerCase())
                             }
                           >
-                            {(mappings || [])?.map(
-                              (option: any, index: number) => (
-                                <Option key={index} value={option.sheet_name}>
-                                  {option.sheet_name}
-                                </Option>
-                              )
-                            )}
+                            {(mappings || [])?.map((option: any, index: number) => (
+                              <Option key={index} value={option.sheet_name}>
+                                {option.sheet_name}
+                              </Option>
+                            ))}
                           </Select>
                         </Form.Item>
                       </div>

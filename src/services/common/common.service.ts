@@ -13,9 +13,9 @@ import {
 } from './common.model';
 
 class CommonService {
-    cancelTokenSource = null;
+  cancelTokenSource = null;
 
-    public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
+  public async getTenantLookup(): Promise<IApiResponse<ILookup>> {
     const url = `/tenant/lookup`;
     return request({ url, method: 'GET' }).then((res) => {
       return res.data;
@@ -420,7 +420,13 @@ class CommonService {
     });
   }
 
-  public async getExcelColumns(file: any, callbackProgress?: any, tenant_id?: number, company_id?: number, bu_id?: number): Promise<IApiResponse<any>> {
+  public async getExcelColumns(
+    file: any,
+    callbackProgress?: any,
+    tenant_id?: number,
+    company_id?: number,
+    bu_id?: number
+  ): Promise<IApiResponse<any>> {
     this.cancelTokenSource = axios.CancelToken.source();
     const headers = { Accept: 'multipart/form-data' };
     let url = `/app/read-excel-file`;
@@ -485,7 +491,7 @@ class CommonService {
 
   public async deleteFileForBulkImport(fileName: string[]): Promise<IApiResponse<any>> {
     const data = {
-      files: fileName
+      files: fileName,
     };
     const url = `/app/delete-file/`;
     return request({ url, method: 'POST', data: data }).then((res) => {
@@ -495,8 +501,9 @@ class CommonService {
 
   // Bulk import
   public async getTableColumns(tableName: string): Promise<IApiResponse<any>> {
-    const url = `/app/table-column/${tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
-      }`;
+    const url = `/app/table-column/${
+      tableName?.includes('/') ? encodeURIComponent(tableName) : tableName
+    }`;
     return request({ url, method: 'GET' }).then((res) => {
       if (res.data?.body.data?.identity_column) {
         const response = res.data?.body.data?.column_data.filter(

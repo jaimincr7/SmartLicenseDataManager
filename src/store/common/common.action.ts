@@ -118,15 +118,12 @@ export const getSoftwareNormalizationLookup = createAsyncThunk(
   }
 );
 
-export const getProccessRunning = createAsyncThunk(
-  'getProccessRunning',
-  async () => {
-    const response = await commonService.getProccessRunning().then((res) => {
-      return res.body;
-    });
-    return response.data;
-  }
-);
+export const getProccessRunning = createAsyncThunk('getProccessRunning', async () => {
+  const response = await commonService.getProccessRunning().then((res) => {
+    return res.body;
+  });
+  return response.data;
+});
 
 export const getOSNormalizationLookup = createAsyncThunk('getOSNormalizationLookup', async () => {
   const response = await commonService.getOSNormalizationLookup().then((res) => {

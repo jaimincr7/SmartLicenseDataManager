@@ -88,7 +88,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     header_row: headerRowCount,
     deli_meter:
       dataRecords.filter((data) => data.index == seqNumber).length > 0 &&
-        dataRecords.filter((data) => data.index == seqNumber)[0].delimiter !== null
+      dataRecords.filter((data) => data.index == seqNumber)[0].delimiter !== null
         ? dataRecords.filter((data) => data.index == seqNumber)[0].delimiter
         : ',',
   };
@@ -98,7 +98,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       if (data.index == seqNumber) {
         data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
           'csv' ||
-          data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
+        data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
           'txt'
           ? setShowDelimiter(true)
           : setShowDelimiter(false);
@@ -260,7 +260,10 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         />
 
         <div className="btns-block modal-footer">
-          <Popconfirm title="Your mapping drop down will be over-written.Please re-check your mapping details after confirming" onConfirm={() => submitHeaderRow(form.getFieldsValue())}>
+          <Popconfirm
+            title="Your mapping drop down will be over-written.Please re-check your mapping details after confirming"
+            onConfirm={() => submitHeaderRow(form.getFieldsValue())}
+          >
             <Button key="submit" type="primary" htmlType="submit">
               Ok
             </Button>

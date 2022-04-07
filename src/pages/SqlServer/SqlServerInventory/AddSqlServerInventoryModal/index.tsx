@@ -18,7 +18,11 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISqlServerInventory } from '../../../../services/sqlServer/sqlServerInventory/sqlServerInventory.model';

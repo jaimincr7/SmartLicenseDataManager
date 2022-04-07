@@ -42,6 +42,7 @@ import DeleteDataset from './DeleteDataset';
 import ConfigO365Products from './ConfigO365Products';
 import ExcelFileMapping from './ExcleFileMapping';
 import ExcelColumnMapping from './ExcelColumnMapping';
+import BackgroundProcessess from '../BackgroundProcesses/AdDevicesExclusions';
 
 const AdministrationRoutes: React.FC = () => {
   const match = useRouteMatch();
@@ -247,6 +248,15 @@ const AdministrationRoutes: React.FC = () => {
             component={ExclusionOperation}
           />
         )}
+
+        {/*Back Ground Processes*/}
+        (
+        <Route
+          exact
+          path={`${match.path}/back-ground-processes`}
+          component={BackgroundProcessess}
+        />
+        )
 
         {/* Excel File Mapping */}
         {ability.can(Action.View, Page.ExcelFileMapping) && (

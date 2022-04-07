@@ -1,9 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import {
-  ISearchExcelColumnMapping,
-  IExcelColumnMapping,
-} from './excelColumnMapping.model';
+import { ISearchExcelColumnMapping, IExcelColumnMapping } from './excelColumnMapping.model';
 
 class ExcelColumnMappingService {
   ENDPOINT = '/config-excel-column-mapping';
@@ -56,6 +53,5 @@ class ExcelColumnMappingService {
       return res;
     });
   }
-
 }
 export default new ExcelColumnMappingService();

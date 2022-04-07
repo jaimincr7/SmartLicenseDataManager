@@ -222,8 +222,13 @@ export const cronSlice = createSlice({
 export const cronSelector = (state: RootState) => state.cron;
 
 // Actions
-export const { clearCron, clearCronMessages, clearCronGetById, setTableColumnSelection, searchWeekDays } =
-  cronSlice.actions;
+export const {
+  clearCron,
+  clearCronMessages,
+  clearCronGetById,
+  setTableColumnSelection,
+  searchWeekDays,
+} = cronSlice.actions;
 
 // The reducer
 export default cronSlice.reducer;

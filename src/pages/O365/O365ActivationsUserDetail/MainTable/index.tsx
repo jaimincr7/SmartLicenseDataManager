@@ -172,9 +172,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDateSwap(
               'report_refresh_date',
               o365ActivationsUserDetail.search.tableName,
-              form, null,
+              form,
+              null,
               ObjectForColumnFilter,
-              true),
+              true
+            ),
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
@@ -230,9 +232,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDateSwap(
               'last_activated_date',
               o365ActivationsUserDetail.search.tableName,
-              form, null,
+              form,
+              null,
               ObjectForColumnFilter,
-              true),
+              true
+            ),
             dataIndex: 'last_activated_date',
             key: 'last_activated_date',
             ellipsis: true,

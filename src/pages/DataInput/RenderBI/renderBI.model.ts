@@ -18,8 +18,8 @@ export interface IRenderBIProps {
   hideUnmapped?: boolean;
   withoutUnmappedRecords?: any[];
   setWithoutUnmappedRecords?: (data: any) => void;
-  dateChangeFlag?:  boolean;
+  dateChangeFlag?: boolean;
   setDateChangeFlag?: (data: boolean) => void;
-  setExpandedRecords?: (data: any)  => void;
+  setExpandedRecords?: (data: any) => void;
   expandedRecords?: any;
 }

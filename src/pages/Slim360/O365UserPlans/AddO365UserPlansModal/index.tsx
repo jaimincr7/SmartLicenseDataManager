@@ -5,7 +5,12 @@ import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forEditModal, getObjectForUpdateMultiple, getSimpleDate, passDateToApi } from '../../../../common/helperFunction';
+import {
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getSimpleDate,
+  passDateToApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { ISlim360O365UserPlans } from '../../../../services/slim360/o365UserPlans/o365UserPlans.model';
@@ -74,7 +79,7 @@ const AddSlim360O365UserPlansModal: React.FC<IAddSlim360O365UserPlansProps> = (p
       ...values,
       id: id ? +id : null,
     };
-    inputValues.date_added = passDateToApi(inputValues.date_added,true);
+    inputValues.date_added = passDateToApi(inputValues.date_added, true);
     if (!isMultiple) {
       dispatch(saveSlim360O365UserPlans(inputValues));
     } else {

@@ -405,7 +405,11 @@ const AddO365SubscribedSkusModal: React.FC<IAddO365SubscribedSkusProps> = (props
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'capability_status']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'capability_status']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>Capability Status</Checkbox>
                     </Form.Item>
                   ) : (
@@ -487,12 +491,7 @@ const AddO365SubscribedSkusModal: React.FC<IAddO365SubscribedSkusProps> = (props
                   ) : (
                     'SKU Id'
                   )}
-                  <Form.Item
-                    name="sku_id"
-                    label="SKU Id"
-                    className="m-0"
-                    rules={[{ max: 36 }]}
-                  >
+                  <Form.Item name="sku_id" label="SKU Id" className="m-0" rules={[{ max: 36 }]}>
                     <Input min={0} className="form-control" />
                   </Form.Item>
                 </div>
@@ -500,7 +499,11 @@ const AddO365SubscribedSkusModal: React.FC<IAddO365SubscribedSkusProps> = (props
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'sku_part_number']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'sku_part_number']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>SKU Part Number</Checkbox>
                     </Form.Item>
                   ) : (
@@ -544,11 +547,7 @@ const AddO365SubscribedSkusModal: React.FC<IAddO365SubscribedSkusProps> = (props
                   ) : (
                     'Service Plans'
                   )}
-                  <Form.Item
-                    name="service_plans"
-                    label="Service Plans"
-                    className="m-0"
-                  >
+                  <Form.Item name="service_plans" label="Service Plans" className="m-0">
                     <Input min={0} className="form-control" />
                   </Form.Item>
                 </div>

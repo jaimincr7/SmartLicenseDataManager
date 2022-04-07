@@ -20,10 +20,7 @@ import {
   commonSelector,
 } from '../../../store/common/common.reducer';
 import { FileExcelOutlined } from '@ant-design/icons';
-import {
-  bulkDelete,
-  saveTableColumnSelection,
-} from '../../../store/common/common.action';
+import { bulkDelete, saveTableColumnSelection } from '../../../store/common/common.action';
 import { globalSearchSelector } from '../../../store/globalSearch/globalSearch.reducer';
 import ReactDragListView from 'react-drag-listview';
 import { spsApiCallSelector } from '../../../store/sps/spsAPICall/spsApiCall.reducer';
@@ -156,8 +153,8 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     if (setObjectForColumnFilter) {
       const filterDate = {
         ...searchData.filter_keys,
-        ...extraSearchData
-      }
+        ...extraSearchData,
+      };
       setObjectForColumnFilter({
         filter_keys: filterDate,
         keyword: searchData.keyword,
@@ -319,8 +316,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
     fetchTableData({ ...pagination, current: 1 });
   };
   const onReset = () => {
-    if (setDropDownFlag)
-      setDropDownFlag(false);
+    if (setDropDownFlag) setDropDownFlag(false);
     const globalSearch: IInlineSearch = {};
     for (const key in globalFilters.search) {
       const element = globalFilters.search[key];
@@ -399,8 +395,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             <div className="btns-block">
               <Button
                 htmlType="submit"
-                className={`action-btn filter-btn p-0 ${_.every(inlineSearch, _.isEmpty) ? '' : 'active'
-                  }`}
+                className={`action-btn filter-btn p-0 ${
+                  _.every(inlineSearch, _.isEmpty) ? '' : 'active'
+                }`}
               >
                 <img src={`${process.env.PUBLIC_URL}/assets/images/ic-filter.svg`} alt="" />
                 <img
@@ -602,12 +599,18 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
 
       const remainingColumns = [];
       let updatedColumns = sortedOrder?.map((a) =>
-        tableColumns.find((x) => (x.column ? x.column.toString().toLowerCase() === a.toString().toLowerCase() : x.title === a))
+        tableColumns.find((x) =>
+          x.column
+            ? x.column.toString().toLowerCase() === a.toString().toLowerCase()
+            : x.title === a
+        )
       );
       updatedColumns = updatedColumns.filter((data) => data !== undefined);
       for (const key in tableColumns) {
         const element = tableColumns[key];
-        const flagColumn = updatedColumns.filter((x) => x?.column.toString().toLowerCase() === element?.column.toString().toLowerCase());
+        const flagColumn = updatedColumns.filter(
+          (x) => x?.column.toString().toLowerCase() === element?.column.toString().toLowerCase()
+        );
         if (flagColumn && flagColumn.length < 1) {
           remainingColumns.push(element);
         }
@@ -659,9 +662,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       table_name: reduxStoreData.search.tableName,
     };
     const list: any = {
-      ...selectedRowList
+      ...selectedRowList,
     };
-    const data = list?.selectedRowList?.map((x) => x = x?.split('-')[0]);
+    const data = list?.selectedRowList?.map((x) => (x = x?.split('-')[0]));
     Obj['selectedIds'] = data;
     dispatch(bulkDelete(Obj));
   };
@@ -713,7 +716,7 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
       <div className="title-block search-block tabel-search">
         <Filter onSearch={onFinishSearch} />
         <div className="btns-block">
-          {tableButtons ? tableButtons() : (<></>)}
+          {tableButtons ? tableButtons() : <></>}
           {!hideExportButton &&
             (reduxStoreData.search.count > 50000 ? (
               <Popconfirm title="Do you want to export file?" onConfirm={downloadExcel}>
@@ -748,16 +751,19 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
             </Popover>
           )}
           {renderCallApiButton()}
-          {showDelete !== false  &&(<Popconfirm title="Delete Record?" onConfirm={() => bulkDeleteData()}>
-            <Button
-              type="primary"
-              disabled={reduxStoreData.search.count == 0}
-            >
-              {Object.keys(selectedRowList).length <= 1
-                ? `Delete All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length : reduxStoreData.search.count})`
-                : `Delete Selected (${Object.keys(selectedRowList).length - 1})`}
-            </Button>
-          </Popconfirm>)}
+          {showDelete !== false && (
+            <Popconfirm title="Delete Record?" onConfirm={() => bulkDeleteData()}>
+              <Button type="primary" disabled={reduxStoreData.search.count == 0}>
+                {Object.keys(selectedRowList).length <= 1
+                  ? `Delete All (${
+                      dropDownFlag === true
+                        ? filterRecordsForLocalSearch?.length
+                        : reduxStoreData.search.count
+                    })`
+                  : `Delete Selected (${Object.keys(selectedRowList).length - 1})`}
+              </Button>
+            </Popconfirm>
+          )}
           {showBulkUpdate && (
             <Button
               type="primary"
@@ -767,7 +773,11 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               disabled={reduxStoreData.search.count == 0}
             >
               {Object.keys(selectedRowList).length <= 1
-                ? `Update All (${dropDownFlag === true ? filterRecordsForLocalSearch?.length : reduxStoreData.search.count})`
+                ? `Update All (${
+                    dropDownFlag === true
+                      ? filterRecordsForLocalSearch?.length
+                      : reduxStoreData.search.count
+                  })`
                 : `Update Selected (${Object.keys(selectedRowList).length - 1})`}
             </Button>
           )}
@@ -793,7 +803,9 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               '-' +
               (record['oauth_id'] ? record['oauth_id'] : '')
             }
-            dataSource={dropDownFlag === true ? filterRecordsForLocalSearch : reduxStoreData.search.data}
+            dataSource={
+              dropDownFlag === true ? filterRecordsForLocalSearch : reduxStoreData.search.data
+            }
             columns={isDragged ? tableColumns : getColumns()}
             loading={
               reduxStoreData.search.loading ||
@@ -802,14 +814,17 @@ const DataTable: React.ForwardRefRenderFunction<unknown, IDataTable> = (props, r
               reduxStoreData?.callApi?.loading ||
               reduxStoreData?.runJobData?.loading
             }
-            pagination={isStartSchedulaAllApi ? false :
-              {
-                ...pagination,
-                pageSizeOptions: ['10', '100', '500', '1000'],
-                showSizeChanger: true,
-                total: reduxStoreData.search.count,
-                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-              }}
+            pagination={
+              isStartSchedulaAllApi
+                ? false
+                : {
+                    ...pagination,
+                    pageSizeOptions: ['10', '100', '500', '1000'],
+                    showSizeChanger: true,
+                    total: reduxStoreData.search.count,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                  }
+            }
             onChange={handleTableChange}
             className="custom-table"
             sortDirections={['ascend', 'descend']}

@@ -345,9 +345,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDateSwap(
               'expiration_date',
               slim360O365Licenses.search.tableName,
-              form, null,
+              form,
+              null,
               ObjectForColumnFilter,
-              true),
+              true
+            ),
             dataIndex: 'expiration_date',
             key: 'expiration_date',
             ellipsis: true,

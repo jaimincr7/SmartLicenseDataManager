@@ -851,11 +851,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Last HW Scan'
                   )}
-                  <Form.Item
-                    name="last_hw_scan"
-                    label="Last HW Scan"
-                    className="m-0"
-                  >
+                  <Form.Item name="last_hw_scan" label="Last HW Scan" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -869,11 +865,7 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Last SW Scan'
                   )}
-                  <Form.Item
-                    name="last_sw_scan"
-                    label="Last SW Scan"
-                    className="m-0"
-                  >
+                  <Form.Item name="last_sw_scan" label="Last SW Scan" className="m-0">
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>
@@ -972,7 +964,12 @@ const AddInventoryModal: React.FC<IAddInventoryProps> = (props) => {
                   ) : (
                     'Date Installed'
                   )}
-                  <Form.Item name="date_installed" label="Date Installed" className="m-0" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="date_installed"
+                    label="Date Installed"
+                    className="m-0"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>

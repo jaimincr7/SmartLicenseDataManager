@@ -127,9 +127,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('joined_date', company.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'joined_date',
+              company.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'joined_date',
             key: 'joined_date',
             ellipsis: true,

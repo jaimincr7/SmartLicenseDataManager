@@ -171,9 +171,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             title: FilterByDateSwap(
               'report_refresh_date',
               o365M365AppsUsageUserDetail.search.tableName,
-              form, null,
+              form,
+              null,
               ObjectForColumnFilter,
-              true),
+              true
+            ),
             dataIndex: 'report_refresh_date',
             key: 'report_refresh_date',
             ellipsis: true,
