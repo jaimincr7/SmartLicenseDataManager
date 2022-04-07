@@ -18,7 +18,7 @@ import {
 } from '../../../../common/components/DataTable/DataTableFilters';
 import { IMainTable } from '../../../../common/models/common';
 import DataTable from '../../../../common/components/DataTable';
-import ability, { Can } from '../../../../common/ability';
+import { Can } from '../../../../common/ability';
 import { Action, Page } from '../../../../common/constants/pageAction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { showDateFromApi } from '../../../../common/helperFunction';
