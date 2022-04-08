@@ -157,7 +157,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               setRecords(dummyrecords);
             }
             form.setFieldsValue(initialValuesData);
-            if(flagForMappingHighlights !== false)
+            if(flagForMappingHighlights !== false && dataMapRecord[0]?.currentMapping)
             {
               setTimeout(() => {
                 setMappingRecords();
