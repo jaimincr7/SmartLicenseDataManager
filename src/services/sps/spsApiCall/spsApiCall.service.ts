@@ -22,7 +22,7 @@ class SPSApiCallService {
   }
 
   public async callApi(data: ICallAPI): Promise<any> {
-    const url = `${this.ENDPOINT}/call-api`;
+    const url = `back-ground-processes/call-api`;
 
     return request({ url, method: 'POST', data: data }).then((res) => {
       return res.data;
@@ -54,7 +54,7 @@ class SPSApiCallService {
   }
 
   public async callAllApi(searchParams?: ICallAllApi): Promise<IApiResponse<{}>> {
-    const url = `${this.ENDPOINT}/call-all-api`;
+    const url = `back-ground-processes/call-all-api`;
 
     return request({ url, method: 'POST', data: searchParams }).then((res) => {
       return res.data;

@@ -130,6 +130,7 @@ import spsApiTokenConfigOptionsV2Reducer from './sps/apiTokenConfigOptionsV2/api
 import spsApiInjectionParamV2Reducer from './sps/apiInjectionParamV2/apiInjectionParamV2.reducer';
 import spsApiInjectionValueParamV2Reducer from './sps/apiInjectionValueParamV2/apiInjectionValueParamV2.reducer';
 import spsApiOauthV2Reducer from './sps/apiOauthV2/apiOauthV2.reducer';
+import backgroundProcessesReducer from './backgroundProcesses/backgroundProcesses.reducer';
 
 export const rootReducer = combineReducers({
   errorLog: errorLogReducer,
@@ -281,6 +282,7 @@ export const rootReducer = combineReducers({
   software: softwareReducer,
   hardware: hardwareReducer,
   deviceState: deviceStateReducer,
+  backgroundProcesses: backgroundProcessesReducer,
 
   //SPS
   spsApi: spsApiReducer,

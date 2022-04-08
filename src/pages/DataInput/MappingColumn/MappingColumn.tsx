@@ -50,7 +50,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         if (data.index == record.index) {
           data.currentMapping =
             bulkImport.saveExcelFileMapping.data && bulkImport.saveExcelFileMapping.data !== null
-              ? bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.sheet_name + '!' + bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.id
+              ? bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.sheet_name +
+                '!' +
+                bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.id
               : null;
           data.show_mapping = [...data.show_mapping, bulkImport.saveExcelFileMapping.data];
         }
@@ -123,9 +125,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               sqlToExcelMapping.push({
                 key: `${ele.name}`,
                 value:
-                  initialValuesData[ele.name] == undefined
-                    ? ''
-                    : `${initialValuesData[ele.name]}`,
+                  initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
               });
             });
             const mapRecord = dummyDatas.filter((x) => x.index == seqNumber);

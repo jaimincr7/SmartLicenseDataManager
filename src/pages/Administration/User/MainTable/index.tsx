@@ -190,9 +190,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('insert_date', users.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'insert_date',
+              users.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'insert_date',
             key: 'insert_date',
             ellipsis: true,
@@ -222,9 +227,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('update_date', users.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'update_date',
+              users.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'update_date',
             key: 'update_date',
             ellipsis: true,

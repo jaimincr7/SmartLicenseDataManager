@@ -256,9 +256,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('last_logon_date', adUsers.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'last_logon_date',
+              adUsers.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'last_logon_date',
             key: 'last_logon_date',
             ellipsis: true,
@@ -352,9 +357,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('password_last_set', adUsers.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'password_last_set',
+              adUsers.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'password_last_set',
             key: 'password_last_set',
             ellipsis: true,
@@ -435,9 +445,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('whenChanged', adUsers.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'whenChanged',
+              adUsers.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'whenChanged',
             key: 'whenChanged',
             ellipsis: true,
@@ -451,9 +466,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('when_created', adUsers.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'when_created',
+              adUsers.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'when_created',
             key: 'when_created',
             ellipsis: true,

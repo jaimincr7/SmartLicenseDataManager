@@ -28,7 +28,11 @@ import {
 } from '../../../../store/o365/o365Users/o365Users.reducer';
 import { processDataO365 } from '../../../../store/o365/o365Users/o365Users.action';
 import { validateMessages } from '../../../../common/constants/common';
-import { forDropDown, getScheduleDateHelperLookup, showDateFromApi } from '../../../../common/helperFunction';
+import {
+  forDropDown,
+  getScheduleDateHelperLookup,
+  showDateFromApi,
+} from '../../../../common/helperFunction';
 import _ from 'lodash';
 import { IInlineSearch } from '../../../../common/models/common';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
@@ -97,7 +101,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
     }
     form.setFieldsValue(data);
   };
-  
+
   useEffect(() => {
     if (commonLookups.getModelPopUpSelection.data !== {}) {
       getConfigData(commonLookups.getModelPopUpSelection.data);
@@ -193,10 +197,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
-      if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
-        dispatch(
-          getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName))
-        );
+      if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+        dispatch(getScheduleDate(getScheduleDateHelperLookup(filterValues, tableName)));
       }
       form.setFieldsValue(filterValues);
     }
@@ -319,9 +321,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={showDateFromApi(option)}>
-                        {forDropDown(option) == 'Invalid date'
-                          ? 'NULL'
-                          : showDateFromApi(option)}
+                        {forDropDown(option) == 'Invalid date' ? 'NULL' : showDateFromApi(option)}
                       </Option>
                     ))}
                   </Select>

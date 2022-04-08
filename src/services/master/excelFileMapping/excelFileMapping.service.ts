@@ -1,9 +1,6 @@
 import { IApiResponse, ISearchResponse } from '../../../common/models/common';
 import request from '../../../utils/request';
-import {
-  ISearchExcelFileMapping,
-  IExcelFileMapping,
-} from './excelFileMapping.model';
+import { ISearchExcelFileMapping, IExcelFileMapping } from './excelFileMapping.model';
 
 class ExcelFileMappingService {
   ENDPOINT = '/config-excel-file-mapping';
@@ -56,6 +53,5 @@ class ExcelFileMappingService {
       return res;
     });
   }
-
 }
 export default new ExcelFileMappingService();

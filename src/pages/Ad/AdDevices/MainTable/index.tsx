@@ -243,9 +243,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('last_logon_date', adDevices.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'last_logon_date',
+              adDevices.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
-              true),
+              true
+            ),
             dataIndex: 'last_logon_date',
             key: 'last_logon_date',
             ellipsis: true,
@@ -353,9 +358,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('password_last_set', adDevices.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'password_last_set',
+              adDevices.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
-              true),
+              true
+            ),
             dataIndex: 'password_last_set',
             key: 'password_last_set',
             ellipsis: true,
@@ -437,9 +447,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('when_created', adDevices.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'when_created',
+              adDevices.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'when_created',
             key: 'when_created',
             ellipsis: true,

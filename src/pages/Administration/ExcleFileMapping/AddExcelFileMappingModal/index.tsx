@@ -368,7 +368,7 @@ const AddExcelFileMappingModal: React.FC<IAddExcelFileMappingProps> = (props) =>
                     name="created_by"
                     label="Created By"
                     className="m-0"
-                    rules={[{ required: !isMultiple , type: 'integer' }]}
+                    rules={[{ required: !isMultiple, type: 'integer' }]}
                   >
                     <InputNumber className="form-control w-100" />
                   </Form.Item>
@@ -402,11 +402,7 @@ const AddExcelFileMappingModal: React.FC<IAddExcelFileMappingProps> = (props) =>
                   ) : (
                     'Delimiter'
                   )}
-                  <Form.Item
-                    name="delimiter"
-                    label="Delimiter"
-                    className="m-0"
-                  >
+                  <Form.Item name="delimiter" label="Delimiter" className="m-0">
                     <Input min={0} className="form-control" />
                   </Form.Item>
                 </div>

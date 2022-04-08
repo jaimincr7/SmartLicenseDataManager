@@ -1,22 +1,18 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Switch,
-} from 'antd';
+import { Button, Checkbox, Col, Form, Input, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import BreadCrumbs from '../../../../common/components/Breadcrumbs';
 import { TableNames, validateMessages } from '../../../../common/constants/common';
 import { Page } from '../../../../common/constants/pageAction';
-import { forDropDown, forEditModal, getObjectForUpdateMultiple, getScheduleDateHelperLookup, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
+import {
+  forDropDown,
+  forEditModal,
+  getObjectForUpdateMultiple,
+  getScheduleDateHelperLookup,
+  passDateToApi,
+  showDateFromApi,
+} from '../../../../common/helperFunction';
 import { IInlineSearch } from '../../../../common/models/common';
 import { ILookup } from '../../../../services/common/common.model';
 import { IWindowsServerLicense } from '../../../../services/windowsServer/windowsServerLicense/windowsServerLicense.model';
@@ -492,7 +488,12 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                   ) : (
                     'Selected Date'
                   )}
-                  <Form.Item name="selected_date" className="m-0" label="Selected Date" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="selected_date"
+                    className="m-0"
+                    label="Selected Date"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <Select
                       placeholder="Select Date"
                       loading={commonLookups.getScheduledDate.loading}
@@ -510,9 +511,7 @@ const AddWindowsServerLicenseModal: React.FC<IAddWindowsServerLicenseProps> = (p
                     >
                       {commonLookups.getScheduledDate.data.map((option: any) => (
                         <Option key={option} value={showDateFromApi(option)}>
-                          {forDropDown(option) == 'Invalid date'
-                            ? 'NULL'
-                            : showDateFromApi(option)}
+                          {forDropDown(option) == 'Invalid date' ? 'NULL' : showDateFromApi(option)}
                         </Option>
                       ))}
                     </Select>

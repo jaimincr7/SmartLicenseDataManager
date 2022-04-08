@@ -11,9 +11,7 @@ import {
   searchExcelColumnMapping,
 } from '../../../../store/master/excelColumnMapping/excelColumnMapping.action';
 import excelColumnMappingService from '../../../../services/master/excelColumnMapping/excelColumnMapping.service';
-import {
-  FilterWithSwapOption,
-} from '../../../../common/components/DataTable/DataTableFilters';
+import { FilterWithSwapOption } from '../../../../common/components/DataTable/DataTableFilters';
 import { ISearch } from '../../../../common/models/common';
 import DataTable from '../../../../common/components/DataTable';
 import { Can } from '../../../../common/ability';
@@ -21,9 +19,7 @@ import { Action, Page } from '../../../../common/constants/pageAction';
 import { IMainTable } from './mainTable.model';
 
 const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, ref) => {
-  const {
-    id,
-  } = props;
+  const { id } = props;
   const excelColumnMapping = useAppSelector(excelColumnMappingSelector);
   const dispatch = useAppDispatch();
   const dataTableRef = useRef(null);
@@ -36,7 +32,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
   }));
 
   useEffect(() => {
-    setObjectForColumnFilter({excel_file_mapping_id: id});
+    setObjectForColumnFilter({ excel_file_mapping_id: id });
   }, []);
 
   const extraSearchData = {

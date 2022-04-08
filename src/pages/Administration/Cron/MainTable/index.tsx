@@ -39,7 +39,6 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
   const [filterKeysID, setFilterKeysID] = useState({});
   const [filterRecords, setFilterRecords] = useState([]);
 
-
   const {
     setSelectedId,
     setShowSelectedListModal,
@@ -47,7 +46,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
     isMultiple,
     setFilterKeys,
     dropDownFlag,
-    setDropDownFlag
+    setDropDownFlag,
   } = props;
 
   useImperativeHandle(ref, () => ({
@@ -82,7 +81,9 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
     if (event !== undefined) {
       setDropDownFlag(true);
       const dummyRecords = _.cloneDeep(cron.search.data);
-      const searchRecords = dummyRecords.filter((data) => moment(data.start_date).format('dddd') === event);
+      const searchRecords = dummyRecords.filter(
+        (data) => moment(data.start_date).format('dddd') === event
+      );
       const filterIds = [];
       searchRecords.map((data) => {
         filterIds.push(data.id);
@@ -110,8 +111,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
             //disabled={dropDownFlag}
             optionFilterProp="children"
             filterOption={(input, option: any) =>
-              option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >=
-              0
+              option.children
+                ?.toString()
+                ?.toLowerCase()
+                .indexOf(input?.toString()?.toLowerCase()) >= 0
             }
             filterSort={(optionA: any, optionB: any) =>
               optionA.children
@@ -166,8 +169,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
             //disabled={dropDownFlag}
             optionFilterProp="children"
             filterOption={(input, option: any) =>
-              option.children?.toString()?.toLowerCase().indexOf(input?.toString()?.toLowerCase()) >=
-              0
+              option.children
+                ?.toString()
+                ?.toLowerCase()
+                .indexOf(input?.toString()?.toLowerCase()) >= 0
             }
             filterSort={(optionA: any, optionB: any) =>
               optionA.children
@@ -303,13 +308,21 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
       {
         title: <span className="dragHandler">Date Modified</span>,
         column: 'Date Modified',
-        sorter: (a, b) => moment(a.date_modified, Common.DATEFORMAT).diff(moment(b.date_modified, Common.DATEFORMAT)),
+        sorter: (a, b) =>
+          moment(a.date_modified, Common.DATEFORMAT).diff(
+            moment(b.date_modified, Common.DATEFORMAT)
+          ),
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('date_modified', cron.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'date_modified',
+              cron.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
-              false),
+              false
+            ),
             dataIndex: 'date_modified',
             key: 'date_modified',
             ellipsis: true,
@@ -320,13 +333,19 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
       {
         title: <span className="dragHandler">Date Added</span>,
         column: 'Date Added',
-        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
+        sorter: (a, b) =>
+          moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', cron.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'date_added',
+              cron.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
-              false),
+              false
+            ),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -337,7 +356,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
       {
         title: <span className="dragHandler">Start Date</span>,
         column: 'Start Date',
-        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
+        sorter: (a, b) =>
+          moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
@@ -353,25 +373,33 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
             dataIndex: 'start_date',
             key: 'start_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : '',
           },
         ],
       },
       {
         title: <span className="dragHandler">Stop Date</span>,
         column: 'StopDate',
-        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
+        sorter: (a, b) =>
+          moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('stop_date', cron.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'stop_date',
+              cron.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
               true,
-              true),
+              true
+            ),
             dataIndex: 'stop_date',
             key: 'stop_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : '',
           },
         ],
       },
@@ -399,7 +427,8 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
             title: FilterByWeekDay(),
             dataIndex: 'start_date',
             key: 'start_date',
-            render: (_, data) => (data.frequency_type == 'Weekly' ? moment(data.start_date).format('dddd') : ''),
+            render: (_, data) =>
+              data.frequency_type == 'Weekly' ? moment(data.start_date).format('dddd') : '',
           },
         ],
       },
@@ -434,36 +463,50 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
       {
         title: <span className="dragHandler">Next Run Date</span>,
         column: 'nextRunDate',
-        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
+        sorter: (a, b) =>
+          moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('next_run_date', cron.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'next_run_date',
+              cron.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
               true,
-              true),
+              true
+            ),
             dataIndex: 'next_run_date',
             key: 'next_run_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : '',
           },
         ],
       },
       {
         title: <span className="dragHandler">Last Run Date</span>,
         column: 'lastRunDate',
-        sorter: (a, b) => moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
+        sorter: (a, b) =>
+          moment(a.date_added, Common.DATEFORMAT).diff(moment(b.date_added, Common.DATEFORMAT)),
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('last_run_date', cron.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'last_run_date',
+              cron.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
               true,
-              true),
+              true
+            ),
             dataIndex: 'last_run_date',
             key: 'last_run_date',
             ellipsis: true,
-            render: (date: Date) => (!_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : ''),
+            render: (date: Date) =>
+              !_.isNull(date) ? moment(date).format(Common.DATETIMEFORMAT) : '',
           },
         ],
       },
@@ -475,11 +518,11 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTableCron> = (prop
       id: data.id,
       sps_api_query_param: data.start_date
         ? [
-          {
-            startTime: data.start_date,
-            endTime: data.stop_date,
-          },
-        ]
+            {
+              startTime: data.start_date,
+              endTime: data.stop_date,
+            },
+          ]
         : [],
     };
     dispatch(startApi(startApiData));

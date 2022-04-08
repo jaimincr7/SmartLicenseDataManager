@@ -20,8 +20,8 @@ const SpsApiJobs: React.FC<ISpsApiJobsProps> = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const dataTableRef = useRef(null);
-  const queryParams = new URLSearchParams(window.location.search)
-  const job_id = queryParams.get("job_id")
+  const queryParams = new URLSearchParams(window.location.search);
+  const job_id = queryParams.get('job_id');
 
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 

@@ -127,10 +127,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('date_added', cronViewLog.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'date_added',
+              cronViewLog.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
               true,
-              true),
+              true
+            ),
             dataIndex: 'date_added',
             key: 'date_added',
             ellipsis: true,
@@ -146,10 +151,15 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         ellipsis: true,
         children: [
           {
-            title: FilterByDateSwap('complete_date', cronViewLog.search.tableName, form, null,
+            title: FilterByDateSwap(
+              'complete_date',
+              cronViewLog.search.tableName,
+              form,
+              null,
               ObjectForColumnFilter,
               true,
-              true),
+              true
+            ),
             dataIndex: 'complete_date',
             key: 'complete_date',
             ellipsis: true,
@@ -180,7 +190,10 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
           }}
         >
           <img src={`${process.env.PUBLIC_URL}/assets/images/ic-eye.svg`} alt="" />
-        </a>) : (<></>)}
+        </a>
+      ) : (
+        <></>
+      )}
       <Can I={Action.Error} a={Page.CronViewLogData}>
         {!(
           data.status == 'Success' ||

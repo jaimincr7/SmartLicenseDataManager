@@ -155,7 +155,7 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
             render: (date: Date) => (!_.isNull(date) ? showDateFromApi(date) : ''),
           },
         ],
-       },
+      },
       // {
       //   title: <span className="dragHandler">Currency</span>,
       //   column: 'CurrencyId',

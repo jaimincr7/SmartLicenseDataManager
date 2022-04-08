@@ -2357,7 +2357,12 @@ const AddAzureDailyUsageModal: React.FC<IAddAzureDailyUsageProps> = (props) => {
                   ) : (
                     'Exchange Rate Date'
                   )}
-                  <Form.Item name="exchange_rate_date" label="Exchange Rate Date" className="m-0" rules={[{ required: !isMultiple }]}>
+                  <Form.Item
+                    name="exchange_rate_date"
+                    label="Exchange Rate Date"
+                    className="m-0"
+                    rules={[{ required: !isMultiple }]}
+                  >
                     <DatePicker className="form-control w-100" />
                   </Form.Item>
                 </div>

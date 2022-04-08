@@ -8,7 +8,6 @@ import commonService from '../../../services/common/common.service';
 import { toast } from 'react-toastify';
 
 class ErrorBoundary extends React.PureComponent<IErrorBoundaryProps, IErrorBoundaryState> {
-
   constructor(props: IErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -22,11 +21,11 @@ class ErrorBoundary extends React.PureComponent<IErrorBoundaryProps, IErrorBound
     toast.error('Oops! Something went wrong.');
     const json = {
       error: error.message,
-      errorStack: errorInfo
+      errorStack: errorInfo,
     };
     const obj = {
       environment: 'FE',
-      json: JSON.stringify(json)
+      json: JSON.stringify(json),
     };
     commonService.errorLog(obj);
     this.props.addError({ err: error.message, info: errorInfo });

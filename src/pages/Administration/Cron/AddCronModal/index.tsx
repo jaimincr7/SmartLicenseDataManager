@@ -1,15 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  DatePicker,
-  Form,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Switch,
-} from 'antd';
+import { Button, Checkbox, Col, DatePicker, Form, Modal, Row, Select, Spin, Switch } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
@@ -60,7 +49,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
     refreshDataTable,
     isMultiple,
     valuesForSelection,
-    setDropDownFlag
+    setDropDownFlag,
   } = props;
 
   const isNew: boolean = id || isMultiple ? false : true;
@@ -148,9 +137,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
         company_id: _.isNull(data.company_id) ? null : data.company_id,
         bu_id: _.isNull(data.bu_id) ? null : data.bu_id,
         frequency_type: data.frequency_type,
-        start_date: _.isNull(data.start_date)
-          ? null
-          : moment(data.start_date),
+        start_date: _.isNull(data.start_date) ? null : moment(data.start_date),
         date_added: _.isNull(data.date_added) ? null : moment(data.date_added),
         start_schedular: data.status === 'Running' ? true : false,
       };
@@ -430,11 +417,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'frequency_type']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'frequency_type']} valuePropName="checked" noStyle>
                       <Checkbox>Frequency Type</Checkbox>
                     </Form.Item>
                   ) : (
@@ -522,11 +505,7 @@ const AddCronModal: React.FC<IAddCronProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item
-                      name={['checked', 'start_date']}
-                      valuePropName="checked"
-                      noStyle
-                    >
+                    <Form.Item name={['checked', 'start_date']} valuePropName="checked" noStyle>
                       <Checkbox>Start Date</Checkbox>
                     </Form.Item>
                   ) : (

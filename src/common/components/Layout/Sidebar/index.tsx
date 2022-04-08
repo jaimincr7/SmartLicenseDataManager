@@ -98,26 +98,27 @@ function Sidebar() {
           </Menu>
           <div className="sidebar-version">
             <hr />
-            <span onClick={() => {
-              if (ability.can(Action.View, Page.Version))
-                setShowVersionModal(true)
-            }}>Version: 1.6.2</span>
+            <span
+              onClick={() => {
+                if (ability.can(Action.View, Page.Version)) setShowVersionModal(true);
+              }}
+            >
+              Version: 1.6.2
+            </span>
           </div>
         </div>
-        {
-          showVersionModal && (
-            <Modal
-              wrapClassName="custom-modal"
-              title="Synapse 360"
-              centered
-              visible={showVersionModal}
-              onCancel={() => setShowVersionModal(false)}
-              footer={false}
-            >
-              <Version />
-            </Modal>
-          )
-        }
+        {showVersionModal && (
+          <Modal
+            wrapClassName="custom-modal"
+            title="Synapse 360"
+            centered
+            visible={showVersionModal}
+            onCancel={() => setShowVersionModal(false)}
+            footer={false}
+          >
+            <Version />
+          </Modal>
+        )}
       </Scrollbars>
     </aside>
   );

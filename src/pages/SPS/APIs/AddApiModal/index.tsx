@@ -330,17 +330,17 @@ const AddApiModal: React.FC<IAddApiModalProps> = (props) => {
               <Col xs={24} sm={12} md={8}>
                 <div className="form-group m-0">
                   {isMultiple ? (
-                    <Form.Item name={['checked', 'api_data_format']} valuePropName="checked" noStyle>
+                    <Form.Item
+                      name={['checked', 'api_data_format']}
+                      valuePropName="checked"
+                      noStyle
+                    >
                       <Checkbox>API Data Format</Checkbox>
                     </Form.Item>
                   ) : (
                     'API Data Format'
                   )}
-                  <Form.Item
-                    name="api_data_format"
-                    className="m-0"
-                    label="API Data Format"
-                  >
+                  <Form.Item name="api_data_format" className="m-0" label="API Data Format">
                     <Select
                       showSearch
                       optionFilterProp="children"

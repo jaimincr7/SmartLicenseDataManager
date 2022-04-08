@@ -99,10 +99,7 @@ export const excelFileMappingSlice = createSlice({
     [getExcelFileMappingById.pending.type]: (state) => {
       state.getById.loading = true;
     },
-    [getExcelFileMappingById.fulfilled.type]: (
-      state,
-      action: PayloadAction<IExcelFileMapping>
-    ) => {
+    [getExcelFileMappingById.fulfilled.type]: (state, action: PayloadAction<IExcelFileMapping>) => {
       state.getById.data = action.payload;
       state.getById.loading = false;
       state.getById.hasErrors = false;
@@ -147,7 +144,6 @@ export const excelFileMappingSlice = createSlice({
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },
-
   },
 });
 

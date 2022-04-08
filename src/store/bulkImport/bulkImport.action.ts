@@ -57,7 +57,7 @@ export const getTableColumns = createAsyncThunk('getTableColumns', async (tableN
 
 export const getExcelColumns = createAsyncThunk('getExcelColumns', async (data: any) => {
   const response = await commonService
-    .getExcelColumns(data.file, data.callbackProgress,data.tenantID,data.companyID,data.buID)
+    .getExcelColumns(data.file, data.callbackProgress, data.tenantID, data.companyID, data.buID)
     .then((res) => {
       return res.body;
     });
@@ -88,12 +88,15 @@ export const getExcelFileMapping = createAsyncThunk(
   }
 );
 
-export const getExcelFileMappingLookup = createAsyncThunk('getExcelFileMappingLookup', async (data: any) => {
-  const response = await bulkImportService.getExcelFileMappingLookup(data).then((res) => {
-    return res.body;
-  });
-  return response.data;
-});
+export const getExcelFileMappingLookup = createAsyncThunk(
+  'getExcelFileMappingLookup',
+  async (data: any) => {
+    const response = await bulkImportService.getExcelFileMappingLookup(data).then((res) => {
+      return res.body;
+    });
+    return response.data;
+  }
+);
 
 export const saveExcelFileMapping = createAsyncThunk(
   'saveExcelFileMapping',

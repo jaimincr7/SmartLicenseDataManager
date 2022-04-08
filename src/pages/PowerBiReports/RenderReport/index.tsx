@@ -72,7 +72,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
         updateHeight();
       }
     });
-  }
+  };
 
   const { name } = match.params;
   useEffect(() => {
@@ -91,11 +91,11 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
 
   const eventHandlersMap = new Map([
     [
-      "error",
+      'error',
       function () {
         configure();
-      }
-    ]
+      },
+    ],
   ]);
 
   return (
@@ -113,7 +113,7 @@ const RenderReport: React.FC<IRenderReportProps> = (props) => {
           <div style={{ height: height }}>
             <PowerBIEmbed
               embedConfig={reportConfig}
-              eventHandlers = { eventHandlersMap }
+              eventHandlers={eventHandlersMap}
               cssClassName={'report-style-class'}
               getEmbeddedComponent={async (embedObject: Embed) => {
                 setEmbeddedReport(embedObject as Report);

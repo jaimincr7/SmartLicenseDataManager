@@ -4,9 +4,7 @@ import React from 'react';
 import GlobalSearch from '../../../common/components/globalSearch/GlobalSearch';
 import { useParams } from 'react-router-dom';
 import { IExcelColumnMappingProps } from './excelColumnMapping.model';
-import {
-  clearExcelColumnMapping,
-} from '../../../store/master/excelColumnMapping/excelColumnMapping.reducer';
+import { clearExcelColumnMapping } from '../../../store/master/excelColumnMapping/excelColumnMapping.reducer';
 import MainTable from './MainTable';
 import { Page } from '../../../common/constants/pageAction';
 import BreadCrumbs from '../../../common/components/Breadcrumbs';
@@ -33,9 +31,7 @@ const ExcelColumnMapping: React.FC<IExcelColumnMappingProps> = () => {
         </div>
       </div>
       <div className="main-card">
-        <MainTable
-          id={+urlId}
-        />
+        <MainTable id={+urlId} />
       </div>
     </div>
   );

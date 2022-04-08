@@ -162,9 +162,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('warranty_start', ciscoSNTC.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'warranty_start',
+              ciscoSNTC.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'warranty_start',
             key: 'warranty_start',
             ellipsis: true,
@@ -178,9 +183,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('warranty_end', ciscoSNTC.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'warranty_end',
+              ciscoSNTC.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'warranty_end',
             key: 'warranty_end',
             ellipsis: true,
@@ -194,9 +204,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('ship_date', ciscoSNTC.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'ship_date',
+              ciscoSNTC.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'ship_date',
             key: 'ship_date',
             ellipsis: true,
@@ -210,9 +225,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('hw_l_do_s', ciscoSNTC.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'hw_l_do_s',
+              ciscoSNTC.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'hw_l_do_s',
             key: 'hw_l_do_s',
             ellipsis: true,
@@ -226,9 +246,14 @@ const MainTable: React.ForwardRefRenderFunction<unknown, IMainTable> = (props, r
         sorter: true,
         children: [
           {
-            title: FilterByDateSwap('collection_date', ciscoSNTC.search.tableName, form, null,
-            ObjectForColumnFilter,
-            true),
+            title: FilterByDateSwap(
+              'collection_date',
+              ciscoSNTC.search.tableName,
+              form,
+              null,
+              ObjectForColumnFilter,
+              true
+            ),
             dataIndex: 'collection_date',
             key: 'collection_date',
             ellipsis: true,

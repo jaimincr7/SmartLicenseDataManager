@@ -27,7 +27,12 @@ import {
   clearAzureDailyUsageMessages,
 } from '../../../../store/azure/azureDailyUsage/azureDailyUsage.reducer';
 import { validateMessages } from '../../../../common/constants/common';
-import { forDropDown, getScheduleDateHelperLookup, passDateToApi, showDateFromApi } from '../../../../common/helperFunction';
+import {
+  forDropDown,
+  getScheduleDateHelperLookup,
+  passDateToApi,
+  showDateFromApi,
+} from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import React from 'react';
 import { IInlineSearch } from '../../../../common/models/common';
@@ -137,10 +142,8 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
-      if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
-        dispatch(
-          getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName))
-        );
+      if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+        dispatch(getScheduleDate(getScheduleDateHelperLookup(initialValues, tableName)));
       }
       form.setFieldsValue(initialValues);
     }
@@ -311,9 +314,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={option}>
-                        {forDropDown(option) == 'Invalid date'
-                          ? 'NULL'
-                          : passDateToApi(option)}
+                        {forDropDown(option) == 'Invalid date' ? 'NULL' : passDateToApi(option)}
                       </Option>
                     ))}
                   </Select>

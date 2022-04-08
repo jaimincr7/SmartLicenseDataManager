@@ -13,7 +13,7 @@ export const axiosConfig = {
     Accept: 'application/json',
   },
   // withCredentials: true
-}
+};
 
 const request = axios.create(axiosConfig);
 
@@ -43,13 +43,10 @@ export const requestInterceptor = async (config) => {
 };
 
 // Request interceptors Customize based on your need
-request.interceptors.request.use(
-  requestInterceptor,
-  (error) => {
-    alert(error);
-    Promise.reject(error);
-  }
-);
+request.interceptors.request.use(requestInterceptor, (error) => {
+  alert(error);
+  Promise.reject(error);
+});
 
 // Response interceptors Customize based on your need
 export const setResponseError = (history) => {
@@ -73,10 +70,9 @@ export const setResponseError = (history) => {
         };
         const obj = {
           environment: 'FE',
-          json: JSON.stringify(json)
+          json: JSON.stringify(json),
         };
-        if(obj !== undefined && obj !== null)
-        commonService.errorLog(obj);
+        if (obj !== undefined && obj !== null) commonService.errorLog(obj);
         return;
         //history.push('/500');
       }

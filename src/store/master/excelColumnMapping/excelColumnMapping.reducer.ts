@@ -64,10 +64,7 @@ export const excelColumnMappingSlice = createSlice({
     [searchExcelColumnMapping.pending.type]: (state) => {
       state.search.loading = true;
     },
-    [searchExcelColumnMapping.fulfilled.type]: (
-      state,
-      action: PayloadAction<any>
-    ) => {
+    [searchExcelColumnMapping.fulfilled.type]: (state, action: PayloadAction<any>) => {
       const { records, total_count, table_name, column_selection } = action.payload;
       state.search.data = records;
       state.search.count = total_count;
@@ -143,7 +140,6 @@ export const excelColumnMappingSlice = createSlice({
       state.delete.loading = false;
       state.delete.hasErrors = true;
     },
-
   },
 });
 

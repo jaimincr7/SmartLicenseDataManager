@@ -28,7 +28,11 @@ import {
 } from '../../../../store/sqlServer/sqlServerInventory/sqlServerInventory.reducer';
 import { toast } from 'react-toastify';
 import { validateMessages } from '../../../../common/constants/common';
-import { forDropDown, getScheduleDateHelperLookup, showDateFromApi } from '../../../../common/helperFunction';
+import {
+  forDropDown,
+  getScheduleDateHelperLookup,
+  showDateFromApi,
+} from '../../../../common/helperFunction';
 import { globalSearchSelector } from '../../../../store/globalSearch/globalSearch.reducer';
 import { IInlineSearch } from '../../../../common/models/common';
 import _ from 'lodash';
@@ -199,7 +203,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
             ? showDateFromApi(filterKeys.filter_keys.date_added[0])
             : null,
       };
-      if(globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
+      if (globalFilters.search.company_id || filterKeys?.filter_keys?.date_added?.length === 1) {
         dispatch(
           getScheduleDate(
             getScheduleDateHelperLookup(filterValues, sqlServerInventory.search.tableName)
@@ -320,9 +324,7 @@ const ProcessDataModal: React.FC<IProcessDataModalProps> = (props) => {
                   >
                     {commonLookups.getScheduledDate.data.map((option: any) => (
                       <Option key={option} value={showDateFromApi(option)}>
-                        {forDropDown(option) == 'Invalid date'
-                          ? 'NULL'
-                          : showDateFromApi(option)}
+                        {forDropDown(option) == 'Invalid date' ? 'NULL' : showDateFromApi(option)}
                       </Option>
                     ))}
                   </Select>
