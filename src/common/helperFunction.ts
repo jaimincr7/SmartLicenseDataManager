@@ -61,7 +61,7 @@ export const getObjectForUpdateMultiple = (
   if (isDummyDropDown === true) {
     objectForSelection['selectedIds'] = Obj.selectedIds;
   } else {
-    rowList.selectedRowList = rowList.selectedRowList.map((data) => (data = data.split('-')[0]));
+    rowList.selectedRowList = rowList.selectedRowList?.map((data) => data = data.split('-')[0]);
     objectForSelection['selectedIds'] = rowList.selectedRowList;
   }
   return objectForSelection;
