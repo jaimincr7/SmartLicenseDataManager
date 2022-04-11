@@ -95,8 +95,9 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               const mapRecord = dummyDatas.filter((x) => x.index == seqNumber);
               if (mapRecord && mapRecord.length) {
                 mapRecord[0].excel_to_sql_mapping?.map((data) => {
-                  if (filterExcelColumns?.includes(data.value)) {
+                  if (filterExcelColumns?.includes(data.value) || mapRecord[0].is_dynamic_header) {
                     latest.push(data);
+                    initialValuesData[data.key] = data.value;
                   } else {
                     const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                     dummyTableColumn?.map((data1) => {
@@ -107,6 +108,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                     setTableColumnState(dummyTableColumn);
                   }
                 });
+                if (mapRecord[0].is_dynamic_header)
+                  form.setFieldsValue(initialValuesData);
                 //mapRecord[0].excel_to_sql_mapping = latest;
                 //latest = [];
               }
@@ -157,8 +160,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   )[0];
                 }
               });
-              form.setFieldsValue(initialValuesData);
             }
+            form.setFieldsValue(initialValuesData);
             const tempRecord = records.filter((data) => data.index == seqNumber);
 
             if (tempRecord[0]?.excel_to_sql_mapping == null) {

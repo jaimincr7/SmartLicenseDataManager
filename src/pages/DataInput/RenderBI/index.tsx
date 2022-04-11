@@ -634,6 +634,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             if (data2.sheet_name == sheetNameV && data2.id == idV) {
               data.key_word = data1?.key_word;
               data.is_public = data1?.is_public;
+              data.is_dynamic_header = data1?.is_dynamic_header;
               data.table_name = data2.table_name;
               flagMapping = JSON.parse(data2.mapping);
             }
