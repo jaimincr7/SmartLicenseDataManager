@@ -202,6 +202,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             sheet_name: data.sheet,
             header_row: data.header_row - 1,
             delimiter: data.delimiter ? data.delimiter : ',',
+            is_dynamic_header: data.is_dynamic_header === true ? true : false,
             foreign_key_values: {
               date_added: data.date
                 ? moment(data.date).format(Common.DATEFORMAT)
@@ -234,6 +235,7 @@ const RenderBI: React.FC<IRenderBIProps> = (props) => {
             sheet_name: data.sheet,
             header_row: data.header_row - 1,
             delimiter: data.delimiter ? data.delimiter : ',',
+            is_dynamic_header: data.is_dynamic_header === true ? true : false,
             foreign_key_values: {
               date_added: data.date
                 ? moment(data.date).format(Common.DATEFORMAT)

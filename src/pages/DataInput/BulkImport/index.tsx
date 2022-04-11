@@ -71,6 +71,7 @@ const BulkImport: React.FC = () => {
       table_name: string;
       header_row: number;
       sheet: string;
+      is_dynamic_header: boolean;
     }>
   >([]);
   const [loading, setLoading] = useState(false);

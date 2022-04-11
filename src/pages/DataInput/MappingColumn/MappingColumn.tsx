@@ -20,7 +20,7 @@ const { Option } = Select;
 
 
 const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
-  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, count, is_public, dateChangeFlag, setDateChangeFlag, setFlagForMappingHighlights, flagForMappingHighlights } =
+  const { record, skipRows, fileName, fileType, seqNumber, records, setRecords, count, is_public, dateChangeFlag, setDateChangeFlag, setFlagForMappingHighlights } =
     props;
 
   const [form] = Form.useForm();
@@ -51,8 +51,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
           data.currentMapping =
             bulkImport.saveExcelFileMapping.data && bulkImport.saveExcelFileMapping.data !== null
               ? bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.sheet_name +
-                '!' +
-                bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.id
+              '!' +
+              bulkImport.saveExcelFileMapping.data?.config_excel_column_mappings[0]?.id
               : null;
           data.show_mapping = [...data.show_mapping, bulkImport.saveExcelFileMapping.data];
         }
@@ -69,6 +69,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         setLoadingTableColumns(true);
         commonService.getTableColumns(record.table_name).then((res) => {
           if (res) {
+            form.resetFields();
             const response: any = res;
             const columnsArray = ['tenantid', 'companyid', 'bu_id', 'date added'];
             let filterExcelColumns: any = record.columns;
@@ -82,7 +83,8 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
             }
             const ExcelColsSorted = [...filterExcelColumns];
             ExcelColsSorted.sort();
-            setExcelColumns(ExcelColsSorted);
+            if (dataMapRecord[0].is_dynamic_header !== true)
+              setExcelColumns(ExcelColsSorted);
             setTableColumnState(filterTableColumns);
             const dummyDatas = _.cloneDeep(records);
 
@@ -98,7 +100,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                   } else {
                     const dummyTableColumn = _.cloneDeep(tableColumnLocal);
                     dummyTableColumn?.map((data1) => {
-                      if (data1.name == data.key && mapRecord[0]?.currentMapping )
+                      if (data1.name == data.key && mapRecord[0]?.currentMapping)
                         data1.validateStatus = "warning";
                     });
                     tableColumnLocal = dummyTableColumn;
@@ -108,43 +110,55 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
                 //mapRecord[0].excel_to_sql_mapping = latest;
                 //latest = [];
               }
-              initialValuesData[ele.name] =
-                filterExcelColumns?.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                    ele.name?.toLowerCase()?.replace(/\s/g, '')
-                ).length > 0 && latest == null
-                  ? filterExcelColumns.filter(
+              if (dataMapRecord[0].is_dynamic_header !== true) {
+                initialValuesData[ele.name] =
+                  filterExcelColumns?.filter(
                     (x: any) =>
                       x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
                       ele.name?.toLowerCase()?.replace(/\s/g, '')
-                  )[0]
-                  : (latest || []).filter((data) => {
-                    return (data.key == ele.name);
-                  })[0]?.value;
-              sqlToExcelMapping.push({
-                key: `${ele.name}`,
-                value:
-                  initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
-              });
-            });
-            const mapRecord = dummyDatas.filter((x) => x.index == seqNumber);
-            Object.entries(initialValuesData).forEach(([key, value]) => {
-              if (value === undefined && !(filterExcelColumns?.includes(value))) {
-                const dummyTableColumn = _.cloneDeep(tableColumnLocal);
-                dummyTableColumn?.map((data) => {
-                  if (data.name == key && data.validateStatus !== "warning" && mapRecord && mapRecord.length && mapRecord[0].currentMapping )
-                    data.validateStatus = "success";
+                  ).length > 0 && latest == null
+                    ? filterExcelColumns.filter(
+                      (x: any) =>
+                        x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                        ele.name?.toLowerCase()?.replace(/\s/g, '')
+                    )[0]
+                    : (latest || []).filter((data) => {
+                      return (data.key == ele.name);
+                    })[0]?.value;
+
+                sqlToExcelMapping.push({
+                  key: `${ele.name}`,
+                  value:
+                    initialValuesData[ele.name] == undefined ? '' : `${initialValuesData[ele.name]}`,
                 });
-                tableColumnLocal = dummyTableColumn;
-                setTableColumnState(dummyTableColumn);
-                initialValuesData[key] = filterExcelColumns.filter(
-                  (x: any) =>
-                    x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
-                    key?.toLowerCase()?.replace(/\s/g, '')
-                )[0];
+              } else {
+                const dummyHeader = [];
+                for (let i = 0; i < ExcelColsSorted?.length; i++) {
+                  dummyHeader.push(`Column${i + 1}`);
+                }
+                setExcelColumns(dummyHeader);
               }
             });
+            const mapRecord = dummyDatas.filter((x) => x.index == seqNumber);
+            if (mapRecord[0].is_dynamic_header !== true) {
+              Object.entries(initialValuesData).forEach(([key, value]) => {
+                if (value === undefined && !(filterExcelColumns?.includes(value))) {
+                  const dummyTableColumn = _.cloneDeep(tableColumnLocal);
+                  dummyTableColumn?.map((data) => {
+                    if (data.name == key && data.validateStatus !== "warning" && mapRecord && mapRecord.length && mapRecord[0].currentMapping)
+                      data.validateStatus = "success";
+                  });
+                  tableColumnLocal = dummyTableColumn;
+                  setTableColumnState(dummyTableColumn);
+                  initialValuesData[key] = filterExcelColumns.filter(
+                    (x: any) =>
+                      x?.toString()?.toLowerCase()?.replace(/\s/g, '') ===
+                      key?.toLowerCase()?.replace(/\s/g, '')
+                  )[0];
+                }
+              });
+              form.setFieldsValue(initialValuesData);
+            }
             const tempRecord = records.filter((data) => data.index == seqNumber);
 
             if (tempRecord[0]?.excel_to_sql_mapping == null) {
@@ -156,9 +170,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               });
               setRecords(dummyrecords);
             }
-            form.setFieldsValue(initialValuesData);
-            if(flagForMappingHighlights !== false && dataMapRecord[0]?.currentMapping)
-            {
+            if (dataMapRecord[0]?.currentMapping) {
               setTimeout(() => {
                 setMappingRecords();
               });
@@ -222,6 +234,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
         {
           sheet_name: record.sheet,
           header_row: record.header_row - 1,
+          is_dynamic_header: record.is_dynamic_header === true ? true : false,
           table_name: record.table_name,
           mapping: JSON.stringify(sqlToExcelMapping),
         },

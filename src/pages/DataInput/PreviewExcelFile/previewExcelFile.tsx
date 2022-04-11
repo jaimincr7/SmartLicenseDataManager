@@ -1,4 +1,4 @@
-import { Button, Col, Form, InputNumber, Modal, Popconfirm, Row, Select, Table } from 'antd';
+import { Button, Col, Form, InputNumber, Modal, Popconfirm, Row, Select, Switch, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { DEFAULT_PAGE_SIZE } from '../../../common/constants/common';
@@ -29,6 +29,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     seqNumber,
     firstFlag,
     setFirstFlag,
+    setExcelPreviewData,
     setFlagForMappingHighlights,
   } = props;
 
@@ -88,9 +89,11 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [form] = Form.useForm();
   const initialValues = {
     header_row: headerRowCount,
+    no_header: dataRecords.filter((data) => data.index == seqNumber).length > 0 &&
+      dataRecords.filter((data) => data.index == seqNumber)[0].is_dynamic_header == true ? true : false,
     deli_meter:
       dataRecords.filter((data) => data.index == seqNumber).length > 0 &&
-      dataRecords.filter((data) => data.index == seqNumber)[0].delimiter !== null
+        dataRecords.filter((data) => data.index == seqNumber)[0].delimiter !== null
         ? dataRecords.filter((data) => data.index == seqNumber)[0].delimiter
         : ',',
   };
@@ -100,7 +103,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       if (data.index == seqNumber) {
         data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
           'csv' ||
-        data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
+          data.original_filename.slice(((data?.original_filename.lastIndexOf('.') - 1) >>> 0) + 2) ==
           'txt'
           ? setShowDelimiter(true)
           : setShowDelimiter(false);
@@ -146,6 +149,27 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     setPagination(paginating);
   };
 
+  const changeHeader = (value) => {
+    if(value) {
+      form.setFieldsValue({header_row: 1});
+      const dummyRec = records[0];
+      const columnHeader = [];
+      for(let i =0 ; i < dummyRec?.length ; i++) {
+        columnHeader.push(`Column${i+1}`);
+      }
+      const rec = [columnHeader].concat(records);
+      setExcelPreviewData(rec);
+      const dummyRecords = _.cloneDeep(dataRecords);
+      dummyRecords?.map((data) =>{
+        if(data.id == seqNumber) {
+          data.columns = rec;
+          data.header_row = 0;
+        }
+      });
+      setRecords(dummyRecords);
+    }
+  };
+
   const submitHeaderRow = (values: any) => {
     setFlagForMappingHighlights(false);
     const dummyRecords = _.cloneDeep(dataRecords);
@@ -154,7 +178,8 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
         data.header_row = values.header_row;
         data.delimiter = values.deli_meter;
         data.excel_to_sql_mapping = null;
-        //data.currentMapping = null;
+        data.is_dynamic_header = values.no_header;
+        data.currentMapping = null;
       }
     });
     setRecords(dummyRecords);
@@ -172,7 +197,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     >
       <Form form={form} name="formUpload" initialValues={initialValues} onFinish={submitHeaderRow}>
         <Row gutter={[30, 15]} className="form-label-hide">
-          <Col xs={24} sm={12} md={8}>
+          <Col xs={24} sm={12} md={12}>
             <div className="form-group ">
               <label className="label">Header Row</label>
               <Form.Item
@@ -197,9 +222,21 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
               </Form.Item>
             </div>
           </Col>
+          <Col xs={24} sm={12} md={12}>
+            <div className="form-group form-inline-pt m-0">
+              <Form.Item
+                name="no_header"
+                className="m-0"
+                valuePropName="checked"
+              >
+                <Switch className="form-control" onChange={(value) => { changeHeader(value); }}/>
+              </Form.Item>
+              <label className="label">No Headers?</label>
+            </div>
+          </Col>
           {showDelimiter ? (
             <>
-              <Col xs={24} sm={12} md={8}>
+              <Col xs={24} sm={12} md={12}>
                 <div className="form-group ">
                   <label className="label">Delimiter</label>
                   <Form.Item
