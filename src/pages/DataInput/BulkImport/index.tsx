@@ -677,6 +677,7 @@ const BulkImport: React.FC = () => {
             data1.table_name = data.table_name;
             data1.key_word = selectedRecord[0].key_word;
             data1.is_public = selectedRecord[0].is_public;
+            data1.is_dynamic_header = selectedRecord[0].is_dynamic_header;
           }
         });
       });
@@ -706,6 +707,7 @@ const BulkImport: React.FC = () => {
           data1.currentMapping = selectedRecord[0].sheet_name;
           data1.excel_to_sql_mapping = JSON.parse(selectedRecord[0].mapping);
           data1.header_row = selectedRecord[0].header_row + 1;
+          data1.is_dynamic_header = selectedRecord[0].is_dynamic_header + 1;
           data1.table_name = selectedRecord[0].table_name;
         });
         const dummy = _.cloneDeep(dummyRecords);
