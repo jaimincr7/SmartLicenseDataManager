@@ -36,6 +36,8 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [columns, setColumns] = useState([]);
   const dispatch = useAppDispatch();
   const [showDelimiter, setShowDelimiter] = useState(false);
+  const [tableData, setTableData] = useState(records ? records : []);
+  const [disableHeaderRow, setDisableHeaderRow] = useState(false);
   const bulkImport = useAppSelector(bulkImportSelector);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -83,7 +85,8 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   }, [bulkImport.getCSVExcelColumns.csvFiles]);
 
   useEffect(() => {
-    showModal && previewData(false, headerRowCount);
+    const dummyRecord = dataRecords?.filter((data) => data.index === seqNumber);
+    showModal && !(dummyRecord[0].is_dynamic_header) && previewData(false, headerRowCount);
   }, [showModal]);
 
   const [form] = Form.useForm();
@@ -107,6 +110,12 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
           'txt'
           ? setShowDelimiter(true)
           : setShowDelimiter(false);
+        if (data.is_dynamic_header) {
+          setDisableHeaderRow(true);
+          setTimeout(() => {
+            addDummyHeader();
+          }, 1000);
+        }
       }
     });
     const initialValues = {
@@ -121,6 +130,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   }, []);
 
   useEffect(() => {
+    setTableData(records);
     const mainColumns = [];
     if (records?.length > 0) {
       for (let index = 0; index <= maxColumn; index++) {
@@ -149,24 +159,38 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     setPagination(paginating);
   };
 
-  const changeHeader = (value) => {
-    if(value) {
-      form.setFieldsValue({header_row: 1});
+  const addDummyHeader = () => {
+    if (records && records?.length && !(records[0][0].includes('Column1'))) {
+      setDisableHeaderRow(true);
+      form.setFieldsValue({ header_row: 1 });
       const dummyRec = records[0];
       const columnHeader = [];
-      for(let i =0 ; i < dummyRec?.length ; i++) {
-        columnHeader.push(`Column${i+1}`);
+      for (let i = 0; i < dummyRec?.length; i++) {
+        columnHeader.push(`Column${i + 1}`);
       }
       const rec = [columnHeader].concat(records);
       setExcelPreviewData(rec);
+      setTableData(rec);
       const dummyRecords = _.cloneDeep(dataRecords);
-      dummyRecords?.map((data) =>{
-        if(data.id == seqNumber) {
+      dummyRecords?.map((data) => {
+        if (data.id == seqNumber) {
           data.columns = rec;
           data.header_row = 0;
         }
       });
       setRecords(dummyRecords);
+    }
+  }
+
+  const changeHeader = (value) => {
+    if (value) {
+      addDummyHeader();
+    } else {
+      setDisableHeaderRow(false);
+      records.shift();
+      setExcelPreviewData(records);
+      setTableData(records);
+      handleTableChange(10);
     }
   };
 
@@ -214,6 +238,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
                 <InputNumber
                   min={1}
                   max={maxCount}
+                  disabled={disableHeaderRow}
                   className="form-control w-100"
                   onChange={(value) => {
                     previewData(false, value);
@@ -229,7 +254,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
                 className="m-0"
                 valuePropName="checked"
               >
-                <Switch className="form-control" onChange={(value) => { changeHeader(value); }}/>
+                <Switch className="form-control" onChange={(value) => { changeHeader(value); }} />
               </Form.Item>
               <label className="label">No Headers?</label>
             </div>
@@ -295,7 +320,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
-          dataSource={records}
+          dataSource={[...tableData]}
           columns={columns}
           className="custom-table first-row-header"
         />

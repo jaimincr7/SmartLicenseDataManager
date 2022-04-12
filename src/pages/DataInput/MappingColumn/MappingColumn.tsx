@@ -137,7 +137,7 @@ const MappingColumn: React.FC<IMappingColumnProps> = (props) => {
               } else {
                 const dummyHeader = [];
                 for (let i = 0; i < ExcelColsSorted?.length; i++) {
-                  dummyHeader.push(`Column${i + 1}`);
+                  dummyHeader.push(`Column${('0' + (i + 1)).slice(-2)}`);
                 }
                 setExcelColumns(dummyHeader);
               }
