@@ -36,7 +36,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   const [columns, setColumns] = useState([]);
   const dispatch = useAppDispatch();
   const [showDelimiter, setShowDelimiter] = useState(false);
-  const [tableData, setTableData] = useState(records ? records : []);
+  const [tableData, setTableData] = useState([]);
   const [disableHeaderRow, setDisableHeaderRow] = useState(false);
   const bulkImport = useAppSelector(bulkImportSelector);
   const [pagination, setPagination] = useState({
@@ -166,7 +166,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       const dummyRec = records[0];
       const columnHeader = [];
       for (let i = 0; i < dummyRec?.length; i++) {
-        columnHeader.push(`Column${i + 1}`);
+        columnHeader.push(`Column-${('0' + (i + 1)).slice(-2)}`);
       }
       const rec = [columnHeader].concat(records);
       setExcelPreviewData(rec);
@@ -320,7 +320,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           }}
           onChange={handleTableChange}
-          dataSource={[...tableData]}
+          dataSource={tableData?.length > 0 ? [...tableData] : []}
           columns={columns}
           className="custom-table first-row-header"
         />
