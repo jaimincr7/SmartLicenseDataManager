@@ -87,6 +87,8 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   useEffect(() => {
     const dummyRecord = dataRecords?.filter((data) => data.index === seqNumber);
     showModal && !(dummyRecord[0].is_dynamic_header) && previewData(false, headerRowCount);
+    if(!(dummyRecord[0].is_dynamic_header) )
+    addDummyHeader();
   }, [showModal]);
 
   const [form] = Form.useForm();
@@ -130,9 +132,9 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   }, []);
 
   useEffect(() => {
-    setTableData(records);
     const mainColumns = [];
     if (records?.length > 0) {
+      setTableData(records);
       for (let index = 0; index <= maxColumn; index++) {
         mainColumns.push({
           dataIndex: 'description' + index,
@@ -160,7 +162,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   };
 
   const addDummyHeader = () => {
-    if (records && records?.length && !(records[0][0].includes('Column1'))) {
+    if (records && records?.length && !(records[0][0].includes('Column'))) {
       setDisableHeaderRow(true);
       form.setFieldsValue({ header_row: 1 });
       const dummyRec = records[0];
@@ -209,6 +211,7 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
     setRecords(dummyRecords);
     handleModalClose();
   };
+
 
   return (
     <Modal
