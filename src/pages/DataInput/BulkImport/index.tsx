@@ -71,6 +71,7 @@ const BulkImport: React.FC = () => {
       table_name: string;
       header_row: number;
       sheet: string;
+      is_dynamic_header: boolean;
     }>
   >([]);
   const [loading, setLoading] = useState(false);
@@ -121,8 +122,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -151,6 +152,12 @@ const BulkImport: React.FC = () => {
                         ? mappingSheet[0]?.header_row + 1
                         : 1
                       : 1,
+                  is_dynamic_header:
+                    mappingData.length > 0
+                      ? mappingSheet.length > 0
+                        ? mappingSheet[0]?.is_dynamic_header
+                        : false
+                      : false,
                   sheet: sheet.sheet,
                   columns: sheet.columns,
                   currentMapping:
@@ -197,8 +204,8 @@ const BulkImport: React.FC = () => {
               const mappingSheet =
                 mappingData.length > 0
                   ? mappingData[0]?.config_excel_column_mappings?.filter(
-                      (data) => data.sheet_name == sheet.sheet
-                    )
+                    (data) => data.sheet_name == sheet.sheet
+                  )
                   : [];
               if (mappingData.length) {
                 formUpload.setFieldsValue({ hide_unmapped: false });
@@ -228,6 +235,12 @@ const BulkImport: React.FC = () => {
                           ? mappingSheet[0]?.header_row + 1
                           : 1
                         : 1,
+                    is_dynamic_header:
+                      mappingData.length > 0
+                        ? mappingSheet.length > 0
+                          ? mappingSheet[0]?.is_dynamic_header
+                          : false
+                        : false,
                     sheet: sheet.sheet,
                     columns: sheet.columns,
                     currentMapping:
@@ -284,8 +297,8 @@ const BulkImport: React.FC = () => {
             const mappingSheet =
               mappingData.length > 0
                 ? mappingData[0]?.config_excel_column_mappings?.filter(
-                    (data) => data.sheet_name == sheet.sheet
-                  )
+                  (data) => data.sheet_name == sheet.sheet
+                )
                 : [];
             if (mappingData.length) {
               formUpload.setFieldsValue({ hide_unmapped: false });
@@ -313,14 +326,20 @@ const BulkImport: React.FC = () => {
                       : tableName
                     : tableName
                   : orgFile.length > 0
-                  ? orgFile[0].table_name
-                  : tableName,
+                    ? orgFile[0].table_name
+                    : tableName,
                 header_row:
                   mappingData.length > 0
                     ? mappingSheet.length > 0
                       ? mappingSheet[0]?.header_row + 1
                       : 1
                     : 1,
+                is_dynamic_header:
+                  mappingData.length > 0
+                    ? mappingSheet.length > 0
+                      ? mappingSheet[0]?.is_dynamic_header
+                      : false
+                    : false,
                 sheet: sheet.sheet,
                 columns: sheet.columns,
                 currentMapping:
@@ -340,8 +359,8 @@ const BulkImport: React.FC = () => {
                       : null
                     : null
                   : orgFile.length > 0
-                  ? orgFile[0].excel_to_sql_mapping
-                  : null,
+                    ? orgFile[0].excel_to_sql_mapping
+                    : null,
                 show_mapping: x.file_mapping ? x.file_mapping : null,
               },
             ];
@@ -658,6 +677,7 @@ const BulkImport: React.FC = () => {
             data1.table_name = data.table_name;
             data1.key_word = selectedRecord[0].key_word;
             data1.is_public = selectedRecord[0].is_public;
+            data1.is_dynamic_header = selectedRecord[0].is_dynamic_header;
           }
         });
       });
@@ -687,6 +707,7 @@ const BulkImport: React.FC = () => {
           data1.currentMapping = selectedRecord[0].sheet_name;
           data1.excel_to_sql_mapping = JSON.parse(selectedRecord[0].mapping);
           data1.header_row = selectedRecord[0].header_row + 1;
+          data1.is_dynamic_header = selectedRecord[0].is_dynamic_header + 1;
           data1.table_name = selectedRecord[0].table_name;
         });
         const dummy = _.cloneDeep(dummyRecords);

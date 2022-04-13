@@ -23,6 +23,7 @@ export interface IConfigColMapping {
   header_row: number;
   mapping: string;
   table_name?: string;
+  is_dynamic_header?: boolean;
   excel_file_mapping_id?: number;
 }
 
