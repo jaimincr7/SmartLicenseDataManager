@@ -1,6 +1,7 @@
 import { Button, Tabs } from 'antd';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import GlobalSearch from '../../../../common/components/globalSearch/GlobalSearch';
 import { useAppDispatch, useAppSelector } from '../../../../store/app.hooks';
 import { getWindowsServerLicenseById } from '../../../../store/windowsServer/windowsServerLicense/windowsServerLicense.action';
 import {
@@ -17,6 +18,7 @@ const EditWindowsServerLicense: React.FC<IEditWindowsServerLicenseProps> = (prop
   const windowsServerLicense = useAppSelector(windowsServerLicenseSelector);
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const [tab, setTab] = useState(false);
 
   const { id: licenseId } = props.match?.params;
 
@@ -42,6 +44,9 @@ const EditWindowsServerLicense: React.FC<IEditWindowsServerLicenseProps> = (prop
       <div className="windowsServer">
         <div className="title-block">
           <h4 className="p-0">{title}</h4>
+          <div className="right-title">
+            {tab && (<GlobalSearch />)}
+          </div>
           <div className="btns-block">
             <Button
               className="btn-icon"
@@ -58,11 +63,11 @@ const EditWindowsServerLicense: React.FC<IEditWindowsServerLicenseProps> = (prop
           </div>
         </div>
         <div className="main-card">
-          <Tabs defaultActiveKey="Scenario">
+          <Tabs defaultActiveKey="Scenario" onChange={() => setTab(!tab) }>
             <TabPane tab="Scenario" key="Scenario">
               <Scenarios licenseId={+licenseId} />
             </TabPane>
-            <TabPane tab="Detail" key="Detail">
+            <TabPane tab="Detail" key="Detail" >
               <DetailDataTable licenseId={+licenseId} />
             </TabPane>
           </Tabs>
