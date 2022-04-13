@@ -86,9 +86,12 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
 
   useEffect(() => {
     const dummyRecord = dataRecords?.filter((data) => data.index === seqNumber);
-    showModal && !(dummyRecord[0].is_dynamic_header) && previewData(false, headerRowCount);
-    if(!(dummyRecord[0].is_dynamic_header) )
-    addDummyHeader();
+    showModal && previewData(false, headerRowCount);
+    if ((dummyRecord[0].is_dynamic_header)) {
+      setTimeout(() => {
+        addDummyHeader();
+      }, 2000);
+    }
   }, [showModal]);
 
   const [form] = Form.useForm();
@@ -134,6 +137,9 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
   useEffect(() => {
     const mainColumns = [];
     if (records?.length > 0) {
+      const dummyRecord = dataRecords?.filter((data) => data.index == seqNumber);
+      if(dummyRecord && dummyRecord[0].is_dynamic_header && !(records[0][0].includes('Column')))
+      addDummyHeader();
       setTableData(records);
       for (let index = 0; index <= maxColumn; index++) {
         mainColumns.push({
@@ -193,6 +199,14 @@ const PreviewExcel: React.FC<IPreviewExcel> = (props) => {
       setExcelPreviewData(records);
       setTableData(records);
       handleTableChange(10);
+      const dummyRecords = _.cloneDeep(dataRecords);
+      dummyRecords?.map((data) => {
+        if (data.id == seqNumber) {
+          data.columns = records;
+          data.header_row = 0;
+        }
+      });
+      setRecords(dummyRecords);
     }
   };
 
