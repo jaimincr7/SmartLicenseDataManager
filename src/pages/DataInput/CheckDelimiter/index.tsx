@@ -87,6 +87,7 @@ const CkeckDelimiterModal: React.FC<ICheckDelimeterProps> = (props) => {
                         <Option value=";">Semi Colon(;)</Option>
                         <Option value=",">Comma(,)</Option>
                         <Option value='$T'>TAB(    )</Option>
+                        <Option value='#T'>TAB( UCS-2 Encoding )</Option>
                         {/* <Option value="    ">TAB</Option> */}
                         {/* <Option value=" ">SPACE</Option> */}
                       </Select>
